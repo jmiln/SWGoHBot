@@ -1,5 +1,24 @@
 [
     {
+        "name": "0-0-0",
+        "uniqueName": "TRIPLEZERO",
+        "aliases": [
+            "0-0-0"
+        ],
+        "nameVariant": [
+            "0-0-0"
+        ],
+        "url": "http://swgoh.gg/characters/0-0-0/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_triplezero.png",
+        "side": "dark",
+        "factions": [
+            "Droid",
+            "Scoundrel",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "50R-T",
         "uniqueName": "50RT",
         "aliases": [
@@ -472,6 +491,25 @@
             "cross": "Protection",
             "source": "swgoh.gg"
         }
+    },
+    {
+        "name": "BT-1",
+        "uniqueName": "BT1",
+        "aliases": [
+            "BT-1"
+        ],
+        "nameVariant": [
+            "BT-1"
+        ],
+        "url": "http://swgoh.gg/characters/bt-1/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bt1.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Scoundrel"
+        ],
+        "mods": {}
     },
     {
         "name": "Barriss Offee",

@@ -1,5 +1,180 @@
 [
     {
+        "name": "0-0-0",
+        "base_id": "TRIPLEZERO",
+        "pk": 3442,
+        "url": "http://swgoh.gg/characters/0-0-0/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_triplezero.png",
+        "power": 34317,
+        "description": "A protocol droid specialized in etiquette, customs, translation, and torture.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "009",
+                    "002",
+                    "003",
+                    "004",
+                    "003",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "028",
+                    "039",
+                    "054",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "053",
+                    "038",
+                    "059",
+                    "060",
+                    "067"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "040",
+                    "038",
+                    "070",
+                    "039",
+                    "083",
+                    "033"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "072",
+                    "070",
+                    "069",
+                    "072",
+                    "040",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "106",
+                    "048",
+                    "059",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "072",
+                    "117",
+                    "101",
+                    "114",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "117",
+                    "114",
+                    "113",
+                    "173",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "174",
+                    "135",
+                    "125",
+                    "131",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "135",
+                    "174",
+                    "130",
+                    "137",
+                    "137",
+                    "143"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "162",
+                    "161",
+                    "169",
+                    "169",
+                    "G12Finisher_TRIPLEZERO_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Droid",
+            "Scoundrel",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Offense Up",
+            "Reduce Cooldowns",
+            "Stun",
+            "Target Lock"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "50R-T",
         "base_id": "50RT",
         "pk": 3433,
@@ -4823,6 +4998,180 @@
             "Thermal Detonator"
         ],
         "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "BT-1",
+        "base_id": "BT1",
+        "pk": 3443,
+        "url": "http://swgoh.gg/characters/bt-1/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_bt1.png",
+        "power": 34527,
+        "description": "A blastomech prototype droid who is known for destroying the Tarkin Initiative base in which he was created.",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "003",
+                    "005",
+                    "002",
+                    "011"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "021",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "037",
+                    "076",
+                    "050",
+                    "041",
+                    "069",
+                    "061"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "039",
+                    "058",
+                    "060",
+                    "055",
+                    "063",
+                    "032"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "089",
+                    "043",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "055",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "103",
+                    "024",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "101",
+                    "099",
+                    "112",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "071",
+                    "102",
+                    "096",
+                    "087",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "120",
+                    "116",
+                    "101",
+                    "173",
+                    "101",
+                    "139"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "172",
+                    "173",
+                    "134",
+                    "139",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "160",
+                    "166",
+                    "171",
+                    "G12Finisher_BT1_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Droid",
+            "Scoundrel"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "DoT",
+            "Expose",
+            "Gain Turn Meter",
+            "Target Lock"
+        ],
+        "role": "Attacker",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
