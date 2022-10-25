@@ -111,17 +111,45 @@ class Character extends Command {
             });
         }
 
-        return interaction.reply({
-            embeds: [{
-                color: Bot.getSideColor(character.side),
-                author: {
-                    name: character.name,
-                    url: character.url,
-                    icon_url: character.avatarURL
-                },
-                fields: fields
-            }]
-        });
+        let embeds1Len = 0;
+        let useEmbeds2 = false;
+        const embeds = [{
+            color: Bot.getSideColor(character.side),
+            author: {
+                name: character.name,
+                url: character.url,
+                icon_url: character.avatarURL
+            },
+            fields: []
+        }];
+
+        for (const thisField of fields) {
+            if (!useEmbeds2 && (embeds1Len + thisField.value.length) < 5000) {
+                // Use msg1
+                embeds[0].fields.push(thisField);
+                embeds1Len += thisField.value.length;
+            } else {
+                // Use msg2
+                if (!embeds[1]) {
+                    embeds.push({
+                        color: Bot.getSideColor(character.side),
+                        author: {
+                            name: character.name + " continued..."
+                        },
+                        fields: []
+                    });
+                }
+                embeds[1].fields.push(thisField);
+                useEmbeds2 = true;
+            }
+        }
+
+        await interaction.reply({content: null, embeds: [embeds[0]]});
+        if (embeds.length > 1) {
+            console.log("Following up");
+            await interaction.followUp({content: null, embeds: [embeds[1]]});
+        }
+        return;
     }
 }
 

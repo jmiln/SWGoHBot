@@ -509,7 +509,6 @@ module.exports = (Bot, client) => {
 
     // Return a duration string
     Bot.duration = (time, message=null) => {
-        if (!message) return "N/A";
         const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
         return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
