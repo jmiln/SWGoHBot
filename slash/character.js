@@ -146,7 +146,6 @@ class Character extends Command {
 
         await interaction.reply({content: null, embeds: [embeds[0]]});
         if (embeds.length > 1) {
-            console.log("Following up");
             await interaction.followUp({content: null, embeds: [embeds[1]]});
         }
         return;
