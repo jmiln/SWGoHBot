@@ -167,7 +167,8 @@
             "Offense Up",
             "Reduce Cooldowns",
             "Stun",
-            "Target Lock"
+            "Target Lock",
+            "Torture"
         ],
         "role": "Support",
         "ship": "",
@@ -14357,8 +14358,8 @@
             "Vulnerable"
         ],
         "role": "Support",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "SCYTHE",
+        "ship_slot": 1,
         "activate_shard_count": 25
     },
     {
@@ -17717,11 +17718,12 @@
             "Speed Up",
             "Taunt",
             "Tenacity Up",
+            "Torture",
             "Vulnerable"
         ],
         "role": "Leader",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "SCYTHE",
+        "ship_slot": 0,
         "activate_shard_count": 330
     },
     {
@@ -26760,11 +26762,15 @@
         ],
         "ability_classes": [
             "Ability Block",
+            "Dispel",
             "Evasion Up",
+            "Gain Turn Meter",
             "Heal",
             "Leader: +Evasion",
             "Leader: +Max Health",
-            "Leader: Healing"
+            "Leader: Healing",
+            "Protection Up",
+            "Tenacity Up"
         ],
         "role": "Leader",
         "ship": "",

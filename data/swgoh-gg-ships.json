@@ -1172,6 +1172,34 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Scythe",
+        "base_id": "SCYTHE",
+        "url": "http://swgoh.gg/ships/scythe/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_scythe.png",
+        "power": 113103,
+        "description": "Support shuttle that boosts Empire ships by providing potent buffs and summoning TIE fighters",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Inquisitorius",
+            "Support",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Defense Down",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Remove Turn Meter",
+            "Speed Down"
+        ],
+        "role": "Support",
+        "capital_ship": false,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Sith Fighter",
         "base_id": "SITHFIGHTER",
         "url": "http://swgoh.gg/ships/sith-fighter/",

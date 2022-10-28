@@ -1528,6 +1528,15 @@
         ]
     },
     {
+        "name": "Krrsantan",
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "7-A"
+            }
+        ]
+    },
+    {
         "name": "Kuiil",
         "locations": [
             {
@@ -2216,6 +2225,15 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "6-C"
+            }
+        ]
+    },
+    {
+        "name": "Skiff Guard (Lando Calrissian)",
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "3-B"
             }
         ]
     },
