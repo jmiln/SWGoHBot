@@ -92,8 +92,8 @@ class UserConf extends Command {
                             name: "payout_warning",
                             description: "Set it to warn you before your payout, 1-1440min, 0 to disable",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 0,
-                            max_value: 1440,
+                            minValue: 0,
+                            maxValue: 1440,
                         }
                     ]
                 },

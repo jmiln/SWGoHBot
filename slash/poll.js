@@ -60,8 +60,8 @@ class Poll extends Command {
                             required: true,
                             description: "The poll option you want to vote for",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 0,
-                            max_value: 10,
+                            minValue: 0,
+                            maxValue: 10,
                         }
                     ]
                 }

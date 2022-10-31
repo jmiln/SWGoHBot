@@ -188,8 +188,8 @@ class ArenaWatch extends Command {
                             type: ApplicationCommandOptionType.Integer,
                             description: "(1-1439) The number of minutes before their payout to warn them",
                             required: true,
-                            min_value: 0,
-                            max_value: 1439,
+                            minValue: 0,
+                            maxValue: 1439,
                         },
                         {
                             name: "arena",

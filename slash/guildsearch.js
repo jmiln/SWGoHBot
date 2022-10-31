@@ -60,15 +60,15 @@ class GuildSearch extends Command {
                             name: "top",
                             description: "View only the top x in the list (1-50)",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 0,
-                            max_value: 50,
+                            minValue: 0,
+                            maxValue: 50,
                         },
                         {
                             name: "rarity",
                             description: "View only X rarity (Star lvl) and above. (1-7)",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 0,
-                            max_value: 7,
+                            minValue: 0,
+                            maxValue: 7,
                         },
                         // BOOL: reverse, zetas
                         {
@@ -120,15 +120,15 @@ class GuildSearch extends Command {
                             name: "top",
                             description: "View only the top x in the list (1-50)",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 0,
-                            max_value: 50,
+                            minValue: 0,
+                            maxValue: 50,
                         },
                         {
                             name: "rarity",
                             description: "View only X rarity (Star lvl) and above. (1-7)",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 0,
-                            max_value: 7,
+                            minValue: 0,
+                            maxValue: 7,
                         },
                         // BOOL: reverse
                         {

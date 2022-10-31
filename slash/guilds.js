@@ -25,8 +25,8 @@ class Guilds extends Command {
                             name: "sort",
                             description: "Which gear level you'd like it sorted by (9-13)",
                             type: ApplicationCommandOptionType.Integer,
-                            min_value: 9,
-                            max_value: 13,
+                            minValue: 9,
+                            maxValue: 13,
                         }
                     ]
                 },
