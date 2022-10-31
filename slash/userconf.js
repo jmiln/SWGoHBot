@@ -11,7 +11,7 @@ class UserConf extends Command {
                 {
                     name: "allycodes",
                     description: "The ally code of the user you want to see",
-                    type: "SUB_COMMAND_GROUP",
+                    type: ApplicationCommandOptionType.SubcommandGroup,
                     // Need add, remove, makeprimary
                     options: [
                         {

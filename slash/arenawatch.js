@@ -138,7 +138,7 @@ class ArenaWatch extends Command {
                     options: [{
                         name: "toggle",
                         description: "Enable/ Disable arenawatch",
-                        type: "BOOLEAN",
+                        type: ApplicationCommandOptionType.Boolean,
                         required: true
                     }]
                 },
