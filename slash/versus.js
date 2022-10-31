@@ -22,6 +22,7 @@ class Versus extends Command {
                 },
                 {
                     name: "character",
+                    autocomplete: true,
                     description: "A character you want to compare the stats of",
                     type: ApplicationCommandOptionType.String,
                     required: true

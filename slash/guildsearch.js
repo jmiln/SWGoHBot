@@ -15,6 +15,7 @@ class GuildSearch extends Command {
                     options: [
                         {
                             name: "character",
+                            autocomplete: true,
                             description: "The character you want to display",
                             type: ApplicationCommandOptionType.String,
                             required: true
@@ -94,6 +95,7 @@ class GuildSearch extends Command {
                     options: [
                         {
                             name: "ship",
+                            autocomplete: true,
                             description: "The ship you want to display",
                             type: ApplicationCommandOptionType.String,
                             required: true

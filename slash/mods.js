@@ -11,6 +11,7 @@ class Mods extends Command {
                 {
                     name: "character",
                     required: true,
+                    autocomplete: true,
                     description: "The character you want to see the mods for",
                     type: ApplicationCommandOptionType.String
                 },

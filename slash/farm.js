@@ -9,6 +9,7 @@ class Farm extends Command {
             options: [
                 {
                     name: "character",
+                    autocomplete: true,
                     description: "The character or ship you want to search for",
                     type: ApplicationCommandOptionType.String,
                     required: true

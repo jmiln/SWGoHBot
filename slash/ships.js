@@ -10,6 +10,7 @@ class Ships extends Command {
             options: [
                 {
                     name: "ship",
+                    autocomplete: true,
                     type: ApplicationCommandOptionType.String,
                     description: "The ship to look up",
                     required: true

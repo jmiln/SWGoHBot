@@ -11,6 +11,7 @@ class Character extends Command {
             options: [
                 {
                     name: "character",
+                    autocomplete: true,
                     type: ApplicationCommandOptionType.String,
                     description: "The character you want to see the gear of",
                     required: true

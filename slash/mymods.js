@@ -19,6 +19,7 @@ class MyMods extends Command {
                     options: [
                         {
                             name: "character",
+                            autocomplete: true,
                             required: true,
                             type: ApplicationCommandOptionType.String,
                             description: "The character you want to check"

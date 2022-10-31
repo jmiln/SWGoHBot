@@ -20,6 +20,7 @@ class Zetas extends Command {
                         },
                         {
                             name: "character",
+                            autocomplete: true,
                             type: ApplicationCommandOptionType.String,
                             description: "Just show the zeta'd abilities for a specific character"
                         },
@@ -38,6 +39,7 @@ class Zetas extends Command {
                         },
                         {
                             name: "character",
+                            autocomplete: true,
                             type: ApplicationCommandOptionType.String,
                             description: "Just show the zeta'd abilities for a specific character"
                         },
