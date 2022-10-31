@@ -987,7 +987,7 @@ module.exports = (Bot, client) => {
                 }, {context: {
                     guildId: Bot.config.dev_server
                 }});
-                if (currentGuildCommands?.length) currentGuildCommands = currentGuildCommands[0];
+                if (currentGuildCommands?.length) currentGuildCommands = currentGuildCommands.filter(curr => !!curr)[0];
                 const { newComs: newGuildComs, changedComs: changedGuildComs } = checkCmds(guildCmds, currentGuildCommands);
 
                 // We'll use set but please keep in mind that `set` is overkill for a singular command.
