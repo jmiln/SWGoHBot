@@ -1092,10 +1092,10 @@ function checkCmds(newCmdList, oldCmdList) {
                 if (!cmd.options[ix].channelTypes)              cmd.options[ix].channelTypes             = undefined;
                 if (!cmd.options[ix].options?.length)           cmd.options[ix].options                  = undefined;
 
-                if (!cmd.options[ix].minValue && cmd.options[ix].minValue !== 0)   cmd.options[ix].minValue  = undefined;
-                if (!cmd.options[ix].maxValue && cmd.options[ix].maxValue !== 0)   cmd.options[ix].maxValue  = undefined;
-                if (!cmd.options[ix].minLength && cmd.options[ix].minLength !== 0) cmd.options[ix].minLength = undefined;
-                if (!cmd.options[ix].maxLength && cmd.options[ix].maxLength !== 0) cmd.options[ix].maxLength = undefined;
+                if (!cmd.options[ix].minValue  && !isNaN(cmd.options[ix].minValue))  cmd.options[ix].minValue  = undefined;
+                if (!cmd.options[ix].maxValue  && !isNaN(cmd.options[ix].maxValue))  cmd.options[ix].maxValue  = undefined;
+                if (!cmd.options[ix].minLength && !isNaN(cmd.options[ix].minLength)) cmd.options[ix].minLength = undefined;
+                if (!cmd.options[ix].maxLength && !isNaN(cmd.options[ix].maxLength)) cmd.options[ix].maxLength = undefined;
 
                 debugLog("> checking " + cmd.options[ix]?.name);
                 for (const op of Object.keys(cmd.options[ix])) {
@@ -1152,10 +1152,10 @@ function checkCmds(newCmdList, oldCmdList) {
                             (newOpt.name !== thisOpt.name                       && (newOpt.name || thisOpt.name)) ||
                             (newOpt.autocomplete !== thisOpt.autocomplete       && (newOpt.autocomplete || thisOpt.autocomplete)) ||
                             (newOpt.description !== thisOpt.description         && (newOpt.description || thisOpt.description)) ||
-                            (newOpt.minValue !== thisOpt.minValue               && (newOpt.minValue || thisOpt.minValue)) ||
-                            (newOpt.maxValue !== thisOpt.maxValue               && (newOpt.maxValue || thisOpt.maxValue)) ||
-                            (newOpt.minLength !== thisOpt.minLength             && (newOpt.minLength || thisOpt.minLength)) ||
-                            (newOpt.maxLength !== thisOpt.maxLength             && (newOpt.maxLength || thisOpt.maxLength)) ||
+                            (newOpt.minValue !== thisOpt.minValue               && (!isNaN(newOpt?.minValue) || !isNaN(thisOpt?.minValue))) ||
+                            (newOpt.maxValue !== thisOpt.maxValue               && (!isNaN(newOpt?.maxValue) || !isNaN(thisOpt?.maxValue))) ||
+                            (newOpt.minLength !== thisOpt.minLength             && (!isNaN(newOpt?.minLength) || !isNaN(thisOpt?.minLength))) ||
+                            (newOpt.maxLength !== thisOpt.maxLength             && (!isNaN(newOpt?.maxLength) || !isNaN(thisOpt?.maxLength))) ||
                             (newOpt.choices?.length !== thisOpt.choices?.length && (newOpt.choices || thisOpt.choices)) ||
                             (newOpt.options?.length !== thisOpt.options?.length && (newOpt.options || thisOpt.options))
                         ) {
@@ -1173,10 +1173,10 @@ function checkCmds(newCmdList, oldCmdList) {
                                     (newSubOpt.name !== thisSubOpt.name                       && (newSubOpt.name || thisSubOpt.name)) ||
                                     (newSubOpt.autocomplete !== thisSubOpt.autocomplete       && (newSubOpt.autocomplete || thisSubOpt.autocomplete)) ||
                                     (newSubOpt.description !== thisSubOpt.description         && (newSubOpt.description || thisSubOpt.description)) ||
-                                    (newSubOpt.minValue !== thisSubOpt.minValue               && (newSubOpt?.minValue >= 0 || thisSubOpt?.minValue >= 0)) ||
-                                    (newSubOpt.maxValue !== thisSubOpt.maxValue               && (newSubOpt?.maxValue >= 0 || thisSubOpt?.maxValue >= 0)) ||
-                                    (newSubOpt.minLength !== thisSubOpt.minLength             && (newSubOpt?.minLength >= 0 || thisSubOpt?.minLength >= 0)) ||
-                                    (newSubOpt.maxLength !== thisSubOpt.maxLength             && (newSubOpt?.maxLength >= 0 || thisSubOpt?.maxLength >= 0)) ||
+                                    (newSubOpt.minValue !== thisSubOpt.minValue               && (!isNaN(newSubOpt?.minValue) || !isNaN(thisSubOpt?.minValue))) ||
+                                    (newSubOpt.maxValue !== thisSubOpt.maxValue               && (!isNaN(newSubOpt?.maxValue) || !isNaN(thisSubOpt?.maxValue))) ||
+                                    (newSubOpt.minLength !== thisSubOpt.minLength             && (!isNaN(newSubOpt?.minLength) || !isNaN(thisSubOpt?.minLength))) ||
+                                    (newSubOpt.maxLength !== thisSubOpt.maxLength             && (!isNaN(newSubOpt?.maxLength) || !isNaN(thisSubOpt?.maxLength))) ||
                                     (newSubOpt.choices?.length !== thisSubOpt.choices?.length && (newSubOpt.choices || thisSubOpt.choices)) ||
                                     (newSubOpt.options?.length !== thisSubOpt.options?.length && (newSubOpt.options || thisSubOpt.options))
                                 ) {
