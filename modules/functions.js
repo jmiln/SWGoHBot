@@ -979,7 +979,15 @@ module.exports = (Bot, client) => {
                 const guildCmds = client.slashcmds.filter(c => c.guildOnly).map(c => c.commandData);
 
                 // The currently deployed commands
-                const currentGuildCommands = await client.guilds.cache.get(Bot.config.dev_server)?.commands.fetch();
+                let currentGuildCommands = await client.shard.broadcastEval(async (client, {guildId}) => {
+                    const targetGuild = await client.guilds.cache.get(guildId)?.commands.fetch();
+                    if (targetGuild) {
+                        return targetGuild;
+                    }
+                }, {context: {
+                    guildId: Bot.config.dev_server
+                }});
+                if (currentGuildCommands?.length) currentGuildCommands = currentGuildCommands[0];
                 const { newComs: newGuildComs, changedComs: changedGuildComs } = checkCmds(guildCmds, currentGuildCommands);
 
                 // We'll use set but please keep in mind that `set` is overkill for a singular command.
@@ -998,16 +1006,20 @@ module.exports = (Bot, client) => {
                 }
 
                 // The new guild commands
-                outLog.push({
-                    name: "**Added Guild**",
-                    value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
-                });
+                if (newGuildComs?.length) {
+                    outLog.push({
+                        name: "**Added Guild**",
+                        value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
+                    });
+                }
 
                 // The edited guild commands
-                outLog.push({
-                    name: "**Changed Guild**",
-                    value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
-                });
+                if (changedGuildComs?.length) {
+                    outLog.push({
+                        name: "**Changed Guild**",
+                        value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
+                    });
+                }
 
 
                 if (Bot.config.enableGlobalCmds) {
@@ -1018,34 +1030,36 @@ module.exports = (Bot, client) => {
 
                     const { newComs: newGlobalComs, changedComs: changedGlobalComs } = checkCmds(globalCmds, currentGlobalCommands);
 
+                    // The new global commands
                     if (newGlobalComs.length) {
                         for (const newGlobalCom of newGlobalComs) {
                             console.log(`Adding ${newGlobalCom.name} to Global commands`);
                             await client.application?.commands.create(newGlobalCom);
                         }
+                        outLog.push({
+                            name: "**Added Global**",
+                            value: newGlobalComs?.length ? newGlobalComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
+                        });
                     }
+
+                    // The edited global commands
                     if (changedGlobalComs.length) {
                         for (const diffGlobalCom of changedGlobalComs) {
                             console.log(`Updating ${diffGlobalCom.com.name} in Global commands`);
                             await client.application?.commands.edit(diffGlobalCom.id, diffGlobalCom.com);
                         }
+                        outLog.push({
+                            name: "**Changed Global**",
+                            value: changedGlobalComs?.length ? changedGlobalComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
+                        });
                     }
-
-                    // The new global commands
-                    outLog.push({
-                        name: "**Added Global**",
-                        value: newGlobalComs?.length ? newGlobalComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
-                    });
-
-                    // The edited global commands
-                    outLog.push({
-                        name: "**Changed Global**",
-                        value: changedGlobalComs?.length ? changedGlobalComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
-                    });
                 }
 
-                console.log("Deployed Commands:");
-                return console.log(outLog);
+                if (outLog?.length) {
+                    console.log("Deployed Commands:");
+                    console.log(outLog);
+                }
+                return;
             } catch (err) {
                 Bot.logger.error(inspect(err, {depth: 5}));
             }
@@ -1142,10 +1156,10 @@ function checkCmds(newCmdList, oldCmdList) {
                         if ((newOpt.required !== thisOpt.required               && (newOpt.required || thisOpt.required)) ||
                             (newOpt.name !== thisOpt.name                       && (newOpt.name || thisOpt.name)) ||
                             (newOpt.description !== thisOpt.description         && (newOpt.description || thisOpt.description)) ||
-                            (newOpt.minValue !== thisOpt.minValue             && (newOpt.minValue || thisOpt.minValue)) ||
-                            (newOpt.maxValue !== thisOpt.maxValue             && (newOpt.maxValue || thisOpt.maxValue)) ||
-                            (newOpt.minLength !== thisOpt.minLength           && (newOpt.minLength || thisOpt.minLength)) ||
-                            (newOpt.maxLength !== thisOpt.maxLength           && (newOpt.maxLength || thisOpt.maxLength)) ||
+                            (newOpt.minValue !== thisOpt.minValue               && (newOpt.minValue || thisOpt.minValue)) ||
+                            (newOpt.maxValue !== thisOpt.maxValue               && (newOpt.maxValue || thisOpt.maxValue)) ||
+                            (newOpt.minLength !== thisOpt.minLength             && (newOpt.minLength || thisOpt.minLength)) ||
+                            (newOpt.maxLength !== thisOpt.maxLength             && (newOpt.maxLength || thisOpt.maxLength)) ||
                             (newOpt.choices?.length !== thisOpt.choices?.length && (newOpt.choices || thisOpt.choices)) ||
                             (newOpt.options?.length !== thisOpt.options?.length && (newOpt.options || thisOpt.options))
                         ) {
@@ -1185,8 +1199,6 @@ function checkCmds(newCmdList, oldCmdList) {
             if (cmd?.defaultPermission !== thisCom?.defaultPermission) {
                 isDiff = true;
                 debugLog("Diff perms");
-                console.log(cmd.defaultPermission)
-                console.log(thisCom.defaultPermission)
             }
         }
 
