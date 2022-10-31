@@ -42,6 +42,10 @@ Bot.languages = {};
 Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
 client.reloadLanguages();
 
+// List of all the unit names to use for autocomplete
+Bot.CharacterNames = Bot.characters.map(ch => ch.name);
+Bot.ShipNames = Bot.ships.map(ch => ch.name);
+
 client.commands  = new Collection();
 client.aliases   = new Collection();
 client.slashcmds = new Collection();

@@ -987,34 +987,29 @@ module.exports = (Bot, client) => {
                 }, {context: {
                     guildId: Bot.config.dev_server
                 }});
-                if (currentGuildCommands?.length) currentGuildCommands = currentGuildCommands[0];
+                if (currentGuildCommands?.length) currentGuildCommands = currentGuildCommands.filter(curr => !!curr)[0];
                 const { newComs: newGuildComs, changedComs: changedGuildComs } = checkCmds(guildCmds, currentGuildCommands);
 
                 // We'll use set but please keep in mind that `set` is overkill for a singular command.
                 // Set the guild commands like this.
+
+                // The new guild commands
                 if (newGuildComs.length) {
                     for (const newGuildCom of newGuildComs) {
                         console.log(`Adding ${newGuildCom.name} to Guild commands`);
                         await client.guilds.cache.get(Bot.config.dev_server)?.commands.create(newGuildCom);
                     }
-                }
-                if (changedGuildComs.length) {
-                    for (const diffGuildCom of changedGuildComs) {
-                        console.log(`Updating ${diffGuildCom.com.name} in Guild commands`);
-                        await client.guilds.cache.get(Bot.config.dev_server)?.commands.edit(diffGuildCom.id, diffGuildCom.com);
-                    }
-                }
-
-                // The new guild commands
-                if (newGuildComs?.length) {
                     outLog.push({
                         name: "**Added Guild**",
                         value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
                     });
                 }
-
                 // The edited guild commands
-                if (changedGuildComs?.length) {
+                if (changedGuildComs.length) {
+                    for (const diffGuildCom of changedGuildComs) {
+                        console.log(`Updating ${diffGuildCom.com.name} in Guild commands`);
+                        await client.guilds.cache.get(Bot.config.dev_server)?.commands.edit(diffGuildCom.id, diffGuildCom.com);
+                    }
                     outLog.push({
                         name: "**Changed Guild**",
                         value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
@@ -1155,6 +1150,7 @@ function checkCmds(newCmdList, oldCmdList) {
                         }
                         if ((newOpt.required !== thisOpt.required               && (newOpt.required || thisOpt.required)) ||
                             (newOpt.name !== thisOpt.name                       && (newOpt.name || thisOpt.name)) ||
+                            (newOpt.autocomplete !== thisOpt.autocomplete       && (newOpt.autocomplete || thisOpt.autocomplete)) ||
                             (newOpt.description !== thisOpt.description         && (newOpt.description || thisOpt.description)) ||
                             (newOpt.minValue !== thisOpt.minValue               && (newOpt.minValue || thisOpt.minValue)) ||
                             (newOpt.maxValue !== thisOpt.maxValue               && (newOpt.maxValue || thisOpt.maxValue)) ||
@@ -1175,11 +1171,12 @@ function checkCmds(newCmdList, oldCmdList) {
 
                                 if ((newSubOpt.required !== thisSubOpt.required               && (newSubOpt.required || thisSubOpt.required)) ||
                                     (newSubOpt.name !== thisSubOpt.name                       && (newSubOpt.name || thisSubOpt.name)) ||
+                                    (newSubOpt.autocomplete !== thisSubOpt.autocomplete       && (newSubOpt.autocomplete || thisSubOpt.autocomplete)) ||
                                     (newSubOpt.description !== thisSubOpt.description         && (newSubOpt.description || thisSubOpt.description)) ||
-                                    (newSubOpt.minValue !== thisSubOpt.minValue             && (newSubOpt?.minValue >= 0 || thisSubOpt?.minValue >= 0)) ||
-                                    (newSubOpt.maxValue !== thisSubOpt.maxValue             && (newSubOpt?.maxValue >= 0 || thisSubOpt?.maxValue >= 0)) ||
-                                    (newSubOpt.minLength !== thisSubOpt.minLength           && (newSubOpt?.minLength >= 0 || thisSubOpt?.minLength >= 0)) ||
-                                    (newSubOpt.maxLength !== thisSubOpt.maxLength           && (newSubOpt?.maxLength >= 0 || thisSubOpt?.maxLength >= 0)) ||
+                                    (newSubOpt.minValue !== thisSubOpt.minValue               && (newSubOpt?.minValue >= 0 || thisSubOpt?.minValue >= 0)) ||
+                                    (newSubOpt.maxValue !== thisSubOpt.maxValue               && (newSubOpt?.maxValue >= 0 || thisSubOpt?.maxValue >= 0)) ||
+                                    (newSubOpt.minLength !== thisSubOpt.minLength             && (newSubOpt?.minLength >= 0 || thisSubOpt?.minLength >= 0)) ||
+                                    (newSubOpt.maxLength !== thisSubOpt.maxLength             && (newSubOpt?.maxLength >= 0 || thisSubOpt?.maxLength >= 0)) ||
                                     (newSubOpt.choices?.length !== thisSubOpt.choices?.length && (newSubOpt.choices || thisSubOpt.choices)) ||
                                     (newSubOpt.options?.length !== thisSubOpt.options?.length && (newSubOpt.options || thisSubOpt.options))
                                 ) {
