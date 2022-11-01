@@ -1052,7 +1052,7 @@ module.exports = (Bot, client) => {
 
                 if (outLog?.length) {
                     console.log("Deployed Commands:");
-                    console.log(outLog);
+                    console.log(outLog.map(log => `${log.name}:\n${log.value}`).join("\n\n"));
                 }
                 return;
             } catch (err) {
@@ -1181,7 +1181,7 @@ function checkCmds(newCmdList, oldCmdList) {
                                     (newSubOpt.options?.length !== thisSubOpt.options?.length && (newSubOpt.options || thisSubOpt.options))
                                 ) {
                                     isDiff = true;
-                                    debugLog(`   [NEW] - ${newOpt ? inspect(newOpt) : null}\n   [OLD] - ${thisOpt ? inspect(thisOpt) : null}`);
+                                    debugLog(`   [NEW] - ${newSubOpt ? inspect(newSubOpt) : null}\n   [OLD] - ${thisSubOpt ? inspect(thisSubOpt) : null}`);
                                     break;
                                 }
                             }
