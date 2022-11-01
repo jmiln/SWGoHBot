@@ -16,7 +16,20 @@
             "Scoundrel",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/0-0-0/best-mods/",
+            "sets": [
+                "Potency x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Potency",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "50R-T",
@@ -509,7 +522,20 @@
             "Droid",
             "Scoundrel"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/bt-1/best-mods/",
+            "sets": [
+                "Crit. Chance x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Barriss Offee",
@@ -3632,7 +3658,20 @@
             "Smuggler",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/hondo-ohnaka/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Health",
+            "cross": "Protection",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Hoth Rebel Scout",
@@ -4030,7 +4069,20 @@
             "Smuggler",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/jabba-the-hutt/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Jango Fett",
