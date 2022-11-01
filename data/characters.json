@@ -669,7 +669,20 @@
             "Attacker",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/ben-solo/best-mods/",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Biggs Darklighter",
@@ -699,7 +712,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Offense/ Protection",
             "source": "swgoh.gg"
         }
     },
