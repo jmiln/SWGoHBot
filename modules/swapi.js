@@ -155,7 +155,7 @@ module.exports = (Bot) => {
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
-        const processStart = new Date();
+        const processStart = new Date().getTime();
         for (const newPlayer of updatedBare) {
             const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
             if (!oldPlayer?.roster) {
@@ -230,13 +230,18 @@ module.exports = (Bot) => {
                 await Bot.cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
             }
         }
-        const processEnd = new Date() - processStart;
+        const processEnd = new Date().getTime() - processStart;
         Bot.logger.debug(`Processing ${updatedBare.length}`);
         Bot.logger.debug(`Processing took ${processEnd}ms`);
 
         return guildLog;
     }
 
+    /**
+     * @param {Number[]} allycodes
+     * @param {number} cooldown
+     * @param {Object} options
+     */
     async function unitStats(allycodes, cooldown, options={}) {
         // Make sure the allycode(s) are in an array
         if (!allycodes) return false;
@@ -248,7 +253,7 @@ module.exports = (Bot) => {
 
         // Check the cooldown to see if it should update stuff or not
         if (!options.force) {
-            if (allycodes.length > 5) {
+            if (allycodes?.length > 5) {
                 // If there's more than 5 ally codes, apply the guild cooldown
                 if (cooldown && cooldown.guild) {
                     cooldown = cooldown.guild;
@@ -268,12 +273,12 @@ module.exports = (Bot) => {
         }
         let playerStats = [];
         try {
-            if (allycodes?.length) {
-                allycodes = allycodes.filter(a => !!a).map(a => a.toString()).filter(a => a.length === 9);
-            } else {
+            if (!allycodes?.length) {
                 throw new Error("No valid ally code(s) entered");
             }
-            allycodes = allycodes.map(a => parseInt(a, 10));
+            allycodes = allycodes
+                .filter(a => a.toString().length === 9)
+                .map(a => parseInt(a, 10));
 
             let players;
             if (!options.force) {
@@ -1013,13 +1018,13 @@ module.exports = (Bot) => {
             if (!cooldown) {
                 cooldown = guildMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date() - new Date(lastUpdated) );
+            const diff = Bot.convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
             return diff.totalMin >= cooldown;
         } else {
             if (!cooldown) {
                 cooldown = playerMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date() - new Date(lastUpdated) );
+            const diff = Bot.convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
             return diff.totalMin >= cooldown;
         }
     }
