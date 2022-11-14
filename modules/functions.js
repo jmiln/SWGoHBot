@@ -1060,6 +1060,47 @@ module.exports = (Bot, client) => {
             }
         }
     };
+
+    // Check the abilities table in the swapi db, and sort out what each omicron is good for
+    Bot.sortOmicrons = async () => {
+        // Get all omicron abilities
+        const abilityList = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {
+            isOmicron: true,
+            language: "eng_us"
+        }, {
+            skillId: 1, _id: 0, descKey: 1
+        });
+
+        const omicronTypes = {
+            tw: [],
+            ga3: [],
+            ga: [],
+            tb: [],
+            raid: [],
+            conquest: [],
+            other: []
+        };
+
+        for (const ab of abilityList) {
+            const key = ab.descKey.toLowerCase();
+            if (key.includes("3v3 grand arenas")) {
+                omicronTypes.ga3.push(ab.skillId);
+            } else if (key.includes("grand arenas")) {
+                omicronTypes.ga.push(ab.skillId);
+            } else if (key.includes("territory war")) {
+                omicronTypes.tw.push(ab.skillId);
+            } else if (key.includes("territory battle")) {
+                omicronTypes.tb.push(ab.skillId);
+            } else if (key.includes("conquest")) {
+                omicronTypes.conquest.push(ab.skillId);
+            } else if (key.includes("raid")) {
+                omicronTypes.raid.push(ab.skillId);
+            } else {
+                omicronTypes.other.push(ab.skillId);
+            }
+        }
+        return omicronTypes;
+    };
 };
 
 

@@ -11,30 +11,29 @@ let specialAbilityList = null;
 module.exports = (Bot) => {
     // Set the max cooldowns (In minutes)
     const playerMinCooldown = 1;    // 1 min
-    const playerMaxCooldown = 180;  // 2 hours
-    const guildMinCooldown  = 3*60; // 4 hours
+    const playerMaxCooldown = 3*60; // 3 hours
+    const guildMinCooldown  = 3*60; // 3 hours
     const guildMaxCooldown  = 6*60; // 6 hours
-    const eventCooldown     = 4*60; // 4 hours
+    // const eventCooldown     = 4*60; // 4 hours
 
     return {
-        playerByName: playerByName,
-        getPayoutFromAC: getPayoutFromAC,
-        getPlayersArena: getPlayersArena,
-        unitStats: unitStats,
-        langChar: langChar,
-        guildStats: guildStats,
-        abilities: abilities,
-        getCharacter: getCharacter,
-        character: character,
-        gear: gear,
-        units: units,
-        recipes: recipes,
-        getRawGuild: getRawGuild,
-        getPlayerUpdates: getPlayerUpdates,
-        guild: guild,
-        guildByName: guildByName,
-        zetaRec: zetaRec,
-        events: events
+        abilities        : abilities,
+        character        : character,
+        gear             : gear,
+        getCharacter     : getCharacter,
+        getPayoutFromAC  : getPayoutFromAC,
+        getPlayerUpdates : getPlayerUpdates,
+        getPlayersArena  : getPlayersArena,
+        getRawGuild      : getRawGuild,
+        guild            : guild,
+        guildByName      : guildByName,
+        guildUnitStats   : guildUnitStats,
+        langChar         : langChar,
+        playerByName     : playerByName,
+        recipes          : recipes,
+        unitStats        : unitStats,
+        units            : units,
+        zetaRec          : zetaRec,
     };
 
     // Grab the abilities that have Zeta / Omicron levels for future reference
@@ -88,7 +87,7 @@ module.exports = (Bot) => {
     }
 
     async function getPlayersArena(allycodes) {
-        const MAX_CONCURRENT = 10;
+        const MAX_CONCURRENT = 20;
         if (!Array.isArray(allycodes)) {
             if (!allycodes) {
                 return false;
@@ -255,14 +254,10 @@ module.exports = (Bot) => {
         if (!options.force) {
             if (allycodes?.length > 5) {
                 // If there's more than 5 ally codes, apply the guild cooldown
-                if (cooldown && cooldown.guild) {
-                    cooldown = cooldown.guild;
-                    if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
-                    if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
-                } else {
-                    cooldown = guildMaxCooldown;
-                }
-            } else if (cooldown && cooldown.player) {
+                cooldown = cooldown?.guild || guildMaxCooldown;
+                if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
+                if (cooldown < guildMinCooldown) cooldown = guildMinCooldown;
+            } else if (cooldown?.player) {
                 // Otherwise, apply the player cooldown
                 cooldown = cooldown.player;
                 if (cooldown > playerMaxCooldown) cooldown = playerMaxCooldown;
@@ -430,13 +425,15 @@ module.exports = (Bot) => {
         return char;
     }
 
-    async function guildStats( allyCodes, defId, cooldown ) {
-        if (cooldown && cooldown.guild) {
-            if (cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
-            if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
-        } else {
-            cooldown.guild = guildMaxCooldown;
-        }
+    /**
+     * @param {Number[]} allyCodes                       - An array of allycodes
+     * @param {String} defId                             - The ID of the character you want to compare
+     * @param {{player: number, guild: number}} cooldown - The cooldown for the user requesting the info
+     * @returns {Promise<Object[]>}                      - Returns an array of player objects with just the specified character in their roster
+     */
+    async function guildUnitStats( allyCodes, defId, cooldown ) {
+        if (!cooldown?.guild || cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
+        if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
 
         const outStats = [];
         const blankUnit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], omicrons: [], relic: {currentTier: 0}, equipped: [], stats: {} };
@@ -446,19 +443,17 @@ module.exports = (Bot) => {
         for (const player of players) {
             let unit;
 
-            if (!player.roster) {
-                unit = JSON.parse(JSON.stringify(blankUnit));
-            } else {
+            if (player?.roster?.length) {
                 unit = player.roster.find(c => c.defId === defId);
-                if (!unit) {
-                    unit = JSON.parse(JSON.stringify(blankUnit));
-                }
             }
-            unit.zetas = unit.skills.filter(s => s.isZeta && s.tier >= s.zetaTier);
+            if (!unit) {
+                unit = JSON.parse(JSON.stringify(blankUnit));
+            }
+            unit.zetas    = unit.skills.filter(s => s.isZeta    && s.tier >= s.zetaTier);
             unit.omicrons = unit.skills.filter(s => s.isOmicron && s.tier >= s.omicronTier);
-            unit.player = player.name;
+            unit.player   = player.name;
             unit.allyCode = player.allyCode;
-            unit.updated = player.updated;
+            unit.updated  = player.updated;
             outStats.push(unit);
         }
         return outStats;
@@ -912,7 +907,7 @@ module.exports = (Bot) => {
         if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
         if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
 
-        let guild  = await Bot.cache.get(Bot.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
+        let guild = await Bot.cache.get(Bot.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
 
         /** Check if existance and expiration */
         if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
@@ -976,40 +971,6 @@ module.exports = (Bot) => {
     async function zetaRec( lang="ENG_US" ) {
         const zetas = await Bot.cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
         return zetas[0].zetas;
-    }
-
-    async function events( lang="ENG_US" ) {
-        /** Get events from cache */
-        let events = await Bot.cache.get(Bot.config.mongodb.swapidb, "events", {lang:lang});
-
-        /** Check if existance and expiration */
-        if ( !events || !events[0] || isExpired(events[0].updated, eventCooldown) ) {
-            /** If not found or expired, fetch new from API and save to cache */
-            try {
-                events =  await Bot.swgoh.fetchAPI("/swgoh/events", {
-                    language: lang,
-                });
-                events = events.result;
-            } catch (e) {
-                Bot.logger.error("[SWGoHAPI] Could not get events");
-            }
-            if (Array.isArray(events)) {
-                events = events[0];
-            }
-            if (!events || !events.events) {
-                return;
-            }
-            events = {
-                lang: lang,
-                events: events.events,
-                updated: events.updated
-            };
-            events = await Bot.cache.put(Bot.config.mongodb.swapidb, "events", {lang:lang}, events);
-        } else {
-            /** If found and valid, serve from cache */
-            events = events[0];
-        }
-        return events;
     }
 
     function isExpired( lastUpdated, cooldown={}, guild=false ) {

@@ -46,13 +46,9 @@ client.reloadLanguages();
 Bot.CharacterNames = Bot.characters.map(ch => ch.name);
 Bot.ShipNames = Bot.ships.map(ch => ch.name);
 
-client.commands  = new Collection();
+
 client.aliases   = new Collection();
 client.slashcmds = new Collection();
-
-Bot.evCountdowns = {};
-
-Bot.talkedRecently = new Set();
 
 
 const init = async () => {
@@ -112,6 +108,9 @@ const init = async () => {
         }
         delete require.cache[require.resolve(`./events/${file}`)];
     });
+
+    // Store the list of omicrons to be used later
+    Bot.omicrons = await Bot.sortOmicrons();
 
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack?.replace(new RegExp(`${process.cwd()}`, "g"), ".");

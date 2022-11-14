@@ -4,13 +4,12 @@
         "moduleResolution": "Node",
         "target": "ESNext",
         "checkJs": true,
+        "allowJs": true,
         "strictNullChecks": true,
         "strictFunctionTypes": true
     },
     "exclude": [
         "node_modules",
-        "**/node_modules/*",
-        "wipCommands",
-        "retiredCommands"
+        "wipCommands"
     ]
 }

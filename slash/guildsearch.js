@@ -247,7 +247,7 @@ class GuildSearch extends Command {
 
         let guildChar;
         try {
-            guildChar = await Bot.swgohAPI.guildStats(guildAllycodes, foundUnit.uniqueName, cooldown);
+            guildChar = await Bot.swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
             return super.error(interaction, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
         }
