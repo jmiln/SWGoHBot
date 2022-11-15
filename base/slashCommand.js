@@ -77,9 +77,7 @@ class slashCommand {
                         },
                         description: msgOut.toString().substring(0, 1900) + "...",
                         color: color,
-                        footer: {
-                            text: footer
-                        }
+                        footer: footer
                     }],
                     ephemeral: ephemeral
                 });
@@ -96,9 +94,7 @@ class slashCommand {
                         },
                         description: msgOut,
                         color: color,
-                        footer: {
-                            text: footer
-                        }
+                        footer: footer
                     }],
                     ephemeral: ephemeral
                 });
@@ -114,9 +110,7 @@ class slashCommand {
                 },
                 description: msgOut,
                 color: color,
-                footer: {
-                    text: footer
-                }
+                footer: footer
             }],
             ephemeral: ephemeral
         });
