@@ -55,7 +55,7 @@ class MyCharacter extends Command {
 
     async run(Bot, interaction) {
         const searchType = interaction.options.getSubcommand();
-        const searchUnit = searchType === "charcter" ? interaction.options.getString("character") : interaction.options.getString("ship");
+        const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
         let allycode     = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode);
 
