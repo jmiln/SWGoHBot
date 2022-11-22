@@ -61,9 +61,14 @@ class slashCommand {
         if (!interaction || !interaction.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
         const title     = options.title || "TITLE HERE";
-        const footer    = options.footer || "";
         const color     = options.color;
         const ephemeral = options.ephemeral || false;
+
+        // If the footer is just a string, put it in the proper object format.
+        let footer = options.footer || "";
+        if (typeof footer === "string") {
+            footer = {text: footer};
+        }
 
         // If the interaction has been replied to or deferred, edit the reply
         if (interaction.replied || interaction.deferred) {
