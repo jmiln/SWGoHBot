@@ -608,7 +608,7 @@ class Guilds extends Command {
                 roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
             }
 
-            const dayMS = 86400000;
+            const daySec = 86400;
             let timeUntilReset = null;
             const chaTime = rawGuild.nextChallengesRefresh;
             const nowTime = moment().unix();
@@ -617,7 +617,7 @@ class Guilds extends Command {
                 timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
             } else {
                 // It's in the past, so calculate the next time
-                const dur = parseInt(chaTime, 10) + dayMS - nowTime;
+                const dur = parseInt(chaTime, 10) + daySec - nowTime;
                 timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
             }
 
