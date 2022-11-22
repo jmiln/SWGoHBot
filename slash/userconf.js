@@ -55,7 +55,6 @@ class UserConf extends Command {
                         }
                     ]
                 },
-                // REMOVING defaults, only being used by one user, and not sure it'd play nice with slash comands
                 {
                     name: "arenaalert",
                     type: ApplicationCommandOptionType.Subcommand,

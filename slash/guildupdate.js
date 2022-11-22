@@ -116,7 +116,7 @@ class GuildUpdate extends Command {
         } else if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
             return interaction.reply({embeds: [{
-                title: `Guild update settings for ${interaction.user.name}`,
+                title: `Guild update settings for ${interaction.user.username}`,
                 description: [
                     `Enabled:  **${gu.enabled ? "ON" : "OFF"}**`,
                     `Channel:  **${gu.channel ? "<#" + gu.channel + ">" : "N/A"}**`,
