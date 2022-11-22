@@ -12,7 +12,4 @@ config.json
 settings.json
 
 # Commands
-/commands/boom.js
-/commands/test.js
-/commands/test2.js
-
+/slash/test.js

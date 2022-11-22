@@ -266,7 +266,7 @@ module.exports = (Bot, client) => {
             if (aw?.payout?.char && aw.payout.char.enabled && aw.payout.char.channel) {
                 const playerTimes    = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
-                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "char");
+                const sentMessage    = await sendBroadcastMsg(aw.payout.char.msgId, aw.payout.char.channel, formattedEmbed);
                 if (sentMessage) {
                     user.arenaWatch.payout["char"].msgID = sentMessage.id;
                 } else {
@@ -277,7 +277,7 @@ module.exports = (Bot, client) => {
             if (aw.payout?.fleet && aw.payout.fleet.enabled && aw.payout.fleet.channel) {
                 const playerTimes    = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
-                const sentMessage    = await sendPayoutUpdates(aw.payout, formattedEmbed, "fleet");
+                const sentMessage    = await sendBroadcastMsg(aw.payout.fleet.msgId, aw.payout.fleet.channel, formattedEmbed);
                 if (sentMessage) {
                     user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
                 } else {
@@ -320,44 +320,9 @@ module.exports = (Bot, client) => {
             description: "=".repeat(25),
             fields: fieldOut,
             footer: {
-                text: `Last Updated: ${moment().utc().format("H:mm")} UTC`
+                text: `Last Updated: ${new Date().getUTCHours()}:${new Date().getUTCMinutes()} UTC`
             }
         };
-    }
-
-    // Send updated payout times to the given channel
-    async function sendPayoutUpdates(payout, outEmbed, arena) {
-        // Use broadcastEval to check all shards for the channel, and if there's a valid message
-        // there, edit it. If not, send a fresh copy of it.
-        if (!payout[arena]?.channel) return;
-        const messages = await client.shard.broadcastEval(async (client, {msgIdIn, chanIn, outEmbed}) => {
-            const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
-
-            let msg, targetMsg;
-            if (channel && channel?.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
-                if (!msgIdIn) {
-                    targetMsg = await channel.send({embeds: [outEmbed]});
-                } else {
-                    try {
-                        msg = await channel.messages.fetch(msgIdIn);
-                    } catch (e) {
-                        msg = null;
-                    }
-                    if (msg) {
-                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendPayoutUpdates]", err));
-                    } else {
-                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendPayoutUpdates]", err));
-                    }
-                }
-            }
-            return targetMsg;
-        }, {context: {
-            msgIdIn: payout[arena].msgID,
-            chanIn: payout[arena].channel,
-            outEmbed: outEmbed
-        }});
-        const msg = messages.filter(a => !!a);
-        return msg.length ? msg[0] : null;
     }
 
     // Go through the given list and return how long til payouts
@@ -754,6 +719,143 @@ module.exports = (Bot, client) => {
                         fieldChunk: fieldChunk
                     }
                 });
+            }
+        }
+    };
+
+
+    // Send updated messages to the given channel, and edit an old message if able & one is supplied
+    async function sendBroadcastMsg(msgId, channelId, outEmbed) {
+        // Use broadcastEval to check all shards for the channel, and if there's a valid message
+        // there, edit it. If not, send a fresh copy of it.
+        if (!channelId) return;
+        const messages = await client.shard.broadcastEval(async (client, {msgIdIn, chanIn, outEmbed}) => {
+            const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
+
+            let msg, targetMsg;
+            if (channel && channel?.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                if (!msgIdIn) {
+                    targetMsg = await channel.send({embeds: [outEmbed]});
+                } else {
+                    try {
+                        msg = await channel.messages.fetch(msgIdIn);
+                    } catch (e) {
+                        msg = null;
+                    }
+                    if (msg) {
+                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendBroadcastMsg]", err));
+                    } else {
+                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendBroadcastMsg]", err));
+                    }
+                }
+            }
+            return targetMsg;
+        }, {context: {
+            msgIdIn: msgId,
+            chanIn: channelId,
+            outEmbed: outEmbed
+        }});
+        const msg = messages.filter(a => !!a);
+        return msg.length ? msg[0] : null;
+    }
+
+    // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 yet
+    Bot.guildTickets = async () => {
+        const patrons = await getActivePatrons();
+        for (const patron of patrons) {
+            // This is only available for the $5 and up tier, so ignore anything else
+            if (!patron.discordID || patron.amount_cents < 100) continue;
+            const user = await Bot.userReg.getUser(patron.discordID);
+
+            // If the guild update isn't enabled, then move along
+            if (!user?.guildTickets?.enabled) continue;
+            const gt = user.guildTickets;
+            if (!gt?.allycode) continue;
+            if (!gt?.channel) continue;
+
+            // This is what will be in the user.guildTickets, possibly add something
+            // in to make it so it only shows above x gear lvl and such later?
+
+            // gt = {
+            //     enabled:  false,             // If it's enabled or not
+            //     allycode: 123123123,         // Ally code to watch the guild of
+            //     channel:  channelID,         // The channel to log all this into
+            //     sortBy:   "name" / "tickets" // What to sort the list by (Defaults to name)
+            // }
+
+            // Check if the bot is able to send messages into the set channel
+            const channels = await client.shard.broadcastEval(async (client, {gtChan}) => {
+                const channel = client.channels.cache.get(gtChan);
+                if (channel && channel.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                    return true;
+                }
+                return false;
+            }, {context: {gtChan: gt.channel}});
+            const chanAvail = channels.some(ch => !!ch);
+
+            // If the channel is not available, move on
+            if (!chanAvail) continue;
+
+            // Get any updates for the guild
+            let rawGuild;
+            try {
+                rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode);
+            } catch (err) {
+                console.log(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gt.allycode}: ${err}`);
+                continue;
+            }
+
+            if (!rawGuild?.roster?.length) {
+                return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gt.allycode}, guild output: ${rawGuild}`);
+            }
+
+            let roster = null;
+            if (gt.sortBy === "tickets") {
+                roster = rawGuild.roster.sort((a, b) => parseInt(a.memberContribution[2]?.currentValue, 10) > parseInt(b.memberContribution[2]?.currentValue, 10) ? 1 : -1);
+            } else {
+                roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
+            }
+
+            const daySec = 86400;
+            let timeUntilReset = null;
+            const chaTime = rawGuild.nextChallengesRefresh;
+            const nowTime = moment().unix();
+            if (chaTime > nowTime) {
+                // It's in the future
+                timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
+            } else {
+                // It's in the past, so calculate the next time
+                const dur = parseInt(chaTime, 10) + daySec - nowTime;
+                timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
+            }
+
+            let maxed = 0;
+            const out = [];
+            for (const member of roster) {
+                const tickets = member.memberContribution["2"].currentValue;
+                if (tickets < 600) {
+                    out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
+                } else {
+                    maxed += 1;
+                }
+            }
+            const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
+            const maxedString   = maxed > 0 ? `**${maxed}** members with 600 tickets\n\n` : "";
+            const outEmbed = {
+                author: {
+                    name: `${rawGuild.profile.name}'s Ticket Counts`
+                },
+                description: `${timeTilString}${maxedString}${out.join("\n")}`,
+                footer: {
+                    text: `Last Updated: ${new Date().getUTCHours()}:${new Date().getUTCMinutes()} UTC`
+                }
+            };
+
+            const sentMsg = await sendBroadcastMsg(gt.msgId, gt.channel, outEmbed);
+            if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
+                gt.msgId = sentMsg.id;
+                user.guildTickets = gt;
+                await Bot.userReg.updateUser(patron.discordID, user);
             }
         }
     };
