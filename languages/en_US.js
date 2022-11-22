@@ -314,7 +314,7 @@ module.exports = class extends Language {
             COMMAND_ARENAWATCH_MISSING_ACTION:      "Missing action, try `add`, `edit` or `remove`",
             COMMAND_ARENAWATCH_INVALID_ACTION:      "Invalid action, try `add`, `edit` or `remove`",
             COMMAND_ARENAWATCH_MISSING_AC:(act) =>  "Missing ally code to " + act,
-            COMMAND_ARENAWATCH_INVALID_AC:          "Invalide ally code",
+            COMMAND_ARENAWATCH_INVALID_AC:          "Invalid ally code",
             COMMAND_ARENAWATCH_AC_CAP: (code) =>    `Could not add ${code}, ally code cap reached!`,
             COMMAND_ARENAWATCH_UPDATED:             "Your settings have been updated.",
             COMMAND_ARENAWATCH_HELP: {
