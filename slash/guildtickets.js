@@ -5,9 +5,8 @@ class GuildTickets extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guildtickets",
-            // category: "Patreon",
             guildOnly: false,
-            description: "Set up the guild watcher to show the guild's tickets needed every 5min",
+            description: "(Patreon command) Set up the guild watcher to show the guild's tickets needed every 5min",
             options: [
                 {
                     name: "set",

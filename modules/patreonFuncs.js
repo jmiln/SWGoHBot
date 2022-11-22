@@ -319,9 +319,7 @@ module.exports = (Bot, client) => {
             title: "Payout Schedule",
             description: "=".repeat(25),
             fields: fieldOut,
-            footer: {
-                text: `Last Updated: ${new Date().getUTCHours()}:${new Date().getUTCMinutes()} UTC`
-            }
+            timestamp: new Date().toISOString()
         };
     }
 
@@ -846,9 +844,7 @@ module.exports = (Bot, client) => {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
                 },
                 description: `${timeTilString}${maxedString}${out.join("\n")}`,
-                footer: {
-                    text: `Last Updated: ${new Date().getUTCHours()}:${new Date().getUTCMinutes()} UTC`
-                }
+                timestamp: new Date().toISOString(),
             };
 
             const sentMsg = await sendBroadcastMsg(gt.msgId, gt.channel, outEmbed);
