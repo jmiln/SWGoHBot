@@ -266,7 +266,7 @@ module.exports = (Bot, client) => {
             if (aw?.payout?.char && aw.payout.char.enabled && aw.payout.char.channel) {
                 const playerTimes    = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
-                const sentMessage    = await sendBroadcastMsg(aw.payout.char.msgId, aw.payout.char.channel, formattedEmbed);
+                const sentMessage    = await sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed);
                 if (sentMessage) {
                     user.arenaWatch.payout["char"].msgID = sentMessage.id;
                 } else {
@@ -277,7 +277,7 @@ module.exports = (Bot, client) => {
             if (aw.payout?.fleet && aw.payout.fleet.enabled && aw.payout.fleet.channel) {
                 const playerTimes    = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
-                const sentMessage    = await sendBroadcastMsg(aw.payout.fleet.msgId, aw.payout.fleet.channel, formattedEmbed);
+                const sentMessage    = await sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed);
                 if (sentMessage) {
                     user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
                 } else {
