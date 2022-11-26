@@ -24,7 +24,7 @@
         "discord.js": "^14.6.0",
         "moment-duration-format": "^2.3.2",
         "moment-timezone": "^0.5.39",
-        "mongodb": "^4.12.0",
+        "mongodb": "^4.12.1",
         "node-fetch": "^3.3.0",
         "socket.io": "^4.5.4",
         "socket.io-client": "^4.5.4",
