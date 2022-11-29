@@ -500,7 +500,7 @@ class Guilds extends Command {
                     g1: 0, g2: 0, g3: 0, g4: 0, g5: 0, g6: 0, g7: 0, g8: 0, g9: 0, g10: 0, g11: 0, g12: 0,
 
                     // The relics
-                    "r0-4": 0, "r5-7": 0, r8:  0
+                    "r0-4": 0, "r5-7": 0, "r8+":  0
                 };
                 for (const char of member.roster) {
                     if (char.gear === 13 && char?.relic?.currentTier-2 >= 0) {
@@ -511,7 +511,7 @@ class Guilds extends Command {
                         } else if (rel <= 7) {
                             memberRoster["r5-7"] += 1;
                         } else {
-                            memberRoster.r8  += 1;
+                            memberRoster["r8+"]  += 1;
                         }
                     } else {
                         // If it's not already there, then stick it in
