@@ -240,6 +240,7 @@ class MyMods extends Command {
             // Filter the player's roster so it's just characters
             const charList = player.roster.filter(unit => unit.combatType !== 2);
             charList.forEach(c => {
+                if (!c?.stats) c.stats = {final: {}, mods: {}};
                 if (!c.stats?.final?.[statToCheck]) {
                     c.stats.final[statToCheck] = 0;
                 }
