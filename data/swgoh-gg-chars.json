@@ -33798,6 +33798,197 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Sana Starros",
+        "base_id": "SANASTARROS",
+        "pk": 3444,
+        "url": "http://swgoh.gg/characters/sana-starros/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_sanastarros.png",
+        "power": 35311,
+        "description": "Scoundrel turned Rebel sympathizer that helps her team deal area of effect damage",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "004",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "076",
+                    "050",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "024",
+                    "055",
+                    "060",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "051",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "055",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "106",
+                    "097",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "101",
+                    "099",
+                    "112",
+                    "118",
+                    "172"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "173",
+                    "103",
+                    "101",
+                    "106",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "116",
+                    "129",
+                    "125",
+                    "116",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "129",
+                    "173",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "160",
+                    "168",
+                    "168",
+                    "G12Finisher_SANASTARROS_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Attacker",
+            "Leader",
+            "Scoundrel",
+            "Smuggler"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Critical Chance Up",
+            "Daze",
+            "Dispel",
+            "Dispel - All Enemies",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Tenacity",
+            "Leader: Protection Up",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Remove Turn Meter",
+            "Stagger",
+            "Stealth",
+            "Target Lock",
+            "Taunt",
+            "Tenacity Down",
+            "Tenacity Up",
+            "Vulnerable"
+        ],
+        "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Savage Opress",
         "base_id": "SAVAGEOPRESS",
         "pk": 137,

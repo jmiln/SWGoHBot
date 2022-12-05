@@ -6426,6 +6426,26 @@
         }
     },
     {
+        "name": "Sana Starros",
+        "uniqueName": "SANASTARROS",
+        "aliases": [
+            "Sana Starros"
+        ],
+        "nameVariant": [
+            "Sana Starros"
+        ],
+        "url": "http://swgoh.gg/characters/sana-starros/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sanastarros.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Leader",
+            "Scoundrel",
+            "Smuggler"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Savage Opress",
         "uniqueName": "SAVAGEOPRESS",
         "aliases": [
