@@ -731,7 +731,8 @@ module.exports = (Bot, client) => {
             const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
 
             let msg, targetMsg;
-            if (channel && channel?.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+            if (!channel?.guild) return null;
+            if (channel?.permissionsFor(client.user.id).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                 if (!msgIdIn) {
                     targetMsg = await channel.send({embeds: [outEmbed]});
                 } else {

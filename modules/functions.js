@@ -229,9 +229,10 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan || !chan.send || !chan.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+        if (!chan?.send || !chan?.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
             // TODO Should probably log this / tell users about the issue somehow?
             return;
+            // return console.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
         } else {
             // If everything is ok, go ahead and try sending the message
             await chan.send(announceMsg).catch((err) => {
