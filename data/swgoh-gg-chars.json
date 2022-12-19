@@ -11163,6 +11163,7 @@
             "Leader: +Max Health",
             "Protection Up",
             "Reduce Cooldowns",
+            "Reset Cooldown",
             "Tenacity Down"
         ],
         "role": "Support",
@@ -12239,6 +12240,195 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 50
+    },
+    {
+        "name": "Doctor Aphra",
+        "base_id": "DOCTORAPHRA",
+        "pk": 3446,
+        "url": "http://swgoh.gg/characters/doctor-aphra/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_doctoraphra.png",
+        "power": 39493,
+        "description": "An inventive and chaotic Support who employs dangerous treasures and technology to empower her team and unravel her foes",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "010",
+                    "009",
+                    "009",
+                    "003",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "020",
+                    "030",
+                    "014",
+                    "017",
+                    "021"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "018",
+                    "057",
+                    "054",
+                    "070",
+                    "070",
+                    "045"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "026",
+                    "054",
+                    "050",
+                    "070",
+                    "071",
+                    "071"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "008",
+                    "083",
+                    "076",
+                    "039",
+                    "071",
+                    "071"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "072",
+                    "096",
+                    "089",
+                    "083",
+                    "090",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "059",
+                    "105",
+                    "071",
+                    "107",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "117",
+                    "117",
+                    "118",
+                    "071",
+                    "114",
+                    "107"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "125",
+                    "083",
+                    "090",
+                    "174",
+                    "132"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "117",
+                    "114",
+                    "143",
+                    "117",
+                    "173"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "135",
+                    "137",
+                    "174",
+                    "124",
+                    "137",
+                    "144"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "164",
+                    "158",
+                    "161",
+                    "170",
+                    "169",
+                    "G12Finisher_DOCTORAPHRA_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Leader",
+            "Scoundrel",
+            "Support"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Assist",
+            "Buff Immunity",
+            "Counter",
+            "Critical Damage Up",
+            "Damage Immunity",
+            "DoT",
+            "Expose",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Offense Up",
+            "Potency Up",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Revive",
+            "Speed Down",
+            "Stagger",
+            "Stun",
+            "Target Lock"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
     },
     {
         "name": "Droideka",
@@ -38403,6 +38593,195 @@
         "role": "Leader",
         "ship": "RAZORCREST",
         "ship_slot": 0,
+        "activate_shard_count": 330
+    },
+    {
+        "name": "Third Sister",
+        "base_id": "THIRDSISTER",
+        "pk": 3445,
+        "url": "http://swgoh.gg/characters/third-sister/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_thirdsister.png",
+        "power": 40278,
+        "description": "A merciless Inquisitor who will stop at nothing till she achieves her goals",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "004",
+                    "003",
+                    "004",
+                    "002",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "030",
+                    "049",
+                    "041",
+                    "030",
+                    "048",
+                    "025"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "074",
+                    "060",
+                    "048",
+                    "041",
+                    "047",
+                    "048"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "024",
+                    "055",
+                    "060",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "063",
+                    "043",
+                    "086",
+                    "051",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "055",
+                    "075",
+                    "097",
+                    "092",
+                    "038",
+                    "092"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "099",
+                    "079",
+                    "099",
+                    "172",
+                    "100",
+                    "102"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "117",
+                    "099",
+                    "172",
+                    "111",
+                    "172"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "172",
+                    "102",
+                    "117",
+                    "126",
+                    "117",
+                    "172"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "079",
+                    "172",
+                    "129",
+                    "087",
+                    "125",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "129",
+                    "146",
+                    "134",
+                    "144",
+                    "134"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "162",
+                    "160",
+                    "166",
+                    "168",
+                    "G12Finisher_THIRDSISTER_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Empire",
+            "Inquisitorius",
+            "Leader",
+            "Tank",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Armor Shred",
+            "Counter",
+            "Critical Damage Up",
+            "Deathmark",
+            "Defense Down",
+            "Defense Penetration Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: Protection Up",
+            "Protection Up",
+            "Purge",
+            "Revive",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Tank",
+        "ship": "",
+        "ship_slot": null,
         "activate_shard_count": 330
     },
     {
