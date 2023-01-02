@@ -996,10 +996,18 @@ module.exports = (Bot, client) => {
 
                 // The new guild commands
                 if (newGuildComs.length) {
-                    for (const newGuildCom of newGuildComs) {
-                        console.log(`Adding ${newGuildCom.name} to Guild commands`);
-                        await client.guilds.cache.get(Bot.config.dev_server)?.commands.create(newGuildCom);
-                    }
+                    await client.shard.broadcastEval(async (client, {guildId, newGuildComs}) => {
+                        const targetGuild = await client.guilds.cache.get(guildId);
+                        if (targetGuild) {
+                            for (const newGuildCom of newGuildComs) {
+                                console.log(`Adding ${newGuildCom.name} to Guild commands`);
+                                await targetGuild.commands.create(newGuildCom);
+                            }
+                        }
+                    }, {context: {
+                        guildId: Bot.config.dev_server,
+                        newGuildComs: newGuildComs
+                    }});
                     outLog.push({
                         name: "**Added Guild**",
                         value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
