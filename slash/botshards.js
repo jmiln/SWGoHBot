@@ -24,8 +24,8 @@ class BotShards extends Command {
                     shardInfoArr.push([
                         `${(parseInt(id[0], 10)+1).toString().padStart(2)}/${shardCount}`,
                         Status[status.toString()].padStart(6),
-                        size.toString().padStart(5),
-                        ping.toString().padStart(3)
+                        size.toString().padStart(5) + " ",
+                        `${ping} ms`
                     ].join(" | "));
                 });
                 interaction.reply({ content: Bot.codeBlock(shardInfoArr.join("\n"), "prolog") });
