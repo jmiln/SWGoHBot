@@ -17,6 +17,7 @@ class ReloadData extends Command {
                     choices: [
                         {name: "Data", value: "Data"},
                         {name: "Debug", value: "Debug"},
+                        // {name: "Deploy Commands", value: "Deploy"},
                         {name: "Events", value: "Events"},
                         {name: "Functions", value: "Functions"},
                         {name: "Languages", value: "Languages"},
@@ -49,6 +50,9 @@ class ReloadData extends Command {
             case "debugLogs":
                 Bot.config.debugLogs = !Bot.config.debugLogs;
                 return super.success(interaction, `DebugLogs set to **${Bot.config.debugLogs}**`);
+            case "deploy":
+                await Bot.deployCommands();
+                return interaction.reply({content: "Deploying Commands...", ephemeral: true});
             case "ev":
             case "events": // Reload the events
                 if (interaction.client.shard && interaction.client.shard.count > 0) {

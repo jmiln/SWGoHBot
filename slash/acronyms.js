@@ -9,7 +9,7 @@ class Acronyms extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "acronyms",
-            description: "Spit out what common acronyms mean",
+            description: "Show what common acronyms mean",
             guildOnly: false,
             options: [{
                 name: "acronym",
