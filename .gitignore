@@ -5,11 +5,13 @@
 /swgoh
 /swgohAPI
 /testOutput
+/testBk
 
 # Specific Files
 config.js
 config.json
 settings.json
+TODO.md
 
 # Commands
 /slash/test.js
