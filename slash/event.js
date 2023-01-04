@@ -213,7 +213,7 @@ class Event extends Command {
 
         const action = interaction.options.getSubcommand();
 
-        if (["create", "delete", "trigger"].includes(action)) {
+        if (["create", "createjson", "delete", "edit", "trigger"].includes(action.toLowerCase())) {
             if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
