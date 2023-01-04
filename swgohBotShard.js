@@ -11,19 +11,19 @@ Manager.spawn({timeout: 60000});
 
 Manager.on("shardCreate", (shard) => {
     shard.on("reconnecting", () => {
-        console.log(`Reconnecting shard: [${shard.id}]`);
+        console.log(`  [${shard.id}] Reconnecting shard`);
     });
     shard.on("spawn", () => {
-        console.log(`Spawned shard: [${shard.id}]`);
+        console.log(`  [${shard.id}] Spawned shard`);
     });
     // shard.on("ready", () => {
-    //     console.log(`Shard [${shard.id}] is ready`);
+    //     console.log(`  [${shard.id}] Shard is ready`);
     // });
     shard.on("disconnect", () => {
-        console.log(`Shard Disconnected: [${shard.id}]`);
+        console.log(`  [${shard.id}] Shard Disconnected`);
     });
     shard.on("death", () => {
-        console.log(`Shard Died: [${shard.id}]`);
+        console.log(`  [${shard.id}] Shard Died`);
     });
     shard.on("error", (err) => {
         console.log("ERROR: Shard had issues starting: \n" + err);

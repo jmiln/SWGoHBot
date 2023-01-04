@@ -22,20 +22,16 @@ module.exports = async (Bot, client) => {
         // Connect the sockets and such
         Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`);
         Bot.socket.on("connect", () => {
-            console.log(`[EventMgr](${client.shard.id}) Connected to socket!`);
+            console.log(`  [${client.shard.id}] Connected to EventMgr socket!`);
         });
         Bot.socket.on("disconnect", () => {
-            console.log(`[EventMgr](${client.shard.id}) Disconnected from socket!`);
+            console.log(`  [${client.shard.id}] Disconnected from EventMgr socket!`);
         });
 
         // Start up the client.ws watcher
-        console.log(`[${client.shard.id}] Starting wsWatcher`);
-        await checkWSHealth(client);
-
         if (client.shard.id === 0) {
             // Deploy all commands in case anything's been updated
             setTimeout(async () => {
-                console.log("\n\n");
                 await Bot.deployCommands();
             }, 2 * 60 * 1000);
 
@@ -83,6 +79,9 @@ module.exports = async (Bot, client) => {
     }
 
     Bot.logger.log(readyString, "ready", true);
+
+    console.log(`  [${client.shard.id}] Starting wsWatcher`);
+    await checkWSHealth(client);
 
     // Sets the status as the current server count and help command
     const playingString =  "swgohbot.com";

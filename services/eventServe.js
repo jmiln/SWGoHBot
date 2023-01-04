@@ -8,7 +8,7 @@ async function init() {
     const cache   = require("../modules/cache.js")(mongo);
 
     io.on("connection", async socket => {
-        console.log("Socket connected");
+        // console.log("Socket connected");
 
         socket.on("checkEvents", async (callback) => {
             // Check all the events, and send back any that should be sent
