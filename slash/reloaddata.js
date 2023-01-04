@@ -17,7 +17,7 @@ class ReloadData extends Command {
                     choices: [
                         {name: "Data", value: "Data"},
                         {name: "Debug", value: "Debug"},
-                        // {name: "Deploy Commands", value: "Deploy"},
+                        {name: "Deploy Commands", value: "Deploy"},
                         {name: "Events", value: "Events"},
                         {name: "Functions", value: "Functions"},
                         {name: "Languages", value: "Languages"},
