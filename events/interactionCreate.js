@@ -55,15 +55,15 @@ module.exports = async (Bot, client, interaction) => {
             // console.log(`[interCreate] Trying to run: ${cmd.commandData.name}\n - Options: ${inspect(interaction.options, {depth: 5})}`);
         } catch (err) {
             if (cmd.commandData.name === "test") {
-                return console.log(`ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
+                return console.log(`ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
             }
 
             if (ignoreArr.some(str => err.toString().includes(str))) {
                 // Don't bother spitting out the whole mess.
                 // Log which command broke, and the first line of the error
-                logErr(Bot, `ERROR(inter) I broke with ${cmd.commandData.name}: \n${err.toString().split("\n")[0]}`);
+                logErr(Bot, `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${err.toString().split("\n")[0]}`);
             } else {
-                logErr(Bot, `ERROR(inter) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
+                logErr(Bot, `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, {depth: 5})} \n${inspect(err, {depth: 5})}`, true);
             }
 
             const replyObj = {content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`, ephemeral: true};

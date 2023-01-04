@@ -229,9 +229,10 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan || !chan.send || !chan.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+        if (!chan?.send || !chan?.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
             // TODO Should probably log this / tell users about the issue somehow?
             return;
+            // return console.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
         } else {
             // If everything is ok, go ahead and try sending the message
             await chan.send(announceMsg).catch((err) => {
@@ -993,27 +994,38 @@ module.exports = (Bot, client) => {
                 // We'll use set but please keep in mind that `set` is overkill for a singular command.
                 // Set the guild commands like this.
 
-                // The new guild commands
-                if (newGuildComs.length) {
-                    for (const newGuildCom of newGuildComs) {
-                        console.log(`Adding ${newGuildCom.name} to Guild commands`);
-                        await client.guilds.cache.get(Bot.config.dev_server)?.commands.create(newGuildCom);
+                if (newGuildComs?.length || changedGuildComs?.length) {
+                    await client.shard.broadcastEval(async (client, {guildId, newGuildComs}) => {
+                        const targetGuild = await client.guilds.cache.get(guildId);
+                        if (targetGuild) {
+                            for (const newGuildCom of newGuildComs) {
+                                console.log(`Adding ${newGuildCom.name} to Guild commands`);
+                                await targetGuild.commands.create(newGuildCom);
+                            }
+                            for (const diffGuildCom of changedGuildComs) {
+                                console.log(`Updating ${diffGuildCom.com.name} in Guild commands`);
+                                await targetGuild.commands.edit(diffGuildCom.id, diffGuildCom.com);
+                            }
+                        }
+                    }, {context: {
+                        guildId: Bot.config.dev_server,
+                        newGuildComs: newGuildComs
+                    }});
+
+                    // The new guild commands
+                    if (newGuildComs.length) {
+                        outLog.push({
+                            name: "**Added Guild**",
+                            value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
+                        });
                     }
-                    outLog.push({
-                        name: "**Added Guild**",
-                        value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
-                    });
-                }
-                // The edited guild commands
-                if (changedGuildComs.length) {
-                    for (const diffGuildCom of changedGuildComs) {
-                        console.log(`Updating ${diffGuildCom.com.name} in Guild commands`);
-                        await client.guilds.cache.get(Bot.config.dev_server)?.commands.edit(diffGuildCom.id, diffGuildCom.com);
+                    // The edited guild commands
+                    if (changedGuildComs.length) {
+                        outLog.push({
+                            name: "**Changed Guild**",
+                            value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
+                        });
                     }
-                    outLog.push({
-                        name: "**Changed Guild**",
-                        value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
-                    });
                 }
 
 
@@ -1139,9 +1151,9 @@ function checkCmds(newCmdList, oldCmdList) {
                 if (!cmd.options[ix].maxLength && !isNaN(cmd.options[ix].maxLength)) cmd.options[ix].maxLength = undefined;
 
                 debugLog("> checking " + cmd.options[ix]?.name);
-                for (const op of Object.keys(cmd.options[ix])) {
-                    debugLog("  * Checking: " + op);
-                    if (op === "choices") {
+                for (const opt of Object.keys(cmd.options[ix])) {
+                    debugLog("  * Checking: " + opt);
+                    if (opt === "choices") {
                         if (cmd.options[ix]?.choices?.length && thisCom.options[ix]?.choices?.length) {
                             // Make sure they both have some number of choices
                             if (cmd.options[ix]?.choices?.length !== thisCom.options[ix]?.choices?.length) {

@@ -1,6 +1,7 @@
 const {inspect} = require("util");
 module.exports = async (Bot, client, member) => {
     const guildConf = await Bot.getGuildSettings(member.guild.id);
+    if (!guildConf?.enablePart || !guildConf?.partMessage) return;
 
     if (guildConf.enablePart && guildConf.partMessage?.length && guildConf.announceChan?.length) { // If they have it turned on, and it's not empty
         const partMessage = guildConf.partMessage

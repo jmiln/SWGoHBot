@@ -10,7 +10,8 @@ Bot.config = require("./config.js");
 
 const client = new Client({
     intents: Bot.config.botIntents,
-    partials: Bot.config.partials
+    partials: Bot.config.partials,
+    closeTimeout: 30_000
 });
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time

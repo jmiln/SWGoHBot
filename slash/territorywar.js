@@ -325,7 +325,7 @@ class TerritoryWar extends Command {
             glOverview.push({
                 check: glName,
                 user1: guild1GLCount[glDefId] + "+" + guild1GLUltCount[glDefId],
-                user2: guild2GLCount[glDefId] + "+" + guild1GLUltCount[glDefId]
+                user2: guild2GLCount[glDefId] + "+" + guild2GLUltCount[glDefId]
             });
         }
         fields.push({

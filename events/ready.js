@@ -1,6 +1,8 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
 const io = require("socket.io-client");
+const checkWSHealth = require("../modules/wsWatcher.js");
+
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
     client.shard.id = client.shard.ids[0];
@@ -26,16 +28,21 @@ module.exports = async (Bot, client) => {
             console.log(`[EventMgr](${client.shard.id}) Disconnected from socket!`);
         });
 
+        // Start up the client.ws watcher
+        console.log(`[${client.shard.id}] Starting wsWatcher`);
+        await checkWSHealth(client);
+
         if (client.shard.id === 0) {
             // Deploy all commands in case anything's been updated
             setTimeout(async () => {
+                console.log("\n\n");
                 await Bot.deployCommands();
             }, 2 * 60 * 1000);
 
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {
-                setTimeout(() => {  // Wait 2min to start, then run on an interval of 1min
-                    setInterval(async () => {
+                setTimeout(async () => {  // Wait 2min to start
+                    setInterval(async () => {   // Then run on an interval of 1min
                         // Check all the personal ranks   (To send to DMs)
                         await Bot.getRanks();
 
@@ -58,6 +65,7 @@ module.exports = async (Bot, client) => {
                             await Bot.guildsUpdate();
                         }
                     }, 1 * 60 * 1000);
+
                 }, 2 * 60 * 1000);
             }
         }

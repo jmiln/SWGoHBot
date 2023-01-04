@@ -19,6 +19,9 @@ Manager.on("shardCreate", (shard) => {
     // shard.on("ready", () => {
     //     console.log(`Shard [${shard.id}] is ready`);
     // });
+    shard.on("disconnect", () => {
+        console.log(`Shard Disconnected: [${shard.id}]`);
+    });
     shard.on("death", () => {
         console.log(`Shard Died: [${shard.id}]`);
     });
