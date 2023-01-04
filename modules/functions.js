@@ -1066,7 +1066,7 @@ module.exports = (Bot, client) => {
                     console.log("Deployed Commands:");
                     console.log(outLog.map(log => `${log.name}:\n${log.value}`).join("\n\n"));
                 }
-                return;
+                return outLog;
             } catch (err) {
                 Bot.logger.error(inspect(err, {depth: 5}));
             }
