@@ -436,6 +436,7 @@ class GuildSearch extends Command {
 
             const charOut = {};
             const hasRelic = sortedGuild.filter(mem => mem?.relic?.currentTier > 2).length;
+            const maxGP = Math.max(...sortedGuild.map(ch => ch.gp.toLocaleString().length));
             for (const member of sortedGuild) {
                 // If we want just zeta, just omicron, or both, and the player doesn't have a viable character, move along
                 if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
@@ -467,9 +468,9 @@ class GuildSearch extends Command {
                 let uStr;
                 if (member.rarity > 0) {
                     if (isShip) {
-                        uStr = `**\`[Lvl ${member.level} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
+                        uStr = `**\`[Lvl ${member.level.toString().padStart(2)} | ${gpStr.padStart(maxGP)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
                     } else {
-                        uStr = `**\`[${gearStr} | ${gpStr + " ".repeat(6 - gpStr.length)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
+                        uStr = `**\`[${gearStr} | ${gpStr.padStart(maxGP)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
                     }
                 } else {
                     uStr = member.player;
