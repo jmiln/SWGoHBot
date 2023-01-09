@@ -1,3 +1,4 @@
+const { inspect } = require("util");
 const momentTZ = require("moment-timezone");
 const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
 require("moment-duration-format");
@@ -636,7 +637,8 @@ class Event extends Command {
                 const newChannel   = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const event = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
+                const eventRes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
+                const event = eventRes?.length ? eventRes[0] : null;
 
                 // Check if that name/ event already exists
                 if (!event) {
@@ -677,7 +679,8 @@ class Event extends Command {
                             // Find all the fields that were updated
                             const outLog = [];
                             for (let field of Object.keys(validEvent.event)) {
-                                if (validEvent.event[field].toString() !== event[field].toString()) {
+                                if (["updated", "updatedAt", "createdAt"].includes(field)) continue;
+                                if (validEvent.event[field].toString() !== event[field]?.toString()) {
                                     let from = "N/A", to = "N/A";    // Default if there's nothing to show
                                     let code = true;    // Show in inline code blocks
                                     if (field === "eventID") {
@@ -832,7 +835,7 @@ class Event extends Command {
                 if (event.channel && !event.channelID) {
                     event.channelID = event.channel;
                 }
-                if (event.channelID) {
+                if (event.channelID?.length) {
                     newEvent.eventChan = event.channelID;
                 } else {
                     const announceChannel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf["announceChan"]);
