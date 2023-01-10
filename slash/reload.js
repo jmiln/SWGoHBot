@@ -11,6 +11,7 @@ class Reload extends Command {
             options: [
                 {
                     name: "command",
+                    autocomplete: true,
                     type: ApplicationCommandOptionType.String,
                     description: "The command to reload",
                     required: true

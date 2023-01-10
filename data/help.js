@@ -45,7 +45,7 @@ module.exports = {
             info:          "Display some basic info about the bot.",
             mods:          "Display a suggested mod loadout for a selected character. Based on swgoh.gg top 100.",
             modsets:       "Display how many mods you need for each set type.",
-            poll:          "Set up / interact with a poll.",
+            poll:          "Set up or interact with a poll.",
             raiddamage:    "Display how much damage you have to do per % of health for raid bosses.",
             shardtimes:    "Display how long you have until each linked user's payout.",
             ships:         "Display abilities for the selected ship.",

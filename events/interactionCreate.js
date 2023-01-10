@@ -95,6 +95,8 @@ module.exports = async (Bot, client, interaction) => {
             if (!filtered?.length) {
                 filtered = Bot.ShipNames.filter(name => name.toLowerCase().includes(focusedOption.value?.toLowerCase()));
             }
+        } else if (focusedOption.name === "command") {
+            filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
         }
         try {
             await interaction.respond(

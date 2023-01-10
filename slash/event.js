@@ -498,7 +498,7 @@ class Event extends Command {
 
                         let PAGE_SELECTED = 1;
                         const PAGES_NEEDED = Math.floor(eventCount / EVENTS_PER_PAGE) + 1;
-                        if (guildConf["useEventPages"]) {
+                        if (guildConf["useEventPages"] || page) {
                             PAGE_SELECTED = page || 0;
                             if (PAGE_SELECTED < 1) PAGE_SELECTED = 1;
                             if (PAGE_SELECTED > PAGES_NEEDED) PAGE_SELECTED = PAGES_NEEDED;
@@ -543,29 +543,25 @@ class Event extends Command {
                                 return interaction.reply({content: interaction.language.get("COMMAND_EVENT_NO_EVENT")});
                             } else {
                                 if (evArray.length > 1) {
+                                    // TODO Figure out splitting these up to multiple message as needed
                                     evArray.forEach((evMsg, ix) => {
                                         if (guildConf["useEventPages"]) {
                                             return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg)});
-                                            // TODO, {split: true});
                                         } else {
                                             if (ix === 0) {
+                                                // If it's the first one, reply to the interaction
                                                 return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg)});
-                                                // TODO , {split: true});
                                             } else {
-                                                return interaction.reply({content: evMsg});
-                                                // TODO, {split: true});
+                                                // After the first one, just send to the channel instead of replying
+                                                return interaction.channel.send({content: evMsg});
                                             }
                                         }
                                     });
                                 } else {
                                     if (guildConf["useEventPages"]) {
-                                        // TODO Figure out the split
-                                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED",eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0])});
-                                        //, {split: true});
+                                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0])});
                                     } else {
-                                        // TODO Figure out the split
-                                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW",eventCount, evArray[0])});
-                                        //, {split: true});
+                                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0])});
                                     }
                                 }
                             }
