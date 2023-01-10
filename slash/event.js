@@ -1,8 +1,6 @@
-const { inspect } = require("util");
 const momentTZ = require("moment-timezone");
 const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
 require("moment-duration-format");
-// const {inspect} = require("util");
 
 const Command = require("../base/slashCommand");
 

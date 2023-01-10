@@ -393,6 +393,9 @@ module.exports = (Bot, client) => {
             Bot.squads       = await JSON.parse(fs.readFileSync("data/squads.json", "utf-8"));
             const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json", "utf-8"));
             Bot.statCalculator.setGameData(gameData);
+
+            delete require.cache[require.resolve("../data/help.js")];
+            Bot.help         = require("../data/help.js");
         } catch (err) {
             return {err: err.stack};
         }

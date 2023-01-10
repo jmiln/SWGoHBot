@@ -21,6 +21,7 @@ Bot.arenaJumps   = JSON.parse(readFileSync("data/arenaJumps.json", "utf-8"));
 Bot.charLocs     = JSON.parse(readFileSync("data/charLocations.json", "utf-8"));
 Bot.characters   = JSON.parse(readFileSync("data/characters.json", "utf-8"));
 Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
+Bot.help         = require("./data/help.js");
 Bot.missions     = JSON.parse(readFileSync("data/missions.json", "utf-8"));
 Bot.resources    = JSON.parse(readFileSync("data/resources.json", "utf-8"));
 Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json", "utf-8"));

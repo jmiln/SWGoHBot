@@ -1,5 +1,4 @@
 const Command = require("../base/slashCommand");
-const helpList = require("../data/help.js");
 
 class Help extends Command {
     constructor(Bot) {
@@ -12,6 +11,7 @@ class Help extends Command {
 
     async run(Bot, interaction) {
         const fields = [];
+        const helpList = Bot.help;
         for (const cat of Object.keys(helpList)) {
             const thisCat = helpList[cat];
             const outArr = [`__${thisCat.description}__`];
@@ -19,7 +19,7 @@ class Help extends Command {
             const nameLen = Math.max(...catCmd.map(com => com.length));
 
             for (const cmd of catCmd) {
-                outArr.push(`\`${cmd}${" ".repeat(nameLen - cmd.length)}\`| ${thisCat.commands[cmd]}`);
+                outArr.push(`\`${cmd}${" ".repeat(nameLen - cmd.length)}\`| ${thisCat.commands[cmd].desc}`);
             }
 
             const chunks = Bot.msgArray(outArr, "\n", 1000);
