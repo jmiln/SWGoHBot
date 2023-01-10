@@ -995,7 +995,7 @@ module.exports = (Bot, client) => {
                 // Set the guild commands like this.
 
                 if (newGuildComs?.length || changedGuildComs?.length) {
-                    await client.shard.broadcastEval(async (client, {guildId, newGuildComs}) => {
+                    await client.shard.broadcastEval(async (client, {guildId, newGuildComs, changedGuildComs}) => {
                         const targetGuild = await client.guilds.cache.get(guildId);
                         if (targetGuild) {
                             for (const newGuildCom of newGuildComs) {
@@ -1009,23 +1009,21 @@ module.exports = (Bot, client) => {
                         }
                     }, {context: {
                         guildId: Bot.config.dev_server,
-                        newGuildComs: newGuildComs
+                        newGuildComs: newGuildComs,
+                        changedGuildComs: changedGuildComs
                     }});
 
                     // The new guild commands
-                    if (newGuildComs.length) {
-                        outLog.push({
-                            name: "**Added Guild**",
-                            value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
-                        });
-                    }
+                    outLog.push({
+                        name: "**Added Guild**",
+                        value: newGuildComs?.length ? newGuildComs.map(newCom => ` * ${newCom.name}`).join("\n") : "N/A"
+                    });
+
                     // The edited guild commands
-                    if (changedGuildComs.length) {
-                        outLog.push({
-                            name: "**Changed Guild**",
-                            value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
-                        });
-                    }
+                    outLog.push({
+                        name: "**Changed Guild**",
+                        value: changedGuildComs?.length ? changedGuildComs.map(diffCom => ` * ${diffCom.com.name}`).join("\n") : "N/A"
+                    });
                 }
 
 
