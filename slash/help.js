@@ -96,7 +96,7 @@ class Help extends Command {
             if (!thisCom) return super.error(interaction, "I couldn't find a match for that command name.");
 
 
-            const cmdArr = [`**/${search}**\n${thisCom.desc}`];
+            const cmdArr = [`**/${search.toLowerCase()}**\n${thisCom.desc}`];
             const usageLen = thisCom.usage?.length;
             if (usageLen) {
                 for (const [ix, use] of thisCom.usage.entries()) {

@@ -604,7 +604,7 @@ class Event extends Command {
                         } else { // Else, use the default one from their settings
                             channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf.announceChan);
                         }
-                        if (channel && channel.permissionsFor(interaction.guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                        if (Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
                             try {
                                 channel.send({content: announceMessage});
                                 return interaction.reply({content: "Successfully triggered " + eventName, ephemeral: true});
