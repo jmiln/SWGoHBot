@@ -43,6 +43,9 @@ module.exports = {
     guildEventCurrency:  "<:guildEventCurrency:581365988386144256>",
     guildShopCurrency:   "<:guildShopCurrency:581365988025696272>",
     gwShopCurrency:      "<:gwShopCurrency:581365988105125899>",
-    shardShopCurrency:   "<:shardShopCurrency:581365987987816468>"
+    shardShopCurrency:   "<:shardShopCurrency:581365987987816468>",
+
+    // Patreon logo
+    patreon:             "<:Patreon:1062186388784676894>",
 };
 

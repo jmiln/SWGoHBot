@@ -1,3 +1,4 @@
+const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 
 class Help extends Command {
@@ -5,36 +6,117 @@ class Help extends Command {
         super(Bot, {
             name: "help",
             guildOnly: false,
-            description: "Displays a list of the available commands."
+            description: "Displays a list of the available commands.",
+            options: [
+                {
+                    name: "details",
+                    description: "Show details about each command's argument",
+                    type: ApplicationCommandOptionType.Boolean
+                },
+                {
+                    name: "command",
+                    description: "Show a specific command's details",
+                    autocomplete: true,
+                    type: ApplicationCommandOptionType.String
+                }
+            ]
         });
     }
 
     async run(Bot, interaction) {
-        const fields = [];
-        const helpList = Bot.help;
-        for (const cat of Object.keys(helpList)) {
-            const thisCat = helpList[cat];
-            const outArr = [`__${thisCat.description}__`];
-            const catCmd = Object.keys(thisCat.commands);
-            const nameLen = Math.max(...catCmd.map(com => com.length));
+        const search = interaction.options.getString("command");
+        const isDetailed = interaction.options.getBoolean("details");
 
-            for (const cmd of catCmd) {
-                outArr.push(`\`${cmd}${" ".repeat(nameLen - cmd.length)}\`| ${thisCat.commands[cmd].desc}`);
+        const color = Math.floor(Math.random()*16777215);
+
+        if (!search) {
+            const fields = [];
+            const helpList = Bot.help;
+            const div = "`======================================`";
+            const helpKeys = Object.keys(helpList);
+            for (const [ix, cat] of helpKeys.entries()) {
+                const thisCat = helpList[cat];
+
+                const outArr = [`__${thisCat.description}__`];
+                const catCmd = Object.keys(thisCat.commands);
+
+                for (const cmd of catCmd) {
+                    const cmdArr = [`**/${cmd}**\n${thisCat.commands[cmd].desc}`];
+                    if (isDetailed) {
+                        const usageLen = thisCat.commands[cmd]?.usage?.length;
+                        if (usageLen) {
+                            for (const [ix, use] of thisCat.commands[cmd].usage.entries()) {
+                                const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
+                                if (!formattedUse.startsWith("*")) {
+                                    cmdArr.push(`** │** ${formattedUse}`);
+                                } else if (ix === usageLen-1) {
+                                    cmdArr.push(`** └** ${formattedUse}`);
+                                } else {
+                                    cmdArr.push(`** ├** ${formattedUse}`);
+                                }
+                            }
+                        }
+                    }
+                    outArr.push(cmdArr.join("\n"));
+                }
+
+                // Put a divider after this section / before the next
+                if (ix < helpKeys.length-1) {
+                    outArr.push(div);
+                }
+
+                // TODO Put the patreon logo at the start of the patreon section
+                const chunks = Bot.msgArray(outArr, "\n\n", 1000);
+                for (const [ix, chunk] of chunks.entries()) {
+                    fields.push({
+                        name: ix > 0 ? Bot.constants.zws : cat.toUpperCase(),
+                        value: chunk
+                    });
+                }
             }
 
-            const chunks = Bot.msgArray(outArr, "\n", 1000);
-            for (const [ix, chunk] of chunks.entries()) {
-                fields.push({
-                    name: ix > 0 ? "-" : cat.toUpperCase(),
-                    value: chunk
-                });
+            await interaction.reply({embeds: [{
+                title: "Slash Commands List",
+                description: " - Options are either `<required>` or `[optional]`",
+                fields: fields.slice(0, 4),
+                color: color
+            }]});
+            return interaction.followUp({embeds: [{
+                fields: fields.slice(4),
+                color: color
+            }]});
+        } else {
+            // Searching for info on a certain command
+            const commands = Object.keys(Bot.help).reduce((acc, curr) => {
+                const currCat = Bot.help[curr].commands;
+                return {...acc, ...currCat};
+            }, {});
+
+            const thisCom = commands[search.toLowerCase()];
+            if (!thisCom) return super.error(interaction, "I couldn't find a match for that command name.");
+
+
+            const cmdArr = [`**/${search}**\n${thisCom.desc}`];
+            const usageLen = thisCom.usage?.length;
+            if (usageLen) {
+                for (const [ix, use] of thisCom.usage.entries()) {
+                    const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
+                    if (!formattedUse.startsWith("*")) {
+                        cmdArr.push(`** │** ${formattedUse}`);
+                    } else if (ix === usageLen-1) {
+                        cmdArr.push(`** └** ${formattedUse}`);
+                    } else {
+                        cmdArr.push(`** ├** ${formattedUse}`);
+                    }
+                }
             }
+
+            await interaction.reply({embeds: [{
+                title: `Command description for ${Bot.toProperCase(search)}`,
+                description: ` - Options are either \`<required>\` or \`[optional]\`\n\n${cmdArr.join("\n")}`,
+                color: color
+            }]});
         }
-
-        return interaction.reply({embeds: [{
-            fields: fields,
-            color: Math.floor(Math.random()*16777215)
-        }]});
     }
 }
 
