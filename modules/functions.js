@@ -1,5 +1,4 @@
-const { WebhookClient, ChannelType, Permissions } = require("discord.js");
-const { PermissionsBitField  } = require("discord.js");
+const { WebhookClient, ChannelType, PermissionsBitField } = require("discord.js");
 const moment = require("moment-timezone");
 require("moment-duration-format");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
@@ -229,7 +228,7 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan?.send || !Bot.hasViewAndSend(chan, guild.members.me)) {
+        if (!chan?.send || !chan?.permissionsFor(guild.members.me).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
             // TODO Should probably log this / tell users about the issue somehow?
             return;
             // return console.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
@@ -1117,7 +1116,7 @@ module.exports = (Bot, client) => {
 
     // Function to see if we have permission to see/ send messages in a given channel
     Bot.hasViewAndSend = async (channel, user) => {
-        return (channel?.guild && channel.permissionsFor(user)?.has([Permissions.Flags.ViewChannel, Permissions.Flags.SendMessages])) || false;
+        return (channel?.guild && channel.permissionsFor(user)?.has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages])) || false;
     };
 };
 
