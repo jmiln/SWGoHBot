@@ -7942,5 +7942,25 @@
             "cross": "Potency",
             "source": "swgoh.gg"
         }
+    },
+    {
+        "name": "Zorii Bliss",
+        "uniqueName": "ZORIIBLISS_V2",
+        "aliases": [
+            "Zorii Bliss"
+        ],
+        "nameVariant": [
+            "Zorii Bliss"
+        ],
+        "url": "http://swgoh.gg/characters/zorii-bliss/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zoriibliss.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "mods": {}
     }
 ]
