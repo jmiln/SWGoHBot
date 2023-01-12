@@ -641,7 +641,7 @@ module.exports = (Bot, client) => {
             // Check if the bot is able to send messages into the set channel
             const channels = await client.shard.broadcastEval(async (client, {guChan}) => {
                 const channel = client.channels.cache.get(guChan);
-                if (channel && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                if (channel?.guild && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                     return true;
                 }
                 return false;
@@ -705,7 +705,7 @@ module.exports = (Bot, client) => {
             for (const fieldChunk of fieldsOut) {
                 await client.shard.broadcastEval(async (client, {guChan, fieldChunk}) => {
                     const channel = client.channels.cache.get(guChan);
-                    if (channel && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                    if (channel?.guild && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                         return channel.send({embeds: [{
                             fields: fieldChunk
                         }]});
@@ -730,9 +730,8 @@ module.exports = (Bot, client) => {
         const messages = await client.shard.broadcastEval(async (client, {msgIdIn, chanIn, outEmbed}) => {
             const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
 
-            let msg, targetMsg;
-            if (!channel?.guild) return null;
-            if (channel && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+            let msg, targetMsg = null;
+            if (channel?.guild && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                 if (!msgIdIn) {
                     targetMsg = await channel.send({embeds: [outEmbed]});
                 } else {
@@ -785,7 +784,7 @@ module.exports = (Bot, client) => {
             // Check if the bot is able to send messages into the set channel
             const channels = await client.shard.broadcastEval(async (client, {gtChan}) => {
                 const channel = client.channels.cache.get(gtChan);
-                if (channel && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                if (channel?.guild && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                     return true;
                 }
                 return false;
