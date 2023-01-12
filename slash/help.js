@@ -14,6 +14,19 @@ class Help extends Command {
                     type: ApplicationCommandOptionType.Boolean
                 },
                 {
+                    name: "category",
+                    description: "Show a list of commands in a given category",
+                    type: ApplicationCommandOptionType.String,
+                    choices: [
+                        "Admin", "Gamedata", "General", "Patreon"
+                    ] .map(choice => {
+                        return {
+                            name: choice,
+                            value: choice
+                        };
+                    })
+                },
+                {
                     name: "command",
                     description: "Show a specific command's details",
                     autocomplete: true,
@@ -25,6 +38,7 @@ class Help extends Command {
 
     async run(Bot, interaction) {
         const search = interaction.options.getString("command");
+        const category = interaction.options.getString("category");
         const isDetailed = interaction.options.getBoolean("details");
 
         const color = Math.floor(Math.random()*16777215);
@@ -35,6 +49,7 @@ class Help extends Command {
             const div = "`======================================`";
             const helpKeys = Object.keys(helpList);
             for (const [ix, cat] of helpKeys.entries()) {
+                if (category && category !== cat) continue;
                 const thisCat = helpList[cat];
 
                 const outArr = [`__${thisCat.description}__`];
@@ -81,10 +96,12 @@ class Help extends Command {
                 fields: fields.slice(0, 4),
                 color: color
             }]});
-            return interaction.followUp({embeds: [{
-                fields: fields.slice(4),
-                color: color
-            }]});
+            if (fields.length > 4) {
+                return interaction.followUp({embeds: [{
+                    fields: fields.slice(4),
+                    color: color
+                }]});
+            }
         } else {
             // Searching for info on a certain command
             const commands = Object.keys(Bot.help).reduce((acc, curr) => {
