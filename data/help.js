@@ -270,8 +270,6 @@ module.exports = {
                     "**lang** [bot_language] [swgoh_language]",
                     "**view**"
                 ]
-                // TODO Put the patreon logo at the start of each patreon limited one.
-                //  - Make each usage into an obj, so we can have {desc: "...", patreon: true} or something?,
             },
             whois: {
                 desc: "Search for a user's allycode by name. (Only checks users registered with the bot)",
@@ -293,7 +291,7 @@ module.exports = {
                 ]
             },
             arenawatch: {
-                desc: "Set up the bot to send a message to a channel any time someone in your list of selected allycodes changes rank",
+                desc: "Set up the bot to send a message to a channel whenever someone in your list of allycodes moves up or down in rank",
                 usage: [
                     "**allycodes add** <allycode>",
                     "**allycodes edit** <allycode>",
@@ -313,7 +311,7 @@ module.exports = {
                 ]
             },
             guildtickets: {
-                desc: "Set up the bot to send an updated",
+                desc: "Set up the bot to send an updated list of who doesn't have the daily 600 tickets",
                 usage: [
                     "**set** [enabled] [channel] [sortby] [allycode]",
                     "**view**",

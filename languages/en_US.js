@@ -1819,15 +1819,6 @@ module.exports = class extends Language {
                         }
                     },
                     {
-                        action: "Defaults",
-                        actionDesc: "Set default flags for commands",
-                        usage: ";userconf defaults <set> <commandName> <flags>\n;userconf defaults <clear> <commandName>",
-                        args: {
-                            "commandName": "The name (or alias) of the command you're wanting to set defaults for.",
-                            "flags": "Any flags you want to set as the dafault for a command"
-                        }
-                    },
-                    {
                         action: "Arena Alert",
                         actionDesc: "Set alerts to DM when your rank drops and other arena related stuff.",
                         usage: [

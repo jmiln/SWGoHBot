@@ -139,8 +139,6 @@ const config = {
         id: "",
         // Array of allycode/ primary status pairs
         accounts: [],
-        // Command specific defaults (guildsearch, ga, etc..)
-        defaults:{},
         // Settings for the arena alerts
         arenaAlert: {
             enableRankDMs: false,

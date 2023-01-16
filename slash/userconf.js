@@ -316,10 +316,6 @@ class UserConf extends Command {
                         value: user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + user.accounts.map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
                     });
                     fields.push({
-                        name: interaction.language.get("COMMAND_USERCONF_VIEW_DEFAULTS_HEADER"),
-                        value: Object.keys(user.defaults).length ? Object.keys(user.defaults).map(d => `**${d}:** \`${user.defaults[d]}\``).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF")
-                    });
-                    fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
                         value: [
                             `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"}**`,
