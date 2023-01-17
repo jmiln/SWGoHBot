@@ -313,24 +313,117 @@ class UserConf extends Command {
                     const fields = [];
                     fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_HEADER"),
-                        value: user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + user.accounts.map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
-                    });
-                    fields.push({
-                        name: interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
-                        value: [
-                            `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"}**`,
-                            `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_SHOW")}: **${user.arenaAlert.arena}**`,
-                            `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_WARNING")}: **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min" : "disabled"}**`,
-                            `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
-                        ].join("\n")
+                        value: ">>> " + (user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + user.accounts.map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC"))
                     });
                     fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_LANG_HEADER") ,
                         value: [
-                            `Language: **${user.lang ? (user.lang.language ? user.lang.language : "N/A") : "N/A"}**`,
+                            `>>> Language: **${user.lang ? (user.lang.language ? user.lang.language : "N/A") : "N/A"}**`,
                             `swgohLanguage: **${user.lang ? (user.lang.swgohLanguage ? user.lang.swgohLanguage.toUpperCase() : "N/A") : "N/A"}**`
                         ].join("\n")
                     });
+
+                    const pat = Bot.getPatronUser(interaction.user.id);
+                    if (pat || pat.amount_cents < 100) {
+                        // If the user will not have any of the following settings, don't bother showing everything/ tell em what's available
+                        fields.push({
+                            name: "Patreon settings",
+                            value: [
+                                ">>> If you subscribe on [Patreon](https://patreon.com/swgohbot), this will show settings for those parts of the bot as well. https://patreon.com/swgohbot",
+                                "",
+                                "**__Arena Alert__**",
+                                "Get DMs when your arena rank changes",
+                                "",
+                                "**__Arena Watch__**",
+                                "Watch up to 50 ally codes for arena rank changes & payouts, and log them to a channel",
+                                "",
+                                "**__Guild Updates__**",
+                                "The bot will check every hour and log any changes in each member's roster",
+                                "",
+                                "**__Guild Tickets__**",
+                                "Watch each guild member & keep a log of who has not hit the daily 600 tickets",
+                            ].join("\n")
+                        });
+                    } else {
+                        // Arena Alert settings
+                        fields.push({
+                            name: interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
+                            value: [
+                                `>>> ${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"}**`,
+                                `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_SHOW")}: **${user.arenaAlert.arena}**`,
+                                `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_WARNING")}: **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min" : "disabled"}**`,
+                                `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
+                            ].join("\n")
+                        });
+
+                        // General AW settings
+                        const uAW = user.arenaWatch;
+                        if (uAW && Object.keys(uAW)?.length) {
+                            fields.push({
+                                name: "Arenawatch",
+                                value: [
+                                    `>>> Enabled: **${uAW.enabled ? "ON" : "OFF"}**`,
+                                    `Channel: **${uAW.channel ? `<#${uAW.channel}>` : "N/A"}**`,
+                                    `Emotes in log: **${uAW.useEmotesInLog ? "ON" : "OFF"}**`,
+                                    `Marks in log: **${uAW.useMarksInLog ? "ON" : "OFF"}**`,
+                                    `Report: **${uAW.report ? "ON" : "OFF"}**`,
+                                    `ShowVS: **${uAW.showvs ? "ON" : "OFF"}**`,
+                                    "",
+                                    `Fleet Enabled: **${uAW.arena.fleet.enabled ? "ON" : "OFF"}**`,
+                                    `Fleet Channel: **${uAW.arena.fleet.channel ? `<#${uAW.arena.fleet.channel}>` : "N/A"}**`,
+                                    "",
+                                    `Char Enabled: **${uAW.arena.char.enabled ? "ON" : "OFF"}**`,
+                                    `Char Channel: **${uAW.arena.char.channel ? `<#${uAW.arena.char.channel}>` : "N/A"}**`,
+                                ].join("\n")
+                            });
+
+                            // AW Allycodes
+                            fields.push({
+                                name: "Arenawatch Allycodes",
+                                value: `\`\`\`${user.arenaWatch.allycodes.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1).map(ac => ac.allyCode + " | " + ac.name).join("\n")}\`\`\``
+                            });
+
+                            // The AW payout stuff
+                            const po = user.arenaWatch.payout;
+                            fields.push({
+                                name: "Arenawatch Payouts",
+                                value: [
+                                    `>>> Fleet Enabled: **${po.fleet.enabled ? "ON" : "OFF"}**`,
+                                    `Fleet Channel: **${po.fleet.channel ? `<#${po.fleet.channel}>` : "N/A"}**`,
+                                    "",
+                                    `Char Enabled: **${po.char.enabled ? "ON" : "OFF"}**`,
+                                    `Char Channel: **${po.char.channel ? `<#${po.char.channel}>` : "N/A"}**`,
+                                ].join("\n")
+                            });
+                        }
+
+                        // Guild Update settings
+                        if (user.guildUpdate && Object.keys(user.guildUpdate)?.length) {
+                            fields.push({
+                                name: "Guild Updates",
+                                value: [
+                                    `>>> Enabled:  **${user.guildUpdate.enabled ? "ON" : "OFF"}**`,
+                                    `Channel:  ${user.guildUpdate.channel ? `<#${user.guildUpdate.channel}>` : "N/A"}`,
+                                    `Allycode: **${user.guildUpdate.allyCode || "N/A"}**`,
+                                    `SortBy:   **${user.guildUpdate.sortBy || "N/A"}**`
+                                ].join("\n")
+                            });
+                        }
+
+                        // Guild Tickets settings
+                        if (user.guildTickets && Object.keys(user.guildTickets)?.length) {
+                            fields.push({
+                                name: "Guild Tickets",
+                                value: [
+                                    `>>> Enabled:  **${user.guildTickets.enabled ? "ON" : "OFF"}**`,
+                                    `Channel:  ${user.guildTickets.channel ? `<#${user.guildTickets.channel}>` : "N/A"}`,
+                                    `Allycode: **${user.guildTickets.allyCode || "N/A"}**`,
+                                    `SortBy:   **${user.guildTickets.sortBy || "N/A"}**`
+                                ].join("\n")
+                            });
+                        }
+                    }
+
                     const u = await interaction.client.users.fetch(userID);
                     return interaction.reply({embeds: [{
                         author: {name: u.username},
