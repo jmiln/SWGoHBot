@@ -324,7 +324,7 @@ class UserConf extends Command {
                     });
 
                     const pat = Bot.getPatronUser(interaction.user.id);
-                    if (pat || pat.amount_cents < 100) {
+                    if (!pat || pat.amount_cents < 100) {
                         // If the user will not have any of the following settings, don't bother showing everything/ tell em what's available
                         fields.push({
                             name: "Patreon settings",
