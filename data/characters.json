@@ -233,6 +233,25 @@
         }
     },
     {
+        "name": "Admiral Trench",
+        "uniqueName": "TRENCH",
+        "aliases": [
+            "Admiral Trench"
+        ],
+        "nameVariant": [
+            "Admiral Trench"
+        ],
+        "url": "http://swgoh.gg/characters/admiral-trench/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_admiraltrench.png",
+        "side": "dark",
+        "factions": [
+            "Leader",
+            "Separatist",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Ahsoka Tano",
         "uniqueName": "AHSOKATANO",
         "aliases": [

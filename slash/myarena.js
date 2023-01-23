@@ -81,9 +81,9 @@ class MyArena extends Command {
                 const unitName = await getUnitName(player, charId);
 
                 const thisChar = playerStats.roster.find(c => c.defId === charId);
-                const speed    = thisChar.stats.final.Speed.toLocaleString();
-                const health   = thisChar.stats.final.Health.toLocaleString();
-                const prot     = thisChar.stats.final.Protection.toLocaleString();
+                const speed    = thisChar.stats.final.Speed?.toLocaleString() || 0;
+                const health   = thisChar.stats.final.Health?.toLocaleString() || 0;
+                const prot     = thisChar.stats.final.Protection?.toLocaleString() || 0;
                 chars.push({
                     pos: positions[ix],
                     speed: speed,

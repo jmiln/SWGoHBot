@@ -347,6 +347,7 @@
             "Foresight",
             "Gain Turn Meter",
             "Health Steal Up",
+            "Instant Defeat Immunity",
             "Leader: +Critical",
             "Leader: +Defense",
             "Leader: +Max Health",
@@ -1093,6 +1094,193 @@
         "activate_shard_count": 25
     },
     {
+        "name": "Admiral Trench",
+        "base_id": "TRENCH",
+        "pk": 3448,
+        "url": "http://swgoh.gg/characters/admiral-trench/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_admiraltrench.png",
+        "power": 38709,
+        "description": "A cunning Separatist admiral who supports his allies with potent buffs and ruins his foes with debilitating debuffs",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "010",
+                    "009",
+                    "009",
+                    "003",
+                    "003"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "020",
+                    "030",
+                    "014",
+                    "017",
+                    "021"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "018",
+                    "057",
+                    "054",
+                    "070",
+                    "070",
+                    "045"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "026",
+                    "054",
+                    "050",
+                    "070",
+                    "071",
+                    "071"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "008",
+                    "083",
+                    "076",
+                    "039",
+                    "071",
+                    "071"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "072",
+                    "096",
+                    "089",
+                    "083",
+                    "090",
+                    "090"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "108",
+                    "059",
+                    "105",
+                    "071",
+                    "107",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "117",
+                    "117",
+                    "118",
+                    "071",
+                    "114",
+                    "107"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "125",
+                    "083",
+                    "090",
+                    "174",
+                    "132"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "173",
+                    "117",
+                    "114",
+                    "143",
+                    "117",
+                    "173"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "135",
+                    "137",
+                    "174",
+                    "124",
+                    "137",
+                    "144"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "164",
+                    "158",
+                    "161",
+                    "170",
+                    "169",
+                    "G12Finisher_TRENCH_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Leader",
+            "Separatist",
+            "Support"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Advantage",
+            "Assist",
+            "Buff Immunity",
+            "Burning",
+            "Counter",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: Assist",
+            "Protection Up",
+            "Remove Turn Meter",
+            "Stagger",
+            "Stealth",
+            "Stun",
+            "Tenacity Up"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Ahsoka Tano",
         "base_id": "AHSOKATANO",
         "pk": 64,
@@ -1257,6 +1445,7 @@
         "ability_classes": [
             "Assist",
             "Counter",
+            "Critical Hit Immunity",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -3559,6 +3748,7 @@
             "Dispel - All Enemies",
             "Gain Turn Meter",
             "Healing Immunity",
+            "Instant Defeat Immunity",
             "Offense Down",
             "Offense Up",
             "Potency Down",
@@ -5167,6 +5357,7 @@
             "Ability Block",
             "AoE",
             "Assist",
+            "Burning",
             "DoT",
             "Expose",
             "Gain Turn Meter",
@@ -6224,6 +6415,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Critical Hit Immunity",
             "Gain Turn Meter",
             "Potency Up",
             "Remove Turn Meter",
@@ -8859,6 +9051,7 @@
             "Ability Block",
             "Bonus Attack",
             "Counter",
+            "Critical Hit Immunity",
             "Daze",
             "Dispel",
             "Gain Turn Meter",
@@ -9389,6 +9582,7 @@
         ],
         "ability_classes": [
             "Counter",
+            "Critical Hit Immunity",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
@@ -13123,7 +13317,9 @@
             "Armor Shred",
             "Blind",
             "Buff Immunity",
+            "Burning",
             "Counter",
+            "Critical Hit Immunity",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -16645,6 +16841,7 @@
             "Advantage",
             "Assist",
             "Counter",
+            "Critical Hit Immunity",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -21809,6 +22006,7 @@
         ],
         "ability_classes": [
             "AoE",
+            "Burning",
             "Counter",
             "Damage Immunity",
             "Dispel",
@@ -23205,6 +23403,7 @@
             "Buff Immunity",
             "Counter",
             "Critical Damage Up",
+            "Critical Hit Immunity",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -23581,6 +23780,7 @@
             "Buff Immunity",
             "Counter",
             "Critical Damage Up",
+            "Critical Hit Immunity",
             "Daze",
             "Defense Up",
             "Dispel",
@@ -24121,6 +24321,7 @@
             "AoE",
             "Buff Immunity",
             "Critical Damage Up",
+            "Critical Hit Immunity",
             "Evasion Up",
             "Expose",
             "Gain Turn Meter",
@@ -24653,6 +24854,7 @@
             "Armor Shred",
             "Bonus Attack",
             "Counter",
+            "Critical Hit Immunity",
             "Daze",
             "Dispel",
             "Gain Turn Meter",
@@ -25186,6 +25388,7 @@
             "Support"
         ],
         "ability_classes": [
+            "Burning",
             "Expose",
             "Gain Turn Meter",
             "Heal",
@@ -28373,6 +28576,7 @@
         ],
         "ability_classes": [
             "Assist",
+            "Critical Hit Immunity",
             "Dispel",
             "Leader: +Defense",
             "Leader: +Max Health",
@@ -31889,6 +32093,7 @@
         "ability_classes": [
             "Advantage",
             "AoE",
+            "Burning",
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
@@ -32410,6 +32615,7 @@
             "AoE",
             "Assist",
             "Counter",
+            "Critical Hit Immunity",
             "Dispel",
             "Gain Turn Meter",
             "Inspired",
@@ -33098,6 +33304,7 @@
         "ability_classes": [
             "AoE",
             "Counter",
+            "Critical Hit Immunity",
             "Damage Immunity",
             "Dispel",
             "Gain Turn Meter",
@@ -34877,6 +35084,7 @@
             "Advantage",
             "Assist",
             "Counter",
+            "Critical Hit Immunity",
             "Daze",
             "Dispel",
             "Evasion Up",
@@ -35063,6 +35271,7 @@
             "Bonus Attack",
             "Counter",
             "Critical Chance Up",
+            "Critical Hit Immunity",
             "Dispel",
             "Gain Turn Meter",
             "Leader: +Max Health",
@@ -35241,6 +35450,7 @@
         "ability_classes": [
             "Counter",
             "Critical Chance Down",
+            "Critical Hit Immunity",
             "Gain Turn Meter",
             "Heal",
             "Taunt"
@@ -36116,6 +36326,7 @@
             "Advantage",
             "AoE",
             "Assist",
+            "Critical Hit Immunity",
             "Dispel",
             "Reset Cooldown",
             "Stun"
@@ -36638,6 +36849,7 @@
             "Assist",
             "Buff Immunity",
             "Counter",
+            "Critical Hit Immunity",
             "Damage Immunity",
             "Daze",
             "Dispel",
@@ -37524,6 +37736,7 @@
             "AoE",
             "Counter",
             "Critical Chance Down",
+            "Critical Hit Immunity",
             "Dispel",
             "Dispel - All Enemies",
             "Heal",
@@ -38226,6 +38439,7 @@
             "Armor Shred",
             "Assist",
             "Counter",
+            "Critical Hit Immunity",
             "Dispel",
             "Leader: Protection Up",
             "Protection Up"
@@ -42242,6 +42456,7 @@
             "Assist",
             "Counter",
             "Critical Damage Up",
+            "Critical Hit Immunity",
             "Damage Immunity",
             "Dispel",
             "Expose",
