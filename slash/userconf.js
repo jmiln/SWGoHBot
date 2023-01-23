@@ -1,5 +1,6 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
+const patreonInfo = require("../data/patreon.js");
 
 
 class UserConf extends Command {
@@ -326,23 +327,19 @@ class UserConf extends Command {
                     const pat = Bot.getPatronUser(interaction.user.id);
                     if (!pat || pat.amount_cents < 100) {
                         // If the user will not have any of the following settings, don't bother showing everything/ tell em what's available
+                        const patreonValue = [
+                            ">>> If you subscribe on [Patreon](https://patreon.com/swgohbot), this will show settings for those parts of the bot as well. https://patreon.com/swgohbot"
+                        ];
+                        for (const cmd of Object.keys(patreonInfo.commands)) {
+                            patreonValue.push(...[
+                                "",
+                                `**__${cmd}__**`,
+                                patreonInfo.commands[cmd]
+                            ]);
+                        }
                         fields.push({
                             name: "Patreon settings",
-                            value: [
-                                ">>> If you subscribe on [Patreon](https://patreon.com/swgohbot), this will show settings for those parts of the bot as well. https://patreon.com/swgohbot",
-                                "",
-                                "**__Arena Alert__**",
-                                "Get DMs when your arena rank changes",
-                                "",
-                                "**__Arena Watch__**",
-                                "Watch up to 50 ally codes for arena rank changes & payouts, and log them to a channel",
-                                "",
-                                "**__Guild Updates__**",
-                                "The bot will check every hour and log any changes in each member's roster",
-                                "",
-                                "**__Guild Tickets__**",
-                                "Watch each guild member & keep a log of who has not hit the daily 600 tickets",
-                            ].join("\n")
+                            value: patreonValue.join("\n")
                         });
                     } else {
                         // Arena Alert settings

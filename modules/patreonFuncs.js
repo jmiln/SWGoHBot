@@ -619,7 +619,7 @@ module.exports = (Bot, client) => {
     Bot.guildsUpdate = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
-            // This is only available for the $5 and up tier, so ignore anything else
+            // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
@@ -761,7 +761,7 @@ module.exports = (Bot, client) => {
     Bot.guildTickets = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
-            // This is only available for the $5 and up tier, so ignore anything else
+            // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < 100) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
