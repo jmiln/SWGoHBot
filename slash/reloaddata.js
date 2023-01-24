@@ -57,7 +57,7 @@ class ReloadData extends Command {
                     embeds: [
                         {
                             title: "Deployed Commands",
-                            description: outLog?.length ? "" : "Nothing deployed",
+                            description: outLog?.length ? null : "Nothing deployed",
                             fields: outLog?.length ? outLog : null
                         }
                     ],
