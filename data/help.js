@@ -324,6 +324,13 @@ module.exports = {
                     "**view**",
                 ]
             },
+            patreon: {
+                desc: "See benefits/ commands available via Patreon, or check on your current tier info",
+                usage: [
+                    "**/patreon**",
+                    "**/patreon** details <Commands|Benefits|my_info>"
+                ]
+            },
         }
     },
 };
