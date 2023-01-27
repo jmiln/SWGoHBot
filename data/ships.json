@@ -1683,6 +1683,25 @@
         ]
     },
     {
+        "name": "TIE Defender",
+        "uniqueName": "TIEDEFENDER",
+        "aliases": [
+            "TIE Defender"
+        ],
+        "nameVariant": [
+            "TIE Defender"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tie-defender/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiedefender.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "TIE Echelon",
         "uniqueName": "FIRSTORDERTIEECHELON",
         "aliases": [
