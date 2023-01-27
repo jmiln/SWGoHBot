@@ -374,9 +374,10 @@ class GuildSearch extends Command {
                 } else {
                     desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
                 }
+                const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
                 return super.error(interaction, desc, {
                     title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
-                    footer: interaction.language.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(guild.updated, interaction)),
+                    footer: footer,
                     edit: true
                 });
             }
@@ -537,7 +538,7 @@ class GuildSearch extends Command {
                 }
             });
 
-            const footer = Bot.updatedFooter(guildChar.updated, interaction, "guild", cooldown);
+            const footer = Bot.updatedFooter(Math.max(...guildChar.map(ch => ch.updated)), interaction, "guild", cooldown);
             let description = null;
             if (doZeta || doOmicron) {
                 if (doZeta && doOmicron) {

@@ -1,6 +1,4 @@
 const { WebhookClient, ChannelType, PermissionsBitField } = require("discord.js");
-const moment = require("moment-timezone");
-require("moment-duration-format");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
 const fs = require("fs");
 const readdir = promisify(require("fs").readdir);
@@ -131,7 +129,7 @@ module.exports = (Bot, client) => {
 
     // Default formatting for current US/Pacific time
     Bot.myTime = () => {
-        return moment.tz("US/Pacific").format("M/D/YYYY h:mma");
+        return Intl.DateTimeFormat("en", {day: "numeric", month: "numeric", year: "numeric", hour: "numeric", minute: "numeric", timeZone: "America/Los_Angeles"}).format(new Date());
     };
 
     // This finds any character that matches the search, and returns them in an array
@@ -512,9 +510,30 @@ module.exports = (Bot, client) => {
     };
 
     // Return a duration string
-    Bot.duration = (time, message=null) => {
-        const lang = message ? message.language : Bot.languages[Bot.config.defaultSettings.language];
-        return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
+    Bot.duration = (time, interaction=null) => {
+        const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
+
+        if (!time) console.error("Missing time value in Bot.duration.\n" + inspect(interaction?.options));
+
+        const timeDiff = Math.abs(new Date().getTime() - time);
+
+        return Bot.formatDuration(timeDiff, lang);
+    };
+
+    // Given a duration number, format the string like it would have been done from moment-duration-format before
+    Bot.formatDuration = (duration, lang) => {
+        const durationMS = Bot.convertMS(duration);
+        const outArr = [];
+
+        if (durationMS.day) {
+            outArr.push(`${durationMS.day} ${durationMS.day > 1 ? lang.getTime("DAY", "PLURAL") : lang.getTime("DAY", "SING")}`);
+        }
+        if (durationMS.hour || durationMS.day) {
+            outArr.push(`${durationMS.hour || "0"} ${durationMS.hour > 1 ? lang.getTime("HOUR", "SHORT_PLURAL") : lang.getTime("HOUR", "SHORT_SING")}`);
+        }
+        outArr.push(`${durationMS.minute || "0"} ${lang.getTime("MINUTE", "SHORT_SING")}`);
+
+        return outArr.join(", ");
     };
 
     Bot.formatCurrentTime = (zone) => {
@@ -526,11 +545,13 @@ module.exports = (Bot, client) => {
         return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", timeZone: zone}).format(new Date());
     };
 
+    // Check against the list of timezones to make sure the given one is valid
     Bot.isValidZone = (zone) => {
         // Check if the entered string is a valid timezone (According to Wikipedia's list), so go ahead and process
         return Bot.timezones.find(tz => tz.toLowerCase() === zone?.toLowerCase()) || false;
     };
 
+    // Return the full name of whatever day of the week it is
     Bot.getCurrentWeekday = (zone) => {
         if (!zone || !Bot.isValidZone(zone)) {
             return Intl.DateTimeFormat("en", {weekday: "long"}).format(new Date());
