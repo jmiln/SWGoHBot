@@ -1301,6 +1301,28 @@
         "activate_shard_count": 80
     },
     {
+        "name": "TIE Defender",
+        "base_id": "TIEDEFENDER",
+        "url": "http://swgoh.gg/ships/tie-defender/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tiedefender.png",
+        "power": 87071,
+        "description": "Powerful reinforcement Empire Attacker capable of stunning enemies and boosting allies, specifically TIE fighters",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Empire"
+        ],
+        "ability_classes": [
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter"
+        ],
+        "role": "Attacker",
+        "capital_ship": false,
+        "activate_shard_count": 80
+    },
+    {
         "name": "TIE Echelon",
         "base_id": "FIRSTORDERTIEECHELON",
         "url": "http://swgoh.gg/ships/tie-echelon/",
