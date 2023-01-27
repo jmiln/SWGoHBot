@@ -528,7 +528,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_NEED_DATE: "You must give a date for your event. Accepted format is `DD/MM/YYYY`.",
             COMMAND_EVENT_BAD_DATE: (badDate) => `${badDate} is not a valid date. Accepted format is \`DD/MM/YYYY\`.`,
             COMMAND_EVENT_NEED_TIME: "You must give a time for your event.",
-            COMMAND_EVEMT_INVALID_TIME: "You must give a valid time for your event. Accepted format is `HH:MM`, using a 24 hour clock. So no AM or PM",
+            COMMAND_EVENT_INVALID_TIME: "You must give a valid time for your event. Accepted format is `HH:MM`, using a 24 hour clock. So no AM or PM",
             COMMAND_EVENT_PAST_DATE: (eventDATE, nowDATE) => `You cannot set an event in the past. ${eventDATE} is before ${nowDATE}`,
             COMMAND_EVENT_CREATED: (eventName, eventDate) => `Event \`${eventName}\` created for ${eventDate}`,
             COMMAND_EVENT_NO_CREATE: "I couldn't set that event, please try again.",
@@ -1725,7 +1725,7 @@ module.exports = class extends Language {
 
             // Time Command
             COMMAND_TIME_CURRENT: (time, zone) => `Current time is: ${time} in ${zone} time`,
-            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time ${time} in ${zone} time`,
+            COMMAND_TIME_INVALID_ZONE: (time, zone) => `Invalid timezone, here's your guild's time: ${time} in ${zone} time`,
             COMMAND_TIME_NO_ZONE: (time) => `Current time is: ${time} UTC time`,
             COMMAND_TIME_WITH_ZONE: (time, zone) => `Current time is: ${time} in ${zone} time`,
             COMMAND_TIME_HELP: {
