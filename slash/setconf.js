@@ -1,4 +1,3 @@
-const moment = require("moment-timezone");
 const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
@@ -85,7 +84,7 @@ class SetConf extends Command {
             if (keyType === ApplicationCommandOptionType.String) {
                 settingStr = interaction.options.getString(optionKey);
                 if (!settingStr) continue;
-                if (key === "timezone" && !moment.tz.zone(settingStr)) {
+                if (key === "timezone" && !Bot.isValidZone(settingStr)) {
                     // If it's not a valid timezone, let em know
                     errors.push(interaction.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                     continue;

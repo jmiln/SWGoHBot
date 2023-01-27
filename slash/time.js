@@ -21,24 +21,24 @@ class Time extends Command {
         const guildConf = interaction.guildSettings;
         const timezone = interaction.options.getString("timezone");
 
-        if (timezone && isValidZone(timezone)) {
+        if (timezone && Bot.isValidZone(timezone)) {
             return interaction.reply({
                 content: interaction.language.get(
                     "COMMAND_TIME_CURRENT",
-                    formatCurrentTime(timezone),
+                    Bot.formatCurrentTime(timezone),
                     timezone
                 )
             });
         }
 
-        if (guildConf?.timezone && isValidZone(guildConf.timezone)) {
+        if (guildConf?.timezone && Bot.isValidZone(guildConf.timezone)) {
             // If we got here because timezone above had issues, say so, but if it's just here because they left it empty, don'tcomplain
             if (timezone?.length) {
                 return super.error(
                     interaction,
                     interaction.language.get(
                         "COMMAND_TIME_INVALID_ZONE",
-                        formatCurrentTime()
+                        Bot.formatCurrentTime()
                     )
                 );
             }
@@ -47,7 +47,7 @@ class Time extends Command {
                 "Here's your guild's default time:\n" +
                 interaction.language.get(
                     "COMMAND_TIME_CURRENT",
-                    formatCurrentTime(guildConf.timezone),
+                    Bot.formatCurrentTime(guildConf.timezone),
                     guildConf.timezone
                 )
             });
@@ -59,23 +59,9 @@ class Time extends Command {
             "I couldn't find a valid timezone to match your request, so this is my default one:\n" +
             interaction.language.get(
                 "COMMAND_TIME_INVALID_ZONE",
-                formatCurrentTime()
+                Bot.formatCurrentTime()
             )
         );
-
-        function formatCurrentTime(zone) {
-            if (!zone || !isValidZone(zone)) {
-                // Format it with whatever zone the server is
-                return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric"}).format(new Date());
-            }
-
-            return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", timeZone: zone}).format(new Date());
-        }
-
-        function isValidZone(zone) {
-            // Check if the entered string is a valid timezone (According to Wikipedia's list), so go ahead and process
-            return Bot.timezones.find(tz => tz.toLowerCase() === zone?.toLowerCase()) || false;
-        }
     }
 }
 

@@ -1,6 +1,5 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
-var moment = require("moment-timezone");
 
 class Challenges extends Command {
     constructor(Bot) {
@@ -77,10 +76,10 @@ class Challenges extends Command {
         let day = interaction.options.getString("day");
 
         if (!day) {
-            if (!guildConf["timezone"]) {
-                day = "day_" + Bot.toProperCase(moment().format("dddd"));
+            if (!guildConf?.timezone) {
+                day = "day_" + Bot.toProperCase(Bot.getCurrentWeekday());
             } else {
-                day = "day_" + Bot.toProperCase(moment().tz(guildConf["timezone"]).format("dddd"));
+                day = "day_" + Bot.toProperCase(Bot.getCurrentWeekday(guildConf.timezone));
             }
         }
 

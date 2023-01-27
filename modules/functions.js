@@ -517,6 +517,27 @@ module.exports = (Bot, client) => {
         return moment.duration(Math.abs(moment(time).diff(moment()))).format(`d [${lang.getTime("DAY", "PLURAL")}], h [${lang.getTime("HOUR", "SHORT_PLURAL")}], m [${lang.getTime("MINUTE", "SHORT_SING")}]`);
     };
 
+    Bot.formatCurrentTime = (zone) => {
+        if (!zone || !Bot.isValidZone(zone)) {
+            // Format it with whatever zone the server is
+            return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric"}).format(new Date());
+        }
+
+        return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", timeZone: zone}).format(new Date());
+    };
+
+    Bot.isValidZone = (zone) => {
+        // Check if the entered string is a valid timezone (According to Wikipedia's list), so go ahead and process
+        return Bot.timezones.find(tz => tz.toLowerCase() === zone?.toLowerCase()) || false;
+    };
+
+    Bot.getCurrentWeekday = (zone) => {
+        if (!zone || !Bot.isValidZone(zone)) {
+            return Intl.DateTimeFormat("en", {weekday: "long"}).format(new Date());
+        }
+        return Intl.DateTimeFormat("en", {weekday: "long", timeZone: zone}).format(new Date());
+    };
+
     /* LAST UPDATED FOOTER
      * Simple one to make the "Last updated ____ " footers
      */
