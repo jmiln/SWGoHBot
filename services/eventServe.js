@@ -4,7 +4,7 @@ const io = require("socket.io")(config.eventServe.port);
 
 async function init() {
     const MongoClient = require("mongodb").MongoClient;
-    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    const mongo = await MongoClient.connect(config.mongodb.url);
     const cache   = require("../modules/cache.js")(mongo);
 
     io.on("connection", async socket => {
@@ -28,7 +28,8 @@ async function init() {
             const futureCoutdownEvents = events.filter(e => (parseInt(e.eventDT, 10) > nowTime && e.countdown));
             for (const ev of futureCoutdownEvents) {
                 const guildID = ev.eventID.split("-")[0];
-                const guildConf = await cache.get(config.mongodb.swgohbotdb, "guildSettings", {guildId: guildID});
+                let guildConf = await cache.get(config.mongodb.swgohbotdb, "guildSettings", {guildId: guildID});
+                if (Array.isArray(guildConf)) guildConf = guildConf[0];
 
                 if (!guildConf) continue;
 
@@ -37,11 +38,11 @@ async function init() {
                     const timesToCountdown = guildConf.eventCountdown;
                     const nowTime = new Date().getTime();
                     const timeTil = ev.eventDT - nowTime;
-                    const minTil  = timeTil / (1000 * 60);
+                    const msTil = convertMS(timeTil);
                     let cdMin = null;
 
                     timesToCountdown.forEach(time => {
-                        if (time === minTil) {
+                        if (time === msTil.minute) {
                             cdMin = time;
                             return;
                         }
@@ -149,4 +150,20 @@ async function init() {
         });
     });
 }
+
+function convertMS(milliseconds) {
+    var hour, totalMin, minute, seconds;
+    seconds = Math.floor(milliseconds / 1000);
+    totalMin = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    hour = Math.floor(totalMin / 60);
+    minute = totalMin % 60;
+    return {
+        hour: hour,
+        minute: minute,
+        totalMin: totalMin,
+        seconds: seconds
+    };
+}
+
 init();

@@ -1,6 +1,3 @@
-const momentTZ = require("moment-timezone");
-require("moment-duration-format");
-
 module.exports = (Bot, client) => {
     // Some base time conversions to milliseconds
     const dayMS  = 86400000;
@@ -89,8 +86,9 @@ module.exports = (Bot, client) => {
         eventName = eventName.join("-");
 
         const guildConf = await Bot.getGuildSettings(guildID);
+        const diffNum = Math.abs(new Date().getTime() - event.eventDT);
+        const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
 
-        var timeToGo = momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format(`h [${Bot.languages[guildConf.language].getTime("HOUR", "SHORT_SING")}], m [${Bot.languages[guildConf.language].getTime("MINUTE", "SHORT_SING")}]`);
         var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
 
         await sendMsg(event, guildConf, guildID, announceMessage);

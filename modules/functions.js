@@ -522,7 +522,9 @@ module.exports = (Bot, client) => {
 
     // Given a duration number, format the string like it would have been done from moment-duration-format before
     Bot.formatDuration = (duration, lang) => {
+        console.log("[Bot.FormatDuration] in: " + duration);
         const durationMS = Bot.convertMS(duration);
+        console.log("[Bot.FormatDuration] durationMS: " + inspect(durationMS));
         const outArr = [];
 
         if (durationMS.day) {
@@ -532,6 +534,8 @@ module.exports = (Bot, client) => {
             outArr.push(`${durationMS.hour || "0"} ${durationMS.hour > 1 ? lang.getTime("HOUR", "SHORT_PLURAL") : lang.getTime("HOUR", "SHORT_SING")}`);
         }
         outArr.push(`${durationMS.minute || "0"} ${lang.getTime("MINUTE", "SHORT_SING")}`);
+
+        console.log("[Bot.FormatDuration] out: " + outArr);
 
         return outArr.join(", ");
     };
