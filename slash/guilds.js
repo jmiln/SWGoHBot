@@ -1,8 +1,5 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
-const moment = require("moment-timezone");
-const momentDuration = require("moment-duration-format");
-momentDuration(moment);
 const {charChecklist, shipChecklist} = require("../data/unitChecklist");
 
 class Guilds extends Command {
@@ -610,17 +607,17 @@ class Guilds extends Command {
                 roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
             }
 
-            const daySec = 86400;
+            const dayMS = 86400000;
             let timeUntilReset = null;
-            const chaTime = rawGuild.nextChallengesRefresh;
-            const nowTime = moment().unix();
+            const chaTime = rawGuild.nextChallengesRefresh * 1000;
+            const nowTime = new Date().getTime();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
+                timeUntilReset = Bot.formatDuration(chaTime - nowTime);
             } else {
                 // It's in the past, so calculate the next time
-                const dur = parseInt(chaTime, 10) + daySec - nowTime;
-                timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
+                const dur = parseInt(chaTime, 10) + dayMS - nowTime;
+                timeUntilReset = Bot.formatDuration(dur);
             }
 
             let maxed = 0;

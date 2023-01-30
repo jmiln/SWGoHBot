@@ -522,6 +522,8 @@ module.exports = (Bot, client) => {
 
     // Given a duration number, format the string like it would have been done from moment-duration-format before
     Bot.formatDuration = (duration, lang) => {
+        if (!lang) lang = Bot.languages[Bot.config.defaultSettings.language];
+
         console.log("[Bot.FormatDuration] in: " + duration);
         const durationMS = Bot.convertMS(duration);
         console.log("[Bot.FormatDuration] durationMS: " + inspect(durationMS));
