@@ -1,9 +1,15 @@
 const { PermissionsBitField } = require("discord.js");
-const moment = require("moment-timezone");
-// const {inspect} = require("util");
 
 module.exports = (Bot, client) => {
     const honPat = 500;
+
+    // Time chunks, in milliseconds
+    //             ms    sec  min  hr
+    const dayMS = 1000 * 60 * 60 * 24;
+    const hrMS  = 1000 * 60 * 60;
+    const minMS = 1000 * 60;
+    // const secMS = 1000;
+
     // Check if a given user is a patron, and if so, return their info
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
@@ -98,7 +104,6 @@ module.exports = (Bot, client) => {
                     acc.lastShipRank = 0;
                     acc.lastShipClimb = 0;
                 }
-                const now = moment();
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player) {
@@ -120,12 +125,9 @@ module.exports = (Bot, client) => {
 
                 if (player.arena?.char?.rank) {
                     if (["both", "char"].includes(user.arenaAlert.arena)) {
-                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(6, "h");
-                        if (then.unix() < now.unix()) {
-                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(18, "h");
-                        }
-                        const minTil =  parseInt((then-now)/60/1000, 10);
-                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
+                        const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, 6);
+                        const minTil = Math.floor(timeLeft / minMS);
+                        const payoutTime = Bot.formatDuration(timeLeft) + " until payout.";
 
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
@@ -174,13 +176,10 @@ module.exports = (Bot, client) => {
                 }
                 if (player.arena.ship?.rank) {
                     if (["both", "fleet"].includes(user.arenaAlert.arena)) {
-                        let then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").subtract(5, "h");
-                        if (then.unix() < now.unix()) {
-                            then = moment(now).utcOffset(player.poUTCOffsetMinutes).endOf("day").add(19, "h");
-                        }
+                        const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, 5);
+                        const minTil = Math.floor(timeLeft / minMS);
+                        const payoutTime = Bot.formatDuration(timeLeft) + " until payout.";
 
-                        const minTil =  parseInt((then-now)/60/1000, 10);
-                        const payoutTime = moment.duration(then-now).format("h[h] m[m]") + " until payout.";
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
                             try {
@@ -326,24 +325,15 @@ module.exports = (Bot, client) => {
     // Go through the given list and return how long til payouts
     function getPayoutTimes(players, arena) {
         const offsets = {
-            char: {
-                start: 18,
-                end: 6
-            },
-            fleet: {
-                start: 19,
-                end: 5
-            }
+            char: 6,
+            fleet: 5
         };
-        const now = moment().utc();
         for (const player of players) {
             if (!player.poOffset && player.poOffset !== 0) continue;
-            let then = moment(now).utcOffset(player.poOffset).endOf("day").subtract(offsets[arena].end, "h");
-            if (then.unix() < now.unix()) {
-                then = moment(now).utcOffset(player.poOffset).endOf("day").add(offsets[arena].start, "h");
-            }
-            player.duration = then-now;
-            player.timeTil = moment.duration(player.duration).format("h[h] m[m]");
+
+            const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, offsets[arena]);
+            player.duration = Math.floor(timeLeft / minMS);
+            player.timeTil  = Bot.formatDuration(timeLeft) + " until payout.";
         }
         return players.sort((a, b) => a.duration > b.duration ? 1 : -1);
     }
@@ -351,27 +341,17 @@ module.exports = (Bot, client) => {
     // Go through a given list and get the payout times for both arenas
     function getAllPayoutTimes(player) {
         const offsets = {
-            char: {
-                start: 18,
-                end: 6
-            },
-            fleet: {
-                start: 19,
-                end: 5
-            }
+            char: 6,
+            fleet: 5
         };
         const payout = {
             poOffset: player.poOffset
         };
-        const now = moment().utc();
         for (const arena of ["fleet", "char"]) {
             if (!payout.poOffset && payout.poOffset !== 0) continue;
-            let then = moment(now).utcOffset(payout.poOffset).endOf("day").subtract(offsets[arena].end, "h");
-            if (then.unix() < now.unix()) {
-                then = moment(now).utcOffset(payout.poOffset).endOf("day").add(offsets[arena].start, "h");
-            }
-            payout[arena + "Duration"] = then-now;
-            payout[arena + "TimeTil"] = moment.duration(payout[arena + "Duration"]).format("h[h] m[m]");
+            const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, offsets[arena]);
+            payout[arena + "Duration"] = Math.floor(timeLeft / minMS);
+            payout[arena + "TimeTil"]  = Bot.formatDuration(timeLeft) + " until payout.";
         }
         return payout;
     }
@@ -814,17 +794,15 @@ module.exports = (Bot, client) => {
                 roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
             }
 
-            const daySec = 86400;
             let timeUntilReset = null;
-            const chaTime = rawGuild.nextChallengesRefresh;
-            const nowTime = moment().unix();
+            const chaTime = rawGuild.nextChallengesRefresh * 1000;
+            const nowTime = new Date().getTime();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = moment.duration(chaTime - nowTime, "seconds").format("h [hrs], m [min]");
+                timeUntilReset = Bot.formatDuration(chaTime - nowTime);
             } else {
                 // It's in the past, so calculate the next time
-                const dur = parseInt(chaTime, 10) + daySec - nowTime;
-                timeUntilReset = moment.duration(dur, "seconds").format("h [hrs], m [min]");
+                timeUntilReset = Bot.formatDuration(chaTime + dayMS - nowTime);
             }
 
             let maxed = 0;
@@ -855,4 +833,13 @@ module.exports = (Bot, client) => {
             }
         }
     };
+
+    function getTimeLeft(offset, hrDiff) {
+        const now = new Date().getTime();
+        let then = dayMS-1 + Bot.getUTCFromOffset(offset) - (hrDiff * hrMS);
+        if (then < now) {
+            then = then + dayMS;
+        }
+        return then - now;
+    }
 };
