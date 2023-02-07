@@ -373,7 +373,7 @@ class Shardtimes extends Command {
             const nowTime = new Date().getTime();
             let targetTime;
             if (type === "zone") {
-                const target = (getStartOfDay(zone)).getTime() + (hrMS * timeToAdd);
+                const target = (Bot.getStartOfDay(zone)).getTime() + (hrMS * timeToAdd);
                 targetTime = (target + nowTime) > target ? target : target + dayMS;
             } else if (type === "hhmm") {
                 const target = getUTCAtTime(zone);
@@ -407,21 +407,10 @@ class Shardtimes extends Command {
 
         function getUTCAtTime(hhmm) {
             const [hr, min] = hhmm.split(":").map(t => parseInt(t, 10));
-            // const day = new Date(new Date().toLocaleString("en-US", { timeZone: "UTC" }));
             const nowDate = new Date();
             return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
         }
 
-        function getStartOfDay(zone) {
-            const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
-            const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
-
-            day.setHours(day.getHours() - parseInt(localeHour, 10));
-            day.setMinutes(0);
-            day.setSeconds(0);
-            day.setMilliseconds(0);
-            return day;
-        }
     }
 }
 
