@@ -103,9 +103,9 @@ module.exports = (Bot, client) => {
         const guildConf = await Bot.getGuildSettings(guildID);
 
         // If it's running late, tack a notice onto the end of the message
-        const nowTime = new Date().getTime();
-        if ((nowTime - event.eventDT) > (2*minMS)) {
-            const minPast = parseInt((nowTime - event.eventDT) / minMS, 10);
+        const diffTime = Math.abs(event.eventDT - new Date().getTime());
+        if (diffTime > (2*minMS)) {
+            const minPast = Math.floor(diffTime / minMS);
             event.eventMessage += "\nThis event is " + minPast + " minutes past time.";
         }
 

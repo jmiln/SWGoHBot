@@ -1,6 +1,4 @@
-const momentTZ = require("moment-timezone");
-const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
-require("moment-duration-format");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 const Command = require("../base/slashCommand");
 
@@ -266,7 +264,7 @@ class Event extends Command {
                     const ev = res[0];
                     const evName = ev.evID.split("-").slice(1).join("-");
                     if (ev.success) {
-                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(validEV.event.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm"))});
+                        return interaction.reply({content: interaction.language.get("COMMAND_EVENT_CREATED", evName, getDateTimeStr(validEV.event.eventDT, guildConf.timezone))});
                     } else {
                         return interaction.reply({content: interaction.language.get("COMMAND_EVENT_NO_CREATE") + "\n\n**" + evName + "**\n" + ev.error});
                     }
@@ -318,7 +316,7 @@ class Event extends Command {
                             for (const ev of res) {
                                 const evName = ev.evID.split("-").slice(1).join("-");
                                 if (ev.success) {
-                                    evAddLog.push(interaction.language.get("COMMAND_EVENT_CREATED", evName, momentTZ.tz(ev.eventDT, guildConf.timezone).format("MMM Do YYYY [at] H:mm")));
+                                    evAddLog.push(interaction.language.get("COMMAND_EVENT_CREATED", evName, getDateTimeStr(ev.eventDT, guildConf.timezone)));
                                 } else {
                                     evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", evName, ev.error));
                                 }
@@ -364,10 +362,10 @@ class Event extends Command {
 
                         // From here on, it should have the event found, so process for viewing
                         if (Array.isArray(event)) event = event[0];
-                        const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                        const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
                         let eventString = interaction.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
                         if (event.eventChan?.length) {
                             let chanName = "";
                             if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -420,10 +418,10 @@ class Event extends Command {
                             let thisEventName = event.eventID.split("-");
                             thisEventName.splice(0, 1);
                             thisEventName = thisEventName.join("-");
-                            const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                            const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
                             let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
                             if (event.eventChan && event.eventChan !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -510,10 +508,10 @@ class Event extends Command {
                             let thisEventName = event.eventID.split("-");
                             thisEventName.splice(0, 1);
                             thisEventName = thisEventName.join("-");
-                            const eventDate = momentTZ(parseInt(event.eventDT, 10)).tz(guildConf.timezone).format("MMM Do YYYY [at] H:mm");
+                            const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
                             let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", momentTZ.duration(momentTZ().diff(momentTZ(parseInt(event.eventDT, 10)), "minutes") * -1, "minutes").format("d [days], h [hrs], m [min]"));
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
                             if (event.eventChan && event.eventChan !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.eventChan)) {
@@ -638,8 +636,7 @@ class Event extends Command {
                 if (!event) {
                     return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", evName)});
                 } else {
-                    const oldDate = momentTZ.tz(parseInt(event.eventDT, 10), interaction.guildSettings.timezone).format("DD/MM/YYYY");
-                    const oldTime = momentTZ.tz(parseInt(event.eventDT, 10), interaction.guildSettings.timezone).format("HH:mm");
+                    const [oldDate, oldTime] = new Date(event.eventDT).toLocaleString("en-GB", {timeZone: "us/pacific", hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}).split(", ");
 
                     // Put any new bits into an event skeleton
                     const newEvent = {
@@ -770,6 +767,7 @@ class Event extends Command {
             return mess;
         }
         function validateEvents(eventArray) {
+            const now = new Date().getTime();
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
             const nameArr = [];
@@ -803,18 +801,20 @@ class Event extends Command {
                 }
                 if (!event.day) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
-                } else if (!event.day.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/) || !momentTZ(event.day, "D/M/YYYY").isValid()) {
+                } else if (!event.day.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/) || !Date.parse(event.day)) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_DAY", event.day));
                 }
                 if (!event.time) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_TIME"));
-                } else if (!event.time.match(/^\d{1,2}:\d{2}$/) || !momentTZ(event.time, "H:mm").isValid()) {
+                } else if (!event.time.match(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", event.time));
                 }
-                newEvent.eventDT = momentTZ.tz(`${event.day} ${event.time}`, "DD/MM/YYYY H:mm", guildConf.timezone).unix() * 1000;
-                if (momentTZ(newEvent.eventDT).isBefore(momentTZ())) {
-                    const eventDATE = momentTZ.tz(newEvent.eventDT, guildConf.timezone).format("D/M/YYYY H:mm");
-                    const nowDATE = momentTZ().tz(guildConf["timezone"]).format("D/M/YYYY H:mm");
+
+                const dateSplit = event.day.split("/");
+                newEvent.eventDT = new Date(`${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]} ${event.time}`).getTime();
+                if (newEvent.eventDT < now) {
+                    const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
+                    const nowDATE = new Date().toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
 
                     err.push(interaction.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
                 }
@@ -904,6 +904,14 @@ class Event extends Command {
             });
             return outEvents;
         }
+
+        function getDateTimeStr(timeNum, zone) {
+            if (!Bot.isValidZone(zone)) return "Invalid Zone";
+            const outStr = new Date(timeNum).toLocaleString("en-US", {timeZone: zone, hour12: false, month: "long", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
+            return outStr;
+        }
+
+        // Check if a given date is >= to the current time
     }
 }
 
