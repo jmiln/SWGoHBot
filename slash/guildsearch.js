@@ -168,7 +168,7 @@ class GuildSearch extends Command {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }
 
-        // Get the one integer option
+        // Get the integer options
         const top = interaction.options.getInteger("top");
         if (top && (isNaN(top) || top <= 0 || top > 50)) {
             return super.error(interaction, "Invalid argument for top. Must be between 1 and 50");
@@ -488,14 +488,10 @@ class GuildSearch extends Command {
             const fields = [];
             let outArr;
 
-            if (top) {
-                outArr = Object.keys(charOut);
+            if (doReverse) {
+                outArr = Object.keys(charOut).reverse();
             } else {
-                if (doReverse) {
-                    outArr = Object.keys(charOut).reverse();
-                } else {
-                    outArr = Object.keys(charOut);
-                }
+                outArr = Object.keys(charOut);
             }
 
             outArr.forEach(star => {
@@ -512,7 +508,7 @@ class GuildSearch extends Command {
             });
             if (guild.warnings) {
                 let warn = guild.warnings.join("\n");
-                if (warn.length < 1024) {
+                if (warn.length > 1024) {
                     warn = warn.slice(0,1000) + "...";
                 }
                 fields.push({
