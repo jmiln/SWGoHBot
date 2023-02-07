@@ -522,9 +522,9 @@ module.exports = (Bot, client) => {
     Bot.formatDuration = (duration, lang) => {
         if (!lang) lang = Bot.languages[Bot.config.defaultSettings.language];
 
-        console.log("[Bot.FormatDuration] in: " + duration);
+        // console.log("[Bot.FormatDuration] in: " + duration);
         const durationMS = Bot.convertMS(duration);
-        console.log("[Bot.FormatDuration] durationMS: " + inspect(durationMS));
+        // console.log("[Bot.FormatDuration] durationMS: " + inspect(durationMS));
         const outArr = [];
 
         if (durationMS.day) {
@@ -535,7 +535,7 @@ module.exports = (Bot, client) => {
         }
         outArr.push(`${durationMS.minute || "0"} ${lang.getTime("MINUTE", "SHORT_SING")}`);
 
-        console.log("[Bot.FormatDuration] out: " + outArr);
+        // console.log("[Bot.FormatDuration] out: " + outArr);
 
         return outArr.join(", ");
     };
@@ -563,6 +563,15 @@ module.exports = (Bot, client) => {
         return Intl.DateTimeFormat("en", {weekday: "long", timeZone: zone}).format(new Date());
     };
 
+    Bot.getUTCFromOffset = (offset) => {
+        const date = new Date();
+        let day = date.getDate() + (offset < 0 ? 0 : 1);
+        if (day > date.getUTCDate()) {
+            day = day-1;
+        }
+        return Date.UTC(date.getFullYear(), date.getMonth(), day, -1 * Math.floor(offset/60), -1 * offset%60, 0);
+    };
+
     Bot.getStartOfDay = (zone) => {
         const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
         const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
@@ -574,6 +583,7 @@ module.exports = (Bot, client) => {
         return day;
     };
     Bot.getEndOfDay = (zone) => {
+        // function getEndOfDay(zone) {
         const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
         const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
 

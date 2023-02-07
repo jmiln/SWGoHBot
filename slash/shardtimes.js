@@ -384,7 +384,7 @@ class Shardtimes extends Command {
                     targetTime = target;
                 }
             } else {
-                const target = getUTCFromOffset(zone) + (hrMS * timeToAdd);
+                const target = Bot.getUTCFromOffset(zone) + (hrMS * timeToAdd);
                 if (target < nowTime) {
                     // It's already passed
                     targetTime = target + dayMS;
@@ -396,14 +396,6 @@ class Shardtimes extends Command {
             return times.hour.toString().padStart(2, "0") + ":" + times.minute.toString().padStart(2, "0");
         }
 
-        function getUTCFromOffset(offset) {
-            const date = new Date();
-            let day = date.getDate() + (offset < 0 ? 0 : 1);
-            if (day > date.getUTCDate()) {
-                day = day-1;
-            }
-            return Date.UTC(date.getFullYear(), date.getMonth(), day, -1 * Math.floor(offset/60), -1 * offset%60, 0);
-        }
 
         function getUTCAtTime(hhmm) {
             const [hr, min] = hhmm.split(":").map(t => parseInt(t, 10));
