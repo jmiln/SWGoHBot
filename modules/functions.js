@@ -514,9 +514,7 @@ module.exports = (Bot, client) => {
         const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
 
         if (!time) console.error("Missing time value in Bot.duration.\n" + inspect(interaction?.options));
-
         const timeDiff = Math.abs(new Date().getTime() - time);
-
         return Bot.formatDuration(timeDiff, lang);
     };
 

@@ -1,8 +1,5 @@
-const momentTZ = require("moment-timezone");
-require("moment-duration-format");
-// const {inspect} = require('util');
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
+const { ApplicationCommandOptionType } = require("discord.js");
 
 class Shardtimes extends Command {
     constructor(Bot) {
@@ -146,31 +143,38 @@ class Shardtimes extends Command {
 
 
             if (timezone) {
-                if (!momentTZ.tz.zone(timezone)) { // Valid time zone?
-                    const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
-                    if (match) {
-                        // It's a UTC +/- zone
-                        zoneType = "utc";
-                        timezone = parseInt(`${match[1]}${(match[2] * 60) + parseInt(match[3], 10)}`, 10);
-                    } else {
-                        // Grumble that it's an invalid tz
-                        return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
-                    }
+                const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
+                if (Bot.isValidZone(timezone)) {
+                    // Timezone is fine & already set, continue on
+                } else if (match) {
+                    // It's a UTC +/- zone  (+8:00 / -4:15)
+                    zoneType = "utc";
+                    timezone = parseInt(`${match[1]}${(match[2] * 60) + parseInt(match[3], 10)}`, 10);
+                } else {
+                    // Grumble that it's an invalid tz
+                    return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
                 }
             } else {
                 zoneType = "hhmm";
                 const match = timeTil.match(/(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
-                if (match) {
-                    // It's a valid time until payout
-                    const [hour, minute] = timeTil.split(":");
-                    const [tempH, tempM] = momentTZ.tz("UTC").add(hour, "h").add(minute, "m").format("HH:mm").split(":").map(t => parseInt(t, 10));
-                    const totalMin = (tempH * 60) + tempM;
-                    const rounded = Math.round(totalMin / 15) * 15;
-                    timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
-                    tempZone = timezone + " UTC";
-                } else {
+                if (!match) {
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
                 }
+                // Get the amount of time til, and split it into hr & min
+                const [hour, minute] = timeTil.split(":");
+
+                // Then grab the current UTC time, and add the hr & min onto that
+                const nowTime = new Date();
+                const hourMS  = 60*60*1000;
+                const minMS   = 60*1000;
+                const updatedTime = new Date().setTime(nowTime.getTime() + (hour*hourMS) + (minute*minMS));
+                const tempH = updatedTime.getHours();
+                const tempM = updatedTime.getMinutes();
+
+                const totalMin = (tempH * 60) + tempM;
+                const rounded = Math.round(totalMin / 15) * 15;
+                timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
+                tempZone = timezone + " UTC";
             }
             if (flag) {
                 if (flag.match(/<:.+:\d+>/)) {
@@ -317,7 +321,7 @@ class Shardtimes extends Command {
                 }
             });
 
-            const sortedShardTimes = Object.keys(shardOut).sort((a, b) => momentTZ(a, "HH:mm").diff(momentTZ(b, "HH:mm")));
+            const sortedShardTimes = Object.keys(shardOut).sort((a, b) => a > b ? 1 : -1);
 
             const fields = [];
             for (const time of sortedShardTimes) {
@@ -364,31 +368,59 @@ class Shardtimes extends Command {
         }
 
         function timeTil(zone, timeToAdd, type) {
+            const hrMS = 1000 * 60 * 60;
+            const dayMS = 1000 * 60 * 60 * 24;
+            const nowTime = new Date().getTime();
             let targetTime;
             if (type === "zone") {
-                if (momentTZ.tz(zone).unix() < momentTZ.tz(zone).startOf("day").add(timeToAdd, "h").unix()) {
-                    // If it's later today
-                    targetTime = momentTZ.tz(zone).startOf("day").add(timeToAdd, "h");
-                } else {
-                    // If it's already passed for the day
-                    targetTime = momentTZ.tz(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
-                }
+                const target = (getStartOfDay(zone)).getTime() + (hrMS * timeToAdd);
+                targetTime = (target + nowTime) > target ? target : target + dayMS;
             } else if (type === "hhmm") {
-                if (momentTZ.tz(zone, "HH:mm", "UTC").unix() < momentTZ().unix()) {
+                const target = getUTCAtTime(zone);
+                if (target < nowTime) {
                     // It's already passed
-                    return momentTZ.duration(momentTZ.tz(zone, "HH:mm", "UTC").add(1, "d").diff(momentTZ())).format("HH:mm", { trim: false });
-                }
-                return momentTZ.duration(momentTZ.tz(zone, "HH:mm", "UTC").diff(momentTZ())).format("HH:mm", { trim: false });
-            } else {
-                // It's utc +/- format
-                if (momentTZ().utcOffset(zone).unix() < momentTZ().utcOffset(zone).startOf("day").add(timeToAdd, "h").unix()) {
-                    targetTime = momentTZ().utcOffset(zone).startOf("day").add(timeToAdd, "h");
+                    targetTime = target + dayMS;
                 } else {
-                    targetTime = momentTZ().utcOffset(zone).startOf("day").add(1, "d").add(timeToAdd, "h");
+                    targetTime = target;
                 }
-                return momentTZ.duration(targetTime.diff(momentTZ().utcOffset(zone))).format("HH:mm", { trim: false });
+            } else {
+                const target = getUTCFromOffset(zone) + (hrMS * timeToAdd);
+                if (target < nowTime) {
+                    // It's already passed
+                    targetTime = target + dayMS;
+                } else {
+                    targetTime = target;
+                }
             }
-            return momentTZ.duration(targetTime.diff(momentTZ.tz(zone))).format("HH:mm", { trim: false });
+            const times = Bot.convertMS(targetTime - new Date().getTime());
+            return times.hour.toString().padStart(2, "0") + ":" + times.minute.toString().padStart(2, "0");
+        }
+
+        function getUTCFromOffset(offset) {
+            const date = new Date();
+            let day = date.getDate() + (offset < 0 ? 0 : 1);
+            if (day > date.getUTCDate()) {
+                day = day-1;
+            }
+            return Date.UTC(date.getFullYear(), date.getMonth(), day, -1 * Math.floor(offset/60), -1 * offset%60, 0);
+        }
+
+        function getUTCAtTime(hhmm) {
+            const [hr, min] = hhmm.split(":").map(t => parseInt(t, 10));
+            // const day = new Date(new Date().toLocaleString("en-US", { timeZone: "UTC" }));
+            const nowDate = new Date();
+            return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
+        }
+
+        function getStartOfDay(zone) {
+            const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
+            const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
+
+            day.setHours(day.getHours() - parseInt(localeHour, 10));
+            day.setMinutes(0);
+            day.setSeconds(0);
+            day.setMilliseconds(0);
+            return day;
         }
     }
 }
