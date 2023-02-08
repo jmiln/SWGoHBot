@@ -214,7 +214,9 @@ class Guilds extends Command {
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
-            return await guildTickets(userAC);
+            const user = await Bot.userReg.getUser(interaction.user.id);
+            const maxTickets = user?.guildTickets?.tickets || 600;
+            return await guildTickets(userAC, maxTickets);
         }
 
         let guild = null;
@@ -587,7 +589,7 @@ class Guilds extends Command {
             }]});
         }
 
-        async function guildTickets(userAC) {
+        async function guildTickets(userAC, maxTickets) {
             const sortBy = interaction.options.getString("sort");
 
             let rawGuild;
@@ -623,7 +625,7 @@ class Guilds extends Command {
             let maxed = 0;
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
-                if (tickets < 600) {
+                if (tickets < maxTickets) {
                     out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
                 } else {
                     maxed += 1;
@@ -631,7 +633,7 @@ class Guilds extends Command {
             }
             const footer = Bot.updatedFooter(rawGuild.updated, interaction, "guild", cooldown);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
-            const maxedString   = maxed > 0 ? `**${maxed}** members with 600 tickets\n\n` : "";
+            const maxedString   = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
