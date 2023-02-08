@@ -311,9 +311,9 @@ module.exports = {
                 ]
             },
             guildtickets: {
-                desc: "Set up the bot to send an updated list of who doesn't have the daily 600 tickets",
+                desc: "Set up the bot to send an updated list of who doesn't have the daily 600 (or set amount) tickets",
                 usage: [
-                    "**set** [enabled] [channel] [sortby] [allycode]",
+                    "**set** [enabled] [channel] [sortby] [allycode] [tickets]",
                     "**view**",
                 ]
             },
