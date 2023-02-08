@@ -331,7 +331,7 @@ module.exports = (Bot, client) => {
         for (const player of players) {
             if (!player.poOffset && player.poOffset !== 0) continue;
 
-            const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, offsets[arena]);
+            const timeLeft = getTimeLeft(player.poOffset, offsets[arena]);
             player.duration = Math.floor(timeLeft / minMS);
             player.timeTil  = Bot.formatDuration(timeLeft) + " until payout.";
         }
@@ -349,7 +349,7 @@ module.exports = (Bot, client) => {
         };
         for (const arena of ["fleet", "char"]) {
             if (!payout.poOffset && payout.poOffset !== 0) continue;
-            const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, offsets[arena]);
+            const timeLeft = getTimeLeft(player.poOffset, offsets[arena]);
             payout[arena + "Duration"] = Math.floor(timeLeft / minMS);
             payout[arena + "TimeTil"]  = Bot.formatDuration(timeLeft) + " until payout.";
         }
@@ -721,9 +721,9 @@ module.exports = (Bot, client) => {
                         msg = null;
                     }
                     if (msg) {
-                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendBroadcastMsg]", err));
+                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => console.error("[PF sendBroadcastMsg]", err));
                     } else {
-                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => Bot.logger.error("[sendBroadcastMsg]", err));
+                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => console.error("[PF sendBroadcastMsg]", err));
                     }
                 }
             }
