@@ -476,8 +476,8 @@ module.exports = (Bot, client) => {
                     if (aw.useMarksInLog && player.mark) {
                         pName = `${player.mark} ${pName}`;
                     }
-                    const charMinLeft  = Math.floor(payouts.charDuration  / 60000);
-                    const fleetMinLeft = Math.floor(payouts.fleetDuration / 60000);
+                    const charMinLeft  = Math.floor(payouts.charDuration);
+                    const fleetMinLeft = Math.floor(payouts.fleetDuration);
                     if (charMinLeft === 0 && ["char", "both"].includes(player.result)) {
                         // If they have char payouts turned on, do that here
                         charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
