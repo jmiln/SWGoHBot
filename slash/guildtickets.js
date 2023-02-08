@@ -39,6 +39,13 @@ class GuildTickets extends Command {
                             ]
                         },
                         {
+                            name: "tickets",
+                            description: "Set the max expected tickets",
+                            type: ApplicationCommandOptionType.Integer,
+                            minValue: 1,
+                            maxValue: 600
+                        },
+                        {
                             name: "allycode",
                             description: "Set what ally code to get the guild's info from",
                             type: ApplicationCommandOptionType.String
@@ -90,6 +97,7 @@ class GuildTickets extends Command {
             const channel = interaction.options.getChannel("channel");
             const sortBy = interaction.options.getString("sortby");
             let allycode = interaction.options.getString("allycode");
+            const tickets = interaction.options.getInteger("tickets");
 
             if (isEnabled !== null) {
                 gt.enabled = isEnabled;
@@ -123,6 +131,10 @@ class GuildTickets extends Command {
                 gt.sortBy = sortBy;
                 updatedArr.push(`Sort By: **${sortBy}**`);
             }
+            if (tickets) {
+                gt.tickets = tickets;
+                updatedArr.push(`Tickets: **${tickets}**`);
+            }
 
             if (updatedArr.length) {
                 user.guildTickets = gt;
@@ -141,6 +153,7 @@ class GuildTickets extends Command {
                     `Channel:  **${gt.channel ? "<#" + gt.channel + ">" : "N/A"}**`,
                     `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
                     `SortBy:   **${Bot.toProperCase(gt.sortBy)}**`,
+                    `Tickets:  **${gt.tickets || 600}**`,
                 ].join("\n")
             }]});
         }

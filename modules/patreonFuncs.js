@@ -737,7 +737,7 @@ module.exports = (Bot, client) => {
         return msg.length ? msg[0] : null;
     }
 
-    // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 yet
+    // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
     Bot.guildTickets = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
@@ -747,6 +747,7 @@ module.exports = (Bot, client) => {
 
             // If the guild update isn't enabled, then move along
             if (!user?.guildTickets?.enabled) continue;
+            const MAX_TICKETS = user.guildTicketCount || 600;
             const gt = user.guildTickets;
             if (!gt?.allycode) continue;
             if (!gt?.channel) continue;
@@ -809,14 +810,14 @@ module.exports = (Bot, client) => {
             const out = [];
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
-                if (tickets < 600) {
+                if (tickets < MAX_TICKETS) {
                     out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
                 } else {
                     maxed += 1;
                 }
             }
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
-            const maxedString   = maxed > 0 ? `**${maxed}** members with 600 tickets\n\n` : "";
+            const maxedString   = maxed > 0 ? `**${maxed}** members with ${MAX_TICKETS} tickets\n\n` : "";
             const outEmbed = {
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
