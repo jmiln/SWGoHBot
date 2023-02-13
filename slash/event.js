@@ -799,9 +799,11 @@ class Event extends Command {
                     }
                     newEvent.eventID = `${interaction.guild.id}-${event.name}`;
                 }
+                const dateSplit = event.day.split("/");
+                const mmddyyyDate = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
                 if (!event.day) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
-                } else if (!event.day.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/) || !Date.parse(event.day)) {
+                } else if (!event.day.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/) || !Date.parse(mmddyyyDate)) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_DAY", event.day));
                 }
                 if (!event.time) {
@@ -810,8 +812,7 @@ class Event extends Command {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", event.time));
                 }
 
-                const dateSplit = event.day.split("/");
-                newEvent.eventDT = new Date(`${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]} ${event.time}`).getTime();
+                newEvent.eventDT = new Date(`${mmddyyyDate} ${event.time}`).getTime();
                 if (newEvent.eventDT < now) {
                     const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
                     const nowDATE = new Date().toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
