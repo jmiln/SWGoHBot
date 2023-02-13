@@ -632,6 +632,10 @@ module.exports = (Bot, client) => {
      * Simple one to make the "Last updated ____ " footers
      */
     Bot.updatedFooter = (updated, message=null, type="player", userCooldown) => {
+        if (!updated) {
+            console.error("[updatedFooter] Missing updated timestamp");
+            return "";
+        }
         const baseCooldown = { player: 2, guild: 6 };
         const minCooldown = { player: 1, guild: 3 };
 

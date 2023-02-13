@@ -378,7 +378,7 @@ class TerritoryWar extends Command {
 
 
 
-        const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), interaction, "player", cooldown);
+        const footer = Bot.updatedFooter(Math.min(guild1.updated, guild2.updated), interaction, "player", cooldown);
         return interaction.editReply({
             content: null,
             embeds: [{
