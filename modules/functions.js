@@ -9,6 +9,13 @@ module.exports = (Bot, client) => {
         // The main invite for the support server
         invite: "https://discord.com/invite/FfwGvhr",
 
+        // Time chunks, in milliseconds
+        //             ms    sec  min  hr
+        dayMS: 1000 * 60 * 60 * 24,
+        hrMS:  1000 * 60 * 60,
+        minMS: 1000 * 60,
+        secMS: 1000,
+
         // Zero width space
         zws: "\u200B",
 
@@ -563,13 +570,41 @@ module.exports = (Bot, client) => {
         return Intl.DateTimeFormat("en", {weekday: "long", timeZone: zone}).format(new Date());
     };
 
+    // Get the offset for a given timezone, based on:
+    // https://stackoverflow.com/a/64263359
+    Bot.getTimezoneOffset = (zone) => {
+        if (!Bot.isValidZone(zone)) {
+            console.error("[Bot.getTimezoneOffset] Missing/ invalid zone");
+            return;
+        }
+        const timeZoneName = Intl.DateTimeFormat("ia", {timeZoneName: "short", timeZone: zone})
+            .formatToParts()
+            .find((i) => i.type === "timeZoneName")?.value || [];
+        const offset = timeZoneName.slice(3);
+        if (!offset) return 0;
+
+        const matchData = offset.match(/([+-])(\d+)(?::(\d+))?/);
+        if (!matchData) throw `cannot parse timezone name: ${timeZoneName}`;
+
+        const [, sign, hour, minute] = matchData;
+        let result = parseInt(hour) * 60;
+        if (sign === "-") result *= -1;
+        if (minute) result + parseInt(minute);
+
+        return result;
+    };
+
+    Bot.getSetTimeForTimezone = (mmddyyyy_HHmm, zone) => {
+        const offset = Bot.getTimezoneOffset(zone);
+        const [month, day, year, hour, min] = mmddyyyy_HHmm.split(/[/\s:]/);
+        if (year.toString().length !== 4) return Error("[Bot.getSetTimeForTimezone] Year MUST be 4 numbers long");
+        const utcAtTarget = Date.UTC(year, month-1, day, hour, min);
+        return utcAtTarget - (offset * Bot.constants.minMS);
+    };
+
     Bot.getUTCFromOffset = (offset) => {
         const date = new Date();
-        let day = date.getDate() + (offset < 0 ? 0 : 1);
-        if (day > date.getUTCDate()) {
-            day = day-1;
-        }
-        return Date.UTC(date.getFullYear(), date.getMonth(), day, -1 * Math.floor(offset/60), -1 * offset%60, 0);
+        return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - (offset * Bot.constants.minMS);
     };
 
     Bot.getStartOfDay = (zone) => {
@@ -583,7 +618,6 @@ module.exports = (Bot, client) => {
         return day;
     };
     Bot.getEndOfDay = (zone) => {
-        // function getEndOfDay(zone) {
         const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
         const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
 
