@@ -7412,6 +7412,25 @@
         }
     },
     {
+        "name": "Tusken Chieftain",
+        "uniqueName": "TUSKENCHIEFTAIN",
+        "aliases": [
+            "Tusken Chieftain"
+        ],
+        "nameVariant": [
+            "Tusken Chieftain"
+        ],
+        "url": "http://swgoh.gg/characters/tusken-chieftain/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenchieftain.png",
+        "side": "dark",
+        "factions": [
+            "Leader",
+            "Support",
+            "Tusken"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Tusken Raider",
         "uniqueName": "TUSKENRAIDER",
         "aliases": [

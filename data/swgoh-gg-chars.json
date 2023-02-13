@@ -12786,9 +12786,14 @@
         ],
         "ability_classes": [
             "Assist",
+            "Counter",
             "Damage Immunity",
+            "Daze",
             "Dispel",
             "Gain Turn Meter",
+            "Heal",
+            "Revive",
+            "Stun",
             "Target Lock",
             "Tenacity Up"
         ],
@@ -39344,6 +39349,183 @@
         "role": "Attacker",
         "ship": "TIEFIGHTERIMPERIAL",
         "ship_slot": 0,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Tusken Chieftain",
+        "base_id": "TUSKENCHIEFTAIN",
+        "pk": 3449,
+        "url": "http://swgoh.gg/characters/tusken-chieftain/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tuskenchieftain.png",
+        "power": 36723,
+        "description": "A strong tribal leader who protects his allies with Momentum and inflicts foes with damaging effects",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "011",
+                    "011",
+                    "009",
+                    "003",
+                    "004",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "034",
+                    "028",
+                    "027",
+                    "031",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "059",
+                    "007",
+                    "050",
+                    "048",
+                    "048",
+                    "027"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "077",
+                    "077",
+                    "073",
+                    "048",
+                    "048",
+                    "068"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "088",
+                    "088",
+                    "083",
+                    "077",
+                    "068",
+                    "050"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "088",
+                    "088",
+                    "080",
+                    "083",
+                    "068",
+                    "068"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "105",
+                    "088",
+                    "083",
+                    "073",
+                    "088",
+                    "073"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "117",
+                    "103",
+                    "117",
+                    "102",
+                    "102"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "079",
+                    "111",
+                    "079",
+                    "068",
+                    "117",
+                    "173"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "139",
+                    "083",
+                    "129",
+                    "173",
+                    "120",
+                    "129"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "117",
+                    "117",
+                    "173",
+                    "144",
+                    "124",
+                    "124"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "159",
+                    "159",
+                    "158",
+                    "168",
+                    "168",
+                    "G12Finisher_TUSKENCHIEFTAIN_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Leader",
+            "Support",
+            "Tusken"
+        ],
+        "ability_classes": [
+            "Assist",
+            "Dispel",
+            "DoT",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Tenacity",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Remove Turn Meter",
+            "Stun"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
         "activate_shard_count": 25
     },
     {

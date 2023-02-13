@@ -747,7 +747,7 @@ module.exports = (Bot, client) => {
 
             // If the guild update isn't enabled, then move along
             if (!user?.guildTickets?.enabled) continue;
-            const MAX_TICKETS = user.guildTicketCount || 600;
+            const MAX_TICKETS = user.guildTickets.tickets || 600;
             const gt = user.guildTickets;
             if (!gt?.allycode) continue;
             if (!gt?.channel) continue;
