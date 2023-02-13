@@ -812,9 +812,7 @@ class Event extends Command {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", event.time));
                 }
 
-                console.log(mmddyyyDate, event.time, guildConf.timezone);
                 newEvent.eventDT = Bot.getSetTimeForTimezone(`${mmddyyyDate} ${event.time}`, guildConf.timezone);
-                console.log(newEvent.eventDT, now);
                 if (newEvent.eventDT < now) {
                     const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
                     const nowDATE = new Date().toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
