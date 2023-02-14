@@ -227,11 +227,11 @@ class Guilds extends Command {
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter(mem => mem.guildMemberLevel > 1);
         } catch (e) {
-            return super.error(interaction, Bot.codeBlock(e));
+            return super.error(interaction, "Issue getting guild: " + Bot.codeBlock(e));
         }
 
         if (!guild) {
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDS_NO_GUILD"));
+            return super.error(interaction, "Couldn't get guild" + interaction.language.get("COMMAND_GUILDS_NO_GUILD"));
         }
 
         // Switch out depending on the subcommand
@@ -241,7 +241,7 @@ class Guilds extends Command {
                 try {
                     return await guildGear();
                 } catch (err) {
-                    return super.error(interaction, err);
+                    return super.error(interaction, "Issue with guildGear: " + err);
                 }
             }
             case "mods": {
@@ -249,7 +249,7 @@ class Guilds extends Command {
                 try {
                     return await guildMods();
                 } catch (err) {
-                    return super.error(interaction, err);
+                    return super.error(interaction, "Issue with guildMods: " + err);
                 }
             }
             case "relics": {
@@ -257,7 +257,7 @@ class Guilds extends Command {
                 try {
                     return await guildRelics();
                 } catch (err) {
-                    return super.error(interaction, err);
+                    return super.error(interaction, "Issue with guildRelics: " + err);
                 }
             }
             case "roster": {
@@ -267,14 +267,14 @@ class Guilds extends Command {
                         try {
                             return await guildRoster();
                         } catch (err) {
-                            return super.error(interaction, err);
+                            return super.error(interaction, "Issue with guildRoster: " + err);
                         }
                     } else {
                         return await guildSidedGP();
                     }
 
                 } catch (err) {
-                    return super.error(interaction, err);
+                    return super.error(interaction, "Issue with guildRoster 2: " + err);
                 }
             }
             case "tw_summary": {
@@ -282,7 +282,7 @@ class Guilds extends Command {
                 try {
                     return await twSummary();
                 } catch (err) {
-                    return super.error(interaction, err);
+                    return super.error(interaction, "Issue with twSummary: " + err);
                 }
             }
             case "view":
@@ -363,6 +363,7 @@ class Guilds extends Command {
             const outMsgArr = Bot.msgArray(tableOut, "\n", 700);
             const fields = [];
             outMsgArr.forEach(m => {
+                if (!m?.length) return;
                 fields.push({
                     name: "-",
                     value: m
@@ -454,6 +455,7 @@ class Guilds extends Command {
             const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
 
             const fields = Bot.msgArray(header.concat(table), "\n", 700).map(m => {
+                if (!m?.length) return;
                 return {name: "-", value: m};
             });
 
@@ -572,6 +574,7 @@ class Guilds extends Command {
 
             // Stick the formatted bits into the fields
             for (const fieldVal of fieldVals) {
+                if (!fieldVal?.length) continue;
                 fields.push({
                     name: "-",
                     value: fieldVal
