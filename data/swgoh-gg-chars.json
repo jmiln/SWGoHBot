@@ -39870,6 +39870,181 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Tusken Warrior",
+        "base_id": "TUSKENHUNTRESS",
+        "pk": 3450,
+        "url": "http://swgoh.gg/characters/tusken-warrior/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tuskenhuntress.png",
+        "power": 36723,
+        "description": "Brave and fearless Tusken warrior whose attacks become stronger with Momentum",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "003",
+                    "005",
+                    "005",
+                    "001",
+                    "007"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "015",
+                    "016",
+                    "032",
+                    "032",
+                    "029",
+                    "002"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "049",
+                    "041",
+                    "018",
+                    "016",
+                    "040",
+                    "035"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "051",
+                    "069",
+                    "060",
+                    "063",
+                    "028"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "042",
+                    "055",
+                    "003",
+                    "049",
+                    "046",
+                    "038"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "079",
+                    "061",
+                    "060",
+                    "061",
+                    "079"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "079",
+                    "069",
+                    "075",
+                    "081",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "109",
+                    "109",
+                    "112",
+                    "112",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "090",
+                    "108",
+                    "125",
+                    "113",
+                    "173",
+                    "106"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "120",
+                    "129",
+                    "100",
+                    "145",
+                    "172",
+                    "173"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "134",
+                    "125",
+                    "113",
+                    "139",
+                    "117",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "160",
+                    "159",
+                    "158",
+                    "166",
+                    "167",
+                    "G12Finisher_TUSKENHUNTRESS_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Tusken"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Bonus Attack",
+            "Counter",
+            "Critical Damage Up",
+            "Defense Down",
+            "Dispel",
+            "Dispel - All Enemies",
+            "DoT",
+            "Reset Cooldown"
+        ],
+        "role": "Attacker",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Ugnaught",
         "base_id": "UGNAUGHT",
         "pk": 58,

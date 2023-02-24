@@ -7493,6 +7493,24 @@
         }
     },
     {
+        "name": "Tusken Warrior",
+        "uniqueName": "TUSKENHUNTRESS",
+        "aliases": [
+            "Tusken Warrior"
+        ],
+        "nameVariant": [
+            "Tusken Warrior"
+        ],
+        "url": "http://swgoh.gg/characters/tusken-warrior/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenhuntress.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Tusken"
+        ],
+        "mods": {}
+    },
+    {
         "name": "URoRRuR'R'R",
         "uniqueName": "URORRURRR",
         "aliases": [
