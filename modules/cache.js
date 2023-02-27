@@ -6,6 +6,7 @@ module.exports = clientMongo => {
         wipe:    wipe,
         put:     put,
         get:     get,
+        getOne:  getOne,
         remove:  remove,
         replace: replace,
         exists:  exists,
@@ -60,6 +61,17 @@ module.exports = clientMongo => {
         matchCondition = matchCondition || {};
         projection = projection || {};
         return await dbo.collection(collection).find(matchCondition).project(projection).toArray();
+    }
+
+    async function getOne( database, collection, matchCondition, projection ) {
+        if ( !database ) { throw new Error("No database specified to get"); }
+        if ( !collection ) { throw new Error("No collection specified to get"); }
+
+        const dbo = await mongo.db( database );
+
+        matchCondition = matchCondition || {};
+        projection = projection || {};
+        return await dbo.collection(collection).findOne(matchCondition).project(projection);
     }
 
     async function remove( database, collection, matchCondition ) {

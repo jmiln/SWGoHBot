@@ -1,4 +1,5 @@
 const { PermissionsBitField } = require("discord.js");
+const patronTiers = require("../data/patreon.js");
 
 module.exports = (Bot, client) => {
     const honPat = 500;
@@ -16,13 +17,39 @@ module.exports = (Bot, client) => {
         if (userId === Bot.config.ownerid || (Bot.config.patrons && Bot.config.patrons.indexOf(userId) > -1)) {
             return {discordID: userId, amount_cents: userId === Bot.config.ownerid ? 1500 : honPat};
         }
-        let patron = await Bot.cache.get("swgohbot", "patrons", {discordID: userId});
+        const patron = await Bot.cache.getOne("swgohbot", "patrons", {discordID: userId});
+        if (!patron) return null;
 
-        if (Array.isArray(patron)) patron = patron[0];
+        const currentTierNum = getPatreonTier(patron);
+        if (!currentTierNum) return null;
+        const currentTier = patronTiers[currentTierNum];
+
         if (patron && !patron.declined_since) {
-            return patron;
+            return {
+                ...patron,
+                playerTime: currentTier.playerTime,
+                guildTime: currentTier.guildTime,
+                awAccounts: currentTier.awAccounts,
+            };
         }
     };
+
+    function getPatreonTier(user) {
+        const tiers = Object.keys(patronTiers).map(t => parseInt(t, 10));
+        const amount_dollars = user.amount_cents / 100;
+        const minTier = Math.min(...tiers);
+        if (amount_dollars < minTier) return null;
+
+        let tierNum = minTier;
+        for (const tier of tiers) {
+            if (amount_dollars >= tier) {
+                tierNum = tier;
+            } else {
+                return tierNum;
+            }
+        }
+        return tierNum;
+    }
 
     // Get an array of all active patrons
     async function getActivePatrons() {
@@ -41,31 +68,10 @@ module.exports = (Bot, client) => {
     // Get the cooldown
     Bot.getPlayerCooldown = async (authorID) => {
         const patron = await Bot.getPatronUser(authorID);
-        if (!patron) {
-            return {
-                player: 2*60,
-                guild:  6*60
-            };
-        }
-        if (patron.amount_cents >= 500) {
-            // If they have the $5 tier or higher, they get shortened guild & player times
-            return {
-                player: 60,
-                guild:  3*60
-            };
-        } else if (patron.amount_cents >= 100) {
-            // They have the $1 tier, so they get short player times
-            return {
-                player: 60,
-                guild:  6*60
-            };
-        } else {
-            // If they are not a patron, their cooldown is the default
-            return {
-                player: 2*60,
-                guild:  6*60
-            };
-        }
+        return {
+            player: patron?.playerTime || 2*60,
+            guild: patron?.guildTime || 6*60
+        };
     };
 
     // Check for updated ranks

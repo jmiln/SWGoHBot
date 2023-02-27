@@ -391,14 +391,7 @@ class ArenaWatch extends Command {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
-        let codeCap = 0;
-        if (pat.amount_cents < 500  ) {
-            codeCap = Bot.config.arenaWatchConfig.tier1;
-        } else if (pat.amount_cents < 1000 ) {
-            codeCap = Bot.config.arenaWatchConfig.tier2;
-        } else if (pat.amount_cents >= 1000) {
-            codeCap = Bot.config.arenaWatchConfig.tier3;
-        }
+        const codeCap = pat?.awAccounts || 1;
 
         let aw = user.arenaWatch;
         const defPayout = {

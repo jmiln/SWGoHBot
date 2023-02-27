@@ -12,6 +12,7 @@ module.exports = {
             },
             playerTime: 1,
             guildTime: 6,
+            awAccounts: 1,
         },
         5: {
             name: "Padawan",
@@ -21,6 +22,7 @@ module.exports = {
             },
             playerTime: 1,
             guildTime: 3,
+            awAccounts: 20,
         },
         10: {
             name: "Jedi Knight",
@@ -29,6 +31,7 @@ module.exports = {
             },
             playerTime: 1,
             guildTime: 3,
+            awAccounts: 50,
         }
     },
     commands: {

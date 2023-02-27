@@ -41,10 +41,8 @@ module.exports = (Bot) => {
 
     async function getUser(userId) {
         // Get and return the user's info
-        let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
-        if (!user || !user.length) return null;
-        if (Array.isArray(user)) user = user[0];
-        return user;
+        const user = await cache.getOne(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
+        return user || null;
     }
 
     async function getUserFromAlly(allyCode) {
