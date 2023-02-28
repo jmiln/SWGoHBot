@@ -71,7 +71,7 @@ module.exports = clientMongo => {
 
         matchCondition = matchCondition || {};
         projection = projection || {};
-        return await dbo.collection(collection).findOne(matchCondition).project(projection);
+        return await dbo.collection(collection).findOne(matchCondition, {projection: projection});
     }
 
     async function remove( database, collection, matchCondition ) {
