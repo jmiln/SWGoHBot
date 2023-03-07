@@ -1,5 +1,41 @@
 [
     {
+        "name": "0-0-0",
+        "charUrl": "https://swgoh.gg/characters/0-0-0/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_triplezero.png",
+        "modsUrl": "https://swgoh.gg/characters/0-0-0/best-mods/",
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health/ Protection",
+            "cross": "Potency"
+        }
+    },
+    {
+        "name": "50R-T",
+        "charUrl": "https://swgoh.gg/characters/50r-t/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_50rt.png",
+        "modsUrl": "https://swgoh.gg/characters/50r-t/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health/ Protection",
+            "circle": "Health",
+            "cross": "Health/ Potency"
+        }
+    },
+    {
         "name": "ARC Trooper",
         "charUrl": "https://swgoh.gg/characters/arc-trooper/",
         "image": "https://game-assets.swgoh.gg/tex.charui_trooperclone_arc.png",
@@ -31,7 +67,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection/ Health",
             "cross": "Potency"
         }
@@ -49,7 +85,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection/ Defense",
             "circle": "Protection",
             "cross": "Tenacity/ Protection"
         }
@@ -70,6 +106,24 @@
             "triangle": "Crit. Damage/ Offense",
             "circle": "Protection/ Health",
             "cross": "Potency"
+        }
+    },
+    {
+        "name": "Admiral Raddus",
+        "charUrl": "https://swgoh.gg/characters/admiral-raddus/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_admiralraddus.png",
+        "modsUrl": "https://swgoh.gg/characters/admiral-raddus/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection/ Health",
+            "circle": "Health/ Protection",
+            "cross": "Protection/ Health"
         }
     },
     {
@@ -97,14 +151,14 @@
         "modsUrl": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health",
             "cross": "Offense"
         }
     },
@@ -160,7 +214,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense"
+            "cross": "Offense/ Potency"
         }
     },
     {
@@ -219,6 +273,24 @@
         }
     },
     {
+        "name": "BT-1",
+        "charUrl": "https://swgoh.gg/characters/bt-1/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_bt1.png",
+        "modsUrl": "https://swgoh.gg/characters/bt-1/best-mods/",
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage/ Offense",
+            "circle": "Health/ Protection",
+            "cross": "Offense"
+        }
+    },
+    {
         "name": "Barriss Offee",
         "charUrl": "https://swgoh.gg/characters/barriss-offee/",
         "image": "https://game-assets.swgoh.gg/tex.charui_barriss_light.png",
@@ -268,7 +340,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Health/ Potency"
         }
@@ -285,11 +357,29 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
+        }
+    },
+    {
+        "name": "Ben Solo",
+        "charUrl": "https://swgoh.gg/characters/ben-solo/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_bensolo.png",
+        "modsUrl": "https://swgoh.gg/characters/ben-solo/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense"
         }
     },
     {
@@ -307,7 +397,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Offense/ Protection"
         }
     },
     {
@@ -343,8 +433,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense"
+            "circle": "Protection",
+            "cross": "Offense/ Potency"
         }
     },
     {
@@ -396,8 +486,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
-            "circle": "Protection/ Health",
+            "triangle": "Offense/ Crit. Chance",
+            "circle": "Health/ Protection",
             "cross": "Potency"
         }
     },
@@ -417,6 +507,24 @@
             "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
+        }
+    },
+    {
+        "name": "Boushh (Leia Organa)",
+        "charUrl": "https://swgoh.gg/characters/boushh-leia-organa/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_boushh.png",
+        "modsUrl": "https://swgoh.gg/characters/boushh-leia-organa/best-mods/",
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection/ Health",
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -505,7 +613,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Health/ Crit. Damage",
             "circle": "Health",
             "cross": "Health"
         }
@@ -577,9 +685,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection",
-            "cross": "Potency/ Protection"
+            "cross": "Potency"
         }
     },
     {
@@ -598,7 +706,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity"
+            "cross": "Tenacity/ Protection"
         }
     },
     {
@@ -626,13 +734,13 @@
         "modsUrl": "https://swgoh.gg/characters/cassian-andor/best-mods/",
         "mods": {
             "sets": [
-                "Speed x4",
+                "Offense x4",
                 "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -671,7 +779,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Offense"
+            "cross": "Protection/ Tenacity"
         }
     },
     {
@@ -707,8 +815,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection/ Tenacity"
+            "circle": "Protection/ Health",
+            "cross": "Tenacity/ Protection"
         }
     },
     {
@@ -761,9 +869,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Defense/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Tenacity"
+            "cross": "Protection/ Defense"
         }
     },
     {
@@ -781,7 +889,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -799,7 +907,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Offense/ Health"
         }
     },
     {
@@ -809,8 +917,8 @@
         "modsUrl": "https://swgoh.gg/characters/commander-luke-skywalker/best-mods/",
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Offense x4",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -833,7 +941,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Chance/ Offense",
             "circle": "Health/ Protection",
             "cross": "Potency"
         }
@@ -870,7 +978,7 @@
             "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
@@ -891,6 +999,25 @@
             "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
+        }
+    },
+    {
+        "name": "Darth Malgus",
+        "charUrl": "https://swgoh.gg/characters/darth-malgus/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_darthmalgus.png",
+        "modsUrl": "https://swgoh.gg/characters/darth-malgus/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         }
     },
     {
@@ -924,9 +1051,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
-            "cross": "Health/ Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         }
     },
     {
@@ -961,7 +1088,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Potency"
         }
     },
@@ -1014,9 +1141,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health/ Protection",
+            "circle": "Health/ Protection",
+            "cross": "Health"
         }
     },
     {
@@ -1033,7 +1160,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Potency"
         }
     },
@@ -1050,9 +1177,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense/ Potency"
+            "cross": "Offense"
         }
     },
     {
@@ -1069,9 +1196,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Protection/ Potency"
         }
     },
     {
@@ -1089,7 +1216,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense"
+            "cross": "Potency"
         }
     },
     {
@@ -1126,6 +1253,25 @@
             "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection/ Potency"
+        }
+    },
+    {
+        "name": "Doctor Aphra",
+        "charUrl": "https://swgoh.gg/characters/doctor-aphra/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_doctoraphra.png",
+        "modsUrl": "https://swgoh.gg/characters/doctor-aphra/best-mods/",
+        "mods": {
+            "sets": [
+                "Potency x2",
+                "Potency x2",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Potency"
         }
     },
     {
@@ -1178,9 +1324,27 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Protection",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Tenacity"
+            "cross": "Tenacity/ Protection"
+        }
+    },
+    {
+        "name": "Eighth Brother",
+        "charUrl": "https://swgoh.gg/characters/eighth-brother/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_eighthbrother.png",
+        "modsUrl": "https://swgoh.gg/characters/eighth-brother/best-mods/",
+        "mods": {
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
         }
     },
     {
@@ -1196,7 +1360,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
             "cross": "Protection"
         }
@@ -1214,7 +1378,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Offense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -1253,7 +1417,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
-            "cross": "Health/ Protection"
+            "cross": "Tenacity/ Health"
         }
     },
     {
@@ -1270,7 +1434,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
@@ -1299,15 +1463,33 @@
         "modsUrl": "https://swgoh.gg/characters/fennec-shand/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection/ Health",
             "cross": "Offense"
+        }
+    },
+    {
+        "name": "Fifth Brother",
+        "charUrl": "https://swgoh.gg/characters/fifth-brother/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_fifthbrother.png",
+        "modsUrl": "https://swgoh.gg/characters/fifth-brother/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection/ Potency"
         }
     },
     {
@@ -1325,7 +1507,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense"
+            "cross": "Potency/ Protection"
         }
     },
     {
@@ -1343,7 +1525,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Offense/ Health"
         }
     },
     {
@@ -1353,13 +1535,13 @@
         "modsUrl": "https://swgoh.gg/characters/first-order-officer/best-mods/",
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Chance",
+            "triangle": "Crit. Damage/ Protection",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -1389,9 +1571,9 @@
         "modsUrl": "https://swgoh.gg/characters/first-order-stormtrooper/best-mods/",
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1434,8 +1616,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Protection",
-            "cross": "Protection"
+            "circle": "Protection/ Health",
+            "cross": "Protection/ Health"
         }
     },
     {
@@ -1451,7 +1633,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Protection",
             "circle": "Protection",
             "cross": "Protection/ Tenacity"
         }
@@ -1507,7 +1689,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Tenacity"
         }
     },
@@ -1541,9 +1723,9 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         }
@@ -1639,6 +1821,24 @@
         }
     },
     {
+        "name": "Grand Inquisitor",
+        "charUrl": "https://swgoh.gg/characters/grand-inquisitor/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_grandinquisitor.png",
+        "modsUrl": "https://swgoh.gg/characters/grand-inquisitor/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        }
+    },
+    {
         "name": "Grand Master Yoda",
         "charUrl": "https://swgoh.gg/characters/grand-master-yoda/",
         "image": "https://game-assets.swgoh.gg/tex.charui_yodagrandmaster.png",
@@ -1687,7 +1887,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection",
             "cross": "Potency/ Offense"
         }
@@ -1705,7 +1905,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Chance",
+            "triangle": "Protection/ Health",
             "circle": "Protection",
             "cross": "Protection"
         }
@@ -1777,9 +1977,27 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Protection/ Health",
             "circle": "Protection/ Health",
-            "cross": "Health/ Protection"
+            "cross": "Protection/ Health"
+        }
+    },
+    {
+        "name": "Hondo Ohnaka",
+        "charUrl": "https://swgoh.gg/characters/hondo-ohnaka/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_hondoohnaka.png",
+        "modsUrl": "https://swgoh.gg/characters/hondo-ohnaka/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage/ Offense",
+            "circle": "Health",
+            "cross": "Offense/ Protection"
         }
     },
     {
@@ -1795,9 +2013,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Offense/ Tenacity"
         }
     },
     {
@@ -1814,7 +2032,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection/ Crit. Chance",
             "circle": "Protection",
             "cross": "Protection/ Tenacity"
         }
@@ -1849,7 +2067,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Critical Avoidance",
+            "arrow": "Critical Avoidance/ Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -1889,7 +2107,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense/ Protection"
         }
     },
@@ -1908,7 +2126,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense"
+            "cross": "Potency"
         }
     },
     {
@@ -1985,6 +2203,24 @@
         }
     },
     {
+        "name": "Jabba the Hutt",
+        "charUrl": "https://swgoh.gg/characters/jabba-the-hutt/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_jabbathehutt.png",
+        "modsUrl": "https://swgoh.gg/characters/jabba-the-hutt/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity/ Health"
+        }
+    },
+    {
         "name": "Jango Fett",
         "charUrl": "https://swgoh.gg/characters/jango-fett/",
         "image": "https://game-assets.swgoh.gg/tex.charui_jangofett.png",
@@ -2036,7 +2272,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Potency"
+            "cross": "Potency/ Protection"
         }
     },
     {
@@ -2072,9 +2308,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Health/ Defense",
             "circle": "Health/ Protection",
-            "cross": "Health/ Protection"
+            "cross": "Health/ Tenacity"
         }
     },
     {
@@ -2109,9 +2345,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Defense",
-            "circle": "Health/ Protection",
-            "cross": "Tenacity/ Health"
+            "triangle": "Health/ Protection",
+            "circle": "Protection/ Health",
+            "cross": "Protection/ Health"
         }
     },
     {
@@ -2146,7 +2382,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Health",
-            "circle": "Health/ Protection",
+            "circle": "Health",
             "cross": "Health/ Offense"
         }
     },
@@ -2202,7 +2438,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Tenacity"
+            "cross": "Tenacity/ Health"
         }
     },
     {
@@ -2249,9 +2485,9 @@
         "modsUrl": "https://swgoh.gg/characters/k-2so/best-mods/",
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Tenacity x2",
+                "Tenacity x2",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2312,8 +2548,27 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense/ Tenacity"
+        }
+    },
+    {
+        "name": "Krrsantan",
+        "charUrl": "https://swgoh.gg/characters/krrsantan/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_krrsantan.png",
+        "modsUrl": "https://swgoh.gg/characters/krrsantan/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         }
     },
     {
@@ -2423,7 +2678,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Offense/ Protection"
         }
     },
     {
@@ -2439,9 +2694,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Chance/ Defense",
             "circle": "Health/ Protection",
-            "cross": "Health/ Tenacity"
+            "cross": "Tenacity/ Health"
         }
     },
     {
@@ -2487,8 +2742,9 @@
         "modsUrl": "https://swgoh.gg/characters/luke-skywalker-farmboy/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2512,7 +2768,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Health/ Crit. Chance",
             "circle": "Health",
             "cross": "Health"
         }
@@ -2532,8 +2788,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
-            "circle": "Health/ Protection",
-            "cross": "Health/ Protection"
+            "circle": "Health",
+            "cross": "Health/ Potency"
         }
     },
     {
@@ -2551,7 +2807,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Tenacity"
+            "cross": "Potency"
         }
     },
     {
@@ -2611,20 +2867,19 @@
     {
         "name": "Mob Enforcer",
         "charUrl": "https://swgoh.gg/characters/mob-enforcer/",
-        "image": "https://game-assets.swgoh.gg/tex.charui_thug_female_01.png",
+        "image": "https://game-assets.swgoh.gg/tex.charui_mob_enforcer.png",
         "modsUrl": "https://swgoh.gg/characters/mob-enforcer/best-mods/",
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
-            "circle": "Health/ Protection",
-            "cross": "Potency/ Tenacity"
+            "triangle": "Crit. Damage/ Protection",
+            "circle": "Protection",
+            "cross": "Potency"
         }
     },
     {
@@ -2659,7 +2914,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Tenacity"
         }
     },
@@ -2694,7 +2949,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Protection/ Health",
             "cross": "Offense"
         }
@@ -2706,9 +2961,8 @@
         "modsUrl": "https://swgoh.gg/characters/nightsister-initiate/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Chance x2",
-                "Critical Chance x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2766,11 +3020,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
-            "cross": "Protection/ Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         }
     },
     {
@@ -2891,7 +3145,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2917,7 +3172,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage/ Protection",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity"
+            "cross": "Protection/ Health"
         }
     },
     {
@@ -3025,7 +3280,7 @@
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Chance",
             "circle": "Health/ Protection",
-            "cross": "Potency/ Offense"
+            "cross": "Potency"
         }
     },
     {
@@ -3061,7 +3316,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection"
+            "cross": "Offense"
         }
     },
     {
@@ -3133,7 +3388,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Offense/ Potency"
         }
     },
     {
@@ -3147,9 +3402,9 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Offense",
+            "arrow": "Offense/ Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Health",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Offense"
         }
@@ -3168,7 +3423,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Potency"
         }
     },
@@ -3247,6 +3502,24 @@
         }
     },
     {
+        "name": "Sana Starros",
+        "charUrl": "https://swgoh.gg/characters/sana-starros/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_sanastarros.png",
+        "modsUrl": "https://swgoh.gg/characters/sana-starros/best-mods/",
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage/ Offense",
+            "circle": "Health/ Protection",
+            "cross": "Offense"
+        }
+    },
+    {
         "name": "Savage Opress",
         "charUrl": "https://swgoh.gg/characters/savage-opress/",
         "image": "https://game-assets.swgoh.gg/tex.charui_savageopress.png",
@@ -3260,9 +3533,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity/ Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         }
     },
     {
@@ -3281,7 +3554,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Defense",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity"
+            "cross": "Protection/ Defense"
         }
     },
     {
@@ -3298,8 +3571,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense/ Potency"
+            "circle": "Protection/ Health",
+            "cross": "Offense"
         }
     },
     {
@@ -3315,9 +3588,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Health",
-            "cross": "Tenacity"
+            "triangle": "Protection/ Crit. Damage",
+            "circle": "Protection",
+            "cross": "Tenacity/ Protection"
         }
     },
     {
@@ -3370,7 +3643,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Offense/ Potency"
         }
@@ -3427,7 +3700,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense"
         }
     },
@@ -3438,14 +3711,32 @@
         "modsUrl": "https://swgoh.gg/characters/sith-trooper/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
+            "cross": "Offense"
+        }
+    },
+    {
+        "name": "Skiff Guard (Lando Calrissian)",
+        "charUrl": "https://swgoh.gg/characters/skiff-guard-lando-calrissian/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_undercoverlando.png",
+        "modsUrl": "https://swgoh.gg/characters/skiff-guard-lando-calrissian/best-mods/",
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage/ Offense",
+            "circle": "Health/ Protection",
             "cross": "Offense"
         }
     },
@@ -3497,7 +3788,7 @@
                 "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -3573,7 +3864,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -3627,7 +3918,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Offense",
+            "triangle": "Offense/ Health",
             "circle": "Health/ Protection",
             "cross": "Potency"
         }
@@ -3646,7 +3937,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection/ Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -3724,6 +4015,25 @@
         }
     },
     {
+        "name": "Tusken Chieftain",
+        "charUrl": "https://swgoh.gg/characters/tusken-chieftain/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tuskenchieftain.png",
+        "modsUrl": "https://swgoh.gg/characters/tusken-chieftain/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health/ Protection",
+            "cross": "Protection/ Tenacity"
+        }
+    },
+    {
         "name": "Tusken Raider",
         "charUrl": "https://swgoh.gg/characters/tusken-raider/",
         "image": "https://game-assets.swgoh.gg/tex.charui_tuskenraider.png",
@@ -3754,9 +4064,27 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
-            "circle": "Health/ Protection",
+            "triangle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Potency"
+        }
+    },
+    {
+        "name": "Tusken Warrior",
+        "charUrl": "https://swgoh.gg/characters/tusken-warrior/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tuskenhuntress.png",
+        "modsUrl": "https://swgoh.gg/characters/tusken-warrior/best-mods/",
+        "mods": {
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
         }
     },
     {
@@ -3767,15 +4095,14 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection/ Potency"
         }
     },
     {
@@ -3791,7 +4118,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Chance/ Crit. Damage",
             "circle": "Health/ Protection",
             "cross": "Potency"
         }
@@ -3848,7 +4175,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -3877,15 +4204,16 @@
         "modsUrl": "https://swgoh.gg/characters/wampa/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Health x2",
+                "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Speed/ Health",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity"
         }
     },
     {
@@ -3992,8 +4320,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection/ Health",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
             "cross": "Offense"
         }
     },
@@ -4009,7 +4337,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -4032,6 +4360,24 @@
             "triangle": "Offense/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
+        }
+    },
+    {
+        "name": "Zorii Bliss",
+        "charUrl": "https://swgoh.gg/characters/zorii-bliss/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_zoriibliss.png",
+        "modsUrl": "https://swgoh.gg/characters/zorii-bliss/best-mods/",
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health/ Crit. Damage",
+            "circle": "Health",
+            "cross": "Health/ Potency"
         }
     }
 ]
