@@ -167,7 +167,7 @@ class Shardtimes extends Command {
                 const nowTime = new Date();
                 const hourMS  = 60*60*1000;
                 const minMS   = 60*1000;
-                const updatedTime = new Date().setTime(nowTime.getTime() + (hour*hourMS) + (minute*minMS));
+                const updatedTime = new Date(new Date().setTime(nowTime.getTime() + (hour*hourMS) || 0 + (minute*minMS) || 0));
                 const tempH = updatedTime.getHours();
                 const tempM = updatedTime.getMinutes();
 
