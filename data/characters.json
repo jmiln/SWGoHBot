@@ -1214,6 +1214,24 @@
         }
     },
     {
+        "name": "Cal Kestis",
+        "uniqueName": "CALKESTIS",
+        "aliases": [
+            "Cal Kestis"
+        ],
+        "nameVariant": [
+            "Cal Kestis"
+        ],
+        "url": "http://swgoh.gg/characters/cal-kestis/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_calkestis.png",
+        "side": "light",
+        "factions": [
+            "Support",
+            "Unaligned Force User"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Canderous Ordo",
         "uniqueName": "CANDEROUSORDO",
         "aliases": [

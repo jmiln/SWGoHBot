@@ -5728,6 +5728,194 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Cal Kestis",
+        "base_id": "CALKESTIS",
+        "pk": 3451,
+        "url": "http://swgoh.gg/characters/cal-kestis/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_calkestis.png",
+        "power": 36723,
+        "description": "A determined Force user who uses his unique abilities to support his allies and manipulate the flow of battle",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "002",
+                    "003",
+                    "004",
+                    "006",
+                    "008"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "021",
+                    "032",
+                    "015",
+                    "023",
+                    "015",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "053",
+                    "034",
+                    "022",
+                    "041",
+                    "048",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "043",
+                    "053",
+                    "024",
+                    "070",
+                    "044",
+                    "077"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "046",
+                    "074",
+                    "079",
+                    "034",
+                    "053",
+                    "086"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "091",
+                    "048",
+                    "065",
+                    "068",
+                    "063",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "097",
+                    "093",
+                    "102",
+                    "098",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "091",
+                    "108",
+                    "069",
+                    "110",
+                    "097",
+                    "118"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "074",
+                    "172",
+                    "112",
+                    "117",
+                    "126"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "145",
+                    "117",
+                    "117",
+                    "173",
+                    "131",
+                    "129"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "144",
+                    "129",
+                    "112",
+                    "173",
+                    "141",
+                    "141"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "161",
+                    "162",
+                    "167",
+                    "168",
+                    "G12Finisher_CALKESTIS_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Support",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Bonus Attack",
+            "Buff Immunity",
+            "Counter",
+            "Critical Chance Down",
+            "Critical Damage Up",
+            "Critical Hit Immunity",
+            "Daze",
+            "Defense Down",
+            "Defense Up",
+            "Dispel",
+            "Evasion Down",
+            "Foresight",
+            "Gain Turn Meter",
+            "Health Steal Up",
+            "Protection Up",
+            "Reset Cooldown",
+            "Speed Down",
+            "Speed Up",
+            "Stun",
+            "Tenacity Down"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Canderous Ordo",
         "base_id": "CANDEROUSORDO",
         "pk": 307,
