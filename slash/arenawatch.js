@@ -891,17 +891,17 @@ class ArenaWatch extends Command {
         return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: Bot.constants.colors.blue});
 
         async function getChannelStr(alertType, arenaType) {
-            if (!["char", "fleet"].includes(arenaType)) {
-                console.error("Invalid arenaType");
-                return null;
-            }
             if (!["arena", "payout"].includes(alertType)) {
                 console.error("Invalid alertType");
                 return null;
             }
+            if (!["char", "fleet"].includes(arenaType)) {
+                console.error("Invalid arenaType");
+                return null;
+            }
             let thisChan = interaction.guild ? interaction.guild.channels.cache.get(aw[alertType]?.[arenaType]?.channel) : null;
             if (!thisChan) {
-                thisChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: aw})
+                thisChan = await interaction.client.shard.broadcastEval((client, aw, alertType, arenaType) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: {aw, alertType, arenaType}})
                     .then((thisChan) => {
                         thisChan = thisChan.filter(a => !!a)[0];
                         return thisChan ? `<#${thisChan.id}>` : "N/A";

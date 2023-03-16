@@ -96,7 +96,7 @@ class ArenaAlert extends Command {
         }
 
         // Make sure the user is a patreon
-        const pat = Bot.getPatronUser(interaction.user.id);
+        const pat = await Bot.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
