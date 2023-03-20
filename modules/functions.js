@@ -1,7 +1,8 @@
-const { WebhookClient, ChannelType, PermissionsBitField } = require("discord.js");
-const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
+const { WebhookClient, ApplicationCommandOptionType, ChannelType, PermissionsBitField } = require("discord.js");
+const {promisify, inspect, debuglog} = require("util");     // eslint-disable-line no-unused-vars
 const fs = require("fs");
 const readdir = promisify(require("fs").readdir);
+// const DEBUG = true;
 const DEBUG = false;
 
 module.exports = (Bot, client) => {
@@ -1337,7 +1338,30 @@ function checkCmds(newCmdList, oldCmdList) {
                             break;
                         }
 
-                        if (thisOpt?.type === "SUB_COMMAND") {
+                        if (thisOpt?.type === ApplicationCommandOptionType.Subcommand) {
+                            for (const optIx in thisOpt.options) {
+                                const thisSubOpt = thisOpt.options[optIx];
+                                const newSubOpt  = newOpt.options[optIx];
+
+                                if ((newSubOpt.required !== thisSubOpt.required               && (newSubOpt.required || thisSubOpt.required)) ||
+                                    (newSubOpt.name !== thisSubOpt.name                       && (newSubOpt.name || thisSubOpt.name)) ||
+                                    (newSubOpt.autocomplete !== thisSubOpt.autocomplete       && (newSubOpt.autocomplete || thisSubOpt.autocomplete)) ||
+                                    (newSubOpt.description !== thisSubOpt.description         && (newSubOpt.description || thisSubOpt.description)) ||
+                                    (newSubOpt.minValue !== thisSubOpt.minValue               && (!isNaN(newSubOpt?.minValue) || !isNaN(thisSubOpt?.minValue))) ||
+                                    (newSubOpt.maxValue !== thisSubOpt.maxValue               && (!isNaN(newSubOpt?.maxValue) || !isNaN(thisSubOpt?.maxValue))) ||
+                                    (newSubOpt.minLength !== thisSubOpt.minLength             && (!isNaN(newSubOpt?.minLength) || !isNaN(thisSubOpt?.minLength))) ||
+                                    (newSubOpt.maxLength !== thisSubOpt.maxLength             && (!isNaN(newSubOpt?.maxLength) || !isNaN(thisSubOpt?.maxLength))) ||
+                                    (newSubOpt.choices?.length !== thisSubOpt.choices?.length && (newSubOpt.choices || thisSubOpt.choices)) ||
+                                    (newSubOpt.options?.length !== thisSubOpt.options?.length && (newSubOpt.options || thisSubOpt.options))
+                                ) {
+                                    isDiff = true;
+                                    debugLog(`   [NEW] - ${newSubOpt ? inspect(newSubOpt) : null}\n   [OLD] - ${thisSubOpt ? inspect(thisSubOpt) : null}`);
+                                    break;
+                                }
+                            }
+                        }
+                        if (thisOpt?.type === ApplicationCommandOptionType.SubcommandGroup) {
+                            debuglog(` > SubcommandGroup: ${thisOpt.name}`);
                             for (const optIx in thisOpt.options) {
                                 const thisSubOpt = thisOpt.options[optIx];
                                 const newSubOpt  = newOpt.options[optIx];
