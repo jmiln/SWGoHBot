@@ -2,8 +2,6 @@
     Logger class for easy and aesthetically pleasing console logging
     Based off of https://github.com/AnIdiotsGuide/guidebot-class/blob/master/modules/Logger.js
 */
-const chalk = require("chalk");
-
 class Logger {
     constructor(Bot, client) {
         this.Bot = Bot;
@@ -18,34 +16,34 @@ class Logger {
         switch (type) {
             case "log": {
                 color = this.Bot.constants.colors.blue;
-                out = `${timestamp} ${chalk.white.bgBlue(type.toUpperCase())} ${content} `;
+                out = `${timestamp} ${type.toUpperCase()} ${content} `;
                 break;
             }
             case "warn": {
                 color = this.Bot.constants.colors.yellow;
-                out =`${timestamp} ${chalk.black.bgYellow(type.toUpperCase())} ${content} `;
+                out =`${timestamp} ${type.toUpperCase()} ${content} `;
                 break;
             }
             case "error": {
                 color = this.Bot.constants.colors.red;
-                out =`${timestamp} ${chalk.black.bgRed(type.toUpperCase())} ${content} `;
+                out =`${timestamp} ${type.toUpperCase()} ${content} `;
                 break;
             }
             case "debug": {
                 // Only print debug logs if it's set to
                 if (!this.Bot.config.debugLogs) return;
                 color = this.Bot.constants.colors.green;
-                out =`${timestamp} ${chalk.green(type.toUpperCase())} ${content} `;
+                out =`${timestamp} ${type.toUpperCase()} ${content} `;
                 break;
             }
             case "cmd": {
                 color = this.Bot.constants.colors.white;
-                out =`${timestamp} ${chalk.black.bgWhite(type.toUpperCase())} ${content}`;
+                out =`${timestamp} ${type.toUpperCase()} ${content}`;
                 break;
             }
             case "ready": {
                 color = this.Bot.constants.colors.green;
-                out =`${timestamp} ${chalk.black.bgGreen(type.toUpperCase())} ${content}`;
+                out =`${timestamp} ${type.toUpperCase()} ${content}`;
                 break;
             }
             default: throw new TypeError("Logger type must be either warn, debug, log, ready, cmd or error.");
