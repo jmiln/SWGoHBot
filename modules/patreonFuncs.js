@@ -1,5 +1,5 @@
 const { PermissionsBitField } = require("discord.js");
-const patronTiers = require("../data/patreon.js");
+const {tiers: patronTiers} = require("../data/patreon.js");
 
 module.exports = (Bot, client) => {
     const honPat = 500;

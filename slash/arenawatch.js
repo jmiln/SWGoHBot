@@ -303,8 +303,14 @@ class ArenaWatch extends Command {
                                 {
                                     name: "mark",
                                     type: ApplicationCommandOptionType.String,
-                                    required: true,
+                                    required: false,
                                     description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
+                                },
+                                {
+                                    name: "remove_mark",
+                                    type: ApplicationCommandOptionType.Boolean,
+                                    required: false,
+                                    description: "Choose this to delete the mark on a selected user"
                                 }
                             ]
                         }
@@ -564,11 +570,18 @@ class ArenaWatch extends Command {
 
                     const ac = interaction.options.getString("allycode");
                     const mark = interaction.options.getString("mark");
+                    const remove_mark = interaction.options.getBoolean("remove_mark");
+
+                    if (!mark && !remove_mark) return super.error(interaction, "You MUST choose either a mark, or to remove a mark");
+                    if (mark && remove_mark) return super.error(interaction, "You MUST choose only one of: mark, remove_mark");
+
 
                     const player = aw.allycodes.find(p => p.allyCode.toString() === ac.toString());
                     if (!player) {
                         return super.error(interaction, "Sorry, but you can only apply a mark to an already present player/ allycode");
                     }
+                    if (remove_mark && !player?.mark?.length) return super.error(interaction, "There's no mark to remove.");
+
                     // If they're trying to use a custom emote, make sure it's available for the bot to use
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
@@ -576,7 +589,11 @@ class ArenaWatch extends Command {
                     }
                     aw.allycodes = aw.allycodes.map(p => {
                         if (p.allyCode.toString() === ac.toString()) {
-                            p.mark = mark;
+                            if (remove_mark) {
+                                p.mark = null;
+                            } else {
+                                p.mark = mark;
+                            }
                         }
                         return p;
                     });
@@ -891,17 +908,17 @@ class ArenaWatch extends Command {
         return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: Bot.constants.colors.blue});
 
         async function getChannelStr(alertType, arenaType) {
-            if (!["char", "fleet"].includes(arenaType)) {
-                console.error("Invalid arenaType");
-                return null;
-            }
             if (!["arena", "payout"].includes(alertType)) {
                 console.error("Invalid alertType");
                 return null;
             }
+            if (!["char", "fleet"].includes(arenaType)) {
+                console.error("Invalid arenaType");
+                return null;
+            }
             let thisChan = interaction.guild ? interaction.guild.channels.cache.get(aw[alertType]?.[arenaType]?.channel) : null;
             if (!thisChan) {
-                thisChan = await interaction.client.shard.broadcastEval((client, aw) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: aw})
+                thisChan = await interaction.client.shard.broadcastEval((client, aw, alertType, arenaType) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: {aw, alertType, arenaType}})
                     .then((thisChan) => {
                         thisChan = thisChan.filter(a => !!a)[0];
                         return thisChan ? `<#${thisChan.id}>` : "N/A";

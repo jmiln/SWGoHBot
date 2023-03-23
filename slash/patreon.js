@@ -34,7 +34,6 @@ class Patreon extends Command {
     }
 
     async run(Bot, interaction) {
-        const userID = interaction.user.id;
         const display = interaction.options.getString("display") || "none";
         const fields = [];
         let description = null;
@@ -69,7 +68,7 @@ class Patreon extends Command {
             }
             case "my_info":
             default: {
-                const pat = Bot.getPatronUser(interaction.user.id);
+                const pat = await Bot.getPatronUser(interaction.user.id);
                 ephemeral = true;
 
                 if (!pat || pat.amount_cents < 100) {
@@ -83,8 +82,8 @@ class Patreon extends Command {
                     const tierNum = getTier(pat.amount_cents);
                     const thisTier = patreonInfo.tiers[tierNum];
 
-                    // Player-specific pulls: patreonInfo[tier].playerTime
-                    // Guild-specific pulls: patreonInfo[tier].guildTime
+                    // Player-specific pulls: patreonInfo.tiers[tier].playerTime
+                    // Guild-specific pulls: patreonInfo.tiers[tier].guildTime
                     description = `**__${thisTier.name} tier__**:`;
                     fields.push({
                         name: "Pull Times",
@@ -118,10 +117,9 @@ class Patreon extends Command {
             }
         }
 
-        const u = await interaction.client.users.fetch(userID);
         return interaction.reply({
             embeds: [{
-                author: {name: u.username},
+                author: {name: interaction.user.username + "'s current Patreon info"},
                 description: description,
                 fields: fields,
             }],
