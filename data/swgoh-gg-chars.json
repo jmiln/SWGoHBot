@@ -7151,6 +7151,192 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Cere Junda",
+        "base_id": "CEREJUNDA",
+        "pk": 3452,
+        "url": "http://swgoh.gg/characters/cere-junda/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_cerejunda.png",
+        "power": 37507,
+        "description": "Resilient Support who aids her allies with an assortment of different buffs and punishes fast opponents",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "001",
+                    "005",
+                    "005",
+                    "003",
+                    "004"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "021",
+                    "026",
+                    "016",
+                    "032",
+                    "022",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "043",
+                    "038",
+                    "026",
+                    "043",
+                    "048"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "049",
+                    "051",
+                    "069",
+                    "060",
+                    "063",
+                    "028"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "042",
+                    "055",
+                    "003",
+                    "049",
+                    "046",
+                    "038"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "079",
+                    "079",
+                    "075",
+                    "061",
+                    "061"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "060",
+                    "069",
+                    "075",
+                    "081",
+                    "099",
+                    "110"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "118",
+                    "172",
+                    "109",
+                    "112",
+                    "112",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "111",
+                    "108",
+                    "125",
+                    "113",
+                    "172",
+                    "118"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "103",
+                    "129",
+                    "100",
+                    "145",
+                    "172",
+                    "109"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "134",
+                    "125",
+                    "113",
+                    "139",
+                    "113",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "160",
+                    "159",
+                    "158",
+                    "166",
+                    "167",
+                    "G12Finisher_CEREJUNDA_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Leader",
+            "Scoundrel",
+            "Support",
+            "Unaligned Force User"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Advantage",
+            "Counter",
+            "Damage Immunity",
+            "Daze",
+            "Defense Penetration Up",
+            "Defense Up",
+            "Dispel",
+            "Foresight",
+            "Gain Turn Meter",
+            "Leader: +Critical",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Tenacity",
+            "Leader: Foresight",
+            "Leader: Protection Up",
+            "Protection Up",
+            "Tenacity Up"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Chewbacca",
         "base_id": "CHEWBACCALEGENDARY",
         "pk": 300,
@@ -31574,6 +31760,7 @@
             "Gain Turn Meter",
             "Offense Up",
             "Remove Turn Meter",
+            "Revive",
             "Target Lock"
         ],
         "role": "Support",
