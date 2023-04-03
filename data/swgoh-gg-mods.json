@@ -127,6 +127,24 @@
         }
     },
     {
+        "name": "Admiral Trench",
+        "charUrl": "https://swgoh.gg/characters/admiral-trench/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_admiraltrench.png",
+        "modsUrl": "https://swgoh.gg/characters/admiral-trench/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Protection/ Health"
+        }
+    },
+    {
         "name": "Ahsoka Tano",
         "charUrl": "https://swgoh.gg/characters/ahsoka-tano/",
         "image": "https://game-assets.swgoh.gg/tex.charui_ahsoka.png",
@@ -486,8 +504,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Chance",
-            "circle": "Protection/ Health",
+            "triangle": "Offense/ Crit. Damage",
+            "circle": "Health/ Protection",
             "cross": "Potency"
         }
     },
@@ -577,7 +595,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Health",
             "cross": "Offense"
         }
     },
@@ -688,7 +706,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Health"
+            "cross": "Health/ Protection"
         }
     },
     {
@@ -909,7 +927,7 @@
             "diamond": "Defense",
             "triangle": "Defense/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Tenacity"
+            "cross": "Protection/ Defense"
         }
     },
     {
@@ -1161,7 +1179,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
+            "triangle": "Crit. Damage/ Offense",
             "circle": "Protection",
             "cross": "Offense"
         }
@@ -1179,8 +1197,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
+            "triangle": "Health",
+            "circle": "Health",
             "cross": "Health"
         }
     },
@@ -1236,7 +1254,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Potency"
+            "cross": "Protection"
         }
     },
     {
@@ -1254,7 +1272,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -1472,7 +1490,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
@@ -1527,7 +1545,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Protection/ Potency"
         }
     },
     {
@@ -1866,7 +1884,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Offense x4"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1943,7 +1961,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         }
@@ -2015,9 +2033,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Protection/ Health",
             "circle": "Protection/ Health",
-            "cross": "Health/ Protection"
+            "cross": "Protection/ Health"
         }
     },
     {
@@ -2146,7 +2164,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense/ Protection"
+            "cross": "Offense"
         }
     },
     {
@@ -2199,7 +2217,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage/ Protection",
             "circle": "Protection/ Health",
             "cross": "Protection/ Health"
         }
@@ -2255,7 +2273,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity/ Health"
+            "cross": "Tenacity"
         }
     },
     {
@@ -2383,7 +2401,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Protection/ Health",
             "circle": "Protection/ Health",
             "cross": "Protection/ Health"
         }
@@ -2476,7 +2494,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity/ Health"
+            "cross": "Health/ Tenacity"
         }
     },
     {
@@ -2587,7 +2605,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense/ Protection"
+            "cross": "Offense/ Tenacity"
         }
     },
     {
@@ -3309,15 +3327,15 @@
         "modsUrl": "https://swgoh.gg/characters/r2-d2/best-mods/",
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Chance",
             "circle": "Health/ Protection",
-            "cross": "Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -3608,7 +3626,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
@@ -3825,7 +3843,7 @@
                 "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Protection/ Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",

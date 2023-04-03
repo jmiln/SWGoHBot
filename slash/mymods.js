@@ -249,29 +249,32 @@ class MyMods extends Command {
                 }
             });
 
-            let sortedCharList;
-            if (showTotal) {  // If looking for the total stats, sort by that
-                sortedCharList = charList.sort((p, c) => {
-                    if (p.stats?.final?.[statToCheck] && c.stats?.final?.[statToCheck]) {
-                        return c.stats.final[statToCheck] - p.stats.final[statToCheck];
-                    } else if (!c.stats?.final?.[statToCheck]) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                });
-            } else {  // Or if looking for just the amount added by mods, sort by the mod's amount
+            // Sort it all by the totoal
+            let sortedCharList = charList.sort((p, c) => {
+                if (p.stats?.final?.[statToCheck] && c.stats?.final?.[statToCheck]) {
+                    return p.stats.final[statToCheck] < c.stats.final[statToCheck] ? 1 : -1;
+                } else if (!p.stats?.final?.[statToCheck]) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            });
+
+            // Then if we want it sorted by mods, do that after
+            if (!showTotal) {
                 sortedCharList = charList.sort((p, c) => {
                     if (p.stats?.mods?.[statToCheck] && c.stats?.mods?.[statToCheck]) {
-                        return c.stats.mods[statToCheck] - p.stats.mods[statToCheck];
-                    } else if (!c.stats?.mods?.[statToCheck]) {
-                        return -1;
-                    } else {
+                        return p.stats.mods[statToCheck] < c.stats.mods[statToCheck] ? 1 : -1;
+                    } else if (!p.stats?.mods?.[statToCheck]) {
                         return 1;
+                    } else {
+                        return -1;
                     }
                 });
             }
 
+            // Slice it down to a proper size, then grab the localized strings
+            sortedCharList = sortedCharList.slice(0, 20);
             for (const charIx in sortedCharList) {
                 sortedCharList[charIx] = await Bot.swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage);
             }
@@ -296,13 +299,13 @@ class MyMods extends Command {
 
                 return {
                     stat: `${finalStat}${modStat?.toString().length ? ` (${modStat})` : ""}`,
-                    name: `: ${c.nameKey}`
+                    name: c.nameKey
                 };
             });
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);
             let outStr = "";
-            for (let ix = 0; ix < 20; ix++) {
-                outStr += "`" + out[ix].stat + ` ${Bot.constants.zws}`.repeat(longest-out[ix].stat.length) + "`**" + out[ix].name + "**\n";
+            for (const outChar of out) {
+                outStr += "`" + outChar?.stat + ` ${Bot.constants.zws}`.repeat(longest-(outChar.stat?.length || 3)) + "`** : " + outChar.name + "**\n";
             }
 
             const fields = [];
