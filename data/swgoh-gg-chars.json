@@ -10504,8 +10504,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "FURYCLASSINTERCEPTOR",
+        "ship_slot": 0,
         "activate_shard_count": 330
     },
     {
@@ -28263,6 +28263,181 @@
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 330
+    },
+    {
+        "name": "Merrin",
+        "base_id": "MERRIN",
+        "pk": 3453,
+        "url": "http://swgoh.gg/characters/merrin/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_merrin.png",
+        "power": 37297,
+        "description": "A Nightsister witch who proactively defends her allies and inflicts enemies with Plague",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "010",
+                    "008",
+                    "003",
+                    "010",
+                    "003",
+                    "009"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "034",
+                    "014",
+                    "015",
+                    "028",
+                    "008",
+                    "012"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "027",
+                    "049",
+                    "014",
+                    "010",
+                    "014",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "038",
+                    "030",
+                    "072",
+                    "073",
+                    "014",
+                    "082"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "068",
+                    "038",
+                    "068",
+                    "089",
+                    "049",
+                    "070"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "073",
+                    "070",
+                    "089",
+                    "072",
+                    "068",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "072",
+                    "109",
+                    "102",
+                    "089",
+                    "102",
+                    "107"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "111",
+                    "072",
+                    "125",
+                    "096",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "091",
+                    "096",
+                    "117",
+                    "111",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "132",
+                    "132",
+                    "117",
+                    "117",
+                    "174",
+                    "143"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "124",
+                    "124",
+                    "173",
+                    "111",
+                    "144",
+                    "173"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "165",
+                    "158",
+                    "158",
+                    "169",
+                    "169",
+                    "G12Finisher_MERRIN_C"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Dark Side",
+        "categories": [
+            "Nightsister",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Counter",
+            "Dispel",
+            "Gain Turn Meter",
+            "Instant Defeat Immunity",
+            "Revive",
+            "Stealth",
+            "Stun",
+            "Taunt"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
     },
     {
         "name": "Mission Vao",

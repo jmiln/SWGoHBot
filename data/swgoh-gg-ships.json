@@ -419,6 +419,35 @@
         "activate_shard_count": 10
     },
     {
+        "name": "Fury-class Interceptor",
+        "base_id": "FURYCLASSINTERCEPTOR",
+        "url": "http://swgoh.gg/ships/fury-class-interceptor/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_furyclassinterceptor.png",
+        "power": 91067,
+        "description": "Sith Support ship that provides powerful defensive bonuses to allies while inflicting debilitating debuffs to enemies",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Sith",
+            "Sith Empire",
+            "Support"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "Assist",
+            "Defense Down",
+            "Dispel",
+            "Gain Turn Meter",
+            "Healing Immunity",
+            "Protection Up",
+            "Reduce Cooldowns",
+            "Taunt"
+        ],
+        "role": "Support",
+        "capital_ship": false,
+        "activate_shard_count": 330
+    },
+    {
         "name": "Gauntlet Starfighter",
         "base_id": "GAUNTLETSTARFIGHTER",
         "url": "http://swgoh.gg/ships/gauntlet-starfighter/",

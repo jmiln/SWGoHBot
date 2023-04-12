@@ -593,6 +593,26 @@
         }
     },
     {
+        "name": "Fury-class Interceptor",
+        "uniqueName": "FURYCLASSINTERCEPTOR",
+        "aliases": [
+            "Fury-class Interceptor"
+        ],
+        "nameVariant": [
+            "Fury-class Interceptor"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/fury-class-interceptor/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_furyclassinterceptor.png",
+        "side": "dark",
+        "factions": [
+            "Sith",
+            "Sith Empire",
+            "Support"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Gauntlet Starfighter",
         "uniqueName": "GAUNTLETSTARFIGHTER",
         "aliases": [
