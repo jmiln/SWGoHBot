@@ -1,6 +1,7 @@
 const config = require("../config");
 
-const io = require("socket.io")(config.eventServe.port);
+const { Server } = require("socket.io");
+const io = new Server(config.eventServe.port);
 
 async function init() {
     const MongoClient = require("mongodb").MongoClient;

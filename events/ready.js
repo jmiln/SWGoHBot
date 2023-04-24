@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
-const io = require("socket.io-client");
+const { io } = require("socket.io-client");
 // const checkWSHealth = require("../modules/wsWatcher.js");
 
 module.exports = async (Bot, client) => {
