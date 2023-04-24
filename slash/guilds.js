@@ -662,11 +662,13 @@ class Guilds extends Command {
                 raids = "No raids available";
             }
 
-            fields.push({
-                name: raidStr.header,
-                value: Bot.codeBlock(raids),
-                inline: true
-            });
+            if (raids) {
+                fields.push({
+                    name: raidStr.header || "Raids",
+                    value: Bot.codeBlock(raids) || "N/A",
+                    inline: true
+                });
+            }
 
             let guildCharGP = 0;
             let guildShipGP = 0;
@@ -683,13 +685,13 @@ class Guilds extends Command {
             );
             fields.push({
                 name: interaction.language.get("COMMAND_GUILDS_STAT_HEADER"),
-                value: Bot.codeBlock(stats),
+                value: Bot.codeBlock(stats) || "N/A",
                 inline: true
             });
 
             fields.push({
                 name: "-",
-                value: interaction.language.get("COMMAND_GUILDS_FOOTER")
+                value: interaction.language.get("COMMAND_GUILDS_FOOTER") || "`/guilds roster` for a list of your guild members and their gp.\n`/guilds roster show_allycode: true` for a list with their ally codes instead."
             });
 
             if (guild.warnings?.length) {
@@ -706,7 +708,7 @@ class Guilds extends Command {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
-                fields: fields.length ? fields : [],
+                fields: fields.length ? fields : null,
                 footer: footer
             }]});
         }
