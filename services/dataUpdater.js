@@ -1,13 +1,13 @@
 const fs = require("fs");
 const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
-// const cheerio = require("cheerio");
+const cheerio = require("cheerio");
 
 const config = require("../config.js");
 const MongoClient = require("mongodb").MongoClient;
 
 const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
-// const GG_MOD_CACHE           = "../data/swgoh-gg-mods.json";
+const GG_MOD_CACHE           = "../data/swgoh-gg-mods.json";
 const SWGOH_HELP_SQUAD_CACHE = "../data/squads.json";
 const CHAR_LOCATIONS         = "../data/charLocations.json";
 const SHIP_LOCATIONS         = "../data/shipLocations.json";
@@ -113,11 +113,11 @@ async function updateRemoteData() {
         await updateCharacters(currentCharacters);
     }
 
-    // const ggModData = await getGgChars();
-    // if (await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
-    //     log.push("Detected a change in mods from swgoh.gg");
-    //     await updateCharacterMods(currentCharacters, ggModData);
-    // }
+    const ggModData = await getGgChars();
+    if (await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
+        log.push("Detected a change in mods from swgoh.gg");
+        await updateCharacterMods(currentCharacters, ggModData);
+    }
 
     if (await updateIfChanged({ localCachePath: SWGOH_HELP_SQUAD_CACHE, dataSourceUri: "https://swgoh.help/data/squads.json" })) {
         log.push("Detected a squad change from swgoh.help.");
@@ -322,119 +322,120 @@ async function updateCharacters(currentCharacters) {
     }
 }
 
-// async function getGgChars() {
-//     const response = await fetch("https://swgoh.gg/stats/mod-meta-report/guilds_100_gp/");
-//     const ggPage = await response.text();
-//
-//     const modSetCounts = {
-//         "Crit Chance":     "Critical Chance x2",
-//         "Crit Damage":     "Critical Damage x4",
-//         "Critical Chance": "Critical Chance x2",
-//         "Critical Damage": "Critical Damage x4",
-//         "Defense":         "Defense x2",
-//         "Health":          "Health x2",
-//         "Offense":         "Offense x4",
-//         "Potency":         "Potency x2",
-//         "Speed":           "Speed x4",
-//         "Tenacity":        "Tenacity x2"
-//     };
-//
-//     const $ = cheerio.load(ggPage);
-//
-//     const charOut = [];
-//
-//     // As of Jan 27th, 2022, side and defId seem to have been taken out
-//     $("body > div.container.p-t-md > div.content-container > div.content-container-primary.character-list > ul > li:nth-child(3) > table > tbody > tr")
-//         .each((i, elem) => {
-//             let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
-//             // const defId = $(name).find("img").attr("data-base-id");
-//             const imgUrl =  $(name).find("img").attr("src");
-//             // const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
-//             const [url, modUrl] = $(name).find("a").toArray().map(link => {
-//                 return $(link).attr("href").trim();
-//             });
-//             name = cleanName($(name).text());
-//             sets = $(sets).find("div").toArray().map(div => {
-//                 return countSet($(div).attr("data-title").trim());
-//             });
-//             receiver    = cleanModType($(receiver).text());
-//             holo        = cleanModType($(holo).text());
-//             data        = cleanModType($(data).text());
-//             multiplexer = cleanModType($(multiplexer).text());
-//             charOut.push({
-//                 name:     name,
-//                 // defId:    defId,
-//                 charUrl:  "https://swgoh.gg" + url,
-//                 image:    imgUrl,
-//                 // side:     side,
-//                 modsUrl:  "https://swgoh.gg" + modUrl, //+ url + "best-mods/",
-//                 mods: {
-//                     sets:     sets,
-//                     square:   "Offense",
-//                     arrow:    receiver,
-//                     diamond:  "Defense",
-//                     triangle: holo,
-//                     circle:   data,
-//                     cross:    multiplexer
-//                 }
-//             });
-//         });
-//
-//     // Clean up the mod names (Wipe out extra spaces or condense long names)
-//     function cleanModType(types) {
-//         if (!types || typeof types !== "string") return null;
-//         return types.trim()
-//             .replace(/\s+\/\s/g, "/ ")
-//             .replace("Critical Damage", "Crit. Damage")
-//             .replace("Critical Chance", "Crit. Chance");
-//     }
-//
-//     // This is mainly to clean up Padme's name for now
-//     function cleanName(name) {
-//         if (!name || typeof name !== "string") return;
-//         return name.trim().replace("é", "e");
-//     }
-//
-//     // Put the number of mods for each set
-//     function countSet(setName) {
-//         return modSetCounts[setName] || setName;
-//     }
-//     return charOut;
-// }
+async function getGgChars() {
+    const response = await fetch(config.swgohggUrl);
+    const ggPage = await response.text();
 
-// async function updateCharacterMods(currentCharacters, freshMods) {
-//     const GG_SOURCE = "swgoh.gg";
-//
-//     // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
-//     for (const character of freshMods) {
-//         let thisChar = currentCharacters.find(ch =>
-//             ch.uniqueName === character.defId ||
-//             getCleanString(ch.name) === getCleanString(character.name) ||
-//             ch.url === character.charUrl
-//         );
-//         if (!thisChar) {
-//             thisChar = currentCharacters.find(ch => ch.aliases.includes(character.name));
-//         }
-//         const mods = {
-//             url:      character.modsUrl,
-//             sets:     character.mods.sets,
-//             square:   character.mods.square,
-//             arrow:    character.mods.arrow,
-//             diamond:  character.mods.diamond,
-//             triangle: character.mods.triangle,
-//             circle:   character.mods.circle,
-//             cross:    character.mods.cross,
-//             source:   GG_SOURCE
-//         };
-//
-//         if (thisChar) {
-//             thisChar.mods = mods;
-//         } else {
-//             // This shouldn't really happen since it should be caught in updateCharacters
-//             console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
-//         }
-//     }
-// }
+    const modSetCounts = {
+        "Crit Chance":     "Critical Chance x2",
+        "Crit Damage":     "Critical Damage x4",
+        "Critical Chance": "Critical Chance x2",
+        "Critical Damage": "Critical Damage x4",
+        "Defense":         "Defense x2",
+        "Health":          "Health x2",
+        "Offense":         "Offense x4",
+        "Potency":         "Potency x2",
+        "Speed":           "Speed x4",
+        "Tenacity":        "Tenacity x2"
+    };
+
+    const $ = cheerio.load(ggPage);
+
+    const charOut = [];
+
+    // As of Jan 27th, 2022, side and defId seem to have been taken out
+    // $("body > div.container.p-t-md > div.content-container > div.content-container-primary.character-list > ul > li:nth-child(3) > table > tbody > tr")
+    $("table.table-striped > tbody > tr")
+        .each((i, elem) => {
+            let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
+            // const defId = $(name).find("img").attr("data-base-id");
+            const imgUrl =  $(name).find("img").attr("src");
+            // const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
+            const [url, modUrl] = $(name).find("a").toArray().map(link => {
+                return $(link)?.attr("href")?.trim() || "";
+            });
+            name = cleanName($(name).text());
+            sets = $(sets).find("div").toArray().map(div => {
+                return countSet($(div).attr("data-title").trim());
+            });
+            receiver    = cleanModType($(receiver).text());
+            holo        = cleanModType($(holo).text());
+            data        = cleanModType($(data).text());
+            multiplexer = cleanModType($(multiplexer).text());
+            charOut.push({
+                name:     name,
+                // defId:    defId,
+                charUrl:  "https://swgoh.gg" + url,
+                image:    imgUrl,
+                // side:     side,
+                modsUrl:  "https://swgoh.gg" + modUrl, //+ url + "best-mods/",
+                mods: {
+                    sets:     sets,
+                    square:   "Offense",
+                    arrow:    receiver,
+                    diamond:  "Defense",
+                    triangle: holo,
+                    circle:   data,
+                    cross:    multiplexer
+                }
+            });
+        });
+
+    // Clean up the mod names (Wipe out extra spaces or condense long names)
+    function cleanModType(types) {
+        if (!types || typeof types !== "string") return null;
+        return types.trim()
+            .replace(/\s+\/\s/g, "/ ")
+            .replace("Critical Damage", "Crit. Damage")
+            .replace("Critical Chance", "Crit. Chance");
+    }
+
+    // This is mainly to clean up Padme's name for now
+    function cleanName(name) {
+        if (!name || typeof name !== "string") return;
+        return name.trim().replace("é", "e");
+    }
+
+    // Put the number of mods for each set
+    function countSet(setName) {
+        return modSetCounts[setName] || setName;
+    }
+    return charOut;
+}
+
+async function updateCharacterMods(currentCharacters, freshMods) {
+    const GG_SOURCE = "swgoh.gg";
+
+    // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
+    for (const character of freshMods) {
+        let thisChar = currentCharacters.find(ch =>
+            ch.uniqueName === character.defId ||
+            getCleanString(ch.name) === getCleanString(character.name) ||
+            ch.url === character.charUrl
+        );
+        if (!thisChar) {
+            thisChar = currentCharacters.find(ch => ch.aliases.includes(character.name));
+        }
+        const mods = {
+            url:      character.modsUrl,
+            sets:     character.mods.sets,
+            square:   character.mods.square,
+            arrow:    character.mods.arrow,
+            diamond:  character.mods.diamond,
+            triangle: character.mods.triangle,
+            circle:   character.mods.circle,
+            cross:    character.mods.cross,
+            source:   GG_SOURCE
+        };
+
+        if (thisChar) {
+            thisChar.mods = mods;
+        } else {
+            // This shouldn't really happen since it should be caught in updateCharacters
+            console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
+        }
+    }
+}
 
 function createEmptyChar(name, url, uniqueName) {
     console.log(`Creating empty char for: ${name} (${uniqueName})`);
@@ -489,8 +490,8 @@ async function updatePatrons() {
                 }
             }).then(res => res.json());
 
-            const data = response.data;
-            const included = response.included;
+            const data = response?.data;
+            const included = response?.included;
 
             const pledges = data.filter(data => data.type === "pledge");
             const users = included.filter(inc => inc.type === "user");
