@@ -18,15 +18,15 @@ class Language {
             }
             return res;
         } else {
-            let res = null;
-            if (args.length > 0 && typeof this.language[str] === "function") {
-                res = this.language[str](...args);
-            } else {
-                res = this.language[str];
-            }
-            if (!res?.length) {
-                // Something went wonky, and it needs something to be fixed
-                //  - Likely old one where it used to have a prefix / argument, but has been updated to not in the ENG
+            // return (args.length > 0 && typeof this.language[str] === "function") ? this.language[str](...args) : this.language[str];
+            let res = "";
+            try {
+                if (!args?.length) {
+                    res = this.language[str];
+                } else {
+                    res = this.language[str](...args);
+                }
+            } catch (err) {
                 res = "ERROR: Broken string for: " + str;
             }
             return res;
