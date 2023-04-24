@@ -4,6 +4,10 @@ const cheerio = require("cheerio");
 
 const config = require("../config.js");
 const MongoClient = require("mongodb").MongoClient;
+let swgohAPI = null;
+if (config.swapiConfig) {
+    swgohAPI = require("../modules/swapi.js")(null);
+}
 
 const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
@@ -99,22 +103,33 @@ async function updateRemoteData() {
     const currentShips        = JSON.parse(fs.readFileSync("../data/ships.json"));
     const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
     const log = [];
+    let hasNewUnit = false;
 
     if (await updateIfChanged({localCachePath: GAMEDATA, dataSourceUri: "http://swgoh-api-stat-calc.glitch.me/gameData.json"})) {
         log.push("Detected a change in Crinolo's Game Data.");
     }
     if (await updateIfChanged({ localCachePath: GG_SHIPS_CACHE, dataSourceUri: "http://api.swgoh.gg/ships/" })) {
         log.push("Detected a change in ships from swgoh.gg");
+        hasNewUnit = true;
         await updateShips(currentShips);
     }
 
     if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "http://api.swgoh.gg/characters/" })) {
         log.push("Detected a change in characters from swgoh.gg");
+        hasNewUnit = true;
         await updateCharacters(currentCharacters);
     }
 
+    // If there are new units, run swgoh api updates for new character similar to `/reloaddata swlang if hasNewUnit is true, then reset it to false after
+    if (hasNewUnit) {
+        console.log("Running updateSWLang");
+        await updateSWLang();
+        console.log("Finished running updateSWLang");
+        hasNewUnit = false;
+    }
+
     const ggModData = await getGgChars();
-    if (await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
+    if (ggModData && await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
         log.push("Detected a change in mods from swgoh.gg");
         await updateCharacterMods(currentCharacters, ggModData);
     }
@@ -323,7 +338,13 @@ async function updateCharacters(currentCharacters) {
 }
 
 async function getGgChars() {
-    const response = await fetch(config.swgohggUrl);
+    let response = null;
+    try {
+        response = await fetch(config.swgohggUrl);
+    } catch {
+        console.error("Cannot get .gg char/ mod info");
+        return null;
+    }
     const ggPage = await response.text();
 
     const modSetCounts = {
@@ -517,3 +538,18 @@ async function updatePatrons() {
     }
 }
 
+
+// Update the language stuff from the swgoh api
+async function updateSWLang() {
+    if (!config.swapiConfig || !swgohAPI) return;
+    const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
+    await swgohAPI.character(null, true);
+    for (const lang of langList) {
+        await swgohAPI.units("", lang, true);
+        await swgohAPI.abilities([], lang, true);
+        await swgohAPI.gear([], lang, true);
+        if (lang.toLowerCase() === "eng_us") {
+            await swgohAPI.recipes([], lang, true);
+        }
+    }
+}

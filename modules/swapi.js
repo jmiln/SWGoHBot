@@ -2,19 +2,50 @@ const {inspect} = require("util"); // eslint-disable-line no-unused-vars
 const statEnums = require("../data/statEnum.js");
 const npmAsync = require("async");
 const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
+const { readFileSync } = require("node:fs");
 
+const config = require(__dirname + "/../config.js");
+const abilityCosts = JSON.parse(readFileSync(__dirname + "/../data/abilityCosts.json", "utf-8"));
+const gameData = JSON.parse(readFileSync(__dirname + "/../data/gameData.json", "utf-8"));
+const statCalculator = require("swgoh-stat-calc");
+statCalculator.setGameData(gameData);
+
+const SwgohClientStub = require("swgoh-client-stub");
+let swgoh = null;
+let swapiStub = null;
+
+if (config.swapiConfig || config.fakeSwapiConfig) {
+    // Load up the api connector/ helpers
+    const ApiSwgohHelp = require("api-swgoh-help");
+    swgoh = (config.fakeSwapiConfig && config.fakeSwapiConfig.enabled) ?
+        new ApiSwgohHelp(config.fakeSwapiConfig.options) :
+        new ApiSwgohHelp(config.swapiConfig);
+
+    if (config.fakeSwapiConfig?.clientStub) {
+        // Do stuff
+        swapiStub = new SwgohClientStub(config.fakeSwapiConfig.clientStub);
+    }
+}
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
 let specialAbilityList = null;
+let cache = null;
+async function init() {
+    const MongoClient = require("mongodb").MongoClient;
+    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    cache = require("../modules/cache.js")(mongo);
+}
 
-module.exports = (Bot) => {
+module.exports = (opts={}) => {
+    // This is just here so it'll actually accept it properly when I require() this file... Doesn't work with just `module.exports = () => ` for some reason
+    if (opts?.noop) return null;
+    init();
     // Set the max cooldowns (In minutes)
     const playerMinCooldown = 1;    // 1 min
     const playerMaxCooldown = 3*60; // 3 hours
     const guildMinCooldown  = 3*60; // 3 hours
     const guildMaxCooldown  = 6*60; // 6 hours
-    // const eventCooldown     = 4*60; // 4 hours
 
     return {
         abilities        : abilities,
@@ -39,7 +70,7 @@ module.exports = (Bot) => {
     // Grab the abilities that have Zeta / Omicron levels for future reference
     async function getSpecialAbilities() {
         if (!specialAbilityList) {
-            const abilityList = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {
+            const abilityList = await cache.get(config.mongodb.swapidb, "abilities", {
                 $or: [
                     {
                         isOmicron: true,
@@ -64,11 +95,11 @@ module.exports = (Bot) => {
             if (typeof name !== "string") name = name.toString();
 
             /** Try to get player's ally code from cache */
-            const player = await Bot.cache.get(Bot.config.mongodb.swapidb, "playerStats", {name: new RegExp(name, "i")}, {name: 1, allyCode: 1, _id: 0});
+            const player = await cache.get(config.mongodb.swapidb, "playerStats", {name: new RegExp(name, "i")}, {name: 1, allyCode: 1, _id: 0});
 
             return player;
         } catch (e) {
-            Bot.logger.error(`SWAPI Broke getting player by name (${name}): ${e}`);
+            console.error(`SWAPI Broke getting player by name (${name}): ${e}`);
             throw e;
         }
     }
@@ -82,7 +113,7 @@ module.exports = (Bot) => {
             allycodes = [allycodes];
         }
         allycodes = allycodes.map(a => parseInt(a, 10));
-        const players = await Bot.cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
+        const players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
         return players;
     }
 
@@ -99,7 +130,7 @@ module.exports = (Bot) => {
 
         const playersOut = [];
         await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
-            const p = await Bot.swapiStub.getPlayerArenaProfile(ac.toString())
+            const p = await swapiStub.getPlayerArenaProfile(ac.toString())
                 .catch(() => {});
                 // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
             playersOut.push(p);
@@ -133,24 +164,24 @@ module.exports = (Bot) => {
 
         let tempBare = null, updatedBare = null;
         if (allycodes.length > 25) {
-            tempBare = await Bot.swgoh.fetchPlayer({
+            tempBare = await swgoh.fetchPlayer({
                 allycode: allycodes.slice(0, Math.floor(allycodes.length/2))
             });
             updatedBare = tempBare.result;
 
             // Then get the 2nd half
-            tempBare = await Bot.swgoh.fetchPlayer({
+            tempBare = await swgoh.fetchPlayer({
                 allycode: allycodes.slice(Math.floor(allycodes.length/2), allycodes.length)
             });
             updatedBare = updatedBare.concat(tempBare.result);
         } else {
-            tempBare = await Bot.swgoh.fetchPlayer({
+            tempBare = await swgoh.fetchPlayer({
                 allycode: allycodes
             });
             updatedBare = tempBare.result;
         }
 
-        const oldMembers = await Bot.cache.get(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
+        const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
@@ -159,7 +190,7 @@ module.exports = (Bot) => {
             const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
             if (!oldPlayer?.roster) {
                 // If they've not been in there before, stick em into the db
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
+                await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
 
                 // Then move on, since there's no old data to compare against
                 continue;
@@ -181,7 +212,7 @@ module.exports = (Bot) => {
             for (const newUnit of newPlayer.roster) {
                 const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
-                const locChar = await Bot.swgohAPI.langChar({defId: newUnit.defId, skills: newUnit.skills});
+                const locChar = await langChar({defId: newUnit.defId, skills: newUnit.skills});
                 if (!oldUnit) {
                     playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
                     updated = true;
@@ -226,12 +257,12 @@ module.exports = (Bot) => {
             }
             if (updated) {
                 guildLog[newPlayer.name] = playerLog;
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
+                await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
             }
         }
         const processEnd = new Date().getTime() - processStart;
-        Bot.logger.debug(`Processing ${updatedBare.length}`);
-        Bot.logger.debug(`Processing took ${processEnd}ms`);
+        console.log(`Processing ${updatedBare.length}`);
+        console.log(`Processing took ${processEnd}ms`);
 
         return guildLog;
     }
@@ -241,7 +272,7 @@ module.exports = (Bot) => {
      * @param {number} cooldown
      * @param {Object} options
      */
-    async function unitStats(allycodes, cooldown, options={}) {
+    async function unitStats(allycodes, cooldown=0, options={}) {
         // Make sure the allycode(s) are in an array
         if (!allycodes) return false;
         if (!Array.isArray(allycodes)) {
@@ -279,9 +310,9 @@ module.exports = (Bot) => {
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options && options.defId) {
-                    players = await Bot.cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
+                    players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
                 } else {
-                    players = await Bot.cache.get(Bot.config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
+                    players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
                 }
             }
             const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
@@ -297,7 +328,7 @@ module.exports = (Bot) => {
                     let tempBare;
                     if (needUpdating.length <= 20) {
                         // If it's not a ton of players at a time
-                        tempBare = await Bot.swgoh.fetchPlayer({
+                        tempBare = await swgoh.fetchPlayer({
                             allycode: needUpdating
                         });
                         if (tempBare.warning) warning = tempBare.warning;
@@ -306,13 +337,13 @@ module.exports = (Bot) => {
                     } else {
                         // If it's a lot of users
                         // Get the first half of the list
-                        tempBare = await Bot.swgoh.fetchPlayer({
+                        tempBare = await swgoh.fetchPlayer({
                             allycode: needUpdating.slice(0, Math.floor(needUpdating.length/2))
                         });
                         updatedBare = tempBare.result;
 
                         // Then get the 2nd half
-                        tempBare = await Bot.swgoh.fetchPlayer({
+                        tempBare = await swgoh.fetchPlayer({
                             allycode: needUpdating.slice(Math.floor(needUpdating.length/2), needUpdating.length)
                         });
                         updatedBare = updatedBare.concat(tempBare.result);
@@ -325,15 +356,15 @@ module.exports = (Bot) => {
                 for (const bareP of updatedBare) {
                     if (bareP?.roster?.length) {
                         try {
-                            if (Bot.config.fakeSwapiConfig.statCalc?.url) {
-                                const statRoster = await fetch(Bot.config.fakeSwapiConfig.statCalc.url + "/api?flags=gameStyle,calcGP", {
+                            if (config.fakeSwapiConfig.statCalc?.url) {
+                                const statRoster = await fetch(config.fakeSwapiConfig.statCalc.url + "/api?flags=gameStyle,calcGP", {
                                     method: "POST",
                                     headers: { "Content-Type": "application/json" },
                                     body: JSON.stringify(bareP.roster)
                                 }).then(res => res.json());
                                 bareP.roster = statRoster;
                             } else {
-                                await Bot.statCalculator.calcRosterStats( bareP.roster , {
+                                await statCalculator.calcRosterStats( bareP.roster , {
                                     gameStyle: true,
                                     language: statLang,
                                     calcGP: true
@@ -359,7 +390,7 @@ module.exports = (Bot) => {
                             }
                         }
 
-                        const charStats = await Bot.cache.put(Bot.config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
+                        const charStats = await cache.put(config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
                         charStats.warnings = warning;
                         playerStats.push(charStats);
                     }
@@ -373,7 +404,7 @@ module.exports = (Bot) => {
             }
             return playerStats;
         } catch (error) {
-            Bot.logger.error("SWAPI Broke getting playerStats: " + error);
+            console.error("SWAPI Broke getting playerStats: " + error);
             throw error;
         }
     }
@@ -406,7 +437,7 @@ module.exports = (Bot) => {
         // In case it has skillReferenceList
         if (char.skillReferenceList) {
             for (const skill in char.skillReferenceList) {
-                let skillName = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
+                let skillName = await cache.get(config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
                 if (Array.isArray(skillName)) skillName = skillName[0];
                 if (!skillName) throw new Error("Cannot find skillName for " + char.skillReferenceList[skill].skillId);
                 char.skillReferenceList[skill].nameKey = skillName.nameKey;
@@ -416,7 +447,7 @@ module.exports = (Bot) => {
         // In case it doesn't
         if (char.skills) {
             for (const skill in char.skills) {
-                let skillName = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
+                let skillName = await cache.get(config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
                 if (Array.isArray(skillName)) skillName = skillName[0];
                 if (!skillName) throw new Error("Cannot find skillName for " + char.skills[skill].id);
                 char.skills[skill].nameKey = skillName.nameKey;
@@ -437,7 +468,7 @@ module.exports = (Bot) => {
 
         const outStats = [];
         const blankUnit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], omicrons: [], relic: {currentTier: 0}, equipped: [], stats: {} };
-        const players = await Bot.swgohAPI.unitStats(allyCodes, cooldown, {defId: defId});
+        const players = await unitStats(allyCodes, cooldown, {defId: defId});
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
@@ -470,7 +501,7 @@ module.exports = (Bot) => {
 
         if (update) {
             const ab = [];
-            let skillList = await Bot.swgoh.fetchAPI("/swgoh/data", {
+            let skillList = await swgoh.fetchAPI("/swgoh/data", {
                 "collection": "skillList",
                 "language": lang,
                 "enums":true,
@@ -488,10 +519,10 @@ module.exports = (Bot) => {
                 }
             });
 
-            if (!skillList || !skillList.result) return Bot.logger.error("No skillList for " + lang);
+            if (!skillList || !skillList.result) return console.error("No skillList for " + lang);
             skillList = skillList.result;
 
-            let abilities = await Bot.swgoh.fetchAPI("/swgoh/data", {
+            let abilities = await swgoh.fetchAPI("/swgoh/data", {
                 "collection": "abilityList",
                 "language": lang,
                 "enums":true,
@@ -507,7 +538,7 @@ module.exports = (Bot) => {
                 }
             });
 
-            if (!abilities || !abilities.result) return Bot.logger.error("No abilities for " + lang);
+            if (!abilities || !abilities.result) return console.error("No abilities for " + lang);
             abilities = abilities.result;
 
             abilities.forEach(a => {
@@ -535,16 +566,16 @@ module.exports = (Bot) => {
                 if (skillArray.includes(ability.skillId)) {
                     ab.push(ability);
                 }
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "abilities", {skillId: ability.skillId, language: ability.language}, ability);
+                await cache.put(config.mongodb.swapidb, "abilities", {skillId: ability.skillId, language: ability.language}, ability);
             }
             return ab;
         } else {
             // All the skills should be loaded, so just get em from the cache
             if (opts.min) {
-                const skillOut = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
+                const skillOut = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
                 return skillOut;
             } else {
-                const skillOut = await Bot.cache.get(Bot.config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+                const skillOut = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
                 return skillOut;
             }
         }
@@ -581,7 +612,7 @@ module.exports = (Bot) => {
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
             if (skill.tierList.length) {
-                s.cost = Bot.abilityCosts[skill.tierList[skill.tierList.length - 1].recipeId];
+                s.cost = abilityCosts[skill.tierList[skill.tierList.length - 1].recipeId];
             }
         }
 
@@ -590,7 +621,7 @@ module.exports = (Bot) => {
             tier.equipmentSetList.forEach((e, ix) => {
                 const eq = eqList.find(equipment => equipment.id === e);
                 if (!eq) {
-                    Bot.logger.error("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff" + inspect(e));
+                    console.error("Missing equipment for char " + char.name + ", make sure to update the gear lang stuff" + inspect(e));
                     return;
                 }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
@@ -610,7 +641,7 @@ module.exports = (Bot) => {
         };
         let outChar = null;
         if (update) {
-            let baseCharacters = await Bot.swgoh.fetchAPI("/swgoh/data", {
+            let baseCharacters = await swgoh.fetchAPI("/swgoh/data", {
                 "collection": "unitsList",
                 "match": {
                     "rarity": 7,
@@ -631,12 +662,12 @@ module.exports = (Bot) => {
 
             baseCharacters = baseCharacters.result;
 
-            if (!baseCharacters) return Bot.logger.error("No baseCharacters");
+            if (!baseCharacters) return console.error("No baseCharacters");
 
             const catList = ["alignment", "profession", "affiliation", "role", "shipclass"];
             for (const char of baseCharacters) {
                 char.factions = [];
-                if (!char.categoryIdList) return Bot.logger.error("Missing baseCharacter abilities");
+                if (!char.categoryIdList) return console.error("Missing baseCharacter abilities");
                 char.categoryIdList.forEach(c => {
                     if (catList.some(str => c.startsWith(str + "_"))) {
                         let faction = c.split("_")[1];
@@ -656,10 +687,10 @@ module.exports = (Bot) => {
                 delete char.crewList;
                 if (defId === char.baseId) outChar = char;
                 if (char && char._id) delete char._id;
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "characters", {baseId: char.baseId}, char);
+                await cache.put(config.mongodb.swapidb, "characters", {baseId: char.baseId}, char);
             }
         } else {
-            outChar = await Bot.cache.get(Bot.config.mongodb.swapidb, "characters", {baseId: defId}, {_id: 0, updated: 0});
+            outChar = await cache.get(config.mongodb.swapidb, "characters", {baseId: defId}, {_id: 0, updated: 0});
         }
         if (outChar && outChar[0]) {
             return outChar[0];
@@ -680,7 +711,7 @@ module.exports = (Bot) => {
 
         if (update) {
             const gOut = [];
-            let gearList = await Bot.swgoh.fetchAPI("/swgoh/data", {
+            let gearList = await swgoh.fetchAPI("/swgoh/data", {
                 "collection": "equipmentList",
                 "language": "eng_us",
                 "enums":true,
@@ -693,7 +724,7 @@ module.exports = (Bot) => {
             });
             gearList = gearList.result;
 
-            if (!gearList) return Bot.logger.error("Missing gearList for " + lang);
+            if (!gearList) return console.error("Missing gearList for " + lang);
 
             for (const gearPiece of gearList) {
                 gearPiece.language = lang.toLowerCase();
@@ -701,12 +732,12 @@ module.exports = (Bot) => {
                     gOut.push(gearPiece);
                 }
                 if (gearPiece && gearPiece._id) delete gearPiece._id;
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "gear", {id: gearPiece.id, language: lang}, gearPiece);
+                await cache.put(config.mongodb.swapidb, "gear", {id: gearPiece.id, language: lang}, gearPiece);
             }
             return gOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const gOut = await Bot.cache.get(Bot.config.mongodb.swapidb, "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            const gOut = await cache.get(config.mongodb.swapidb, "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return gOut;
         }
     }
@@ -721,7 +752,7 @@ module.exports = (Bot) => {
 
         if (update) {
             let uOut;
-            const unitList = await Bot.swgoh.fetchAPI("/swgoh/data", {
+            const unitList = await swgoh.fetchAPI("/swgoh/data", {
                 collection: "unitsList",
                 language: lang,
                 enums: true,
@@ -744,7 +775,7 @@ module.exports = (Bot) => {
                 }
             });
 
-            if (!unitList?.result) return Bot.logger.error("No unitList for " + lang);
+            if (!unitList?.result) return console.error("No unitList for " + lang);
 
             for (const unit of unitList.result) {
                 unit.language = lang.toLowerCase();
@@ -752,12 +783,12 @@ module.exports = (Bot) => {
                     uOut = unit.nameKey;
                 }
                 if (unit && unit._id) delete unit._id;
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "units", {baseId: unit.baseId, language: lang}, unit);
+                await cache.put(config.mongodb.swapidb, "units", {baseId: unit.baseId, language: lang}, unit);
             }
             return uOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            let uOut = await Bot.cache.get(Bot.config.mongodb.swapidb, "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            let uOut = await cache.get(config.mongodb.swapidb, "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             if (Array.isArray(uOut)) uOut = uOut[0];
             return uOut;
         }
@@ -774,7 +805,7 @@ module.exports = (Bot) => {
 
         if (update) {
             const rOut = [];
-            let recList = await Bot.swgoh.fetchAPI("/swgoh/data", {
+            let recList = await swgoh.fetchAPI("/swgoh/data", {
                 "collection": "recipeList",
                 "language": lang,
                 "enums":true,
@@ -789,10 +820,10 @@ module.exports = (Bot) => {
 
             recList = recList.result;
 
-            if (!recList) return Bot.logger.error("No recList for " + lang);
+            if (!recList) return console.error("No recList for " + lang);
 
             // Wipe out all the old data because it breaks even when it shouldn't
-            await Bot.cache.wipe(Bot.config.mongodb.swapidb, "recipes");
+            await cache.wipe(config.mongodb.swapidb, "recipes");
 
             // For each of the recipes it fetched, give them a language & stick em in
             for (const rec of recList) {
@@ -800,12 +831,12 @@ module.exports = (Bot) => {
                 if (recArray.includes(rec.id)) {
                     rOut.push(rec);
                 }
-                await Bot.cache.put(Bot.config.mongodb.swapidb, "recipes", {id: rec.id, language: lang}, rec);
+                await cache.put(config.mongodb.swapidb, "recipes", {id: rec.id, language: lang}, rec);
             }
             return rOut;
         } else {
             // All the skills should be loaded, so just get em from the cache
-            const rOut = await Bot.cache.get(Bot.config.mongodb.swapidb, "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            const rOut = await cache.get(config.mongodb.swapidb, "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
             return rOut;
         }
     }
@@ -822,15 +853,15 @@ module.exports = (Bot) => {
         if (allycode) allycode = allycode.toString().replace(/[^\d]/g, "");
         if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
 
-        const player = await Bot.swapiStub.getPlayer(allycode);
+        const player = await swapiStub.getPlayer(allycode);
         if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
 
-        let rawGuild  = await Bot.cache.get(Bot.config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
+        let rawGuild  = await cache.get(config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
         if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
             try {
-                rawGuild = await Bot.swapiStub.getGuild(player.guildId, 0, true);
+                rawGuild = await swapiStub.getGuild(player.guildId, 0, true);
             } catch (err) {
                 throw new Error(err);
             }
@@ -874,7 +905,7 @@ module.exports = (Bot) => {
                     tempGuild[key] = rawGuild[key];
                 }
             }
-            rawGuild = await Bot.cache.put(Bot.config.mongodb.swapidb, "rawGuilds", {id: player.guildId}, tempGuild);
+            rawGuild = await cache.put(config.mongodb.swapidb, "rawGuilds", {id: player.guildId}, tempGuild);
         } else {
             /** If found and valid, serve from cache */
             rawGuild = rawGuild[0];
@@ -902,19 +933,19 @@ module.exports = (Bot) => {
         allycode = parseInt(allycode, 10);
 
         /** Get player from cache */
-        let player = await Bot.swgohAPI.unitStats(allycode);
+        let player = await unitStats(allycode);
         if (Array.isArray(player)) player = player[0];
         if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
         if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
 
-        let guild = await Bot.cache.get(Bot.config.mongodb.swapidb, "guilds", {id: player.guildRefId});
+        let guild = await cache.get(config.mongodb.swapidb, "guilds", {id: player.guildRefId});
 
         /** Check if existance and expiration */
         if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild;
             try {
-                tempGuild = await Bot.swgoh.fetchGuild({
+                tempGuild = await swgoh.fetchGuild({
                     allycode: allycode,
                     language: lang
                 });
@@ -943,9 +974,9 @@ module.exports = (Bot) => {
             }
 
             if (tempGuild.roster.length !== tempGuild.members) {
-                Bot.logger.error(`[swgohapi-guild] Missing players, only getting ${tempGuild.roster.length}/${tempGuild.members}`);
+                console.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster.length}/${tempGuild.members}`);
             }
-            guild = await Bot.cache.put(Bot.config.mongodb.swapidb, "guilds", {id: tempGuild.id}, tempGuild);
+            guild = await cache.put(config.mongodb.swapidb, "guilds", {id: tempGuild.id}, tempGuild);
             if (warnings) guild.warnings = warnings;
         } else {
             /** If found and valid, serve from cache */
@@ -956,37 +987,53 @@ module.exports = (Bot) => {
 
     async function guildByName( gName ) {
         try {
-            const guild  = await Bot.cache.get(Bot.config.mongodb.swapidb, "guilds", {name: gName});
+            const guild  = await cache.get(config.mongodb.swapidb, "guilds", {name: gName});
 
             if ( !guild || !guild[0] ) {
                 return null;
             }
             return guild[0];
         } catch (e) {
-            Bot.logger.error("SWAPI(guild) Broke getting guild: " + e);
+            console.error("SWAPI(guild) Broke getting guild: " + e);
             throw e;
         }
     }
 
     async function zetaRec( lang="ENG_US" ) {
-        const zetas = await Bot.cache.get(Bot.config.mongodb.swapidb, "zetaRec", {lang:lang});
+        const zetas = await cache.get(config.mongodb.swapidb, "zetaRec", {lang:lang});
         return zetas[0].zetas;
     }
 
-    function isExpired( lastUpdated, cooldown={}, guild=false ) {
+    function isExpired( lastUpdated, cooldown, guild=false ) {
         if (!lastUpdated) return true;
         if (guild) {
             if (!cooldown) {
                 cooldown = guildMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
+            const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
             return diff.totalMin >= cooldown;
         } else {
             if (!cooldown) {
                 cooldown = playerMaxCooldown;
             }
-            const diff = Bot.convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
+            const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
             return diff.totalMin >= cooldown;
         }
     }
+};
+
+
+const convertMS = (milliseconds) => {
+    var hour, totalMin, minute, seconds;
+    seconds = Math.floor(milliseconds / 1000);
+    totalMin = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    hour = Math.floor(totalMin / 60);
+    minute = totalMin % 60;
+    return {
+        hour: hour,
+        minute: minute,
+        totalMin: totalMin,
+        seconds: seconds
+    };
 };

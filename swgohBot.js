@@ -1,7 +1,6 @@
 const { Client, Collection } = require("discord.js");
 const { readdirSync, readFileSync } = require("fs");
 const { inspect } = require("util");
-const SwgohClientStub = require("swgoh-client-stub");
 
 const Bot = {};
 
@@ -64,18 +63,11 @@ const init = async () => {
     Bot.statCalculator = require("swgoh-stat-calc");
     Bot.statCalculator.setGameData(gameData);
 
-    if (Bot.config.swapiConfig) {
+    if (Bot.config.swapiConfig || Bot.config.fakeSwapiConfig) {
         // Load up the api connector/ helpers
-        const ApiSwgohHelp = require("api-swgoh-help");
-        Bot.swgoh = (Bot.config.fakeSwapiConfig && Bot.config.fakeSwapiConfig.enabled) ?
-            new ApiSwgohHelp(Bot.config.fakeSwapiConfig.options) :
-            new ApiSwgohHelp(Bot.config.swapiConfig);
-        Bot.swgohAPI = require("./modules/swapi.js")(Bot);
-
-        if (Bot.config.fakeSwapiConfig?.clientStub) {
-            // Do stuff
-            Bot.swapiStub = new SwgohClientStub(Bot.config.fakeSwapiConfig.clientStub);
-        }
+        Bot.swgohAPI = require("./modules/swapi.js")(null);
+    } else {
+        console.log("Couldn't load swapi");
     }
 
     const Logger = require("./modules/Logger.js");
