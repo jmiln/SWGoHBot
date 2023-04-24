@@ -1,7 +1,7 @@
 /* eslint no-undef: 0 */
 // const {inspect} = require("util");
 const io = require("socket.io-client");
-const checkWSHealth = require("../modules/wsWatcher.js");
+// const checkWSHealth = require("../modules/wsWatcher.js");
 
 module.exports = async (Bot, client) => {
     // Logs that it's up, and some extra info
@@ -84,8 +84,8 @@ module.exports = async (Bot, client) => {
 
     Bot.logger.log(readyString, "ready", true);
 
-    console.log(`  [${client.shard.id}] Starting wsWatcher`);
-    await checkWSHealth(client);
+    // console.log(`  [${client.shard.id}] Starting wsWatcher`);
+    // await checkWSHealth(client);
 
     // Sets the status as the current server count and help command
     const playingString =  "swgohbot.com";

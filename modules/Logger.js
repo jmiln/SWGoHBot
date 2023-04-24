@@ -10,7 +10,7 @@ class Logger {
     log(content, type = "log", webhook = false) {
         const shard = this.client?.shard?.id > -1 ? ` (${this.client.shard.id})` : "";
         const time = Intl.DateTimeFormat("en", {day: "numeric", month: "numeric", year: "numeric", hour: "numeric", minute: "numeric", timeZone: "America/Los_Angeles"}).format(new Date()).replace(" 0", "  ");
-        const timestamp = `[${time}]${shard}`;
+        const timestamp = `[${time.split(",").map(t => t.padStart(9, " ")).join(",")}]${shard}`;
         let out = "";
         let color = null;
         switch (type) {
