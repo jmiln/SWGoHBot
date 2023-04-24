@@ -38,6 +38,10 @@ class slashCommand {
             console.error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
             errMsg = "Something broke, please try again in a bit, or report it.";
         }
+        if (errMsg.includes("DiscordAPIError") && errMsg.includes("Unknown Message")) {
+            // console.error("Unknown Msg error...");
+            return;
+        }
         if (!options) options = {
             ephemeral: true
         };
