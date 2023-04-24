@@ -662,7 +662,7 @@ module.exports = class extends Language {
                 `Ca. Schiff GM: ${shipGP}`,
                 `Gesamt GM:     ${gp}`
             ].join("\n"),
-            COMMAND_GUILDS_FOOTER: `\`/guilds roster\` eine Liste der Gildenmitglieder und ihrer GM.\n\`/guilds roster allycoda <allycode>\` fuer eine Liste mit ihren Buendniscodes. `,
+            COMMAND_GUILDS_FOOTER: "`/guilds roster` eine Liste der Gildenmitglieder und ihrer GM.\n`/guilds roster allycoda <allycode>` fuer eine Liste mit ihren Buendniscodes. ",
             COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName} Territorialkrieg Uebersicht`,
             COMMAND_GUILDS_HELP: {
                 description: "Zeigt dir jeden in deiner Gilde und grundsätzliche Statistiken an.",
@@ -850,7 +850,7 @@ module.exports = class extends Language {
             // Mods Command
             COMMAND_MODS_NEED_CHARACTER: (prefix) => `Benoetigt einen Charakter. Der Befehl lautet: \`${prefix}mods <Charaktername auf englisch>\``,
             COMMAND_MODS_INVALID_CHARACTER_HEADER: "Ungueltiger Charakter",
-            COMMAND_MODS_USAGE: (prefix) => `Verwendung ist \`${prefix}mods <CharakterName auf englisch>\``,
+            COMMAND_MODS_USAGE: "Verwendung ist `/mods character <CharakterName auf englisch>`",
             COMMAND_MODS_EMBED_STRING1: (square, arrow, diamond) =>  `\`Quadrat:   ${square}\`\n\`Pfeil:     ${arrow}\`\n\`Diamant:   ${diamond}\`\n`,
             COMMAND_MODS_EMBED_STRING2: (triangle, circle, cross) => `\`Dreieck:   ${triangle}\`\n\`Kreis:     ${circle}\`\n\`Kreuz:     ${cross}\``,
             COMMAND_MODS_EMBED_OUTPUT: (modSetString, modPrimaryString) => `**### Sets ###**\n${modSetString}\n**### Primaer ###**\n${modPrimaryString}`,
@@ -1712,7 +1712,7 @@ module.exports = class extends Language {
             // Zetas Command
             COMMAND_ZETA_NO_USER: "Entschuldigung, aber diesen User kann ich nicht finden.",
             COMMAND_ZETA_NO_ZETAS: "Keine Faehigkeiten mit Zeta gefunden.",
-            COMMAND_ZETA_OUT_DESC: `\`------------------------------\`\n\`[L]\` Anfuehrer | \`[S]\` Spezial | \`[U]\` Einzigartig\n\`------------------------------\``,
+            COMMAND_ZETA_OUT_DESC: "`------------------------------`\n`[L]` Anfuehrer | `[S]` Spezial | `[U]` Einzigartig\n`------------------------------`",
             COMMAND_ZETA_MORE_INFO: "`;zeta <character>` fuer mehr Info.",
             COMMAND_ZETA_REC_BAD_FILTER: (filters) => `Ungueltiger Filter, bitte einen von diesen verwenden \`${filters}\``,
             COMMAND_ZETA_REC_HEADER: "Verfuegbare Filter:",
