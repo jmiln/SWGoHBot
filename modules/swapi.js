@@ -10,9 +10,9 @@ const gameData = JSON.parse(readFileSync(__dirname + "/../data/gameData.json", "
 const statCalculator = require("swgoh-stat-calc");
 statCalculator.setGameData(gameData);
 
-const SwgohClientStub = require("swgoh-client-stub");
+const ComlinkStub = require("@swgoh-utils/comlink");
 let swgoh = null;
-let swapiStub = null;
+let comlinkStub = null;
 
 if (config.swapiConfig || config.fakeSwapiConfig) {
     // Load up the api connector/ helpers
@@ -23,7 +23,7 @@ if (config.swapiConfig || config.fakeSwapiConfig) {
 
     if (config.fakeSwapiConfig?.clientStub) {
         // Do stuff
-        swapiStub = new SwgohClientStub(config.fakeSwapiConfig.clientStub);
+        comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
     }
 }
 
@@ -130,7 +130,7 @@ module.exports = (opts={}) => {
 
         const playersOut = [];
         await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
-            const p = await swapiStub.getPlayerArenaProfile(ac.toString())
+            const p = await comlinkStub.getPlayerArenaProfile(ac.toString())
                 .catch(() => {});
                 // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
             playersOut.push(p);
@@ -853,7 +853,7 @@ module.exports = (opts={}) => {
         if (allycode) allycode = allycode.toString().replace(/[^\d]/g, "");
         if ( !allycode || isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
 
-        const player = await swapiStub.getPlayer(allycode);
+        const player = await comlinkStub.getPlayer(allycode);
         if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
@@ -861,7 +861,7 @@ module.exports = (opts={}) => {
         let rawGuild  = await cache.get(config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
         if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
             try {
-                rawGuild = await swapiStub.getGuild(player.guildId, 0, true);
+                rawGuild = await comlinkStub.getGuild(player.guildId, 0, true);
             } catch (err) {
                 throw new Error(err);
             }

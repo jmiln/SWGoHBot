@@ -18,6 +18,7 @@
         "url": "git+https://github.com/jmiln/SWGoHBot.git"
     },
     "dependencies": {
+        "@swgoh-utils/comlink": "^1.4.1",
         "api-swgoh-help": "^3.3.0",
         "async": "^3.2.4",
         "cheerio": "^1.0.0-rc.12",
@@ -26,7 +27,6 @@
         "node-fetch": "^3.3.1",
         "socket.io": "^4.6.1",
         "socket.io-client": "^4.6.1",
-        "swgoh-client-stub": "^2.4.1",
         "swgoh-stat-calc": "^1.1.2"
     },
     "engines": {
