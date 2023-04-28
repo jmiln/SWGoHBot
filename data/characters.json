@@ -7327,6 +7327,25 @@
         }
     },
     {
+        "name": "Tarfful",
+        "uniqueName": "TARFFUL",
+        "aliases": [
+            "Tarfful"
+        ],
+        "nameVariant": [
+            "Tarfful"
+        ],
+        "url": "http://swgoh.gg/characters/tarfful/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tarfful.png",
+        "side": "light",
+        "factions": [
+            "Leader",
+            "Support",
+            "Wookiee"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Tech",
         "uniqueName": "BADBATCHTECH",
         "aliases": [

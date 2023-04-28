@@ -1076,10 +1076,12 @@
             "Gain Turn Meter",
             "Heal",
             "Healing Immunity",
+            "Health Up",
             "Leader: +Critical",
             "Leader: +Defense",
             "Leader: +Speed",
             "Leader: +Tenacity",
+            "Leader: Health Up",
             "Leader: Protection Up",
             "Offense Up",
             "Potency Up",
@@ -7495,7 +7497,8 @@
             "Attacker",
             "Rebel",
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Wookiee"
         ],
         "ability_classes": [
             "Ability Block",
@@ -8545,12 +8548,14 @@
             "Galactic Republic",
             "Leader",
             "Scoundrel",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "ability_classes": [
             "Defense Up",
             "Dispel",
             "Gain Turn Meter",
+            "Health Up",
             "Leader: +Defense",
             "Remove Turn Meter",
             "Taunt"
@@ -15473,6 +15478,7 @@
             "Counter",
             "Dispel",
             "Gain Turn Meter",
+            "Health Up",
             "Remove Turn Meter",
             "Reset Cooldown"
         ],
@@ -20432,6 +20438,7 @@
         "ability_classes": [
             "Counter",
             "Defense Up",
+            "Health Up",
             "Offense Down",
             "Taunt"
         ],
@@ -25580,7 +25587,8 @@
             "Hutt Cartel",
             "Leader",
             "Scoundrel",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "ability_classes": [
             "Ability Block",
@@ -26997,6 +27005,7 @@
             "Dispel",
             "Foresight",
             "Gain Turn Meter",
+            "Health Up",
             "Offense Up",
             "Remove Turn Meter",
             "Tenacity Up"
@@ -34564,6 +34573,7 @@
         "ability_classes": [
             "Counter",
             "Defense Up",
+            "Health Up",
             "Speed Down",
             "Stun",
             "Taunt"
@@ -37060,6 +37070,7 @@
             "Defense Up",
             "Dispel",
             "DoT",
+            "Health Up",
             "Potency Up",
             "Speed Up",
             "Stealth"
@@ -37934,6 +37945,7 @@
             "Defense Up",
             "Dispel",
             "Health Steal Up",
+            "Health Up",
             "Offense Down",
             "Remove Turn Meter",
             "Stagger",
@@ -38475,6 +38487,197 @@
             "Stagger"
         ],
         "role": "Leader",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
+        "name": "Tarfful",
+        "base_id": "TARFFUL",
+        "pk": 3454,
+        "url": "http://swgoh.gg/characters/tarfful/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tarfful.png",
+        "power": 37507,
+        "description": "Ferocious Support that provides Defense to his allies and punishes enemies with Provoked",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "001",
+                    "002",
+                    "003",
+                    "004",
+                    "004",
+                    "005"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "025",
+                    "021",
+                    "015",
+                    "028",
+                    "028",
+                    "034"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "062",
+                    "076",
+                    "050",
+                    "041",
+                    "069",
+                    "049"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "055",
+                    "058",
+                    "024",
+                    "055",
+                    "060",
+                    "074"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "093",
+                    "043",
+                    "086",
+                    "051",
+                    "084",
+                    "079"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "075",
+                    "055",
+                    "092",
+                    "092",
+                    "093",
+                    "097"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "102",
+                    "079",
+                    "063",
+                    "024",
+                    "100",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "048",
+                    "103",
+                    "172",
+                    "118",
+                    "117"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "173",
+                    "102",
+                    "096",
+                    "068",
+                    "106",
+                    "111"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "144",
+                    "120",
+                    "129",
+                    "125",
+                    "173",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "109",
+                    "129",
+                    "146",
+                    "134",
+                    "144",
+                    "142"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "158",
+                    "159",
+                    "160",
+                    "168",
+                    "168",
+                    "G12Finisher_TARFFUL_A"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Leader",
+            "Support",
+            "Wookiee"
+        ],
+        "ability_classes": [
+            "Advantage",
+            "AoE",
+            "Assist",
+            "Counter",
+            "Critical Damage Up",
+            "Defense Penetration Up",
+            "Defense Up",
+            "Dispel",
+            "DoT",
+            "Foresight",
+            "Gain Turn Meter",
+            "Heal",
+            "Health Up",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Tenacity",
+            "Leader: Foresight",
+            "Leader: Protection Up",
+            "Potency Up",
+            "Protection Up",
+            "Speed Up",
+            "Stun",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Support",
         "ship": "",
         "ship_slot": null,
         "activate_shard_count": 25
@@ -39711,7 +39914,8 @@
         "categories": [
             "Attacker",
             "Droid",
-            "Rebel"
+            "Rebel",
+            "Wookiee"
         ],
         "ability_classes": [
             "Advantage",
@@ -41093,7 +41297,8 @@
         "categories": [
             "Scoundrel",
             "Smuggler",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "ability_classes": [
             "Advantage",
@@ -41266,7 +41471,8 @@
             "Attacker",
             "Resistance",
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Wookiee"
         ],
         "ability_classes": [
             "AoE",
@@ -43007,7 +43213,8 @@
         "categories": [
             "Old Republic",
             "Scoundrel",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "ability_classes": [
             "AoE",
