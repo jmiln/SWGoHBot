@@ -25,7 +25,6 @@ Bot.missions     = JSON.parse(readFileSync("data/missions.json", "utf-8"));
 Bot.resources    = JSON.parse(readFileSync("data/resources.json", "utf-8"));
 Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json", "utf-8"));
 Bot.ships        = JSON.parse(readFileSync("data/ships.json", "utf-8"));
-Bot.squads       = JSON.parse(readFileSync("data/squads.json", "utf-8"));
 Bot.timezones    = JSON.parse(readFileSync("data/timezones.json", "utf-8"));
 
 const gameData   = JSON.parse(readFileSync("data/gameData.json", "utf-8"));
