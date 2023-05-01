@@ -2,7 +2,12 @@
     {
         "name": "0-0-0",
         "defId": "TRIPLEZERO",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "2-A"
+            }
+        ]
     },
     {
         "name": "50R-T",
@@ -61,6 +66,10 @@
         "defId": "ADMIRALRADDUS",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "4-A"
+            },
+            {
                 "type": "Intro P1 (Marquee)",
                 "name": "Spark of Rebellion"
             }
@@ -84,8 +93,8 @@
                 "cost": "400/10"
             },
             {
-                "type": "Hard Modes (D)",
-                "level": "4-C"
+                "type": "Hard Modes (L)",
+                "level": "1-B"
             }
         ]
     },
@@ -168,10 +177,6 @@
         "defId": "BARRISSOFFEE",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "6-A"
-            },
-            {
                 "type": "Guild Shop",
                 "cost": "450/10"
             },
@@ -188,10 +193,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "5-B"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "2-D"
             }
         ]
     },
@@ -249,10 +250,6 @@
             {
                 "type": "GW Shipments",
                 "cost": "400/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "4-A"
             }
         ]
     },
@@ -299,10 +296,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "2-B"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "4-E"
             }
         ]
     },
@@ -348,7 +341,12 @@
     {
         "name": "BT-1",
         "defId": "BT1",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "2-C"
+            }
+        ]
     },
     {
         "name": "C-3PO",
@@ -420,8 +418,8 @@
         "defId": "CARTHONASI",
         "locations": [
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "2-E"
+                "type": "Cantina",
+                "level": "8-E"
             }
         ]
     },
@@ -525,12 +523,8 @@
                 "cost": "450/10"
             },
             {
-                "type": "Hard Modes (D)",
-                "level": "1-B"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "3-E"
+                "type": "Hard Modes (L)",
+                "level": "5-C"
             }
         ]
     },
@@ -540,11 +534,7 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "1-C"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "2-C"
+                "level": "2-F"
             }
         ]
     },
@@ -594,14 +584,6 @@
             {
                 "type": "Cantina",
                 "level": "6-G"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "1-C"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "1-C"
             }
         ]
     },
@@ -657,6 +639,10 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
+                "level": "1-C"
+            },
+            {
+                "type": "Hard Modes (L)",
                 "cost": "1-C"
             }
         ]
@@ -665,10 +651,6 @@
         "name": "Darth Malak",
         "defId": "DARTHMALAK",
         "locations": [
-            {
-                "type": "Special Event",
-                "name": "Star Forge Showdown"
-            },
             {
                 "type": "Guild Event Shop",
                 "cost": "1900/5"
@@ -680,6 +662,10 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "5700/15"
+            },
+            {
+                "type": "Special Event",
+                "name": "Star Forge Showdown"
             }
         ]
     },
@@ -743,10 +729,6 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "9-A"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "4-D"
             }
         ]
     },
@@ -926,7 +908,7 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "2-C"
+                "level": "2-A"
             }
         ]
     },
@@ -936,7 +918,7 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "1-A"
+                "level": "2-A"
             }
         ]
     },
@@ -1026,10 +1008,6 @@
         "name": "First Order Stormtrooper",
         "defId": "FIRSTORDERTROOPER",
         "locations": [
-            {
-                "type": "Hard Modes (D)",
-                "level": "2-A"
-            },
             {
                 "type": "Hard Modes (L)",
                 "level": "2-B"
@@ -1159,10 +1137,6 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "4-C"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1334,7 +1308,12 @@
     {
         "name": "Hondo Ohnaka",
         "defId": "HONDO",
-        "locations": []
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "1-D"
+            }
+        ]
     },
     {
         "name": "Hoth Rebel Scout",
@@ -1412,7 +1391,7 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "3-B"
+                "level": "3-E"
             }
         ]
     },
@@ -1427,10 +1406,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "2-F"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "4-D"
             }
         ]
     },
@@ -1449,16 +1424,12 @@
         "defId": "IMAGUNDI",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "5-C"
-            },
-            {
                 "type": "Guild Shop",
                 "cost": "450/10"
             },
             {
-                "type": "Hard Modes (L)",
-                "level": "7-C"
+                "type": "Hard Modes (D)",
+                "level": "5-C"
             }
         ]
     },
@@ -1467,16 +1438,16 @@
         "defId": "IMPERIALPROBEDROID",
         "locations": [
             {
-                "type": "Territory Battle",
-                "name": "Imperial Retaliation"
-            },
-            {
                 "type": "Guild Event Shop",
                 "cost": "900/5"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "1800/10"
+            },
+            {
+                "type": "Territory Battle",
+                "name": "Imperial Retaliation"
             }
         ]
     },
@@ -1489,8 +1460,8 @@
                 "cost": "400/10"
             },
             {
-                "type": "Cantina",
-                "level": "2-C"
+                "type": "Hard Modes (Fleet)",
+                "level": "4-A"
             }
         ]
     },
@@ -1513,10 +1484,6 @@
         "name": "Jawa",
         "defId": "JAWA",
         "locations": [
-            {
-                "type": "Cantina",
-                "level": "2-D"
-            },
             {
                 "type": "Hard Modes (D)",
                 "level": "4-F"
@@ -1558,10 +1525,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "1-D"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "1-B"
             }
         ]
     },
@@ -1633,10 +1596,6 @@
         "name": "Jolee Bindo",
         "defId": "JOLEEBINDO",
         "locations": [
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "4-E"
-            },
             {
                 "type": "Hard Modes (D)",
                 "level": "6-D"
@@ -1766,6 +1725,10 @@
             {
                 "type": "Cantina",
                 "level": "3-F"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "1-D"
             }
         ]
     },
@@ -1800,10 +1763,6 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "4-B"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "5-B"
             }
         ]
     },
@@ -1860,10 +1819,6 @@
             {
                 "type": "Hard Modes (D)",
                 "level": "2-E"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "3-D"
             }
         ]
     },
@@ -1890,11 +1845,11 @@
         "defId": "MAGMATROOPER",
         "locations": [
             {
-                "type": "GW Shipments",
+                "type": "Guild Event Shop",
                 "cost": "400/10"
             },
             {
-                "type": "Guild Event Shop",
+                "type": "GW Shipments",
                 "cost": "400/10"
             }
         ]
@@ -1902,7 +1857,12 @@
     {
         "name": "Mara Jade, The Emperor's Hand",
         "defId": "MARAJADE",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "6-D"
+            }
+        ]
     },
     {
         "name": "Maul",
@@ -1923,8 +1883,8 @@
         "defId": "MISSIONVAO",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "7-A"
+                "type": "Hard Modes (L)",
+                "level": "5-D"
             }
         ]
     },
@@ -1945,6 +1905,10 @@
             {
                 "type": "Cantina",
                 "level": "4-E"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "2-D"
             }
         ]
     },
@@ -1963,12 +1927,12 @@
         "defId": "MOTHERTALZIN",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Defense of Dathomir"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "8-A"
+            },
+            {
+                "type": "Special Event",
+                "name": "Defense of Dathomir"
             }
         ]
     },
@@ -2001,12 +1965,12 @@
         "defId": "NIGHTSISTERSPIRIT",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Ghosts of Dathomir"
-            },
-            {
                 "type": "Cantina",
                 "level": "7-F"
+            },
+            {
+                "type": "Special Event",
+                "name": "Ghosts of Dathomir"
             }
         ]
     },
@@ -2015,12 +1979,12 @@
         "defId": "NIGHTSISTERZOMBIE",
         "locations": [
             {
-                "type": "Special Event",
-                "name": "Ghosts of Dathomir"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "8-D"
+            },
+            {
+                "type": "Special Event",
+                "name": "Ghosts of Dathomir"
             }
         ]
     },
@@ -2050,7 +2014,7 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "2-F"
+                "level": "1-C"
             },
             {
                 "type": "Guild Shop",
@@ -2221,16 +2185,16 @@
         "defId": "HOTHLEIA",
         "locations": [
             {
-                "type": "Territory Battle",
-                "name": "Rebel Assault"
-            },
-            {
                 "type": "Guild Event Shop",
                 "cost": "900/10"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "1800/10"
+            },
+            {
+                "type": "Territory Battle",
+                "name": "Rebel Assault"
             }
         ]
     },
@@ -2316,7 +2280,7 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "2-A"
+                "level": "1-A"
             }
         ]
     },
@@ -2335,16 +2299,12 @@
         "defId": "ROYALGUARD",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "5-F"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "1-D"
-            },
-            {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "5-F"
             }
         ]
     },
@@ -2361,7 +2321,12 @@
     {
         "name": "Sana Starros",
         "defId": "SANASTARROS",
-        "locations": []
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "2-C"
+            }
+        ]
     },
     {
         "name": "Savage Opress",
@@ -2378,16 +2343,16 @@
         "defId": "SCARIFREBEL",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "1-D"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/10"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-C"
             }
         ]
     },
@@ -2395,6 +2360,10 @@
         "name": "Second Sister",
         "defId": "SECONDSISTER",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "4-C"
+            },
             {
                 "type": "Hard Modes (D)"
             }
@@ -2479,8 +2448,8 @@
         "defId": "FOSITHTROOPER",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "6-C"
+                "type": "Hard Modes (L)",
+                "level": "2-B"
             }
         ]
     },
@@ -2503,16 +2472,16 @@
                 "level": "7-B"
             },
             {
+                "type": "Guild Event Shop",
+                "cost": "400/10"
+            },
+            {
                 "type": "Guild Shop",
                 "cost": "450/10"
             },
             {
                 "type": "Hard Modes (L)",
                 "level": "8-C"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
             }
         ]
     },
@@ -2535,12 +2504,12 @@
                 "cost": "400/10"
             },
             {
-                "type": "Hard Modes (L)",
-                "level": "3-C"
-            },
-            {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "3-C"
             }
         ]
     },
@@ -2603,10 +2572,6 @@
             {
                 "type": "Guild Shop",
                 "cost": "450/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "2-D"
             },
             {
                 "type": "Hard Modes (L)",
@@ -2717,7 +2682,12 @@
     {
         "name": "Tusken Chieftain",
         "defId": "TUSKENCHIEFTAIN",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "6-C"
+            }
+        ]
     },
     {
         "name": "Tusken Raider",
@@ -2750,7 +2720,12 @@
     {
         "name": "Tusken Warrior",
         "defId": "TUSKENHUNTRESS",
-        "locations": []
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "2-D"
+            }
+        ]
     },
     {
         "name": "Ugnaught",
@@ -2769,10 +2744,6 @@
             {
                 "type": "Hard Modes (L)",
                 "level": "5-A"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "5-F"
             }
         ]
     },
@@ -2863,12 +2834,12 @@
         "defId": "WICKET",
         "locations": [
             {
-                "type": "Heroic Event",
-                "name": "Endor Escalation"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "8-A"
+            },
+            {
+                "type": "Heroic Event",
+                "name": "Endor Escalation"
             }
         ]
     },
@@ -2928,6 +2899,11 @@
     {
         "name": "Zorii Bliss",
         "defId": "ZORIIBLISS_V2",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "1-C"
+            }
+        ]
     }
 ]

@@ -4,15 +4,15 @@
         "defId": "JEDISTARFIGHTERAHSOKATANO",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             }
         ]
@@ -42,11 +42,11 @@
         "defId": "XWINGRED3",
         "locations": [
             {
-                "type": "GW Shipments",
+                "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
-                "type": "Fleet Shipments",
+                "type": "GW Shipments",
                 "cost": "400/4"
             }
         ]
@@ -84,12 +84,12 @@
         "defId": "UWINGROGUEONE",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/4"
-            },
-            {
                 "type": "Cantina Shipments",
                 "cost": "400/5"
+            },
+            {
+                "type": "Guild Event Shop",
+                "cost": "400/4"
             }
         ]
     },
@@ -108,15 +108,15 @@
         "defId": "ARC170CLONESERGEANT",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             },
             {
@@ -200,7 +200,7 @@
         "defId": "TIEFIGHTERFIRSTORDER",
         "locations": [
             {
-                "type": "GW Shipments",
+                "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
@@ -208,7 +208,7 @@
                 "cost": "400/4"
             },
             {
-                "type": "Fleet Shipments",
+                "type": "GW Shipments",
                 "cost": "400/4"
             }
         ]
@@ -241,20 +241,20 @@
         "defId": "GEONOSIANSTARFIGHTER1",
         "locations": [
             {
-                "type": "Hard Modes (L)",
-                "level": "9-D"
-            },
-            {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-A"
             }
         ]
     },
@@ -263,15 +263,15 @@
         "defId": "GEONOSIANSTARFIGHTER3",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             }
         ]
@@ -281,16 +281,16 @@
         "defId": "GHOST",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "9-C"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-C"
             }
         ]
     },
@@ -359,15 +359,15 @@
         "defId": "TIEFIGHTERIMPERIAL",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             },
             {
@@ -381,20 +381,20 @@
         "defId": "JEDISTARFIGHTERCONSULAR",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "8-B"
-            },
-            {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "8-B"
             }
         ]
     },
@@ -439,7 +439,12 @@
     {
         "name": "MG-100 StarFortress SF-17",
         "defId": "MG100STARFORTRESSSF17",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-D"
+            }
+        ]
     },
     {
         "name": "Negotiator",
@@ -457,7 +462,7 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "30C"
+                "level": "3-C"
             }
         ]
     },
@@ -466,16 +471,16 @@
         "defId": "PHANTOM2",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "9-D"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
                 "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-D"
             }
         ]
     },
@@ -488,15 +493,15 @@
                 "level": "7-F"
             },
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             }
         ]
@@ -537,7 +542,12 @@
     {
         "name": "Raven's Claw",
         "defId": "RAVENSCLAW",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-E"
+            }
+        ]
     },
     {
         "name": "Razor Crest",
@@ -563,15 +573,15 @@
         "defId": "XWINGRESISTANCE",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             },
             {
@@ -656,10 +666,6 @@
         "defId": "GEONOSIANSTARFIGHTER2",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
@@ -668,8 +674,12 @@
                 "cost": "400/4"
             },
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "2-A"
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "9-D"
             }
         ]
     },
@@ -690,12 +700,22 @@
     {
         "name": "TIE Defender",
         "defId": "TIEDEFENDER",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-B"
+            }
+        ]
     },
     {
         "name": "TIE Echelon",
         "defId": "FIRSTORDERTIEECHELON",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-E"
+            }
+        ]
     },
     {
         "name": "TIE Reaper",
@@ -727,10 +747,6 @@
         "defId": "UMBARANSTARFIGHTER",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
@@ -739,8 +755,12 @@
                 "cost": "400/4"
             },
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "3-B"
+                "type": "GW Shipments",
+                "cost": "400/4"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "2-D"
             }
         ]
     },
@@ -759,15 +779,15 @@
         "defId": "XWINGRED2",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
             {
                 "type": "Guild Event Shop",
+                "cost": "400/4"
+            },
+            {
+                "type": "GW Shipments",
                 "cost": "400/4"
             }
         ]
