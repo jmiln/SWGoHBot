@@ -9,19 +9,28 @@ if (config.swapiConfig) {
     swgohAPI = require("../modules/swapi.js")(null);
 }
 
-const GG_CHAR_CACHE          = "../data/swgoh-gg-chars.json";
-const GG_SHIPS_CACHE         = "../data/swgoh-gg-ships.json";
-const GG_MOD_CACHE           = "../data/swgoh-gg-mods.json";
-const SWGOH_HELP_SQUAD_CACHE = "../data/squads.json";
-const CHAR_LOCATIONS         = "../data/charLocations.json";
-const SHIP_LOCATIONS         = "../data/shipLocations.json";
-const GAMEDATA               = "../data/gameData.json";
+const dataDir = __dirname + "/../data/";
+
+const ApiSwgohHelp = require("api-swgoh-help");
+const swgoh = new ApiSwgohHelp(config.fakeSwapiConfig.options);
+const campaignMapNames = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNames.json", "utf-8"))[0];
+const campaignMapNodes = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNodes.json", "utf-8"))[0];
+const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
+
+const GG_CHAR_CACHE          = dataDir + "swgoh-gg-chars.json";
+const GG_SHIPS_CACHE         = dataDir + "swgoh-gg-ships.json";
+const GG_MOD_CACHE           = dataDir + "swgoh-gg-mods.json";
+// const SWGOH_HELP_SQUAD_CACHE = dataDir + "squads.json";
+const CHAR_FILE              = dataDir + "characters.json";
+const CHAR_LOCATIONS         = dataDir + "charLocations.json";
+const SHIP_LOCATIONS         = dataDir + "shipLocations.json";
+const SHIP_FILE              = dataDir + "ships.json";
+const GAMEDATA               = dataDir + "gameData.json";
 const UNKNOWN                = "Unknown";
 
 const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=";
-const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
-const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
-
+// const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
+// const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
 
 // How long between being runs (In minutes)
 const INTERVAL = 60;
@@ -98,10 +107,13 @@ async function updateIfChanged({localCachePath, dataSourceUri, dataObject}) {
 
 async function updateRemoteData() {
     // Load then copy the data of char/ship files
-    const currentCharacters   = JSON.parse(fs.readFileSync("../data/characters.json"));
+    const currentCharacters   = JSON.parse(fs.readFileSync(CHAR_FILE));
     const currentCharSnapshot = JSON.parse(JSON.stringify(currentCharacters));
-    const currentShips        = JSON.parse(fs.readFileSync("../data/ships.json"));
+    const currentShips        = JSON.parse(fs.readFileSync(SHIP_FILE));
     const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
+    const currentCharLocs     = JSON.parse(fs.readFileSync(CHAR_LOCATIONS));
+    const currentShipLocs     = JSON.parse(fs.readFileSync(SHIP_LOCATIONS));
+
     const log = [];
     let hasNewUnit = false;
 
@@ -134,25 +146,38 @@ async function updateRemoteData() {
         await updateCharacterMods(currentCharacters, ggModData);
     }
 
-    if (await updateIfChanged({ localCachePath: SWGOH_HELP_SQUAD_CACHE, dataSourceUri: "https://swgoh.help/data/squads.json" })) {
-        log.push("Detected a squad change from swgoh.help.");
-    }
+    // if (await updateIfChanged({ localCachePath: SWGOH_HELP_SQUAD_CACHE, dataSourceUri: "https://swgoh.help/data/squads.json" })) {
+    //     log.push("Detected a squad change from swgoh.help.");
+    // }
 
-    if (await updateIfChanged({ localCachePath: CHAR_LOCATIONS, dataSourceUri: charLocationLink })) {
+    // if (await updateIfChanged({ localCachePath: CHAR_LOCATIONS, dataSourceUri: charLocationLink })) {
+    //     log.push("Detected a change in character locations.");
+    // }
+    //
+    // if (await updateIfChanged({ localCachePath: SHIP_LOCATIONS, dataSourceUri: shipLocationLink })) {
+    //     log.push("Detected a change in ship locations.");
+    // }
+
+    // Run unit locations updaters
+    const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
+    if (JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
         log.push("Detected a change in character locations.");
+        saveFile(CHAR_LOCATIONS, newCharLocs);
     }
 
-    if (await updateIfChanged({ localCachePath: SHIP_LOCATIONS, dataSourceUri: shipLocationLink })) {
+    const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS);
+    if (JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
         log.push("Detected a change in ship locations.");
+        saveFile(SHIP_LOCATIONS, newShipLocs);
     }
 
     if (JSON.stringify(currentCharSnapshot) !== JSON.stringify(currentCharacters)) {
         log.push("Changes detected in character data, saving updates and reloading");
-        saveFile("../data/characters.json", currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
+        saveFile(CHAR_FILE, currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
     }
     if (JSON.stringify(currentShipSnapshot) !== JSON.stringify(currentShips)) {
         log.push("Changes detected in ship data, saving updates and reloading");
-        saveFile("../data/ships.json", currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
+        saveFile(SHIP_FILE, currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
     }
 
     if (config.patreon) {
@@ -538,6 +563,95 @@ async function updatePatrons() {
     }
 }
 
+
+async function updateLocs(unitListFile, currentLocFile) {
+    const currentUnits = JSON.parse(fs.readFileSync(unitListFile, "utf-8"));
+    const currentLocs = JSON.parse(fs.readFileSync(currentLocFile, "utf-8"));
+    const matArr = [];
+
+    for (const unit of currentUnits) {
+        const res = await swgoh.fetchAPI("/swgoh/data", {
+            "collection": "materialList",
+            "language": "eng_us",
+            "enums":true,
+            "match": {
+                "id": `unitshard_${unit.uniqueName}`
+            },
+            "project": {
+                "lookupMissionList": {
+                    "missionIdentifier": true
+                }
+            }
+        });
+        if (res?.result?.length) {
+            matArr.push({
+                defId: unit.uniqueName,
+                mats: res.result[0]
+            });
+        }
+    }
+    if (!matArr.length) return;
+
+    const outArr = [];
+    for (const mat of matArr) {
+        const missions = mat?.mats?.lookupMissionList?.map(r => r.missionIdentifier);
+        if (!missions) return;
+
+        const charArr = [];
+        for (const node of missions) {
+            if (node.campaignId === "EVENTS") continue;
+            const outMode = campaignMapNames[node.campaignId]?.game_mode;
+            if (!outMode) {
+                // console.log("Missing location data for:");
+                // console.log(node);
+                continue;
+            }
+            const outNode = campaignMapNodes?.[node.campaignId]?.[node.campaignMapId]?.[node.campaignNodeDifficulty]?.[node.campaignNodeId]?.[node.campaignMissionId];
+
+            let typeStr = "Hard Modes";
+            switch (outMode) {
+                case "Light Side Battles":
+                    typeStr += " (L)";
+                    break;
+                case "Dark Side Battles":
+                    typeStr += " (D)";
+                    break;
+                case "Cantina Battles":
+                    typeStr = "Cantina";
+                    break;
+                case "Fleet Battles":
+                    typeStr += " (Fleet)";
+                    break;
+                default:
+                    typeStr = "N/A";
+                    break;
+            }
+            charArr.push({
+                type: typeStr,
+                level: outNode
+            });
+        }
+        outArr.push({defId: mat.defId, locations: charArr});
+    }
+
+    // Wipe out all previous locations so we can replace them lateri, but leave the shop info alone
+    const filteredLocations = currentLocs.map(loc => {
+        loc.locations = loc.locations.filter(thisLoc => !thisLoc?.level?.length);
+        return loc;
+    });
+
+    const finalOut = [];
+    for (const unitLoc of outArr) {
+        const thisUnit = filteredLocations.find(loc => loc.defId === unitLoc.defId);
+        finalOut.push({
+            name: thisUnit?.name || unitLoc?.name,
+            defId: unitLoc.defId,
+            locations: unitLoc?.locations ? [...thisUnit.locations, ...unitLoc.locations].sort((a,b) => a.type.toLowerCase() > b.type.toLowerCase() ? 1 : -1) : thisUnit.locations
+        });
+    }
+
+    return finalOut.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+}
 
 // Update the language stuff from the swgoh api
 async function updateSWLang() {
