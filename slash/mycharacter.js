@@ -1,6 +1,5 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
-const nodeFetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 const {inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 class MyCharacter extends Command {
@@ -129,7 +128,7 @@ class MyCharacter extends Command {
         };
 
         try {
-            await nodeFetch(Bot.config.imageServIP_Port + "/char/", {
+            await fetch(Bot.config.imageServIP_Port + "/char/", {
                 method: "post",
                 body: JSON.stringify(fetchBody),
                 headers: { "Content-Type": "application/json" }

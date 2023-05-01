@@ -1,7 +1,6 @@
 const {inspect} = require("util"); // eslint-disable-line no-unused-vars
 const statEnums = require("../data/statEnum.js");
 const npmAsync = require("async");
-const fetch = (...args) => import("node-fetch").then(({default: fetch}) => fetch(...args));
 const { readFileSync } = require("node:fs");
 
 const config = require(__dirname + "/../config.js");

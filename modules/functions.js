@@ -1089,10 +1089,20 @@ module.exports = (Bot, client) => {
     };
 
     // Deploy commands
-    Bot.deployCommands = async () => {
+    Bot.deployCommands = async (force=false) => {
         const outLog = [];
 
-        if (Bot.config.dev_server) {
+        if (force) {
+            console.log("Running deploy with force.");
+            try {
+                // Force deploy the global slash commands
+                const globalCmds = client.slashcmds.filter(c => !c.guildOnly);
+                const globalCmdData = globalCmds?.map(c => c.commandData);
+                await client.application?.commands.set(globalCmdData);
+            } catch (err) {
+                console.error("ERROR: " + err);
+            }
+        } else if (Bot.config.dev_server) {
             try {
                 // Filter the slash commands to find guild only ones.
                 const guildCmds = client.slashcmds.filter(c => c.guildOnly).map(c => c.commandData);

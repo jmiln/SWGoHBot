@@ -51,7 +51,7 @@ class ReloadData extends Command {
                 Bot.config.debugLogs = !Bot.config.debugLogs;
                 return super.success(interaction, `DebugLogs set to **${Bot.config.debugLogs}**`);
             case "deploy": {
-                const outLog = await Bot.deployCommands();
+                const outLog = await Bot.deployCommands(true);
                 return interaction.reply({
                     content: "Deploying Commands...",
                     embeds: [
