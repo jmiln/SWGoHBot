@@ -48,7 +48,7 @@ class Poll extends Command {
                     name: "view",
                     description: "View the status of a poll with the current results",
                     type: ApplicationCommandOptionType.Subcommand,
-                    options: [ ]
+                    options: []
                 },
                 {
                     name: "vote",
