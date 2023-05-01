@@ -1,6 +1,7 @@
 [
     {
         "name": "Ahsoka Tano's Jedi Starfighter",
+        "defId": "JEDISTARFIGHTERAHSOKATANO",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -18,6 +19,7 @@
     },
     {
         "name": "Anakin's Eta-2 Starfighter",
+        "defId": "JEDISTARFIGHTERANAKIN",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -27,6 +29,7 @@
     },
     {
         "name": "B-28 Extinction-class Bomber",
+        "defId": "SITHBOMBER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -36,6 +39,7 @@
     },
     {
         "name": "Biggs Darklighter's X-wing",
+        "defId": "XWINGRED3",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -49,6 +53,7 @@
     },
     {
         "name": "Bistan's U-wing",
+        "defId": "UWINGSCARIF",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -66,6 +71,7 @@
     },
     {
         "name": "BTL-B Y-wing Starfighter",
+        "defId": "YWINGCLONEWARS",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -75,6 +81,7 @@
     },
     {
         "name": "Cassian's U-wing",
+        "defId": "UWINGROGUEONE",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -88,6 +95,7 @@
     },
     {
         "name": "Chimaera",
+        "defId": "CAPITALCHIMAERA",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -97,6 +105,7 @@
     },
     {
         "name": "Clone Sergeant's ARC-170",
+        "defId": "ARC170CLONESERGEANT",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -118,6 +127,7 @@
     },
     {
         "name": "Ebon Hawk",
+        "defId": "EBONHAWK",
         "locations": [
             {
                 "type": "Cantina",
@@ -127,6 +137,7 @@
     },
     {
         "name": "Emperor's Shuttle",
+        "defId": "EMPERORSSHUTTLE",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -136,6 +147,7 @@
     },
     {
         "name": "Endurance",
+        "defId": "CAPITALJEDICRUISER",
         "locations": [
             {
                 "type": "Challenges",
@@ -145,6 +157,7 @@
     },
     {
         "name": "Executor",
+        "defId": "CAPITALEXECUTOR",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -154,6 +167,7 @@
     },
     {
         "name": "Executrix",
+        "defId": "CAPITALSTARDESTROYER",
         "locations": [
             {
                 "type": "Challenges",
@@ -163,6 +177,7 @@
     },
     {
         "name": "Finalizer",
+        "defId": "CAPITALFINALIZER",
         "locations": [
             {
                 "type": "Challenges",
@@ -172,6 +187,7 @@
     },
     {
         "name": "First Order SF TIE Fighter",
+        "defId": "TIEFIGHTERFOSF",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -181,6 +197,7 @@
     },
     {
         "name": "First Order TIE Fighter",
+        "defId": "TIEFIGHTERFIRSTORDER",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -197,7 +214,13 @@
         ]
     },
     {
+        "name": "Fury-class Interceptor",
+        "defId": "FURYCLASSINTERCEPTOR",
+        "locations": []
+    },
+    {
         "name": "Gauntlet Starfighter",
+        "defId": "GAUNTLETSTARFIGHTER",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -215,6 +238,7 @@
     },
     {
         "name": "Geonosian Soldier's Starfighter",
+        "defId": "GEONOSIANSTARFIGHTER1",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -236,6 +260,7 @@
     },
     {
         "name": "Geonosian Spy's Starfighter",
+        "defId": "GEONOSIANSTARFIGHTER3",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -253,6 +278,7 @@
     },
     {
         "name": "Ghost",
+        "defId": "GHOST",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -270,6 +296,7 @@
     },
     {
         "name": "Han's Millennium Falcon",
+        "defId": "MILLENNIUMFALCON",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -279,6 +306,7 @@
     },
     {
         "name": "Home One",
+        "defId": "CAPITALMONCALAMARICRUISER",
         "locations": [
             {
                 "type": "Challenges",
@@ -288,6 +316,7 @@
     },
     {
         "name": "Hound's Tooth",
+        "defId": "HOUNDSTOOTH",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -297,6 +326,7 @@
     },
     {
         "name": "Hyena Bomber",
+        "defId": "HYENABOMBER",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -306,6 +336,7 @@
     },
     {
         "name": "IG-2000",
+        "defId": "IG2000",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -315,6 +346,7 @@
     },
     {
         "name": "Imperial TIE Bomber",
+        "defId": "TIEBOMBERIMPERIAL",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -324,6 +356,7 @@
     },
     {
         "name": "Imperial TIE Fighter",
+        "defId": "TIEFIGHTERIMPERIAL",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -345,6 +378,7 @@
     },
     {
         "name": "Jedi Consular's Starfighter",
+        "defId": "JEDISTARFIGHTERCONSULAR",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -366,6 +400,7 @@
     },
     {
         "name": "Kylo Ren's Command Shuttle",
+        "defId": "COMMANDSHUTTLE",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -375,6 +410,7 @@
     },
     {
         "name": "Lando's Millennium Falcon",
+        "defId": "MILLENNIUMFALCONPRISTINE",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -384,6 +420,7 @@
     },
     {
         "name": "Malevolence",
+        "defId": "CAPITALMALEVOLENCE",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -400,7 +437,13 @@
         ]
     },
     {
+        "name": "MG-100 StarFortress SF-17",
+        "defId": "MG100STARFORTRESSSF17",
+        "locations": []
+    },
+    {
         "name": "Negotiator",
+        "defId": "CAPITALNEGOTIATOR",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -410,6 +453,7 @@
     },
     {
         "name": "Outrider",
+        "defId": "OUTRIDER",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -419,6 +463,7 @@
     },
     {
         "name": "Phantom II",
+        "defId": "PHANTOM2",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -436,6 +481,7 @@
     },
     {
         "name": "Plo Koon's Jedi Starfighter",
+        "defId": "BLADEOFDORIN",
         "locations": [
             {
                 "type": "Cantina",
@@ -457,6 +503,7 @@
     },
     {
         "name": "Poe Dameron's X-wing",
+        "defId": "XWINGBLACKONE",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -473,7 +520,13 @@
         ]
     },
     {
+        "name": "Profundity",
+        "defId": "CAPITALPROFUNDITY",
+        "locations": []
+    },
+    {
         "name": "Raddus",
+        "defId": "CAPITALRADDUS",
         "locations": [
             {
                 "type": "Challenges",
@@ -482,7 +535,13 @@
         ]
     },
     {
+        "name": "Raven's Claw",
+        "defId": "RAVENSCLAW",
+        "locations": []
+    },
+    {
         "name": "Razor Crest",
+        "defId": "RAZORCREST",
         "locations": [
             {
                 "type": "Galactic Battle: Conquest"
@@ -491,6 +550,7 @@
     },
     {
         "name": "Rebel Y-Wing",
+        "defId": "YWINGREBEL",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -500,6 +560,7 @@
     },
     {
         "name": "Resistance X-wing",
+        "defId": "XWINGRESISTANCE",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -521,6 +582,7 @@
     },
     {
         "name": "Rex's ARC-170",
+        "defId": "ARC170REX",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -534,6 +596,7 @@
     },
     {
         "name": "Rey's Millennium Falcon",
+        "defId": "MILLENNIUMFALCONEP7",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -543,6 +606,7 @@
     },
     {
         "name": "Scimitar",
+        "defId": "SITHINFILTRATOR",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -559,7 +623,13 @@
         ]
     },
     {
+        "name": "Scythe",
+        "defId": "SCYTHE",
+        "locations": []
+    },
+    {
         "name": "Sith Fighter",
+        "defId": "SITHFIGHTER",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -568,7 +638,8 @@
         ]
     },
     {
-        "name": "Slave I",
+        "name": "Slave-I",
+        "defId": "SLAVE1",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -582,6 +653,7 @@
     },
     {
         "name": "Sun Fac's Geonosian Starfighter",
+        "defId": "GEONOSIANSTARFIGHTER2",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -603,6 +675,7 @@
     },
     {
         "name": "TIE Advanced x1",
+        "defId": "TIEADVANCED",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -615,7 +688,18 @@
         ]
     },
     {
+        "name": "TIE Defender",
+        "defId": "TIEDEFENDER",
+        "locations": []
+    },
+    {
+        "name": "TIE Echelon",
+        "defId": "FIRSTORDERTIEECHELON",
+        "locations": []
+    },
+    {
         "name": "TIE Reaper",
+        "defId": "TIEREAPER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -625,6 +709,7 @@
     },
     {
         "name": "TIE Silencer",
+        "defId": "TIESILENCER",
         "locations": [
             {
                 "type": "Cantina",
@@ -633,7 +718,13 @@
         ]
     },
     {
+        "name": "TIE/IN Interceptor Prototype",
+        "defId": "TIEINTERCEPTOR",
+        "locations": []
+    },
+    {
         "name": "Umbaran Starfighter",
+        "defId": "UMBARANSTARFIGHTER",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -655,6 +746,7 @@
     },
     {
         "name": "Vulture Droid",
+        "defId": "VULTUREDROID",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -664,6 +756,7 @@
     },
     {
         "name": "Wedge Antilles's X-wing",
+        "defId": "XWINGRED2",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -681,6 +774,7 @@
     },
     {
         "name": "Xanadu Blood",
+        "defId": "XANADUBLOOD",
         "locations": [
             {
                 "type": "Hard Modes (L)",

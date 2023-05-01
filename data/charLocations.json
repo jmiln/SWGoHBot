@@ -1,6 +1,12 @@
 [
     {
+        "name": "0-0-0",
+        "defId": "TRIPLEZERO",
+        "locations": []
+    },
+    {
         "name": "50R-T",
+        "defId": "50RT",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -10,6 +16,7 @@
     },
     {
         "name": "Aayla Secura",
+        "defId": "AAYLASECURA",
         "locations": [
             {
                 "type": "Cantina",
@@ -23,6 +30,7 @@
     },
     {
         "name": "Admiral Ackbar",
+        "defId": "ADMIRALACKBAR",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -40,6 +48,7 @@
     },
     {
         "name": "Admiral Piett",
+        "defId": "ADMIRALPIETT",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -49,6 +58,7 @@
     },
     {
         "name": "Admiral Raddus",
+        "defId": "ADMIRALRADDUS",
         "locations": [
             {
                 "type": "Intro P1 (Marquee)",
@@ -57,7 +67,13 @@
         ]
     },
     {
+        "name": "Admiral Trench",
+        "defId": "TRENCH",
+        "locations": []
+    },
+    {
         "name": "Ahsoka Tano",
+        "defId": "AHSOKATANO",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -75,6 +91,7 @@
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
+        "defId": "FULCRUMAHSOKA",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -84,6 +101,7 @@
     },
     {
         "name": "Amilyn Holdo",
+        "defId": "AMILYNHOLDO",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -93,6 +111,7 @@
     },
     {
         "name": "ARC Trooper",
+        "defId": "ARCTROOPER501ST",
         "locations": [
             {
                 "type": "Cantina",
@@ -102,6 +121,7 @@
     },
     {
         "name": "Asajj Ventress",
+        "defId": "ASAJVENTRESS",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -111,6 +131,7 @@
     },
     {
         "name": "Aurra Sing",
+        "defId": "AURRA_SING",
         "locations": [
             {
                 "type": "Cantina",
@@ -120,6 +141,7 @@
     },
     {
         "name": "B1 Battle Droid",
+        "defId": "B1BATTLEDROIDV2",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -129,6 +151,7 @@
     },
     {
         "name": "B2 Super Battle Droid",
+        "defId": "B2SUPERBATTLEDROID",
         "locations": [
             {
                 "type": "Cantina",
@@ -142,6 +165,7 @@
     },
     {
         "name": "Barriss Offee",
+        "defId": "BARRISSOFFEE",
         "locations": [
             {
                 "type": "Cantina",
@@ -159,6 +183,7 @@
     },
     {
         "name": "Bastila Shan",
+        "defId": "BASTILASHAN",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -172,6 +197,7 @@
     },
     {
         "name": "Bastila Shan (Fallen)",
+        "defId": "BASTILASHANDARK",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -181,6 +207,7 @@
     },
     {
         "name": "Baze Malbus",
+        "defId": "BAZEMALBUS",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -190,6 +217,7 @@
     },
     {
         "name": "BB-8",
+        "defId": "BB8",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -198,7 +226,13 @@
         ]
     },
     {
+        "name": "Ben Solo",
+        "defId": "BENSOLO",
+        "locations": []
+    },
+    {
         "name": "Biggs Darklighter",
+        "defId": "BIGGSDARKLIGHTER",
         "locations": [
             {
                 "type": "Cantina",
@@ -224,6 +258,7 @@
     },
     {
         "name": "Bistan",
+        "defId": "BISTAN",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -241,6 +276,7 @@
     },
     {
         "name": "Bo-Katan Kryze",
+        "defId": "BOKATAN",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -250,6 +286,7 @@
     },
     {
         "name": "Boba Fett",
+        "defId": "BOBAFETT",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -271,6 +308,7 @@
     },
     {
         "name": "Boba Fett, Scion of Jango",
+        "defId": "BOBAFETTSCION",
         "locations": [
             {
                 "type": "Galactic Battle: Conquest"
@@ -279,6 +317,7 @@
     },
     {
         "name": "Bodhi Rook",
+        "defId": "BODHIROOK",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -288,6 +327,7 @@
     },
     {
         "name": "Bossk",
+        "defId": "BOSSK",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -297,6 +337,7 @@
     },
     {
         "name": "Boushh (Leia Organa)",
+        "defId": "BOUSHH",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -305,7 +346,13 @@
         ]
     },
     {
+        "name": "BT-1",
+        "defId": "BT1",
+        "locations": []
+    },
+    {
         "name": "C-3PO",
+        "defId": "C3POLEGENDARY",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -315,6 +362,7 @@
     },
     {
         "name": "Cad Bane",
+        "defId": "CADBANE",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -323,7 +371,13 @@
         ]
     },
     {
+        "name": "Cal Kestis",
+        "defId": "CALKESTIS",
+        "locations": []
+    },
+    {
         "name": "Canderous Ordo",
+        "defId": "CANDEROUSORDO",
         "locations": [
             {
                 "type": "Cantina",
@@ -333,6 +387,7 @@
     },
     {
         "name": "Captain Han Solo",
+        "defId": "HOTHHAN",
         "locations": [
             {
                 "type": "Cantina",
@@ -342,6 +397,7 @@
     },
     {
         "name": "Captain Phasma",
+        "defId": "PHASMA",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -351,6 +407,7 @@
     },
     {
         "name": "Cara Dune",
+        "defId": "CARADUNE",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -360,6 +417,7 @@
     },
     {
         "name": "Carth Onasi",
+        "defId": "CARTHONASI",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -369,6 +427,7 @@
     },
     {
         "name": "Cassian Andor",
+        "defId": "CASSIANANDOR",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -382,6 +441,7 @@
     },
     {
         "name": "CC-2224 \"Cody\"",
+        "defId": "CC2224",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -394,7 +454,13 @@
         ]
     },
     {
+        "name": "Cere Junda",
+        "defId": "CEREJUNDA",
+        "locations": []
+    },
+    {
         "name": "Chewbacca",
+        "defId": "CHEWBACCALEGENDARY",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -404,6 +470,7 @@
     },
     {
         "name": "Chief Chirpa",
+        "defId": "CHIEFCHIRPA",
         "locations": [
             {
                 "type": "Cantina",
@@ -413,6 +480,7 @@
     },
     {
         "name": "Chief Nebit",
+        "defId": "CHIEFNEBIT",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -422,6 +490,7 @@
     },
     {
         "name": "Chirrut Îmwe",
+        "defId": "CHIRRUTIMWE",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -431,6 +500,7 @@
     },
     {
         "name": "Chopper",
+        "defId": "CHOPPERS3",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -444,6 +514,7 @@
     },
     {
         "name": "Clone Sergeant - Phase I",
+        "defId": "CLONESERGEANTPHASEI",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -465,6 +536,7 @@
     },
     {
         "name": "Clone Wars Chewbacca",
+        "defId": "CLONEWARSCHEWBACCA",
         "locations": [
             {
                 "type": "Cantina",
@@ -478,6 +550,7 @@
     },
     {
         "name": "Colonel Starck",
+        "defId": "COLONELSTARCK",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -487,6 +560,7 @@
     },
     {
         "name": "Commander Ahsoka Tano",
+        "defId": "COMMANDERAHSOKA",
         "locations": [
             {
                 "type": "Galactic Battle: Conquest"
@@ -495,6 +569,7 @@
     },
     {
         "name": "Commander Luke Skywalker",
+        "defId": "COMMANDERLUKESKYWALKER",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -504,6 +579,7 @@
     },
     {
         "name": "Coruscant Underworld Police",
+        "defId": "CORUSCANTUNDERWORLDPOLICE",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -513,6 +589,7 @@
     },
     {
         "name": "Count Dooku",
+        "defId": "COUNTDOOKU",
         "locations": [
             {
                 "type": "Cantina",
@@ -530,6 +607,7 @@
     },
     {
         "name": "CT-21-0408 \"Echo\"",
+        "defId": "CT210408",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -543,6 +621,7 @@
     },
     {
         "name": "CT-5555 \"Fives\"",
+        "defId": "CT5555",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -560,6 +639,7 @@
     },
     {
         "name": "CT-7567 \"Rex\"",
+        "defId": "CT7567",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -573,6 +653,7 @@
     },
     {
         "name": "Dark Trooper",
+        "defId": "DARKTROOPER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -582,6 +663,7 @@
     },
     {
         "name": "Darth Malak",
+        "defId": "DARTHMALAK",
         "locations": [
             {
                 "type": "Special Event",
@@ -603,6 +685,7 @@
     },
     {
         "name": "Darth Malgus",
+        "defId": "DARTHMALGUS",
         "locations": [
             {
                 "type": "Galactic Battle: Conquest"
@@ -611,6 +694,7 @@
     },
     {
         "name": "Darth Maul",
+        "defId": "MAUL",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -624,6 +708,7 @@
     },
     {
         "name": "Darth Nihilus",
+        "defId": "DARTHNIHILUS",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -633,6 +718,7 @@
     },
     {
         "name": "Darth Revan",
+        "defId": "DARTHREVAN",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -642,6 +728,7 @@
     },
     {
         "name": "Darth Sidious",
+        "defId": "DARTHSIDIOUS",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -651,6 +738,7 @@
     },
     {
         "name": "Darth Sion",
+        "defId": "DARTHSION",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -664,6 +752,7 @@
     },
     {
         "name": "Darth Talon",
+        "defId": "DARTHTALON",
         "locations": [
             {
                 "type": "Cantina",
@@ -673,6 +762,7 @@
     },
     {
         "name": "Darth Traya",
+        "defId": "DARTHTRAYA",
         "locations": [
             {
                 "type": "Raids",
@@ -682,6 +772,7 @@
     },
     {
         "name": "Darth Vader",
+        "defId": "VADER",
         "locations": [
             {
                 "type": "Achievements"
@@ -694,6 +785,7 @@
     },
     {
         "name": "Dash Rendar",
+        "defId": "DASHRENDAR",
         "locations": [
             {
                 "type": "Cantina",
@@ -703,6 +795,7 @@
     },
     {
         "name": "Dathcha",
+        "defId": "DATHCHA",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -716,6 +809,7 @@
     },
     {
         "name": "Death Trooper",
+        "defId": "DEATHTROOPER",
         "locations": [
             {
                 "type": "Cantina",
@@ -725,6 +819,7 @@
     },
     {
         "name": "Dengar",
+        "defId": "DENGAR",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -734,6 +829,7 @@
     },
     {
         "name": "Director Krennic",
+        "defId": "DIRECTORKRENNIC",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -746,7 +842,13 @@
         ]
     },
     {
+        "name": "Doctor Aphra",
+        "defId": "DOCTORAPHRA",
+        "locations": []
+    },
+    {
         "name": "Droideka",
+        "defId": "DROIDEKA",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -756,6 +858,7 @@
     },
     {
         "name": "Echo",
+        "defId": "BADBATCHECHO",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -765,6 +868,7 @@
     },
     {
         "name": "Eeth Koth",
+        "defId": "EETHKOTH",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -774,6 +878,7 @@
     },
     {
         "name": "Eighth Brother",
+        "defId": "EIGHTHBROTHER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -783,6 +888,7 @@
     },
     {
         "name": "Embo",
+        "defId": "EMBO",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -792,6 +898,7 @@
     },
     {
         "name": "Emperor Palpatine",
+        "defId": "EMPERORPALPATINE",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -801,6 +908,7 @@
     },
     {
         "name": "Enfys Nest",
+        "defId": "ENFYSNEST",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -810,6 +918,7 @@
     },
     {
         "name": "Ewok Elder",
+        "defId": "EWOKELDER",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -823,6 +932,7 @@
     },
     {
         "name": "Ewok Scout",
+        "defId": "EWOKSCOUT",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -832,6 +942,7 @@
     },
     {
         "name": "Ezra Bridger",
+        "defId": "EZRABRIDGERS3",
         "locations": [
             {
                 "type": "Cantina",
@@ -849,6 +960,7 @@
     },
     {
         "name": "Fennec Shand",
+        "defId": "FENNECSHAND",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -858,6 +970,7 @@
     },
     {
         "name": "Fifth Brother",
+        "defId": "FIFTHBROTHER",
         "locations": [
             {
                 "type": "Cantina",
@@ -867,6 +980,7 @@
     },
     {
         "name": "Finn",
+        "defId": "FINN",
         "locations": [
             {
                 "type": "Cantina",
@@ -880,6 +994,7 @@
     },
     {
         "name": "First Order Executioner",
+        "defId": "FIRSTORDEREXECUTIONER",
         "locations": [
             {
                 "type": "Cantina",
@@ -889,6 +1004,7 @@
     },
     {
         "name": "First Order Officer",
+        "defId": "FIRSTORDEROFFICERMALE",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -898,6 +1014,7 @@
     },
     {
         "name": "First Order SF TIE Pilot",
+        "defId": "FIRSTORDERSPECIALFORCESPILOT",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -907,6 +1024,7 @@
     },
     {
         "name": "First Order Stormtrooper",
+        "defId": "FIRSTORDERTROOPER",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -920,6 +1038,7 @@
     },
     {
         "name": "First Order TIE Pilot",
+        "defId": "FIRSTORDERTIEPILOT",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -933,6 +1052,7 @@
     },
     {
         "name": "Gamorrean Guard",
+        "defId": "GAMORREANGUARD",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -942,6 +1062,7 @@
     },
     {
         "name": "Gar Saxon",
+        "defId": "GARSAXON",
         "locations": [
             {
                 "type": "Cantina",
@@ -955,6 +1076,7 @@
     },
     {
         "name": "Garazeb \"Zeb\" Orrelios",
+        "defId": "ZEBS3",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -968,6 +1090,7 @@
     },
     {
         "name": "General Grievous",
+        "defId": "GRIEVOUS",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -989,6 +1112,7 @@
     },
     {
         "name": "General Hux",
+        "defId": "GENERALHUX",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -998,6 +1122,7 @@
     },
     {
         "name": "General Kenobi",
+        "defId": "GENERALKENOBI",
         "locations": [
             {
                 "type": "Raids",
@@ -1007,6 +1132,7 @@
     },
     {
         "name": "General Skywalker",
+        "defId": "GENERALSKYWALKER",
         "locations": [
             {
                 "type": "Epic Confrontation",
@@ -1028,6 +1154,7 @@
     },
     {
         "name": "General Veers",
+        "defId": "VEERS",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -1045,6 +1172,7 @@
     },
     {
         "name": "Geonosian Brood Alpha",
+        "defId": "GEONOSIANBROODALPHA",
         "locations": [
             {
                 "type": "Cantina",
@@ -1054,6 +1182,7 @@
     },
     {
         "name": "Geonosian Soldier",
+        "defId": "GEONOSIANSOLDIER",
         "locations": [
             {
                 "type": "Cantina",
@@ -1067,6 +1196,7 @@
     },
     {
         "name": "Geonosian Spy",
+        "defId": "GEONOSIANSPY",
         "locations": [
             {
                 "type": "Cantina",
@@ -1080,6 +1210,7 @@
     },
     {
         "name": "Grand Admiral Thrawn",
+        "defId": "GRANDADMIRALTHRAWN",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -1089,6 +1220,7 @@
     },
     {
         "name": "Grand Inquisitor",
+        "defId": "GRANDINQUISITOR",
         "locations": [
             {
                 "type": "Assault Battle"
@@ -1097,6 +1229,7 @@
     },
     {
         "name": "Grand Master Yoda",
+        "defId": "GRANDMASTERYODA",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -1106,6 +1239,7 @@
     },
     {
         "name": "Grand Moff Tarkin",
+        "defId": "GRANDMOFFTARKIN",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1123,6 +1257,7 @@
     },
     {
         "name": "Greedo",
+        "defId": "GREEDO",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1132,6 +1267,7 @@
     },
     {
         "name": "Greef Karga",
+        "defId": "GREEFKARGA",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -1145,6 +1281,7 @@
     },
     {
         "name": "Han Solo",
+        "defId": "HANSOLO",
         "locations": [
             {
                 "type": "Raids",
@@ -1154,6 +1291,7 @@
     },
     {
         "name": "Hera Syndulla",
+        "defId": "HERASYNDULLAS3",
         "locations": [
             {
                 "type": "Cantina",
@@ -1167,6 +1305,7 @@
     },
     {
         "name": "Hermit Yoda",
+        "defId": "HERMITYODA",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -1184,6 +1323,7 @@
     },
     {
         "name": "HK-47",
+        "defId": "HK47",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1192,7 +1332,13 @@
         ]
     },
     {
+        "name": "Hondo Ohnaka",
+        "defId": "HONDO",
+        "locations": []
+    },
+    {
         "name": "Hoth Rebel Scout",
+        "defId": "HOTHREBELSCOUT",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1210,6 +1356,7 @@
     },
     {
         "name": "Hoth Rebel Soldier",
+        "defId": "HOTHREBELSOLDIER",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -1223,6 +1370,7 @@
     },
     {
         "name": "Hunter",
+        "defId": "BADBATCHHUNTER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1232,6 +1380,7 @@
     },
     {
         "name": "Iden Versio",
+        "defId": "IDENVERSIOEMPIRE",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1241,6 +1390,7 @@
     },
     {
         "name": "IG-100 MagnaGuard",
+        "defId": "MAGNAGUARD",
         "locations": [
             {
                 "type": "Cantina",
@@ -1258,6 +1408,7 @@
     },
     {
         "name": "IG-11",
+        "defId": "IG11",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1267,6 +1418,7 @@
     },
     {
         "name": "IG-86 Sentinel Droid",
+        "defId": "IG86SENTINELDROID",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -1284,6 +1436,7 @@
     },
     {
         "name": "IG-88",
+        "defId": "IG88",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1293,6 +1446,7 @@
     },
     {
         "name": "Ima-Gun Di",
+        "defId": "IMAGUNDI",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -1310,6 +1464,7 @@
     },
     {
         "name": "Imperial Probe Droid",
+        "defId": "IMPERIALPROBEDROID",
         "locations": [
             {
                 "type": "Territory Battle",
@@ -1327,6 +1482,7 @@
     },
     {
         "name": "Imperial Super Commando",
+        "defId": "IMPERIALSUPERCOMMANDO",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -1339,7 +1495,13 @@
         ]
     },
     {
+        "name": "Jabba the Hutt",
+        "defId": "JABBATHEHUTT",
+        "locations": []
+    },
+    {
         "name": "Jango Fett",
+        "defId": "JANGOFETT",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1349,6 +1511,7 @@
     },
     {
         "name": "Jawa",
+        "defId": "JAWA",
         "locations": [
             {
                 "type": "Cantina",
@@ -1362,6 +1525,7 @@
     },
     {
         "name": "Jawa Engineer",
+        "defId": "JAWAENGINEER",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -1371,6 +1535,7 @@
     },
     {
         "name": "Jawa Scavenger",
+        "defId": "JAWASCAVENGER",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1380,6 +1545,7 @@
     },
     {
         "name": "Jedi Consular",
+        "defId": "JEDIKNIGHTCONSULAR",
         "locations": [
             {
                 "type": "Cantina",
@@ -1401,6 +1567,7 @@
     },
     {
         "name": "Jedi Knight Anakin",
+        "defId": "ANAKINKNIGHT",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -1410,6 +1577,7 @@
     },
     {
         "name": "Jedi Knight Guardian",
+        "defId": "JEDIKNIGHTGUARDIAN",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1423,6 +1591,7 @@
     },
     {
         "name": "Jedi Knight Luke Skywalker",
+        "defId": "JEDIKNIGHTLUKE",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -1432,6 +1601,7 @@
     },
     {
         "name": "Jedi Knight Revan",
+        "defId": "JEDIKNIGHTREVAN",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -1441,6 +1611,7 @@
     },
     {
         "name": "Jedi Master Kenobi",
+        "defId": "JEDIMASTERKENOBI",
         "locations": [
             {
                 "type": "Galactic Ascension",
@@ -1450,6 +1621,7 @@
     },
     {
         "name": "Jedi Master Luke Skywalker",
+        "defId": "GRANDMASTERLUKE",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -1459,6 +1631,7 @@
     },
     {
         "name": "Jolee Bindo",
+        "defId": "JOLEEBINDO",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -1472,6 +1645,7 @@
     },
     {
         "name": "Juhani",
+        "defId": "JUHANI",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1481,6 +1655,7 @@
     },
     {
         "name": "Jyn Erso",
+        "defId": "JYNERSO",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -1490,6 +1665,7 @@
     },
     {
         "name": "K-2SO",
+        "defId": "K2SO",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -1503,6 +1679,7 @@
     },
     {
         "name": "Kanan Jarrus",
+        "defId": "KANANJARRUSS3",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1516,6 +1693,7 @@
     },
     {
         "name": "Ki-Adi-Mundi",
+        "defId": "KIADIMUNDI",
         "locations": [
             {
                 "type": "Territory Battle",
@@ -1525,6 +1703,7 @@
     },
     {
         "name": "Kit Fisto",
+        "defId": "KITFISTO",
         "locations": [
             {
                 "type": "Cantina",
@@ -1538,6 +1717,7 @@
     },
     {
         "name": "Krrsantan",
+        "defId": "KRRSANTAN",
         "locations": [
             {
                 "type": "Cantina",
@@ -1547,6 +1727,7 @@
     },
     {
         "name": "Kuiil",
+        "defId": "KUIIL",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -1556,6 +1737,7 @@
     },
     {
         "name": "Kyle Katarn",
+        "defId": "KYLEKATARN",
         "locations": [
             {
                 "type": "Cantina",
@@ -1565,6 +1747,7 @@
     },
     {
         "name": "Kylo Ren",
+        "defId": "KYLOREN",
         "locations": [
             {
                 "type": "Cantina",
@@ -1578,6 +1761,7 @@
     },
     {
         "name": "Kylo Ren (Unmasked)",
+        "defId": "KYLORENUNMASKED",
         "locations": [
             {
                 "type": "Cantina",
@@ -1587,6 +1771,7 @@
     },
     {
         "name": "L3-37",
+        "defId": "L3_37",
         "locations": [
             {
                 "type": "Cantina",
@@ -1596,6 +1781,7 @@
     },
     {
         "name": "Lando Calrissian",
+        "defId": "ADMINISTRATORLANDO",
         "locations": [
             {
                 "type": "Cantina",
@@ -1609,6 +1795,7 @@
     },
     {
         "name": "Lobot",
+        "defId": "LOBOT",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1622,6 +1809,7 @@
     },
     {
         "name": "Logray",
+        "defId": "LOGRAY",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -1631,6 +1819,7 @@
     },
     {
         "name": "Lord Vader",
+        "defId": "LORDVADER",
         "locations": [
             {
                 "type": "Galactic Ascension",
@@ -1640,6 +1829,7 @@
     },
     {
         "name": "Luke Skywalker (Farmboy)",
+        "defId": "LUKESKYWALKER",
         "locations": [
             {
                 "type": "Cantina",
@@ -1661,6 +1851,7 @@
     },
     {
         "name": "Luminara Unduli",
+        "defId": "LUMINARAUNDULI",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -1678,6 +1869,7 @@
     },
     {
         "name": "Mace Windu",
+        "defId": "MACEWINDU",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1695,6 +1887,7 @@
     },
     {
         "name": "Magmatrooper",
+        "defId": "MAGMATROOPER",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -1707,16 +1900,13 @@
         ]
     },
     {
-        "name": "Mara Jade",
-        "locations": [
-            {
-                "type": "Hard Modes (L)",
-                "level": "6-D"
-            }
-        ]
+        "name": "Mara Jade, The Emperor's Hand",
+        "defId": "MARAJADE",
+        "locations": []
     },
     {
         "name": "Maul",
+        "defId": "MAULS7",
         "locations": [
             {
                 "type": "Galactic Battle: Conquest"
@@ -1724,7 +1914,13 @@
         ]
     },
     {
+        "name": "Merrin",
+        "defId": "MERRIN",
+        "locations": []
+    },
+    {
         "name": "Mission Vao",
+        "defId": "MISSIONVAO",
         "locations": [
             {
                 "type": "Cantina",
@@ -1734,6 +1930,7 @@
     },
     {
         "name": "Mob Enforcer",
+        "defId": "HUMANTHUG",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1743,6 +1940,7 @@
     },
     {
         "name": "Moff Gideon",
+        "defId": "MOFFGIDEONS1",
         "locations": [
             {
                 "type": "Cantina",
@@ -1752,6 +1950,7 @@
     },
     {
         "name": "Mon Mothma",
+        "defId": "MONMOTHMA",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1761,6 +1960,7 @@
     },
     {
         "name": "Mother Talzin",
+        "defId": "MOTHERTALZIN",
         "locations": [
             {
                 "type": "Special Event",
@@ -1774,6 +1974,7 @@
     },
     {
         "name": "Nightsister Acolyte",
+        "defId": "NIGHTSISTERACOLYTE",
         "locations": [
             {
                 "type": "Cantina",
@@ -1787,6 +1988,7 @@
     },
     {
         "name": "Nightsister Initiate",
+        "defId": "NIGHTSISTERINITIATE",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -1796,6 +1998,7 @@
     },
     {
         "name": "Nightsister Spirit",
+        "defId": "NIGHTSISTERSPIRIT",
         "locations": [
             {
                 "type": "Special Event",
@@ -1809,6 +2012,7 @@
     },
     {
         "name": "Nightsister Zombie",
+        "defId": "NIGHTSISTERZOMBIE",
         "locations": [
             {
                 "type": "Special Event",
@@ -1822,6 +2026,7 @@
     },
     {
         "name": "Ninth Sister",
+        "defId": "NINTHSISTER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -1831,6 +2036,7 @@
     },
     {
         "name": "Nute Gunray",
+        "defId": "NUTEGUNRAY",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1840,6 +2046,7 @@
     },
     {
         "name": "Obi-Wan Kenobi (Old Ben)",
+        "defId": "OLDBENKENOBI",
         "locations": [
             {
                 "type": "Cantina",
@@ -1853,6 +2060,7 @@
     },
     {
         "name": "Old Daka",
+        "defId": "DAKA",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1866,6 +2074,7 @@
     },
     {
         "name": "Omega",
+        "defId": "BADBATCHOMEGA",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -1875,6 +2084,7 @@
     },
     {
         "name": "Padmé Amidala",
+        "defId": "PADMEAMIDALA",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -1884,6 +2094,7 @@
     },
     {
         "name": "Pao",
+        "defId": "PAO",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1893,6 +2104,7 @@
     },
     {
         "name": "Paploo",
+        "defId": "PAPLOO",
         "locations": [
             {
                 "type": "Cantina",
@@ -1906,6 +2118,7 @@
     },
     {
         "name": "Plo Koon",
+        "defId": "PLOKOON",
         "locations": [
             {
                 "type": "Cantina",
@@ -1919,6 +2132,7 @@
     },
     {
         "name": "Poe Dameron",
+        "defId": "POE",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1936,6 +2150,7 @@
     },
     {
         "name": "Poggle the Lesser",
+        "defId": "POGGLETHELESSER",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -1949,6 +2164,7 @@
     },
     {
         "name": "Princess Leia",
+        "defId": "PRINCESSLEIA",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -1962,6 +2178,7 @@
     },
     {
         "name": "Qi'ra",
+        "defId": "QIRA",
         "locations": [
             {
                 "type": "Cantina",
@@ -1971,6 +2188,7 @@
     },
     {
         "name": "Qui-Gon Jinn",
+        "defId": "QUIGONJINN",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -1980,6 +2198,7 @@
     },
     {
         "name": "R2-D2",
+        "defId": "R2D2_LEGENDARY",
         "locations": [
             {
                 "type": "Legendary Event",
@@ -1989,6 +2208,7 @@
     },
     {
         "name": "Range Trooper",
+        "defId": "RANGETROOPER",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -1998,6 +2218,7 @@
     },
     {
         "name": "Rebel Officer Leia Organa",
+        "defId": "HOTHLEIA",
         "locations": [
             {
                 "type": "Territory Battle",
@@ -2015,6 +2236,7 @@
     },
     {
         "name": "Resistance Hero Finn",
+        "defId": "EPIXFINN",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2024,6 +2246,7 @@
     },
     {
         "name": "Resistance Hero Poe",
+        "defId": "EPIXPOE",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2033,6 +2256,7 @@
     },
     {
         "name": "Resistance Pilot",
+        "defId": "RESISTANCEPILOT",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -2046,6 +2270,7 @@
     },
     {
         "name": "Resistance Trooper",
+        "defId": "RESISTANCETROOPER",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -2059,6 +2284,7 @@
     },
     {
         "name": "Rey",
+        "defId": "GLREY",
         "locations": [
             {
                 "type": "Galactic Ascension",
@@ -2068,6 +2294,7 @@
     },
     {
         "name": "Rey (Jedi Training)",
+        "defId": "REYJEDITRAINING",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -2077,6 +2304,7 @@
     },
     {
         "name": "Rey (Scavenger)",
+        "defId": "REY",
         "locations": [
             {
                 "type": "Guild Shop",
@@ -2094,6 +2322,7 @@
     },
     {
         "name": "Rose Tico",
+        "defId": "ROSETICO",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2103,6 +2332,7 @@
     },
     {
         "name": "Royal Guard",
+        "defId": "ROYALGUARD",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2120,6 +2350,7 @@
     },
     {
         "name": "Sabine Wren",
+        "defId": "SABINEWRENS3",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2128,7 +2359,13 @@
         ]
     },
     {
+        "name": "Sana Starros",
+        "defId": "SANASTARROS",
+        "locations": []
+    },
+    {
         "name": "Savage Opress",
+        "defId": "SAVAGEOPRESS",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -2138,6 +2375,7 @@
     },
     {
         "name": "Scarif Rebel Pathfinder",
+        "defId": "SCARIFREBEL",
         "locations": [
             {
                 "type": "Cantina",
@@ -2155,6 +2393,7 @@
     },
     {
         "name": "Second Sister",
+        "defId": "SECONDSISTER",
         "locations": [
             {
                 "type": "Hard Modes (D)"
@@ -2163,6 +2402,7 @@
     },
     {
         "name": "Seventh Sister",
+        "defId": "SEVENTHSISTER",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2172,6 +2412,7 @@
     },
     {
         "name": "Shaak Ti",
+        "defId": "SHAAKTI",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -2181,6 +2422,7 @@
     },
     {
         "name": "Shoretrooper",
+        "defId": "SHORETROOPER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2190,6 +2432,7 @@
     },
     {
         "name": "Sith Assassin",
+        "defId": "SITHASSASSIN",
         "locations": [
             {
                 "type": "Cantina",
@@ -2203,6 +2446,7 @@
     },
     {
         "name": "Sith Empire Trooper",
+        "defId": "SITHTROOPER",
         "locations": [
             {
                 "type": "Cantina",
@@ -2212,6 +2456,7 @@
     },
     {
         "name": "Sith Eternal Emperor",
+        "defId": "SITHPALPATINE",
         "locations": [
             {
                 "type": "Galactic Ascension",
@@ -2221,6 +2466,7 @@
     },
     {
         "name": "Sith Marauder",
+        "defId": "SITHMARAUDER",
         "locations": [
             {
                 "type": "Cantina",
@@ -2230,6 +2476,7 @@
     },
     {
         "name": "Sith Trooper",
+        "defId": "FOSITHTROOPER",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2239,6 +2486,7 @@
     },
     {
         "name": "Skiff Guard (Lando Calrissian)",
+        "defId": "UNDERCOVERLANDO",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2248,6 +2496,7 @@
     },
     {
         "name": "Snowtrooper",
+        "defId": "SNOWTROOPER",
         "locations": [
             {
                 "type": "Cantina",
@@ -2269,6 +2518,7 @@
     },
     {
         "name": "Starkiller",
+        "defId": "STARKILLER",
         "locations": [
             {
                 "type": "Legacy Event",
@@ -2278,6 +2528,7 @@
     },
     {
         "name": "Stormtrooper",
+        "defId": "STORMTROOPER",
         "locations": [
             {
                 "type": "Cantina Shipments",
@@ -2295,6 +2546,7 @@
     },
     {
         "name": "Stormtrooper Han",
+        "defId": "STORMTROOPERHAN",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -2308,6 +2560,7 @@
     },
     {
         "name": "Sun Fac",
+        "defId": "SUNFAC",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -2321,6 +2574,7 @@
     },
     {
         "name": "Supreme Leader Kylo Ren",
+        "defId": "SUPREMELEADERKYLOREN",
         "locations": [
             {
                 "type": "Galactic Ascension",
@@ -2330,6 +2584,7 @@
     },
     {
         "name": "T3-M4",
+        "defId": "T3_M4",
         "locations": [
             {
                 "type": "Cantina",
@@ -2339,6 +2594,7 @@
     },
     {
         "name": "Talia",
+        "defId": "TALIA",
         "locations": [
             {
                 "type": "Cantina",
@@ -2359,7 +2615,13 @@
         ]
     },
     {
+        "name": "Tarfful",
+        "defId": "TARFFUL",
+        "locations": []
+    },
+    {
         "name": "Tech",
+        "defId": "BADBATCHTECH",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2369,6 +2631,7 @@
     },
     {
         "name": "Teebo",
+        "defId": "TEEBO",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -2386,6 +2649,7 @@
     },
     {
         "name": "The Armorer",
+        "defId": "ARMORER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2395,6 +2659,7 @@
     },
     {
         "name": "The Mandalorian",
+        "defId": "THEMANDALORIAN",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2408,6 +2673,7 @@
     },
     {
         "name": "The Mandalorian (Beskar Armor)",
+        "defId": "THEMANDALORIANBESKARARMOR",
         "locations": [
             {
                 "type": "Hero's Journey",
@@ -2416,7 +2682,13 @@
         ]
     },
     {
+        "name": "Third Sister",
+        "defId": "THIRDSISTER",
+        "locations": []
+    },
+    {
         "name": "Threepio & Chewie",
+        "defId": "C3POCHEWBACCA",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2426,6 +2698,7 @@
     },
     {
         "name": "TIE Fighter Pilot",
+        "defId": "TIEFIGHTERPILOT",
         "locations": [
             {
                 "type": "Cantina",
@@ -2442,7 +2715,13 @@
         ]
     },
     {
+        "name": "Tusken Chieftain",
+        "defId": "TUSKENCHIEFTAIN",
+        "locations": []
+    },
+    {
         "name": "Tusken Raider",
+        "defId": "TUSKENRAIDER",
         "locations": [
             {
                 "type": "GW Shipments",
@@ -2456,6 +2735,7 @@
     },
     {
         "name": "Tusken Shaman",
+        "defId": "TUSKENSHAMAN",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -2468,7 +2748,13 @@
         ]
     },
     {
+        "name": "Tusken Warrior",
+        "defId": "TUSKENHUNTRESS",
+        "locations": []
+    },
+    {
         "name": "Ugnaught",
+        "defId": "UGNAUGHT",
         "locations": [
             {
                 "type": "Arena Shipments",
@@ -2478,6 +2764,7 @@
     },
     {
         "name": "URoRRuR'R'R",
+        "defId": "URORRURRR",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2491,6 +2778,7 @@
     },
     {
         "name": "Vandor Chewbacca",
+        "defId": "YOUNGCHEWBACCA",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2500,6 +2788,7 @@
     },
     {
         "name": "Veteran Smuggler Chewbacca",
+        "defId": "SMUGGLERCHEWBACCA",
         "locations": [
             {
                 "type": "Cantina",
@@ -2509,6 +2798,7 @@
     },
     {
         "name": "Veteran Smuggler Han Solo",
+        "defId": "SMUGGLERHAN",
         "locations": [
             {
                 "type": "Cantina",
@@ -2518,6 +2808,7 @@
     },
     {
         "name": "Visas Marr",
+        "defId": "VISASMARR",
         "locations": [
             {
                 "type": "Hard Modes (D)",
@@ -2527,6 +2818,7 @@
     },
     {
         "name": "Wampa",
+        "defId": "WAMPA",
         "locations": [
             {
                 "type": "Guild Event Shop",
@@ -2544,6 +2836,7 @@
     },
     {
         "name": "Wat Tambor",
+        "defId": "WATTAMBOR",
         "locations": [
             {
                 "type": "Territory Battle",
@@ -2553,6 +2846,7 @@
     },
     {
         "name": "Wedge Antilles",
+        "defId": "WEDGEANTILLES",
         "locations": [
             {
                 "type": "Cantina",
@@ -2566,6 +2860,7 @@
     },
     {
         "name": "Wicket",
+        "defId": "WICKET",
         "locations": [
             {
                 "type": "Heroic Event",
@@ -2579,6 +2874,7 @@
     },
     {
         "name": "Wrecker",
+        "defId": "BADBATCHWRECKER",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2588,6 +2884,7 @@
     },
     {
         "name": "Young Han Solo",
+        "defId": "YOUNGHAN",
         "locations": [
             {
                 "type": "Guild Shop"
@@ -2596,6 +2893,7 @@
     },
     {
         "name": "Young Lando Calrissian",
+        "defId": "YOUNGLANDO",
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
@@ -2605,6 +2903,7 @@
     },
     {
         "name": "Zaalbar",
+        "defId": "ZAALBAR",
         "locations": [
             {
                 "type": "Hard Modes (L)",
@@ -2614,6 +2913,7 @@
     },
     {
         "name": "Zam Wesell",
+        "defId": "ZAMWESELL",
         "locations": [
             {
                 "type": "Fleet Shipments",
@@ -2624,5 +2924,10 @@
                 "cost": "450/10"
             }
         ]
+    },
+    {
+        "name": "Zorii Bliss",
+        "defId": "ZORIIBLISS_V2",
+        "locations": []
     }
 ]
