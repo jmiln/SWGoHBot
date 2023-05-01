@@ -653,15 +653,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "1900/5"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "3800/10"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "5700/15"
+                "cost": "5700/15\n3800/10\n1900/5"
             },
             {
                 "type": "Special Event",
@@ -1076,15 +1068,7 @@
             },
             {
                 "type": "Shard Shop",
-                "cost": "2250/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "4500/10"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "13500/30"
+                "cost": "13500/30\n4500/10\n2250/5"
             }
         ]
     },
@@ -1118,15 +1102,7 @@
             },
             {
                 "type": "Shard Shop",
-                "cost": "1900/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "3800/10"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "5700/15"
+                "cost": "5700/15\n3800/10\n1900/5"
             }
         ]
     },
@@ -1283,15 +1259,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "1350/5"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "2700/10"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "4050/15"
+                "cost": "4050/152\n700/10\n1350/5"
             }
         ]
     },
@@ -1439,11 +1407,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "900/5"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "1800/10"
+                "cost": "1800/10\n900/5"
             },
             {
                 "type": "Territory Battle",
@@ -2186,11 +2150,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "900/10"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "1800/10"
+                "cost": "1800/10\n900/10"
             },
             {
                 "type": "Territory Battle",
@@ -2793,15 +2753,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "1350/5"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "2700/10"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "4050/15"
+                "cost": "4050/15\n2700/10\n1350/5"
             }
         ]
     },

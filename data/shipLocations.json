@@ -424,15 +424,7 @@
         "locations": [
             {
                 "type": "Guild Event Shop",
-                "cost": "1350/5"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "2700/10"
-            },
-            {
-                "type": "Guild Event Shop",
-                "cost": "4050/15"
+                "cost": "4050/15\n2700/10\n1350/5"
             }
         ]
     },
