@@ -50,9 +50,11 @@ class Farm extends Command {
         const outList = [];
         let unitLocs = null;
         if (!isChar) {
-            unitLocs = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
+            unitLocs = Bot.shipLocs.find(s => s.defId === character.uniqueName);
+            // unitLocs = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
         } else {
-            unitLocs = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
+            unitLocs = Bot.charLocs.find(c => c.defId === character.uniqueName);
+            // unitLocs = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
         }
 
         if (unitLocs) {
