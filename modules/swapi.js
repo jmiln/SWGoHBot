@@ -860,7 +860,7 @@ module.exports = (opts={}) => {
         let rawGuild  = await cache.get(config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
         if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
             try {
-                rawGuild = await comlinkStub.getGuild(player.guildId, 0, true);
+                rawGuild = await comlinkStub.getGuild(player.guildId, true);
             } catch (err) {
                 throw new Error(err);
             }
