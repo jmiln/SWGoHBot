@@ -413,7 +413,7 @@ module.exports = (opts={}) => {
         if (!char) throw new Error("Missing Character");
 
         if (char.defId) {
-            const nameKey = await this.units(char.defId);
+            const nameKey = await units(char.defId);
             char.nameKey = nameKey ? nameKey.nameKey : null;
         }
 
@@ -585,7 +585,7 @@ module.exports = (opts={}) => {
         lang = lang ? lang.toLowerCase() : "eng_us";
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
 
-        const char = await this.character(defId);
+        const char = await character(defId);
 
         if (!char) {
             throw new Error("[SWGoH-API getCharacter] Missing Character");
@@ -594,7 +594,7 @@ module.exports = (opts={}) => {
         }
 
         for (const s of char.skillReferenceList) {
-            let skill = await this.abilities([s.skillId], lang);
+            let skill = await abilities([s.skillId], lang);
             if (Array.isArray(skill)) {
                 skill = skill[0];
             }
@@ -616,7 +616,7 @@ module.exports = (opts={}) => {
         }
 
         for (const tier of char.unitTierList) {
-            const eqList = await this.gear(tier.equipmentSetList, lang);
+            const eqList = await gear(tier.equipmentSetList, lang);
             tier.equipmentSetList.forEach((e, ix) => {
                 const eq = eqList.find(equipment => equipment.id === e);
                 if (!eq) {
