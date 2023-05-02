@@ -184,7 +184,6 @@ module.exports = (opts={}) => {
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
-        const processStart = new Date().getTime();
         for (const newPlayer of updatedBare) {
             const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
             if (!oldPlayer?.roster) {
@@ -259,9 +258,6 @@ module.exports = (opts={}) => {
                 await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
             }
         }
-        const processEnd = new Date().getTime() - processStart;
-        console.log(`Processing ${updatedBare.length}`);
-        console.log(`Processing took ${processEnd}ms`);
 
         return guildLog;
     }
