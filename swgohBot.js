@@ -1,5 +1,5 @@
 const { Client, Collection } = require("discord.js");
-const { readdirSync, readFileSync } = require("fs");
+const { readFileSync } = require("fs");
 const { inspect } = require("util");
 
 const Bot = {};
@@ -14,20 +14,22 @@ const client = new Client({
 });
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
-Bot.abilityCosts = JSON.parse(readFileSync("data/abilityCosts.json", "utf-8"));
-Bot.acronyms     = JSON.parse(readFileSync("data/acronyms.json", "utf-8"));
-Bot.arenaJumps   = JSON.parse(readFileSync("data/arenaJumps.json", "utf-8"));
-Bot.charLocs     = JSON.parse(readFileSync("data/charLocations.json", "utf-8"));
-Bot.characters   = JSON.parse(readFileSync("data/characters.json", "utf-8"));
+Bot.abilityCosts = JSON.parse(readFileSync("./data/abilityCosts.json", "utf-8"));
+Bot.acronyms     = JSON.parse(readFileSync("./data/acronyms.json", "utf-8"));
+Bot.arenaJumps   = JSON.parse(readFileSync("./data/arenaJumps.json", "utf-8"));
+Bot.charLocs     = JSON.parse(readFileSync("./data/charLocations.json", "utf-8"));
+Bot.characters   = JSON.parse(readFileSync("./data/characters.json", "utf-8"));
 Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.help         = require("./data/help.js");
-Bot.missions     = JSON.parse(readFileSync("data/missions.json", "utf-8"));
-Bot.resources    = JSON.parse(readFileSync("data/resources.json", "utf-8"));
-Bot.shipLocs     = JSON.parse(readFileSync("data/shipLocations.json", "utf-8"));
-Bot.ships        = JSON.parse(readFileSync("data/ships.json", "utf-8"));
-Bot.timezones    = JSON.parse(readFileSync("data/timezones.json", "utf-8"));
+Bot.missions     = JSON.parse(readFileSync("./data/missions.json", "utf-8"));
+Bot.resources    = JSON.parse(readFileSync("./data/resources.json", "utf-8"));
+Bot.shipLocs     = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8"));
+Bot.ships        = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
+Bot.timezones    = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 
-const gameData   = JSON.parse(readFileSync("data/gameData.json", "utf-8"));
+Bot.constants    = require("./data/cosntants.js");
+Bot.help         = require("./data/help.js");
+
+const gameData   = JSON.parse(readFileSync("./data/gameData.json", "utf-8"));
 
 // Load in various general functions for the bot
 require("./modules/functions.js")(Bot, client);
@@ -47,10 +49,7 @@ client.reloadLanguages();
 Bot.CharacterNames = Bot.characters.map(ch => ch.name);
 Bot.ShipNames = Bot.ships.map(ch => ch.name);
 
-
-client.aliases   = new Collection();
 client.slashcmds = new Collection();
-
 
 const init = async () => {
     const { MongoClient } = require("mongodb");
@@ -69,42 +68,14 @@ const init = async () => {
         console.log("Couldn't load swapi");
     }
 
+    // Store the list of omicrons to be used later
+    Bot.omicrons = await Bot.sortOmicrons();
+
     const Logger = require("./modules/Logger.js");
     Bot.logger = new Logger(Bot, client);
 
-    // Here we load Slash Commands into memory, as a collection, so they're accessible
-    // here and everywhere else.
-    const slashFiles = readdirSync("./slash/");
-    const slashError = [];
-    slashFiles.forEach(file => {
-        try {
-            if (!file.endsWith(".js")) return;
-            const commandName = file.split(".")[0];
-            const result = client.loadSlash(commandName);
-            if (result) slashError.push(`Unable to load command: ${commandName}`);
-        } catch (err) {
-            return console.error(err);
-        }
-    });
-    if (slashError.length) {
-        Bot.logger.warn("slashLoad: " + slashError.join("\n"));
-    }
-
-    // Then we load events, which will include our message and ready event.
-    const evtFiles = readdirSync("./events/");
-    evtFiles.forEach(file => {
-        const eventName = file.split(".")[0];
-        const event = require(`./events/${file}`);
-        if (["ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"].includes(eventName)) {
-            client.on(eventName, event.bind(null, Bot, client));
-        } else {
-            client.on(eventName, event.bind(null, Bot));
-        }
-        delete require.cache[require.resolve(`./events/${file}`)];
-    });
-
-    // Store the list of omicrons to be used later
-    Bot.omicrons = await Bot.sortOmicrons();
+    require("./handlers/slashHandler.js")(Bot, client);
+    require("./handlers/eventHandler.js")(Bot, client);
 
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack?.replace(new RegExp(`${process.cwd()}`, "g"), ".");
@@ -118,13 +89,11 @@ const init = async () => {
         } catch (e) {
             // Don't bother doing anything
         }
-        // Always best practice to let the code crash on uncaught exceptions.
-        // Because you should be catching them anyway.
         process.exit(1);
     });
 
     process.on("unhandledRejection", (err) => {
-        const errorMsg = err.stack.replace(new RegExp(process.cwd(), "g"), ".");
+        const errorMsg = err?.stack.replace(new RegExp(process.cwd(), "g"), ".");
 
         // If it's something I can't do anything about, ignore it
         const ignoreArr = [
