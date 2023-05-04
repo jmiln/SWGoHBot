@@ -14,7 +14,7 @@ const ApiSwgohHelp = require("api-swgoh-help");
 const swgoh = new ApiSwgohHelp(config.fakeSwapiConfig.options);
 const campaignMapNames = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNames.json", "utf-8"))[0];
 const campaignMapNodes = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNodes.json", "utf-8"))[0];
-const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
+// const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
 
 const GG_CHAR_CACHE          = dataDir + "swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = dataDir + "swgoh-gg-ships.json";
@@ -27,7 +27,7 @@ const SHIP_FILE              = dataDir + "ships.json";
 const GAMEDATA               = dataDir + "gameData.json";
 const UNKNOWN                = "Unknown";
 
-const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=";
+// const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=";
 // const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
 // const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
 
@@ -642,10 +642,13 @@ async function updateLocs(unitListFile, currentLocFile) {
     const finalOut = [];
     for (const unitLoc of outArr) {
         const thisUnit = filteredLocations.find(loc => loc.defId === unitLoc.defId);
+        const locations = [];
+        if (thisUnit?.locations) locations.push(...thisUnit.locations);
+        if (unitLoc?.locations) locations.push(...unitLoc.locations);
         finalOut.push({
             name: thisUnit?.name || unitLoc?.name,
             defId: unitLoc.defId,
-            locations: unitLoc?.locations ? [...thisUnit.locations, ...unitLoc.locations].sort((a,b) => a.type.toLowerCase() > b.type.toLowerCase() ? 1 : -1) : thisUnit.locations
+            locations: locations?.sort((a,b) => a.type.toLowerCase() > b.type.toLowerCase() ? 1 : -1) || []
         });
     }
 
