@@ -35130,6 +35130,201 @@
         "activate_shard_count": 50
     },
     {
+        "name": "Saw Gerrera",
+        "base_id": "SAWGERRERA",
+        "pk": 3455,
+        "url": "http://swgoh.gg/characters/saw-gerrera/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_sawgerrera.png",
+        "power": 36723,
+        "description": "An extreme guerrilla fighter who leads his Partisans against the Empire",
+        "combat_type": 1,
+        "gear_levels": [
+            {
+                "tier": 1,
+                "gear": [
+                    "004",
+                    "005",
+                    "002",
+                    "007",
+                    "003",
+                    "004"
+                ]
+            },
+            {
+                "tier": 2,
+                "gear": [
+                    "021",
+                    "025",
+                    "025",
+                    "012",
+                    "034",
+                    "028"
+                ]
+            },
+            {
+                "tier": 3,
+                "gear": [
+                    "060",
+                    "050",
+                    "037",
+                    "041",
+                    "050",
+                    "055"
+                ]
+            },
+            {
+                "tier": 4,
+                "gear": [
+                    "048",
+                    "048",
+                    "041",
+                    "055",
+                    "060",
+                    "067"
+                ]
+            },
+            {
+                "tier": 5,
+                "gear": [
+                    "043",
+                    "043",
+                    "075",
+                    "051",
+                    "075",
+                    "084"
+                ]
+            },
+            {
+                "tier": 6,
+                "gear": [
+                    "094",
+                    "055",
+                    "092",
+                    "075",
+                    "075",
+                    "021"
+                ]
+            },
+            {
+                "tier": 7,
+                "gear": [
+                    "025",
+                    "079",
+                    "099",
+                    "075",
+                    "075",
+                    "099"
+                ]
+            },
+            {
+                "tier": 8,
+                "gear": [
+                    "108",
+                    "043",
+                    "063",
+                    "172",
+                    "117",
+                    "111"
+                ]
+            },
+            {
+                "tier": 9,
+                "gear": [
+                    "117",
+                    "063",
+                    "125",
+                    "173",
+                    "063",
+                    "101"
+                ]
+            },
+            {
+                "tier": 10,
+                "gear": [
+                    "172",
+                    "116",
+                    "129",
+                    "173",
+                    "117",
+                    "144"
+                ]
+            },
+            {
+                "tier": 11,
+                "gear": [
+                    "112",
+                    "103",
+                    "146",
+                    "131",
+                    "142",
+                    "144"
+                ]
+            },
+            {
+                "tier": 12,
+                "gear": [
+                    "162",
+                    "159",
+                    "161",
+                    "171",
+                    "169",
+                    "G12Finisher_SAWGERRERA_B"
+                ]
+            },
+            {
+                "tier": 13,
+                "gear": [
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999",
+                    "9999"
+                ]
+            }
+        ],
+        "alignment": "Light Side",
+        "categories": [
+            "Leader",
+            "Rebel",
+            "Rebel Fighter",
+            "Support"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Blind",
+            "Burning",
+            "Counter",
+            "Critical Damage Down",
+            "Critical Damage Up",
+            "Critical Hit Immunity",
+            "Defense Down",
+            "Defense Up",
+            "Dispel",
+            "Gain Turn Meter",
+            "Leader: +Defense",
+            "Leader: +Max Health",
+            "Leader: +Speed",
+            "Leader: +Tenacity",
+            "Leader: Assist",
+            "Offense Up",
+            "Reduce Cooldowns",
+            "Remove Turn Meter",
+            "Revive",
+            "Speed Up",
+            "Stagger",
+            "Stealth",
+            "Stun",
+            "Taunt",
+            "Tenacity Up"
+        ],
+        "role": "Support",
+        "ship": "",
+        "ship_slot": null,
+        "activate_shard_count": 25
+    },
+    {
         "name": "Scarif Rebel Pathfinder",
         "base_id": "SCARIFREBEL",
         "pk": 210,
