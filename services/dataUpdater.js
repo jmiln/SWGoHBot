@@ -645,14 +645,19 @@ async function updateLocs(unitListFile, currentLocFile) {
         const locations = [];
         if (thisUnit?.locations) locations.push(...thisUnit.locations);
         if (unitLoc?.locations) locations.push(...unitLoc.locations);
+        const unitName = thisUnit?.name || unitLoc?.name;
+
+        // If it somehow doesn't have anything to identify it, move along
+        if (!unitName && !unitLoc.defId) continue;
+
         finalOut.push({
-            name: thisUnit?.name || unitLoc?.name,
+            name: unitName,
             defId: unitLoc.defId,
             locations: locations?.sort((a,b) => a.type.toLowerCase() > b.type.toLowerCase() ? 1 : -1) || []
         });
     }
 
-    return finalOut.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+    return finalOut.sort((a,b) => a?.name && b?.name ? (a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1) : (a.defId.toLowerCase() > b.defId.toLowerCase() ? 1 : -1));
 }
 
 // Update the language stuff from the swgoh api
