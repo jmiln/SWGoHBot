@@ -10,9 +10,9 @@ const Manager = new Discord.ShardingManager("./swgohBot.js",{
 Manager.spawn({timeout: 60000});
 
 Manager.on("shardCreate", (shard) => {
-    shard.on("reconnecting", () => {
-        console.log(`  [${shard.id}] Reconnecting shard`);
-    });
+    // shard.on("reconnecting", () => {
+    //     console.log(`  [${shard.id}] Reconnecting shard`);
+    // });
     shard.on("spawn", () => {
         console.log(`  [${shard.id}] Spawned shard`);
     });

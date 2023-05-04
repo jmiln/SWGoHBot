@@ -2190,7 +2190,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
+            "triangle": "Crit. Damage/ Offense",
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
@@ -2362,7 +2362,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Potency/ Offense",
             "source": "swgoh.gg"
         }
     },
@@ -2730,7 +2730,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
         }
@@ -3324,8 +3324,8 @@
         "mods": {
             "url": "https://swgoh.gg/characters/general-veers/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Speed x4",
+                "Critical Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4373,7 +4373,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Health/ Defense",
             "circle": "Health/ Protection",
             "cross": "Health/ Tenacity",
             "source": "swgoh.gg"
@@ -4443,7 +4443,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Protection/ Health",
             "circle": "Health/ Protection",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
@@ -5589,7 +5589,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
@@ -6381,7 +6381,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency",
+            "cross": "Offense",
             "source": "swgoh.gg"
         }
     },
@@ -6655,6 +6655,26 @@
         }
     },
     {
+        "name": "Saw Gerrera",
+        "uniqueName": "SAWGERRERA",
+        "aliases": [
+            "Saw Gerrera"
+        ],
+        "nameVariant": [
+            "Saw Gerrera"
+        ],
+        "url": "http://swgoh.gg/characters/saw-gerrera/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sawgerrera.png",
+        "side": "light",
+        "factions": [
+            "Leader",
+            "Rebel",
+            "Rebel Fighter",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Scarif Rebel Pathfinder",
         "uniqueName": "SCARIFREBEL",
         "aliases": [
@@ -6683,7 +6703,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection/ Defense",
             "source": "swgoh.gg"

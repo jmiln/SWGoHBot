@@ -371,7 +371,12 @@
     {
         "name": "Cal Kestis",
         "defId": "CALKESTIS",
-        "locations": []
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "1-F"
+            }
+        ]
     },
     {
         "name": "Canderous Ordo",
@@ -1244,12 +1249,12 @@
         "defId": "HERASYNDULLAS3",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "1-F"
-            },
-            {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "2-F"
             }
         ]
     },
@@ -2534,8 +2539,8 @@
                 "cost": "450/10"
             },
             {
-                "type": "Hard Modes (L)",
-                "level": "2-F"
+                "type": "Hard Modes (D)",
+                "level": "9-C"
             }
         ]
     },

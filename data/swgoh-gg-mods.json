@@ -1179,7 +1179,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
+            "triangle": "Crit. Damage/ Offense",
             "circle": "Protection",
             "cross": "Offense"
         }
@@ -1272,7 +1272,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -1472,7 +1472,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection"
         }
     },
@@ -1793,8 +1793,8 @@
         "modsUrl": "https://swgoh.gg/characters/general-veers/best-mods/",
         "mods": {
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Speed x4",
+                "Critical Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2364,7 +2364,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Health/ Defense",
             "circle": "Health/ Protection",
             "cross": "Health/ Tenacity"
         }
@@ -2401,7 +2401,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Protection/ Health",
             "circle": "Health/ Protection",
             "cross": "Protection/ Health"
         }
@@ -2620,7 +2620,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -3024,7 +3024,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Damage/ Crit. Chance",
             "circle": "Protection/ Health",
             "cross": "Offense"
         }
@@ -3463,7 +3463,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency"
+            "cross": "Offense"
         }
     },
     {
@@ -3627,7 +3627,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection/ Defense"
         }
@@ -3793,7 +3793,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense"
         }
     },
