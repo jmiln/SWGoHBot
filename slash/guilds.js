@@ -804,7 +804,7 @@ class Guilds extends Command {
             const showReg = interaction.options.getBoolean("registered");
             const sortBy  = interaction.options.getString("sort");
 
-            if (!guild.roster.length) {
+            if (!guild?.roster?.length) {
                 throw new Error("I cannot find that guild. \nPlease make sure the name or ally code is correct.");
             }
 
@@ -853,6 +853,7 @@ class Guilds extends Command {
 
             const users = [];
             // Format the strings for each member
+            const maxLen = Math.max(...sortedGuild.map(mem => mem.gp.toLocaleString().length));
             for (const p of sortedGuild) {
 
                 // The name, bold if they're in the server with the bot
@@ -862,7 +863,7 @@ class Guilds extends Command {
                 const regStr  = showReg && p.dID ? `(<@!${p.dID}>)` : "";
 
                 // The ally code or the GP string
-                const numStr = showAC ? p.allyCode : `${" ".repeat(9 - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP`;
+                const numStr = showAC ? p.allyCode : `${" ".repeat(maxLen - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP`;
 
                 // Finally, the output string with everything together
                 users.push(`\`[${numStr}]\` - \`[${p.memberLvl}]\` ${nameStr} ${regStr}`);
