@@ -46,17 +46,17 @@ module.exports = {
         "ALLOMICRON",
         "PVEOMICRON",
         "PVPOMICRON",
-        "GUILDRAIDOMICRON",
-        "TERRITORYSTRIKEOMICRON",       // Huh?
-        "TERRITORYCOVERTOMICRON",       // Huh?
-        "TERRITORYBATTLEBOTHOMICRON",
-        "TERRITORYWAROMICRON",
-        "TERRITORYTOURNAMENTOMICRON",   // Huh?
-        "WAROMICRON0",                  // Idk
+        "GUILDRAIDOMICRON",             // Boushh  (Guild raids)
+        "TERRITORYSTRIKEOMICRON",
+        "TERRITORYCOVERTOMICRON",
+        "TERRITORYBATTLEBOTHOMICRON",   // Cassian, Finn, Gammorean (TB)
+        "TERRITORYWAROMICRON",          // Nebit, Sid, Sana Starros, Cal, Trench (TW)
+        "TERRITORYTOURNAMENTOMICRON",   // Hondo, 3rd sister,  (GAC)
+        "WAROMICRON0",
         "CONQUESTOMICRON1",
         "GALACTICCHALLENGEOMICRON2",
         "PVEEVENTOMICRON3",
-        "TERRITORYTOURNAMENT3OMICRON4", // Who knows
-        "TERRITORYTOURNAMENT5OMICRON5"  // Who knows
+        "TERRITORYTOURNAMENT3OMICRON4",
+        "TERRITORYTOURNAMENT5OMICRON5"
     ]
 };
