@@ -26,7 +26,7 @@ Bot.shipLocs     = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8")
 Bot.ships        = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
 Bot.timezones    = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 
-Bot.constants    = require("./data/cosntants.js");
+Bot.constants    = require("./data/constants.js");
 Bot.help         = require("./data/help.js");
 
 const gameData   = JSON.parse(readFileSync("./data/gameData.json", "utf-8"));
