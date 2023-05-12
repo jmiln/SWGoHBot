@@ -30,13 +30,13 @@ console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
 // Run the upater when it's started, then every ${INTERVAL} minutes after that
 init().then(async () => {
-    await updateGameData();
-    // await runUpdater();
+    // await updateGameData();
+    await runUpdater();
 });
-// setInterval(async () => {
-//     await runUpdater();
-// }, INTERVAL * 60 * 1000);
-//
+setInterval(async () => {
+    await runUpdater();
+}, INTERVAL * 60 * 1000);
+
 async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     cache = require("../modules/cache.js")(mongo);
