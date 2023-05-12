@@ -148,13 +148,13 @@ async function updateRemoteData() {
 
     // Run unit locations updaters
     const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
-    if (JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
+    if (newCharLocs && JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
         log.push("Detected a change in character locations.");
         saveFile(CHAR_LOCATIONS, newCharLocs);
     }
 
     const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS);
-    if (JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
+    if (newShipLocs && JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
         log.push("Detected a change in ship locations.");
         saveFile(SHIP_LOCATIONS, newShipLocs);
     }
@@ -557,7 +557,7 @@ async function updateLocs(unitListFile, currentLocFile) {
         if (res?.length) {
             matArr.push({
                 defId: unit.uniqueName,
-                mats: res.result[0]
+                mats: res[0]
             });
         }
     }
@@ -565,8 +565,8 @@ async function updateLocs(unitListFile, currentLocFile) {
 
     const outArr = [];
     for (const mat of matArr) {
-        const missions = mat?.mats?.lookupMissionList?.map(r => r.missionIdentifier);
-        if (!missions) return;
+        const missions = mat?.mats?.lookupMissionList;
+        if (!missions?.length) continue;
 
         const charArr = [];
         for (const node of missions) {
@@ -602,19 +602,20 @@ async function updateLocs(unitListFile, currentLocFile) {
         outArr.push({defId: mat.defId, locations: charArr});
     }
 
-    // Wipe out all previous locations so we can replace them lateri, but leave the shop info alone
+    // Wipe out all previous locations so we can replace them later, but leave the shop info alone
     const filteredLocations = currentLocs.map(loc => {
         loc.locations = loc.locations.filter(thisLoc => !thisLoc?.level?.length);
         return loc;
     });
 
     const finalOut = [];
-    for (const unitLoc of outArr) {
-        const thisUnit = filteredLocations.find(loc => loc.defId === unitLoc.defId);
+    for (const unit of currentUnits) {
+        const thisUnitLoc = filteredLocations.find(loc => loc.defId === unit.uniqueName);
+        const unitLoc = outArr.find(loc => loc.defId === unit.uniqueName) || {defId: unit.uniqueName};
         const locations = [];
-        if (thisUnit?.locations) locations.push(...thisUnit.locations);
+        if (thisUnitLoc?.locations) locations.push(...thisUnitLoc.locations);
         if (unitLoc?.locations) locations.push(...unitLoc.locations);
-        const unitName = thisUnit?.name || unitLoc?.name;
+        const unitName = thisUnitLoc?.name || unitLoc?.name || unit?.name;
 
         // If it somehow doesn't have anything to identify it, move along
         if (!unitName && !unitLoc.defId) continue;
