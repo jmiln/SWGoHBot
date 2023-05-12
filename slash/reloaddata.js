@@ -119,42 +119,43 @@ class ReloadData extends Command {
                 break;
             case "swlang": {
                 // Do this first since it's just the basic skeleton
-                const langList = Bot.swgohLangList;
-
-                // Helper funct to log the updates
-                const progressArr = [];
-                const progressOut = (strIn) => {
-                    progressArr.push(strIn);
-                    if (interaction.replied) {
-                        interaction.editReply({content: progressArr.join("\n")});
-                    } else {
-                        interaction.reply({content: progressArr.join("\n")});
-                    }
-                };
-
-                await Bot.swgohAPI.character(null, true);
-                progressOut("Starting update...");
-                for (const lang of langList) {
-                    await Bot.swgohAPI.units("", lang, true);
-                    progressOut(`Updated units for ${lang}`);
-
-                    await Bot.swgohAPI.abilities([], lang, true);
-                    progressOut(`Updated abilities for ${lang}`);
-
-                    await Bot.swgohAPI.gear([], lang, true);
-                    progressOut(`Updated gear for ${lang}`);
-
-                    if (lang.toLowerCase() === "eng_us") {
-                        await Bot.swgohAPI.recipes([], lang, true);
-                        progressOut(`Updated recipes for ${lang}`);
-                    } else {
-                        progressOut(`Skipping recipes for ${lang}`);
-                    }
-
-                    progressOut(`Updated all local data for ${lang}`);
-                }
-                interaction.editReply({content: "API Language update complete"});
-                break;
+                return super.error(interaction, "This is no longer needed");
+                // const langList = Bot.swgohLangList;
+                //
+                // // Helper funct to log the updates
+                // const progressArr = [];
+                // const progressOut = (strIn) => {
+                //     progressArr.push(strIn);
+                //     if (interaction.replied) {
+                //         interaction.editReply({content: progressArr.join("\n")});
+                //     } else {
+                //         interaction.reply({content: progressArr.join("\n")});
+                //     }
+                // };
+                //
+                // await Bot.swgohAPI.character(null, true);
+                // progressOut("Starting update...");
+                // for (const lang of langList) {
+                //     await Bot.swgohAPI.units("", lang, true);
+                //     progressOut(`Updated units for ${lang}`);
+                //
+                //     await Bot.swgohAPI.abilities([], lang, true);
+                //     progressOut(`Updated abilities for ${lang}`);
+                //
+                //     await Bot.swgohAPI.gear([], lang, true);
+                //     progressOut(`Updated gear for ${lang}`);
+                //
+                //     if (lang.toLowerCase() === "eng_us") {
+                //         await Bot.swgohAPI.recipes([], lang, true);
+                //         progressOut(`Updated recipes for ${lang}`);
+                //     } else {
+                //         progressOut(`Skipping recipes for ${lang}`);
+                //     }
+                //
+                //     progressOut(`Updated all local data for ${lang}`);
+                // }
+                // interaction.editReply({content: "API Language update complete"});
+                // break;
             }
             case "users": // Reload the users file
                 if (interaction.client.shard && interaction.client.shard.count > 0) {

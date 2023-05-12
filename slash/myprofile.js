@@ -129,7 +129,7 @@ class MyProfile extends Command {
             for (const skill of char.skills) {
                 if (skill.isOmicron && skill.isZeta) {
                     if (skill.tier === skill.tiers) {
-                        // If it's max level, then it has both zeta and omicronCount
+                        // If it's max level, then it has both zeta and omicron
                         omicronCount += 1;
                         zetaCount += 1;
                     } else if (skill.tier === skill.tiers-1) {

@@ -1321,7 +1321,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Health",
+            "cross": "Health/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -1387,7 +1387,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Tenacity",
+            "cross": "Potency/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -2328,7 +2328,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Potency",
+            "cross": "Protection",
             "source": "swgoh.gg"
         }
     },
@@ -2960,7 +2960,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
@@ -3295,7 +3295,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -3834,7 +3834,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense/ Tenacity",
+            "cross": "Offense",
             "source": "swgoh.gg"
         }
     },
@@ -4005,7 +4005,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense",
+            "cross": "Offense/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -4373,7 +4373,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Defense",
+            "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
             "cross": "Health/ Tenacity",
             "source": "swgoh.gg"
@@ -4443,8 +4443,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
+            "triangle": "Protection/ Defense",
+            "circle": "Protection/ Health",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
         }
@@ -4856,7 +4856,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -4991,7 +4991,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -5064,7 +5064,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
+            "cross": "Offense",
             "source": "swgoh.gg"
         }
     },
@@ -5396,7 +5396,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health/ Protection",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
         }
@@ -6190,7 +6190,7 @@
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Chance",
             "circle": "Health/ Protection",
-            "cross": "Potency/ Offense",
+            "cross": "Potency",
             "source": "swgoh.gg"
         }
     },
@@ -6672,7 +6672,20 @@
             "Rebel Fighter",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "url": "https://swgoh.gg/characters/saw-gerrera/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "source": "swgoh.gg"
+        }
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -6873,7 +6886,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense/ Protection",
             "source": "swgoh.gg"
         }
@@ -7009,7 +7022,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
         }
@@ -7375,7 +7388,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Protection/ Defense",
+            "cross": "Defense/ Protection",
             "source": "swgoh.gg"
         }
     },
@@ -7674,7 +7687,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
+            "cross": "Offense",
             "source": "swgoh.gg"
         }
     },
@@ -8158,7 +8171,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
         }

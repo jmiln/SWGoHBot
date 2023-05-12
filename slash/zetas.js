@@ -222,7 +222,7 @@ class Zetas extends Command {
                     outObj.name = "**" + Bot.characters.find(c => c.uniqueName === char).name + "**";
                     outObj.abilities = "";
                     for (const skill of Object.keys(zetas[char])) {
-                        const s = await Bot.swgohAPI.abilities(skill, null, null, {min: true});
+                        const s = await Bot.swgohAPI.abilities(skill, null, {min: true});
                         outObj.abilities += `\`${zetas[char][skill].length}\`: ${s[0].nameKey}\n`;
                     }
                     zOut.push(outObj);
@@ -260,7 +260,7 @@ class Zetas extends Command {
                 }
             } else {
                 for (const skill of Object.keys(zetas[character.uniqueName])) {
-                    const name = await Bot.swgohAPI.abilities(skill, null, null, {min: true});
+                    const name = await Bot.swgohAPI.abilities(skill, null, {min: true});
                     fields.push({
                         name: name[0].nameKey,
                         value: zetas[character.uniqueName][skill].join("\n")

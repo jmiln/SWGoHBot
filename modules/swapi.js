@@ -409,8 +409,8 @@ module.exports = (opts={}) => {
         if (!char) throw new Error("Missing Character");
 
         if (char.defId) {
-            const nameKey = await units(char.defId);
-            char.nameKey = nameKey ? nameKey.nameKey : null;
+            const unit = await units(char.defId);
+            char.nameKey = unit ? unit.nameKey : null;
         }
 
         if (char.mods) {
@@ -485,7 +485,7 @@ module.exports = (opts={}) => {
         return outStats;
     }
 
-    async function abilities( skillArray, lang, update=false, opts ) {
+    async function abilities( skillArray, lang, opts ) {
         lang = lang || "eng_us";
         if (!opts) opts = {};
         if (!skillArray) {
@@ -494,85 +494,13 @@ module.exports = (opts={}) => {
             skillArray = [skillArray];
         }
 
-        if (update) {
-            const ab = [];
-            let skillList = await swgoh.fetchAPI("/swgoh/data", {
-                "collection": "skillList",
-                "language": lang,
-                "enums":true,
-                "project": {
-                    "id":1,
-                    "abilityReference":1,
-                    "isZeta":1,
-                    "tierList": {
-                        recipeId: 1,
-                        powerOverrideTag: 1,
-                        isZetaTier: 1,
-                        isOmicronTier: 1
-                    },
-                    omicronMode: 1
-                }
-            });
-
-            if (!skillList || !skillList.result) return console.error("No skillList for " + lang);
-            skillList = skillList.result;
-
-            let abilities = await swgoh.fetchAPI("/swgoh/data", {
-                "collection": "abilityList",
-                "language": lang,
-                "enums":true,
-                "project": {
-                    "id":1,
-                    "type":1,
-                    "nameKey":1,
-                    "descKey":1,
-                    "cooldown":1,
-                    "tierList": {
-                        descKey: 1
-                    }
-                }
-            });
-
-            if (!abilities || !abilities.result) return console.error("No abilities for " + lang);
-            abilities = abilities.result;
-
-            abilities.forEach(a => {
-                const skill = skillList.find(s => s.abilityReference === a.id);
-                if (a.tierList && a.tierList.length > 0) {
-                    a.descKey = a.tierList[a.tierList.length - 1].descKey;
-                    delete a.tierList;
-                }
-                if (!skill) return;
-                const isOmicron = skill.tierList.some(sk => sk.powerOverrideTag?.toLowerCase()?.indexOf("omicron") > -1 || sk.recipeId?.toLowerCase()?.indexOf("omicron") > -1);
-                a.isZeta        = skill.isZeta;
-                a.isOmicron     = isOmicron ? true : false;
-                a.skillId       = skill.id;
-                a.tierList      = skill.tierList;
-                a.language      = lang.toLowerCase();
-                if (a.isOmicron) {
-                    a.omicronTier = skill.tierList.length;
-                }
-                if (a.isZeta) {
-                    a.zetaTier = isOmicron ? skill.tierList.length - 1 : skill.tierList.length;
-                }
-            });
-
-            for (const ability of abilities) {
-                if (skillArray.includes(ability.skillId)) {
-                    ab.push(ability);
-                }
-                await cache.put(config.mongodb.swapidb, "abilities", {skillId: ability.skillId, language: ability.language}, ability);
-            }
-            return ab;
+        // All the skills should be loaded, so just get em from the cache
+        if (opts.min) {
+            const skillOut = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
+            return skillOut;
         } else {
-            // All the skills should be loaded, so just get em from the cache
-            if (opts.min) {
-                const skillOut = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
-                return skillOut;
-            } else {
-                const skillOut = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
-                return skillOut;
-            }
+            const skillOut = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+            return skillOut;
         }
     }
 
@@ -607,7 +535,14 @@ module.exports = (opts={}) => {
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
             if (skill.tierList.length) {
-                s.cost = abilityCosts[skill.tierList[skill.tierList.length - 1].recipeId];
+                s.cost = {};
+                for (const tier of skill.tierList) {
+                    if (abilityCosts[tier]) {
+                        for (const key of Object.keys(abilityCosts[tier])) {
+                            s.cost[key] = s.cost[key] ? s.cost[key] += abilityCosts[tier][key] : s.cost[key] = abilityCosts[tier][key];
+                        }
+                    }
+                }
             }
         }
 
@@ -627,66 +562,8 @@ module.exports = (opts={}) => {
     }
 
     // Function for updating all the stored character data from the game
-    async function character( defId, update=false) {
-        const factionMap = {
-            bountyhunter : "bounty hunter",
-            cargoship    : "cargo ship",
-            light        : "light side",
-            dark         : "dark side"
-        };
-        let outChar = null;
-        if (update) {
-            let baseCharacters = await swgoh.fetchAPI("/swgoh/data", {
-                "collection": "unitsList",
-                "match": {
-                    "rarity": 7,
-                    "obtainable": true,
-                    "obtainableTime": 0
-                },
-                "project": {
-                    "baseId": 1,
-                    "skillReferenceList": 1,
-                    "categoryIdList": 1,
-                    "unitTierList": {
-                        "tier": 1,
-                        "equipmentSetList": 1
-                    },
-                    crewList: 1
-                }
-            });
-
-            baseCharacters = baseCharacters.result;
-
-            if (!baseCharacters) return console.error("No baseCharacters");
-
-            const catList = ["alignment", "profession", "affiliation", "role", "shipclass"];
-            for (const char of baseCharacters) {
-                char.factions = [];
-                if (!char.categoryIdList) return console.error("Missing baseCharacter abilities");
-                char.categoryIdList.forEach(c => {
-                    if (catList.some(str => c.startsWith(str + "_"))) {
-                        let faction = c.split("_")[1];
-                        if (factionMap[faction]) faction = factionMap[faction];
-                        faction = faction.replace(/s$/, "");
-                        char.factions.push(faction);
-                    }
-                });
-                delete char.categoryIdList;
-                char.crew = [];
-                if (char.crewList.length) {
-                    for (const c of char.crewList) {
-                        char.crew.push(c.unitId);
-                        char.skillReferenceList = char.skillReferenceList.concat(c.skillReferenceList);
-                    }
-                }
-                delete char.crewList;
-                if (defId === char.baseId) outChar = char;
-                if (char && char._id) delete char._id;
-                await cache.put(config.mongodb.swapidb, "characters", {baseId: char.baseId}, char);
-            }
-        } else {
-            outChar = await cache.get(config.mongodb.swapidb, "characters", {baseId: defId}, {_id: 0, updated: 0});
-        }
+    async function character( defId ) {
+        const outChar = await cache.get(config.mongodb.swapidb, "characters", {baseId: defId}, {_id: 0, updated: 0});
         if (outChar && outChar[0]) {
             return outChar[0];
         } else {
@@ -695,7 +572,7 @@ module.exports = (opts={}) => {
     }
 
     // Get the gear for a given character
-    async function gear( gearArray, lang, update=false ) {
+    async function gear( gearArray, lang ) {
         lang = lang || "eng_us";
         lang = lang.toLowerCase();
         if (!gearArray) {
@@ -704,93 +581,26 @@ module.exports = (opts={}) => {
             gearArray = [gearArray];
         }
 
-        if (update) {
-            const gOut = [];
-            let gearList = await swgoh.fetchAPI("/swgoh/data", {
-                "collection": "equipmentList",
-                "language": "eng_us",
-                "enums":true,
-                "project": {
-                    "id": 1,
-                    "nameKey": 1,
-                    "recipeId": 1,
-                    "mark": 1
-                }
-            });
-            gearList = gearList.result;
+        // All the skills should be loaded, so just get em from the cache
+        const gOut = await cache.get(config.mongodb.swapidb, "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+        return gOut;
 
-            if (!gearList) return console.error("Missing gearList for " + lang);
-
-            for (const gearPiece of gearList) {
-                gearPiece.language = lang.toLowerCase();
-                if (gearArray.includes(gearPiece.id)) {
-                    gOut.push(gearPiece);
-                }
-                if (gearPiece && gearPiece._id) delete gearPiece._id;
-                await cache.put(config.mongodb.swapidb, "gear", {id: gearPiece.id, language: lang}, gearPiece);
-            }
-            return gOut;
-        } else {
-            // All the skills should be loaded, so just get em from the cache
-            const gOut = await cache.get(config.mongodb.swapidb, "gear", {id: {$in: gearArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
-            return gOut;
-        }
     }
 
     // Used by farm, randomchar, and reloaddata
-    async function units( defId, lang, update=false ) {
+    async function units( defId, lang ) {
         lang = lang || "eng_us";
         lang = lang.toLowerCase();
-        if (!defId && !update) {
-            throw new Error("You need to specify a defId");
-        }
+        if (!defId) throw new Error("You need to specify a defId");
 
-        if (update) {
-            let uOut;
-            const unitList = await swgoh.fetchAPI("/swgoh/data", {
-                collection: "unitsList",
-                language: lang,
-                enums: true,
-                match: {
-                    rarity: 7,
-                    obtainable: true,
-                    obtainableTime: 0
-                },
-                project: {
-                    baseId: 1,
-                    nameKey: 1,
-                    categoryIdList: 1,
-                    skillReferenceList: 1,
-                    unitTierList: {
-                        tier: 1,
-                        equipmentSetList: 1
-                    },
-                    crewList: 1,
-                    creationRecipeReference: 1
-                }
-            });
-
-            if (!unitList?.result) return console.error("No unitList for " + lang);
-
-            for (const unit of unitList.result) {
-                unit.language = lang.toLowerCase();
-                if (unit.baseId === defId) {
-                    uOut = unit.nameKey;
-                }
-                if (unit && unit._id) delete unit._id;
-                await cache.put(config.mongodb.swapidb, "units", {baseId: unit.baseId, language: lang}, unit);
-            }
-            return uOut;
-        } else {
-            // All the skills should be loaded, so just get em from the cache
-            let uOut = await cache.get(config.mongodb.swapidb, "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
-            if (Array.isArray(uOut)) uOut = uOut[0];
-            return uOut;
-        }
+        // All the skills should be loaded, so just get em from the cache
+        let uOut = await cache.get(config.mongodb.swapidb, "units", {baseId: defId, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+        if (Array.isArray(uOut)) uOut = uOut[0];
+        return uOut;
     }
 
     // Get gear recipes
-    async function recipes( recArray, lang, update=false ) {
+    async function recipes( recArray, lang ) {
         lang = lang || "eng_us";
         if (!recArray) {
             throw new Error("You need to have a list of gear here");
@@ -798,42 +608,9 @@ module.exports = (opts={}) => {
             recArray = [recArray];
         }
 
-        if (update) {
-            const rOut = [];
-            let recList = await swgoh.fetchAPI("/swgoh/data", {
-                "collection": "recipeList",
-                "language": lang,
-                "enums":true,
-                "project": {
-                    "id": 1,
-                    "nameKey": 1,
-                    "descKey": 1,
-                    "result": 1,
-                    "ingredientsList": 1
-                }
-            });
-
-            recList = recList.result;
-
-            if (!recList) return console.error("No recList for " + lang);
-
-            // Wipe out all the old data because it breaks even when it shouldn't
-            await cache.wipe(config.mongodb.swapidb, "recipes");
-
-            // For each of the recipes it fetched, give them a language & stick em in
-            for (const rec of recList) {
-                rec.language = lang.toLowerCase();
-                if (recArray.includes(rec.id)) {
-                    rOut.push(rec);
-                }
-                await cache.put(config.mongodb.swapidb, "recipes", {id: rec.id, language: lang}, rec);
-            }
-            return rOut;
-        } else {
-            // All the skills should be loaded, so just get em from the cache
-            const rOut = await cache.get(config.mongodb.swapidb, "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
-            return rOut;
-        }
+        // All the skills should be loaded, so just get em from the cache
+        const rOut = await cache.get(config.mongodb.swapidb, "recipes", {id: {$in: recArray}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+        return rOut;
     }
 
     async function getRawGuild(allycode, cooldown) {

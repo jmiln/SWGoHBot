@@ -3,15 +3,13 @@ const cheerio = require("cheerio");
 
 const config = require("../config.js");
 const MongoClient = require("mongodb").MongoClient;
-let swgohAPI = null;
-if (config.swapiConfig) {
-    swgohAPI = require("../modules/swapi.js")(null);
-}
+let cache = null;
+
+const ComlinkStub = require("@swgoh-utils/comlink");
+const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
 
 const dataDir = __dirname + "/../data/";
 
-const ApiSwgohHelp = require("api-swgoh-help");
-const swgoh = new ApiSwgohHelp(config.fakeSwapiConfig.options);
 const campaignMapNames = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNames.json", "utf-8"))[0];
 const campaignMapNodes = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNodes.json", "utf-8"))[0];
 // const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
@@ -19,7 +17,6 @@ const campaignMapNodes = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/
 const GG_CHAR_CACHE          = dataDir + "swgoh-gg-chars.json";
 const GG_SHIPS_CACHE         = dataDir + "swgoh-gg-ships.json";
 const GG_MOD_CACHE           = dataDir + "swgoh-gg-mods.json";
-// const SWGOH_HELP_SQUAD_CACHE = dataDir + "squads.json";
 const CHAR_FILE              = dataDir + "characters.json";
 const CHAR_LOCATIONS         = dataDir + "charLocations.json";
 const SHIP_LOCATIONS         = dataDir + "shipLocations.json";
@@ -27,24 +24,28 @@ const SHIP_FILE              = dataDir + "ships.json";
 const GAMEDATA               = dataDir + "gameData.json";
 const UNKNOWN                = "Unknown";
 
-// const crinoloLocs = "https://script.google.com/macros/s/AKfycbxyzFyyOZvHyLcQcfR6ee8TAJqeuqst7Y-O-oSMNb2wlcnYFrs/exec?isShip=";
-// const charLocationLink = config.locations?.char ? config.locations.char : crinoloLocs + "false";
-// const shipLocationLink = config.locations?.ship ? config.locations.ship : crinoloLocs + "true";
-
 // How long between being runs (In minutes)
 const INTERVAL = 60;
 console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
 // Run the upater when it's started, then every ${INTERVAL} minutes after that
-runUpdater();
-setInterval(async () => {
-    await runUpdater();
-}, INTERVAL * 60 * 1000);
+init().then(async () => {
+    await updateGameData();
+    // await runUpdater();
+});
+// setInterval(async () => {
+//     await runUpdater();
+// }, INTERVAL * 60 * 1000);
+//
+async function init() {
+    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    cache = require("../modules/cache.js")(mongo);
+}
 
 async function runUpdater() {
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = await updateRemoteData();
-    if (log && log.length) {
+    if (log?.length) {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         console.log(log.join("\n"));
     } else {
@@ -133,9 +134,9 @@ async function updateRemoteData() {
 
     // If there are new units, run swgoh api updates for new character similar to `/reloaddata swlang if hasNewUnit is true, then reset it to false after
     if (hasNewUnit) {
-        console.log("Running updateSWLang");
-        await updateSWLang();
-        console.log("Finished running updateSWLang");
+        console.log("Running updateGameData");
+        await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
+        console.log("Finished running updateGameData");
         hasNewUnit = false;
     }
 
@@ -144,18 +145,6 @@ async function updateRemoteData() {
         log.push("Detected a change in mods from swgoh.gg");
         await updateCharacterMods(currentCharacters, ggModData);
     }
-
-    // if (await updateIfChanged({ localCachePath: SWGOH_HELP_SQUAD_CACHE, dataSourceUri: "https://swgoh.help/data/squads.json" })) {
-    //     log.push("Detected a squad change from swgoh.help.");
-    // }
-
-    // if (await updateIfChanged({ localCachePath: CHAR_LOCATIONS, dataSourceUri: charLocationLink })) {
-    //     log.push("Detected a change in character locations.");
-    // }
-    //
-    // if (await updateIfChanged({ localCachePath: SHIP_LOCATIONS, dataSourceUri: shipLocationLink })) {
-    //     log.push("Detected a change in ship locations.");
-    // }
 
     // Run unit locations updaters
     const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
@@ -388,8 +377,6 @@ async function getGgChars() {
 
     const charOut = [];
 
-    // As of Jan 27th, 2022, side and defId seem to have been taken out
-    // $("body > div.container.p-t-md > div.content-container > div.content-container-primary.character-list > ul > li:nth-child(3) > table > tbody > tr")
     $("table.table-striped > tbody > tr")
         .each((i, elem) => {
             let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
@@ -518,8 +505,6 @@ async function updatePatrons() {
     if (!patreon) {
         return;
     }
-    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
-    const cache = require("../modules/cache.js")(mongo);
     try {
         let response = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
             {
@@ -562,27 +547,14 @@ async function updatePatrons() {
     }
 }
 
-
 async function updateLocs(unitListFile, currentLocFile) {
     const currentUnits = JSON.parse(fs.readFileSync(unitListFile, "utf-8"));
     const currentLocs = JSON.parse(fs.readFileSync(currentLocFile, "utf-8"));
     const matArr = [];
 
     for (const unit of currentUnits) {
-        const res = await swgoh.fetchAPI("/swgoh/data", {
-            "collection": "materialList",
-            "language": "eng_us",
-            "enums":true,
-            "match": {
-                "id": `unitshard_${unit.uniqueName}`
-            },
-            "project": {
-                "lookupMissionList": {
-                    "missionIdentifier": true
-                }
-            }
-        });
-        if (res?.result?.length) {
+        const res = await cache.get(config.mongodb.swapidb, "materials", {id: `unitshard_${unit.uniqueName}`});
+        if (res?.length) {
             matArr.push({
                 defId: unit.uniqueName,
                 mats: res.result[0]
@@ -600,11 +572,8 @@ async function updateLocs(unitListFile, currentLocFile) {
         for (const node of missions) {
             if (node.campaignId === "EVENTS") continue;
             const outMode = campaignMapNames[node.campaignId]?.game_mode;
-            if (!outMode) {
-                // console.log("Missing location data for:");
-                // console.log(node);
-                continue;
-            }
+            if (!outMode) continue;
+
             const outNode = campaignMapNodes?.[node.campaignId]?.[node.campaignMapId]?.[node.campaignNodeDifficulty]?.[node.campaignNodeId]?.[node.campaignMissionId];
 
             let typeStr = "Hard Modes";
@@ -660,17 +629,244 @@ async function updateLocs(unitListFile, currentLocFile) {
     return finalOut.sort((a,b) => a?.name && b?.name ? (a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1) : (a.defId.toLowerCase() > b.defId.toLowerCase() ? 1 : -1));
 }
 
-// Update the language stuff from the swgoh api
-async function updateSWLang() {
-    if (!config.swapiConfig || !swgohAPI) return;
-    const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
-    await swgohAPI.character(null, true);
-    for (const lang of langList) {
-        await swgohAPI.units("", lang, true);
-        await swgohAPI.abilities([], lang, true);
-        await swgohAPI.gear([], lang, true);
-        if (lang.toLowerCase() === "eng_us") {
-            await swgohAPI.recipes([], lang, true);
+async function updateGameData() {
+    let locales = {};
+    async function updateGameData() {
+        const meta = await comlinkStub.getMetaData();
+        const gameData = await comlinkStub.getGameData(meta.latestGamedataVersion, false);
+
+        locales = await getLocalizationData(meta.latestLocalizationBundleVersion);
+
+        await processAbilities(gameData.ability, gameData.skill);
+        await processEquipment(gameData.equipment);
+        await processMaterials(gameData.material);
+        await processRecipes(gameData.recipe);
+        await processUnits(gameData.units);
+    }
+    await updateGameData();
+
+
+    /**
+    * function
+    * @param {Object[]} rawDataIn  - The array of objects to localize
+    * @param {string}   dbTarget   - The mongo table to insert into
+    * @param {string[]} targetKeys - An array of keys to localize
+    * @param {string}   dbIdKey    - The key to use as the unique db key
+    * @param {string[]} langList   - An array of localization languages
+    */
+    async function processLocalization(rawDataIn, dbTarget, targetKeys, dbIdKey="id", langList) {
+        if (!langList) langList = Object.keys(locales);
+        for (const lang of langList) {    // For each language that we need to localize for...
+            const dataIn = structuredClone(rawDataIn);
+            for (const data of dataIn) {    // For each chunk of the dataIn (ability, gear, recipes, unit, etc)
+                for (const target of targetKeys) {      // For each of the specified keys of each chunk
+                    data.language = lang;
+                    if (Array.isArray(data[target])) {
+                        for (const ix in data[target]) {    // If it's an array, go ahead and localize each entry inside
+                            if (locales[lang][data[target][ix]]) {
+                                data[target][ix] = locales[lang][data[target][ix]];
+                            }
+                        }
+                    } else {
+                        if (locales[lang][data[target]]) {
+                            data[target] = locales[lang][data[target]];
+                        }
+                    }
+                }
+                await cache.put(config.mongodb.swapidb, dbTarget, {[dbIdKey]: data[dbIdKey], language: lang}, data);
+            }
+            console.log(`Finished localizing ${dbTarget} for ${lang}`);
+        }
+        console.log(`Finished localizing ${dbTarget}`);
+    }
+
+    async function processAbilities(abilityIn, skillIn) {
+        const abilitiesOut = [];
+
+        for (const ability of abilityIn) {
+            const skill = skillIn.find(sk => sk.abilityReference === ability.id);
+            if (!skill) continue;
+
+            const abOut = {
+                id: ability.id,
+                type: ability.type,
+                nameKey: ability.nameKey,
+                descKey: ability.descKey,
+                cooldown: ability.cooldown,
+                isZeta: skill.isZeta || false,
+                skillId: skill.id,
+                tierList: skill.tier.map(t => t.recipeId)
+            };
+            if (ability?.tier?.length) {
+                abOut.abilityTiers = ability.tier?.map(ti => ti.descKey);
+                abOut.descKey = abOut.abilityTiers[abOut.abilityTiers.length-1];
+            }
+            if (skill.tier.filter(t => t.isOmicronTier)?.length) {
+                abOut.isOmicron = true;
+            }
+            if (abOut.isOmicron) {
+                abOut.omicronTier = abOut.tierList.length;
+            }
+            if (abOut.isZeta) {
+                abOut.zetaTier = abOut.isOmicron ? abOut.tierList.length-1 : abOut.tierList.length;
+            }
+            abilitiesOut.push(abOut);
+        }
+        await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", null);
+    }
+
+    async function processEquipment(equipmentIn) {
+        const mappedEquipmentList = equipmentIn.map(equipment => {
+            return {
+                id: equipment.id,
+                nameKey: equipment.nameKey,
+                recipeId: equipment.recipeId,
+                mark: equipment.mark
+            };
+        });
+        await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", null);
+    }
+
+    async function processMaterials(materialIn) {
+        // Filter the list to just be unit shards for now
+        const filteredList = materialIn.filter(mat => {
+            return mat.id.startsWith("unitshard");
+        });
+
+        // Then map em to just grab the bits that we want for later
+        const mappedMatList = filteredList.map(mat => {
+            return {
+                id: mat.id,
+                lookupMissionList: mat.lookupMission.map(mis => mis.missionIdentifier),
+                raidLookupList: mat.raidLookup.map(mis => mis.missionIdentifier),
+            };
+        });
+
+        // Then stick em in the db for later use
+        for (const mat of mappedMatList) {
+            await cache.put(config.mongodb.swapidb, "materials", {id: mat.id}, mat);
         }
     }
+
+    async function processRecipes(recipeIn) {
+        const mappedRecipeList = recipeIn.map(recipe => {
+            return {
+                id: recipe.id,
+                descKey: recipe.descKey,
+                ingredients: recipe.ingredients
+            };
+        });
+        await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", ["eng_us"]);
+    }
+
+    async function processUnits(unitsIn) {
+        const filteredList = unitsIn.filter(unit => {
+            if (unit.rarity !== 7 || !unit.obtainable || (unit.obtainableTime !== 0 && unit.obtainableTime !== "0")) return false;
+            return true;
+        }).map(unit => {
+            return {
+                baseId: unit.baseId,
+                nameKey: unit.nameKey,
+                skillReferenceList: unit.skillReference,
+                categoryIdList: unit.categoryId,
+                unitTierList: unit.unitTier?.map(tier => {
+                    return {
+                        tier: tier.tier,
+                        equipmentSetList: tier.equipmentSet
+                    };
+                }),
+                crewList: unit.crew,
+                creationRecipeReference: unit.creationRecipeReference
+            };
+        });
+
+        // Pass in a copy of the list so nothing gets altered that would be needed later
+        // This will convert everything to the format we're used to in the characters db table
+        await unitsToCharacter(JSON.parse(JSON.stringify(filteredList)));
+        // Then send the list to be processed
+        await processLocalization(filteredList, "units", ["nameKey"], "baseId", null);
+    }
+
+    async function unitsToCharacter(unitsIn) {
+        // Process the units list to go into the characters db table
+        const catList = ["alignment", "profession", "affiliation", "role", "shipclass"];
+        const factionMap = {
+            bountyhunter : "bounty hunter",
+            cargoship    : "cargo ship",
+            light        : "light side",
+            dark         : "dark side"
+        };
+
+        for (const unit of unitsIn) {
+            unit.factions = [];
+            delete unit.nameKey;
+            delete unit.creationRecipeReference;
+            if (!unit.categoryIdList) {
+                console.error("Missing baseCharacter abilities for " + unit.baseId);
+                continue;
+            }
+            unit.categoryIdList.forEach(cat => {
+                if (catList.some(str => cat.startsWith(str + "_"))) {
+                    let faction = cat.split("_")[1];
+                    if (factionMap[faction]) faction = factionMap[faction];
+                    faction = faction.replace(/s$/, "");
+                    unit.factions.push(faction);
+                }
+            });
+            delete unit.categoryIdList;
+            unit.crew = [];
+            if (unit.crewList.length) {
+                for (const crewChar of unit.crewList) {
+                    unit.crew.push(crewChar.unitId);
+                    unit.skillReferenceList = unit.skillReferenceList.concat(crewChar.skillReference);
+                }
+            }
+            delete unit.crewList;
+            await cache.put(config.mongodb.swapidb, "characters", {baseId: unit.baseId}, unit);
+        }
+    }
+
+    async function getLocalizationData(bundleVersion) {
+        const ignoreArr = ["datacron", "krayt", "anniversary", "promo", "subscription", "marquee"];
+        const localeData = await comlinkStub.getLocalizationBundle(
+            bundleVersion,
+            true    // unzip: true
+        );
+        delete localeData["Loc_Key_Mapping.txt"];
+
+        const localeOut = {};
+        for (const [lang, content] of Object.entries(localeData)) {
+            const out = {};
+            const contentSplit = content.split("\n");
+            const langKey = lang.replace("Loc_", "").replace(".txt", "").toLowerCase();
+
+            for (const row of contentSplit) {
+                if (ignoreArr.some(ign => row.includes(ign.toLowerCase()))) continue;
+                const res = processLocalizationLine(row);
+                if (!res) continue;
+                const [key, val] = res;
+                if (!key || !val) continue;
+                out[key] = val;
+            }
+            localeOut[langKey] = out;
+        }
+        return localeOut;
+    }
+
+    function processLocalizationLine(line) {
+        if (line.startsWith("#")) return;
+        let [ key, val ] = line.split(/\|/g).map(s => s.trim());
+        if (!key || !val) return;
+        val = val
+            .replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (m,p1) => p1)
+            .replace(/\\n/g, " ")
+            .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+        return [key, val];
+    }
 }
+
+
+
+
+
+

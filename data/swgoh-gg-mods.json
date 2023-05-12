@@ -706,7 +706,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Health"
+            "cross": "Health/ Protection"
         }
     },
     {
@@ -743,7 +743,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Tenacity"
+            "cross": "Potency/ Protection"
         }
     },
     {
@@ -1254,7 +1254,7 @@
             "diamond": "Defense",
             "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Potency"
+            "cross": "Protection"
         }
     },
     {
@@ -1597,7 +1597,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -1779,7 +1779,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Speed",
+            "arrow": "Speed/ Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -2071,7 +2071,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense/ Tenacity"
+            "cross": "Offense"
         }
     },
     {
@@ -2164,7 +2164,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense"
+            "cross": "Offense/ Protection"
         }
     },
     {
@@ -2364,7 +2364,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Defense",
+            "triangle": "Health/ Protection",
             "circle": "Health/ Protection",
             "cross": "Health/ Tenacity"
         }
@@ -2401,8 +2401,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
+            "triangle": "Protection/ Defense",
+            "circle": "Protection/ Health",
             "cross": "Protection/ Health"
         }
     },
@@ -2693,7 +2693,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -2734,7 +2734,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection"
+            "cross": "Offense"
         }
     },
     {
@@ -2917,7 +2917,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health/ Protection",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Potency"
         }
     },
@@ -3355,7 +3355,7 @@
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Chance",
             "circle": "Health/ Protection",
-            "cross": "Potency/ Offense"
+            "cross": "Potency"
         }
     },
     {
@@ -3614,6 +3614,24 @@
         }
     },
     {
+        "name": "Saw Gerrera",
+        "charUrl": "https://swgoh.gg/characters/saw-gerrera/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_sawgerrera.png",
+        "modsUrl": "https://swgoh.gg/characters/saw-gerrera/best-mods/",
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        }
+    },
+    {
         "name": "Scarif Rebel Pathfinder",
         "charUrl": "https://swgoh.gg/characters/scarif-rebel-pathfinder/",
         "image": "https://game-assets.swgoh.gg/tex.charui_rebel_scarif.png",
@@ -3719,7 +3737,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense/ Protection"
         }
     },
@@ -3996,7 +4014,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Protection/ Defense"
+            "cross": "Defense/ Protection"
         }
     },
     {
@@ -4159,7 +4177,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection"
+            "cross": "Offense"
         }
     },
     {
@@ -4432,7 +4450,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
