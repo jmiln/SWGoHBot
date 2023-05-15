@@ -193,8 +193,7 @@ class Charactergear extends Command {
                         });
                     } else {
                         if (doExpand) {
-                        // If they want all the pieces, work on that
-
+                            // If they want all the pieces, work on that
                             const out = await expandPieces(Bot, g.equipmentSetList);
                             const outK = Object.keys(out).sort((a, b) => parseInt(out[a].mark, 10) - parseInt(out[b].mark, 10));
 
@@ -216,14 +215,30 @@ class Charactergear extends Command {
                         value: player.warnings.join("\n")
                     });
                 }
+                const totalLen = fields.reduce((acc, cur) => {return acc + cur.value.length;}, 0);
                 const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
-                return interaction.reply({embeds: [{
-                    author: {
-                        name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`
-                    },
-                    fields: fields,
-                    footer: footer
-                }]});
+                if (totalLen < 5500) {
+                    return interaction.reply({embeds: [{
+                        author: {
+                            name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`
+                        },
+                        fields: fields,
+                        footer: footer
+                    }]});
+                } else {
+                    const half = parseInt(fields.length/2, 10);
+                    await interaction.reply({embeds: [{
+                        author: {
+                            name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`
+                        },
+                        fields: fields.slice(0, half),
+                    }]});
+                    return await interaction.followUp({embeds: [{
+                        title: Bot.constants.zws,
+                        fields: fields.slice(half),
+                        footer: footer
+                    }]});
+                }
             }
         }
     }

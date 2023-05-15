@@ -1,5 +1,6 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
+const { changelog } = require("../config");
 
 class ArenaAlert extends Command {
     constructor(Bot) {
@@ -153,6 +154,9 @@ class ArenaAlert extends Command {
         }
 
         await Bot.userReg.updateUser(userID, user);
+        if (!changelog.length) {
+            return super.success(interaction, "It looks like nothing was updated.");
+        }
         return super.success(interaction, changeLog.join("\n"));
     }
 }
