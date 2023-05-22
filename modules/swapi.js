@@ -1,6 +1,6 @@
-const {inspect} = require("util"); // eslint-disable-line no-unused-vars
+const { inspect } = require("util"); // eslint-disable-line no-unused-vars
 const statEnums = require("../data/statEnum.js");
-const npmAsync = require("async");
+const { eachLimit } = require("async");
 const { readFileSync } = require("node:fs");
 
 const config = require(__dirname + "/../config.js");
@@ -10,23 +10,18 @@ const statCalculator = require("swgoh-stat-calc");
 statCalculator.setGameData(gameData);
 
 const ComlinkStub = require("@swgoh-utils/comlink");
-let swgoh = null;
-let comlinkStub = null;
-
-if (config.swapiConfig || config.fakeSwapiConfig) {
-    // Load up the api connector/ helpers
-    const ApiSwgohHelp = require("api-swgoh-help");
-    swgoh = (config.fakeSwapiConfig && config.fakeSwapiConfig.enabled) ?
-        new ApiSwgohHelp(config.fakeSwapiConfig.options) :
-        new ApiSwgohHelp(config.swapiConfig);
-
-    if (config.fakeSwapiConfig?.clientStub) {
-        // Do stuff
-        comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-    }
+if (!config.fakeSwapiConfig?.clientStub) {
+    throw new Error("Missing clientStub config info!");
 }
+const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
+
+const modMap = require(__dirname + "/../data/modMap.json");
+const unitMap = require(__dirname + "/../data/unitMap.json");
+const skillMap = require(__dirname + "/../data/skillMap.json");
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
+
+const MAX_CONCURRENT = 20;
 
 let specialAbilityList = null;
 let cache = null;
@@ -117,7 +112,6 @@ module.exports = (opts={}) => {
     }
 
     async function getPlayersArena(allycodes) {
-        const MAX_CONCURRENT = 20;
         if (!Array.isArray(allycodes)) {
             if (!allycodes) {
                 return false;
@@ -128,7 +122,7 @@ module.exports = (opts={}) => {
         if (!allycodes.length) throw new Error("No valid ally code(s) entered");
 
         const playersOut = [];
-        await npmAsync.eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
+        await eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
             const p = await comlinkStub.getPlayerArenaProfile(ac.toString())
                 .catch(() => {});
                 // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
@@ -157,30 +151,25 @@ module.exports = (opts={}) => {
     }
 
     async function getPlayerUpdates(allycodes) {
+        const specialAbilities = await getSpecialAbilities();
         if (!Array.isArray(allycodes)) {
             allycodes = [allycodes];
         }
 
-        let tempBare = null, updatedBare = null;
-        if (allycodes.length > 25) {
-            tempBare = await swgoh.fetchPlayer({
-                allycode: allycodes.slice(0, Math.floor(allycodes.length/2))
+        const updatedBare = [];
+        await eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
+            const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch((err) => {
+                console.error(`Error in eachLimit getPlayer (${ac}):`);
+                return console.error(err);
             });
-            updatedBare = tempBare.result;
+            if (!tempBare) console.error("[getPlayerUpdates] Broke while getting tempBare");
+            else {
+                const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                updatedBare.push(formattedComlinkPlayer);
+            }
+        });
 
-            // Then get the 2nd half
-            tempBare = await swgoh.fetchPlayer({
-                allycode: allycodes.slice(Math.floor(allycodes.length/2), allycodes.length)
-            });
-            updatedBare = updatedBare.concat(tempBare.result);
-        } else {
-            tempBare = await swgoh.fetchPlayer({
-                allycode: allycodes
-            });
-            updatedBare = tempBare.result;
-        }
-
-        const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes}});
+        const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes.map(ac => parseInt(ac, 10))}});
         const guildLog = {};
 
         // For each of the up to 50 players in the guild
@@ -206,54 +195,78 @@ module.exports = (opts={}) => {
             };
 
             // Check through each of the 250ish? units in their roster for differences
-            let updated = false;
             for (const newUnit of newPlayer.roster) {
                 const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
                 const locChar = await langChar({defId: newUnit.defId, skills: newUnit.skills});
                 if (!oldUnit) {
                     playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
-                    updated = true;
+                    if (newUnit?.level > 1) {
+                        playerLog.unlocked.push(` - Upgraded to level ${newUnit.level}`);
+                    }
+                    if (newUnit.gear > 1) {
+                        playerLog.unlocked.push(` - Upgraded to gear ${newUnit.gear}`);
+                    }
                     continue;
                 }
                 if (oldUnit.level < newUnit.level) {
                     playerLog.leveled.push(`Leveled up ${locChar.nameKey} to ${newUnit.level}!`);
-                    updated = true;
                 }
                 if (oldUnit.rarity < newUnit.rarity) {
                     playerLog.starred.push(`Starred up ${locChar.nameKey} to ${newUnit.rarity} star!`);
-                    updated = true;
                 }
                 for (const skillId of newUnit.skills.map(s => s.id)) {
                     // For each of the skills, see if it's changed
                     const oldSkill = oldUnit.skills.find(s => s.id === skillId);
                     const newSkill = newUnit.skills.find(s => s.id === skillId);
-                    if (oldSkill?.tier < newSkill?.tier) {
+
+                    if ((!oldSkill && newSkill?.tier) ||  oldSkill?.tier < newSkill?.tier) {
                         const locSkill = locChar.skills.find(s => s.id == skillId);
 
-                        if (newSkill.isZeta && newSkill.tier == newSkill.tiers) {
-                            // If the skill's been zeta'd
-                            playerLog.abilities.push(`Zeta'd ${locChar.nameKey}'s **${locSkill.nameKey}**`);
+                        // Grab zeta/ omicron data for the ability if available
+                        const thisAbility = specialAbilities.find(abi => abi.skillId == newSkill.id);
+                        if (thisAbility?.omicronTier) {
+                            newSkill.isOmicron = true;
+                            newSkill.omicronTier = thisAbility.omicronTier + 1;
+                            newSkill.omicronMode = thisAbility.omicronMode;
+                        }
+                        if (thisAbility?.zetaTier) {
+                            newSkill.isZeta = true;
+                            newSkill.zetaTier = thisAbility.zetaTier + 1;
+                        }
+
+                        if (!oldSkill) {
+                            playerLog.abilities.push(`Unlocked ${locChar.nameKey}'s **${locSkill.nameKey}**`);
+                        }
+
+                        if ((newSkill.isOmicron || newSkill.isZeta) && (newSkill.tier >= newSkill.zetaTier || newSkill.tier >= newSkill.omicronTier)) {
+                            // If the skill has zeta/ omicron tiers, and is high enough level
+                            if (oldSkill?.tier < newSkill.zetaTier && newSkill.tier >= newSkill.zetaTier) {
+                                // If it was below the Zeta tier before, and at or above it now
+                                playerLog.abilities.push(`Zeta'd ${locChar.nameKey}'s **${locSkill.nameKey}**`);
+                            }
+
+                            if (oldSkill?.tier < newSkill.omicronTier && newSkill.tier >= newSkill.omicronTier) {
+                                // If it was below the Omicron tier before, and at or above it now
+                                playerLog.abilities.push(`Omicron'd ${locChar.nameKey}'s **${locSkill.nameKey}**`);
+                            }
                         } else {
-                            // Or if it's just a normal upgrade
+                            // In case it's either too low to be a zeta or omicron tier upgrade, or just doesn't have one
                             playerLog.abilities.push(`Upgraded ${locChar.nameKey}'s **${locSkill.nameKey}** to level ${newSkill.tier}`);
                         }
-                        updated = true;
                     }
                 }
                 if (oldUnit.gear < newUnit.gear) {
                     playerLog.geared.push(`Geared up ${locChar.nameKey} to G${newUnit.gear}!`);
-                    updated = true;
                 }
                 if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && (newUnit.relic.currentTier - 2) > 0) {
                     playerLog.reliced.push(`Upgraded ${locChar.nameKey} to relic ${newUnit.relic.currentTier-2}!`);
-                    updated = true;
                 }
                 if (oldUnit?.purchasedAbilityId?.length < newUnit?.purchasedAbilityId?.length) {
                     playerLog.ultimate.push(`Unlocked ${locChar.nameKey}'s **ultimate**'`);
                 }
             }
-            if (updated) {
+            if (playerLog?.length) {
                 guildLog[newPlayer.name] = playerLog;
                 await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
             }
@@ -310,6 +323,9 @@ module.exports = (opts={}) => {
                     players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
                 }
             }
+
+            // If options.force is true (Apparently never used?), set the list of unexpired players to be empty
+            // This will make it so that all players will be run through the updater
             const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
             const updatedAC = updated.map(p => parseInt(p.allyCode, 10));
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
@@ -318,31 +334,19 @@ module.exports = (opts={}) => {
 
             let warning;
             if (needUpdating.length) {
-                let updatedBare;
+                const updatedBare = [];
                 try {
-                    let tempBare;
-                    if (needUpdating.length <= 20) {
-                        // If it's not a ton of players at a time
-                        tempBare = await swgoh.fetchPlayer({
-                            allycode: needUpdating
+                    await eachLimit(needUpdating, MAX_CONCURRENT, async function(ac) {
+                        const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch((err) => {
+                            console.error(`Error in eachLimit getPlayer (${ac}):`);
+                            return console.error(err);
                         });
-                        if (tempBare.warning) warning = tempBare.warning;
-                        if (tempBare.error) throw new Error(tempBare.error);
-                        updatedBare = tempBare.result;
-                    } else {
-                        // If it's a lot of users
-                        // Get the first half of the list
-                        tempBare = await swgoh.fetchPlayer({
-                            allycode: needUpdating.slice(0, Math.floor(needUpdating.length/2))
-                        });
-                        updatedBare = tempBare.result;
-
-                        // Then get the 2nd half
-                        tempBare = await swgoh.fetchPlayer({
-                            allycode: needUpdating.slice(Math.floor(needUpdating.length/2), needUpdating.length)
-                        });
-                        updatedBare = updatedBare.concat(tempBare.result);
-                    }
+                        if (!tempBare) console.error("Broke while getting tempBare");
+                        else {
+                            const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                            updatedBare.push(formattedComlinkPlayer);
+                        }
+                    });
                 } catch (error) {
                     // Couldn't get the data from the api, so send old stuff
                     return players;
@@ -379,6 +383,7 @@ module.exports = (opts={}) => {
                                         ability.omicronMode = thisAbility.omicronMode;
                                     }
                                     if (thisAbility.zetaTier) {
+                                        ability.isZeta = true;
                                         ability.zetaTier = thisAbility.zetaTier + 1;
                                     }
                                 }
@@ -402,6 +407,108 @@ module.exports = (opts={}) => {
             console.error("SWAPI Broke getting playerStats: " + error);
             throw error;
         }
+    }
+
+    function getUnitDefId(unitDefId) {
+        if (typeof unitDefId !== "string") return unitDefId;
+        return unitDefId.split(":")[0];
+    }
+
+    async function formatComlinkPlayer(comlinkPlayer) {
+        const comlinkPlayerArena = {};
+        const emptyArena = {rank: null, squad: null};
+
+        for (const { tab, rank, squad } of comlinkPlayer.pvpProfile) {
+            comlinkPlayerArena[tab] = {
+                rank: rank,
+                squad: squad?.cell?.map(unit => {
+                    return {
+                        id: unit.unitId,
+                        defId: getUnitDefId(unit.unitDefId),
+                    };
+                }) || [],
+                // TODO Should probably look into making use of this if I ever get around to figuring out datacrons
+                // unformattedSquad: squad
+            };
+        }
+
+        return {
+            allyCode: parseInt(comlinkPlayer.allyCode, 10),
+            guildId: comlinkPlayer.guildId,
+            guildName: comlinkPlayer.guildName,
+            id: comlinkPlayer.playerId,
+            name: comlinkPlayer.name,
+            roster: comlinkPlayer.rosterUnit.map(unit => {
+                const thisDefId = unit.definitionId.split(":")[0];
+                const thisUnit = unitMap[thisDefId];
+                return {
+                    id: unit.id,
+                    defId: thisDefId,
+                    nameKey: thisUnit.nameKey,
+                    level: unit.currentLevel,
+                    rarity: unit.currentRarity,
+                    gear: unit.currentTier,
+                    equipped: unit.equipment ? unit.equipment : [],
+                    skills: unit.skill.map(sk => {
+                        const thisSkill = skillMap[sk.id];
+                        return {
+                            id: sk.id,
+                            tier: sk.tier + 2,
+                            tiers: thisSkill.tiers + 1
+                        };
+                    }),
+                    relic: unit.relic,
+                    purchasedAbilityId: unit.purchasedAbilityId,
+                    crew: thisUnit.crew,
+                    combatType: thisUnit.combatType,
+                    mods: unit.equippedStatMod.map(mod => {
+                        const {pips, slot, set} = modMap[mod.definitionId];
+                        return {
+                            id: mod.id,
+                            level: mod.level,
+                            tier: mod.tier,
+                            secondaryStat: mod.secondaryStat,
+                            primaryStat: mod.primaryStat,
+                            pips, slot, set
+                        };
+                    })
+                };
+            }),
+            stats: comlinkPlayer.profileStat?.filter(({nameKey}) => nameKey.includes("GALACTIC_POWER")).map(({nameKey, value}) => {
+                return {
+                    nameKey,
+                    value: Number(value)
+                };
+            }) || [],
+            arena: {
+                char: comlinkPlayerArena[1] || emptyArena,
+                ship: comlinkPlayerArena[2] || emptyArena
+            },
+            guildBannerColor: comlinkPlayer.guildBannerColor,
+            guildBannerLogo: comlinkPlayer.guildBannerLogo,
+            poUTCOffsetMinutes: comlinkPlayer.localTimeZoneOffsetMinutes,
+            lastActivity: comlinkPlayer.lastActivityTime,
+
+            // // TODO I don't do anything with these, but I probably should at some point
+            // datacron: ???
+            // grandArena: comlinkPlayer.seasonStatus,
+            // playerRating: comlinkPlayer.playerRating,
+            // lifetimeSeasonScore: comlinkPlayer.lifetimeSeasonScore,
+
+            // // I don't do anything with the rest of these at this time
+            // titles: {
+            //     selected: comlinkPlayer.selectedPlayerTitle || null,
+            //     unlocked: comlinkPlayer.unlockedPlayerTitle || []
+            // }
+            // portraits: {
+            //     selected: comlinkPlayer.selectedPlayerPortrait?.id || null,
+            //     unlocked: comlinkPlayer?.unlockedPlayerPortrait.map(portrait => portrait.id) || []
+            // },
+            // guildTypeId: comlinkPlayer.guildTypeId,
+
+            // // Never seems to be populated?
+            // guildLogoBackground,
+        };
     }
 
     async function langChar(char, lang) {
@@ -689,9 +796,7 @@ module.exports = (opts={}) => {
         return rawGuild;
     }
 
-    async function guild( allycode, lang="ENG_US", cooldown ) {
-        lang = lang || "ENG_US";
-
+    async function guild( allycode, cooldown ) {
         if (cooldown) {
             cooldown = cooldown.guild;
             if (cooldown > guildMaxCooldown) cooldown = guildMaxCooldown;
@@ -708,32 +813,26 @@ module.exports = (opts={}) => {
         let player = await unitStats(allycode);
         if (Array.isArray(player)) player = player[0];
         if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
-        if (!player.guildRefId) throw new Error("Sorry, that player is not in a guild");
+        if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
 
-        let guild = await cache.get(config.mongodb.swapidb, "guilds", {id: player.guildRefId});
+        let guild = await cache.get(config.mongodb.swapidb, "guilds", {id: player.guildId});
 
         /** Check if existance and expiration */
         if ( !guild || !guild[0] || isExpired(guild[0].updated, cooldown, true) ) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild;
             try {
-                tempGuild = await swgoh.fetchGuild({
-                    allycode: allycode,
-                    language: lang
-                });
-                if (tempGuild.warning) warnings = tempGuild.warning;
-                if (tempGuild.error) throw new Error(tempGuild.error.description);
-                tempGuild = tempGuild.result;
+                tempGuild = await fetchGuild(player.guildId);
             } catch (err) {
                 // Probably API timeout
-                // console.log("[SWAPI-guild] Couldn't update guild for: " + player.name);
+                console.log("[SWAPI-guild] Couldn't update guild for: " + player.name);
                 throw new Error(err);
             }
             // console.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
 
-            if (tempGuild && tempGuild[0]) {
+            if (Array.isArray(tempGuild)) {
                 tempGuild = tempGuild[0];
-                if (tempGuild && tempGuild._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
+                if (tempGuild?._id) delete tempGuild._id;  // Delete this since it's always whining about it being different
             }
 
             if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
@@ -745,8 +844,8 @@ module.exports = (opts={}) => {
                 }
             }
 
-            if (tempGuild.roster.length !== tempGuild.members) {
-                console.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster.length}/${tempGuild.members}`);
+            if (tempGuild.roster?.length !== tempGuild.members) {
+                console.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
             guild = await cache.put(config.mongodb.swapidb, "guilds", {id: tempGuild.id}, tempGuild);
             if (warnings) guild.warnings = warnings;
@@ -755,6 +854,101 @@ module.exports = (opts={}) => {
             guild = guild[0];
         }
         return guild;
+    }
+
+    async function fetchGuild(guildId) {
+        const comlinkGuild = await comlinkStub.getGuild(guildId, true);
+
+        const formattedGuild = await formatGuild(comlinkGuild);
+        return formattedGuild;
+    }
+
+    async function formatGuild({ guild, raidLaunchConfig, ...topRest }) {
+        const {
+            profile,
+            guildEventTracker,
+            nextChallengesRefresh,
+            recentTerritoryWarResult,
+            member,
+            ...guildRest
+        } = guild;
+        const {
+            id,
+            name,
+            externalMessageKey,
+            memberCount,
+            enrollmentStatus,
+            levelRequirement,
+            bannerColorId,
+            bannerLogoId,
+            internalMessage,
+            guildGalacticPower,
+            ...profileRest
+        } = profile;
+
+        const raids = {};
+        if (raidLaunchConfig) {
+            for (const { campaignMissionIdentifier, raidId } of raidLaunchConfig) {
+                raids[raidId] = campaignMissionIdentifier.campaignMissionId;
+            }
+        }
+
+        const members = [];
+        await eachLimit(member, MAX_CONCURRENT, async function({playerId, memberLevel, memberContribution, ...rest}) {
+            // Grab each player and process their info
+            const {name, level, allyCode, profileStat} = await comlinkStub.getPlayer(null, playerId);
+
+            let gp;
+            let gpChar;
+            let gpShip;
+            for (const stat of profileStat) {
+                if (stat.nameKey == "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
+                    gpShip = Number(stat.value);
+                } else if (stat.nameKey == "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
+                    gp = Number(stat.value);
+                } else if (stat.nameKey == "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
+                    gpChar = Number(stat.value);
+                }
+                if (gp && gpChar && gpShip) break;
+            }
+
+            members.push({
+                ...rest,
+                id: playerId,
+                guildMemberLevel: memberLevel,
+                memberContribution,
+                name,
+                level,
+                allyCode: Number(allyCode),
+                gp,
+                gpChar,
+                gpShip,
+                updated: new Date().getTime()
+            });
+        });
+
+        return {
+            ...profileRest,
+            ...topRest,
+            ...guildRest,
+            id,
+            name,
+            desc: externalMessageKey,
+            members: memberCount,
+            status: enrollmentStatus,
+            required: levelRequirement,
+            bannerColor: bannerColorId,
+            bannerLogo: bannerLogoId,
+            message: internalMessage,
+            gp: Number(guildGalacticPower),
+            raid: raids,
+            roster: members,
+            updated: new Date().getTime(),
+            recentTerritoryWarResult,
+            nextChallengesRefresh,
+            guildEventTracker,
+            raidLaunchConfig
+        };
     }
 
     async function guildByName( gName ) {

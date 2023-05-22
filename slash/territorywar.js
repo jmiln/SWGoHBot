@@ -61,7 +61,7 @@ class TerritoryWar extends Command {
         // Get the name & ally code for each player in each of the guilds
         let guild1 = null;
         try {
-            guild1 = await Bot.swgohAPI.guild(user1, null, cooldown);
+            guild1 = await Bot.swgohAPI.guild(user1, cooldown);
             if (!guild1?.roster?.length) {
                 problemArr.push(`The guild for ${user1} did not come back with anyone in it`);
             }
@@ -71,7 +71,7 @@ class TerritoryWar extends Command {
 
         let guild2 = null;
         try {
-            guild2 = await Bot.swgohAPI.guild(user2, null, cooldown);
+            guild2 = await Bot.swgohAPI.guild(user2, cooldown);
         } catch (err) {
             problemArr.push(`I could not find a guild for "${user2str}"`);
         }

@@ -218,7 +218,7 @@ class GuildSearch extends Command {
 
         let guild = null;
         try {
-            guild = await Bot.swgohAPI.guild(allycode, null, cooldown);
+            guild = await Bot.swgohAPI.guild(allycode, cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, "Sorry, but it looks like that player is not in a guild");
@@ -229,7 +229,7 @@ class GuildSearch extends Command {
         if (!guild?.roster?.length) {
             return interaction.editReply({content: interaction.language.get("BASE_SWGOH_NO_GUILD")});
         } else {
-            interaction.editReply({content: `Found guild \`${guild.name}\`!`});
+            interaction.editReply({content: `Found guild \`${guild.name}\`!\n*Processing...*`});
 
             const oldLen = guild.roster.length;
             guild.roster = guild.roster.filter(m => m.allyCode !== null);

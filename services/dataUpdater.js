@@ -641,6 +641,7 @@ async function updateGameData() {
         await processAbilities(gameData.ability, gameData.skill);
         await processEquipment(gameData.equipment);
         await processMaterials(gameData.material);
+        await processModData(gameData.statMod);
         await processRecipes(gameData.recipe);
         await processUnits(gameData.units);
     }
@@ -683,6 +684,7 @@ async function updateGameData() {
 
     async function processAbilities(abilityIn, skillIn) {
         const abilitiesOut = [];
+        const skillMap = {};
 
         for (const ability of abilityIn) {
             const skill = skillIn.find(sk => sk.abilityReference === ability.id);
@@ -712,7 +714,15 @@ async function updateGameData() {
                 abOut.zetaTier = abOut.isOmicron ? abOut.tierList.length-1 : abOut.tierList.length;
             }
             abilitiesOut.push(abOut);
+
+            skillMap[skill.id] = {
+                nameKey: ability.nameKey,
+                isZeta: skill.isZeta,
+                tiers: skill.tier.length,
+                abilityId: skill.abilityReference
+            };
         }
+        await fs.writeFileSync(__dirname + "/../data/skillMap.json", JSON.stringify(skillMap), {encoding: "utf-8"});
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", null);
     }
 
@@ -749,6 +759,19 @@ async function updateGameData() {
         }
     }
 
+    async function processModData(modIn) {
+        // gameData.statMod  ->  This is used to get slot, set, and pip of each mod
+        const modsOut = {};
+        modIn.forEach(m => {
+            modsOut[m.id] = {
+                pips:  m.rarity,
+                set:  m.setId,
+                slot: m.slot
+            };
+        });
+        await fs.writeFileSync(__dirname + "/../data/modMap.json", JSON.stringify(modsOut), {encoding: "utf-8"});
+    }
+
     async function processRecipes(recipeIn) {
         const mappedRecipeList = recipeIn.map(recipe => {
             return {
@@ -770,6 +793,7 @@ async function updateGameData() {
                 nameKey: unit.nameKey,
                 skillReferenceList: unit.skillReference,
                 categoryIdList: unit.categoryId,
+                combatType: unit.combatType,
                 unitTierList: unit.unitTier?.map(tier => {
                     return {
                         tier: tier.tier,
@@ -786,6 +810,8 @@ async function updateGameData() {
         await unitsToCharacter(JSON.parse(JSON.stringify(filteredList)));
         // Then send the list to be processed
         await processLocalization(filteredList, "units", ["nameKey"], "baseId", null);
+        // Then send a copy through for the unitMap to help format player rosters
+        await unitsToUnitMap(filteredList);
     }
 
     async function unitsToCharacter(unitsIn) {
@@ -827,8 +853,28 @@ async function updateGameData() {
         }
     }
 
+    async function unitsToUnitMap(unitsIn) {
+        // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
+        const unitsOut = {};
+        unitsIn.forEach(unit => {
+            unitsOut[unit.baseId] = {
+                nameKey: unit.nameKey,
+                combatType: unit.combatType,
+                crew: unit.crewList.map(cr => {
+                    return {
+                        skillReferenceList: cr.skillReference,
+                        unitId: cr.unitId,
+                        slot: cr.slot
+                    };
+                })
+            };
+        });
+
+        await fs.writeFileSync(__dirname + "/../data/unitMap.json", JSON.stringify(unitsOut), {encoding: "utf-8"});
+    }
+
     async function getLocalizationData(bundleVersion) {
-        const ignoreArr = ["datacron", "krayt", "anniversary", "promo", "subscription", "marquee"];
+        const ignoreArr = ["datacron", "anniversary", "promo", "subscription", "marquee"];
         const localeData = await comlinkStub.getLocalizationBundle(
             bundleVersion,
             true    // unzip: true

@@ -222,7 +222,7 @@ class Guilds extends Command {
         let guild = null;
         try {
             // Grab the guild's info from the DB
-            guild = await Bot.swgohAPI.guild(userAC, null, cooldown);
+            guild = await Bot.swgohAPI.guild(userAC, cooldown);
 
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter(mem => mem.guildMemberLevel > 1);

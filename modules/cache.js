@@ -33,8 +33,7 @@ module.exports = clientMongo => {
 
         if (!saveObject.updated && autoUpdate) {
             //set updated time to now
-            saveObject.updated = new Date();
-            saveObject.updated = saveObject.updated.getTime();
+            saveObject.updated = new Date().getTime();
         }
 
         // Use a format that works with mongo's auto-cleaning

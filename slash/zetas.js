@@ -182,7 +182,7 @@ class Zetas extends Command {
             let guildGG = null;
 
             try {
-                guild = await Bot.swgohAPI.guild(player.allyCode, null, cooldown);
+                guild = await Bot.swgohAPI.guild(player.allyCode, cooldown);
                 // TODO  Lang this
                 if (!guild) return super.error(interaction, "Cannot find guild");
                 if (!guild.roster) return super.error(interaction, "Cannot find your guild's roster");
