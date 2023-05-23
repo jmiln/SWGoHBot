@@ -19,7 +19,6 @@
     },
     "dependencies": {
         "@swgoh-utils/comlink": "^1.4.1",
-        "api-swgoh-help": "^3.3.0",
         "async": "^3.2.4",
         "cheerio": "^1.0.0-rc.12",
         "discord.js": "^14.11.0",
