@@ -1330,6 +1330,34 @@
         "activate_shard_count": 80
     },
     {
+        "name": "TIE Dagger",
+        "base_id": "TIEDAGGER",
+        "url": "http://swgoh.gg/ships/tie-dagger/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_tiedagger.png",
+        "power": 85779,
+        "description": "Retaliatory Attacker that uses Vengeance to undercut enemy defenses",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "First Order",
+            "Sith"
+        ],
+        "ability_classes": [
+            "Ability Block",
+            "AoE",
+            "Counter",
+            "Dispel",
+            "Healing Immunity",
+            "Taunt",
+            "Tenacity Down",
+            "Vulnerable"
+        ],
+        "role": "Attacker",
+        "capital_ship": false,
+        "activate_shard_count": 80
+    },
+    {
         "name": "TIE Defender",
         "base_id": "TIEDEFENDER",
         "url": "http://swgoh.gg/ships/tie-defender/",

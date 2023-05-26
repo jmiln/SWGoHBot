@@ -1703,6 +1703,26 @@
         ]
     },
     {
+        "name": "TIE Dagger",
+        "uniqueName": "TIEDAGGER",
+        "aliases": [
+            "TIE Dagger"
+        ],
+        "nameVariant": [
+            "TIE Dagger"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tie-dagger/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiedagger.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "First Order",
+            "Sith"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "TIE Defender",
         "uniqueName": "TIEDEFENDER",
         "aliases": [

@@ -37092,8 +37092,8 @@
             "Stun"
         ],
         "role": "Attacker",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "TIEDAGGER",
+        "ship_slot": 0,
         "activate_shard_count": 25
     },
     {

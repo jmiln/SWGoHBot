@@ -459,7 +459,12 @@
     {
         "name": "Cere Junda",
         "defId": "CEREJUNDA",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "3-A"
+            }
+        ]
     },
     {
         "name": "Chewbacca",
@@ -2207,7 +2212,7 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "3-A"
+                "level": "4-F"
             }
         ]
     },

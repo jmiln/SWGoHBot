@@ -690,6 +690,11 @@
         ]
     },
     {
+        "name": "TIE Dagger",
+        "defId": "TIEDAGGER",
+        "locations": []
+    },
+    {
         "name": "TIE Defender",
         "defId": "TIEDEFENDER",
         "locations": [

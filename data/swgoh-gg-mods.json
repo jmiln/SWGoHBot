@@ -32,7 +32,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Potency"
+            "cross": "Health"
         }
     },
     {
@@ -304,7 +304,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Offense"
         }
     },
@@ -452,7 +452,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -505,7 +505,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Chance",
-            "circle": "Health/ Protection",
+            "circle": "Protection/ Health",
             "cross": "Potency"
         }
     },
@@ -541,7 +541,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Health/ Protection",
             "cross": "Offense/ Potency"
         }
     },
@@ -680,8 +680,8 @@
         "modsUrl": "https://swgoh.gg/characters/canderous-ordo/best-mods/",
         "mods": {
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -706,7 +706,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Health/ Protection"
+            "cross": "Protection/ Health"
         }
     },
     {
@@ -743,7 +743,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Protection"
+            "cross": "Potency/ Tenacity"
         }
     },
     {
@@ -998,7 +998,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance/ Crit. Damage",
-            "circle": "Health/ Protection",
+            "circle": "Health",
             "cross": "Potency"
         }
     },
@@ -1597,7 +1597,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Crit. Damage/ Protection",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -1907,7 +1907,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Offense"
         }
@@ -2164,7 +2164,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection/ Health",
-            "cross": "Offense/ Protection"
+            "cross": "Offense"
         }
     },
     {
@@ -2273,7 +2273,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity/ Health"
+            "cross": "Health/ Tenacity"
         }
     },
     {
@@ -2364,7 +2364,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
+            "triangle": "Health/ Defense",
             "circle": "Health/ Protection",
             "cross": "Health/ Tenacity"
         }
@@ -2401,8 +2401,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
-            "circle": "Protection/ Health",
+            "triangle": "Defense/ Protection",
+            "circle": "Health/ Protection",
             "cross": "Protection/ Health"
         }
     },
@@ -2693,7 +2693,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Speed/ Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -2970,7 +2970,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection/ Crit. Damage",
             "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection"
         }
@@ -3263,7 +3263,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -3355,7 +3355,7 @@
             "diamond": "Defense",
             "triangle": "Offense/ Crit. Chance",
             "circle": "Health/ Protection",
-            "cross": "Potency"
+            "cross": "Potency/ Offense"
         }
     },
     {
@@ -3951,8 +3951,8 @@
         "modsUrl": "https://swgoh.gg/characters/t3-m4/best-mods/",
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4159,7 +4159,7 @@
             "diamond": "Defense",
             "triangle": "Health/ Protection",
             "circle": "Protection/ Health",
-            "cross": "Protection/ Tenacity"
+            "cross": "Protection"
         }
     },
     {
@@ -4193,7 +4193,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         }
@@ -4335,7 +4335,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Tenacity x2"
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed/ Health",
@@ -4450,7 +4450,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
+            "circle": "Protection",
             "cross": "Offense"
         }
     },
