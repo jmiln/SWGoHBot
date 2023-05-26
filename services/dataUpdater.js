@@ -33,9 +33,16 @@ init().then(async () => {
     // await updateGameData();
     await runUpdater();
 });
+
+// Set it to update the characters and such every ${INTERVAL} minutes
 setInterval(async () => {
     await runUpdater();
 }, INTERVAL * 60 * 1000);
+
+// Set it to update the game data daily
+setInterval(async () => {
+    await updateGameData();
+}, 24 * 60 * 60 * 1000);
 
 async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
@@ -134,9 +141,9 @@ async function updateRemoteData() {
 
     // If there are new units, run swgoh api updates for new character similar to `/reloaddata swlang if hasNewUnit is true, then reset it to false after
     if (hasNewUnit) {
-        console.log("Running updateGameData");
+        // console.log("Running updateGameData");
         await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
-        console.log("Finished running updateGameData");
+        // console.log("Finished running updateGameData");
         hasNewUnit = false;
     }
 
@@ -677,9 +684,9 @@ async function updateGameData() {
                 }
                 await cache.put(config.mongodb.swapidb, dbTarget, {[dbIdKey]: data[dbIdKey], language: lang}, data);
             }
-            console.log(`Finished localizing ${dbTarget} for ${lang}`);
+            // console.log(`Finished localizing ${dbTarget} for ${lang}`);
         }
-        console.log(`Finished localizing ${dbTarget}`);
+        // console.log(`Finished localizing ${dbTarget}`);
     }
 
     async function processAbilities(abilityIn, skillIn) {
