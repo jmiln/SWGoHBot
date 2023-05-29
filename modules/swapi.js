@@ -199,6 +199,7 @@ module.exports = (opts={}) => {
                 const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
                 const locChar = await langChar({defId: newUnit.defId, skills: newUnit.skills});
+                if (!locChar?.nameKey) locChar.nameKey = newUnit.defId;
                 if (!oldUnit) {
                     playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
                     if (newUnit?.level > 1) {
@@ -266,13 +267,20 @@ module.exports = (opts={}) => {
                     playerLog.ultimate.push(`Unlocked ${locChar.nameKey}'s **ultimate**'`);
                 }
             }
-            if (playerLog?.length) {
+            if (isPlayerUpdated(playerLog)) {
                 guildLog[newPlayer.name] = playerLog;
                 await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
             }
         }
 
         return guildLog;
+    }
+
+    function isPlayerUpdated(playerLog) {
+        for (const key of Object.keys(playerLog)) {
+            if (playerLog[key]?.length) return true;
+        }
+        return false;
     }
 
     /**
@@ -474,12 +482,16 @@ module.exports = (opts={}) => {
                     })
                 };
             }),
-            stats: comlinkPlayer.profileStat?.filter(({nameKey}) => nameKey.includes("GALACTIC_POWER")).map(({nameKey, value}) => {
-                return {
-                    nameKey,
-                    value: Number(value)
-                };
-            }) || [],
+            stats: comlinkPlayer.profileStat
+                ?.filter(({nameKey}) => {
+                    return nameKey?.includes("GALACTIC_POWER");
+                })
+                .map(({nameKey, value}) => {
+                    return {
+                        nameKey,
+                        value: Number(value)
+                    };
+                }) || [],
             arena: {
                 char: comlinkPlayerArena[1] || emptyArena,
                 ship: comlinkPlayerArena[2] || emptyArena
