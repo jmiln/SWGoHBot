@@ -21,6 +21,15 @@ const skillMap = require(__dirname + "/../data/skillMap.json");
 
 const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
+const flatStats = [
+    1,  // health
+    5,  // speed
+    28, // prot
+    41, // offense
+    42  // defense
+];
+
+
 const MAX_CONCURRENT = 20;
 
 let specialAbilityList = null;
@@ -469,17 +478,7 @@ module.exports = (opts={}) => {
                     purchasedAbilityId: unit.purchasedAbilityId,
                     crew: thisUnit.crew,
                     combatType: thisUnit.combatType,
-                    mods: unit.equippedStatMod.map(mod => {
-                        const {pips, slot, set} = modMap[mod.definitionId];
-                        return {
-                            id: mod.id,
-                            level: mod.level,
-                            tier: mod.tier,
-                            secondaryStat: mod.secondaryStat,
-                            primaryStat: mod.primaryStat,
-                            pips, slot, set
-                        };
-                    })
+                    mods: unit.equippedStatMod ? unit.equippedStatMod.map(mod => formatMod(mod)) : [],
                 };
             }),
             stats: comlinkPlayer.profileStat
@@ -520,6 +519,34 @@ module.exports = (opts={}) => {
 
             // // Never seems to be populated?
             // guildLogoBackground,
+        };
+    }
+
+    function formatMod({ definitionId, primaryStat, id, level, tier, secondaryStat, ...rest }) {
+        const modSchema = modMap[definitionId] || {};
+        const primaryStatId = primaryStat.stat.unitStatId;
+        const primaryStatScaler = flatStats.includes(primaryStatId) ? 1e8 : 1e6;
+        return {
+            ...rest,
+            id,
+            level,
+            tier,
+            slot: modSchema.slot-1, // mod slots are numbered 2-7
+            set: Number(modSchema.set),
+            pips: modSchema.pips,
+            primaryStat: {
+                unitStat: primaryStat.stat.unitStatId,
+                value: primaryStat.stat.unscaledDecimalValue / primaryStatScaler
+            },
+            secondaryStat: secondaryStat ? secondaryStat.map(stat => {
+                const statId = stat.stat.unitStatId;
+                const statScaler = flatStats.includes(statId) ? 1e8 : 1e6;
+                return {
+                    unitStat: stat.stat.unitStatId,
+                    value: stat.stat.unscaledDecimalValue / statScaler,
+                    roll: stat.statRolls
+                };
+            }) : []
         };
     }
 
