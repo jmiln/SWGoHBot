@@ -354,12 +354,8 @@ module.exports = (opts={}) => {
                 const updatedBare = [];
                 try {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async function(ac) {
-                        const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch((err) => {
-                            console.error(`Error in eachLimit getPlayer (${ac}):`);
-                            return console.error(err);
-                        });
-                        if (!tempBare) console.error("Broke while getting tempBare");
-                        else {
+                        const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch(() => {});
+                        if (tempBare) {
                             const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
                             updatedBare.push(formattedComlinkPlayer);
                         }
