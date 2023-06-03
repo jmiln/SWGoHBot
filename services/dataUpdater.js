@@ -1,28 +1,37 @@
 const fs = require("fs");
-const cheerio = require("cheerio");
 
-const config = require("../config.js");
+const config = require(__dirname + "/../config.js");
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
 
 const ComlinkStub = require("@swgoh-utils/comlink");
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
 
+let metadataFile;
+
+// TODO Use this for shop inventories
+// const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
+
+const CHAR_COMBAT_TYPE = 1;
+
 const dataDir = __dirname + "/../data/";
 
 const campaignMapNames = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNames.json", "utf-8"))[0];
 const campaignMapNodes = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNodes.json", "utf-8"))[0];
-// const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
 
-const GG_CHAR_CACHE          = dataDir + "swgoh-gg-chars.json";
-const GG_SHIPS_CACHE         = dataDir + "swgoh-gg-ships.json";
-const GG_MOD_CACHE           = dataDir + "swgoh-gg-mods.json";
-const CHAR_FILE              = dataDir + "characters.json";
-const CHAR_LOCATIONS         = dataDir + "charLocations.json";
-const SHIP_LOCATIONS         = dataDir + "shipLocations.json";
-const SHIP_FILE              = dataDir + "ships.json";
-const GAMEDATA               = dataDir + "gameData.json";
-const UNKNOWN                = "Unknown";
+const CHAR_FILE      = dataDir + "characters.json";
+const CHAR_LOCATIONS = dataDir + "charLocations.json";
+const SHIP_FILE      = dataDir + "ships.json";
+const SHIP_LOCATIONS = dataDir + "shipLocations.json";
+
+const META_FILE      = dataDir + "metadata.json";
+const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
+
+// Use these to store data in to use when needing data from a different part of the gameData processing
+let unitRecipeList = [];
+let unitShardList = [];
+const unitFactionMap = {};
+const unitDefIdMap = {};
 
 // How long between being runs (In minutes)
 const INTERVAL = 60;
@@ -30,28 +39,88 @@ console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 
 // Run the upater when it's started, then every ${INTERVAL} minutes after that
 init().then(async () => {
-    // await updateGameData();
-    await runUpdater();
+    const isNew = await updateMetaData();
+    if (isNew) {
+        // await updateGameData();
+        await runUpdater();
+    }
 });
 
-// Set it to update the characters and such every ${INTERVAL} minutes
-setInterval(async () => {
-    await runUpdater();
-}, INTERVAL * 60 * 1000);
+// Set it to update the patreon data and every INTERVAL minutes if doable
+if (config.patreon) {
+    setInterval(async () => {
+        await updatePatrons();
+    }, INTERVAL * 60 * 1000);
+}
 
-// Set it to update the game data daily
+// Set it to check/ update the game data daily if needed
 setInterval(async () => {
-    await updateGameData();
+    const isNew = await updateMetaData();
+    if (isNew) {
+        await updateGameData();
+    }
 }, 24 * 60 * 60 * 1000);
 
 async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
-    cache = require("../modules/cache.js")(mongo);
+    cache = require(__dirname + "/../modules/cache.js")(mongo);
+}
+
+// Update the metadata file if it exists, create it otherwise
+async function updateMetaData() {
+    const meta = await comlinkStub.getMetaData();
+    let metaFile = {};
+    if (fs.existsSync(META_FILE)) {
+        metaFile = JSON.parse(fs.readFileSync(META_FILE, "utf-8"));
+    }
+    let isUpdated = false;
+    const metaOut = {};
+    for (const key of META_KEYS) {
+        if (meta[key] !== metaFile[key]) {
+            metaOut[key] = meta[key];
+            isUpdated = true;
+        }
+    }
+
+    if (isUpdated) {
+        await saveFile(META_FILE, metaOut);
+        metadataFile = metaOut;
+    }
+
+    return isUpdated;
 }
 
 async function runUpdater() {
     const time = new Date().toString().split(" ").slice(1, 5);
-    const log = await updateRemoteData();
+    const log = [];
+
+    // Load the files of char/ship locations
+    const currentCharLocs     = JSON.parse(fs.readFileSync(CHAR_LOCATIONS));
+    const currentShipLocs     = JSON.parse(fs.readFileSync(SHIP_LOCATIONS));
+
+    // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
+    await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
+
+    // TODO Still need to work out checking mod loadouts locally... Probably more often than waiting on a metadata update too though
+    // const ggModData = await getGgChars();
+    // if (ggModData && await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
+    //     log.push("Detected a change in mods from swgoh.gg");
+    //     await updateCharacterMods(currentCharacters, ggModData);
+    // }
+
+    // Run unit locations updaters
+    const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
+    if (newCharLocs && JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
+        log.push("Detected a change in character locations.");
+        saveFile(CHAR_LOCATIONS, newCharLocs);
+    }
+    const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS);
+    if (newShipLocs && JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
+        log.push("Detected a change in ship locations.");
+        saveFile(SHIP_LOCATIONS, newShipLocs);
+    }
+
+
     if (log?.length) {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         console.log(log.join("\n"));
@@ -60,9 +129,13 @@ async function runUpdater() {
     }
 }
 
-function saveFile(filePath, jsonData) {
+function saveFile(filePath, jsonData, doPretty=true) {
     try {
-        fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), "utf8");
+        if (doPretty) {
+            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), {encoding: "utf8"});
+        } else {
+            fs.writeFileSync(filePath, JSON.stringify(jsonData), {encoding: "utf8"});
+        }
     } catch (err) {
         if (err) {
             console.log("ERROR in dataUpdater/saveFile: " + err);
@@ -70,442 +143,132 @@ function saveFile(filePath, jsonData) {
     }
 }
 
-async function updateIfChanged({localCachePath, dataSourceUri, dataObject}) {
-    let updated = false;
 
-    let localCache = {};
-    if (!dataSourceUri && !dataObject) throw new Error("Missing data to compare!");
-    if (dataSourceUri && dataObject)   throw new Error("Found URL & data, use one or the other");
-    if (dataSourceUri && !dataObject) {
-        try {
-            // console.log("UpdateRemoteData", "Fetching " + dataSourceUri);
-            const remoteData = await fetch(dataSourceUri).then(res => res.json());
+// const cheerio = require("cheerio");
+// const GG_MOD_CACHE   = dataDir + "swgoh-gg-mods.json";
+// function getCleanString(input) {
+//     const cleanReg = /["()'-\s]/g;
+//
+//     return input.toLowerCase().replace(cleanReg, "");
+// }
+// async function getGgChars() {
+//     let response = null;
+//     try {
+//         response = await fetch(config.swgohggUrl);
+//     } catch {
+//         console.error("Cannot get .gg char/ mod info");
+//         return null;
+//     }
+//     const ggPage = await response.text();
+//
+//     const modSetCounts = {
+//         "Crit Chance":     "Critical Chance x2",
+//         "Crit Damage":     "Critical Damage x4",
+//         "Critical Chance": "Critical Chance x2",
+//         "Critical Damage": "Critical Damage x4",
+//         "Defense":         "Defense x2",
+//         "Health":          "Health x2",
+//         "Offense":         "Offense x4",
+//         "Potency":         "Potency x2",
+//         "Speed":           "Speed x4",
+//         "Tenacity":        "Tenacity x2"
+//     };
+//
+//     const $ = cheerio.load(ggPage);
+//
+//     const charOut = [];
+//
+//     $("table.table-striped > tbody > tr")
+//         .each((i, elem) => {
+//             let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
+//             // const defId = $(name).find("img").attr("data-base-id");
+//             const imgUrl =  $(name).find("img").attr("src");
+//             // const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
+//             const [url, modUrl] = $(name).find("a").toArray().map(link => {
+//                 return $(link)?.attr("href")?.trim() || "";
+//             });
+//             name = cleanName($(name).text());
+//             sets = $(sets).find("div").toArray().map(div => {
+//                 return countSet($(div).attr("data-title")?.trim());
+//             });
+//             receiver    = cleanModType($(receiver).text());
+//             holo        = cleanModType($(holo).text());
+//             data        = cleanModType($(data).text());
+//             multiplexer = cleanModType($(multiplexer).text());
+//             charOut.push({
+//                 name:     name,
+//                 // defId:    defId,
+//                 charUrl:  "https://swgoh.gg" + url,
+//                 image:    imgUrl,
+//                 // side:     side,
+//                 modsUrl:  "https://swgoh.gg" + modUrl, //+ url + "best-mods/",
+//                 mods: {
+//                     sets:     sets,
+//                     square:   "Offense",
+//                     arrow:    receiver,
+//                     diamond:  "Defense",
+//                     triangle: holo,
+//                     circle:   data,
+//                     cross:    multiplexer
+//                 }
+//             });
+//         });
+//
+//     // Clean up the mod names (Wipe out extra spaces or condense long names)
+//     function cleanModType(types) {
+//         if (!types || typeof types !== "string") return null;
+//         return types.trim()
+//             .replace(/\s+\/\s/g, "/ ")
+//             .replace("Critical Damage", "Crit. Damage")
+//             .replace("Critical Chance", "Crit. Chance");
+//     }
+//
+//     // This is mainly to clean up Padme's name for now
+//     function cleanName(name) {
+//         if (!name || typeof name !== "string") return;
+//         return name.trim().replace("é", "e");
+//     }
+//
+//     // Put the number of mods for each set
+//     function countSet(setName) {
+//         return modSetCounts[setName] || setName;
+//     }
+//     return charOut;
+// }
+// async function updateCharacterMods(currentCharacters, freshMods) {
+//     const GG_SOURCE = "swgoh.gg";
+//
+//     // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
+//     for (const character of freshMods) {
+//         let thisChar = currentCharacters.find(ch =>
+//             ch.uniqueName === character.defId ||
+//             getCleanString(ch.name) === getCleanString(character.name) ||
+//             ch.url === character.charUrl
+//         );
+//         if (!thisChar) {
+//             thisChar = currentCharacters.find(ch => ch.aliases.includes(character.name));
+//         }
+//         const mods = {
+//             url:      character.modsUrl,
+//             sets:     character.mods.sets,
+//             square:   character.mods.square,
+//             arrow:    character.mods.arrow,
+//             diamond:  character.mods.diamond,
+//             triangle: character.mods.triangle,
+//             circle:   character.mods.circle,
+//             cross:    character.mods.cross,
+//             source:   GG_SOURCE
+//         };
+//
+//         if (thisChar) {
+//             thisChar.mods = mods;
+//         } else {
+//             // This shouldn't really happen since it should be caught in updateCharacters
+//             console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
+//         }
+//     }
+// }
 
-            try {
-                localCache = JSON.parse(fs.readFileSync(localCachePath));
-            } catch (err) {
-                const reason = err || "unknown error";
-                localCache = {};
-                console.log("UpdateRemoteData", "Error reading local cache for " + dataSourceUri + ", reason: " + reason);
-            }
-
-            if (remoteData.generatedAt) delete remoteData.generatedAt;
-            if (JSON.stringify(remoteData) !== JSON.stringify(localCache)) {
-                saveFile(localCachePath, remoteData);
-                updated = true;
-            }
-        } catch (err) {
-            const reason = err || "unknown error";
-            return console.log("UpdateRemoteData", "Unable to update cache for " + dataSourceUri + ", reason: " + reason);
-        }
-    } else {
-        // Logic for when there's data itself instead of a url
-        const dataFile = fs.readFileSync(localCachePath);
-        const dataJSON = JSON.parse(dataFile);
-
-        if (JSON.stringify(dataJSON) !== JSON.stringify(dataObject)) {
-            saveFile(localCachePath, dataObject);
-            updated = true;
-        }
-    }
-
-    return updated;
-}
-
-async function updateRemoteData() {
-    // Load then copy the data of char/ship files
-    const currentCharacters   = JSON.parse(fs.readFileSync(CHAR_FILE));
-    const currentCharSnapshot = JSON.parse(JSON.stringify(currentCharacters));
-    const currentShips        = JSON.parse(fs.readFileSync(SHIP_FILE));
-    const currentShipSnapshot = JSON.parse(JSON.stringify(currentShips));
-    const currentCharLocs     = JSON.parse(fs.readFileSync(CHAR_LOCATIONS));
-    const currentShipLocs     = JSON.parse(fs.readFileSync(SHIP_LOCATIONS));
-
-    const log = [];
-    let hasNewUnit = false;
-
-    if (await updateIfChanged({localCachePath: GAMEDATA, dataSourceUri: "http://swgoh-api-stat-calc.glitch.me/gameData.json"})) {
-        log.push("Detected a change in Crinolo's Game Data.");
-    }
-    if (await updateIfChanged({ localCachePath: GG_SHIPS_CACHE, dataSourceUri: "http://api.swgoh.gg/ships/" })) {
-        log.push("Detected a change in ships from swgoh.gg");
-        hasNewUnit = true;
-        await updateShips(currentShips);
-    }
-
-    if (await updateIfChanged({ localCachePath: GG_CHAR_CACHE, dataSourceUri: "http://api.swgoh.gg/characters/" })) {
-        log.push("Detected a change in characters from swgoh.gg");
-        hasNewUnit = true;
-        await updateCharacters(currentCharacters);
-    }
-
-    // If there are new units, run swgoh api updates for new character similar to `/reloaddata swlang if hasNewUnit is true, then reset it to false after
-    if (hasNewUnit) {
-        // console.log("Running updateGameData");
-        await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
-        // console.log("Finished running updateGameData");
-        hasNewUnit = false;
-    }
-
-    const ggModData = await getGgChars();
-    if (ggModData && await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
-        log.push("Detected a change in mods from swgoh.gg");
-        await updateCharacterMods(currentCharacters, ggModData);
-    }
-
-    // Run unit locations updaters
-    const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
-    if (newCharLocs && JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
-        log.push("Detected a change in character locations.");
-        saveFile(CHAR_LOCATIONS, newCharLocs);
-    }
-
-    const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS);
-    if (newShipLocs && JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
-        log.push("Detected a change in ship locations.");
-        saveFile(SHIP_LOCATIONS, newShipLocs);
-    }
-
-    if (JSON.stringify(currentCharSnapshot) !== JSON.stringify(currentCharacters)) {
-        log.push("Changes detected in character data, saving updates and reloading");
-        saveFile(CHAR_FILE, currentCharacters.sort((a, b) => a.name > b.name ? 1 : -1));
-    }
-    if (JSON.stringify(currentShipSnapshot) !== JSON.stringify(currentShips)) {
-        log.push("Changes detected in ship data, saving updates and reloading");
-        saveFile(SHIP_FILE, currentShips.sort((a, b) => a.name > b.name ? 1 : -1));
-    }
-
-    if (config.patreon) {
-        await updatePatrons();
-    }
-
-    return log;
-}
-
-async function updateShips(currentShips) {
-    const ggShipList = JSON.parse(fs.readFileSync(GG_SHIPS_CACHE));
-
-    for (var ggShipKey in ggShipList) {
-        const ggShip = ggShipList[ggShipKey];
-
-        let found = false;
-        for (var currentShipKey in currentShips) {
-            const currentShip = currentShips[currentShipKey];
-
-            // attempt to match in increasing uniqueness- base_id, url, then name variants
-            if (currentShip.uniqueName && currentShip.uniqueName !== UNKNOWN) {
-                if (currentShip.uniqueName === ggShip.base_id) {
-                    found = true;
-                }
-            } else if (currentShip.url && currentShip.url !== UNKNOWN) {
-                if (ggShip.url === currentShip.url) {
-                    found = true;
-                }
-            } else if (isSameCharacter(currentShip, ggShip)) {
-                found = true;
-            }
-
-            if (found) {
-                let updated = false;
-
-                // character discovered from another source that wasn't yet added to swgoh.gg
-                if (!currentShip.url || currentShip.url === UNKNOWN || ggShip.url !== currentShip.url) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentShip.name + "'s swgoh.gg url");
-                    currentShip.url = ggShip.url;
-                    updated = true;
-                }
-                if (currentShip.uniqueName !== ggShip.base_id) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentShip.name + "'s swgoh.gg base_id");
-                    currentShip.uniqueName = ggShip.base_id;
-                    updated = true;
-                }
-                if (!isSameCharacter(currentShip, ggShip)) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentShip.name + "'s swgoh.gg name variants");
-                    if (!currentShip.nameVariant) {
-                        currentShip.nameVariant = [];
-                    }
-                    currentShip.nameVariant.push(ggShip.name);
-                    updated = true;
-                }
-                if (!currentShip.avatarURL || currentShip.avatarURL !== ggShip.image) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentShip.name + "'s swgoh.gg image url");
-                    currentShip.avatarURL = ggShip.image;
-                    updated = true;
-                }
-
-                //updated = true; // force an update of everything
-
-                if (updated) {
-                    console.log("Updated: " + ggShip.name);
-                    currentShip.factions = ggShip.categories;
-                    currentShip.side = ggShip.alignment === "Light Side" ? "light" : "dark";
-                }
-                break;
-            }
-        }
-
-        if (!found) {
-            console.log("Adding: " + ggShip.name);
-            console.log("UpdateRemoteData", "New ship discovered from swgoh.gg: " + ggShip.name);
-            const newShip = createEmptyShip(ggShip.name, ggShip.url, ggShip.base_id);
-
-            newShip.factions = ggShip.categories;
-            newShip.side = ggShip.alignment === "Light Side" ? "light" : "dark";
-            newShip.avatarURL = ggShip.image;
-            currentShips.push(newShip);
-        }
-    }
-}
-
-function getCleanString(input) {
-    const cleanReg = /["()'-\s]/g;
-
-    return input.toLowerCase().replace(cleanReg, "");
-}
-
-function isSameCharacter(localChar, remoteChar, nameAttribute) {
-    let isSame = false;
-    const remoteAttribute = nameAttribute || "name";
-    const remoteName = getCleanString(remoteChar[remoteAttribute]);
-
-    if (remoteName === getCleanString(localChar.name)) {
-        isSame = true;
-    } else {
-        if (localChar.nameVariant) {
-            for (const key in localChar.nameVariant) {
-                const localName = getCleanString(localChar.nameVariant[key]);
-                if (remoteName === localName) {
-                    isSame = true;
-                    break;
-                }
-            }
-        } else {
-            localChar.nameVariant = [];
-            localChar.nameVariant.push(localChar.name);
-        }
-    }
-
-    return isSame;
-}
-
-async function updateCharacters(currentCharacters) {
-    const ggCharList = JSON.parse(fs.readFileSync(GG_CHAR_CACHE));
-
-    for (const ggChar of ggCharList) {
-        let found = false;
-        for (const currentChar of currentCharacters) {
-            // Attempt to match in increasing uniqueness- base_id, url, then name variants
-            if (currentChar.uniqueName && currentChar.uniqueName !== UNKNOWN) {
-                if (currentChar.uniqueName === ggChar.base_id) {
-                    found = true;
-                }
-            } else if (currentChar.url && currentChar.url !== UNKNOWN) {
-                if (ggChar.url === currentChar.url) {
-                    found = true;
-                }
-            } else if (isSameCharacter(currentChar, ggChar)) {
-                found = true;
-            }
-
-            if (found) {
-                let updated = false;
-
-                // character discovered from another source that wasn't yet added to swgoh.gg
-                if (!currentChar.url || currentChar.url === UNKNOWN || ggChar.url !== currentChar.url) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentChar.name + "'s swgoh.gg url");
-                    currentChar.url = ggChar.url;
-                    updated = true;
-                }
-                if (currentChar.uniqueName !== ggChar.base_id) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentChar.name + "'s swgoh.gg base_id");
-                    currentChar.uniqueName = ggChar.base_id;
-                    updated = true;
-                }
-                if (!isSameCharacter(currentChar, ggChar)) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentChar.name + "'s swgoh.gg name variants");
-                    if (!currentChar.nameVariant) {
-                        currentChar.nameVariant = [];
-                    }
-                    currentChar.nameVariant.push(ggChar.name);
-                    updated = true;
-                }
-                if (!currentChar.avatarURL || currentChar.avatarURL !== ggChar.image) {
-                    console.log("UpdateRemoteData", "Automatically reconciling " + currentChar.name + "'s swgoh.gg image url");
-                    currentChar.avatarURL = ggChar.image;
-                    updated = true;
-                }
-
-                // updated = true; // force an update of everything
-
-                if (updated) {
-                    // Some piece of the data needed reconciling, go ahead and request an update from swgoh.gg
-                    currentChar.factions = ggChar.categories;
-                    currentChar.side = ggChar.alignment === "Light Side" ? "light" : "dark";
-                }
-                break;
-            }
-        }
-
-        if (!found) {
-            console.log("UpdateRemoteData", "New character discovered from swgoh.gg: " + ggChar.name);
-            const newCharacter = createEmptyChar(ggChar.name, ggChar.url, ggChar.base_id);
-            newCharacter.factions = ggChar.categories;
-            newCharacter.side = ggChar.alignment === "Light Side" ? "light" : "dark";
-            newCharacter.avatarURL = ggChar.image;
-            currentCharacters.push(newCharacter);
-        }
-    }
-}
-
-async function getGgChars() {
-    let response = null;
-    try {
-        response = await fetch(config.swgohggUrl);
-    } catch {
-        console.error("Cannot get .gg char/ mod info");
-        return null;
-    }
-    const ggPage = await response.text();
-
-    const modSetCounts = {
-        "Crit Chance":     "Critical Chance x2",
-        "Crit Damage":     "Critical Damage x4",
-        "Critical Chance": "Critical Chance x2",
-        "Critical Damage": "Critical Damage x4",
-        "Defense":         "Defense x2",
-        "Health":          "Health x2",
-        "Offense":         "Offense x4",
-        "Potency":         "Potency x2",
-        "Speed":           "Speed x4",
-        "Tenacity":        "Tenacity x2"
-    };
-
-    const $ = cheerio.load(ggPage);
-
-    const charOut = [];
-
-    $("table.table-striped > tbody > tr")
-        .each((i, elem) => {
-            let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
-            // const defId = $(name).find("img").attr("data-base-id");
-            const imgUrl =  $(name).find("img").attr("src");
-            // const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
-            const [url, modUrl] = $(name).find("a").toArray().map(link => {
-                return $(link)?.attr("href")?.trim() || "";
-            });
-            name = cleanName($(name).text());
-            sets = $(sets).find("div").toArray().map(div => {
-                return countSet($(div).attr("data-title").trim());
-            });
-            receiver    = cleanModType($(receiver).text());
-            holo        = cleanModType($(holo).text());
-            data        = cleanModType($(data).text());
-            multiplexer = cleanModType($(multiplexer).text());
-            charOut.push({
-                name:     name,
-                // defId:    defId,
-                charUrl:  "https://swgoh.gg" + url,
-                image:    imgUrl,
-                // side:     side,
-                modsUrl:  "https://swgoh.gg" + modUrl, //+ url + "best-mods/",
-                mods: {
-                    sets:     sets,
-                    square:   "Offense",
-                    arrow:    receiver,
-                    diamond:  "Defense",
-                    triangle: holo,
-                    circle:   data,
-                    cross:    multiplexer
-                }
-            });
-        });
-
-    // Clean up the mod names (Wipe out extra spaces or condense long names)
-    function cleanModType(types) {
-        if (!types || typeof types !== "string") return null;
-        return types.trim()
-            .replace(/\s+\/\s/g, "/ ")
-            .replace("Critical Damage", "Crit. Damage")
-            .replace("Critical Chance", "Crit. Chance");
-    }
-
-    // This is mainly to clean up Padme's name for now
-    function cleanName(name) {
-        if (!name || typeof name !== "string") return;
-        return name.trim().replace("é", "e");
-    }
-
-    // Put the number of mods for each set
-    function countSet(setName) {
-        return modSetCounts[setName] || setName;
-    }
-    return charOut;
-}
-
-async function updateCharacterMods(currentCharacters, freshMods) {
-    const GG_SOURCE = "swgoh.gg";
-
-    // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
-    for (const character of freshMods) {
-        let thisChar = currentCharacters.find(ch =>
-            ch.uniqueName === character.defId ||
-            getCleanString(ch.name) === getCleanString(character.name) ||
-            ch.url === character.charUrl
-        );
-        if (!thisChar) {
-            thisChar = currentCharacters.find(ch => ch.aliases.includes(character.name));
-        }
-        const mods = {
-            url:      character.modsUrl,
-            sets:     character.mods.sets,
-            square:   character.mods.square,
-            arrow:    character.mods.arrow,
-            diamond:  character.mods.diamond,
-            triangle: character.mods.triangle,
-            circle:   character.mods.circle,
-            cross:    character.mods.cross,
-            source:   GG_SOURCE
-        };
-
-        if (thisChar) {
-            thisChar.mods = mods;
-        } else {
-            // This shouldn't really happen since it should be caught in updateCharacters
-            console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
-        }
-    }
-}
-
-function createEmptyChar(name, url, uniqueName) {
-    console.log(`Creating empty char for: ${name} (${uniqueName})`);
-    return {
-        "name":        name,
-        "uniqueName":  uniqueName,
-        "aliases":     [name], // common community names
-        "nameVariant": [name], // names used by remote data sources, for unique matches
-        "url":         url,
-        "avatarURL":   "",
-        "side":        "",
-        "factions":    [],
-        "mods":        {}
-    };
-}
-
-function createEmptyShip(name, url, uniqueName) {
-    console.log(`Creating empty ship for: ${name} (${uniqueName})`);
-    return {
-        "name":        name,
-        "uniqueName":  uniqueName,
-        "aliases":     [name], // common community names
-        "nameVariant": [name], // names used by remote data sources, for unique matches
-        "crew":        [],
-        "url":         url,
-        "avatarURL":   "",
-        "side":        "",
-        "factions":    [],
-        "abilities":   {}
-    };
-}
 
 async function updatePatrons() {
     const patreon = config.patreon;
@@ -640,10 +403,9 @@ async function updateLocs(unitListFile, currentLocFile) {
 async function updateGameData() {
     let locales = {};
     async function updateGameData() {
-        const meta = await comlinkStub.getMetaData();
-        const gameData = await comlinkStub.getGameData(meta.latestGamedataVersion, false);
+        const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
 
-        locales = await getLocalizationData(meta.latestLocalizationBundleVersion);
+        locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
 
         await processAbilities(gameData.ability, gameData.skill);
         await processEquipment(gameData.equipment);
@@ -729,7 +491,7 @@ async function updateGameData() {
                 abilityId: skill.abilityReference
             };
         }
-        await fs.writeFileSync(__dirname + "/../data/skillMap.json", JSON.stringify(skillMap), {encoding: "utf-8"});
+        await saveFile(dataDir + "skillMap.json", skillMap, false);
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", null);
     }
 
@@ -757,6 +519,14 @@ async function updateGameData() {
                 id: mat.id,
                 lookupMissionList: mat.lookupMission.map(mis => mis.missionIdentifier),
                 raidLookupList: mat.raidLookup.map(mis => mis.missionIdentifier),
+                iconKey: mat.iconKey
+            };
+        });
+
+        unitShardList = filteredList.map(mat => {
+            return {
+                id: mat.id,
+                iconKey: mat.iconKey.replace(/^tex\./, "")
             };
         });
 
@@ -776,7 +546,8 @@ async function updateGameData() {
                 slot: m.slot
             };
         });
-        await fs.writeFileSync(__dirname + "/../data/modMap.json", JSON.stringify(modsOut), {encoding: "utf-8"});
+
+        await saveFile(dataDir + "modMap.json", modsOut, false);
     }
 
     async function processRecipes(recipeIn) {
@@ -784,9 +555,22 @@ async function updateGameData() {
             return {
                 id: recipe.id,
                 descKey: recipe.descKey,
-                ingredients: recipe.ingredients
+                ingredients: recipe.ingredients.filter(ing => ing.id !== "GRIND")
             };
         });
+
+        // Set up a list of just creationRecipeReference IDs, and unitshard names to access later
+        unitRecipeList = recipeIn.map(r => {
+            const unitshardList = r.ingredients.filter(ing => ing.id?.startsWith("unitshard"));
+            if (unitshardList.length) {
+                return {
+                    id: r.id,
+                    unitshard: unitshardList[0].id
+                };
+            } else {
+                return;
+            }
+        }).filter(r => !!r);
         await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", ["eng_us"]);
     }
 
@@ -796,8 +580,8 @@ async function updateGameData() {
             return true;
         }).map(unit => {
             return {
-                baseId: unit.baseId,
-                nameKey: unit.nameKey,
+                baseId: unit.baseId, // uniqueName
+                nameKey: unit.nameKey, // name
                 skillReferenceList: unit.skillReference,
                 categoryIdList: unit.categoryId,
                 combatType: unit.combatType,
@@ -812,23 +596,150 @@ async function updateGameData() {
             };
         });
 
+        // Put all the baseId and english names together for later use with the crew
+        for (const unit of filteredList) {
+            unitDefIdMap[unit.baseId] = locales["eng_us"][unit.nameKey];
+        }
+
         // Pass in a copy of the list so nothing gets altered that would be needed later
         // This will convert everything to the format we're used to in the characters db table
-        await unitsToCharacter(JSON.parse(JSON.stringify(filteredList)));
+        await unitsToCharacterDB(JSON.parse(JSON.stringify(filteredList)));
         // Then send the list to be processed
-        await processLocalization(filteredList, "units", ["nameKey"], "baseId", null);
+        await processLocalization(JSON.parse(JSON.stringify(filteredList)), "units", ["nameKey"], "baseId", null);
         // Then send a copy through for the unitMap to help format player rosters
-        await unitsToUnitMap(filteredList);
+        await unitsToUnitMapFile(JSON.parse(JSON.stringify(filteredList)));
+        // Format everything and save to the characters.json/ ships.json files
+        await unitsToUnitFiles(JSON.parse(JSON.stringify(filteredList)));
     }
 
-    async function unitsToCharacter(unitsIn) {
+    async function unitsToUnitFiles(filteredList) {
+        const oldCharFile = JSON.parse(fs.readFileSync(CHAR_FILE));
+        const oldShipFile = JSON.parse(fs.readFileSync(SHIP_FILE));
+
+        const eng = locales["eng_us"];
+
+        // Process the units into the character or ship files
+        const charactersOut = [];
+        const shipsOut = [];
+
+        for (const unit of filteredList) {
+            const charUIName = getCharUIName(unit.creationRecipeReference);
+            unit.name = eng[unit.nameKey];
+            let oldUnit;
+            if (unit.combatType === CHAR_COMBAT_TYPE) {
+                // If it already exists in the file, don't overwrite
+                oldUnit = oldCharFile.find(ch => ch.uniqueName === unit.baseId);
+            } else {
+                oldUnit = oldShipFile.find(sh => sh.uniqueName === unit.baseId);
+            }
+
+            let unitObj;
+
+            if (oldUnit) {
+                // Don't overwrite, just make sure the info is up to date
+                unitObj = oldUnit;
+                // delete unitObj.avatarURL;
+                delete unitObj.nameVariant;
+                unitObj.avatarName = charUIName;
+            } else {
+                // Work up a new character to put in
+                unitObj = createNewUnit(unit, charUIName);
+            }
+
+            // Process characters
+            unit.combatType === CHAR_COMBAT_TYPE ? charactersOut.push(unitObj) : shipsOut.push(unitObj);
+        }
+
+        function getCharUIName(creationRecipeId) {
+            const thisRecipe = unitRecipeList.find(rec => rec.id === creationRecipeId);
+            const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe.unitshard);
+            return thisUnitShard?.iconKey;
+        }
+
+        function getSide(factions) {
+            const factionCheck = (checkStr) => {
+                if (factions.includes(checkStr)) {
+                    factions.splice(factions.indexOf(checkStr), 1);
+                    return true;
+                }
+            };
+
+            if (factionCheck("Dark Side")) {
+                return "dark";
+            } else if (factionCheck("Light Side")) {
+                return "light";
+            } else if (factionCheck("Neutral")) {
+                return "neutral";
+            } else {
+                return "N/A";
+            }
+        }
+
+        function createNewUnit(unit, charUIName) {
+            const unitFactions = unitFactionMap[unit.baseId];
+            const unitOut = {
+                "name":        unit.name,
+                "uniqueName":  unit.baseId,
+                "aliases":     [unit.name],
+                "avatarName":  charUIName,
+                "side":        getSide(unitFactions),
+                "factions":    unitFactions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
+            };
+
+            if (unit.combatType === CHAR_COMBAT_TYPE) {
+                // If it's a character, stick mods in
+                unitOut.mods = {};
+            } else {
+                // If its' a ship, map the crew out to be just the names
+                unitOut.crew = unit?.crewList
+                    .map(cr => {
+                        return unitDefIdMap[cr.unitId];
+                    });
+            }
+            console.log(`Creating a new unit: ${unit.name}   (${unit.baseId})`);
+            return unitOut;
+        }
+
+        // Write to the characters & ships files
+        const sortedChars = charactersOut.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        await saveFile(CHAR_FILE, sortedChars);
+        const sortedShips = shipsOut.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        await saveFile(SHIP_FILE, sortedShips);
+        console.log("Unit files updated");
+
+        // Wipe out the recipe and mats lists so it'll be clean next time
+        unitRecipeList = [];
+        unitShardList = [];
+    }
+
+    async function unitsToCharacterDB(unitsIn) {
         // Process the units list to go into the characters db table
         const catList = ["alignment", "profession", "affiliation", "role", "shipclass"];
+        const ignoreArr = [
+            "fomilitary",      "galactic",         "order66",       "sithlord",       "palp", "rebfalconcrew",
+            "smuggled",        "foexecutionsquad", "gacs2fireteam", "jacket",         "el16", "ptisfalconcrew",
+            "forcelightning",  "doubleblade",      "kenobi",        "translator",     "rey",  "veteransmuggler",
+            "crimsondawn",     "sabacc",           "dathbro",       "prisfalconcrew", "kylo", "capital",
+            "resistancexwing", "fotie",            "millennium"
+        ];
         const factionMap = {
-            bountyhunter : "bounty hunter",
-            cargoship    : "cargo ship",
-            light        : "light side",
-            dark         : "dark side"
+            badbatch       : "bad batch",
+            bountyhunter   : "bounty hunter",
+            capitalship    : "capital ship",
+            cargoship      : "cargo ship",
+            clonetrooper   : "clone trooper",
+            dark           : "dark side",
+            firstorder     : "first order",
+            huttcartel     : "hutt cartel",
+            imperialremnant: "imerpial remnant",
+            imperialtrooper: "imperial trooper",
+            inquisitoriu   : "inquisitorius",
+            light          : "light side",
+            oldrepublic    : "old republic",
+            rebelfighter   : "rebel fighter",
+            republic       : "galactic republic",
+            rogue          : "rogue one",
+            sithempire     : "sith empire",
         };
 
         for (const unit of unitsIn) {
@@ -842,13 +753,15 @@ async function updateGameData() {
             unit.categoryIdList.forEach(cat => {
                 if (catList.some(str => cat.startsWith(str + "_"))) {
                     let faction = cat.split("_")[1];
+                    if (ignoreArr.includes(faction)) return;
                     if (factionMap[faction]) faction = factionMap[faction];
-                    faction = faction.replace(/s$/, "");
+                    faction = toProperCase(faction);
                     unit.factions.push(faction);
                 }
             });
             delete unit.categoryIdList;
             unit.crew = [];
+            unit.factions = [...new Set(unit.factions)];
             if (unit.crewList.length) {
                 for (const crewChar of unit.crewList) {
                     unit.crew.push(crewChar.unitId);
@@ -856,11 +769,12 @@ async function updateGameData() {
                 }
             }
             delete unit.crewList;
+            unitFactionMap[unit.baseId] = unit.factions;
             await cache.put(config.mongodb.swapidb, "characters", {baseId: unit.baseId}, unit);
         }
     }
 
-    async function unitsToUnitMap(unitsIn) {
+    async function unitsToUnitMapFile(unitsIn) {
         // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
         const unitsOut = {};
         unitsIn.forEach(unit => {
@@ -877,7 +791,7 @@ async function updateGameData() {
             };
         });
 
-        await fs.writeFileSync(__dirname + "/../data/unitMap.json", JSON.stringify(unitsOut), {encoding: "utf-8"});
+        await saveFile(dataDir + "unitMap.json", unitsOut, false);
     }
 
     async function getLocalizationData(bundleVersion) {
@@ -919,8 +833,9 @@ async function updateGameData() {
     }
 }
 
-
-
-
-
+function toProperCase(strIn) {
+    return strIn.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
 
