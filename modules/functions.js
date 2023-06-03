@@ -237,8 +237,6 @@ module.exports = (Bot, client) => {
             Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json", "utf-8"));
             Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json", "utf-8"));
             Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
-            const gameData   = await JSON.parse(fs.readFileSync("data/gameData.json", "utf-8"));
-            Bot.statCalculator.setGameData(gameData);
 
             delete require.cache[require.resolve("../data/help.js")];
             Bot.help         = require("../data/help.js");

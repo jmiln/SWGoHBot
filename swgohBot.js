@@ -29,8 +29,6 @@ Bot.timezones    = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 Bot.constants    = require("./data/constants.js");
 Bot.help         = require("./data/help.js");
 
-const gameData   = JSON.parse(readFileSync("./data/gameData.json", "utf-8"));
-
 // Load in various general functions for the bot
 require("./modules/functions.js")(Bot, client);
 
@@ -57,9 +55,6 @@ const init = async () => {
     // Set up the caching
     Bot.cache   = require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = require("./modules/users.js")(Bot);
-
-    Bot.statCalculator = require("swgoh-stat-calc");
-    Bot.statCalculator.setGameData(gameData);
 
     if (Bot.config.swapiConfig || Bot.config.fakeSwapiConfig) {
         // Load up the api connector/ helpers
