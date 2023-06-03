@@ -5,9 +5,6 @@
         "aliases": [
             "0-0-0"
         ],
-        "nameVariant": [
-            "0-0-0"
-        ],
         "url": "http://swgoh.gg/characters/0-0-0/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_triplezero.png",
         "side": "dark",
@@ -29,15 +26,13 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_triplezero"
     },
     {
         "name": "50R-T",
         "uniqueName": "50RT",
         "aliases": [
-            "50R-T"
-        ],
-        "nameVariant": [
             "50R-T"
         ],
         "url": "http://swgoh.gg/characters/50r-t/",
@@ -62,48 +57,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "ARC Trooper",
-        "uniqueName": "ARCTROOPER501ST",
-        "aliases": [
-            "ARC Trooper"
-        ],
-        "nameVariant": [
-            "ARC Trooper"
-        ],
-        "url": "http://swgoh.gg/characters/arc-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_arc.png",
-        "side": "light",
-        "factions": [
-            "501st",
-            "Attacker",
-            "Clone Trooper",
-            "Galactic Republic"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/arc-trooper/best-mods/",
-            "sets": [
-                "Health x2",
-                "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_50rt"
     },
     {
         "name": "Aayla Secura",
         "uniqueName": "AAYLASECURA",
         "aliases": [
-            "Aayla Secura"
-        ],
-        "nameVariant": [
             "Aayla Secura"
         ],
         "url": "http://swgoh.gg/characters/aayla-secura/",
@@ -129,7 +89,8 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_aaylasecura"
     },
     {
         "name": "Admiral Ackbar",
@@ -137,9 +98,6 @@
         "aliases": [
             "Admiral Ackbar",
             "AA"
-        ],
-        "nameVariant": [
-            "Admiral Ackbar"
         ],
         "url": "http://swgoh.gg/characters/admiral-ackbar/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ackbaradmiral.png",
@@ -163,15 +121,13 @@
             "circle": "Protection",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ackbaradmiral"
     },
     {
         "name": "Admiral Piett",
         "uniqueName": "ADMIRALPIETT",
         "aliases": [
-            "Admiral Piett"
-        ],
-        "nameVariant": [
             "Admiral Piett"
         ],
         "url": "http://swgoh.gg/characters/admiral-piett/",
@@ -197,15 +153,13 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_piett"
     },
     {
         "name": "Admiral Raddus",
         "uniqueName": "ADMIRALRADDUS",
         "aliases": [
-            "Admiral Raddus"
-        ],
-        "nameVariant": [
             "Admiral Raddus"
         ],
         "url": "http://swgoh.gg/characters/admiral-raddus/",
@@ -230,15 +184,13 @@
             "circle": "Health/ Protection",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_admiralraddus"
     },
     {
         "name": "Admiral Trench",
         "uniqueName": "TRENCH",
         "aliases": [
-            "Admiral Trench"
-        ],
-        "nameVariant": [
             "Admiral Trench"
         ],
         "url": "http://swgoh.gg/characters/admiral-trench/",
@@ -262,7 +214,8 @@
             "circle": "Health",
             "cross": "Health/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_admiraltrench"
     },
     {
         "name": "Ahsoka Tano",
@@ -271,9 +224,6 @@
             "Ahsoka Tano",
             "Snips",
             "AT"
-        ],
-        "nameVariant": [
-            "Ahsoka Tano"
         ],
         "url": "http://swgoh.gg/characters/ahsoka-tano/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ahsoka.png",
@@ -298,7 +248,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ahsoka"
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
@@ -308,10 +259,6 @@
             "Ahsoka Tano Fulcrum",
             "ATF",
             "FAT"
-        ],
-        "nameVariant": [
-            "Ahsoka Tano Fulcrum",
-            "Ahsoka Tano (Fulcrum)"
         ],
         "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ahsokaadult.png",
@@ -334,15 +281,13 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ahsokaadult"
     },
     {
         "name": "Amilyn Holdo",
         "uniqueName": "AMILYNHOLDO",
         "aliases": [
-            "Amilyn Holdo"
-        ],
-        "nameVariant": [
             "Amilyn Holdo"
         ],
         "url": "http://swgoh.gg/characters/amilyn-holdo/",
@@ -367,7 +312,39 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_holdo"
+    },
+    {
+        "name": "ARC Trooper",
+        "uniqueName": "ARCTROOPER501ST",
+        "aliases": [
+            "ARC Trooper"
+        ],
+        "url": "http://swgoh.gg/characters/arc-trooper/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_arc.png",
+        "side": "light",
+        "factions": [
+            "501st",
+            "Attacker",
+            "Clone Trooper",
+            "Galactic Republic"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/arc-trooper/best-mods/",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health/ Protection",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_trooperclone_arc"
     },
     {
         "name": "Asajj Ventress",
@@ -377,9 +354,6 @@
             "Asajj",
             "Ventress",
             "AV"
-        ],
-        "nameVariant": [
-            "Asajj Ventress"
         ],
         "url": "http://swgoh.gg/characters/asajj-ventress/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ventress.png",
@@ -404,15 +378,13 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ventress"
     },
     {
         "name": "Aurra Sing",
         "uniqueName": "AURRA_SING",
         "aliases": [
-            "Aurra Sing"
-        ],
-        "nameVariant": [
             "Aurra Sing"
         ],
         "url": "http://swgoh.gg/characters/aurra-sing/",
@@ -437,15 +409,13 @@
             "circle": "Protection",
             "cross": "Offense/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_aurrasing"
     },
     {
         "name": "B1 Battle Droid",
         "uniqueName": "B1BATTLEDROIDV2",
         "aliases": [
-            "B1 Battle Droid"
-        ],
-        "nameVariant": [
             "B1 Battle Droid"
         ],
         "url": "http://swgoh.gg/characters/b1-battle-droid/",
@@ -469,15 +439,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_b1"
     },
     {
         "name": "B2 Super Battle Droid",
         "uniqueName": "B2SUPERBATTLEDROID",
         "aliases": [
-            "B2 Super Battle Droid"
-        ],
-        "nameVariant": [
             "B2 Super Battle Droid"
         ],
         "url": "http://swgoh.gg/characters/b2-super-battle-droid/",
@@ -502,72 +470,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "BB-8",
-        "uniqueName": "BB8",
-        "aliases": [
-            "BB-8",
-            "BB8"
-        ],
-        "nameVariant": [
-            "BB-8"
-        ],
-        "url": "http://swgoh.gg/characters/bb-8/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb8.png",
-        "side": "light",
-        "factions": [
-            "Droid",
-            "Resistance",
-            "Support"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/bb-8/best-mods/",
-            "sets": [
-                "Health x2",
-                "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance/ Protection",
-            "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "BT-1",
-        "uniqueName": "BT1",
-        "aliases": [
-            "BT-1"
-        ],
-        "nameVariant": [
-            "BT-1"
-        ],
-        "url": "http://swgoh.gg/characters/bt-1/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bt1.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Droid",
-            "Scoundrel"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/bt-1/best-mods/",
-            "sets": [
-                "Offense x4",
-                "Critical Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_b2"
     },
     {
         "name": "Barriss Offee",
@@ -577,9 +481,6 @@
             "Baris",
             "Barris",
             "Bariss"
-        ],
-        "nameVariant": [
-            "Barriss Offee"
         ],
         "url": "http://swgoh.gg/characters/barriss-offee/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_barriss_light.png",
@@ -604,7 +505,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_barriss_light"
     },
     {
         "name": "Bastila Shan",
@@ -612,9 +514,6 @@
         "aliases": [
             "Bastila Shan",
             "Bastilla"
-        ],
-        "nameVariant": [
-            "Bastila Shan"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bastilashan.png",
@@ -638,7 +537,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bastilashan"
     },
     {
         "name": "Bastila Shan (Fallen)",
@@ -649,10 +549,6 @@
             "Bastila Fallen",
             "BSF",
             "Fallen"
-        ],
-        "nameVariant": [
-            "Bastila Shan (Fallen)",
-            "Bastila Shan Fallen"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bastilashan_dark.png",
@@ -675,15 +571,13 @@
             "circle": "Health",
             "cross": "Health/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bastilashan_dark"
     },
     {
         "name": "Baze Malbus",
         "uniqueName": "BAZEMALBUS",
         "aliases": [
-            "Baze Malbus"
-        ],
-        "nameVariant": [
             "Baze Malbus"
         ],
         "url": "http://swgoh.gg/characters/baze-malbus/",
@@ -709,15 +603,44 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bazemalbus"
+    },
+    {
+        "name": "BB-8",
+        "uniqueName": "BB8",
+        "aliases": [
+            "BB-8",
+            "BB8"
+        ],
+        "url": "http://swgoh.gg/characters/bb-8/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb8.png",
+        "side": "light",
+        "factions": [
+            "Droid",
+            "Resistance",
+            "Support"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/bb-8/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance/ Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_bb8"
     },
     {
         "name": "Ben Solo",
         "uniqueName": "BENSOLO",
         "aliases": [
-            "Ben Solo"
-        ],
-        "nameVariant": [
             "Ben Solo"
         ],
         "url": "http://swgoh.gg/characters/ben-solo/",
@@ -740,15 +663,13 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bensolo"
     },
     {
         "name": "Biggs Darklighter",
         "uniqueName": "BIGGSDARKLIGHTER",
         "aliases": [
-            "Biggs Darklighter"
-        ],
-        "nameVariant": [
             "Biggs Darklighter"
         ],
         "url": "http://swgoh.gg/characters/biggs-darklighter/",
@@ -772,15 +693,13 @@
             "circle": "Protection",
             "cross": "Offense/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rebelpilot_biggs"
     },
     {
         "name": "Bistan",
         "uniqueName": "BISTAN",
         "aliases": [
-            "Bistan"
-        ],
-        "nameVariant": [
             "Bistan"
         ],
         "url": "http://swgoh.gg/characters/bistan/",
@@ -806,7 +725,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bistan"
     },
     {
         "name": "Bo-Katan Kryze",
@@ -815,9 +735,6 @@
             "Bo-Katan Kryze",
             "BoKatan Kryze",
             "Bo Katan Kryze"
-        ],
-        "nameVariant": [
-            "Bo-Katan Kryze"
         ],
         "url": "http://swgoh.gg/characters/bo-katan-kryze/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bokatan.png",
@@ -841,15 +758,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bokatan"
     },
     {
         "name": "Boba Fett",
         "uniqueName": "BOBAFETT",
         "aliases": [
-            "Boba Fett"
-        ],
-        "nameVariant": [
             "Boba Fett"
         ],
         "url": "http://swgoh.gg/characters/boba-fett/",
@@ -874,15 +789,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bobafett"
     },
     {
         "name": "Boba Fett, Scion of Jango",
         "uniqueName": "BOBAFETTSCION",
         "aliases": [
-            "Boba Fett, Scion of Jango"
-        ],
-        "nameVariant": [
             "Boba Fett, Scion of Jango"
         ],
         "url": "http://swgoh.gg/characters/boba-fett-scion-of-jango/",
@@ -907,15 +820,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bobafettold"
     },
     {
         "name": "Bodhi Rook",
         "uniqueName": "BODHIROOK",
         "aliases": [
-            "Bodhi Rook"
-        ],
-        "nameVariant": [
             "Bodhi Rook"
         ],
         "url": "http://swgoh.gg/characters/bodhi-rook/",
@@ -940,7 +851,8 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bodhi"
     },
     {
         "name": "Bossk",
@@ -948,9 +860,6 @@
         "aliases": [
             "Bossk",
             "Bosk"
-        ],
-        "nameVariant": [
-            "Bossk"
         ],
         "url": "http://swgoh.gg/characters/bossk/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bossk.png",
@@ -974,15 +883,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bossk"
     },
     {
         "name": "Boushh (Leia Organa)",
         "uniqueName": "BOUSHH",
         "aliases": [
-            "Boushh (Leia Organa)"
-        ],
-        "nameVariant": [
             "Boushh (Leia Organa)"
         ],
         "url": "http://swgoh.gg/characters/boushh-leia-organa/",
@@ -1008,7 +915,38 @@
             "circle": "Health/ Protection",
             "cross": "Offense/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_boushh"
+    },
+    {
+        "name": "BT-1",
+        "uniqueName": "BT1",
+        "aliases": [
+            "BT-1"
+        ],
+        "url": "http://swgoh.gg/characters/bt-1/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bt1.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Scoundrel"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/bt-1/best-mods/",
+            "sets": [
+                "Offense x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection/ Health",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_bt1"
     },
     {
         "name": "C-3PO",
@@ -1018,9 +956,6 @@
             "C3P0",
             "C3PO",
             "3PO"
-        ],
-        "nameVariant": [
-            "C-3PO"
         ],
         "url": "http://swgoh.gg/characters/c-3po/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_c3p0.png",
@@ -1045,161 +980,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "CC-2224 \"Cody\"",
-        "uniqueName": "CC2224",
-        "aliases": [
-            "CC-2224 \"Cody\"",
-            "CC-2224 Cody"
-        ],
-        "nameVariant": [
-            "'CC-2224 Cody'",
-            "CC-2224 \"Cody\""
-        ],
-        "url": "http://swgoh.gg/characters/cc-2224-cody/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_cody.png",
-        "side": "light",
-        "factions": [
-            "Attacker",
-            "Clone Trooper",
-            "Galactic Republic",
-            "Leader"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/cc-2224-cody/best-mods/",
-            "sets": [
-                "Speed x4",
-                "Critical Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
-            "circle": "Protection",
-            "cross": "Offense/ Protection",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "CT-21-0408 \"Echo\"",
-        "uniqueName": "CT210408",
-        "aliases": [
-            "CT-21-0408 \"Echo\"",
-            "Clone Trooper Echo",
-            "CT Echo",
-            "CTEcho"
-        ],
-        "nameVariant": [
-            "'CT-21-0408 Echo'",
-            "CT-21-0408 \"Echo\""
-        ],
-        "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_echo.png",
-        "side": "light",
-        "factions": [
-            "501st",
-            "Clone Trooper",
-            "Galactic Republic",
-            "Support"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ct-21-0408-echo/best-mods/",
-            "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "CT-5555 \"Fives\"",
-        "uniqueName": "CT5555",
-        "aliases": [
-            "CT-5555 \"Fives\"",
-            "Fives",
-            "5s"
-        ],
-        "nameVariant": [
-            "'CT-5555 Fives'",
-            "CT-5555 \"Fives\""
-        ],
-        "url": "http://swgoh.gg/characters/ct-5555-fives/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_fives.png",
-        "side": "light",
-        "factions": [
-            "501st",
-            "Clone Trooper",
-            "Galactic Republic",
-            "Leader",
-            "Tank"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ct-5555-fives/best-mods/",
-            "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed/ Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "CT-7567 \"Rex\"",
-        "uniqueName": "CT7567",
-        "aliases": [
-            "CT-7567 \"Rex\"",
-            "Rex"
-        ],
-        "nameVariant": [
-            "'CT-7567 Rex'",
-            "CT-7567 \"Rex\""
-        ],
-        "url": "http://swgoh.gg/characters/ct-7567-rex/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_rex.png",
-        "side": "light",
-        "factions": [
-            "501st",
-            "Clone Trooper",
-            "Galactic Republic",
-            "Leader",
-            "Support"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ct-7567-rex/best-mods/",
-            "sets": [
-                "Health x2",
-                "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
-            "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_c3p0"
     },
     {
         "name": "Cad Bane",
         "uniqueName": "CADBANE",
         "aliases": [
-            "Cad Bane"
-        ],
-        "nameVariant": [
             "Cad Bane"
         ],
         "url": "http://swgoh.gg/characters/cad-bane/",
@@ -1224,15 +1011,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_cadbane"
     },
     {
         "name": "Cal Kestis",
         "uniqueName": "CALKESTIS",
         "aliases": [
-            "Cal Kestis"
-        ],
-        "nameVariant": [
             "Cal Kestis"
         ],
         "url": "http://swgoh.gg/characters/cal-kestis/",
@@ -1256,15 +1041,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_calkestis"
     },
     {
         "name": "Canderous Ordo",
         "uniqueName": "CANDEROUSORDO",
         "aliases": [
-            "Canderous Ordo"
-        ],
-        "nameVariant": [
             "Canderous Ordo"
         ],
         "url": "http://swgoh.gg/characters/canderous-ordo/",
@@ -1289,7 +1072,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_canderous"
     },
     {
         "name": "Captain Han Solo",
@@ -1298,9 +1082,6 @@
             "Captain Han Solo",
             "CHolo",
             "CHS"
-        ],
-        "nameVariant": [
-            "Captain Han Solo"
         ],
         "url": "http://swgoh.gg/characters/captain-han-solo/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hoth_han.png",
@@ -1323,15 +1104,13 @@
             "circle": "Protection/ Health",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_hoth_han"
     },
     {
         "name": "Captain Phasma",
         "uniqueName": "PHASMA",
         "aliases": [
-            "Captain Phasma"
-        ],
-        "nameVariant": [
             "Captain Phasma"
         ],
         "url": "http://swgoh.gg/characters/captain-phasma/",
@@ -1355,15 +1134,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_phasma"
     },
     {
         "name": "Cara Dune",
         "uniqueName": "CARADUNE",
         "aliases": [
-            "Cara Dune"
-        ],
-        "nameVariant": [
             "Cara Dune"
         ],
         "url": "http://swgoh.gg/characters/cara-dune/",
@@ -1389,15 +1166,13 @@
             "circle": "Protection",
             "cross": "Potency/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_caradune"
     },
     {
         "name": "Carth Onasi",
         "uniqueName": "CARTHONASI",
         "aliases": [
-            "Carth Onasi"
-        ],
-        "nameVariant": [
             "Carth Onasi"
         ],
         "url": "http://swgoh.gg/characters/carth-onasi/",
@@ -1421,15 +1196,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_carth"
     },
     {
         "name": "Cassian Andor",
         "uniqueName": "CASSIANANDOR",
         "aliases": [
-            "Cassian Andor"
-        ],
-        "nameVariant": [
             "Cassian Andor"
         ],
         "url": "http://swgoh.gg/characters/cassian-andor/",
@@ -1454,15 +1227,45 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_cassian"
+    },
+    {
+        "name": "CC-2224 \"Cody\"",
+        "uniqueName": "CC2224",
+        "aliases": [
+            "CC-2224 \"Cody\"",
+            "CC-2224 Cody"
+        ],
+        "url": "http://swgoh.gg/characters/cc-2224-cody/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_cody.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Leader"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/cc-2224-cody/best-mods/",
+            "sets": [
+                "Speed x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage/ Crit. Chance",
+            "circle": "Protection",
+            "cross": "Offense/ Protection",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_trooperclone_cody"
     },
     {
         "name": "Cere Junda",
         "uniqueName": "CEREJUNDA",
         "aliases": [
-            "Cere Junda"
-        ],
-        "nameVariant": [
             "Cere Junda"
         ],
         "url": "http://swgoh.gg/characters/cere-junda/",
@@ -1488,15 +1291,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_cerejunda"
     },
     {
         "name": "Chewbacca",
         "uniqueName": "CHEWBACCALEGENDARY",
         "aliases": [
-            "Chewbacca"
-        ],
-        "nameVariant": [
             "Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/chewbacca/",
@@ -1522,15 +1323,13 @@
             "circle": "Protection",
             "cross": "Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_chewbacca_ot"
     },
     {
         "name": "Chief Chirpa",
         "uniqueName": "CHIEFCHIRPA",
         "aliases": [
-            "Chief Chirpa"
-        ],
-        "nameVariant": [
             "Chief Chirpa"
         ],
         "url": "http://swgoh.gg/characters/chief-chirpa/",
@@ -1554,7 +1353,8 @@
             "circle": "Protection",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_chirpa"
     },
     {
         "name": "Chief Nebit",
@@ -1562,9 +1362,6 @@
         "aliases": [
             "Chief Nebit",
             "Nebit"
-        ],
-        "nameVariant": [
-            "Chief Nebit"
         ],
         "url": "http://swgoh.gg/characters/chief-nebit/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_nebit.png",
@@ -1588,7 +1385,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jawa_nebit"
     },
     {
         "name": "Chirrut Îmwe",
@@ -1596,9 +1394,6 @@
         "aliases": [
             "Chirrut Îmwe",
             "Chirrut"
-        ],
-        "nameVariant": [
-            "Chirrut Îmwe"
         ],
         "url": "http://swgoh.gg/characters/chirrut-imwe/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chirrut.png",
@@ -1622,15 +1417,13 @@
             "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_chirrut"
     },
     {
         "name": "Chopper",
         "uniqueName": "CHOPPERS3",
         "aliases": [
-            "Chopper"
-        ],
-        "nameVariant": [
             "Chopper"
         ],
         "url": "http://swgoh.gg/characters/chopper/",
@@ -1655,7 +1448,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_chopper"
     },
     {
         "name": "Clone Sergeant - Phase I",
@@ -1664,9 +1458,6 @@
             "Clone Sergeant - Phase I",
             "Clone Sergeant P1",
             "CS1"
-        ],
-        "nameVariant": [
-            "Clone Sergeant - Phase I"
         ],
         "url": "http://swgoh.gg/characters/clone-sergeant-phase-i/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclonegreen.png",
@@ -1689,7 +1480,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_trooperclonegreen"
     },
     {
         "name": "Clone Wars Chewbacca",
@@ -1698,9 +1490,6 @@
             "Clone Wars Chewbacca",
             "Chewbacca",
             "Chewy"
-        ],
-        "nameVariant": [
-            "Clone Wars Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/clone-wars-chewbacca/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca.png",
@@ -1725,7 +1514,8 @@
             "circle": "Protection/ Health",
             "cross": "Protection/ Defense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_clonewarschewbacca"
     },
     {
         "name": "Colonel Starck",
@@ -1734,9 +1524,6 @@
             "Colonel Starck",
             "Stark",
             "Starck"
-        ],
-        "nameVariant": [
-            "Colonel Starck"
         ],
         "url": "http://swgoh.gg/characters/colonel-starck/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_colonel_stark.png",
@@ -1759,7 +1546,8 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_colonel_stark"
     },
     {
         "name": "Commander Ahsoka Tano",
@@ -1767,9 +1555,6 @@
         "aliases": [
             "Commander Ahsoka Tano",
             "CAT"
-        ],
-        "nameVariant": [
-            "Commander Ahsoka Tano"
         ],
         "url": "http://swgoh.gg/characters/commander-ahsoka-tano/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_commanderahsokatano.png",
@@ -1793,7 +1578,8 @@
             "circle": "Health",
             "cross": "Offense/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_commanderahsokatano"
     },
     {
         "name": "Commander Luke Skywalker",
@@ -1804,9 +1590,6 @@
             "Luke Skywalker",
             "Luke",
             "CLS"
-        ],
-        "nameVariant": [
-            "Commander Luke Skywalker"
         ],
         "url": "http://swgoh.gg/characters/commander-luke-skywalker/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lukebespin.png",
@@ -1830,7 +1613,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_lukebespin"
     },
     {
         "name": "Coruscant Underworld Police",
@@ -1838,9 +1622,6 @@
         "aliases": [
             "Coruscant Underworld Police",
             "CUP"
-        ],
-        "nameVariant": [
-            "Coruscant Underworld Police"
         ],
         "url": "http://swgoh.gg/characters/coruscant-underworld-police/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_coruscantpolice.png",
@@ -1862,7 +1643,8 @@
             "circle": "Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_coruscantpolice"
     },
     {
         "name": "Count Dooku",
@@ -1870,9 +1652,6 @@
         "aliases": [
             "Count Dooku",
             "Dooku"
-        ],
-        "nameVariant": [
-            "Count Dooku"
         ],
         "url": "http://swgoh.gg/characters/count-dooku/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dooku.png",
@@ -1896,15 +1675,115 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_dooku"
+    },
+    {
+        "name": "CT-21-0408 \"Echo\"",
+        "uniqueName": "CT210408",
+        "aliases": [
+            "CT-21-0408 \"Echo\"",
+            "Clone Trooper Echo",
+            "CT Echo",
+            "CTEcho"
+        ],
+        "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_echo.png",
+        "side": "light",
+        "factions": [
+            "501st",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ct-21-0408-echo/best-mods/",
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health/ Protection",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_trooperclone_echo"
+    },
+    {
+        "name": "CT-5555 \"Fives\"",
+        "uniqueName": "CT5555",
+        "aliases": [
+            "CT-5555 \"Fives\"",
+            "Fives",
+            "5s"
+        ],
+        "url": "http://swgoh.gg/characters/ct-5555-fives/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_fives.png",
+        "side": "light",
+        "factions": [
+            "501st",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Leader",
+            "Tank"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ct-5555-fives/best-mods/",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed/ Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_trooperclone_fives"
+    },
+    {
+        "name": "CT-7567 \"Rex\"",
+        "uniqueName": "CT7567",
+        "aliases": [
+            "CT-7567 \"Rex\"",
+            "Rex"
+        ],
+        "url": "http://swgoh.gg/characters/ct-7567-rex/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_rex.png",
+        "side": "light",
+        "factions": [
+            "501st",
+            "Clone Trooper",
+            "Galactic Republic",
+            "Leader",
+            "Support"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ct-7567-rex/best-mods/",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health/ Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_trooperclone_rex"
     },
     {
         "name": "Dark Trooper",
         "uniqueName": "DARKTROOPER",
         "aliases": [
-            "Dark Trooper"
-        ],
-        "nameVariant": [
             "Dark Trooper"
         ],
         "url": "http://swgoh.gg/characters/dark-trooper/",
@@ -1930,15 +1809,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_darktrooper"
     },
     {
         "name": "Darth Malak",
         "uniqueName": "DARTHMALAK",
         "aliases": [
-            "Darth Malak"
-        ],
-        "nameVariant": [
             "Darth Malak"
         ],
         "url": "http://swgoh.gg/characters/darth-malak/",
@@ -1963,15 +1840,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_darthmalak"
     },
     {
         "name": "Darth Malgus",
         "uniqueName": "DARTHMALGUS",
         "aliases": [
-            "Darth Malgus"
-        ],
-        "nameVariant": [
             "Darth Malgus"
         ],
         "url": "http://swgoh.gg/characters/darth-malgus/",
@@ -1997,15 +1872,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_darthmalgus"
     },
     {
         "name": "Darth Maul",
         "uniqueName": "MAUL",
         "aliases": [
-            "Darth Maul"
-        ],
-        "nameVariant": [
             "Darth Maul"
         ],
         "url": "http://swgoh.gg/characters/darth-maul/",
@@ -2029,7 +1902,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_maul"
     },
     {
         "name": "Darth Nihilus",
@@ -2038,9 +1912,6 @@
             "Darth Nihilus",
             "Nihilus",
             "DN"
-        ],
-        "nameVariant": [
-            "Darth Nihilus"
         ],
         "url": "http://swgoh.gg/characters/darth-nihilus/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nihilus.png",
@@ -2063,7 +1934,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nihilus"
     },
     {
         "name": "Darth Revan",
@@ -2071,9 +1943,6 @@
         "aliases": [
             "Darth Revan",
             "DR"
-        ],
-        "nameVariant": [
-            "Darth Revan"
         ],
         "url": "http://swgoh.gg/characters/darth-revan/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithrevan.png",
@@ -2097,7 +1966,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sithrevan"
     },
     {
         "name": "Darth Sidious",
@@ -2106,9 +1976,6 @@
             "Darth Sidious",
             "Sidious",
             "Sid"
-        ],
-        "nameVariant": [
-            "Darth Sidious"
         ],
         "url": "http://swgoh.gg/characters/darth-sidious/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sidious.png",
@@ -2131,7 +1998,8 @@
             "circle": "Health/ Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sidious"
     },
     {
         "name": "Darth Sion",
@@ -2139,9 +2007,6 @@
         "aliases": [
             "Darth Sion",
             "Sion"
-        ],
-        "nameVariant": [
-            "Darth Sion"
         ],
         "url": "http://swgoh.gg/characters/darth-sion/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sion.png",
@@ -2163,15 +2028,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sion"
     },
     {
         "name": "Darth Talon",
         "uniqueName": "DARTHTALON",
         "aliases": [
-            "Darth Talon"
-        ],
-        "nameVariant": [
             "Darth Talon"
         ],
         "url": "http://swgoh.gg/characters/darth-talon/",
@@ -2194,7 +2057,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_darthtalon"
     },
     {
         "name": "Darth Traya",
@@ -2203,9 +2067,6 @@
             "Darth Traya",
             "Traya",
             "Treya"
-        ],
-        "nameVariant": [
-            "Darth Traya"
         ],
         "url": "http://swgoh.gg/characters/darth-traya/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_traya.png",
@@ -2228,7 +2089,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_traya"
     },
     {
         "name": "Darth Vader",
@@ -2237,9 +2099,6 @@
             "Darth Vader",
             "Vader",
             "DV"
-        ],
-        "nameVariant": [
-            "Darth Vader"
         ],
         "url": "http://swgoh.gg/characters/darth-vader/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_vader.png",
@@ -2263,15 +2122,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_vader"
     },
     {
         "name": "Dash Rendar",
         "uniqueName": "DASHRENDAR",
         "aliases": [
-            "Dash Rendar"
-        ],
-        "nameVariant": [
             "Dash Rendar"
         ],
         "url": "http://swgoh.gg/characters/dash-rendar/",
@@ -2296,7 +2153,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_dashrendar"
     },
     {
         "name": "Dathcha",
@@ -2304,9 +2162,6 @@
         "aliases": [
             "Dathcha",
             "Datcha"
-        ],
-        "nameVariant": [
-            "Dathcha"
         ],
         "url": "http://swgoh.gg/characters/dathcha/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_dathcha.png",
@@ -2330,7 +2185,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jawa_dathcha"
     },
     {
         "name": "Death Trooper",
@@ -2338,9 +2194,6 @@
         "aliases": [
             "Death Trooper",
             "DT"
-        ],
-        "nameVariant": [
-            "Death Trooper"
         ],
         "url": "http://swgoh.gg/characters/death-trooper/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperdeath.png",
@@ -2364,15 +2217,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_trooperdeath"
     },
     {
         "name": "Dengar",
         "uniqueName": "DENGAR",
         "aliases": [
-            "Dengar"
-        ],
-        "nameVariant": [
             "Dengar"
         ],
         "url": "http://swgoh.gg/characters/dengar/",
@@ -2397,7 +2248,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_dengar"
     },
     {
         "name": "Director Krennic",
@@ -2406,9 +2258,6 @@
             "Director Krennic",
             "Krennic",
             "DK"
-        ],
-        "nameVariant": [
-            "Director Krennic"
         ],
         "url": "http://swgoh.gg/characters/director-krennic/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_krennic.png",
@@ -2431,15 +2280,13 @@
             "circle": "Protection",
             "cross": "Protection/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_krennic"
     },
     {
         "name": "Doctor Aphra",
         "uniqueName": "DOCTORAPHRA",
         "aliases": [
-            "Doctor Aphra"
-        ],
-        "nameVariant": [
             "Doctor Aphra"
         ],
         "url": "http://swgoh.gg/characters/doctor-aphra/",
@@ -2464,15 +2311,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_doctoraphra"
     },
     {
         "name": "Droideka",
         "uniqueName": "DROIDEKA",
         "aliases": [
-            "Droideka"
-        ],
-        "nameVariant": [
             "Droideka"
         ],
         "url": "http://swgoh.gg/characters/droideka/",
@@ -2496,7 +2341,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_droideka"
     },
     {
         "name": "Echo",
@@ -2505,9 +2351,6 @@
             "Bad Batch Echo",
             "BB Echo",
             "BBEcho"
-        ],
-        "nameVariant": [
-            "Echo"
         ],
         "url": "http://swgoh.gg/characters/echo/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_echo.png",
@@ -2531,15 +2374,13 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bb_echo"
     },
     {
         "name": "Eeth Koth",
         "uniqueName": "EETHKOTH",
         "aliases": [
-            "Eeth Koth"
-        ],
-        "nameVariant": [
             "Eeth Koth"
         ],
         "url": "http://swgoh.gg/characters/eeth-koth/",
@@ -2565,7 +2406,8 @@
             "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_eethkoth"
     },
     {
         "name": "Eighth Brother",
@@ -2573,9 +2415,6 @@
         "aliases": [
             "Eighth Brother",
             "8th Brother"
-        ],
-        "nameVariant": [
-            "Eighth Brother"
         ],
         "url": "http://swgoh.gg/characters/eighth-brother/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_eighthbrother.png",
@@ -2600,15 +2439,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_eighthbrother"
     },
     {
         "name": "Embo",
         "uniqueName": "EMBO",
         "aliases": [
-            "Embo"
-        ],
-        "nameVariant": [
             "Embo"
         ],
         "url": "http://swgoh.gg/characters/embo/",
@@ -2633,7 +2470,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_embo"
     },
     {
         "name": "Emperor Palpatine",
@@ -2643,9 +2481,6 @@
             "Palpatine",
             "Palp",
             "EP"
-        ],
-        "nameVariant": [
-            "Emperor Palpatine"
         ],
         "url": "http://swgoh.gg/characters/emperor-palpatine/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_palpatineemperor.png",
@@ -2669,15 +2504,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_palpatineemperor"
     },
     {
         "name": "Enfys Nest",
         "uniqueName": "ENFYSNEST",
         "aliases": [
-            "Enfys Nest"
-        ],
-        "nameVariant": [
             "Enfys Nest"
         ],
         "url": "http://swgoh.gg/characters/enfys-nest/",
@@ -2702,15 +2535,13 @@
             "circle": "Health",
             "cross": "Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_enfys"
     },
     {
         "name": "Ewok Elder",
         "uniqueName": "EWOKELDER",
         "aliases": [
-            "Ewok Elder"
-        ],
-        "nameVariant": [
             "Ewok Elder"
         ],
         "url": "http://swgoh.gg/characters/ewok-elder/",
@@ -2733,15 +2564,13 @@
             "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_chief"
     },
     {
         "name": "Ewok Scout",
         "uniqueName": "EWOKSCOUT",
         "aliases": [
-            "Ewok Scout"
-        ],
-        "nameVariant": [
             "Ewok Scout"
         ],
         "url": "http://swgoh.gg/characters/ewok-scout/",
@@ -2764,15 +2593,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_scout"
     },
     {
         "name": "Ezra Bridger",
         "uniqueName": "EZRABRIDGERS3",
         "aliases": [
-            "Ezra Bridger"
-        ],
-        "nameVariant": [
             "Ezra Bridger"
         ],
         "url": "http://swgoh.gg/characters/ezra-bridger/",
@@ -2797,7 +2624,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ezra_s3"
     },
     {
         "name": "Fennec Shand",
@@ -2805,9 +2633,6 @@
         "aliases": [
             "Fennec Shand",
             "FS"
-        ],
-        "nameVariant": [
-            "Fennec Shand"
         ],
         "url": "http://swgoh.gg/characters/fennec-shand/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_fennec.png",
@@ -2831,7 +2656,8 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_fennec"
     },
     {
         "name": "Fifth Brother",
@@ -2839,9 +2665,6 @@
         "aliases": [
             "Fifth Brother",
             "5th Brother"
-        ],
-        "nameVariant": [
-            "Fifth Brother"
         ],
         "url": "http://swgoh.gg/characters/fifth-brother/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_fifthbrother.png",
@@ -2866,15 +2689,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_fifthbrother"
     },
     {
         "name": "Finn",
         "uniqueName": "FINN",
         "aliases": [
-            "Finn"
-        ],
-        "nameVariant": [
             "Finn"
         ],
         "url": "http://swgoh.gg/characters/finn/",
@@ -2898,7 +2719,8 @@
             "circle": "Protection",
             "cross": "Protection/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_finnjakku"
     },
     {
         "name": "First Order Executioner",
@@ -2908,9 +2730,6 @@
             "FOX",
             "FOE",
             "Death Panda"
-        ],
-        "nameVariant": [
-            "First Order Executioner"
         ],
         "url": "http://swgoh.gg/characters/first-order-executioner/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_executioner.png",
@@ -2932,7 +2751,8 @@
             "circle": "Health",
             "cross": "Offense/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_firstorder_executioner"
     },
     {
         "name": "First Order Officer",
@@ -2940,9 +2760,6 @@
         "aliases": [
             "First Order Officer",
             "FOO"
-        ],
-        "nameVariant": [
-            "First Order Officer"
         ],
         "url": "http://swgoh.gg/characters/first-order-officer/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorderofficer.png",
@@ -2964,7 +2781,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_firstorderofficer"
     },
     {
         "name": "First Order SF TIE Pilot",
@@ -2973,9 +2791,6 @@
             "First Order SF TIE Pilot",
             "FOSFTP",
             "Special Forces Tie Pilot"
-        ],
-        "nameVariant": [
-            "First Order SF TIE Pilot"
         ],
         "url": "http://swgoh.gg/characters/first-order-sf-tie-pilot/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_pilot.png",
@@ -2997,7 +2812,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_firstorder_pilot"
     },
     {
         "name": "First Order Stormtrooper",
@@ -3005,9 +2821,6 @@
         "aliases": [
             "First Order Stormtrooper",
             "FOST"
-        ],
-        "nameVariant": [
-            "First Order Stormtrooper"
         ],
         "url": "http://swgoh.gg/characters/first-order-stormtrooper/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertrooper.png",
@@ -3030,7 +2843,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_firstordertrooper"
     },
     {
         "name": "First Order TIE Pilot",
@@ -3038,9 +2852,6 @@
         "aliases": [
             "First Order TIE Pilot",
             "FOTP"
-        ],
-        "nameVariant": [
-            "First Order TIE Pilot"
         ],
         "url": "http://swgoh.gg/characters/first-order-tie-pilot/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertiepilot.png",
@@ -3062,15 +2873,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_firstordertiepilot"
     },
     {
         "name": "Gamorrean Guard",
         "uniqueName": "GAMORREANGUARD",
         "aliases": [
-            "Gamorrean Guard"
-        ],
-        "nameVariant": [
             "Gamorrean Guard"
         ],
         "url": "http://swgoh.gg/characters/gamorrean-guard/",
@@ -3094,15 +2903,13 @@
             "circle": "Protection/ Health",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_gamorreanguard"
     },
     {
         "name": "Gar Saxon",
         "uniqueName": "GARSAXON",
         "aliases": [
-            "Gar Saxon"
-        ],
-        "nameVariant": [
             "Gar Saxon"
         ],
         "url": "http://swgoh.gg/characters/gar-saxon/",
@@ -3127,7 +2934,8 @@
             "circle": "Protection",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_gar_saxon"
     },
     {
         "name": "Garazeb \"Zeb\" Orrelios",
@@ -3135,10 +2943,6 @@
         "aliases": [
             "Garazeb \"Zeb\" Orrelios",
             "Zeb"
-        ],
-        "nameVariant": [
-            "'Garazeb Zeb Orrelios'",
-            "Garazeb \"Zeb\" Orrelios"
         ],
         "url": "http://swgoh.gg/characters/garazeb-zeb-orrelios/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zeb_s3.png",
@@ -3161,7 +2965,8 @@
             "circle": "Protection",
             "cross": "Potency/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_zeb_s3"
     },
     {
         "name": "General Grievous",
@@ -3169,9 +2974,6 @@
         "aliases": [
             "General Grievous",
             "GG"
-        ],
-        "nameVariant": [
-            "General Grievous"
         ],
         "url": "http://swgoh.gg/characters/general-grievous/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_grievous.png",
@@ -3197,15 +2999,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_grievous"
     },
     {
         "name": "General Hux",
         "uniqueName": "GENERALHUX",
         "aliases": [
-            "General Hux"
-        ],
-        "nameVariant": [
             "General Hux"
         ],
         "url": "http://swgoh.gg/characters/general-hux/",
@@ -3230,7 +3030,8 @@
             "circle": "Protection/ Health",
             "cross": "Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_generalhux"
     },
     {
         "name": "General Kenobi",
@@ -3238,9 +3039,6 @@
         "aliases": [
             "General Kenobi",
             "GK"
-        ],
-        "nameVariant": [
-            "General Kenobi"
         ],
         "url": "http://swgoh.gg/characters/general-kenobi/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_obiwangeneral.png",
@@ -3266,7 +3064,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_obiwangeneral"
     },
     {
         "name": "General Skywalker",
@@ -3274,9 +3073,6 @@
         "aliases": [
             "General Skywalker",
             "GAS"
-        ],
-        "nameVariant": [
-            "General Skywalker"
         ],
         "url": "http://swgoh.gg/characters/general-skywalker/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_generalanakin.png",
@@ -3301,15 +3097,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_generalanakin"
     },
     {
         "name": "General Veers",
         "uniqueName": "VEERS",
         "aliases": [
-            "General Veers"
-        ],
-        "nameVariant": [
             "General Veers"
         ],
         "url": "http://swgoh.gg/characters/general-veers/",
@@ -3334,7 +3128,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_veers"
     },
     {
         "name": "Geonosian Brood Alpha",
@@ -3342,9 +3137,6 @@
         "aliases": [
             "Geonosian Brood Alpha",
             "GBA"
-        ],
-        "nameVariant": [
-            "Geonosian Brood Alpha"
         ],
         "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_broodalpha.png",
@@ -3368,15 +3160,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_geonosian_broodalpha"
     },
     {
         "name": "Geonosian Soldier",
         "uniqueName": "GEONOSIANSOLDIER",
         "aliases": [
-            "Geonosian Soldier"
-        ],
-        "nameVariant": [
             "Geonosian Soldier"
         ],
         "url": "http://swgoh.gg/characters/geonosian-soldier/",
@@ -3400,15 +3190,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_geonosian_soldier"
     },
     {
         "name": "Geonosian Spy",
         "uniqueName": "GEONOSIANSPY",
         "aliases": [
-            "Geonosian Spy"
-        ],
-        "nameVariant": [
             "Geonosian Spy"
         ],
         "url": "http://swgoh.gg/characters/geonosian-spy/",
@@ -3432,7 +3220,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_geonosian_spy"
     },
     {
         "name": "Grand Admiral Thrawn",
@@ -3440,9 +3229,6 @@
         "aliases": [
             "Grand Admiral Thrawn",
             "GAT"
-        ],
-        "nameVariant": [
-            "Grand Admiral Thrawn"
         ],
         "url": "http://swgoh.gg/characters/grand-admiral-thrawn/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_thrawn.png",
@@ -3466,15 +3252,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_thrawn"
     },
     {
         "name": "Grand Inquisitor",
         "uniqueName": "GRANDINQUISITOR",
         "aliases": [
-            "Grand Inquisitor"
-        ],
-        "nameVariant": [
             "Grand Inquisitor"
         ],
         "url": "http://swgoh.gg/characters/grand-inquisitor/",
@@ -3500,7 +3284,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_grandinquisitor"
     },
     {
         "name": "Grand Master Yoda",
@@ -3509,9 +3294,6 @@
             "Grand Master Yoda",
             "Grandmaster Yoda",
             "GMY"
-        ],
-        "nameVariant": [
-            "Grand Master Yoda"
         ],
         "url": "http://swgoh.gg/characters/grand-master-yoda/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_yodagrandmaster.png",
@@ -3535,7 +3317,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_yodagrandmaster"
     },
     {
         "name": "Grand Moff Tarkin",
@@ -3543,9 +3326,6 @@
         "aliases": [
             "Grand Moff Tarkin",
             "GMT"
-        ],
-        "nameVariant": [
-            "Grand Moff Tarkin"
         ],
         "url": "http://swgoh.gg/characters/grand-moff-tarkin/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tarkinadmiral.png",
@@ -3569,15 +3349,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tarkinadmiral"
     },
     {
         "name": "Greedo",
         "uniqueName": "GREEDO",
         "aliases": [
-            "Greedo"
-        ],
-        "nameVariant": [
             "Greedo"
         ],
         "url": "http://swgoh.gg/characters/greedo/",
@@ -3602,15 +3380,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_greedo"
     },
     {
         "name": "Greef Karga",
         "uniqueName": "GREEFKARGA",
         "aliases": [
-            "Greef Karga"
-        ],
-        "nameVariant": [
             "Greef Karga"
         ],
         "url": "http://swgoh.gg/characters/greef-karga/",
@@ -3635,50 +3411,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "HK-47",
-        "uniqueName": "HK47",
-        "aliases": [
-            "HK-47",
-            "HK",
-            "HK47"
-        ],
-        "nameVariant": [
-            "HK-47"
-        ],
-        "url": "http://swgoh.gg/characters/hk-47/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hk47.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Droid",
-            "Leader",
-            "Sith Empire"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/hk-47/best-mods/",
-            "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_greefkarga"
     },
     {
         "name": "Han Solo",
         "uniqueName": "HANSOLO",
         "aliases": [
-            "Han Solo"
-        ],
-        "nameVariant": [
             "Han Solo"
         ],
         "url": "http://swgoh.gg/characters/han-solo/",
@@ -3703,15 +3442,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_han"
     },
     {
         "name": "Hera Syndulla",
         "uniqueName": "HERASYNDULLAS3",
         "aliases": [
-            "Hera Syndulla"
-        ],
-        "nameVariant": [
             "Hera Syndulla"
         ],
         "url": "http://swgoh.gg/characters/hera-syndulla/",
@@ -3736,7 +3473,8 @@
             "circle": "Protection",
             "cross": "Protection/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_hera_s3"
     },
     {
         "name": "Hermit Yoda",
@@ -3746,9 +3484,6 @@
             "Hoda",
             "hYoda",
             "HY"
-        ],
-        "nameVariant": [
-            "Hermit Yoda"
         ],
         "url": "http://swgoh.gg/characters/hermit-yoda/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_yodahermit.png",
@@ -3770,15 +3505,46 @@
             "circle": "Protection/ Health",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_yodahermit"
+    },
+    {
+        "name": "HK-47",
+        "uniqueName": "HK47",
+        "aliases": [
+            "HK-47",
+            "HK",
+            "HK47"
+        ],
+        "url": "http://swgoh.gg/characters/hk-47/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hk47.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Leader",
+            "Sith Empire"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/hk-47/best-mods/",
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_hk47"
     },
     {
         "name": "Hondo Ohnaka",
         "uniqueName": "HONDO",
         "aliases": [
-            "Hondo Ohnaka"
-        ],
-        "nameVariant": [
             "Hondo Ohnaka"
         ],
         "url": "http://swgoh.gg/characters/hondo-ohnaka/",
@@ -3802,7 +3568,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_hondoohnaka"
     },
     {
         "name": "Hoth Rebel Scout",
@@ -3811,9 +3578,6 @@
             "Hoth Rebel Scout",
             "Hoth Scout",
             "HRS"
-        ],
-        "nameVariant": [
-            "Hoth Rebel Scout"
         ],
         "url": "http://swgoh.gg/characters/hoth-rebel-scout/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelhothscout.png",
@@ -3836,7 +3600,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rebelhothscout"
     },
     {
         "name": "Hoth Rebel Soldier",
@@ -3845,9 +3610,6 @@
             "Hoth Rebel Soldier",
             "Hoth Soldier",
             "HRS"
-        ],
-        "nameVariant": [
-            "Hoth Rebel Soldier"
         ],
         "url": "http://swgoh.gg/characters/hoth-rebel-soldier/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelhoth.png",
@@ -3871,15 +3633,13 @@
             "circle": "Protection",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rebelhoth"
     },
     {
         "name": "Hunter",
         "uniqueName": "BADBATCHHUNTER",
         "aliases": [
-            "Hunter"
-        ],
-        "nameVariant": [
             "Hunter"
         ],
         "url": "http://swgoh.gg/characters/hunter/",
@@ -3905,152 +3665,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "IG-100 MagnaGuard",
-        "uniqueName": "MAGNAGUARD",
-        "aliases": [
-            "IG-100 MagnaGuard",
-            "Magna",
-            "IG100"
-        ],
-        "nameVariant": [
-            "IG-100 MagnaGuard"
-        ],
-        "url": "http://swgoh.gg/characters/ig-100-magnaguard/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_magnaguard.png",
-        "side": "dark",
-        "factions": [
-            "Droid",
-            "Separatist",
-            "Tank"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ig-100-magnaguard/best-mods/",
-            "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Critical Avoidance/ Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "IG-11",
-        "uniqueName": "IG11",
-        "aliases": [
-            "IG-11",
-            "IG11"
-        ],
-        "nameVariant": [
-            "IG-11"
-        ],
-        "url": "http://swgoh.gg/characters/ig-11/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig11_nurse.png",
-        "side": "light",
-        "factions": [
-            "Droid",
-            "Healer",
-            "Scoundrel"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ig-11/best-mods/",
-            "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "IG-86 Sentinel Droid",
-        "uniqueName": "IG86SENTINELDROID",
-        "aliases": [
-            "IG-86 Sentinel Droid",
-            "IG86",
-            "Sentinel"
-        ],
-        "nameVariant": [
-            "IG-86 Sentinel Droid"
-        ],
-        "url": "http://swgoh.gg/characters/ig-86-sentinel-droid/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig86.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Droid"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/best-mods/",
-            "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "IG-88",
-        "uniqueName": "IG88",
-        "aliases": [
-            "IG-88",
-            "IG88"
-        ],
-        "nameVariant": [
-            "IG-88"
-        ],
-        "url": "http://swgoh.gg/characters/ig-88/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig88.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Bounty Hunter",
-            "Droid",
-            "Leader",
-            "Scoundrel"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ig-88/best-mods/",
-            "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bb_hunter"
     },
     {
         "name": "Iden Versio",
         "uniqueName": "IDENVERSIOEMPIRE",
         "aliases": [
-            "Iden Versio"
-        ],
-        "nameVariant": [
             "Iden Versio"
         ],
         "url": "http://swgoh.gg/characters/iden-versio/",
@@ -4075,7 +3696,137 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_idenversioempire"
+    },
+    {
+        "name": "IG-100 MagnaGuard",
+        "uniqueName": "MAGNAGUARD",
+        "aliases": [
+            "IG-100 MagnaGuard",
+            "Magna",
+            "IG100"
+        ],
+        "url": "http://swgoh.gg/characters/ig-100-magnaguard/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_magnaguard.png",
+        "side": "dark",
+        "factions": [
+            "Droid",
+            "Separatist",
+            "Tank"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ig-100-magnaguard/best-mods/",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Critical Avoidance/ Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_magnaguard"
+    },
+    {
+        "name": "IG-11",
+        "uniqueName": "IG11",
+        "aliases": [
+            "IG-11",
+            "IG11"
+        ],
+        "url": "http://swgoh.gg/characters/ig-11/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig11_nurse.png",
+        "side": "light",
+        "factions": [
+            "Droid",
+            "Healer",
+            "Scoundrel"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ig-11/best-mods/",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_ig11_nurse"
+    },
+    {
+        "name": "IG-86 Sentinel Droid",
+        "uniqueName": "IG86SENTINELDROID",
+        "aliases": [
+            "IG-86 Sentinel Droid",
+            "IG86",
+            "Sentinel"
+        ],
+        "url": "http://swgoh.gg/characters/ig-86-sentinel-droid/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig86.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/best-mods/",
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection/ Health",
+            "cross": "Offense",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_ig86"
+    },
+    {
+        "name": "IG-88",
+        "uniqueName": "IG88",
+        "aliases": [
+            "IG-88",
+            "IG88"
+        ],
+        "url": "http://swgoh.gg/characters/ig-88/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig88.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Bounty Hunter",
+            "Droid",
+            "Leader",
+            "Scoundrel"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ig-88/best-mods/",
+            "sets": [
+                "Critical Chance x2",
+                "Critical Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_ig88"
     },
     {
         "name": "Ima-Gun Di",
@@ -4084,9 +3835,6 @@
             "Ima-Gun Di",
             "ImaGun Di",
             "IGD"
-        ],
-        "nameVariant": [
-            "Ima-Gun Di"
         ],
         "url": "http://swgoh.gg/characters/ima-gun-di/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_imagundi.png",
@@ -4111,7 +3859,8 @@
             "circle": "Protection/ Health",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_imagundi"
     },
     {
         "name": "Imperial Probe Droid",
@@ -4120,9 +3869,6 @@
             "Imperial Probe Droid",
             "IPD",
             "Probe Droid"
-        ],
-        "nameVariant": [
-            "Imperial Probe Droid"
         ],
         "url": "http://swgoh.gg/characters/imperial-probe-droid/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_probedroid.png",
@@ -4145,7 +3891,8 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_probedroid"
     },
     {
         "name": "Imperial Super Commando",
@@ -4153,9 +3900,6 @@
         "aliases": [
             "Imperial Super Commando",
             "ISC"
-        ],
-        "nameVariant": [
-            "Imperial Super Commando"
         ],
         "url": "http://swgoh.gg/characters/imperial-super-commando/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_imperial_super_commando.png",
@@ -4178,15 +3922,13 @@
             "circle": "Protection",
             "cross": "Offense/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_imperial_super_commando"
     },
     {
         "name": "Jabba the Hutt",
         "uniqueName": "JABBATHEHUTT",
         "aliases": [
-            "Jabba the Hutt"
-        ],
-        "nameVariant": [
             "Jabba the Hutt"
         ],
         "url": "http://swgoh.gg/characters/jabba-the-hutt/",
@@ -4213,7 +3955,8 @@
             "circle": "Health",
             "cross": "Health/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jabbathehutt"
     },
     {
         "name": "Jango Fett",
@@ -4221,9 +3964,6 @@
         "aliases": [
             "Jango Fett",
             "JF"
-        ],
-        "nameVariant": [
-            "Jango Fett"
         ],
         "url": "http://swgoh.gg/characters/jango-fett/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jangofett.png",
@@ -4249,15 +3989,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jangofett"
     },
     {
         "name": "Jawa",
         "uniqueName": "JAWA",
         "aliases": [
-            "Jawa"
-        ],
-        "nameVariant": [
             "Jawa"
         ],
         "url": "http://swgoh.gg/characters/jawa/",
@@ -4281,15 +4019,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jawa_jawa"
     },
     {
         "name": "Jawa Engineer",
         "uniqueName": "JAWAENGINEER",
         "aliases": [
-            "Jawa Engineer"
-        ],
-        "nameVariant": [
             "Jawa Engineer"
         ],
         "url": "http://swgoh.gg/characters/jawa-engineer/",
@@ -4312,15 +4048,13 @@
             "circle": "Protection",
             "cross": "Potency/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jawa_engineer"
     },
     {
         "name": "Jawa Scavenger",
         "uniqueName": "JAWASCAVENGER",
         "aliases": [
-            "Jawa Scavenger"
-        ],
-        "nameVariant": [
             "Jawa Scavenger"
         ],
         "url": "http://swgoh.gg/characters/jawa-scavenger/",
@@ -4344,15 +4078,13 @@
             "circle": "Protection",
             "cross": "Protection/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jawa_scavenger"
     },
     {
         "name": "Jedi Consular",
         "uniqueName": "JEDIKNIGHTCONSULAR",
         "aliases": [
-            "Jedi Consular"
-        ],
-        "nameVariant": [
             "Jedi Consular"
         ],
         "url": "http://swgoh.gg/characters/jedi-consular/",
@@ -4377,7 +4109,8 @@
             "circle": "Health/ Protection",
             "cross": "Health/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jedi_consular_03"
     },
     {
         "name": "Jedi Knight Anakin",
@@ -4387,9 +4120,6 @@
             "Sky guy",
             "Skyguy",
             "JKA"
-        ],
-        "nameVariant": [
-            "Jedi Knight Anakin"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_anakinknight.png",
@@ -4413,7 +4143,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_anakinknight"
     },
     {
         "name": "Jedi Knight Guardian",
@@ -4421,9 +4152,6 @@
         "aliases": [
             "Jedi Knight Guardian",
             "JKG"
-        ],
-        "nameVariant": [
-            "Jedi Knight Guardian"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-guardian/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedi_guardian_01.png",
@@ -4447,7 +4175,8 @@
             "circle": "Health/ Protection",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jedi_guardian_01"
     },
     {
         "name": "Jedi Knight Luke Skywalker",
@@ -4456,9 +4185,6 @@
             "Jedi Knight Luke Skywalker",
             "JKL",
             "JKLS"
-        ],
-        "nameVariant": [
-            "Jedi Knight Luke Skywalker"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-luke-skywalker/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_jediknight.png",
@@ -4481,7 +4207,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_luke_jediknight"
     },
     {
         "name": "Jedi Knight Revan",
@@ -4490,9 +4217,6 @@
             "Jedi Knight Revan",
             "Jedi Revan",
             "JKR"
-        ],
-        "nameVariant": [
-            "Jedi Knight Revan"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-revan/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedirevan.png",
@@ -4516,7 +4240,8 @@
             "circle": "Health",
             "cross": "Health/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jedirevan"
     },
     {
         "name": "Jedi Master Kenobi",
@@ -4524,9 +4249,6 @@
         "aliases": [
             "Jedi Master Kenobi",
             "JMK"
-        ],
-        "nameVariant": [
-            "Jedi Master Kenobi"
         ],
         "url": "http://swgoh.gg/characters/jedi-master-kenobi/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_globiwan.png",
@@ -4551,7 +4273,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_globiwan"
     },
     {
         "name": "Jedi Master Luke Skywalker",
@@ -4560,9 +4283,6 @@
             "Jedi Master Luke Skywalker",
             "JMLS",
             "JML"
-        ],
-        "nameVariant": [
-            "Jedi Master Luke Skywalker"
         ],
         "url": "http://swgoh.gg/characters/jedi-master-luke-skywalker/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_jml.png",
@@ -4586,16 +4306,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_luke_jml"
     },
     {
         "name": "Jolee Bindo",
         "uniqueName": "JOLEEBINDO",
         "aliases": [
-            "Jolee Bindo",
-            "Jolee Bido"
-        ],
-        "nameVariant": [
             "Jolee Bindo",
             "Jolee Bido"
         ],
@@ -4621,15 +4338,13 @@
             "circle": "Health",
             "cross": "Health/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_joleebindo"
     },
     {
         "name": "Juhani",
         "uniqueName": "JUHANI",
         "aliases": [
-            "Juhani"
-        ],
-        "nameVariant": [
             "Juhani"
         ],
         "url": "http://swgoh.gg/characters/juhani/",
@@ -4654,15 +4369,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_juhani"
     },
     {
         "name": "Jyn Erso",
         "uniqueName": "JYNERSO",
         "aliases": [
-            "Jyn Erso"
-        ],
-        "nameVariant": [
             "Jyn Erso"
         ],
         "url": "http://swgoh.gg/characters/jyn-erso/",
@@ -4688,7 +4401,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_jyn"
     },
     {
         "name": "K-2SO",
@@ -4698,9 +4412,6 @@
             "K2SO",
             "K2S0",
             "K2"
-        ],
-        "nameVariant": [
-            "K-2SO"
         ],
         "url": "http://swgoh.gg/characters/k-2so/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_k2so.png",
@@ -4726,15 +4437,13 @@
             "circle": "Protection",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_k2so"
     },
     {
         "name": "Kanan Jarrus",
         "uniqueName": "KANANJARRUSS3",
         "aliases": [
-            "Kanan Jarrus"
-        ],
-        "nameVariant": [
             "Kanan Jarrus"
         ],
         "url": "http://swgoh.gg/characters/kanan-jarrus/",
@@ -4760,7 +4469,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kanan_s3"
     },
     {
         "name": "Ki-Adi-Mundi",
@@ -4769,9 +4479,6 @@
             "Ki-Adi-Mundi",
             "Ki Adi Mundi",
             "KAM"
-        ],
-        "nameVariant": [
-            "Ki-Adi-Mundi"
         ],
         "url": "http://swgoh.gg/characters/ki-adi-mundi/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kiadimundi.png",
@@ -4794,15 +4501,13 @@
             "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kiadimundi"
     },
     {
         "name": "Kit Fisto",
         "uniqueName": "KITFISTO",
         "aliases": [
-            "Kit Fisto"
-        ],
-        "nameVariant": [
             "Kit Fisto"
         ],
         "url": "http://swgoh.gg/characters/kit-fisto/",
@@ -4827,15 +4532,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kitfisto"
     },
     {
         "name": "Krrsantan",
         "uniqueName": "KRRSANTAN",
         "aliases": [
-            "Krrsantan"
-        ],
-        "nameVariant": [
             "Krrsantan"
         ],
         "url": "http://swgoh.gg/characters/krrsantan/",
@@ -4862,15 +4565,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_krrsantan"
     },
     {
         "name": "Kuiil",
         "uniqueName": "KUIIL",
         "aliases": [
-            "Kuiil"
-        ],
-        "nameVariant": [
             "Kuiil"
         ],
         "url": "http://swgoh.gg/characters/kuiil/",
@@ -4893,15 +4594,13 @@
             "circle": "Health/ Protection",
             "cross": "Potency/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kuiil"
     },
     {
         "name": "Kyle Katarn",
         "uniqueName": "KYLEKATARN",
         "aliases": [
-            "Kyle Katarn"
-        ],
-        "nameVariant": [
             "Kyle Katarn"
         ],
         "url": "http://swgoh.gg/characters/kyle-katarn/",
@@ -4926,7 +4625,8 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kylekatarn"
     },
     {
         "name": "Kylo Ren",
@@ -4934,9 +4634,6 @@
         "aliases": [
             "Kylo Ren",
             "Zylo"
-        ],
-        "nameVariant": [
-            "Kylo Ren"
         ],
         "url": "http://swgoh.gg/characters/kylo-ren/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kyloren.png",
@@ -4959,7 +4656,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kyloren"
     },
     {
         "name": "Kylo Ren (Unmasked)",
@@ -4969,10 +4667,6 @@
             "Kylo Ren Unmasked",
             "KRU",
             "Matt"
-        ],
-        "nameVariant": [
-            "Kylo Ren Unmasked",
-            "Kylo Ren (Unmasked)"
         ],
         "url": "http://swgoh.gg/characters/kylo-ren-unmasked/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kylo_unmasked.png",
@@ -4997,7 +4691,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kylo_unmasked"
     },
     {
         "name": "L3-37",
@@ -5005,9 +4700,6 @@
         "aliases": [
             "L3-37",
             "L337"
-        ],
-        "nameVariant": [
-            "L3-37"
         ],
         "url": "http://swgoh.gg/characters/l3-37/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_l337.png",
@@ -5032,15 +4724,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_l337"
     },
     {
         "name": "Lando Calrissian",
         "uniqueName": "ADMINISTRATORLANDO",
         "aliases": [
-            "Lando Calrissian"
-        ],
-        "nameVariant": [
             "Lando Calrissian"
         ],
         "url": "http://swgoh.gg/characters/lando-calrissian/",
@@ -5066,15 +4756,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_landobespin"
     },
     {
         "name": "Lobot",
         "uniqueName": "LOBOT",
         "aliases": [
-            "Lobot"
-        ],
-        "nameVariant": [
             "Lobot"
         ],
         "url": "http://swgoh.gg/characters/lobot/",
@@ -5098,15 +4786,13 @@
             "circle": "Health/ Protection",
             "cross": "Tenacity/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_lobot"
     },
     {
         "name": "Logray",
         "uniqueName": "LOGRAY",
         "aliases": [
-            "Logray"
-        ],
-        "nameVariant": [
             "Logray"
         ],
         "url": "http://swgoh.gg/characters/logray/",
@@ -5129,7 +4815,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_logray"
     },
     {
         "name": "Lord Vader",
@@ -5137,9 +4824,6 @@
         "aliases": [
             "Lord Vader",
             "LV"
-        ],
-        "nameVariant": [
-            "Lord Vader"
         ],
         "url": "http://swgoh.gg/characters/lord-vader/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lordvader.png",
@@ -5164,7 +4848,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_lordvader"
     },
     {
         "name": "Luke Skywalker (Farmboy)",
@@ -5174,10 +4859,6 @@
             "Farmboy Luke",
             "Farm Boy Luke",
             "FBL"
-        ],
-        "nameVariant": [
-            "Luke Skywalker Farmboy",
-            "Luke Skywalker (Farmboy)"
         ],
         "url": "http://swgoh.gg/characters/luke-skywalker-farmboy/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_ep4.png",
@@ -5201,15 +4882,13 @@
             "circle": "Protection",
             "cross": "Protection/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_luke_ep4"
     },
     {
         "name": "Luminara Unduli",
         "uniqueName": "LUMINARAUNDULI",
         "aliases": [
-            "Luminara Unduli"
-        ],
-        "nameVariant": [
             "Luminara Unduli"
         ],
         "url": "http://swgoh.gg/characters/luminara-unduli/",
@@ -5235,15 +4914,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_luminara"
     },
     {
         "name": "Mace Windu",
         "uniqueName": "MACEWINDU",
         "aliases": [
-            "Mace Windu"
-        ],
-        "nameVariant": [
             "Mace Windu"
         ],
         "url": "http://swgoh.gg/characters/mace-windu/",
@@ -5270,15 +4947,13 @@
             "circle": "Health",
             "cross": "Health/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_macewindu"
     },
     {
         "name": "Magmatrooper",
         "uniqueName": "MAGMATROOPER",
         "aliases": [
-            "Magmatrooper"
-        ],
-        "nameVariant": [
             "Magmatrooper"
         ],
         "url": "http://swgoh.gg/characters/magmatrooper/",
@@ -5302,15 +4977,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_trooperstorm_magma"
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
         "uniqueName": "MARAJADE",
         "aliases": [
-            "Mara Jade, The Emperor's Hand"
-        ],
-        "nameVariant": [
             "Mara Jade, The Emperor's Hand"
         ],
         "url": "http://swgoh.gg/characters/mara-jade-the-emperors-hand/",
@@ -5334,15 +5007,13 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_marajade"
     },
     {
         "name": "Maul",
         "uniqueName": "MAULS7",
         "aliases": [
-            "Maul"
-        ],
-        "nameVariant": [
             "Maul"
         ],
         "url": "http://swgoh.gg/characters/maul/",
@@ -5367,15 +5038,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_maul_cyborg"
     },
     {
         "name": "Merrin",
         "uniqueName": "MERRIN",
         "aliases": [
-            "Merrin"
-        ],
-        "nameVariant": [
             "Merrin"
         ],
         "url": "http://swgoh.gg/characters/merrin/",
@@ -5399,15 +5068,13 @@
             "circle": "Health/ Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_merrin"
     },
     {
         "name": "Mission Vao",
         "uniqueName": "MISSIONVAO",
         "aliases": [
-            "Mission Vao"
-        ],
-        "nameVariant": [
             "Mission Vao"
         ],
         "url": "http://swgoh.gg/characters/mission-vao/",
@@ -5431,15 +5098,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_mission"
     },
     {
         "name": "Mob Enforcer",
         "uniqueName": "HUMANTHUG",
         "aliases": [
-            "Mob Enforcer"
-        ],
-        "nameVariant": [
             "Mob Enforcer"
         ],
         "url": "http://swgoh.gg/characters/mob-enforcer/",
@@ -5463,15 +5128,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_mob_enforcer"
     },
     {
         "name": "Moff Gideon",
         "uniqueName": "MOFFGIDEONS1",
         "aliases": [
-            "Moff Gideon"
-        ],
-        "nameVariant": [
             "Moff Gideon"
         ],
         "url": "http://swgoh.gg/characters/moff-gideon/",
@@ -5497,15 +5160,13 @@
             "circle": "Protection/ Health",
             "cross": "Tenacity/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_moffgideon"
     },
     {
         "name": "Mon Mothma",
         "uniqueName": "MONMOTHMA",
         "aliases": [
-            "Mon Mothma"
-        ],
-        "nameVariant": [
             "Mon Mothma"
         ],
         "url": "http://swgoh.gg/characters/mon-mothma/",
@@ -5529,7 +5190,8 @@
             "circle": "Protection/ Health",
             "cross": "Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_monmothma"
     },
     {
         "name": "Mother Talzin",
@@ -5537,9 +5199,6 @@
         "aliases": [
             "Mother Talzin",
             "MT"
-        ],
-        "nameVariant": [
-            "Mother Talzin"
         ],
         "url": "http://swgoh.gg/characters/mother-talzin/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_talzin.png",
@@ -5562,15 +5221,13 @@
             "circle": "Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nightsisters_talzin"
     },
     {
         "name": "Nightsister Acolyte",
         "uniqueName": "NIGHTSISTERACOLYTE",
         "aliases": [
-            "Nightsister Acolyte"
-        ],
-        "nameVariant": [
             "Nightsister Acolyte"
         ],
         "url": "http://swgoh.gg/characters/nightsister-acolyte/",
@@ -5593,15 +5250,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nightsister_acolyte"
     },
     {
         "name": "Nightsister Initiate",
         "uniqueName": "NIGHTSISTERINITIATE",
         "aliases": [
-            "Nightsister Initiate"
-        ],
-        "nameVariant": [
             "Nightsister Initiate"
         ],
         "url": "http://swgoh.gg/characters/nightsister-initiate/",
@@ -5624,15 +5279,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nightsister_initiate"
     },
     {
         "name": "Nightsister Spirit",
         "uniqueName": "NIGHTSISTERSPIRIT",
         "aliases": [
-            "Nightsister Spirit"
-        ],
-        "nameVariant": [
             "Nightsister Spirit"
         ],
         "url": "http://swgoh.gg/characters/nightsister-spirit/",
@@ -5655,15 +5308,13 @@
             "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nightsisters_wraith"
     },
     {
         "name": "Nightsister Zombie",
         "uniqueName": "NIGHTSISTERZOMBIE",
         "aliases": [
-            "Nightsister Zombie"
-        ],
-        "nameVariant": [
             "Nightsister Zombie"
         ],
         "url": "http://swgoh.gg/characters/nightsister-zombie/",
@@ -5686,7 +5337,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nightsisters_zombie"
     },
     {
         "name": "Ninth Sister",
@@ -5694,9 +5346,6 @@
         "aliases": [
             "Ninth Sister",
             "9th Sister"
-        ],
-        "nameVariant": [
-            "Ninth Sister"
         ],
         "url": "http://swgoh.gg/characters/ninth-sister/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ninthsister.png",
@@ -5722,15 +5371,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ninthsister"
     },
     {
         "name": "Nute Gunray",
         "uniqueName": "NUTEGUNRAY",
         "aliases": [
-            "Nute Gunray"
-        ],
-        "nameVariant": [
             "Nute Gunray"
         ],
         "url": "http://swgoh.gg/characters/nute-gunray/",
@@ -5755,7 +5402,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nutegunray"
     },
     {
         "name": "Obi-Wan Kenobi (Old Ben)",
@@ -5763,10 +5411,6 @@
         "aliases": [
             "Obi-Wan Kenobi (Old Ben)",
             "Old Ben"
-        ],
-        "nameVariant": [
-            "Obi-Wan Kenobi Old Ben",
-            "Obi-Wan Kenobi (Old Ben)"
         ],
         "url": "http://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_obiwanep4.png",
@@ -5790,15 +5434,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_obiwanep4"
     },
     {
         "name": "Old Daka",
         "uniqueName": "DAKA",
         "aliases": [
-            "Old Daka"
-        ],
-        "nameVariant": [
             "Old Daka"
         ],
         "url": "http://swgoh.gg/characters/old-daka/",
@@ -5823,15 +5465,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_daka"
     },
     {
         "name": "Omega",
         "uniqueName": "BADBATCHOMEGA",
         "aliases": [
-            "Omega"
-        ],
-        "nameVariant": [
             "Omega"
         ],
         "url": "http://swgoh.gg/characters/omega/",
@@ -5855,16 +5495,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_badbatchomega"
     },
     {
         "name": "Padmé Amidala",
         "uniqueName": "PADMEAMIDALA",
         "aliases": [
-            "Padmé Amidala",
-            "Padme Amidala"
-        ],
-        "nameVariant": [
             "Padmé Amidala",
             "Padme Amidala"
         ],
@@ -5890,15 +5527,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_padme_geonosis"
     },
     {
         "name": "Pao",
         "uniqueName": "PAO",
         "aliases": [
-            "Pao"
-        ],
-        "nameVariant": [
             "Pao"
         ],
         "url": "http://swgoh.gg/characters/pao/",
@@ -5923,15 +5558,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_pao"
     },
     {
         "name": "Paploo",
         "uniqueName": "PAPLOO",
         "aliases": [
-            "Paploo"
-        ],
-        "nameVariant": [
             "Paploo"
         ],
         "url": "http://swgoh.gg/characters/paploo/",
@@ -5955,15 +5588,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_paploo"
     },
     {
         "name": "Plo Koon",
         "uniqueName": "PLOKOON",
         "aliases": [
-            "Plo Koon"
-        ],
-        "nameVariant": [
             "Plo Koon"
         ],
         "url": "http://swgoh.gg/characters/plo-koon/",
@@ -5989,15 +5620,13 @@
             "circle": "Protection",
             "cross": "Protection/ Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_plokoon"
     },
     {
         "name": "Poe Dameron",
         "uniqueName": "POE",
         "aliases": [
-            "Poe Dameron"
-        ],
-        "nameVariant": [
             "Poe Dameron"
         ],
         "url": "http://swgoh.gg/characters/poe-dameron/",
@@ -6021,15 +5650,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_poe"
     },
     {
         "name": "Poggle the Lesser",
         "uniqueName": "POGGLETHELESSER",
         "aliases": [
-            "Poggle the Lesser"
-        ],
-        "nameVariant": [
             "Poggle the Lesser"
         ],
         "url": "http://swgoh.gg/characters/poggle-the-lesser/",
@@ -6054,15 +5681,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_geonosian_poggle"
     },
     {
         "name": "Princess Leia",
         "uniqueName": "PRINCESSLEIA",
         "aliases": [
-            "Princess Leia"
-        ],
-        "nameVariant": [
             "Princess Leia"
         ],
         "url": "http://swgoh.gg/characters/princess-leia/",
@@ -6086,7 +5711,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_leia_princess"
     },
     {
         "name": "Qi'ra",
@@ -6095,9 +5721,6 @@
             "Qi'ra",
             "Qi’ra",
             "Qira"
-        ],
-        "nameVariant": [
-            "Qi'ra"
         ],
         "url": "http://swgoh.gg/characters/qira/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_qira.png",
@@ -6121,7 +5744,8 @@
             "circle": "Protection",
             "cross": "Potency/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_qira"
     },
     {
         "name": "Qui-Gon Jinn",
@@ -6130,9 +5754,6 @@
             "Qui-Gon Jinn",
             "Qui Gon",
             "QGJ"
-        ],
-        "nameVariant": [
-            "Qui-Gon Jinn"
         ],
         "url": "http://swgoh.gg/characters/qui-gon-jinn/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_quigon.png",
@@ -6156,7 +5777,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_quigon"
     },
     {
         "name": "R2-D2",
@@ -6165,9 +5787,6 @@
             "R2-D2",
             "R2D2",
             "R2"
-        ],
-        "nameVariant": [
-            "R2-D2"
         ],
         "url": "http://swgoh.gg/characters/r2-d2/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_astromech_r2d2.png",
@@ -6192,15 +5811,13 @@
             "circle": "Health/ Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_astromech_r2d2"
     },
     {
         "name": "Range Trooper",
         "uniqueName": "RANGETROOPER",
         "aliases": [
-            "Range Trooper"
-        ],
-        "nameVariant": [
             "Range Trooper"
         ],
         "url": "http://swgoh.gg/characters/range-trooper/",
@@ -6224,7 +5841,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_trooperranger"
     },
     {
         "name": "Rebel Officer Leia Organa",
@@ -6232,9 +5850,6 @@
         "aliases": [
             "Rebel Officer Leia Organa",
             "ROLO"
-        ],
-        "nameVariant": [
-            "Rebel Officer Leia Organa"
         ],
         "url": "http://swgoh.gg/characters/rebel-officer-leia-organa/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leiahoth.png",
@@ -6257,7 +5872,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_leiahoth"
     },
     {
         "name": "Resistance Hero Finn",
@@ -6266,9 +5882,6 @@
             "Resistance Hero Finn",
             "Res Hero Finn",
             "RHF"
-        ],
-        "nameVariant": [
-            "Resistance Hero Finn"
         ],
         "url": "http://swgoh.gg/characters/resistance-hero-finn/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_finn.png",
@@ -6290,15 +5903,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_finn"
     },
     {
         "name": "Resistance Hero Poe",
         "uniqueName": "EPIXPOE",
         "aliases": [
-            "Resistance Hero Poe"
-        ],
-        "nameVariant": [
             "Resistance Hero Poe"
         ],
         "url": "http://swgoh.gg/characters/resistance-hero-poe/",
@@ -6321,15 +5932,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_poe_tros"
     },
     {
         "name": "Resistance Pilot",
         "uniqueName": "RESISTANCEPILOT",
         "aliases": [
-            "Resistance Pilot"
-        ],
-        "nameVariant": [
             "Resistance Pilot"
         ],
         "url": "http://swgoh.gg/characters/resistance-pilot/",
@@ -6352,15 +5961,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_resistancepilot"
     },
     {
         "name": "Resistance Trooper",
         "uniqueName": "RESISTANCETROOPER",
         "aliases": [
-            "Resistance Trooper"
-        ],
-        "nameVariant": [
             "Resistance Trooper"
         ],
         "url": "http://swgoh.gg/characters/resistance-trooper/",
@@ -6383,15 +5990,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_resistancetrooper"
     },
     {
         "name": "Rey",
         "uniqueName": "GLREY",
         "aliases": [
-            "Rey"
-        ],
-        "nameVariant": [
             "Rey"
         ],
         "url": "http://swgoh.gg/characters/rey/",
@@ -6417,7 +6022,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rey_tros"
     },
     {
         "name": "Rey (Jedi Training)",
@@ -6427,10 +6033,6 @@
             "Rey Jedi Training",
             "JTR",
             "RJT"
-        ],
-        "nameVariant": [
-            "Rey (Jedi Training)",
-            "Rey Jedi Training"
         ],
         "url": "http://swgoh.gg/characters/rey-jedi-training/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rey_tlj.png",
@@ -6454,7 +6056,8 @@
             "circle": "Protection/ Health",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rey_tlj"
     },
     {
         "name": "Rey (Scavenger)",
@@ -6463,10 +6066,6 @@
             "Rey (Scavenger)",
             "Rey Scavenger",
             "Scav"
-        ],
-        "nameVariant": [
-            "Rey (Scavenger)",
-            "Rey Scavenger"
         ],
         "url": "http://swgoh.gg/characters/rey-scavenger/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_reyjakku.png",
@@ -6489,15 +6088,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_reyjakku"
     },
     {
         "name": "Rose Tico",
         "uniqueName": "ROSETICO",
         "aliases": [
-            "Rose Tico"
-        ],
-        "nameVariant": [
             "Rose Tico"
         ],
         "url": "http://swgoh.gg/characters/rose-tico/",
@@ -6521,15 +6118,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rose"
     },
     {
         "name": "Royal Guard",
         "uniqueName": "ROYALGUARD",
         "aliases": [
-            "Royal Guard"
-        ],
-        "nameVariant": [
             "Royal Guard"
         ],
         "url": "http://swgoh.gg/characters/royal-guard/",
@@ -6553,15 +6148,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_royalguard"
     },
     {
         "name": "Sabine Wren",
         "uniqueName": "SABINEWRENS3",
         "aliases": [
-            "Sabine Wren"
-        ],
-        "nameVariant": [
             "Sabine Wren"
         ],
         "url": "http://swgoh.gg/characters/sabine-wren/",
@@ -6586,15 +6179,13 @@
             "circle": "Protection",
             "cross": "Offense/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sabine_s3"
     },
     {
         "name": "Sana Starros",
         "uniqueName": "SANASTARROS",
         "aliases": [
-            "Sana Starros"
-        ],
-        "nameVariant": [
             "Sana Starros"
         ],
         "url": "http://swgoh.gg/characters/sana-starros/",
@@ -6619,15 +6210,13 @@
             "circle": "Protection/ Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sanastarros"
     },
     {
         "name": "Savage Opress",
         "uniqueName": "SAVAGEOPRESS",
         "aliases": [
-            "Savage Opress"
-        ],
-        "nameVariant": [
             "Savage Opress"
         ],
         "url": "http://swgoh.gg/characters/savage-opress/",
@@ -6652,15 +6241,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_savageopress"
     },
     {
         "name": "Saw Gerrera",
         "uniqueName": "SAWGERRERA",
         "aliases": [
-            "Saw Gerrera"
-        ],
-        "nameVariant": [
             "Saw Gerrera"
         ],
         "url": "http://swgoh.gg/characters/saw-gerrera/",
@@ -6685,7 +6272,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sawgerrera"
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -6693,9 +6281,6 @@
         "aliases": [
             "Scarif Rebel Pathfinder",
             "SRP"
-        ],
-        "nameVariant": [
-            "Scarif Rebel Pathfinder"
         ],
         "url": "http://swgoh.gg/characters/scarif-rebel-pathfinder/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebel_scarif.png",
@@ -6720,7 +6305,8 @@
             "circle": "Protection",
             "cross": "Protection/ Defense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rebel_scarif"
     },
     {
         "name": "Second Sister",
@@ -6728,9 +6314,6 @@
         "aliases": [
             "Second Sister",
             "2nd Sister"
-        ],
-        "nameVariant": [
-            "Second Sister"
         ],
         "url": "http://swgoh.gg/characters/second-sister/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_secondsister.png",
@@ -6755,7 +6338,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_secondsister"
     },
     {
         "name": "Seventh Sister",
@@ -6763,9 +6347,6 @@
         "aliases": [
             "Seventh Sister",
             "7th Sister"
-        ],
-        "nameVariant": [
-            "Seventh Sister"
         ],
         "url": "http://swgoh.gg/characters/seventh-sister/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_seventhsister.png",
@@ -6790,15 +6371,13 @@
             "circle": "Protection",
             "cross": "Protection/ Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_seventhsister"
     },
     {
         "name": "Shaak Ti",
         "uniqueName": "SHAAKTI",
         "aliases": [
-            "Shaak Ti"
-        ],
-        "nameVariant": [
             "Shaak Ti"
         ],
         "url": "http://swgoh.gg/characters/shaak-ti/",
@@ -6823,15 +6402,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_shaakti"
     },
     {
         "name": "Shoretrooper",
         "uniqueName": "SHORETROOPER",
         "aliases": [
-            "Shoretrooper"
-        ],
-        "nameVariant": [
             "Shoretrooper"
         ],
         "url": "http://swgoh.gg/characters/shoretrooper/",
@@ -6856,7 +6433,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_troopershore"
     },
     {
         "name": "Sith Assassin",
@@ -6864,9 +6442,6 @@
         "aliases": [
             "Sith Assassin",
             "SA"
-        ],
-        "nameVariant": [
-            "Sith Assassin"
         ],
         "url": "http://swgoh.gg/characters/sith-assassin/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithassassin.png",
@@ -6889,7 +6464,8 @@
             "circle": "Protection",
             "cross": "Offense/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sithassassin"
     },
     {
         "name": "Sith Empire Trooper",
@@ -6897,9 +6473,6 @@
         "aliases": [
             "Sith Empire Trooper",
             "SET"
-        ],
-        "nameVariant": [
-            "Sith Empire Trooper"
         ],
         "url": "http://swgoh.gg/characters/sith-empire-trooper/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithtrooper.png",
@@ -6923,7 +6496,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sithtrooper"
     },
     {
         "name": "Sith Eternal Emperor",
@@ -6931,9 +6505,6 @@
         "aliases": [
             "Sith Eternal Emperor",
             "SEE"
-        ],
-        "nameVariant": [
-            "Sith Eternal Emperor"
         ],
         "url": "http://swgoh.gg/characters/sith-eternal-emperor/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_espalpatine_pre.png",
@@ -6958,15 +6529,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_espalpatine_pre"
     },
     {
         "name": "Sith Marauder",
         "uniqueName": "SITHMARAUDER",
         "aliases": [
-            "Sith Marauder"
-        ],
-        "nameVariant": [
             "Sith Marauder"
         ],
         "url": "http://swgoh.gg/characters/sith-marauder/",
@@ -6990,7 +6559,8 @@
             "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_sithmarauder"
     },
     {
         "name": "Sith Trooper",
@@ -7000,9 +6570,6 @@
             "First Order Sith Trooper",
             "FO Sith Trooper",
             "ST"
-        ],
-        "nameVariant": [
-            "Sith Trooper"
         ],
         "url": "http://swgoh.gg/characters/sith-trooper/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_sithtrooper.png",
@@ -7025,15 +6592,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_firstorder_sithtrooper"
     },
     {
         "name": "Skiff Guard (Lando Calrissian)",
         "uniqueName": "UNDERCOVERLANDO",
         "aliases": [
-            "Skiff Guard (Lando Calrissian)"
-        ],
-        "nameVariant": [
             "Skiff Guard (Lando Calrissian)"
         ],
         "url": "http://swgoh.gg/characters/skiff-guard-lando-calrissian/",
@@ -7058,15 +6623,13 @@
             "circle": "Health/ Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_undercoverlando"
     },
     {
         "name": "Snowtrooper",
         "uniqueName": "SNOWTROOPER",
         "aliases": [
-            "Snowtrooper"
-        ],
-        "nameVariant": [
             "Snowtrooper"
         ],
         "url": "http://swgoh.gg/characters/snowtrooper/",
@@ -7090,15 +6653,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_troopersnow"
     },
     {
         "name": "Starkiller",
         "uniqueName": "STARKILLER",
         "aliases": [
-            "Starkiller"
-        ],
-        "nameVariant": [
             "Starkiller"
         ],
         "url": "http://swgoh.gg/characters/starkiller/",
@@ -7121,15 +6682,13 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_starkiller"
     },
     {
         "name": "Stormtrooper",
         "uniqueName": "STORMTROOPER",
         "aliases": [
-            "Stormtrooper"
-        ],
-        "nameVariant": [
             "Stormtrooper"
         ],
         "url": "http://swgoh.gg/characters/stormtrooper/",
@@ -7155,7 +6714,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_trooperstorm"
     },
     {
         "name": "Stormtrooper Han",
@@ -7163,9 +6723,6 @@
         "aliases": [
             "Stormtrooper Han",
             "STHan"
-        ],
-        "nameVariant": [
-            "Stormtrooper Han"
         ],
         "url": "http://swgoh.gg/characters/stormtrooper-han/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_han.png",
@@ -7190,15 +6747,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_trooperstorm_han"
     },
     {
         "name": "Sun Fac",
         "uniqueName": "SUNFAC",
         "aliases": [
-            "Sun Fac"
-        ],
-        "nameVariant": [
             "Sun Fac"
         ],
         "url": "http://swgoh.gg/characters/sun-fac/",
@@ -7223,7 +6778,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_geonosian_sunfac"
     },
     {
         "name": "Supreme Leader Kylo Ren",
@@ -7233,9 +6789,6 @@
             "Supreme Leader",
             "SLKR",
             "SLK"
-        ],
-        "nameVariant": [
-            "Supreme Leader Kylo Ren"
         ],
         "url": "http://swgoh.gg/characters/supreme-leader-kylo-ren/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kyloren_tros.png",
@@ -7260,7 +6813,8 @@
             "circle": "Health",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_kyloren_tros"
     },
     {
         "name": "T3-M4",
@@ -7268,9 +6822,6 @@
         "aliases": [
             "T3-M4",
             "T3M4"
-        ],
-        "nameVariant": [
-            "T3-M4"
         ],
         "url": "http://swgoh.gg/characters/t3-m4/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_t3m4.png",
@@ -7293,47 +6844,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "TIE Fighter Pilot",
-        "uniqueName": "TIEFIGHTERPILOT",
-        "aliases": [
-            "TIE Fighter Pilot",
-            "TFP"
-        ],
-        "nameVariant": [
-            "TIE Fighter Pilot"
-        ],
-        "url": "http://swgoh.gg/characters/tie-fighter-pilot/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiepilot.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Empire"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/tie-fighter-pilot/best-mods/",
-            "sets": [
-                "Speed x4",
-                "Critical Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense/ Potency",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_t3m4"
     },
     {
         "name": "Talia",
         "uniqueName": "TALIA",
         "aliases": [
-            "Talia"
-        ],
-        "nameVariant": [
             "Talia"
         ],
         "url": "http://swgoh.gg/characters/talia/",
@@ -7357,15 +6874,13 @@
             "circle": "Health",
             "cross": "Health/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_nightsister_talia"
     },
     {
         "name": "Tarfful",
         "uniqueName": "TARFFUL",
         "aliases": [
-            "Tarfful"
-        ],
-        "nameVariant": [
             "Tarfful"
         ],
         "url": "http://swgoh.gg/characters/tarfful/",
@@ -7390,15 +6905,13 @@
             "circle": "Health",
             "cross": "Defense/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tarfful"
     },
     {
         "name": "Tech",
         "uniqueName": "BADBATCHTECH",
         "aliases": [
-            "Tech"
-        ],
-        "nameVariant": [
             "Tech"
         ],
         "url": "http://swgoh.gg/characters/tech/",
@@ -7423,15 +6936,13 @@
             "circle": "Health/ Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bb_tech"
     },
     {
         "name": "Teebo",
         "uniqueName": "TEEBO",
         "aliases": [
-            "Teebo"
-        ],
-        "nameVariant": [
             "Teebo"
         ],
         "url": "http://swgoh.gg/characters/teebo/",
@@ -7456,15 +6967,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_teebo"
     },
     {
         "name": "The Armorer",
         "uniqueName": "ARMORER",
         "aliases": [
-            "The Armorer"
-        ],
-        "nameVariant": [
             "The Armorer"
         ],
         "url": "http://swgoh.gg/characters/the-armorer/",
@@ -7488,7 +6997,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_armorer"
     },
     {
         "name": "The Mandalorian",
@@ -7496,9 +7006,6 @@
         "aliases": [
             "The Mandalorian",
             "Mando"
-        ],
-        "nameVariant": [
-            "The Mandalorian"
         ],
         "url": "http://swgoh.gg/characters/the-mandalorian/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandalorian.png",
@@ -7523,7 +7030,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_mandalorian"
     },
     {
         "name": "The Mandalorian (Beskar Armor)",
@@ -7531,9 +7039,6 @@
         "aliases": [
             "The Mandalorian Beskar Armor",
             "BAM"
-        ],
-        "nameVariant": [
-            "The Mandalorian (Beskar Armor)"
         ],
         "url": "http://swgoh.gg/characters/the-mandalorian-beskar-armor/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandobeskar.png",
@@ -7557,15 +7062,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_mandobeskar"
     },
     {
         "name": "Third Sister",
         "uniqueName": "THIRDSISTER",
         "aliases": [
-            "Third Sister"
-        ],
-        "nameVariant": [
             "Third Sister"
         ],
         "url": "http://swgoh.gg/characters/third-sister/",
@@ -7591,7 +7094,8 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_thirdsister"
     },
     {
         "name": "Threepio & Chewie",
@@ -7601,9 +7105,6 @@
             "3poc",
             "Chewpio",
             "3Bacca"
-        ],
-        "nameVariant": [
-            "Threepio & Chewie"
         ],
         "url": "http://swgoh.gg/characters/threepio-chewie/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_c3po.png",
@@ -7626,15 +7127,43 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_chewbacca_c3po"
+    },
+    {
+        "name": "TIE Fighter Pilot",
+        "uniqueName": "TIEFIGHTERPILOT",
+        "aliases": [
+            "TIE Fighter Pilot",
+            "TFP"
+        ],
+        "url": "http://swgoh.gg/characters/tie-fighter-pilot/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiepilot.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/tie-fighter-pilot/best-mods/",
+            "sets": [
+                "Speed x4",
+                "Critical Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense/ Potency",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_tiepilot"
     },
     {
         "name": "Tusken Chieftain",
         "uniqueName": "TUSKENCHIEFTAIN",
         "aliases": [
-            "Tusken Chieftain"
-        ],
-        "nameVariant": [
             "Tusken Chieftain"
         ],
         "url": "http://swgoh.gg/characters/tusken-chieftain/",
@@ -7658,15 +7187,13 @@
             "circle": "Protection/ Health",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tuskenchieftain"
     },
     {
         "name": "Tusken Raider",
         "uniqueName": "TUSKENRAIDER",
         "aliases": [
-            "Tusken Raider"
-        ],
-        "nameVariant": [
             "Tusken Raider"
         ],
         "url": "http://swgoh.gg/characters/tusken-raider/",
@@ -7689,15 +7216,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tuskenraider"
     },
     {
         "name": "Tusken Shaman",
         "uniqueName": "TUSKENSHAMAN",
         "aliases": [
-            "Tusken Shaman"
-        ],
-        "nameVariant": [
             "Tusken Shaman"
         ],
         "url": "http://swgoh.gg/characters/tusken-shaman/",
@@ -7720,15 +7245,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tuskenshaman"
     },
     {
         "name": "Tusken Warrior",
         "uniqueName": "TUSKENHUNTRESS",
         "aliases": [
-            "Tusken Warrior"
-        ],
-        "nameVariant": [
             "Tusken Warrior"
         ],
         "url": "http://swgoh.gg/characters/tusken-warrior/",
@@ -7751,7 +7274,36 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tuskenhuntress"
+    },
+    {
+        "name": "Ugnaught",
+        "uniqueName": "UGNAUGHT",
+        "aliases": [
+            "Ugnaught"
+        ],
+        "url": "http://swgoh.gg/characters/ugnaught/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ugnaught.png",
+        "side": "light",
+        "factions": [
+            "Support"
+        ],
+        "mods": {
+            "url": "https://swgoh.gg/characters/ugnaught/best-mods/",
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance/ Crit. Damage",
+            "circle": "Health/ Protection",
+            "cross": "Potency",
+            "source": "swgoh.gg"
+        },
+        "avatarName": "charui_ugnaught"
     },
     {
         "name": "URoRRuR'R'R",
@@ -7761,9 +7313,6 @@
             "Urorr",
             "Uror",
             "Ur"
-        ],
-        "nameVariant": [
-            "URoRRuR'R'R"
         ],
         "url": "http://swgoh.gg/characters/urorrurrr/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_urorrurrr.png",
@@ -7786,45 +7335,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
-    },
-    {
-        "name": "Ugnaught",
-        "uniqueName": "UGNAUGHT",
-        "aliases": [
-            "Ugnaught"
-        ],
-        "nameVariant": [
-            "Ugnaught"
-        ],
-        "url": "http://swgoh.gg/characters/ugnaught/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ugnaught.png",
-        "side": "light",
-        "factions": [
-            "Support"
-        ],
-        "mods": {
-            "url": "https://swgoh.gg/characters/ugnaught/best-mods/",
-            "sets": [
-                "Speed x4",
-                "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_urorrurrr"
     },
     {
         "name": "Vandor Chewbacca",
         "uniqueName": "YOUNGCHEWBACCA",
         "aliases": [
-            "Vandor Chewbacca"
-        ],
-        "nameVariant": [
             "Vandor Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/vandor-chewbacca/",
@@ -7849,15 +7366,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_chewbacca_vandor"
     },
     {
         "name": "Veteran Smuggler Chewbacca",
         "uniqueName": "SMUGGLERCHEWBACCA",
         "aliases": [
-            "Veteran Smuggler Chewbacca"
-        ],
-        "nameVariant": [
             "Veteran Smuggler Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/veteran-smuggler-chewbacca/",
@@ -7882,7 +7397,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tfa_chewbacca"
     },
     {
         "name": "Veteran Smuggler Han Solo",
@@ -7891,9 +7407,6 @@
             "Veteran Smuggler Han Solo",
             "Vet Han",
             "Han Solo"
-        ],
-        "nameVariant": [
-            "Veteran Smuggler Han Solo"
         ],
         "url": "http://swgoh.gg/characters/veteran-smuggler-han-solo/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tfa_han.png",
@@ -7917,15 +7430,13 @@
             "circle": "Protection",
             "cross": "Potency/ Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_tfa_han"
     },
     {
         "name": "Visas Marr",
         "uniqueName": "VISASMARR",
         "aliases": [
-            "Visas Marr"
-        ],
-        "nameVariant": [
             "Visas Marr"
         ],
         "url": "http://swgoh.gg/characters/visas-marr/",
@@ -7949,15 +7460,13 @@
             "circle": "Health",
             "cross": "Health",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_visas"
     },
     {
         "name": "Wampa",
         "uniqueName": "WAMPA",
         "aliases": [
-            "Wampa"
-        ],
-        "nameVariant": [
             "Wampa"
         ],
         "url": "http://swgoh.gg/characters/wampa/",
@@ -7980,15 +7489,13 @@
             "circle": "Health",
             "cross": "Tenacity",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_wampa"
     },
     {
         "name": "Wat Tambor",
         "uniqueName": "WATTAMBOR",
         "aliases": [
-            "Wat Tambor"
-        ],
-        "nameVariant": [
             "Wat Tambor"
         ],
         "url": "http://swgoh.gg/characters/wat-tambor/",
@@ -8011,15 +7518,13 @@
             "circle": "Health",
             "cross": "Health/ Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_wattambor"
     },
     {
         "name": "Wedge Antilles",
         "uniqueName": "WEDGEANTILLES",
         "aliases": [
-            "Wedge Antilles"
-        ],
-        "nameVariant": [
             "Wedge Antilles"
         ],
         "url": "http://swgoh.gg/characters/wedge-antilles/",
@@ -8044,15 +7549,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_rebelpilot_wedge"
     },
     {
         "name": "Wicket",
         "uniqueName": "WICKET",
         "aliases": [
-            "Wicket"
-        ],
-        "nameVariant": [
             "Wicket"
         ],
         "url": "http://swgoh.gg/characters/wicket/",
@@ -8075,15 +7578,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_ewok_wicket"
     },
     {
         "name": "Wrecker",
         "uniqueName": "BADBATCHWRECKER",
         "aliases": [
-            "Wrecker"
-        ],
-        "nameVariant": [
             "Wrecker"
         ],
         "url": "http://swgoh.gg/characters/wrecker/",
@@ -8109,7 +7610,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_bb_wrecker"
     },
     {
         "name": "Young Han Solo",
@@ -8117,9 +7619,6 @@
         "aliases": [
             "Young Han Solo",
             "YOLO"
-        ],
-        "nameVariant": [
-            "Young Han Solo"
         ],
         "url": "http://swgoh.gg/characters/young-han-solo/",
         "avatarURL": "https://game-assets.swgoh.gg/tex.charui_han_young.png",
@@ -8142,15 +7641,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_han_young"
     },
     {
         "name": "Young Lando Calrissian",
         "uniqueName": "YOUNGLANDO",
         "aliases": [
-            "Young Lando Calrissian"
-        ],
-        "nameVariant": [
             "Young Lando Calrissian"
         ],
         "url": "http://swgoh.gg/characters/young-lando-calrissian/",
@@ -8174,15 +7671,13 @@
             "circle": "Protection",
             "cross": "Offense",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_younglando"
     },
     {
         "name": "Zaalbar",
         "uniqueName": "ZAALBAR",
         "aliases": [
-            "Zaalbar"
-        ],
-        "nameVariant": [
             "Zaalbar"
         ],
         "url": "http://swgoh.gg/characters/zaalbar/",
@@ -8207,15 +7702,13 @@
             "circle": "Protection",
             "cross": "Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_zaalbar"
     },
     {
         "name": "Zam Wesell",
         "uniqueName": "ZAMWESELL",
         "aliases": [
-            "Zam Wesell"
-        ],
-        "nameVariant": [
             "Zam Wesell"
         ],
         "url": "http://swgoh.gg/characters/zam-wesell/",
@@ -8240,15 +7733,13 @@
             "circle": "Protection",
             "cross": "Potency",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_zamwesell"
     },
     {
         "name": "Zorii Bliss",
         "uniqueName": "ZORIIBLISS_V2",
         "aliases": [
-            "Zorii Bliss"
-        ],
-        "nameVariant": [
             "Zorii Bliss"
         ],
         "url": "http://swgoh.gg/characters/zorii-bliss/",
@@ -8273,6 +7764,7 @@
             "circle": "Health/ Protection",
             "cross": "Health/ Protection",
             "source": "swgoh.gg"
-        }
+        },
+        "avatarName": "charui_zoriibliss"
     }
 ]

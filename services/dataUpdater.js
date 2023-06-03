@@ -41,7 +41,6 @@ console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
 init().then(async () => {
     const isNew = await updateMetaData();
     if (isNew) {
-        // await updateGameData();
         await runUpdater();
     }
 });
@@ -57,7 +56,7 @@ if (config.patreon) {
 setInterval(async () => {
     const isNew = await updateMetaData();
     if (isNew) {
-        await updateGameData();
+        await runUpdater();
     }
 }, 24 * 60 * 60 * 1000);
 
@@ -77,9 +76,9 @@ async function updateMetaData() {
     const metaOut = {};
     for (const key of META_KEYS) {
         if (meta[key] !== metaFile[key]) {
-            metaOut[key] = meta[key];
             isUpdated = true;
         }
+        metaOut[key] = meta[key];
     }
 
     if (isUpdated) {
@@ -402,20 +401,17 @@ async function updateLocs(unitListFile, currentLocFile) {
 
 async function updateGameData() {
     let locales = {};
-    async function updateGameData() {
-        const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
+    if (!metadataFile.latestGamedataVersion) return console.error("[updateGameData] Missing latestGamedataVersion from metadata");
+    const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
 
-        locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
+    locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
 
-        await processAbilities(gameData.ability, gameData.skill);
-        await processEquipment(gameData.equipment);
-        await processMaterials(gameData.material);
-        await processModData(gameData.statMod);
-        await processRecipes(gameData.recipe);
-        await processUnits(gameData.units);
-    }
-    await updateGameData();
-
+    await processAbilities(gameData.ability, gameData.skill);
+    await processEquipment(gameData.equipment);
+    await processMaterials(gameData.material);
+    await processModData(gameData.statMod);
+    await processRecipes(gameData.recipe);
+    await processUnits(gameData.units);
 
     /**
     * function
