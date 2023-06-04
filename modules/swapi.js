@@ -440,6 +440,7 @@ module.exports = (opts={}) => {
             guildName: comlinkPlayer.guildName,
             id: comlinkPlayer.playerId,
             name: comlinkPlayer.name,
+            level: comlinkPlayer.level,
             roster: comlinkPlayer.rosterUnit.map(unit => {
                 const thisDefId = unit.definitionId.split(":")[0];
                 const thisUnit = unitMap[thisDefId];
