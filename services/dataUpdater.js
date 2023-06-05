@@ -637,6 +637,7 @@ async function updateGameData() {
                 // delete unitObj.avatarURL;
                 delete unitObj.nameVariant;
                 unitObj.avatarName = charUIName;
+                unitObj.avatarURL  = `https://game-assets.swgoh.gg/tex.${charUIName}.png`
             } else {
                 // Work up a new character to put in
                 unitObj = createNewUnit(unit, charUIName);
@@ -674,12 +675,13 @@ async function updateGameData() {
         function createNewUnit(unit, charUIName) {
             const unitFactions = unitFactionMap[unit.baseId];
             const unitOut = {
-                "name":        unit.name,
-                "uniqueName":  unit.baseId,
-                "aliases":     [unit.name],
-                "avatarName":  charUIName,
-                "side":        getSide(unitFactions),
-                "factions":    unitFactions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
+                name:        unit.name,
+                uniqueName:  unit.baseId,
+                aliases:     [unit.name],
+                avatarName:  charUIName,
+                avatarURL:   `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
+                side:        getSide(unitFactions),
+                factions:    unitFactions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
             };
 
             if (unit.combatType === CHAR_COMBAT_TYPE) {
