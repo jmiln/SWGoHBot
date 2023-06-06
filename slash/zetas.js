@@ -99,7 +99,6 @@ class Zetas extends Command {
             // Display zetas for a single player
             const zetas = {};
             let count = 0;
-            const character = null;
 
             // This will grab the character info for any entered character
             const getCharInfo = async (thisChar) => {
