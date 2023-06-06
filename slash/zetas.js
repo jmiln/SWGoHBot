@@ -132,7 +132,6 @@ class Zetas extends Command {
                 const sorted = Object.keys(zetas).sort((p, c) => p > c ? 1 : -1);
 
                 author.name = `${player.name}'s ${character.name} (${count})`;
-                author.icon_url = character.avatarURL;
                 if (!zetas[sorted[0]] || zetas[sorted[0]].length === 0) {
                     desc.push(interaction.language.get("COMMAND_ZETA_NO_ZETAS"));
                 } else {
@@ -166,13 +165,22 @@ class Zetas extends Command {
             }
 
             const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
-            return interaction.editReply({content: null, embeds: [{
-                color: Bot.constants.colors.black,
-                author: author,
-                description: desc.join("\n"),
-                fields: fields,
-                footer: footer
-            }]});
+            const charImg = await Bot.getBlankUnitImage(character.uniqueName);
+            return interaction.editReply({
+                content: null,
+                embeds: [{
+                    color: Bot.constants.colors.black,
+                    author: author,
+                    description: desc.join("\n"),
+                    fields: fields,
+                    footer: footer,
+                    thumbnail: {url: "attachment://image.png"}
+                }],
+                files: [{
+                    attachment: charImg,
+                    name: "image.png"
+                }]
+            });
         } else if (subCommand === "guild") {
             // Display the zetas for the whole guild (Takes a while)
             await interaction.reply({content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD")});

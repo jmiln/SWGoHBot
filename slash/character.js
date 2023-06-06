@@ -114,14 +114,15 @@ class Character extends Command {
 
         let embeds1Len = 0;
         let useEmbeds2 = false;
+        const charImage = await Bot.getBlankUnitImage(character.uniqueName);
         const embeds = [{
             color: Bot.getSideColor(character.side),
             author: {
                 name: character.name,
-                url: character.url,
-                icon_url: character.avatarURL
+                url: character?.url || null,
             },
-            fields: []
+            thumbnail: {url: "attachment://image.png"},
+            fields: [],
         }];
 
         for (const thisField of fields) {
@@ -145,7 +146,14 @@ class Character extends Command {
             }
         }
 
-        await interaction.reply({content: null, embeds: [embeds[0]]});
+        await interaction.reply({
+            content: null,
+            embeds: [embeds[0]],
+            files: [{
+                attachment: charImage,
+                name: "image.png"
+            }]
+        });
         if (embeds.length > 1) {
             await interaction.followUp({content: null, embeds: [embeds[1]]});
         }

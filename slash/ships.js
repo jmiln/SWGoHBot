@@ -95,15 +95,20 @@ class Ships extends Command {
                 value: "Sorry, but this ship has not been fully updated yet."
             });
         }
+        const charImg = await Bot.getBlankUnitImage(ship.uniqueName);
         return interaction.reply({
             embeds: [{
                 color: Bot.getSideColor(ship.side),
                 author: {
                     name: Bot.toProperCase(ship.name),
                     url: ship.url,
-                    icon_url: ship.avatarURL
                 },
-                fields: fields
+                fields: fields,
+                thumbnail: {url: "attachment://image.png"},
+            }],
+            files: [{
+                attachment: charImg,
+                name: "image.png"
             }]
         });
     }

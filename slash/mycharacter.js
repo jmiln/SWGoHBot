@@ -114,37 +114,6 @@ class MyCharacter extends Command {
         const stats = thisUnit.stats;
         const isShip = thisUnit.combatType === 2 ? true : false;
 
-        let unitImg;
-        const fetchBody = {
-            defId: thisUnit.defId,
-            charUrl: unit.avatarURL,
-            rarity: thisUnit.rarity,
-            level: thisUnit.level,
-            gear: thisUnit.gear,
-            zetas: thisUnit.skills.filter(s => s.isZeta && (s.tier === s.tiers || (s.isOmicron && s.tier >= s.tiers-1))).length,
-            relic: thisUnit.relic?.currentTier ? thisUnit.relic.currentTier : 0,
-            omicron: thisUnit.skills.filter(s => s.isOmicron && s.tier === s.tiers).length,
-            side: unit.side
-        };
-
-        try {
-            await fetch(Bot.config.imageServIP_Port + "/char/", {
-                method: "post",
-                body: JSON.stringify(fetchBody),
-                headers: { "Content-Type": "application/json" }
-            })
-                .then(async response => {
-                    const resBuf = await response.arrayBuffer();
-                    if (!resBuf) return null;
-                    return Buffer.from(resBuf);
-                })
-                .then(image => {
-                    unitImg = image;
-                });
-        } catch (e) {
-            Bot.logger.error("ImageFetch in myCharacter broke: " + e);
-        }
-
         const abilities = {
             basic: [],
             special: [],
@@ -302,6 +271,8 @@ class MyCharacter extends Command {
             ].join("\n");
         }
 
+        const unitImg = await Bot.getUnitImage(thisUnit.defId, thisUnit);
+
         if (!unitImg) {
             // If it couldn't get an image for the character
             return interaction.editReply({
@@ -309,8 +280,8 @@ class MyCharacter extends Command {
                 embeds: [{
                     author: {
                         name: (thisUnit.player ? thisUnit.player : player.name) + "'s " + unit.name,
-                        url: unit.url,
-                        icon_url: unit.avatarURL
+                        url: unit.url || null,
+                        icon_url: unit.avatarURL || null
                     },
                     description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${thisUnit.rarity}* | ${parseInt(thisUnit.gp, 10)} gp\`${gearOut}`,
                     fields: [
@@ -329,8 +300,7 @@ class MyCharacter extends Command {
                 embeds: [{
                     author: {
                         name: (thisUnit.player ? thisUnit.player : player.name) + "'s " + unit.name,
-                        url: unit.url,
-                        icon_url: unit.avatarURL
+                        url: unit.url
                     },
                     thumbnail: { url: "attachment://image.png" },
                     description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${thisUnit.rarity}* | ${parseInt(thisUnit.gp, 10)} gp\`${gearOut}`,

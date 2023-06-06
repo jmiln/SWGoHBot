@@ -972,6 +972,50 @@ module.exports = (Bot, client) => {
     Bot.hasViewAndSend = async (channel, user) => {
         return (channel?.guild && channel.permissionsFor(user)?.has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages])) || false;
     };
+
+    Bot.getBlankUnitImage = async (defId) => {
+        return await Bot.getUnitImage(defId, {
+            gear: -1,
+            level: -1,
+            rarity: -1,
+            skills: null,
+            relic: null
+        });
+    };
+
+    const unitsList = [...Bot.characters, ...Bot.ships];
+    Bot.getUnitImage = async (defId, {rarity, level, gear, skills, relic}) => {
+        const thisChar = unitsList.find(ch => ch.uniqueName === defId);
+        if (!thisChar) return console.error("[getImage] Cannot find matching defId");
+        const fetchBody = {
+            defId: defId,
+            charUrl: thisChar?.avatarURL,
+            avatarName: thisChar?.avatarName,
+            rarity: rarity,
+            level: level,
+            gear: gear,
+            zetas: skills?.filter(s => s.isZeta && (s.tier === s.tiers || (s.isOmicron && s.tier >= s.tiers-1))).length || 0,
+            relic: relic?.currentTier ? relic.currentTier : 0,
+            omicron: skills?.filter(s => s.isOmicron && s.tier === s.tiers).length || 0,
+            side: thisChar.side
+        };
+
+        try {
+            return await fetch(Bot.config.imageServIP_Port + "/char/", {
+                method: "post",
+                body: JSON.stringify(fetchBody),
+                headers: { "Content-Type": "application/json" }
+            })
+                .then(async response => {
+                    const resBuf = await response.arrayBuffer();
+                    if (!resBuf) return null;
+                    return Buffer.from(resBuf);
+                });
+        } catch (e) {
+            Bot.logger.error("[Bot.getUnitImage] Something broke while requesting image.\n" + e);
+            return null;
+        }
+    };
 };
 
 
