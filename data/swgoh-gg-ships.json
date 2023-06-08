@@ -806,6 +806,31 @@
         "activate_shard_count": 145
     },
     {
+        "name": "Mark VI Interceptor",
+        "base_id": "SITHSUPREMACYCLASS",
+        "url": "http://swgoh.gg/ships/mark-vi-interceptor/",
+        "image": "https://game-assets.swgoh.gg/tex.charui_sithsupremacyclass.png",
+        "power": 79072,
+        "description": "A reinforced Attacker ship called to swarm its enemy until it's defeated.",
+        "combat_type": 2,
+        "alignment": "Dark Side",
+        "categories": [
+            "Attacker",
+            "Sith",
+            "Sith Empire"
+        ],
+        "ability_classes": [
+            "AoE",
+            "Assist",
+            "Counter",
+            "Speed Down",
+            "Tenacity Up"
+        ],
+        "role": "Attacker",
+        "capital_ship": false,
+        "activate_shard_count": 80
+    },
+    {
         "name": "MG-100 StarFortress SF-17",
         "base_id": "MG100STARFORTRESSSF17",
         "url": "http://swgoh.gg/ships/mg-100-starfortress-sf-17/",

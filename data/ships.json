@@ -37,13 +37,15 @@
                 "abilityCooldown": "2",
                 "abilityDesc": "If Ashoka Tano's Jedi Starfighter doesn't have any buffs, it gains Offense Up for 2 turns and 25% turn meter.  Otherwise, it loses all status effects to recover 80% protection."
             }
-        },
-        "avatarName": "charui_jedi_fighter_ahsoka"
+        }
     },
     {
         "name": "Anakin's Eta-2 Starfighter",
         "uniqueName": "JEDISTARFIGHTERANAKIN",
         "aliases": [
+            "Anakin's Eta-2 Starfighter"
+        ],
+        "nameVariant": [
             "Anakin's Eta-2 Starfighter"
         ],
         "crew": [
@@ -63,13 +65,15 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_jedi_fighter_anakin"
+        }
     },
     {
         "name": "B-28 Extinction-class Bomber",
         "uniqueName": "SITHBOMBER",
         "aliases": [
+            "B-28 Extinction-class Bomber"
+        ],
+        "nameVariant": [
             "B-28 Extinction-class Bomber"
         ],
         "crew": [
@@ -89,8 +93,26 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_b28extinctionclassbomber"
+        }
+    },
+    {
+        "name": "BTL-B Y-wing Starfighter",
+        "uniqueName": "YWINGCLONEWARS",
+        "aliases": [
+            "BTL-B Y-wing Starfighter"
+        ],
+        "nameVariant": [
+            "BTL-B Y-wing Starfighter"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/btl-b-y-wing-starfighter/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ywing_btlb.png",
+        "side": "light",
+        "factions": [
+            "Galactic Republic",
+            "Tank"
+        ],
+        "abilities": {}
     },
     {
         "name": "Biggs Darklighter's X-Wing",
@@ -129,8 +151,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal physical damage to target enemy and inflict Offense Down for 2 turns.  Target Lock: Call an ally to assist."
             }
-        },
-        "avatarName": "charui_xwing_red3"
+        }
     },
     {
         "name": "Bistan's U-Wing",
@@ -175,25 +196,7 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "Bistan's U-wing has +20% speed.  In addition, whenever an enemy becomes Target Locked, another random ally gains 30% turn meter and advantage for 1 turn."
             }
-        },
-        "avatarName": "charui_uwing"
-    },
-    {
-        "name": "BTL-B Y-wing Starfighter",
-        "uniqueName": "YWINGCLONEWARS",
-        "aliases": [
-            "BTL-B Y-wing Starfighter"
-        ],
-        "crew": [],
-        "url": "http://swgoh.gg/ships/btl-b-y-wing-starfighter/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ywing_btlb.png",
-        "side": "light",
-        "factions": [
-            "Galactic Republic",
-            "Tank"
-        ],
-        "abilities": {},
-        "avatarName": "charui_ywing_btlb"
+        }
     },
     {
         "name": "Cassian's U-Wing",
@@ -245,8 +248,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Inflict Target Lock and Tenacity Down for 2 turns on target enemy.  These effects can't be resisted.  If the target enemy has any buffs, remove 20% turn meter."
             }
-        },
-        "avatarName": "charui_uwing_hero"
+        }
     },
     {
         "name": "Chimaera",
@@ -292,8 +294,7 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "Instantly defeat target enemy and deal damage to all remaining enemies equal to 40% of their Max Health. Dispel all debuffs on target ally and grant them 100% Health, 100% Protection and 75% Turn Meter, and heal all other allies equal to 40% of their Max Health. Increase all cooldowns on the enemy Capital Ship by 1. This ability starts on cooldown."
             }
-        },
-        "avatarName": "charui_chimaera"
+        }
     },
     {
         "name": "Clone Sergeant's ARC-170",
@@ -331,13 +332,15 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal physical damage to target enemy.  Target Lock: This attack is an automatic critical hit and can't be evaded."
             }
-        },
-        "avatarName": "charui_arc170"
+        }
     },
     {
         "name": "Ebon Hawk",
         "uniqueName": "EBONHAWK",
         "aliases": [
+            "Ebon Hawk"
+        ],
+        "nameVariant": [
             "Ebon Hawk"
         ],
         "crew": [],
@@ -349,13 +352,15 @@
             "Old Republic",
             "Support"
         ],
-        "abilities": {},
-        "avatarName": "charui_ebonhawk"
+        "abilities": {}
     },
     {
         "name": "Emperor's Shuttle",
         "uniqueName": "EMPERORSSHUTTLE",
         "aliases": [
+            "Emperor's Shuttle"
+        ],
+        "nameVariant": [
             "Emperor's Shuttle"
         ],
         "crew": [
@@ -376,8 +381,7 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_imperialshuttle"
+        }
     },
     {
         "name": "Endurance",
@@ -425,13 +429,15 @@
                 "abilityCooldown": "15",
                 "abilityDesc": "Each ally gains damage immunity and Offense Up for 1 turn.  This ability starts on cooldown."
             }
-        },
-        "avatarName": "charui_venator"
+        }
     },
     {
         "name": "Executor",
         "uniqueName": "CAPITALEXECUTOR",
         "aliases": [
+            "Executor"
+        ],
+        "nameVariant": [
             "Executor"
         ],
         "crew": [],
@@ -442,8 +448,7 @@
             "Capital Ship",
             "Empire"
         ],
-        "abilities": {},
-        "avatarName": "charui_executor"
+        "abilities": {}
     },
     {
         "name": "Executrix",
@@ -490,13 +495,15 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "Allies deal 15% more damage for each debuffed enemy.  This bonus is doubled for Empire allies.  Reinforcement Bonus: Reinforcements gain retribution for 3 turns."
             }
-        },
-        "avatarName": "charui_stardestroyer"
+        }
     },
     {
         "name": "Finalizer",
         "uniqueName": "CAPITALFINALIZER",
         "aliases": [
+            "Finalizer"
+        ],
+        "nameVariant": [
             "Finalizer"
         ],
         "crew": [],
@@ -507,8 +514,7 @@
             "Capital Ship",
             "First Order"
         ],
-        "abilities": {},
-        "avatarName": "charui_finalizer"
+        "abilities": {}
     },
     {
         "name": "First Order SF Tie Fighter",
@@ -547,8 +553,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal Special damage to target enemy, inflict Ability Block for 1 turn, gain 20% Turn Meter, and call a random ally to assist. If that ally is First Order, grant them Advantage for 2 turns. This attack ignores Protection."
             }
-        },
-        "avatarName": "charui_fosf_tie_fighter"
+        }
     },
     {
         "name": "First Order Tie Fighter",
@@ -585,13 +590,15 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal physical damage to target enemy.  Target Lock: Strafe's cooldown is refreshed."
             }
-        },
-        "avatarName": "charui_firstorder_tiefighter"
+        }
     },
     {
         "name": "Fury-class Interceptor",
         "uniqueName": "FURYCLASSINTERCEPTOR",
         "aliases": [
+            "Fury-class Interceptor"
+        ],
+        "nameVariant": [
             "Fury-class Interceptor"
         ],
         "crew": [],
@@ -603,8 +610,7 @@
             "Sith Empire",
             "Support"
         ],
-        "abilities": {},
-        "avatarName": "charui_furyclassinterceptor"
+        "abilities": {}
     },
     {
         "name": "Gauntlet Starfighter",
@@ -647,8 +653,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal pysical damage to target enemy and inflict Buff Immunity for 2 turns."
             }
-        },
-        "avatarName": "charui_gauntlet"
+        }
     },
     {
         "name": "Geonosian Soldier's Starfighter",
@@ -687,7 +692,10 @@
                 "abilityDesc": "Deal physical damage to target enemy and call a random ally to assist.  Inflict Evasion Down for 2 turns if chosen ally is Separtist.  Target Lock: Both attackers deal 25% more damage."
             }
         },
-        "avatarName": "charui_geonosis_fighter_sunfac"
+        "nameVariant": [
+            "Geonosian Soldier's Starfighter",
+            "Sun Fac's Geonosian Starfighter"
+        ]
     },
     {
         "name": "Geonosian Spy's Starfighter",
@@ -726,8 +734,7 @@
                 "abilityCooldown": "2",
                 "abilityDesc": "Deap special damage to target enemy and inflict Defense Down for 2 turns.  Target Lock: Call all stealthed allies to assist."
             }
-        },
-        "avatarName": "charui_geonosis_fighter_spy"
+        }
     },
     {
         "name": "Ghost",
@@ -778,8 +785,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Inflict Defense Down to target enemy for 2 turns and expose all Target Locked enemies.  These effects can't be resisted.  The Ghost gains 20% turn meter for each enemy that was exposed."
             }
-        },
-        "avatarName": "charui_ghost"
+        }
     },
     {
         "name": "Han's Millennium Falcon",
@@ -787,6 +793,9 @@
         "aliases": [
             "Han's Millennium Falcon",
             "MilF"
+        ],
+        "nameVariant": [
+            "Han's Millennium Falcon"
         ],
         "crew": [
             "Han Solo",
@@ -807,8 +816,7 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_mfalcon"
+        }
     },
     {
         "name": "Home One",
@@ -854,8 +862,7 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "Whenever an ally attacks out of turn they have +40% Critical Damage and gain Protection Up for (25%) for 2 turns.  These bonuses are doubled for Rebel allies.  Reinforcement Bonus: Reinforcements gain advantage for 1 turn."
             }
-        },
-        "avatarName": "charui_moncalamarilibertycruiser"
+        }
     },
     {
         "name": "Hound's Tooth",
@@ -865,6 +872,9 @@
             "Hounds Tooth",
             "Hounds",
             "Hound"
+        ],
+        "nameVariant": [
+            "Hound's Tooth"
         ],
         "crew": [
             "Bossk"
@@ -884,13 +894,15 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_houndstooth"
+        }
     },
     {
         "name": "Hyena Bomber",
         "uniqueName": "HYENABOMBER",
         "aliases": [
+            "Hyena Bomber"
+        ],
+        "nameVariant": [
             "Hyena Bomber"
         ],
         "crew": [],
@@ -902,8 +914,7 @@
             "Separatist",
             "Tank"
         ],
-        "abilities": {},
-        "avatarName": "charui_hyenabomber"
+        "abilities": {}
     },
     {
         "name": "IG-2000",
@@ -911,6 +922,9 @@
         "aliases": [
             "IG-2000",
             "IG2000"
+        ],
+        "nameVariant": [
+            "IG-2000"
         ],
         "crew": [
             "IG-88"
@@ -930,13 +944,15 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_ig2000"
+        }
     },
     {
         "name": "Imperial TIE Bomber",
         "uniqueName": "TIEBOMBERIMPERIAL",
         "aliases": [
+            "Imperial TIE Bomber"
+        ],
+        "nameVariant": [
             "Imperial TIE Bomber"
         ],
         "crew": [],
@@ -947,8 +963,7 @@
             "Empire",
             "Tank"
         ],
-        "abilities": {},
-        "avatarName": "charui_tiebomber"
+        "abilities": {}
     },
     {
         "name": "Imperial TIE Fighter",
@@ -984,13 +999,15 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "Grants 15% turn meter to the allied Capital Ship whenever this ship evades an attack.  The effect is doubled for Empire Capital ships."
             }
-        },
-        "avatarName": "charui_tiefighter"
+        }
     },
     {
         "name": "Jedi Consular's Starfighter",
         "uniqueName": "JEDISTARFIGHTERCONSULAR",
         "aliases": [
+            "Jedi Consular's Starfighter"
+        ],
+        "nameVariant": [
             "Jedi Consular's Starfighter"
         ],
         "crew": [
@@ -1010,8 +1027,7 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_jedi_fighter"
+        }
     },
     {
         "name": "Kylo Ren's Command Shuttle",
@@ -1061,13 +1077,15 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Kylo Ren's Command Shuttle has +30 Speed while it has Protection and +30% counter chance while it doesn't.  If First Order Tie Fighter is present, it receives 25% turn meter every time the Command Shuttle takes damage."
             }
-        },
-        "avatarName": "charui_upsilon_shuttle_kylo"
+        }
     },
     {
         "name": "Lando's Millennium Falcon",
         "uniqueName": "MILLENNIUMFALCONPRISTINE",
         "aliases": [
+            "Lando's Millennium Falcon"
+        ],
+        "nameVariant": [
             "Lando's Millennium Falcon"
         ],
         "crew": [
@@ -1088,13 +1106,34 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_mil_fal_pristine"
+        }
+    },
+    {
+        "name": "MG-100 StarFortress SF-17",
+        "uniqueName": "MG100STARFORTRESSSF17",
+        "aliases": [
+            "MG-100 StarFortress SF-17"
+        ],
+        "nameVariant": [
+            "MG-100 StarFortress SF-17"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/mg-100-starfortress-sf-17/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mg100.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Tank"
+        ],
+        "abilities": {}
     },
     {
         "name": "Malevolence",
         "uniqueName": "CAPITALMALEVOLENCE",
         "aliases": [
+            "Malevolence"
+        ],
+        "nameVariant": [
             "Malevolence"
         ],
         "crew": [],
@@ -1106,30 +1145,35 @@
             "Droid",
             "Separatist"
         ],
-        "abilities": {},
-        "avatarName": "charui_malevolence"
+        "abilities": {}
     },
     {
-        "name": "MG-100 StarFortress SF-17",
-        "uniqueName": "MG100STARFORTRESSSF17",
+        "name": "Mark VI Interceptor",
+        "uniqueName": "SITHSUPREMACYCLASS",
         "aliases": [
-            "MG-100 StarFortress SF-17"
+            "Mark VI Interceptor"
+        ],
+        "nameVariant": [
+            "Mark VI Interceptor"
         ],
         "crew": [],
-        "url": "http://swgoh.gg/ships/mg-100-starfortress-sf-17/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mg100.png",
-        "side": "light",
+        "url": "http://swgoh.gg/ships/mark-vi-interceptor/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithsupremacyclass.png",
+        "side": "dark",
         "factions": [
-            "Resistance",
-            "Tank"
+            "Attacker",
+            "Sith",
+            "Sith Empire"
         ],
-        "abilities": {},
-        "avatarName": "charui_mg100"
+        "abilities": {}
     },
     {
         "name": "Negotiator",
         "uniqueName": "CAPITALNEGOTIATOR",
         "aliases": [
+            "Negotiator"
+        ],
+        "nameVariant": [
             "Negotiator"
         ],
         "crew": [],
@@ -1141,13 +1185,15 @@
             "Galactic Republic",
             "Jedi"
         ],
-        "abilities": {},
-        "avatarName": "charui_negotiator"
+        "abilities": {}
     },
     {
         "name": "Outrider",
         "uniqueName": "OUTRIDER",
         "aliases": [
+            "Outrider"
+        ],
+        "nameVariant": [
             "Outrider"
         ],
         "crew": [],
@@ -1161,8 +1207,7 @@
             "Smuggler",
             "Support"
         ],
-        "abilities": {},
-        "avatarName": "charui_outrider"
+        "abilities": {}
     },
     {
         "name": "Phantom II",
@@ -1214,8 +1259,7 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "While Phantom II has no protection it has 50% chance each to gain Advantage, Foresight, Offsense Up, or Defense Up for 2 turns at the end of its turn.  While the Phantom II is active, the Ghost also has this ability."
             }
-        },
-        "avatarName": "charui_phantom2"
+        }
     },
     {
         "name": "Plo Koon's Jedi Starfighter",
@@ -1253,8 +1297,7 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "All allies gain 40% Turn Meter, Clone allies gain Tenacity Up for 1 turn and Jedi allies gain Protection Recharge (35%) for 2 turns."
             }
-        },
-        "avatarName": "charui_jedi_fighter_bladeofdorin"
+        }
     },
     {
         "name": "Poe Dameron's X-wing",
@@ -1292,13 +1335,15 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal physical damage to target enemy.  This attack can't be evaded and always scores a Critical Hit against enemies without protection."
             }
-        },
-        "avatarName": "charui_xwing_blackone"
+        }
     },
     {
         "name": "Profundity",
         "uniqueName": "CAPITALPROFUNDITY",
         "aliases": [
+            "Profundity"
+        ],
+        "nameVariant": [
             "Profundity"
         ],
         "crew": [],
@@ -1309,13 +1354,15 @@
             "Capital Ship",
             "Rebel"
         ],
-        "abilities": {},
-        "avatarName": "charui_profundity"
+        "abilities": {}
     },
     {
         "name": "Raddus",
         "uniqueName": "CAPITALRADDUS",
         "aliases": [
+            "Raddus"
+        ],
+        "nameVariant": [
             "Raddus"
         ],
         "crew": [
@@ -1328,13 +1375,15 @@
             "Capital Ship",
             "Resistance"
         ],
-        "abilities": {},
-        "avatarName": "charui_raddus"
+        "abilities": {}
     },
     {
         "name": "Raven's Claw",
         "uniqueName": "RAVENSCLAW",
         "aliases": [
+            "Raven's Claw"
+        ],
+        "nameVariant": [
             "Raven's Claw"
         ],
         "crew": [],
@@ -1346,13 +1395,15 @@
             "Rebel",
             "Support"
         ],
-        "abilities": {},
-        "avatarName": "charui_ravensclaw"
+        "abilities": {}
     },
     {
         "name": "Razor Crest",
         "uniqueName": "RAZORCREST",
         "aliases": [
+            "Razor Crest"
+        ],
+        "nameVariant": [
             "Razor Crest"
         ],
         "crew": [],
@@ -1365,13 +1416,15 @@
             "Cargo Ship",
             "Scoundrel"
         ],
-        "abilities": {},
-        "avatarName": "charui_razorcrest"
+        "abilities": {}
     },
     {
         "name": "Rebel Y-wing",
         "uniqueName": "YWINGREBEL",
         "aliases": [
+            "Rebel Y-wing"
+        ],
+        "nameVariant": [
             "Rebel Y-wing"
         ],
         "crew": [],
@@ -1382,8 +1435,7 @@
             "Rebel",
             "Tank"
         ],
-        "abilities": {},
-        "avatarName": "charui_ywing"
+        "abilities": {}
     },
     {
         "name": "Resistance X-wing",
@@ -1420,8 +1472,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal physical damage to the target enemy and inflict Target Lock for 2 turns, with a 55% chance to also Expose them for 2 turns."
             }
-        },
-        "avatarName": "charui_xwing_resistance"
+        }
     },
     {
         "name": "Rex's ARC-170",
@@ -1458,14 +1509,17 @@
                 "abilityCooldown": "6",
                 "abilityDesc": "Rex's ARC-170 and another target ally gain 50% turn meter and recover 50% protection.  This ability's cooldown is reduced by 1 for each other Republic ally."
             }
-        },
-        "avatarName": "charui_arc170_02"
+        }
     },
     {
         "name": "Rey's Millennium Falcon",
         "uniqueName": "MILLENNIUMFALCONEP7",
         "aliases": [
             "Millennium Falcon (Ep VII)"
+        ],
+        "nameVariant": [
+            "Millennium Falcon (Ep VII)",
+            "Rey's Millennium Falcon"
         ],
         "crew": [
             "Rey",
@@ -1500,8 +1554,7 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal physical damage to all enemies then lose all buffs.  This attack hits each enemy again for each buff lost this way (maximum 3.)  Hits after the first deal 50% less damage."
             }
-        },
-        "avatarName": "charui_mfalcon_ep7"
+        }
     },
     {
         "name": "Scimitar",
@@ -1536,13 +1589,15 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Target ally gains Protection Up (50%) and Retribution for 2 turns and all other allies gain stealth for 2 turns."
             }
-        },
-        "avatarName": "charui_sithinfiltrator"
+        }
     },
     {
         "name": "Scythe",
         "uniqueName": "SCYTHE",
         "aliases": [
+            "Scythe"
+        ],
+        "nameVariant": [
             "Scythe"
         ],
         "crew": [],
@@ -1555,13 +1610,15 @@
             "Support",
             "Unaligned Force User"
         ],
-        "abilities": {},
-        "avatarName": "charui_scythe"
+        "abilities": {}
     },
     {
         "name": "Sith Fighter",
         "uniqueName": "SITHFIGHTER",
         "aliases": [
+            "Sith Fighter"
+        ],
+        "nameVariant": [
             "Sith Fighter"
         ],
         "crew": [
@@ -1581,8 +1638,7 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_sithfighter"
+        }
     },
     {
         "name": "Slave-I",
@@ -1622,8 +1678,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "Deal physical damage to target enemy and all Target Locked enemies, and inflict Ability Block for 1 turn on all affected targets."
             }
-        },
-        "avatarName": "charui_slave1"
+        }
     },
     {
         "name": "Sun Fac's Geonosian Starfighter",
@@ -1662,7 +1717,88 @@
                 "abilityDesc": "Deal physical damage to target enemy.  If the target is buffed also stun them for 1 turn."
             }
         },
-        "avatarName": "charui_geonosis_fighter_soldier"
+        "nameVariant": [
+            "Sun Fac's Genosian Starfighter",
+            "Geonosian Soldier's Starfighter"
+        ]
+    },
+    {
+        "name": "TIE Dagger",
+        "uniqueName": "TIEDAGGER",
+        "aliases": [
+            "TIE Dagger"
+        ],
+        "nameVariant": [
+            "TIE Dagger"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tie-dagger/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiedagger.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "First Order",
+            "Sith"
+        ],
+        "abilities": {}
+    },
+    {
+        "name": "TIE Defender",
+        "uniqueName": "TIEDEFENDER",
+        "aliases": [
+            "TIE Defender"
+        ],
+        "nameVariant": [
+            "TIE Defender"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tie-defender/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiedefender.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire"
+        ],
+        "abilities": {}
+    },
+    {
+        "name": "TIE Echelon",
+        "uniqueName": "FIRSTORDERTIEECHELON",
+        "aliases": [
+            "TIE Echelon"
+        ],
+        "nameVariant": [
+            "TIE Echelon"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tie-echelon/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertieechelon.png",
+        "side": "dark",
+        "factions": [
+            "First Order",
+            "Tank"
+        ],
+        "abilities": {}
+    },
+    {
+        "name": "TIE/IN Interceptor Prototype",
+        "uniqueName": "TIEINTERCEPTOR",
+        "aliases": [
+            "TIE/IN Interceptor Prototype"
+        ],
+        "nameVariant": [
+            "TIE/IN Interceptor Prototype"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/tiein-interceptor-prototype/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tie_interceptor_prototype.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Empire",
+            "Inquisitorius"
+        ],
+        "abilities": {}
     },
     {
         "name": "Tie Advanced x1",
@@ -1700,60 +1836,7 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "Inflict Evasion Down and Ability Block on target enemy for 2 turns then gain 25% turn meter for each debuff on that enemy.  Target Lock:  Dispel all buffs and remove 100% turn meter."
             }
-        },
-        "avatarName": "charui_tieadvanced"
-    },
-    {
-        "name": "TIE Dagger",
-        "uniqueName": "TIEDAGGER",
-        "aliases": [
-            "TIE Dagger"
-        ],
-        "crew": [],
-        "url": "http://swgoh.gg/ships/tie-dagger/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiedagger.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "First Order",
-            "Sith"
-        ],
-        "abilities": {},
-        "avatarName": "charui_tiedagger"
-    },
-    {
-        "name": "TIE Defender",
-        "uniqueName": "TIEDEFENDER",
-        "aliases": [
-            "TIE Defender"
-        ],
-        "crew": [],
-        "url": "http://swgoh.gg/ships/tie-defender/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiedefender.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Empire"
-        ],
-        "abilities": {},
-        "avatarName": "charui_tiedefender"
-    },
-    {
-        "name": "TIE Echelon",
-        "uniqueName": "FIRSTORDERTIEECHELON",
-        "aliases": [
-            "TIE Echelon"
-        ],
-        "crew": [],
-        "url": "http://swgoh.gg/ships/tie-echelon/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertieechelon.png",
-        "side": "dark",
-        "factions": [
-            "First Order",
-            "Tank"
-        ],
-        "abilities": {},
-        "avatarName": "charui_firstordertieechelon"
+        }
     },
     {
         "name": "Tie Reaper",
@@ -1796,8 +1879,7 @@
                 "abilityCooldown": "3",
                 "abilityDesc": "ITE Reaper and target ally gain Defense Up and Protection Up (30%) for 2 turns.  If that ally is Empire, they receive an additional 20% Protection Up."
             }
-        },
-        "avatarName": "charui_tiereaper"
+        }
     },
     {
         "name": "Tie Silencer",
@@ -1834,26 +1916,7 @@
                 "abilityCooldown": "0",
                 "abilityDesc": "Each time the TIE silencer is damaged or damages a Target Locked enemy, it gains +10 Speed and +10% Offense (stacking) until the end of the encounter."
             }
-        },
-        "avatarName": "charui_tie_silencer"
-    },
-    {
-        "name": "TIE/IN Interceptor Prototype",
-        "uniqueName": "TIEINTERCEPTOR",
-        "aliases": [
-            "TIE/IN Interceptor Prototype"
-        ],
-        "crew": [],
-        "url": "http://swgoh.gg/ships/tiein-interceptor-prototype/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tie_interceptor_prototype.png",
-        "side": "dark",
-        "factions": [
-            "Attacker",
-            "Empire",
-            "Inquisitorius"
-        ],
-        "abilities": {},
-        "avatarName": "charui_tie_interceptor_prototype"
+        }
     },
     {
         "name": "Umbaran Starfighter",
@@ -1890,13 +1953,15 @@
                 "abilityCooldown": "5",
                 "abilityDesc": "Inflict Target Lock for 2 turns on target enemy (can't be resisted), then deal physical damage to each Target Locked enemy.  This attack deals +20% damage for each Target Locked enemy."
             }
-        },
-        "avatarName": "charui_umbaran_star_fighter"
+        }
     },
     {
         "name": "Vulture Droid",
         "uniqueName": "VULTUREDROID",
         "aliases": [
+            "Vulture Droid"
+        ],
+        "nameVariant": [
             "Vulture Droid"
         ],
         "crew": [],
@@ -1908,8 +1973,7 @@
             "Droid",
             "Separatist"
         ],
-        "abilities": {},
-        "avatarName": "charui_vulturedroid"
+        "abilities": {}
     },
     {
         "name": "Wedge Antilles's X-Wing",
@@ -1947,13 +2011,15 @@
                 "abilityCooldown": "4",
                 "abilityDesc": "Deal physical damage to target enemy.  Deals 10% additonal damage for each detrimental effect on the target.  Target Lock: Inflict 3 Damage Over Time effects for 2 turns."
             }
-        },
-        "avatarName": "charui_xwing_red2"
+        }
     },
     {
         "name": "Xanadu Blood",
         "uniqueName": "XANADUBLOOD",
         "aliases": [
+            "Xanadu Blood"
+        ],
+        "nameVariant": [
             "Xanadu Blood"
         ],
         "crew": [
@@ -1973,7 +2039,6 @@
             "light": [],
             "cantina": [],
             "shops": []
-        },
-        "avatarName": "charui_xanadublood"
+        }
     }
 ]

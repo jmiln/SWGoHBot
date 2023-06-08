@@ -166,6 +166,7 @@
             "Gain Turn Meter",
             "Offense Up",
             "Reduce Cooldowns",
+            "Shock",
             "Stun",
             "Target Lock",
             "Torture"
@@ -1272,6 +1273,7 @@
             "Leader: Assist",
             "Protection Up",
             "Remove Turn Meter",
+            "Shock",
             "Stagger",
             "Stealth",
             "Stun",
@@ -3215,6 +3217,7 @@
             "Gain Turn Meter",
             "Offense Down",
             "Reduce Cooldowns",
+            "Shock",
             "Speed Down",
             "Stagger"
         ],
@@ -9436,6 +9439,7 @@
             "Gain Turn Meter",
             "Healing Immunity",
             "Leader: +Tenacity",
+            "Shock",
             "Stealth",
             "Stun",
             "Tenacity Down"
@@ -10317,6 +10321,7 @@
             "Gain Turn Meter",
             "Healing Immunity",
             "Reset Cooldown",
+            "Shock",
             "Stun",
             "Taunt",
             "Tenacity Down"
@@ -10505,6 +10510,7 @@
             "Leader: +Tenacity",
             "Protection Up",
             "Reduce Cooldowns",
+            "Shock",
             "Stun",
             "Taunt"
         ],
@@ -11038,6 +11044,7 @@
             "Leader: +Critical",
             "Leader: +Speed",
             "Reduce Cooldowns",
+            "Shock",
             "Stun"
         ],
         "role": "Leader",
@@ -12988,6 +12995,7 @@
             "Healing Immunity",
             "Leader: +Max Health",
             "Leader: +Speed",
+            "Leader: +Tenacity",
             "Offense Up",
             "Potency Up",
             "Protection Up",
@@ -14066,6 +14074,7 @@
             "Leader: +Evasion",
             "Leader: +Max Health",
             "Offense Up",
+            "Shock",
             "Stun"
         ],
         "role": "Support",
@@ -18672,6 +18681,7 @@
             "Potency Down",
             "Protection Up",
             "Remove Turn Meter",
+            "Shock",
             "Stealth",
             "Stun",
             "Taunt",
@@ -21159,6 +21169,7 @@
             "DoT",
             "Foresight",
             "Health Steal Up",
+            "Shock",
             "Taunt",
             "Tenacity Down"
         ],
@@ -25607,6 +25618,7 @@
             "Reduce Cooldowns",
             "Reset Cooldown",
             "Revive",
+            "Shock",
             "Speed Up",
             "Taunt"
         ],
@@ -25780,6 +25792,7 @@
             "Gain Turn Meter",
             "Heal",
             "Revive",
+            "Shock",
             "Speed Down",
             "Stun"
         ],
@@ -28080,6 +28093,7 @@
             "Dispel",
             "Gain Turn Meter",
             "Offense Down",
+            "Shock",
             "Stagger",
             "Stealth",
             "Stun",
@@ -36566,8 +36580,8 @@
             "Taunt"
         ],
         "role": "Tank",
-        "ship": "",
-        "ship_slot": null,
+        "ship": "SITHSUPREMACYCLASS",
+        "ship_slot": 0,
         "activate_shard_count": 50
     },
     {
@@ -37619,6 +37633,7 @@
             "Healing Immunity",
             "Reduce Cooldowns",
             "Reset Cooldown",
+            "Shock",
             "Stun",
             "Taunt",
             "Vulnerable"
