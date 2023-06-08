@@ -460,16 +460,16 @@ class ArenaWatch extends Command {
             return [parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players, code) {
+        function checkPlayer(players, code, isEdit=false) {
             if (!players) throw new Error("Missing players in checkPlayer");
             const player = players.find(p => parseInt(p.allyCode, 10) === parseInt(code.code, 10));
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
             if (aw.allycodes.find(usercode => parseInt(usercode.allyCode, 10) === parseInt(code.code, 10))) {
-                throw new Error(`${code.code} was already in the list. If you're trying to change something, try using the \`;aw allycode edit\` command`);
+                throw new Error(`${code.code} was already in the list. If you're trying to change something, try using the \`/arenawatch allycode edit\` command`);
             }
-            if (aw.allycodes.length >= codeCap) {
+            if (!isEdit && aw.allycodes.length >= codeCap) {
                 throw new Error(`Could not add ${code.code}, ally code cap reached!`);
             }
             return player;
@@ -720,7 +720,9 @@ class ArenaWatch extends Command {
                     try {
                         await interaction.deferReply();
                         const players = await Bot.swgohAPI.unitStats(ac);
-                        player = checkPlayer(players, {code: ac});
+                        if (!players?.length) console.error(`[AW Edit] Missing players ${ac}`);
+                        player = checkPlayer(players, {code: ac}, true);
+                        if (!player) console.error(`[AW Edit] Missing player after check ${ac}`);
                     } catch (e) {
                         return super.error(interaction, "Error getting player info.\n" + e);
                     }
