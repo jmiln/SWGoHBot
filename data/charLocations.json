@@ -1735,8 +1735,8 @@
         "defId": "LOBOT",
         "locations": [
             {
-                "type": "Hard Modes (L)",
-                "level": "4-B"
+                "type": "Cantina",
+                "level": "1-E"
             }
         ]
     },
@@ -1850,7 +1850,12 @@
     {
         "name": "Merrin",
         "defId": "MERRIN",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-C"
+            }
+        ]
     },
     {
         "name": "Mission Vao",
@@ -2311,7 +2316,12 @@
     {
         "name": "Saw Gerrera",
         "defId": "SAWGERRERA",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "4-B"
+            }
+        ]
     },
     {
         "name": "Scarif Rebel Pathfinder",
@@ -2557,7 +2567,12 @@
     {
         "name": "Tarfful",
         "defId": "TARFFUL",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "4-D"
+            }
+        ]
     },
     {
         "name": "Tech",

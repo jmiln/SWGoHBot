@@ -1148,6 +1148,26 @@
         "abilities": {}
     },
     {
+        "name": "Mark VI Interceptor",
+        "uniqueName": "SITHSUPREMACYCLASS",
+        "aliases": [
+            "Mark VI Interceptor"
+        ],
+        "nameVariant": [
+            "Mark VI Interceptor"
+        ],
+        "crew": [],
+        "url": "http://swgoh.gg/ships/mark-vi-interceptor/",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithsupremacyclass.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Sith",
+            "Sith Empire"
+        ],
+        "abilities": {}
+    },
+    {
         "name": "Negotiator",
         "uniqueName": "CAPITALNEGOTIATOR",
         "aliases": [

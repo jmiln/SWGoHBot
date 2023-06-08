@@ -359,6 +359,10 @@
         "defId": "TIEFIGHTERIMPERIAL",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "4-B"
+            },
+            {
                 "type": "Fleet Shipments",
                 "cost": "400/4"
             },
@@ -369,10 +373,6 @@
             {
                 "type": "GW Shipments",
                 "cost": "400/4"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "1-C"
             }
         ]
     },
@@ -427,6 +427,11 @@
                 "cost": "4050/15\n2700/10\n1350/5"
             }
         ]
+    },
+    {
+        "name": "Mark VI Interceptor",
+        "defId": "SITHSUPREMACYCLASS",
+        "locations": []
     },
     {
         "name": "MG-100 StarFortress SF-17",
