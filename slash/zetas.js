@@ -165,22 +165,35 @@ class Zetas extends Command {
             }
 
             const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
-            const charImg = await Bot.getBlankUnitImage(character.uniqueName);
-            return interaction.editReply({
-                content: null,
-                embeds: [{
-                    color: Bot.constants.colors.black,
-                    author: author,
-                    description: desc.join("\n"),
-                    fields: fields,
-                    footer: footer,
-                    thumbnail: {url: "attachment://image.png"}
-                }],
-                files: [{
-                    attachment: charImg,
-                    name: "image.png"
-                }]
-            });
+            if (character) {
+                const charImg = await Bot.getBlankUnitImage(character.uniqueName);
+                return interaction.editReply({
+                    content: null,
+                    embeds: [{
+                        color: Bot.constants.colors.black,
+                        author: author,
+                        description: desc.join("\n"),
+                        fields: fields,
+                        footer: footer,
+                        thumbnail: {url: "attachment://image.png"}
+                    }],
+                    files: [{
+                        attachment: charImg,
+                        name: "image.png"
+                    }]
+                });
+            } else {
+                return interaction.editReply({
+                    content: null,
+                    embeds: [{
+                        color: Bot.constants.colors.black,
+                        author: author,
+                        description: desc.join("\n"),
+                        fields: fields,
+                        footer: footer,
+                    }],
+                });
+            }
         } else if (subCommand === "guild") {
             // Display the zetas for the whole guild (Takes a while)
             await interaction.reply({content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD")});
