@@ -231,7 +231,7 @@ class Shardtimes extends Command {
             }
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < Bot.constants.GUILD_ADMIN) {
+            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < Bot.constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
@@ -251,7 +251,7 @@ class Shardtimes extends Command {
             const destChannel = interaction.options.getChannel("dest_channel");
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
-            if (options.level < Bot.consants.GUILD_ADMIN) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
+            if (options.level < Bot.consants.permMap.GUILD_ADMIN) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
 

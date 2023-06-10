@@ -499,7 +499,7 @@ class ArenaWatch extends Command {
 
                 // If it gets this far, it should be a valid code
                 // Need to make sure that the user has the correct permissions to set this up
-                if (options.level < Bot.constants.GUILD_ADMIN) {
+                if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                 }
 
@@ -551,7 +551,7 @@ class ArenaWatch extends Command {
                     const targetArena = interaction.options.getString("arena");
 
                     // Need to make sure that the user has the correct permissions to set this up
-                    if (options.level < Bot.constants.GUILD_ADMIN) {
+                    if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
                         return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                     }
 
