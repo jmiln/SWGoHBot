@@ -15,8 +15,17 @@ module.exports = (Bot, client) => {
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
         if (userId === Bot.config.ownerid || (Bot.config.patrons && Bot.config.patrons.indexOf(userId) > -1)) {
-            return {discordID: userId, amount_cents: userId === Bot.config.ownerid ? 1500 : honPat};
+            const currentTierNum = getPatreonTier({amount_cents: userId === Bot.config.ownerid ? 1500 : honPat});
+            const currentTier = patronTiers[currentTierNum];
+            return {
+                playerTime: currentTier.playerTime,
+                guildTime: currentTier.guildTime,
+                awAccounts: currentTier.awAccounts,
+                discordID: userId,
+                amount_cents: userId === Bot.config.ownerid ? 1500 : honPat
+            };
         }
+
         const patron = await Bot.cache.getOne("swgohbot", "patrons", {discordID: userId});
         if (!patron) return null;
 
