@@ -437,7 +437,7 @@ class GuildSearch extends Command {
 
             const charOut = {};
             const hasRelic = sortedGuild.filter(mem => mem?.relic?.currentTier > 2).length;
-            const maxGP = Math.max(...sortedGuild.map(ch => ch.gp.toLocaleString().length));
+            const maxGP = Math.max(...sortedGuild.map(ch => ch.gp?.toLocaleString().length || 0));
             for (const member of sortedGuild) {
                 // If we want just zeta, just omicron, or both, and the player doesn't have a viable character, move along
                 if (doZeta && doOmicron && !member.zetas?.length && !member.omicrons?.length) continue;
