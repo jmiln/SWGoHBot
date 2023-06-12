@@ -1,100 +1,100 @@
 {
     "chs_cn": {
-        "RAID_AAT_NAME": "坦克歼击",
-        "RAID_RANCOR_NAME": "挑战坑",
-        "RAID_RANCOR_CHALLENGE_NAME": "深坑（挑战）",
-        "RAID_TRIUMVIRATE_NAME": "西斯三巨头",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "克雷特龙猎杀"
+        "aat": "坦克歼击",
+        "rancor": "挑战坑",
+        "rancor_challenge": "深坑（挑战）",
+        "sith_raid": "西斯三巨头",
+        "kraytdragon": "克雷特龙猎杀"
     },
     "cht_cn": {
-        "RAID_AAT_NAME": "肉盾擊倒",
-        "RAID_RANCOR_NAME": "地窖",
-        "RAID_RANCOR_CHALLENGE_NAME": "地窖（挑戰）",
-        "RAID_TRIUMVIRATE_NAME": "西斯三巨頭",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "獵殺克雷特龍"
+        "aat": "肉盾擊倒",
+        "rancor": "地窖",
+        "rancor_challenge": "地窖（挑戰）",
+        "sith_raid": "西斯三巨頭",
+        "kraytdragon": "獵殺克雷特龍"
     },
     "eng_us": {
-        "RAID_AAT_NAME": "TANK TAKEDOWN",
-        "RAID_RANCOR_NAME": "THE PIT",
-        "RAID_RANCOR_CHALLENGE_NAME": "THE PIT (CHALLENGE)",
-        "RAID_TRIUMVIRATE_NAME": "THE SITH TRIUMVIRATE",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "KRAYT DRAGON HUNT"
+        "aat": "TANK TAKEDOWN",
+        "rancor": "THE PIT",
+        "rancor_challenge": "THE PIT (CHALLENGE)",
+        "sith_raid": "THE SITH TRIUMVIRATE",
+        "kraytdragon": "KRAYT DRAGON HUNT"
     },
     "fre_fr": {
-        "RAID_AAT_NAME": "ASSAUT DE CHAR",
-        "RAID_RANCOR_NAME": "LA FOSSE",
-        "RAID_RANCOR_CHALLENGE_NAME": "LA FOSSE (DÉFI)",
-        "RAID_TRIUMVIRATE_NAME": "LE TRIUMVIRAT SITH",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "CHASSE AU DRAGON KRAYT"
+        "aat": "ASSAUT DE CHAR",
+        "rancor": "LA FOSSE",
+        "rancor_challenge": "LA FOSSE (DÉFI)",
+        "sith_raid": "LE TRIUMVIRAT SITH",
+        "kraytdragon": "CHASSE AU DRAGON KRAYT"
     },
     "ger_de": {
-        "RAID_AAT_NAME": "TANK-TAKEDOWN",
-        "RAID_RANCOR_NAME": "DIE GRUBE",
-        "RAID_RANCOR_CHALLENGE_NAME": "DIE GRUBE (HERAUSFOR.)",
-        "RAID_TRIUMVIRATE_NAME": "DAS SITH-TRIUMVIRAT",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "KRAYT-DRACHENJAGD"
+        "aat": "TANK-TAKEDOWN",
+        "rancor": "DIE GRUBE",
+        "rancor_challenge": "DIE GRUBE (HERAUSFOR.)",
+        "sith_raid": "DAS SITH-TRIUMVIRAT",
+        "kraytdragon": "KRAYT-DRACHENJAGD"
     },
     "ind_id": {
-        "RAID_AAT_NAME": "PELUMPUHAN TANK",
-        "RAID_RANCOR_NAME": "GUA",
-        "RAID_RANCOR_CHALLENGE_NAME": "GUA (TANTANGAN)",
-        "RAID_TRIUMVIRATE_NAME": "TIGA SERANGKAI SITH",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "PERBURUAN KRAYT DRAGON"
+        "aat": "PELUMPUHAN TANK",
+        "rancor": "GUA",
+        "rancor_challenge": "GUA (TANTANGAN)",
+        "sith_raid": "TIGA SERANGKAI SITH",
+        "kraytdragon": "PERBURUAN KRAYT DRAGON"
     },
     "ita_it": {
-        "RAID_AAT_NAME": "ALL'ASSALTO DEL CARRO",
-        "RAID_RANCOR_NAME": "LA FOSSA",
-        "RAID_RANCOR_CHALLENGE_NAME": "LA FOSSA (SFIDA)",
-        "RAID_TRIUMVIRATE_NAME": "IL TRIUMVIRATO SITH",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "CACCIA AL DRAGO KRAYT"
+        "aat": "ALL'ASSALTO DEL CARRO",
+        "rancor": "LA FOSSA",
+        "rancor_challenge": "LA FOSSA (SFIDA)",
+        "sith_raid": "IL TRIUMVIRATO SITH",
+        "kraytdragon": "CACCIA AL DRAGO KRAYT"
     },
     "jpn_jp": {
-        "RAID_AAT_NAME": "タンク排除",
-        "RAID_RANCOR_NAME": "ピット",
-        "RAID_RANCOR_CHALLENGE_NAME": "ピット(チャレンジ)",
-        "RAID_TRIUMVIRATE_NAME": "シス三頭政治",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "クレイト・ドラゴン・ハント"
+        "aat": "タンク排除",
+        "rancor": "ピット",
+        "rancor_challenge": "ピット(チャレンジ)",
+        "sith_raid": "シス三頭政治",
+        "kraytdragon": "クレイト・ドラゴン・ハント"
     },
     "kor_kr": {
-        "RAID_AAT_NAME": "탱크 테이크다운",
-        "RAID_RANCOR_NAME": "구덩이",
-        "RAID_RANCOR_CHALLENGE_NAME": "핏 (챌린지)",
-        "RAID_TRIUMVIRATE_NAME": "시스 삼인방",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "크레이트 드래곤 사냥"
+        "aat": "탱크 테이크다운",
+        "rancor": "구덩이",
+        "rancor_challenge": "핏 (챌린지)",
+        "sith_raid": "시스 삼인방",
+        "kraytdragon": "크레이트 드래곤 사냥"
     },
     "por_br": {
-        "RAID_AAT_NAME": "ELIMINAÇÃO DE TANQUE",
-        "RAID_RANCOR_NAME": "O FOSSO",
-        "RAID_RANCOR_CHALLENGE_NAME": "O FOSSO (DESAFIO)",
-        "RAID_TRIUMVIRATE_NAME": "O TRIUNVIRATO SITH",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "CAÇADA AO DRAGÃO KRAYT"
+        "aat": "ELIMINAÇÃO DE TANQUE",
+        "rancor": "O FOSSO",
+        "rancor_challenge": "O FOSSO (DESAFIO)",
+        "sith_raid": "O TRIUNVIRATO SITH",
+        "kraytdragon": "CAÇADA AO DRAGÃO KRAYT"
     },
     "rus_ru": {
-        "RAID_AAT_NAME": "УНИЧТОЖЕНИЕ ТАНКА",
-        "RAID_RANCOR_NAME": "ЯМА",
-        "RAID_RANCOR_CHALLENGE_NAME": "ЯМА (ИСПЫТАНИЕ)",
-        "RAID_TRIUMVIRATE_NAME": "ТРИУМВИРАТ СИТХОВ",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "ОХОТА НА КРАЙТ-ДРАКОНА"
+        "aat": "УНИЧТОЖЕНИЕ ТАНКА",
+        "rancor": "ЯМА",
+        "rancor_challenge": "ЯМА (ИСПЫТАНИЕ)",
+        "sith_raid": "ТРИУМВИРАТ СИТХОВ",
+        "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА"
     },
     "spa_xm": {
-        "RAID_AAT_NAME": "DERRIBO DE TANQUE",
-        "RAID_RANCOR_NAME": "EL FOSO",
-        "RAID_RANCOR_CHALLENGE_NAME": "EL FOSO (DESAFÍO)",
-        "RAID_TRIUMVIRATE_NAME": "EL TRIUNVIRATO SITH",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "CACERÍA DEL DRAGÓN KRAYT"
+        "aat": "DERRIBO DE TANQUE",
+        "rancor": "EL FOSO",
+        "rancor_challenge": "EL FOSO (DESAFÍO)",
+        "sith_raid": "EL TRIUNVIRATO SITH",
+        "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT"
     },
     "tha_th": {
-        "RAID_AAT_NAME": "แทงค์บรรลัยกัลป์",
-        "RAID_RANCOR_NAME": "หลุมลึก",
-        "RAID_RANCOR_CHALLENGE_NAME": "อุโมงค์มรณะ (ภารกิจท้าทาย)",
-        "RAID_TRIUMVIRATE_NAME": "ไตรภาคีแห่งซิธ",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "ล่ามังกรไครท์"
+        "aat": "แทงค์บรรลัยกัลป์",
+        "rancor": "หลุมลึก",
+        "rancor_challenge": "อุโมงค์มรณะ (ภารกิจท้าทาย)",
+        "sith_raid": "ไตรภาคีแห่งซิธ",
+        "kraytdragon": "ล่ามังกรไครท์"
     },
     "tur_tr": {
-        "RAID_AAT_NAME": "TANK PARÇALAMA",
-        "RAID_RANCOR_NAME": "ÇUKUR",
-        "RAID_RANCOR_CHALLENGE_NAME": "ÇUKUR (GÖREV)",
-        "RAID_TRIUMVIRATE_NAME": "SITH ÜÇLÜ YÖNETİMİ",
-        "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME": "KRAYT DRAGON AVI"
+        "aat": "TANK PARÇALAMA",
+        "rancor": "ÇUKUR",
+        "rancor_challenge": "ÇUKUR (GÖREV)",
+        "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
+        "kraytdragon": "KRAYT DRAGON AVI"
     }
 }

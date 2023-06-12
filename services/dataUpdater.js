@@ -452,18 +452,20 @@ async function updateGameData() {
 
     async function saveRaidNames() {
         const langList = Object.keys(locales);
-        const raidKeys = [
-            "RAID_AAT_NAME",
-            "RAID_RANCOR_NAME",
-            "RAID_RANCOR_CHALLENGE_NAME",
-            "RAID_TRIUMVIRATE_NAME",
-            "MISSION_GUILDRAIDS_KRAYTDRAGON_NAME"
-        ];
+
+        // The keys that match in the lang files, and the keys that the guild raids give
+        const raidKeys = {
+            RAID_AAT_NAME: "aat",
+            RAID_RANCOR_NAME: "rancor",
+            RAID_RANCOR_CHALLENGE_NAME: "rancor_challenge",
+            RAID_TRIUMVIRATE_NAME: "sith_raid",
+            MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon"
+        };
         const out = {};
         for (const lang of langList) {
             out[lang] = {};
-            for (const key of raidKeys) {
-                out[lang][key] = locales[lang][key];
+            for (const key of Object.keys(raidKeys)) {
+                out[lang][raidKeys[key]] = locales[lang][key];
             }
         }
         saveFile(RAID_NAMES, out);
