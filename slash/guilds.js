@@ -211,6 +211,7 @@ class Guilds extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        // const guildConf = await Bot.getGuildSettings(interaction?.guild.id);
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {

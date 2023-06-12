@@ -894,6 +894,7 @@ module.exports = (opts={}) => {
             guildEventTracker,
             nextChallengesRefresh,
             recentTerritoryWarResult,
+            recentRaidResult,
             member,
             ...guildRest
         } = guild;
@@ -912,9 +913,17 @@ module.exports = (opts={}) => {
         } = profile;
 
         const raids = {};
-        if (raidLaunchConfig) {
-            for (const { campaignMissionIdentifier, raidId } of raidLaunchConfig) {
-                raids[raidId] = campaignMissionIdentifier.campaignMissionId;
+        // if (raidLaunchConfig) {
+        //     for (const { campaignMissionIdentifier, raidId } of raidLaunchConfig) {
+        //         raids[raidId] = campaignMissionIdentifier.campaignMissionId;
+        //     }
+        // }
+        if (recentRaidResult?.length) {
+            for (const {identifier, guildRewardScore, raidId} of recentRaidResult) {
+                raids[raidId] = {
+                    diffId: identifier.campaignMissionId,
+                    progress: guildRewardScore
+                };
             }
         }
 

@@ -235,6 +235,7 @@ module.exports = (Bot, client) => {
             Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
             Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json", "utf-8"));
             Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json", "utf-8"));
+            Bot.raidNames    = await JSON.parse(fs.readFileSync("./data/raidNames.json", "utf-8"));
             Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json", "utf-8"));
             Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
 
