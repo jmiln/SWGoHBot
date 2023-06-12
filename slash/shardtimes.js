@@ -251,7 +251,7 @@ class Shardtimes extends Command {
             const destChannel = interaction.options.getChannel("dest_channel");
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
-            if (options.level < Bot.consants.permMap.GUILD_ADMIN) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
+            if (options.level < Bot.constants.permMap.GUILD_ADMIN) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
 
