@@ -681,7 +681,7 @@ module.exports = (Bot, client) => {
         let outStr = "";
         str.split(/([\s]{2,})/).forEach(e => {
             if (e.match(/[\s]{2,}/)) {
-                outStr += e.split("").join("\u200B");
+                outStr += e.split("").join(Bot.constants.zws);
             } else {
                 outStr += e;
             }

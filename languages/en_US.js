@@ -805,7 +805,7 @@ module.exports = class extends Language {
                 rancor_challenge:    "Chall Rancor:",
                 aat:                 "AAT:         ",
                 sith_raid:           "Sith:        ",
-                heroic:              "Heroic       ",
+                heroic:              "Heroic",
                 kraytdragon:         "Krayt Dragon:"
 
             },
