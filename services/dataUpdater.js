@@ -24,6 +24,8 @@ const CHAR_LOCATIONS = dataDir + "charLocations.json";
 const SHIP_FILE      = dataDir + "ships.json";
 const SHIP_LOCATIONS = dataDir + "shipLocations.json";
 
+const RAID_NAMES     = dataDir + "raidNames.json";
+
 const META_FILE      = dataDir + "metadata.json";
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
 
@@ -83,8 +85,8 @@ async function updateMetaData() {
 
     if (isUpdated) {
         await saveFile(META_FILE, metaOut);
-        metadataFile = metaOut;
     }
+    metadataFile = metaOut;
 
     return isUpdated;
 }
@@ -412,6 +414,7 @@ async function updateGameData() {
     await processModData(gameData.statMod);
     await processRecipes(gameData.recipe);
     await processUnits(gameData.units);
+    await saveRaidNames();
 
     /**
     * function
@@ -445,6 +448,28 @@ async function updateGameData() {
             // console.log(`Finished localizing ${dbTarget} for ${lang}`);
         }
         // console.log(`Finished localizing ${dbTarget}`);
+    }
+
+    async function saveRaidNames() {
+        const langList = Object.keys(locales);
+
+        // The keys that match in the lang files, and the keys that the guild raids give
+        const raidKeys = {
+            RAID_AAT_NAME: "aat",
+            RAID_RANCOR_NAME: "rancor",
+            RAID_RANCOR_CHALLENGE_NAME: "rancor_challenge",
+            RAID_TRIUMVIRATE_NAME: "sith_raid",
+            MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon",
+            MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic"
+        };
+        const out = {};
+        for (const lang of langList) {
+            out[lang] = {};
+            for (const key of Object.keys(raidKeys)) {
+                out[lang][raidKeys[key]] = locales[lang][key];
+            }
+        }
+        saveFile(RAID_NAMES, out);
     }
 
     async function processAbilities(abilityIn, skillIn) {

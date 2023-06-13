@@ -802,10 +802,12 @@ module.exports = class extends Language {
             COMMAND_GUILDS_RAID_STRINGS: {
                 header:              "Raids",
                 rancor:              "Rancor:      ",
-                rancor_challenge:    "Chal Rancor: ",
+                rancor_challenge:    "Chall Rancor:",
                 aat:                 "AAT:         ",
                 sith_raid:           "Sith:        ",
-                heroic:              "Heroic"
+                heroic:              "Heroic",
+                kraytdragon:         "Krayt Dragon:"
+
             },
             COMMAND_GUILDS_STAT_HEADER: "Stats",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [

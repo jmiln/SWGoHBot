@@ -211,6 +211,7 @@ class Guilds extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const guildConf = await Bot.getGuildSettings(interaction?.guild.id);
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
@@ -652,12 +653,23 @@ class Guilds extends Command {
             desc += (guild.message && guild.message.length) ? `**${interaction.language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
 
             const raidStr = interaction.language.get("COMMAND_GUILDS_RAID_STRINGS");
+            const raidArr = [];
             let raids = "";
 
             if (guild.raid && Object.keys(guild.raid).length) {
+                const raidNames = Bot.raidNames[guildConf.swgohLanguage.toLowerCase()];
+                const maxRaidLen = Math.max(...Object.values(raidNames).filter(r => !!r).map(r => r.length));
                 Object.keys(guild.raid).forEach(r => {
-                    raids += `${raidStr[r]}${guild.raid[r].includes("HEROIC") ? raidStr.heroic : guild.raid[r].replace("DIFF0", "T")}\n`;
+                    const thisRaidName = Bot.expandSpaces(
+                        Bot.toProperCase(
+                            raidNames[r].padEnd(maxRaidLen+1, " ")
+                        )
+                    );
+                    raidArr.push(`${thisRaidName} | ${guild.raid[r].includes("HEROIC") ? Bot.toProperCase(raidNames.heroic) : guild.raid[r].replace("DIFF0", "T")}`);
                 });
+                raids = raidArr
+                    .sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1)
+                    .join("\n");
             } else {
                 raids = "No raids available";
             }
