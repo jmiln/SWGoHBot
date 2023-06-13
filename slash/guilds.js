@@ -665,7 +665,7 @@ class Guilds extends Command {
                             raidNames[r].padEnd(maxRaidLen+1, " ")
                         )
                     );
-                    raidArr.push(`${thisRaidName} | ${guild.raid[r].includes("HEROIC") ? raidStr.heroic : guild.raid[r].replace("DIFF0", "T")}`);
+                    raidArr.push(`${thisRaidName} | ${guild.raid[r].includes("HEROIC") ? Bot.toProperCase(raidNames.heroic) : guild.raid[r].replace("DIFF0", "T")}`);
                 });
                 raids = raidArr
                     .sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1)

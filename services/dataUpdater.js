@@ -459,7 +459,8 @@ async function updateGameData() {
             RAID_RANCOR_NAME: "rancor",
             RAID_RANCOR_CHALLENGE_NAME: "rancor_challenge",
             RAID_TRIUMVIRATE_NAME: "sith_raid",
-            MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon"
+            MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon",
+            MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic"
         };
         const out = {};
         for (const lang of langList) {
