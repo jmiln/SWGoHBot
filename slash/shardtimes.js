@@ -89,7 +89,8 @@ class Shardtimes extends Command {
 
     async run(Bot, interaction, options) {
         // Shard ID will be guild.id-channel.id
-        const shardID = `${interaction.guild.id}-${interaction.channel.id}`;
+        if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
+        const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
         let shardTimes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID})
             .then(st => {
