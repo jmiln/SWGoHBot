@@ -1,6 +1,8 @@
-const fs = require("fs");
-
 const config = require(__dirname + "/../config.js");
+
+const fs = require("node:fs");
+const { eachLimit } = require("async");
+
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
 
@@ -29,37 +31,43 @@ const RAID_NAMES     = dataDir + "raidNames.json";
 const META_FILE      = dataDir + "metadata.json";
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
 
+// The max players to grab at the same time
+const MAX_CONCURRENT = 20;
+const modMap = require(dataDir + "modMap.json");
+const unitMap = require(dataDir + "unitMap.json");
+
 // Use these to store data in to use when needing data from a different part of the gameData processing
 let unitRecipeList = [];
 let unitShardList = [];
 const unitFactionMap = {};
 const unitDefIdMap = {};
 
-// How long between being runs (In minutes)
-const INTERVAL = 60;
-console.log(`Starting data updater, set to run every ${INTERVAL} minutes.`);
+console.log("Starting data updater");
 
-// Run the upater when it's started, then every ${INTERVAL} minutes after that
+// Run the upater when it's started
 init().then(async () => {
     const isNew = await updateMetaData();
     if (isNew) {
-        await runUpdater();
+        await runGameDataUpdaters();
     }
+    await runModUpdaters();
 });
 
-// Set it to update the patreon data and every INTERVAL minutes if doable
+// Set it to update the patreon data and every 15 minutes if doable
 if (config.patreon) {
     setInterval(async () => {
         await updatePatrons();
-    }, INTERVAL * 60 * 1000);
+    }, 15 * 60 * 1000);
 }
 
 // Set it to check/ update the game data daily if needed
+// - Also run the mods updater daily
 setInterval(async () => {
     const isNew = await updateMetaData();
     if (isNew) {
-        await runUpdater();
+        await runGameDataUpdaters();
     }
+    await runModUpdaters();
 }, 24 * 60 * 60 * 1000);
 
 async function init() {
@@ -91,7 +99,29 @@ async function updateMetaData() {
     return isUpdated;
 }
 
-async function runUpdater() {
+async function runModUpdaters() {
+    // Grab the guild IDs for the top x guilds
+    const guildIds = await getGuildIds();
+
+    // Grab the player IDs for each player in each of those guilds
+    const playerIds = await getGuildPlayerIds(guildIds);
+
+    // Grab the defId and needed mod info for each of those players' units
+    const playerUnits = await getPlayerRosters(playerIds);
+
+    // Get list which sets of mods each character has
+    // Also record the primary stats each of them has per slot
+    const unitsOut = await processUnitMods(playerUnits);
+
+    // Go through each character and find the most common versions of
+    // set and primaries, and convert them to be readable
+    const modsOut = await processModResults(unitsOut);
+
+    // Process each batch of mods and put them into the characters
+    await mergeModsToCharacters(modsOut);
+}
+
+async function runGameDataUpdaters() {
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = [];
 
@@ -101,13 +131,6 @@ async function runUpdater() {
 
     // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
     await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
-
-    // TODO Still need to work out checking mod loadouts locally... Probably more often than waiting on a metadata update too though
-    // const ggModData = await getGgChars();
-    // if (ggModData && await updateIfChanged({localCachePath: GG_MOD_CACHE, dataObject: ggModData})) {
-    //     log.push("Detected a change in mods from swgoh.gg");
-    //     await updateCharacterMods(currentCharacters, ggModData);
-    // }
 
     // Run unit locations updaters
     const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
@@ -145,130 +168,173 @@ function saveFile(filePath, jsonData, doPretty=true) {
 }
 
 
-// const cheerio = require("cheerio");
-// const GG_MOD_CACHE   = dataDir + "swgoh-gg-mods.json";
-// function getCleanString(input) {
-//     const cleanReg = /["()'-\s]/g;
-//
-//     return input.toLowerCase().replace(cleanReg, "");
-// }
-// async function getGgChars() {
-//     let response = null;
-//     try {
-//         response = await fetch(config.swgohggUrl);
-//     } catch {
-//         console.error("Cannot get .gg char/ mod info");
-//         return null;
-//     }
-//     const ggPage = await response.text();
-//
-//     const modSetCounts = {
-//         "Crit Chance":     "Critical Chance x2",
-//         "Crit Damage":     "Critical Damage x4",
-//         "Critical Chance": "Critical Chance x2",
-//         "Critical Damage": "Critical Damage x4",
-//         "Defense":         "Defense x2",
-//         "Health":          "Health x2",
-//         "Offense":         "Offense x4",
-//         "Potency":         "Potency x2",
-//         "Speed":           "Speed x4",
-//         "Tenacity":        "Tenacity x2"
-//     };
-//
-//     const $ = cheerio.load(ggPage);
-//
-//     const charOut = [];
-//
-//     $("table.table-striped > tbody > tr")
-//         .each((i, elem) => {
-//             let [name, sets, receiver, holo, data, multiplexer] = $(elem).children();
-//             // const defId = $(name).find("img").attr("data-base-id");
-//             const imgUrl =  $(name).find("img").attr("src");
-//             // const side = $(name).find("div").attr("class").indexOf("light-side") > -1 ? "Light Side" : "Dark Side";
-//             const [url, modUrl] = $(name).find("a").toArray().map(link => {
-//                 return $(link)?.attr("href")?.trim() || "";
-//             });
-//             name = cleanName($(name).text());
-//             sets = $(sets).find("div").toArray().map(div => {
-//                 return countSet($(div).attr("data-title")?.trim());
-//             });
-//             receiver    = cleanModType($(receiver).text());
-//             holo        = cleanModType($(holo).text());
-//             data        = cleanModType($(data).text());
-//             multiplexer = cleanModType($(multiplexer).text());
-//             charOut.push({
-//                 name:     name,
-//                 // defId:    defId,
-//                 charUrl:  "https://swgoh.gg" + url,
-//                 image:    imgUrl,
-//                 // side:     side,
-//                 modsUrl:  "https://swgoh.gg" + modUrl, //+ url + "best-mods/",
-//                 mods: {
-//                     sets:     sets,
-//                     square:   "Offense",
-//                     arrow:    receiver,
-//                     diamond:  "Defense",
-//                     triangle: holo,
-//                     circle:   data,
-//                     cross:    multiplexer
-//                 }
-//             });
-//         });
-//
-//     // Clean up the mod names (Wipe out extra spaces or condense long names)
-//     function cleanModType(types) {
-//         if (!types || typeof types !== "string") return null;
-//         return types.trim()
-//             .replace(/\s+\/\s/g, "/ ")
-//             .replace("Critical Damage", "Crit. Damage")
-//             .replace("Critical Chance", "Crit. Chance");
-//     }
-//
-//     // This is mainly to clean up Padme's name for now
-//     function cleanName(name) {
-//         if (!name || typeof name !== "string") return;
-//         return name.trim().replace("é", "e");
-//     }
-//
-//     // Put the number of mods for each set
-//     function countSet(setName) {
-//         return modSetCounts[setName] || setName;
-//     }
-//     return charOut;
-// }
-// async function updateCharacterMods(currentCharacters, freshMods) {
-//     const GG_SOURCE = "swgoh.gg";
-//
-//     // Iterate the data from swgoh.gg, put new mods in as needed, and if there's a new character, put them in too
-//     for (const character of freshMods) {
-//         let thisChar = currentCharacters.find(ch =>
-//             ch.uniqueName === character.defId ||
-//             getCleanString(ch.name) === getCleanString(character.name) ||
-//             ch.url === character.charUrl
-//         );
-//         if (!thisChar) {
-//             thisChar = currentCharacters.find(ch => ch.aliases.includes(character.name));
-//         }
-//         const mods = {
-//             url:      character.modsUrl,
-//             sets:     character.mods.sets,
-//             square:   character.mods.square,
-//             arrow:    character.mods.arrow,
-//             diamond:  character.mods.diamond,
-//             triangle: character.mods.triangle,
-//             circle:   character.mods.circle,
-//             cross:    character.mods.cross,
-//             source:   GG_SOURCE
-//         };
-//
-//         if (thisChar) {
-//             thisChar.mods = mods;
-//         } else {
-//             // This shouldn't really happen since it should be caught in updateCharacters
-//             console.log(`[DataUpdater] (updateCharacterMods) New character discovered: ${character.name} (${character.defId})\n${character}`);
-//         }
-//     }
-// }
+const setLang = { 1: "Health", 2: "Offense", 3: "Defense", 4: "Speed", 5: "Crit. Chance", 6: "Crit. Damage", 7: "Potency", 8: "Tenacity" };
+const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Crit. Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Crit. Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Crit. Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
+const slotNames = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
+
+async function getGuildIds() {
+    const guildLeaderboardRes = await comlinkStub._postRequestPromiseAPI("/getGuildLeaderboard", {
+        "payload" : {
+            "leaderboardId":[ { "leaderboardType": 3, "monthOffset": 0 } ],
+            "count": 10
+        },
+        "enums": false
+    });
+    return guildLeaderboardRes.leaderboard[0].guild.map(guild => guild.id);
+}
+
+async function getGuildPlayerIds(guildIds) {
+    const playerIdArr = [];
+
+    // Get all the players' IDs from each guild
+    await eachLimit(guildIds, MAX_CONCURRENT, async function(guildId) {
+        const {guild} = await comlinkStub.getGuild(guildId);
+        const playerIds = guild.member.map(player => player.playerId);
+        playerIdArr.push(...playerIds);
+    });
+
+    return playerIdArr;
+}
+
+// Stick all of the characters from each player's rosters into an array ot be processed later
+async function getPlayerRosters(playerIds) {
+    const rosterArr = [];
+
+    await eachLimit(playerIds, MAX_CONCURRENT, async function(playerId) {
+        const {rosterUnit} = await comlinkStub.getPlayer(null, playerId);
+        const strippedUnits = rosterUnit
+            .filter(unit => unit?.equippedStatMod && unitMap[unit.definitionId.split(":")[0]].combatType === 1)
+            .map(unit => {
+                return {
+                    defId: unit.definitionId.split(":")[0],
+                    mods: unit.equippedStatMod.map(mod => formatMod(mod))
+                };
+            });
+        rosterArr.push(...strippedUnits);
+    });
+
+    return rosterArr;
+}
+
+// Just spit back the bits that we'll actually need for this (Set, slot, and primart stat)
+function formatMod({ definitionId, primaryStat }) {
+    const modSchema = modMap[definitionId] || {};
+    return {
+        slot: modSchema.slot-1, // mod slots are numbered 2-7
+        set: Number(modSchema.set),
+        primaryStat: primaryStat?.stat.unitStatId
+    };
+}
+
+async function processUnitMods(unitsIn) {
+    // These will be formatted as {defId: []}, with the arrays being full of each combo found
+    const unitsOut = {};
+
+    for (const unit of unitsIn) {
+        if (!unit.mods?.length) continue;
+        if (!unitsOut[unit.defId]) {
+            unitsOut[unit.defId] = {
+                primaries: {},
+                sets: {}
+            };
+        }
+
+        // log the unit's primaries as 1_48,2_45,...
+        const primaryStr = unit.mods.map((m, ix) => `${ix+1}-${m.primaryStat}`).join("_");
+        if (!primaryStr?.length) continue;
+        incrementInObj(unitsOut[unit.defId].primaries, primaryStr);
+
+
+        const unitSets = {};
+        for (const mod of unit.mods) {
+            incrementInObj(unitSets, mod.set);
+        }
+        // Log the unit's sets as `COUNTxSTAT`
+        const setStr = Object.keys(unitSets).map(k => `${unitSets[k]}x${k}`).join("_");
+        if (!setStr?.length) continue;
+        incrementInObj(unitsOut[unit.defId].sets, setStr);
+    }
+
+    return unitsOut;
+}
+
+function incrementInObj(obj, key) {
+    obj[key] = obj[key] ? obj[key] += 1 : 1;
+    return obj;
+}
+
+const multiSets = {
+    "Crit. Chance x4": ["Crit. Chance x2", "Crit. Chance x2"],
+    "Crit. Chance x6": ["Crit. Chance x2", "Crit. Chance x2", "Crit. Chance x2"],
+    "Defense x4": ["Defense x2", "Defense x2"],
+    "Defense x6": ["Defense x2", "Defense x2", "Defense x2"],
+    "Health x4": ["Health x2", "Health x2"],
+    "Health x6": ["Health x2", "Health x2", "Health x2"],
+    "Potency x4": ["Potency x2", "Potency x2"],
+    "Potency x6": ["Potency x2", "Potency x2", "Potency x2"],
+    "Tenacity x4": ["Tenacity x2", "Tenacity x2"],
+    "Tenacity x6": ["Tenacity x2", "Tenacity x2", "Tenacity x2"],
+};
+
+// For each character, get rid of all but the most common results (If more than one tie, return both)
+function processModResults(unitsIn) {
+    for (const unit of Object.keys(unitsIn)) {
+        const thisUnit = unitsIn[unit];
+
+        const maxPrim = Math.max(...Object.values(thisUnit.primaries));
+        for (const [prim, count] of Object.entries(thisUnit.primaries)) {
+            if (count !== maxPrim) delete thisUnit.primaries[prim];
+        }
+        const primaries = {};
+        Object.keys(thisUnit.primaries)[0]
+            .split("_")
+            .map(slot => slot.split("-")[1])
+            .forEach((stat, ix) => {
+                primaries[slotNames[ix]] = statLang[stat];
+            });
+
+        thisUnit.mods = {
+            sets: [],
+            ...primaries
+        };
+
+        const maxSets = Math.max(...Object.values(thisUnit.sets));
+        for (const [set, count] of Object.entries(thisUnit.sets)) {
+            if (count !== maxSets) delete thisUnit.sets[set];
+        }
+        const totalSets = Object.keys(thisUnit.sets)[0]
+            .split("_")
+            .map(set => {
+                const [count, stat] = set.split("x");
+                return `${setLang[stat]} x${count}`;
+            });
+
+        totalSets.forEach(set => {
+            if (multiSets[set]) {
+                thisUnit.mods.sets.push(...multiSets[set]);
+            } else {
+                thisUnit.mods.sets.push(set);
+            }
+        });
+        delete thisUnit.sets;
+        delete thisUnit.primaries;
+    }
+    return unitsIn;
+}
+
+async function mergeModsToCharacters(modsIn) {
+    const characters = await JSON.parse(fs.readFileSync(CHAR_FILE));
+
+    for (const defId of Object.keys(modsIn)) {
+        const thisChar = characters.find(ch => ch.uniqueName === defId);
+        if (!thisChar) continue;
+        thisChar.mods = modsIn[defId].mods;
+    }
+
+    await saveFile(CHAR_FILE, characters);
+}
+
+
 
 
 async function updatePatrons() {
@@ -662,7 +728,7 @@ async function updateGameData() {
                 // delete unitObj.avatarURL;
                 delete unitObj.nameVariant;
                 unitObj.avatarName = charUIName;
-                unitObj.avatarURL  = `https://game-assets.swgoh.gg/tex.${charUIName}.png`
+                unitObj.avatarURL  = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
             } else {
                 // Work up a new character to put in
                 unitObj = createNewUnit(unit, charUIName);

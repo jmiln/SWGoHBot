@@ -14,7 +14,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/0-0-0/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -23,9 +22,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_triplezero"
     },
@@ -45,7 +43,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/50r-t/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -55,8 +52,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_50rt"
     },
@@ -76,19 +72,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/aayla-secura/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Chance x2",
-                "Potency x2"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_aaylasecura"
     },
@@ -109,7 +102,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/admiral-ackbar/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -117,10 +109,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Defense",
+            "triangle": "Defense",
             "circle": "Protection",
-            "cross": "Tenacity/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Defense"
         },
         "avatarName": "charui_ackbaradmiral"
     },
@@ -141,7 +132,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/admiral-piett/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -149,10 +139,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency"
         },
         "avatarName": "charui_piett"
     },
@@ -172,7 +161,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/admiral-raddus/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -180,10 +168,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_admiralraddus"
     },
@@ -202,7 +189,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/admiral-trench/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -212,8 +198,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_admiraltrench"
     },
@@ -236,7 +221,6 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ahsoka-tano/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -246,8 +230,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_ahsoka"
     },
@@ -269,18 +252,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ahsoka-tano-fulcrum/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_ahsokaadult"
     },
@@ -299,19 +280,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/amilyn-holdo/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_holdo"
     },
@@ -331,7 +310,6 @@
             "Galactic Republic"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/arc-trooper/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -340,9 +318,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclone_arc"
     },
@@ -366,18 +343,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/asajj-ventress/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_ventress"
     },
@@ -397,18 +372,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/aurra-sing/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_aurrasing"
     },
@@ -427,18 +400,16 @@
             "Separatist"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/b1-battle-droid/best-mods/",
             "sets": [
-                "Offense x4",
+                "Speed x4",
                 "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_b1"
     },
@@ -457,19 +428,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/b2-super-battle-droid/best-mods/",
             "sets": [
                 "Potency x2",
-                "Potency x2",
-                "Potency x2"
+                "Tenacity x2",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_b2"
     },
@@ -492,19 +461,17 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/barriss-offee/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_barriss_light"
     },
@@ -525,18 +492,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bastila-shan/best-mods/",
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_bastilashan"
     },
@@ -559,7 +524,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bastila-shan-fallen/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -569,8 +533,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_bastilashan_dark"
     },
@@ -590,19 +553,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/baze-malbus/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_bazemalbus"
     },
@@ -622,7 +583,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bb-8/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -630,10 +590,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Protection",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_bb8"
     },
@@ -651,7 +610,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ben-solo/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -659,10 +617,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_bensolo"
     },
@@ -681,18 +638,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/biggs-darklighter/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_rebelpilot_biggs"
     },
@@ -712,10 +667,8 @@
             "Rogue One"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bistan/best-mods/",
             "sets": [
-                "Potency x2",
-                "Potency x2",
+                "Offense x4",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -723,8 +676,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_bistan"
     },
@@ -746,18 +698,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bo-katan-kryze/best-mods/",
             "sets": [
-                "Health x2",
-                "Critical Damage x4"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_bokatan"
     },
@@ -777,18 +727,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/boba-fett/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_bobafett"
     },
@@ -808,18 +756,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/boba-fett-scion-of-jango/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_bobafettold"
     },
@@ -839,7 +785,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bodhi-rook/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -847,10 +792,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Chance",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency"
         },
         "avatarName": "charui_bodhi"
     },
@@ -871,7 +815,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bossk/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -881,8 +824,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_bossk"
     },
@@ -903,18 +845,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/boushh-leia-organa/best-mods/",
             "sets": [
                 "Speed x4",
-                "Potency x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_boushh"
     },
@@ -933,18 +873,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/bt-1/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_bt1"
     },
@@ -968,18 +906,17 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/c-3po/best-mods/",
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Tenacity x2",
+                "Tenacity x2",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_c3p0"
     },
@@ -999,18 +936,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/cad-bane/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_cadbane"
     },
@@ -1028,19 +963,17 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/cal-kestis/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_calkestis"
     },
@@ -1060,18 +993,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/canderous-ordo/best-mods/",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_canderous"
     },
@@ -1092,7 +1023,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/captain-han-solo/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1100,10 +1030,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1122,7 +1051,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/captain-phasma/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1130,10 +1058,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_phasma"
     },
@@ -1153,19 +1080,16 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/cara-dune/best-mods/",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_caradune"
     },
@@ -1184,18 +1108,16 @@
             "Old Republic"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/carth-onasi/best-mods/",
             "sets": [
-                "Critical Damage x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_carth"
     },
@@ -1215,9 +1137,8 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/cassian-andor/best-mods/",
             "sets": [
-                "Offense x4",
+                "Speed x4",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -1225,8 +1146,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_cassian"
     },
@@ -1247,18 +1167,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/cc-2224-cody/best-mods/",
             "sets": [
                 "Speed x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -1278,19 +1196,17 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/cere-junda/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_cerejunda"
     },
@@ -1310,7 +1226,6 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/chewbacca/best-mods/",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
@@ -1321,8 +1236,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_chewbacca_ot"
     },
@@ -1341,7 +1255,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/chief-chirpa/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1349,10 +1262,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_ewok_chirpa"
     },
@@ -1372,19 +1284,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/chief-nebit/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_jawa_nebit"
     },
@@ -1405,7 +1315,6 @@
             "Rogue One"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/chirrut-imwe/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1413,10 +1322,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity/ Protection",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_chirrut"
     },
@@ -1436,7 +1344,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/chopper/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1446,8 +1353,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_chopper"
     },
@@ -1468,18 +1374,16 @@
             "Galactic Republic"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/clone-sergeant-phase-i/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclonegreen"
     },
@@ -1501,19 +1405,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/clone-wars-chewbacca/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Defense/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Defense",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_clonewarschewbacca"
     },
@@ -1534,7 +1436,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/colonel-starck/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1544,8 +1445,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_colonel_stark"
     },
@@ -1566,7 +1466,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/commander-ahsoka-tano/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1574,10 +1473,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense/ Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_commanderahsokatano"
     },
@@ -1601,7 +1499,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/commander-luke-skywalker/best-mods/",
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
@@ -1610,9 +1507,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_lukebespin"
     },
@@ -1631,7 +1527,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/coruscant-underworld-police/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -1639,10 +1534,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_coruscantpolice"
     },
@@ -1663,7 +1557,6 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/count-dooku/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -1672,9 +1565,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_dooku"
     },
@@ -1697,18 +1589,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ct-21-0408-echo/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Potency"
         },
         "avatarName": "charui_trooperclone_echo"
     },
@@ -1731,19 +1621,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ct-5555-fives/best-mods/",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperclone_fives"
     },
@@ -1765,7 +1653,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ct-7567-rex/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1773,10 +1660,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_trooperclone_rex"
     },
@@ -1797,7 +1683,6 @@
             "Imperial Trooper"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/dark-trooper/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -1806,9 +1691,8 @@
             "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_darktrooper"
     },
@@ -1827,19 +1711,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-malak/best-mods/",
             "sets": [
-                "Tenacity x2",
-                "Tenacity x2",
-                "Tenacity x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_darthmalak"
     },
@@ -1859,7 +1741,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-malgus/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1870,8 +1751,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_darthmalgus"
     },
@@ -1890,18 +1770,16 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-maul/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_maul"
     },
@@ -1922,18 +1800,17 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-nihilus/best-mods/",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_nihilus"
     },
@@ -1954,7 +1831,6 @@
             "Sith Empire"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-revan/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1964,8 +1840,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_sithrevan"
     },
@@ -1986,18 +1861,17 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-sidious/best-mods/",
             "sets": [
-                "Speed x4",
+                "Potency x2",
+                "Potency x2",
                 "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_sidious"
     },
@@ -2016,7 +1890,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-sion/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2026,8 +1899,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_sion"
     },
@@ -2045,7 +1917,6 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-talon/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2053,10 +1924,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_darthtalon"
     },
@@ -2077,18 +1947,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-traya/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_traya"
     },
@@ -2110,18 +1978,16 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/darth-vader/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_vader"
     },
@@ -2141,18 +2007,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/dash-rendar/best-mods/",
             "sets": [
                 "Speed x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_dashrendar"
     },
@@ -2172,7 +2036,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/dathcha/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2181,10 +2044,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_jawa_dathcha"
     },
@@ -2205,18 +2067,16 @@
             "Imperial Trooper"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/death-trooper/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Damage x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_trooperdeath"
     },
@@ -2236,18 +2096,17 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/dengar/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Chance x2",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_dengar"
     },
@@ -2268,18 +2127,17 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/director-krennic/best-mods/",
             "sets": [
-                "Speed x4",
-                "Critical Chance x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_krennic"
     },
@@ -2298,7 +2156,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/doctor-aphra/best-mods/",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -2309,8 +2166,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_doctoraphra"
     },
@@ -2329,7 +2185,6 @@
             "Separatist"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/droideka/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2339,8 +2194,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_droideka"
     },
@@ -2362,7 +2216,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/echo/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -2370,10 +2223,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_bb_echo"
     },
@@ -2393,7 +2245,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/eeth-koth/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2402,10 +2253,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity/ Protection",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_eethkoth"
     },
@@ -2427,18 +2277,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/eighth-brother/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_eighthbrother"
     },
@@ -2458,18 +2306,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/embo/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_embo"
     },
@@ -2492,7 +2338,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/emperor-palpatine/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -2502,8 +2347,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_palpatineemperor"
     },
@@ -2522,19 +2366,17 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/enfys-nest/best-mods/",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Health",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_enfys"
     },
@@ -2552,7 +2394,6 @@
             "Healer"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ewok-elder/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2560,10 +2401,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity/ Protection",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_ewok_chief"
     },
@@ -2581,18 +2421,16 @@
             "Ewok"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ewok-scout/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_ewok_scout"
     },
@@ -2612,18 +2450,16 @@
             "Rebel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ezra-bridger/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_ezra_s3"
     },
@@ -2644,18 +2480,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/fennec-shand/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_fennec"
     },
@@ -2677,7 +2511,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/fifth-brother/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2687,8 +2520,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_fifthbrother"
     },
@@ -2707,18 +2539,16 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/finn/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_finnjakku"
     },
@@ -2739,18 +2569,16 @@
             "First Order"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/first-order-executioner/best-mods/",
             "sets": [
                 "Health x2",
-                "Critical Damage x4"
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense/ Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -2769,7 +2597,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/first-order-officer/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -2777,10 +2604,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_firstorderofficer"
     },
@@ -2800,18 +2626,16 @@
             "First Order"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/first-order-sf-tie-pilot/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_firstorder_pilot"
     },
@@ -2830,7 +2654,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/first-order-stormtrooper/best-mods/",
             "sets": [
                 "Defense x2",
                 "Defense x2",
@@ -2841,8 +2664,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_firstordertrooper"
     },
@@ -2861,18 +2683,16 @@
             "First Order"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/first-order-tie-pilot/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_firstordertiepilot"
     },
@@ -2890,19 +2710,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/gamorrean-guard/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_gamorreanguard"
     },
@@ -2922,18 +2740,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/gar-saxon/best-mods/",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_gar_saxon"
     },
@@ -2953,18 +2770,16 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/garazeb-zeb-orrelios/best-mods/",
             "sets": [
                 "Health x2",
-                "Critical Damage x4"
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_zeb_s3"
     },
@@ -2986,7 +2801,6 @@
             "Separatist"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/general-grievous/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2997,8 +2811,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_grievous"
     },
@@ -3018,7 +2831,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/general-hux/best-mods/",
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
@@ -3026,10 +2838,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_generalhux"
     },
@@ -3051,19 +2862,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/general-kenobi/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_obiwangeneral"
     },
@@ -3085,18 +2894,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/general-skywalker/best-mods/",
             "sets": [
-                "Health x2",
-                "Offense x4"
+                "Offense x4",
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_generalanakin"
     },
@@ -3116,18 +2923,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/general-veers/best-mods/",
             "sets": [
-                "Speed x4",
-                "Critical Chance x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_veers"
     },
@@ -3148,7 +2953,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/geonosian-brood-alpha/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3158,8 +2962,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_geonosian_broodalpha"
     },
@@ -3178,18 +2981,16 @@
             "Separatist"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/geonosian-soldier/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_geonosian_soldier"
     },
@@ -3208,18 +3009,16 @@
             "Separatist"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/geonosian-spy/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_geonosian_spy"
     },
@@ -3240,7 +3039,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/grand-admiral-thrawn/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3250,8 +3048,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_thrawn"
     },
@@ -3272,7 +3069,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/grand-inquisitor/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -3282,8 +3078,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_grandinquisitor"
     },
@@ -3305,7 +3100,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/grand-master-yoda/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3313,10 +3107,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_yodagrandmaster"
     },
@@ -3337,7 +3130,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/grand-moff-tarkin/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -3347,8 +3139,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_tarkinadmiral"
     },
@@ -3368,18 +3159,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/greedo/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_greedo"
     },
@@ -3399,7 +3188,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/greef-karga/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3409,8 +3197,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_greefkarga"
     },
@@ -3430,18 +3217,16 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/han-solo/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_han"
     },
@@ -3461,7 +3246,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hera-syndulla/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3469,10 +3253,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_hera_s3"
     },
@@ -3493,7 +3276,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hermit-yoda/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3501,10 +3283,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -3526,18 +3307,16 @@
             "Sith Empire"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hk-47/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_hk47"
     },
@@ -3556,7 +3335,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hondo-ohnaka/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3564,10 +3342,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
+            "triangle": "Offense",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_hondoohnaka"
     },
@@ -3588,18 +3365,16 @@
             "Rebel Fighter"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hoth-rebel-scout/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Speed x4",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Offense/ Tenacity",
-            "source": "swgoh.gg"
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_rebelhothscout"
     },
@@ -3620,7 +3395,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hoth-rebel-soldier/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3629,10 +3403,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_rebelhoth"
     },
@@ -3653,18 +3426,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/hunter/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_bb_hunter"
     },
@@ -3684,18 +3455,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/iden-versio/best-mods/",
             "sets": [
-                "Critical Damage x4",
+                "Speed x4",
                 "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Potency"
         },
         "avatarName": "charui_idenversioempire"
     },
@@ -3716,19 +3485,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ig-100-magnaguard/best-mods/",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance/ Protection",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_magnaguard"
     },
@@ -3748,7 +3515,6 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ig-11/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3759,8 +3525,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_ig11_nurse"
     },
@@ -3780,18 +3545,16 @@
             "Droid"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ig-86-sentinel-droid/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_ig86"
     },
@@ -3813,18 +3576,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ig-88/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Damage x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_ig88"
     },
@@ -3846,7 +3607,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ima-gun-di/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3855,10 +3615,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection/ Health",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_imagundi"
     },
@@ -3879,7 +3638,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/imperial-probe-droid/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -3887,10 +3645,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency"
         },
         "avatarName": "charui_probedroid"
     },
@@ -3910,18 +3667,16 @@
             "Mandalorian"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/imperial-super-commando/best-mods/",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -3943,7 +3698,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jabba-the-hutt/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3953,8 +3707,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_jabbathehutt"
     },
@@ -3977,18 +3730,16 @@
             "Separatist"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jango-fett/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_jangofett"
     },
@@ -4006,7 +3757,6 @@
             "Jawa"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jawa/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4015,10 +3765,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_jawa_jawa"
     },
@@ -4036,7 +3785,6 @@
             "Jawa"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jawa-engineer/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4046,8 +3794,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_jawa_engineer"
     },
@@ -4065,7 +3812,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jawa-scavenger/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4076,8 +3822,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_jawa_scavenger"
     },
@@ -4096,7 +3841,6 @@
             "Jedi"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-consular/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4105,10 +3849,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Defense",
-            "circle": "Health/ Protection",
-            "cross": "Health/ Tenacity",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_jedi_consular_03"
     },
@@ -4131,18 +3874,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-knight-anakin/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_anakinknight"
     },
@@ -4162,19 +3903,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-knight-guardian/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Health/ Protection",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -4195,18 +3934,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-knight-luke-skywalker/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_luke_jediknight"
     },
@@ -4228,7 +3965,6 @@
             "Old Republic"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-knight-revan/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4236,10 +3972,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Health",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_jedirevan"
     },
@@ -4261,7 +3996,6 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-master-kenobi/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4271,8 +4005,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_globiwan"
     },
@@ -4294,18 +4027,16 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jedi-master-luke-skywalker/best-mods/",
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_luke_jml"
     },
@@ -4325,19 +4056,17 @@
             "Old Republic"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jolee-bindo/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_joleebindo"
     },
@@ -4356,19 +4085,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/juhani/best-mods/",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_juhani"
     },
@@ -4389,18 +4116,16 @@
             "Rogue One"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/jyn-erso/best-mods/",
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_jyn"
     },
@@ -4424,19 +4149,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/k-2so/best-mods/",
             "sets": [
-                "Tenacity x2",
+                "Health x2",
                 "Tenacity x2",
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_k2so"
     },
@@ -4456,7 +4179,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/kanan-jarrus/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4467,8 +4189,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_kanan_s3"
     },
@@ -4489,18 +4210,16 @@
             "Jedi"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ki-adi-mundi/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_kiadimundi"
     },
@@ -4520,18 +4239,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/kit-fisto/best-mods/",
             "sets": [
                 "Health x2",
-                "Critical Damage x4"
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense/ Tenacity",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_kitfisto"
     },
@@ -4552,19 +4269,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/krrsantan/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_krrsantan"
     },
@@ -4582,7 +4297,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/kuiil/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4590,10 +4304,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
-            "cross": "Potency/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -4613,18 +4326,16 @@
             "Rebel Fighter"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/kyle-katarn/best-mods/",
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
     },
@@ -4644,18 +4355,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/kylo-ren/best-mods/",
             "sets": [
-                "Offense x4",
-                "Tenacity x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_kyloren"
     },
@@ -4678,19 +4387,17 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/kylo-ren-unmasked/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Health",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_kylo_unmasked"
     },
@@ -4711,19 +4418,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/l3-37/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_l337"
     },
@@ -4744,18 +4449,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/lando-calrissian/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_landobespin"
     },
@@ -4774,7 +4477,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/lobot/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4782,10 +4484,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Defense",
-            "circle": "Health/ Protection",
-            "cross": "Tenacity/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_lobot"
     },
@@ -4803,7 +4504,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/logray/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -4811,10 +4511,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_ewok_logray"
     },
@@ -4836,18 +4535,16 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/lord-vader/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_lordvader"
     },
@@ -4869,7 +4566,6 @@
             "Rebel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/luke-skywalker-farmboy/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4878,10 +4574,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_luke_ep4"
     },
@@ -4901,19 +4596,16 @@
             "Leader"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/luminara-unduli/best-mods/",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Chance",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_luminara"
     },
@@ -4934,7 +4626,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/mace-windu/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4945,8 +4636,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_macewindu"
     },
@@ -4965,18 +4655,16 @@
             "Imperial Trooper"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/magmatrooper/best-mods/",
             "sets": [
                 "Offense x4",
-                "Tenacity x2"
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_trooperstorm_magma"
     },
@@ -4995,7 +4683,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/mara-jade-the-emperors-hand/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5003,10 +4690,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency"
         },
         "avatarName": "charui_marajade"
     },
@@ -5026,18 +4712,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/maul/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_maul_cyborg"
     },
@@ -5055,19 +4739,17 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/merrin/best-mods/",
             "sets": [
                 "Health x2",
-                "Potency x2",
-                "Tenacity x2"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_merrin"
     },
@@ -5086,18 +4768,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/mission-vao/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_mission"
     },
@@ -5116,7 +4796,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/mob-enforcer/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5124,10 +4803,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_mob_enforcer"
     },
@@ -5148,7 +4826,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/moff-gideon/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5156,10 +4833,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity/ Protection",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_moffgideon"
     },
@@ -5178,7 +4854,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/mon-mothma/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5186,10 +4861,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
-            "circle": "Protection/ Health",
-            "cross": "Tenacity",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_monmothma"
     },
@@ -5209,7 +4883,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/mother-talzin/best-mods/",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -5219,8 +4892,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsisters_talzin"
     },
@@ -5238,18 +4910,16 @@
             "Nightsister"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/nightsister-acolyte/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
     },
@@ -5267,7 +4937,6 @@
             "Nightsister"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/nightsister-initiate/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5275,10 +4944,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection/ Health",
-            "cross": "Offense/ Protection",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5296,18 +4964,16 @@
             "Nightsister"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/nightsister-spirit/best-mods/",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsisters_wraith"
     },
@@ -5325,7 +4991,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/nightsister-zombie/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5335,8 +5000,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_nightsisters_zombie"
     },
@@ -5358,19 +5022,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ninth-sister/best-mods/",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Protection",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_ninthsister"
     },
@@ -5390,7 +5051,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/nute-gunray/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5398,10 +5058,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Health",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_nutegunray"
     },
@@ -5422,7 +5081,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/obi-wan-kenobi-old-ben/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5432,8 +5090,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_obiwanep4"
     },
@@ -5452,19 +5109,17 @@
             "Nightsister"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/old-daka/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Health",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_daka"
     },
@@ -5483,18 +5138,16 @@
             "Clone Trooper"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/omega/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_badbatchomega"
     },
@@ -5514,7 +5167,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/padme-amidala/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5525,8 +5177,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_padme_geonosis"
     },
@@ -5546,18 +5197,16 @@
             "Rogue One"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/pao/best-mods/",
             "sets": [
-                "Offense x4",
+                "Speed x4",
                 "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Offense",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_pao"
     },
@@ -5575,19 +5224,16 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/paploo/best-mods/",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_ewok_paploo"
     },
@@ -5607,7 +5253,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/plo-koon/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5616,10 +5261,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Protection",
-            "circle": "Protection",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_plokoon"
     },
@@ -5638,7 +5282,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/poe-dameron/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5648,8 +5291,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_poe"
     },
@@ -5669,7 +5311,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/poggle-the-lesser/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5679,8 +5320,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_geonosian_poggle"
     },
@@ -5699,18 +5339,16 @@
             "Rebel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/princess-leia/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_leia_princess"
     },
@@ -5732,18 +5370,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/qira/best-mods/",
             "sets": [
                 "Speed x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Potency/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_qira"
     },
@@ -5765,7 +5401,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/qui-gon-jinn/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5775,8 +5410,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_quigon"
     },
@@ -5799,18 +5433,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/r2-d2/best-mods/",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Chance",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_astromech_r2d2"
     },
@@ -5829,18 +5461,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/range-trooper/best-mods/",
             "sets": [
-                "Offense x4",
-                "Tenacity x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperranger"
     },
@@ -5860,18 +5490,16 @@
             "Rebel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/rebel-officer-leia-organa/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_leiahoth"
     },
@@ -5891,7 +5519,6 @@
             "Resistance"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/resistance-hero-finn/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5900,9 +5527,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_finn"
     },
@@ -5920,18 +5546,16 @@
             "Resistance"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/resistance-hero-poe/best-mods/",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
     },
@@ -5949,18 +5573,16 @@
             "Resistance"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/resistance-pilot/best-mods/",
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_resistancepilot"
     },
@@ -5978,18 +5600,16 @@
             "Resistance"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/resistance-trooper/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_resistancetrooper"
     },
@@ -6010,18 +5630,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/rey/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense/ Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_rey_tros"
     },
@@ -6044,18 +5662,17 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/rey-jedi-training/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_rey_tlj"
     },
@@ -6076,18 +5693,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/rey-scavenger/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_reyjakku"
     },
@@ -6105,19 +5720,16 @@
             "Resistance"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/rose-tico/best-mods/",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_rose"
     },
@@ -6135,7 +5747,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/royal-guard/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6146,8 +5757,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_royalguard"
     },
@@ -6167,18 +5777,16 @@
             "Rebel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sabine-wren/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_sabine_s3"
     },
@@ -6198,7 +5806,6 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sana-starros/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6206,10 +5813,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection/ Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_sanastarros"
     },
@@ -6228,19 +5834,17 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/savage-opress/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_savageopress"
     },
@@ -6260,7 +5864,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/saw-gerrera/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6270,8 +5873,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_sawgerrera"
     },
@@ -6292,7 +5894,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/scarif-rebel-pathfinder/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6303,8 +5904,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection/ Defense",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_rebel_scarif"
     },
@@ -6326,18 +5926,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/second-sister/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_secondsister"
     },
@@ -6359,7 +5957,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/seventh-sister/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6367,10 +5964,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection/ Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_seventhsister"
     },
@@ -6390,7 +5986,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/shaak-ti/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6400,8 +5995,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_shaakti"
     },
@@ -6420,7 +6014,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/shoretrooper/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6431,8 +6024,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_troopershore"
     },
@@ -6452,7 +6044,6 @@
             "Sith Empire"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sith-assassin/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6462,8 +6053,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_sithassassin"
     },
@@ -6483,7 +6073,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sith-empire-trooper/best-mods/",
             "sets": [
                 "Defense x2",
                 "Defense x2",
@@ -6494,8 +6083,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_sithtrooper"
     },
@@ -6516,7 +6104,6 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sith-eternal-emperor/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6527,8 +6114,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_espalpatine_pre"
     },
@@ -6547,18 +6133,16 @@
             "Sith Empire"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sith-marauder/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Health x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_sithmarauder"
     },
@@ -6580,18 +6164,16 @@
             "Sith"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sith-trooper/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_firstorder_sithtrooper"
     },
@@ -6611,18 +6193,16 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/skiff-guard-lando-calrissian/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "avatarName": "charui_undercoverlando"
     },
@@ -6641,18 +6221,16 @@
             "Imperial Trooper"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/snowtrooper/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_troopersnow"
     },
@@ -6670,7 +6248,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/starkiller/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6680,8 +6257,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_starkiller"
     },
@@ -6701,19 +6277,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/stormtrooper/best-mods/",
             "sets": [
                 "Defense x2",
                 "Defense x2",
                 "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Protection/ Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperstorm"
     },
@@ -6734,19 +6308,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/stormtrooper-han/best-mods/",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperstorm_han"
     },
@@ -6765,19 +6337,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/sun-fac/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_geonosian_sunfac"
     },
@@ -6801,7 +6371,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/supreme-leader-kylo-ren/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6811,8 +6380,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_kyloren_tros"
     },
@@ -6832,7 +6400,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/t3-m4/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -6842,8 +6409,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_t3m4"
     },
@@ -6862,18 +6428,17 @@
             "Nightsister"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/talia/best-mods/",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Health",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_nightsister_talia"
     },
@@ -6892,7 +6457,6 @@
             "Wookiee"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tarfful/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6903,8 +6467,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Defense/ Protection",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_tarfful"
     },
@@ -6924,7 +6487,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tech/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -6932,10 +6494,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Health",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_bb_tech"
     },
@@ -6954,7 +6515,6 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/teebo/best-mods/",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -6963,10 +6523,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection/ Crit. Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_ewok_teebo"
     },
@@ -6985,7 +6544,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/the-armorer/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6995,8 +6553,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_armorer"
     },
@@ -7018,18 +6575,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/the-mandalorian/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage/ Crit. Chance",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_mandalorian"
     },
@@ -7050,7 +6605,6 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/the-mandalorian-beskar-armor/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -7060,8 +6614,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_mandobeskar"
     },
@@ -7082,7 +6635,6 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/third-sister/best-mods/",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -7090,10 +6642,9 @@
             "square": "Offense",
             "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_thirdsister"
     },
@@ -7115,18 +6666,16 @@
             "Rebel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/threepio-chewie/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Offense x4",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "circle": "Health",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_chewbacca_c3po"
     },
@@ -7145,18 +6694,16 @@
             "Empire"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tie-fighter-pilot/best-mods/",
             "sets": [
-                "Speed x4",
-                "Critical Chance x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_tiepilot"
     },
@@ -7175,7 +6722,6 @@
             "Tusken"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tusken-chieftain/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -7183,10 +6729,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Protection",
-            "circle": "Protection/ Health",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_tuskenchieftain"
     },
@@ -7204,18 +6749,16 @@
             "Tusken"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tusken-raider/best-mods/",
             "sets": [
-                "Offense x4",
-                "Tenacity x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_tuskenraider"
     },
@@ -7233,7 +6776,6 @@
             "Tusken"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tusken-shaman/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -7243,8 +6785,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_tuskenshaman"
     },
@@ -7262,18 +6803,16 @@
             "Tusken"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/tusken-warrior/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_tuskenhuntress"
     },
@@ -7290,7 +6829,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/ugnaught/best-mods/",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -7298,10 +6836,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance/ Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_ugnaught"
     },
@@ -7323,18 +6860,16 @@
             "Tusken"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/urorrurrr/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_urorrurrr"
     },
@@ -7353,19 +6888,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/vandor-chewbacca/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_chewbacca_vandor"
     },
@@ -7385,18 +6918,16 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/veteran-smuggler-chewbacca/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_tfa_chewbacca"
     },
@@ -7418,18 +6949,16 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/veteran-smuggler-han-solo/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency/ Offense",
-            "source": "swgoh.gg"
+            "cross": "Potency"
         },
         "avatarName": "charui_tfa_han"
     },
@@ -7447,19 +6976,16 @@
             "Unaligned Force User"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/visas-marr/best-mods/",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_visas"
     },
@@ -7476,19 +7002,17 @@
             "Attacker"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/wampa/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Speed/ Health",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity",
-            "source": "swgoh.gg"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_wampa"
     },
@@ -7506,7 +7030,6 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/wat-tambor/best-mods/",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -7516,8 +7039,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health/ Potency",
-            "source": "swgoh.gg"
+            "cross": "Health"
         },
         "avatarName": "charui_wattambor"
     },
@@ -7537,18 +7059,16 @@
             "Rebel Fighter"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/wedge-antilles/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_rebelpilot_wedge"
     },
@@ -7566,18 +7086,16 @@
             "Ewok"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/wicket/best-mods/",
             "sets": [
-                "Critical Chance x2",
-                "Critical Damage x4"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_ewok_wicket"
     },
@@ -7597,19 +7115,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/wrecker/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_bb_wrecker"
     },
@@ -7629,18 +7145,16 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/young-han-solo/best-mods/",
             "sets": [
-                "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_han_young"
     },
@@ -7659,18 +7173,16 @@
             "Smuggler"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/young-lando-calrissian/best-mods/",
             "sets": [
                 "Offense x4",
-                "Critical Chance x2"
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_younglando"
     },
@@ -7689,19 +7201,17 @@
             "Tank"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/zaalbar/best-mods/",
             "sets": [
                 "Health x2",
                 "Health x2",
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
-            "source": "swgoh.gg"
+            "cross": "Protection"
         },
         "avatarName": "charui_zaalbar"
     },
@@ -7721,18 +7231,16 @@
             "Scoundrel"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/zam-wesell/best-mods/",
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense/ Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency",
-            "source": "swgoh.gg"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },
@@ -7752,18 +7260,16 @@
             "Support"
         ],
         "mods": {
-            "url": "https://swgoh.gg/characters/zorii-bliss/best-mods/",
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health/ Crit. Damage",
-            "circle": "Health/ Protection",
-            "cross": "Protection/ Health",
-            "source": "swgoh.gg"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_zoriibliss"
     }
