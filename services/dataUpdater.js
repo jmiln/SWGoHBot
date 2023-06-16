@@ -176,7 +176,7 @@ async function getGuildIds() {
     const guildLeaderboardRes = await comlinkStub._postRequestPromiseAPI("/getGuildLeaderboard", {
         "payload" : {
             "leaderboardId":[ { "leaderboardType": 3, "monthOffset": 0 } ],
-            "count": 10
+            "count": 100
         },
         "enums": false
     });
