@@ -228,16 +228,19 @@ module.exports = (Bot, client) => {
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async () => {
         try {
-            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json", "utf-8"));
-            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json", "utf-8"));
-            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json", "utf-8"));
-            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json", "utf-8"));
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json",  "utf-8"));
+            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json",      "utf-8"));
+            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json",    "utf-8"));
+            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json",    "utf-8"));
             Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
-            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json", "utf-8"));
-            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json", "utf-8"));
-            Bot.raidNames    = await JSON.parse(fs.readFileSync("./data/raidNames.json", "utf-8"));
-            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json", "utf-8"));
+            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json",      "utf-8"));
+            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json",     "utf-8"));
+            Bot.raidNames    = await JSON.parse(fs.readFileSync("data/raidNames.json",     "utf-8"));
+            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json",         "utf-8"));
             Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
+
+            Bot.CharacterNames = Bot.characters.map(ch => ch.name);
+            Bot.ShipNames = Bot.ships.map(ch => ch.name);
 
             delete require.cache[require.resolve("../data/help.js")];
             Bot.help         = require("../data/help.js");

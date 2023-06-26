@@ -12,9 +12,9 @@ if (!config.fakeSwapiConfig?.clientStub) {
 }
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
 
-const modMap = require(__dirname + "/../data/modMap.json");
-const unitMap = require(__dirname + "/../data/unitMap.json");
-const skillMap = require(__dirname + "/../data/skillMap.json");
+let modMap = JSON.parse(readFileSync(__dirname + "/../data/modMap.json", "utf-8"));
+let unitMap = JSON.parse(readFileSync(__dirname + "/../data/unitMap.json", "utf-8"));
+let skillMap = JSON.parse(readFileSync(__dirname + "/../data/skillMap.json", "utf-8"));
 
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
@@ -26,7 +26,6 @@ const flatStats = [
     42  // defense
 ];
 
-
 const MAX_CONCURRENT = 20;
 
 let specialAbilityList = null;
@@ -35,6 +34,13 @@ async function init() {
     const MongoClient = require("mongodb").MongoClient;
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
     cache = require("../modules/cache.js")(mongo);
+
+    // Set it to reload the api map files every hour
+    setInterval(() => {
+        modMap = JSON.parse(readFileSync(__dirname + "/../data/modMap.json", "utf-8"));
+        unitMap = JSON.parse(readFileSync(__dirname + "/../data/unitMap.json", "utf-8"));
+        skillMap = JSON.parse(readFileSync(__dirname + "/../data/skillMap.json", "utf-8"));
+    }, 360_000);
 }
 
 module.exports = (opts={}) => {
@@ -205,7 +211,10 @@ module.exports = (opts={}) => {
                 const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
                 if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
                 const locChar = await langChar({defId: newUnit.defId, skills: newUnit.skills});
-                if (!locChar?.nameKey) locChar.nameKey = newUnit.defId;
+                if (!locChar?.nameKey) {
+                    console.log(locChar);
+                    locChar.nameKey = newUnit.defId;
+                }
                 if (!oldUnit) {
                     playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
                     if (newUnit?.level > 1) {
@@ -242,9 +251,9 @@ module.exports = (opts={}) => {
                             newSkill.zetaTier = thisAbility.zetaTier + 1;
                         }
 
-                        if (!oldSkill) {
-                            playerLog.abilities.push(`Unlocked ${locChar.nameKey}'s **${locSkill.nameKey}**`);
-                        }
+                        // if (!oldSkill) {
+                        //     playerLog.abilities.push(`Unlocked ${locChar.nameKey}'s **${locSkill.nameKey}**`);
+                        // }
 
                         if ((newSkill.isOmicron || newSkill.isZeta) && (newSkill.tier >= newSkill.zetaTier || newSkill.tier >= newSkill.omicronTier)) {
                             // If the skill has zeta/ omicron tiers, and is high enough level
@@ -444,10 +453,11 @@ module.exports = (opts={}) => {
             roster: comlinkPlayer.rosterUnit.map(unit => {
                 const thisDefId = unit.definitionId.split(":")[0];
                 const thisUnit = unitMap[thisDefId];
+                if (!thisUnit?.nameKey) return;
                 return {
                     id: unit.id,
                     defId: thisDefId,
-                    nameKey: thisUnit.nameKey,
+                    nameKey: thisUnit?.nameKey,
                     level: unit.currentLevel,
                     rarity: unit.currentRarity,
                     gear: unit.currentTier,
@@ -466,7 +476,7 @@ module.exports = (opts={}) => {
                     combatType: thisUnit.combatType,
                     mods: unit.equippedStatMod ? unit.equippedStatMod.map(mod => formatMod(mod)) : [],
                 };
-            }),
+            }).filter(unit => !!unit),
             stats: comlinkPlayer.profileStat
                 ?.filter(({nameKey}) => {
                     return nameKey?.includes("GALACTIC_POWER");
