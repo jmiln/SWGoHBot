@@ -34,9 +34,8 @@ const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationB
 
 // The max players to grab at the same time
 const MAX_CONCURRENT = 20;
-let catMap = require(dataDir + "catMap.json") || {};
-const modMap = require(dataDir + "modMap.json");
-const unitMap = require(dataDir + "unitMap.json");
+let modMap = JSON.parse(fs.readFileSync(dataDir + "modMap.json"));
+let unitMap = JSON.parse(fs.readFileSync(dataDir + "unitMap.json"));
 
 // Use these to store data in to use when needing data from a different part of the gameData processing
 let unitRecipeList = [];
@@ -592,10 +591,7 @@ async function updateGameData() {
                 return {id, descKey};
             });
 
-        // Set the file-wide catMap to be used elsewhere
-        catMap = catMapOut;
-
-        await saveFile(dataDir + "catMap.json", catMapOut, false);
+        // await saveFile(dataDir + "catMap.json", catMapOut, false);
         await processLocalization(catMapOut, "categories", ["descKey"], "id", null);
     }
 
@@ -651,6 +647,7 @@ async function updateGameData() {
             };
         });
 
+        modMap = modsOut;
         await saveFile(dataDir + "modMap.json", modsOut, false);
     }
 
@@ -899,6 +896,7 @@ async function updateGameData() {
             };
         });
 
+        unitMap = unitsOut;
         await saveFile(dataDir + "unitMap.json", unitsOut, false);
     }
 

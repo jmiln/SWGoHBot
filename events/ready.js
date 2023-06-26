@@ -64,6 +64,14 @@ module.exports = async (Bot, client) => {
                             // Run the checker for guild member's roster changes
                             await Bot.guildsUpdate();
                         }
+
+                        // Reload all the data files on a timer so it'll catch new changes
+                        if (client.shard?.count > 0) {
+                            client.shard.broadcastEval(client => client.reloadDataFiles())
+                                .catch(err => console.log("[Ready/ReloadData data]\n" + err));
+                        } else {
+                            client.reloadDataFiles();
+                        }
                     }, 1 * 60 * 1000);
 
                 }, 2 * 60 * 1000);
