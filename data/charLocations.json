@@ -409,6 +409,11 @@
         ]
     },
     {
+        "name": "Captain Rex",
+        "defId": "CAPTAINREX",
+        "locations": []
+    },
+    {
         "name": "Cara Dune",
         "defId": "CARADUNE",
         "locations": [
@@ -517,6 +522,10 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "1-D"
             }
         ]
     },
@@ -1058,6 +1067,10 @@
         "name": "Garazeb \"Zeb\" Orrelios",
         "defId": "ZEBS3",
         "locations": [
+            {
+                "type": "Cantina",
+                "level": "1-G"
+            },
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
@@ -1619,6 +1632,10 @@
                 "cost": "400/10"
             },
             {
+                "type": "Cantina",
+                "level": "2-B"
+            },
+            {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
             }
@@ -2116,6 +2133,10 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "level": "1-C"
             }
         ]
     },
@@ -2505,6 +2526,10 @@
             {
                 "type": "Arena Shipments",
                 "cost": "400/10"
+            },
+            {
+                "type": "Cantina",
+                "level": "2-A"
             },
             {
                 "type": "Guild Event Shop",
