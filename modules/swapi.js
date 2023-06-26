@@ -561,6 +561,16 @@ module.exports = (opts={}) => {
             }
         }
 
+        if (char.factions) {
+            for (const factionIx in char.factions) {
+                const thisFaction = char.factions[factionIx];
+                let factionName = await cache.get(config.mongodb.swapidb, "categories", {id:thisFaction , language: lang}, {nameKey: 1, _id: 0});
+                if (Array.isArray(factionName)) factionName = factionName[0];
+                if (!factionName) throw new Error("Cannot find factionName for " + thisFaction);
+                char.factions[factionIx] = factionName.nameKey;
+            }
+        }
+
         // In case it has skillReferenceList
         if (char.skillReferenceList) {
             for (const skill in char.skillReferenceList) {

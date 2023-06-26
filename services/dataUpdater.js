@@ -15,6 +15,7 @@ let metadataFile;
 // const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
 
 const CHAR_COMBAT_TYPE = 1;
+const SHIP_COMBAT_TYPE = 2;
 
 const dataDir = __dirname + "/../data/";
 
@@ -33,6 +34,7 @@ const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationB
 
 // The max players to grab at the same time
 const MAX_CONCURRENT = 20;
+let catMap = require(dataDir + "catMap.json") || {};
 const modMap = require(dataDir + "modMap.json");
 const unitMap = require(dataDir + "unitMap.json");
 
@@ -475,6 +477,7 @@ async function updateGameData() {
     locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
 
     await processAbilities(gameData.ability, gameData.skill);
+    await processCategories(gameData.category);
     await processEquipment(gameData.equipment);
     await processMaterials(gameData.material);
     await processModData(gameData.statMod);
@@ -580,6 +583,20 @@ async function updateGameData() {
         }
         await saveFile(dataDir + "skillMap.json", skillMap, false);
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", null);
+    }
+
+    async function processCategories(catsIn) {
+        const catMapOut = catsIn
+            .filter(cat => cat.visible || cat.id.startsWith("alignment"))
+            .map(({id, descKey}) => {
+                return {id, descKey};
+            });
+
+        // Set the file-wide catMap to be used elsewhere
+        catMap = catMapOut;
+
+        await saveFile(dataDir + "catMap.json", catMapOut, false);
+        await processLocalization(catMapOut, "categories", ["descKey"], "id", null);
     }
 
     async function processEquipment(equipmentIn) {
@@ -731,11 +748,18 @@ async function updateGameData() {
                 unitObj.avatarURL  = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
             } else {
                 // Work up a new character to put in
-                unitObj = createNewUnit(unit, charUIName);
+                unitObj = await createNewUnit(unit, charUIName);
             }
 
-            // Process characters
-            unit.combatType === CHAR_COMBAT_TYPE ? charactersOut.push(unitObj) : shipsOut.push(unitObj);
+            // Sort out where the unit goes
+            if (unit.combatType === CHAR_COMBAT_TYPE) {
+                charactersOut.push(unitObj);
+            } else if (unit.combatType === SHIP_COMBAT_TYPE) {
+                shipsOut.push(unitObj);
+            } else {
+                console.error("Bad combatType for:");
+                console.error(unitObj);
+            }
         }
 
         function getCharUIName(creationRecipeId) {
@@ -745,34 +769,29 @@ async function updateGameData() {
         }
 
         function getSide(factions) {
-            const factionCheck = (checkStr) => {
-                if (factions.includes(checkStr)) {
-                    factions.splice(factions.indexOf(checkStr), 1);
-                    return true;
+            for (const side of ["dark", "light", "neutral"]) {
+                const factIx = factions.findIndex(fact => fact.id === `alignment_${side}`);
+                if (factIx > -1) {
+                    factions.splice(factIx, 1);
+                    return {
+                        side: side,
+                        factions: factions.map(fact => fact.descKey)
+                    };
                 }
-            };
-
-            if (factionCheck("Dark Side")) {
-                return "dark";
-            } else if (factionCheck("Light Side")) {
-                return "light";
-            } else if (factionCheck("Neutral")) {
-                return "neutral";
-            } else {
-                return "N/A";
             }
         }
 
-        function createNewUnit(unit, charUIName) {
-            const unitFactions = unitFactionMap[unit.baseId];
+        async function createNewUnit(unit, charUIName) {
+            const unitFactionsObj = await cache.get(config.mongodb.swapidb, "categories", {id: {$in: unit.categoryIdList}, language: "eng_us"}, {id: 1, descKey: 1, _id: 0});
+            const {factions, side} = getSide(unitFactionsObj);
             const unitOut = {
                 name:        unit.name,
                 uniqueName:  unit.baseId,
                 aliases:     [unit.name],
                 avatarName:  charUIName,
                 avatarURL:   `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
-                side:        getSide(unitFactions),
-                factions:    unitFactions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
+                side:        side,
+                factions:    factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
             };
 
             if (unit.combatType === CHAR_COMBAT_TYPE) {
@@ -785,14 +804,14 @@ async function updateGameData() {
                         return unitDefIdMap[cr.unitId];
                     });
             }
-            console.log(`Creating a new unit: ${unit.name}   (${unit.baseId})`);
+            console.log(`Creating a new unit: ${unitOut.name}   (${unitOut.uniqueName})`);
             return unitOut;
         }
 
         // Write to the characters & ships files
-        const sortedChars = charactersOut.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        const sortedChars = charactersOut.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
         await saveFile(CHAR_FILE, sortedChars);
-        const sortedShips = shipsOut.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
+        const sortedShips = shipsOut.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
         await saveFile(SHIP_FILE, sortedShips);
         console.log("Unit files updated");
 
