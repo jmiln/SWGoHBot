@@ -1065,6 +1065,24 @@
         "avatarName": "charui_phasma"
     },
     {
+        "name": "Captain Rex",
+        "uniqueName": "CAPTAINREX",
+        "aliases": [
+            "Captain Rex"
+        ],
+        "avatarName": "charui_captainrex",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captainrex.png",
+        "side": "light",
+        "factions": [
+            "Clone Trooper",
+            "Phoenix",
+            "Rebel",
+            "Rebel Fighter",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Cara Dune",
         "uniqueName": "CARADUNE",
         "aliases": [
