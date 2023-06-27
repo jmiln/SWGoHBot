@@ -998,8 +998,8 @@ module.exports = (Bot, client) => {
             rarity: rarity,
             level: level,
             gear: gear,
-            zetas: skills?.filter(s => s.isZeta && (s.tier === s.tiers || (s.isOmicron && s.tier >= s.tiers-1))).length || 0,
-            relic: relic?.currentTier ? relic.currentTier : 0,
+            zetas: skills?.filter(s => s.isZeta && (s.tier >= s?.zetaTier || (s.isOmicron && s.tier >= s.tiers-1))).length || 0,
+            relic: relic?.currentTier || 0,
             omicron: skills?.filter(s => s.isOmicron && s.tier === s.tiers).length || 0,
             side: thisChar.side
         };

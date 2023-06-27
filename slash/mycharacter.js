@@ -138,22 +138,22 @@ class MyCharacter extends Command {
             if (a.tier === a.tiers) {
                 if (a.isOmicron) {
                     // Maxed Omicron ability
-                    a.tier = "Max O";
+                    a.tierStr = "Max O";
                 } else if (a.isZeta) {
                     // Maxed Zeta ability
-                    a.tier = "Max ✦";
+                    a.tierStr = "Max ✦";
                 } else if (isShip) {
-                    a.tier = "Max";
+                    a.tierStr = "Max";
                 } else {
                     // Maxed Omega ability
-                    a.tier = "Max ⭓";
+                    a.tierStr = "Max ⭓";
                 }
             } else {
                 // Unmaxed ability
-                a.tier = "Lvl " + a.tier;
+                a.tierStr = "Lvl " + a.tier;
             }
             try {
-                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tier} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`);
+                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(`\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`);
             } catch (e) {
                 Bot.logger.error("ERROR[MC]: bad ability type: " + inspect(a));
             }
