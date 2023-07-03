@@ -1526,6 +1526,11 @@
         ]
     },
     {
+        "name": "Jedi Knight Cal Kestis",
+        "defId": "JEDIKNIGHTCAL",
+        "locations": []
+    },
+    {
         "name": "Jedi Knight Guardian",
         "defId": "JEDIKNIGHTGUARDIAN",
         "locations": [

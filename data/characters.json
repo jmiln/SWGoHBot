@@ -21,8 +21,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_triplezero"
@@ -1061,7 +1061,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Protection"
         },
         "avatarName": "charui_phasma"
     },
@@ -1355,7 +1355,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_chirrut"
     },
@@ -1743,9 +1743,9 @@
         ],
         "mods": {
             "sets": [
-                "Tenacity x2",
-                "Tenacity x2",
-                "Tenacity x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -2625,8 +2625,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2803,9 +2803,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Potency"
         },
         "avatarName": "charui_zeb_s3"
     },
@@ -3702,7 +3702,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Protection"
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -3914,6 +3914,33 @@
         "avatarName": "charui_anakinknight"
     },
     {
+        "name": "Jedi Knight Cal Kestis",
+        "uniqueName": "JEDIKNIGHTCAL",
+        "aliases": [
+            "Jedi Knight Cal Kestis"
+        ],
+        "avatarName": "charui_jediknightcal",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jediknightcal.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Jedi",
+            "Leader"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        }
+    },
+    {
         "name": "Jedi Knight Guardian",
         "uniqueName": "JEDIKNIGHTGUARDIAN",
         "aliases": [
@@ -3935,11 +3962,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Protection"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -4663,7 +4690,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Potency"
         },
         "avatarName": "charui_macewindu"
     },
@@ -4772,10 +4799,10 @@
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
+            "triangle": "Health",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_merrin"
@@ -4945,7 +4972,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -6865,7 +6892,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_ugnaught"
@@ -7296,9 +7323,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_zoriibliss"
     }
