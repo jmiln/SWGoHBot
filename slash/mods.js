@@ -6,7 +6,7 @@ class Mods extends Command {
         super(Bot, {
             name: "mods",
             guildOnly: false,
-            description: "Display some suggested mod loadouts based on apps.crouchingrancor.com",
+            description: "Display some suggested mod loadouts based on the most common loadouts by players in top 100 guilds.",
             options: [
                 {
                     name: "character",
