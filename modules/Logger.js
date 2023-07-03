@@ -63,7 +63,7 @@ class Logger {
     }
 
     error(content, webhook=false) {
-        if (content?.includes("Unable to authenticate")) webhook = true;
+        if (typeof content === "string" && content?.includes("Unable to authenticate")) webhook = true;
         return this.log(content, "error", webhook);
     }
 

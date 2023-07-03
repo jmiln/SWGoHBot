@@ -989,8 +989,18 @@ module.exports = (Bot, client) => {
 
     const unitsList = [...Bot.characters, ...Bot.ships];
     Bot.getUnitImage = async (defId, {rarity, level, gear, skills, relic}) => {
-        const thisChar = unitsList.find(ch => ch.uniqueName === defId);
-        if (!thisChar) return console.error("[getImage] Cannot find matching defId");
+        let thisChar;
+        try {
+            thisChar = unitsList.find(ch => ch.uniqueName === defId);
+        } catch (err) {
+            console.error("Issue getting character image:");
+            console.error(err);
+            return null;
+        }
+        if (!thisChar) {
+            console.error("[getImage] Cannot find matching defId");
+            return null;
+        }
         const fetchBody = {
             defId: defId,
             charUrl: thisChar?.avatarURL,

@@ -736,9 +736,9 @@ module.exports = (Bot, client) => {
                         msg = null;
                     }
                     if (msg) {
-                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => console.error("[PF sendBroadcastMsg]", err));
+                        targetMsg = await msg.edit({embeds: [outEmbed]}).catch(err => console.error("[PF sendBroadcastMsg edit]", err));
                     } else {
-                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => console.error("[PF sendBroadcastMsg]", err));
+                        targetMsg = await channel.send({embeds: [outEmbed]}).catch(err => console.error("[PF sendBroadcastMsg send]", err));
                     }
                 }
             }

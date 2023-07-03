@@ -103,7 +103,11 @@ module.exports = async (Bot, client, interaction) => {
                 filtered.map(choice => ({ name: choice, value: choice })).slice(0, 24)
             );
         } catch (err) {
-            logErr(err);
+            if (typeof err !== "string") {
+                logErr(`[interactionCreate, autocomplete, cmd=${interaction.name}] Missing error.`);
+            } else {
+                logErr(err);
+            }
         }
     }
 
