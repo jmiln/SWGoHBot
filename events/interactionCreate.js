@@ -103,8 +103,14 @@ module.exports = async (Bot, client, interaction) => {
                 filtered.map(choice => ({ name: choice, value: choice })).slice(0, 24)
             );
         } catch (err) {
+            // If it's an unknown interaction error, just move on, nothing that I can do about it
+            if (err.toString().toLowerCase().includes("Unknown interaction")) return;
+
+            // Otherwise, print out what I can about it
             if (typeof err !== "string") {
-                logErr(`[interactionCreate, autocomplete, cmd=${interaction.name}] Missing error.`);
+                logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
+                console.error(interaction);
+                console.error(err);
             } else {
                 logErr(err);
             }
