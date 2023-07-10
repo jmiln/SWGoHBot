@@ -2605,6 +2605,11 @@
         ]
     },
     {
+        "name": "Taron Malicos",
+        "defId": "TARONMALICOS",
+        "locations": []
+    },
+    {
         "name": "Tech",
         "defId": "BADBATCHTECH",
         "locations": [

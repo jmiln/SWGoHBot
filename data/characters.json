@@ -21,8 +21,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
+            "triangle": "Offense",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_triplezero"
@@ -1031,9 +1031,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1355,7 +1355,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Protection"
         },
         "avatarName": "charui_chirrut"
     },
@@ -2803,9 +2803,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Protection"
         },
         "avatarName": "charui_zeb_s3"
     },
@@ -3962,11 +3962,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -4972,7 +4972,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -6457,8 +6457,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6525,6 +6525,21 @@
             "cross": "Protection"
         },
         "avatarName": "charui_tarfful"
+    },
+    {
+        "name": "Taron Malicos",
+        "uniqueName": "TARONMALICOS",
+        "aliases": [
+            "Taron Malicos"
+        ],
+        "avatarName": "charui_taronmalicos",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_taronmalicos.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Unaligned Force User"
+        ],
+        "mods": {}
     },
     {
         "name": "Tech",
@@ -7061,7 +7076,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Health",
