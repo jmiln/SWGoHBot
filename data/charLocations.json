@@ -4,12 +4,13 @@
         "defId": "TRIPLEZERO",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BT1000_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "2-A",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BT1000_NAME"
             }
         ]
     },
@@ -18,12 +19,13 @@
         "defId": "50RT",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_50RT_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "3-E",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_50RT_NAME"
             }
         ]
     },
@@ -65,12 +67,16 @@
         "defId": "ADMIRALPIETT",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-B",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME"
+            },
+            {
+                "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME"
             }
         ]
     },
@@ -79,9 +85,6 @@
         "defId": "ADMIRALRADDUS",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_ADMIRALRADDUS_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "4-A",
                 "locId": "HARD_DARK"
@@ -89,6 +92,10 @@
             {
                 "type": "Intro P1 (Marquee)",
                 "name": "Spark of Rebellion"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ADMIRALRADDUS_NAME"
             }
         ]
     },
@@ -304,12 +311,13 @@
         "defId": "BOKATAN",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BOKATAN_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "6-D",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BOKATAN_NAME"
             }
         ]
     },
@@ -367,12 +375,13 @@
         "defId": "BOUSHH",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BOUSHH_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "2-C",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BOUSHH_NAME"
             }
         ]
     },
@@ -381,12 +390,13 @@
         "defId": "BT1",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BT1000_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "2-C",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BT1000_NAME"
             }
         ]
     },
@@ -415,12 +425,13 @@
         "defId": "CALKESTIS",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_CALKESTIS_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "1-F",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CALKESTIS_NAME"
             }
         ]
     },
@@ -461,6 +472,7 @@
         "defId": "CAPTAINREX",
         "locations": [
             {
+                "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINREX_NAME"
             }
         ]
@@ -470,12 +482,13 @@
         "defId": "CARADUNE",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_CARADUNE_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "5-E",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CARADUNE_NAME"
             }
         ]
     },
@@ -523,12 +536,13 @@
         "defId": "CEREJUNDA",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_CEREJUNDA_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "3-A",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CEREJUNDA_NAME"
             }
         ]
     },
@@ -724,9 +738,6 @@
         "defId": "DARKTROOPER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_DARKTROOPER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "1-C",
                 "locId": "HARD_LIGHT"
@@ -734,6 +745,10 @@
             {
                 "type": "Hard Modes (L)",
                 "cost": "1-C"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DARKTROOPER_NAME"
             }
         ]
     },
@@ -821,12 +836,13 @@
         "defId": "DARTHTALON",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_DARTHTALON_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "7-G",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DARTHTALON_NAME"
             }
         ]
     },
@@ -858,12 +874,13 @@
         "defId": "DASHRENDAR",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_DASHRENDAR_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "7-E",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DASHRENDAR_NAME"
             }
         ]
     },
@@ -939,12 +956,13 @@
         "defId": "BADBATCHECHO",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BADBATCHECHO_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "7-D",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BADBATCHECHO_NAME"
             }
         ]
     },
@@ -963,12 +981,13 @@
         "defId": "EIGHTHBROTHER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_EIGHTHBROTHER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-E",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_EIGHTHBROTHER_NAME"
             }
         ]
     },
@@ -1054,12 +1073,13 @@
         "defId": "FENNECSHAND",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_FENNECSHAND_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-C",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_FENNECSHAND_NAME"
             }
         ]
     },
@@ -1068,12 +1088,13 @@
         "defId": "FIFTHBROTHER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_FIFTHBROTHER_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "4-A",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_FIFTHBROTHER_NAME"
             }
         ]
     },
@@ -1212,12 +1233,13 @@
         "defId": "GENERALHUX",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_GENERALHUX_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "6-A",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_GENERALHUX_NAME"
             }
         ]
     },
@@ -1363,9 +1385,6 @@
         "defId": "GREEFKARGA",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_GREEFKARGA_NAME"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "4-C",
                 "locId": "HARD_FLEET"
@@ -1374,6 +1393,10 @@
                 "type": "Hard Modes (L)",
                 "level": "3-E",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_GREEFKARGA_NAME"
             }
         ]
     },
@@ -1427,12 +1450,13 @@
         "defId": "HONDO",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_HONDO_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "1-D",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_HONDO_NAME"
             }
         ]
     },
@@ -1475,12 +1499,13 @@
         "defId": "BADBATCHHUNTER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BADBATCHHUNTER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "5-B",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BADBATCHHUNTER_NAME"
             }
         ]
     },
@@ -1489,12 +1514,13 @@
         "defId": "IDENVERSIOEMPIRE",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_IDENVERSIOEMPIRE_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "4-D",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_IDENVERSIOEMPIRE_NAME"
             }
         ]
     },
@@ -1853,12 +1879,13 @@
         "defId": "KYLEKATARN",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_KYLEKATARN_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "6-A",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_KYLEKATARN_NAME"
             }
         ]
     },
@@ -2027,12 +2054,13 @@
         "defId": "MARAJADE",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_MARAJADE_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-D",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MARAJADE_NAME"
             }
         ]
     },
@@ -2050,12 +2078,13 @@
         "defId": "MERRIN",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_MERRIN_NAME"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-C",
                 "locId": "HARD_FLEET"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MERRIN_NAME"
             }
         ]
     },
@@ -2085,9 +2114,6 @@
         "defId": "MOFFGIDEONS1",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_MOFFGIDEONS1_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "4-E",
                 "locId": "CANTINA"
@@ -2096,6 +2122,10 @@
                 "type": "Hard Modes (L)",
                 "level": "2-D",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MOFFGIDEONS1_NAME"
             }
         ]
     },
@@ -2104,12 +2134,13 @@
         "defId": "MONMOTHMA",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_MONMOTHMA_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "5-E",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MONMOTHMA_NAME"
             }
         ]
     },
@@ -2188,12 +2219,13 @@
         "defId": "NINTHSISTER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_NINTHSISTER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "3-D",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_NINTHSISTER_NAME"
             }
         ]
     },
@@ -2242,12 +2274,13 @@
         "defId": "BADBATCHOMEGA",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BADBATCHOMEGA_NAME"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "4-D",
                 "locId": "HARD_FLEET"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BADBATCHOMEGA_NAME"
             }
         ]
     },
@@ -2415,12 +2448,13 @@
         "defId": "EPIXFINN",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_EPIXFINN_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "8-C",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_EPIXFINN_NAME"
             }
         ]
     },
@@ -2429,12 +2463,13 @@
         "defId": "EPIXPOE",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_EPIXPOE_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-B",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_EPIXPOE_NAME"
             }
         ]
     },
@@ -2549,12 +2584,13 @@
         "defId": "SANASTARROS",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_SANASTARROS_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "2-C",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SANASTARROS_NAME"
             }
         ]
     },
@@ -2573,12 +2609,13 @@
         "defId": "SAWGERRERA",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_SAWGERRERA_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "4-B",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SAWGERRERA_NAME"
             }
         ]
     },
@@ -2606,15 +2643,16 @@
         "defId": "SECONDSISTER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_SECONDSISTER_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "4-C",
                 "locId": "HARD_DARK"
             },
             {
                 "type": "Hard Modes (D)"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SECONDSISTER_NAME"
             }
         ]
     },
@@ -2623,12 +2661,13 @@
         "defId": "SEVENTHSISTER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_SEVENTHSISTER_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "4-E",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SEVENTHSISTER_NAME"
             }
         ]
     },
@@ -2637,12 +2676,13 @@
         "defId": "SHAAKTI",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_SHAAKTI_NAME"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "5-A",
                 "locId": "HARD_FLEET"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SHAAKTI_NAME"
             }
         ]
     },
@@ -2709,12 +2749,13 @@
         "defId": "FOSITHTROOPER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_FOSITHTROOPER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "2-B",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_FOSITHTROOPER_NAME"
             }
         ]
     },
@@ -2723,12 +2764,13 @@
         "defId": "UNDERCOVERLANDO",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_UNDERCOVERLANDO_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "3-B",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_UNDERCOVERLANDO_NAME"
             }
         ]
     },
@@ -2864,12 +2906,13 @@
         "defId": "TARFFUL",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_TARFFUL_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "4-D",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_TARFFUL_NAME"
             }
         ]
     },
@@ -2883,12 +2926,13 @@
         "defId": "BADBATCHTECH",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BADBATCHTECH_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "5-F",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BADBATCHTECH_NAME"
             }
         ]
     },
@@ -2917,12 +2961,13 @@
         "defId": "ARMORER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_ARMORER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "9-C",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ARMORER_NAME"
             }
         ]
     },
@@ -2930,9 +2975,6 @@
         "name": "The Mandalorian",
         "defId": "THEMANDALORIAN",
         "locations": [
-            {
-                "locId": "EVENT_MARQUEE_THEMANDALORIAN_NAME"
-            },
             {
                 "type": "Hard Modes (D)",
                 "level": "3-C",
@@ -2942,6 +2984,10 @@
                 "type": "Hard Modes (Fleet)",
                 "level": "5-E",
                 "locId": "HARD_FLEET"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_THEMANDALORIAN_NAME"
             }
         ]
     },
@@ -2965,12 +3011,13 @@
         "defId": "C3POCHEWBACCA",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_C3POCHEWBACCA_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "7-A",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_C3POCHEWBACCA_NAME"
             }
         ]
     },
@@ -2998,12 +3045,13 @@
         "defId": "TUSKENCHIEFTAIN",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_TUSKENCHIEFTAIN_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "6-C",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_TUSKENCHIEFTAIN_NAME"
             }
         ]
     },
@@ -3041,12 +3089,13 @@
         "defId": "TUSKENHUNTRESS",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_TUSKENHUNTRESS_NAME"
-            },
-            {
                 "type": "Cantina",
                 "level": "2-D",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_TUSKENHUNTRESS_NAME"
             }
         ]
     },
@@ -3170,12 +3219,13 @@
         "defId": "BADBATCHWRECKER",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_BADBATCHWRECKER_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "7-C",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BADBATCHWRECKER_NAME"
             }
         ]
     },
@@ -3229,12 +3279,13 @@
         "defId": "ZORIIBLISS_V2",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_ZORIIBLISS_NAME"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "1-C",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ZORIIBLISS_NAME"
             }
         ]
     }

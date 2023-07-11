@@ -77,12 +77,13 @@
         "defId": "YWINGCLONEWARS",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_YWINGCLONEWARS_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "7-C",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_YWINGCLONEWARS_NAME"
             }
         ]
     },
@@ -811,12 +812,13 @@
         "defId": "VULTUREDROID",
         "locations": [
             {
-                "locId": "EVENT_MARQUEE_VULTUREDROID_NAME"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "4-D",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_VULTUREDROID_NAME"
             }
         ]
     },
