@@ -23,7 +23,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "1-B"
+                "level": "1-B",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -33,7 +34,8 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "6-C"
+                "level": "6-C",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -65,7 +67,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "2-C"
+                "level": "2-C",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -74,8 +77,12 @@
         "defId": "YWINGCLONEWARS",
         "locations": [
             {
+                "locId": "EVENT_MARQUEE_YWINGCLONEWARS_NAME"
+            },
+            {
                 "type": "Hard Modes (L)",
-                "level": "7-C"
+                "level": "7-C",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -121,7 +128,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "1-A"
+                "level": "1-A",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -131,7 +139,8 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "8-E"
+                "level": "8-E",
+                "locId": "CANTINA"
             }
         ]
     },
@@ -141,7 +150,8 @@
         "locations": [
             {
                 "type": "Hard Modes (D)",
-                "level": "7-D"
+                "level": "7-D",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -232,7 +242,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "4-A"
+                "level": "4-A",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -254,7 +265,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "2-A"
+                "level": "2-A",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -290,7 +302,8 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "2-F"
+                "level": "2-F",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -320,7 +333,8 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "8-D"
+                "level": "8-D",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -330,7 +344,8 @@
         "locations": [
             {
                 "type": "Hard Modes (D)",
-                "level": "8-B"
+                "level": "8-B",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -340,7 +355,8 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "6-E"
+                "level": "6-E",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -350,7 +366,8 @@
         "locations": [
             {
                 "type": "Hard Modes (D)",
-                "level": "5-A"
+                "level": "5-A",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -360,7 +377,8 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "4-B"
+                "level": "4-B",
+                "locId": "CANTINA"
             },
             {
                 "type": "Fleet Shipments",
@@ -394,7 +412,8 @@
             },
             {
                 "type": "Hard Modes (D)",
-                "level": "8-B"
+                "level": "8-B",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -404,7 +423,8 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "9-A"
+                "level": "9-A",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -414,7 +434,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "1-D"
+                "level": "1-D",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -439,7 +460,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "2-D"
+                "level": "2-D",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -459,7 +481,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "3-C"
+                "level": "3-C",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -477,7 +500,8 @@
             },
             {
                 "type": "Hard Modes (D)",
-                "level": "9-D"
+                "level": "9-D",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -487,7 +511,8 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "7-F"
+                "level": "7-F",
+                "locId": "CANTINA"
             },
             {
                 "type": "Fleet Shipments",
@@ -517,7 +542,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "3-A"
+                "level": "3-A",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -542,7 +568,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "2-E"
+                "level": "2-E",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -561,7 +588,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "4-C"
+                "level": "4-C",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -583,7 +611,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "1-E"
+                "level": "1-E",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -607,7 +636,8 @@
         "locations": [
             {
                 "type": "Hard Modes (D)",
-                "level": "5-D"
+                "level": "5-D",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -625,7 +655,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "3-D"
+                "level": "3-D",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -640,7 +671,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "3-E"
+                "level": "3-E",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -654,7 +686,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "2-B"
+                "level": "2-B",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -676,7 +709,8 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "9-D"
+                "level": "9-D",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -690,7 +724,8 @@
             },
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "4-B"
+                "level": "4-B",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -705,7 +740,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "3-B"
+                "level": "3-B",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -715,7 +751,8 @@
         "locations": [
             {
                 "type": "Hard Modes (Fleet)",
-                "level": "4-E"
+                "level": "4-E",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -725,7 +762,8 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "9-B"
+                "level": "9-B",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -735,7 +773,8 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "3-F"
+                "level": "3-F",
+                "locId": "CANTINA"
             }
         ]
     },
@@ -762,7 +801,8 @@
             },
             {
                 "type": "Hard Modes (D)",
-                "level": "2-D"
+                "level": "2-D",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -771,8 +811,12 @@
         "defId": "VULTUREDROID",
         "locations": [
             {
+                "locId": "EVENT_MARQUEE_VULTUREDROID_NAME"
+            },
+            {
                 "type": "Hard Modes (L)",
-                "level": "4-D"
+                "level": "4-D",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -800,7 +844,8 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "8-B"
+                "level": "8-B",
+                "locId": "HARD_LIGHT"
             }
         ]
     }

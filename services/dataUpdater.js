@@ -43,6 +43,8 @@ let unitShardList = [];
 const unitFactionMap = {};
 const unitDefIdMap = {};
 
+let locales = {};
+
 console.log("Starting data updater");
 
 // Run the upater when it's started
@@ -401,41 +403,96 @@ async function updateLocs(unitListFile, currentLocFile) {
     }
     if (!matArr.length) return;
 
+    const langList = Object.keys(locales);
+    const targets = {
+        HARD_DARK:  ["FeatureTitle_DarkCampaigns", "DIFF_HARD"],
+        HARD_FLEET: ["FeatureTitle_ShipPve", "DIFF_HARD"],
+        HARD_LIGHT: ["FeatureTitle_LightCampaigns", "DIFF_HARD"],
+        CANTINA:    ["FeatureTitle_DatacronBattles"],
+    };
+    for (const lang of langList) {
+        for (const target of Object.keys(targets)) {
+            const out = {
+                id: target,
+                language: lang,
+                langKey: targets[target].map(t => locales[lang][t] || `ERROR: ${t}`).join(" ")
+            };
+            await cache.put(config.mongodb.swapidb, "locations", {id: target, language: lang}, out);
+        }
+    }
+
     const outArr = [];
     for (const mat of matArr) {
         const missions = mat?.mats?.lookupMissionList;
         if (!missions?.length) continue;
 
         const charArr = [];
+        const usedMarqee = [];
         for (const node of missions) {
-            if (node.campaignId === "EVENTS") continue;
-            const outMode = campaignMapNames[node.campaignId]?.game_mode;
-            if (!outMode) continue;
+            if (node.campaignId === "EVENTS") {
+                if (node.campaignMapId !== "MARQUEE") continue;
+                // Run through stuff for events (Marquees)
+                const locId = `EVENT_MARQUEE_${node.campaignNodeId.split("_")[0]}_NAME`;
+                if (usedMarqee.includes(locId)) continue;
+                usedMarqee.push(locId);
 
-            const outNode = campaignMapNodes?.[node.campaignId]?.[node.campaignMapId]?.[node.campaignNodeDifficulty]?.[node.campaignNodeId]?.[node.campaignMissionId];
+                let isAvailable = true;
+                for (const lang of langList) {
+                    const langKey = locales[lang][locId];
+                    if (!langKey) {
+                        isAvailable = false;
+                        break;
+                    }
+                    const out = {
+                        id: locId,
+                        language: lang,
+                        langKey
+                    };
+                    await cache.put(config.mongodb.swapidb, "locations", {id: locId, language: lang}, out);
+                }
+                if (isAvailable) {
+                    charArr.push({
+                        type: "Marquee",
+                        locId
+                    });
+                }
+            } else {
+                // Run stuff through for hard nodes
+                const outMode = campaignMapNames[node.campaignId]?.game_mode;
+                if (!outMode) continue;
 
-            let typeStr = "Hard Modes";
-            switch (outMode) {
-                case "Light Side Battles":
-                    typeStr += " (L)";
-                    break;
-                case "Dark Side Battles":
-                    typeStr += " (D)";
-                    break;
-                case "Cantina Battles":
-                    typeStr = "Cantina";
-                    break;
-                case "Fleet Battles":
-                    typeStr += " (Fleet)";
-                    break;
-                default:
-                    typeStr = "N/A";
-                    break;
+                const outNode = campaignMapNodes?.[node.campaignId]?.[node.campaignMapId]?.[node.campaignNodeDifficulty]?.[node.campaignNodeId]?.[node.campaignMissionId];
+
+                let locId = null;
+                // ONLY /farm and /need use these
+                let typeStr = "Hard Modes";
+                switch (outMode) {
+                    case "Light Side Battles":
+                        typeStr += " (L)";
+                        locId = "HARD_LIGHT";
+                        break;
+                    case "Dark Side Battles":
+                        typeStr += " (D)";
+                        locId = "HARD_DARK";
+                        break;
+                    case "Cantina Battles":
+                        typeStr = "Cantina";
+                        locId = "CANTINA";
+                        break;
+                    case "Fleet Battles":
+                        typeStr += " (Fleet)";
+                        locId = "HARD_FLEET";
+                        break;
+                    default:
+                        typeStr = "N/A";
+                        break;
+                }
+                charArr.push({
+                    type: typeStr,
+                    level: outNode,
+                    locId
+                });
             }
-            charArr.push({
-                type: typeStr,
-                level: outNode
-            });
         }
         outArr.push({defId: mat.defId, locations: charArr});
     }
@@ -461,7 +518,7 @@ async function updateLocs(unitListFile, currentLocFile) {
         finalOut.push({
             name: unitName,
             defId: unitLoc.defId,
-            locations: locations?.sort((a,b) => a.type.toLowerCase() > b.type.toLowerCase() ? 1 : -1) || []
+            locations: locations?.sort((a,b) => a.type?.toLowerCase() > b.type?.toLowerCase() ? 1 : -1) || []
         });
     }
 
@@ -469,7 +526,6 @@ async function updateLocs(unitListFile, currentLocFile) {
 }
 
 async function updateGameData() {
-    let locales = {};
     if (!metadataFile.latestGamedataVersion) return console.error("[updateGameData] Missing latestGamedataVersion from metadata");
     const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
 
