@@ -987,10 +987,14 @@ module.exports = (Bot, client) => {
         });
     };
 
-    const unitsList = [...Bot.characters, ...Bot.ships];
+    let unitsList = [...Bot.characters, ...Bot.ships];
     Bot.getUnitImage = async (defId, {rarity, level, gear, skills, relic}) => {
         let thisChar;
         try {
+            thisChar = unitsList.find(ch => ch.uniqueName === defId);
+
+            // If it doesn't find it, try remaking the list (Lazy reload)
+            if (!thisChar) unitsList = [...Bot.characters, ...Bot.ships];
             thisChar = unitsList.find(ch => ch.uniqueName === defId);
         } catch (err) {
             console.error("Issue getting character image:");

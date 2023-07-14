@@ -121,7 +121,7 @@ class Character extends Command {
                 name: character.name,
                 url: character?.url || null,
             },
-            thumbnail: {url: "attachment://image.png"},
+            thumbnail: charImage ? {url: "attachment://image.png"} : null,
             fields: [],
         }];
 
@@ -136,7 +136,8 @@ class Character extends Command {
                     embeds.push({
                         color: Bot.getSideColor(character.side),
                         author: {
-                            name: character.name + " continued..."
+                            name: character.name + " continued...",
+                            url: null
                         },
                         fields: []
                     });
@@ -149,10 +150,10 @@ class Character extends Command {
         await interaction.reply({
             content: null,
             embeds: [embeds[0]],
-            files: [{
+            files: charImage ? [{
                 attachment: charImage,
                 name: "image.png"
-            }]
+            }] : null
         });
         if (embeds.length > 1) {
             await interaction.followUp({content: null, embeds: [embeds[1]]});
