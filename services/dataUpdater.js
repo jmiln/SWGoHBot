@@ -498,8 +498,23 @@ async function updateLocs(unitListFile, currentLocFile) {
     }
 
     // Wipe out all previous locations so we can replace them later, but leave the shop info alone
+    const whitelistTypeLocs = [
+        "Achievements",
+        "Assault Battle",
+        "Epic Confrontation",
+        "Challenges",
+        "Galactic Ascension",
+        "Galactic Battle: Conquest",
+        "Hero's Journey",
+        "Heroic Event",
+        "Legacy Event",
+        "Legendary Event",
+        "Raids",
+        "Special Event",
+        "Territory Battle",
+    ];
     const filteredLocations = currentLocs.map(loc => {
-        loc.locations = loc.locations.filter(thisLoc => !thisLoc?.level?.length);
+        loc.locations = loc.locations.filter(thisLoc => thisLoc?.cost?.length || whitelistTypeLocs.includes(thisLoc?.type));
         return loc;
     });
 
