@@ -5382,6 +5382,21 @@
         "avatarName": "charui_geonosian_poggle"
     },
     {
+        "name": "Princess Kneesaa",
+        "uniqueName": "PRINCESSKNEESAA",
+        "aliases": [
+            "Princess Kneesaa"
+        ],
+        "avatarName": "charui_princesskneesaa",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_princesskneesaa.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Ewok"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Princess Leia",
         "uniqueName": "PRINCESSLEIA",
         "aliases": [

@@ -74,9 +74,6 @@
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME"
-            },
-            {
-                "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME"
             }
         ]
     },
@@ -88,10 +85,6 @@
                 "type": "Hard Modes (D)",
                 "level": "4-A",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Intro P1 (Marquee)",
-                "name": "Spark of Rebellion"
             },
             {
                 "type": "Marquee",
@@ -2369,6 +2362,16 @@
         ]
     },
     {
+        "name": "Princess Kneesaa",
+        "defId": "PRINCESSKNEESAA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_PRINCESSKNEESAA_NAME"
+            }
+        ]
+    },
+    {
         "name": "Princess Leia",
         "defId": "PRINCESSLEIA",
         "locations": [
@@ -2646,9 +2649,6 @@
                 "type": "Hard Modes (D)",
                 "level": "4-C",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Hard Modes (D)"
             },
             {
                 "type": "Marquee",
@@ -3234,7 +3234,8 @@
         "defId": "YOUNGHAN",
         "locations": [
             {
-                "type": "Guild Shop"
+                "type": "Guild Shop",
+                "cost": "450/10"
             }
         ]
     },
