@@ -10,7 +10,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BT1000_NAME"
+                "locId": "EVENT_MARQUEE_BT1000_NAME",
+                "name": "Murder And Manners Marquee Event"
             }
         ]
     },
@@ -25,7 +26,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_50RT_NAME"
+                "locId": "EVENT_MARQUEE_50RT_NAME",
+                "name": "Playing The Odds Marquee Event"
             }
         ]
     },
@@ -73,7 +75,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME"
+                "locId": "EVENT_MARQUEE_ADMIRALPIETT_NAME",
+                "name": "Cunning Commander Marquee Event"
             }
         ]
     },
@@ -88,7 +91,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_ADMIRALRADDUS_NAME"
+                "locId": "EVENT_MARQUEE_ADMIRALRADDUS_NAME",
+                "name": "Spark Of Rebellion Marquee Event"
             }
         ]
     },
@@ -256,7 +260,13 @@
     {
         "name": "Ben Solo",
         "defId": "BENSOLO",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Biggs Darklighter",
@@ -310,7 +320,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BOKATAN_NAME"
+                "locId": "EVENT_MARQUEE_BOKATAN_NAME",
+                "name": "Tales From The Outer Rim Vi Marquee Event"
             }
         ]
     },
@@ -338,7 +349,9 @@
         "defId": "BOBAFETTSCION",
         "locations": [
             {
-                "type": "Galactic Battle: Conquest"
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
             }
         ]
     },
@@ -374,7 +387,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BOUSHH_NAME"
+                "locId": "EVENT_MARQUEE_BOUSHH_NAME",
+                "name": "My Kind Of Scum Marquee Event"
             }
         ]
     },
@@ -389,7 +403,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BT1000_NAME"
+                "locId": "EVENT_MARQUEE_BT1000_NAME",
+                "name": "Murder And Manners Marquee Event"
             }
         ]
     },
@@ -424,7 +439,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CALKESTIS_NAME"
+                "locId": "EVENT_MARQUEE_CALKESTIS_NAME",
+                "name": "Stories Of Survival I Marquee Event"
             }
         ]
     },
@@ -466,7 +482,8 @@
         "locations": [
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CAPTAINREX_NAME"
+                "locId": "EVENT_MARQUEE_CAPTAINREX_NAME",
+                "name": "The Lost Commander Marquee Event"
             }
         ]
     },
@@ -481,7 +498,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CARADUNE_NAME"
+                "locId": "EVENT_MARQUEE_CARADUNE_NAME",
+                "name": "Tales From The Outer Rim I Marquee Event"
             }
         ]
     },
@@ -535,7 +553,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CEREJUNDA_NAME"
+                "locId": "EVENT_MARQUEE_CEREJUNDA_NAME",
+                "name": "Stories Of Survival Ii Marquee Event"
             }
         ]
     },
@@ -644,7 +663,9 @@
         "defId": "COMMANDERAHSOKA",
         "locations": [
             {
-                "type": "Galactic Battle: Conquest"
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
             }
         ]
     },
@@ -741,7 +762,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_DARKTROOPER_NAME"
+                "locId": "EVENT_MARQUEE_DARKTROOPER_NAME",
+                "name": "Tales From The Outer Rim V Marquee Event"
             }
         ]
     },
@@ -764,7 +786,9 @@
         "defId": "DARTHMALGUS",
         "locations": [
             {
-                "type": "Galactic Battle: Conquest"
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
             }
         ]
     },
@@ -835,7 +859,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_DARTHTALON_NAME"
+                "locId": "EVENT_MARQUEE_DARTHTALON_NAME",
+                "name": "Hand Of The One Sith Marquee Event"
             }
         ]
     },
@@ -873,7 +898,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_DASHRENDAR_NAME"
+                "locId": "EVENT_MARQUEE_DASHRENDAR_NAME",
+                "name": "Shadows Of The Empire Marquee Event"
             }
         ]
     },
@@ -955,7 +981,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BADBATCHECHO_NAME"
+                "locId": "EVENT_MARQUEE_BADBATCHECHO_NAME",
+                "name": "Clone Force 99 Iv  Marquee Event"
             }
         ]
     },
@@ -980,7 +1007,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_EIGHTHBROTHER_NAME"
+                "locId": "EVENT_MARQUEE_EIGHTHBROTHER_NAME",
+                "name": "Ruthless Efficiency Iv Marquee Event"
             }
         ]
     },
@@ -1001,6 +1029,7 @@
         "locations": [
             {
                 "type": "Legendary Event",
+                "locId": "PROGRESSIONEVENT_EMPERORS_END_NAME",
                 "name": "Emperor's Demise"
             }
         ]
@@ -1072,7 +1101,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_FENNECSHAND_NAME"
+                "locId": "EVENT_MARQUEE_FENNECSHAND_NAME",
+                "name": "Tales From The Outer Rim Vii Marquee Event"
             }
         ]
     },
@@ -1087,7 +1117,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_FIFTHBROTHER_NAME"
+                "locId": "EVENT_MARQUEE_FIFTHBROTHER_NAME",
+                "name": "Ruthless Efficiency V Marquee Event"
             }
         ]
     },
@@ -1232,7 +1263,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_GENERALHUX_NAME"
+                "locId": "EVENT_MARQUEE_GENERALHUX_NAME",
+                "name": "Ruthless General Marquee Event"
             }
         ]
     },
@@ -1341,6 +1373,7 @@
         "locations": [
             {
                 "type": "Legendary Event",
+                "locId": "PROGRESSIONEVENT_GRANDMASTERS_TRAINING_NAME",
                 "name": "Grand Master's Training"
             }
         ]
@@ -1389,7 +1422,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_GREEFKARGA_NAME"
+                "locId": "EVENT_MARQUEE_GREEFKARGA_NAME",
+                "name": "Tales From The Outer Rim Ii Marquee Event"
             }
         ]
     },
@@ -1449,7 +1483,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_HONDO_NAME"
+                "locId": "EVENT_MARQUEE_HONDO_NAME",
+                "name": "Good Business Marquee Event"
             }
         ]
     },
@@ -1498,7 +1533,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BADBATCHHUNTER_NAME"
+                "locId": "EVENT_MARQUEE_BADBATCHHUNTER_NAME",
+                "name": "Clone Force 99 I Marquee Event"
             }
         ]
     },
@@ -1513,7 +1549,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_IDENVERSIOEMPIRE_NAME"
+                "locId": "EVENT_MARQUEE_IDENVERSIOEMPIRE_NAME",
+                "name": "Embers Of The Empire Marquee Event"
             }
         ]
     },
@@ -1620,7 +1657,13 @@
     {
         "name": "Jabba the Hutt",
         "defId": "JABBATHEHUTT",
-        "locations": []
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "locId": "EVENT_JABBA_GALACTICLEGEND_NAME",
+                "name": "Greetings, Exalted One Galactic Ascension"
+            }
+        ]
     },
     {
         "name": "Jango Fett",
@@ -1741,7 +1784,8 @@
         "locations": [
             {
                 "type": "Galactic Ascension",
-                "name": "What Must be Done"
+                "locId": "EVENT_KENOBI_GALACTICLEGEND_NAME",
+                "name": "What Must Be Done Galactic Ascension"
             }
         ]
     },
@@ -1750,7 +1794,8 @@
         "defId": "GRANDMASTERLUKE",
         "locations": [
             {
-                "type": "Hero's Journey",
+                "type": "Galactic Ascension",
+                "locId": "NODE_CAMPAIGN_EVENT_LUKE_GALACTICLEGEND_NAME",
                 "name": "The Journey's End"
             }
         ]
@@ -1878,7 +1923,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_KYLEKATARN_NAME"
+                "locId": "EVENT_MARQUEE_KYLEKATARN_NAME",
+                "name": "Dark Forces Marquee Event"
             }
         ]
     },
@@ -1966,7 +2012,8 @@
         "locations": [
             {
                 "type": "Galactic Ascension",
-                "name": "Hero's Fall"
+                "locId": "EVENT_LORDVADER_GALACTICLEGEND_NAME_V2",
+                "name": "Lord Vader Hero's Fall"
             }
         ]
     },
@@ -2053,7 +2100,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_MARAJADE_NAME"
+                "locId": "EVENT_MARQUEE_MARAJADE_NAME",
+                "name": "By The Emperor's Hand Marquee Event"
             }
         ]
     },
@@ -2062,7 +2110,9 @@
         "defId": "MAULS7",
         "locations": [
             {
-                "type": "Galactic Battle: Conquest"
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
             }
         ]
     },
@@ -2077,7 +2127,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_MERRIN_NAME"
+                "locId": "EVENT_MARQUEE_MERRIN_NAME",
+                "name": "Stories Of Survival Iii Marquee Event"
             }
         ]
     },
@@ -2118,7 +2169,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_MOFFGIDEONS1_NAME"
+                "locId": "EVENT_MARQUEE_MOFFGIDEONS1_NAME",
+                "name": "Tales From The Outer Rim Iv Marquee Event"
             }
         ]
     },
@@ -2133,7 +2185,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_MONMOTHMA_NAME"
+                "locId": "EVENT_MARQUEE_MONMOTHMA_NAME",
+                "name": "Alliance Chancellor Marquee Event"
             }
         ]
     },
@@ -2218,7 +2271,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_NINTHSISTER_NAME"
+                "locId": "EVENT_MARQUEE_NINTHSISTER_NAME",
+                "name": "Ruthless Efficiency Ii  Marquee Event"
             }
         ]
     },
@@ -2273,7 +2327,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BADBATCHOMEGA_NAME"
+                "locId": "EVENT_MARQUEE_BADBATCHOMEGA_NAME",
+                "name": "Clone Force 99 V Marquee Event"
             }
         ]
     },
@@ -2367,7 +2422,8 @@
         "locations": [
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_PRINCESSKNEESAA_NAME"
+                "locId": "EVENT_MARQUEE_PRINCESSKNEESAA_NAME",
+                "name": "Spirits From The Forest Moon Marquee Event"
             }
         ]
     },
@@ -2457,7 +2513,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_EPIXFINN_NAME"
+                "locId": "EVENT_MARQUEE_EPIXFINN_NAME",
+                "name": "Heroes Of The Resistance Marquee Event"
             }
         ]
     },
@@ -2472,7 +2529,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_EPIXPOE_NAME"
+                "locId": "EVENT_MARQUEE_EPIXPOE_NAME",
+                "name": "Heroes Of The Resistance Ii Marquee Event"
             }
         ]
     },
@@ -2511,7 +2569,8 @@
         "locations": [
             {
                 "type": "Galactic Ascension",
-                "name": "Heir to the Light Side"
+                "locId": "EVENT_REY_GALACTICLEGEND_NAME",
+                "name": "Heir To The Light Side Galactic Ascension"
             }
         ]
     },
@@ -2593,7 +2652,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_SANASTARROS_NAME"
+                "locId": "EVENT_MARQUEE_SANASTARROS_NAME",
+                "name": "Partner In Crime Marquee Event"
             }
         ]
     },
@@ -2618,7 +2678,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_SAWGERRERA_NAME"
+                "locId": "EVENT_MARQUEE_SAWGERRERA_NAME",
+                "name": "Stories Of Survival V Marquee Event"
             }
         ]
     },
@@ -2652,7 +2713,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_SECONDSISTER_NAME"
+                "locId": "EVENT_MARQUEE_SECONDSISTER_NAME",
+                "name": "Ruthless Efficiency I Marquee Event"
             }
         ]
     },
@@ -2667,7 +2729,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_SEVENTHSISTER_NAME"
+                "locId": "EVENT_MARQUEE_SEVENTHSISTER_NAME",
+                "name": "Ruthless Efficiency Iii  Marquee Event"
             }
         ]
     },
@@ -2682,7 +2745,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_SHAAKTI_NAME"
+                "locId": "EVENT_MARQUEE_SHAAKTI_NAME",
+                "name": "Clone Training Marquee Event"
             }
         ]
     },
@@ -2729,6 +2793,7 @@
         "locations": [
             {
                 "type": "Galactic Ascension",
+                "locId": "NODE_CAMPAIGN_EVENT_SITHETERNALEMPEROR_GALACTICLEGEND_NAME",
                 "name": "The Final Order"
             }
         ]
@@ -2755,7 +2820,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_FOSITHTROOPER_NAME"
+                "locId": "EVENT_MARQUEE_FOSITHTROOPER_NAME",
+                "name": "Emperor's Elite Marquee Event"
             }
         ]
     },
@@ -2770,7 +2836,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_UNDERCOVERLANDO_NAME"
+                "locId": "EVENT_MARQUEE_UNDERCOVERLANDO_NAME",
+                "name": "Guard Duty Marquee Event"
             }
         ]
     },
@@ -2866,7 +2933,8 @@
         "locations": [
             {
                 "type": "Galactic Ascension",
-                "name": "Heir to the Dark Side"
+                "locId": "EVENT_KYLOREN_GALACTICLEGEND_NAME",
+                "name": "Heir To The Dark Side Galactic Ascension"
             }
         ]
     },
@@ -2912,7 +2980,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_TARFFUL_NAME"
+                "locId": "EVENT_MARQUEE_TARFFUL_NAME",
+                "name": "Stories Of Survival Iv Marquee Event"
             }
         ]
     },
@@ -2932,7 +3001,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BADBATCHTECH_NAME"
+                "locId": "EVENT_MARQUEE_BADBATCHTECH_NAME",
+                "name": "Clone Force 99 Ii Marquee Event"
             }
         ]
     },
@@ -2967,7 +3037,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_ARMORER_NAME"
+                "locId": "EVENT_MARQUEE_ARMORER_NAME",
+                "name": "Way Of The Mandalore Marquee Event"
             }
         ]
     },
@@ -2987,7 +3058,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_THEMANDALORIAN_NAME"
+                "locId": "EVENT_MARQUEE_THEMANDALORIAN_NAME",
+                "name": "Tales From The Outer Rim Iii Marquee Event"
             }
         ]
     },
@@ -3017,7 +3089,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_C3POCHEWBACCA_NAME"
+                "locId": "EVENT_MARQUEE_C3POCHEWBACCA_NAME",
+                "name": "Escape From Cloud City Marquee Event"
             }
         ]
     },
@@ -3051,7 +3124,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_TUSKENCHIEFTAIN_NAME"
+                "locId": "EVENT_MARQUEE_TUSKENCHIEFTAIN_NAME",
+                "name": "Warriors Of The Dune Sea Marquee Event"
             }
         ]
     },
@@ -3095,7 +3169,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_TUSKENHUNTRESS_NAME"
+                "locId": "EVENT_MARQUEE_TUSKENHUNTRESS_NAME",
+                "name": "Warriors Of The Dune Sea Ii Marquee Event"
             }
         ]
     },
@@ -3225,7 +3300,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BADBATCHWRECKER_NAME"
+                "locId": "EVENT_MARQUEE_BADBATCHWRECKER_NAME",
+                "name": "Clone Force 99 Iii Marquee Event"
             }
         ]
     },
@@ -3286,7 +3362,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_ZORIIBLISS_NAME"
+                "locId": "EVENT_MARQUEE_ZORIIBLISS_NAME",
+                "name": "Resistance Runner Marquee Event"
             }
         ]
     }

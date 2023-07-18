@@ -427,15 +427,63 @@ async function updateLocs(unitListFile, currentLocFile) {
         if (!missions?.length) continue;
 
         const charArr = [];
-        const usedMarqee = [];
+        const usedLocId = [];
         for (const node of missions) {
             if (node.campaignId === "EVENTS") {
-                if (node.campaignMapId !== "MARQUEE") continue;
-                // Run through stuff for events (Marquees)
-                const locId = `EVENT_MARQUEE_${node.campaignNodeId.split("_")[0]}_NAME`;
-                if (usedMarqee.includes(locId)) continue;
-                usedMarqee.push(locId);
+                let locId = null;
+                const charObj = {};
+                if (node.campaignMapId === "MARQUEE") {
+                    // Run through stuff for Marquee events
+                    locId = `EVENT_MARQUEE_${node.campaignNodeId.split("_")[0]}_NAME`;
+                    if (usedLocId.includes(locId)) continue;
+                    usedLocId.push(locId);
 
+                    charObj.type = "Marquee";
+                    charObj.locId = locId;
+                } else if (node.campaignMapId === "PROGRESSION") {
+                    // Process the two progression events (GMY / EP)
+                    locId = `PROGRESSIONEVENT_${node.campaignNodeId}_NAME`;
+                    if (usedLocId.includes(locId)) continue;
+                    usedLocId.push(locId);
+
+                    charObj.type = "Legendary Event";
+                    charObj.locId = locId;
+                } else if (node.campaignMapId === "SCHEDULED" && node.campaignNodeId === "CONQUEST_UNIT_TRIALS") {
+                    // Process the Proving Grounds events
+                    // - Really just localize "Proving Grounds" since the rest is just the unit's name
+                    locId = "EVENT_CONQUEST_UNIT_TRIALS_NAME";
+                    if (usedLocId.includes(locId)) continue;
+                    usedLocId.push(locId);
+
+                    charObj.type = "Proving Grounds";
+                    charObj.locId = locId;
+                } else if (node.campaignMapId === "GALACTIC") {
+                    // Process galactic legends events
+                    //  - Still not sure how to manage LORDVADER in place of VADER
+                    const commonStr = node.campaignNodeId.replace("CAMPAIGN_", "");  // Replace junk
+                    const possibleKeys = [
+                        `NODE_CAMPAIGN_${commonStr}_NAME`,
+                        `${commonStr}_NAME`,
+                        `EVENT_${mat.defId}_GALACTICLEGEND_NAME_V2`,
+                        `EVENT_${mat.defId}_GALACTICLEGEND_NAME`,
+                    ];
+
+                    for (const possible of possibleKeys) {
+                        if (locales.eng_us[possible]) {
+                            locId = possible;
+                            break;
+                        }
+                    }
+
+                    if (usedLocId.includes(locId)) continue;
+                    usedLocId.push(locId);
+
+                    charObj.type = "Galactic Ascension";
+                    charObj.locId = locId;
+                }
+
+                // Go through and save all the locale strings into the db
+                if (!locId) continue;
                 let isAvailable = true;
                 for (const lang of langList) {
                     const langKey = locales[lang][locId];
@@ -443,6 +491,7 @@ async function updateLocs(unitListFile, currentLocFile) {
                         isAvailable = false;
                         break;
                     }
+                    if (lang === "eng_us") charObj.name = toProperCase(langKey);
                     const out = {
                         id: locId,
                         language: lang,
@@ -450,12 +499,8 @@ async function updateLocs(unitListFile, currentLocFile) {
                     };
                     await cache.put(config.mongodb.swapidb, "locations", {id: locId, language: lang}, out);
                 }
-                if (isAvailable) {
-                    charArr.push({
-                        type: "Marquee",
-                        locId
-                    });
-                }
+                // If locale strings were available, go ahead and stick the info in
+                if (isAvailable) charArr.push(charObj);
             } else {
                 // Run stuff through for hard nodes
                 const outMode = campaignMapNames[node.campaignId]?.game_mode;
@@ -503,8 +548,6 @@ async function updateLocs(unitListFile, currentLocFile) {
         "Assault Battle",
         "Epic Confrontation",
         "Challenges",
-        "Galactic Ascension",
-        "Galactic Battle: Conquest",
         "Hero's Journey",
         "Heroic Event",
         "Legacy Event",
@@ -514,7 +557,7 @@ async function updateLocs(unitListFile, currentLocFile) {
         "Territory Battle",
     ];
     const filteredLocations = currentLocs.map(loc => {
-        loc.locations = loc.locations.filter(thisLoc => thisLoc?.cost?.length || whitelistTypeLocs.includes(thisLoc?.type));
+        loc.locations = loc.locations.filter(thisLoc => thisLoc?.cost?.length || (whitelistTypeLocs.includes(thisLoc?.type) && !thisLoc.locId));
         return loc;
     });
 

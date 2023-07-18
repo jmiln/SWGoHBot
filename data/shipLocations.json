@@ -83,7 +83,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_YWINGCLONEWARS_NAME"
+                "locId": "EVENT_MARQUEE_YWINGCLONEWARS_NAME",
+                "name": "Republic Stalwart Marquee Event"
             }
         ]
     },
@@ -579,7 +580,9 @@
         "defId": "RAZORCREST",
         "locations": [
             {
-                "type": "Galactic Battle: Conquest"
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
             }
         ]
     },
@@ -782,7 +785,13 @@
     {
         "name": "TIE/IN Interceptor Prototype",
         "defId": "TIEINTERCEPTOR",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Umbaran Starfighter",
@@ -818,7 +827,8 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_VULTUREDROID_NAME"
+                "locId": "EVENT_MARQUEE_VULTUREDROID_NAME",
+                "name": "Mindless Destruction Marquee Event"
             }
         ]
     },

@@ -52,10 +52,8 @@ class Farm extends Command {
         let unitLocs = null;
         if (!isChar) {
             unitLocs = Bot.shipLocs.find(s => s.defId === character.uniqueName);
-            // unitLocs = Bot.shipLocs.find(s => s.name.toLowerCase() === character.name.toLowerCase());
         } else {
             unitLocs = Bot.charLocs.find(c => c.defId === character.uniqueName);
-            // unitLocs = Bot.charLocs.find(c => c.name.toLowerCase() === character.name.toLowerCase());
         }
 
 
@@ -63,12 +61,18 @@ class Farm extends Command {
             for (const loc of unitLocs.locations) {
                 if (loc.cost) {
                     // This will be anything in a store
-                    outList.push( `${loc.type} - ${loc.cost.replace("/", " per ")} shards`);
+                    outList.push( `${loc.type} \n * ${loc.cost.split("\n").map(cost => cost.replace("/", " per ")).join(" shards\n * ")} shards`);
                 } else if (loc.level) {
                     // It's a node, fleet, cantina, light/ dark side
                     if (loc.locId) {
                         const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {id: loc.locId, language: interaction.swgohLanguage.toLowerCase()});
-                        outList.push(Bot.toProperCase(langLoc?.langKey) + " " + loc.level);
+
+                        // If it's a proving grounds event, stick the unit name after
+                        if (loc.locId === "EVENT_CONQUEST_UNIT_TRIALS_NAME") {
+                            outList.push(Bot.toProperCase(langLoc.langKey) + " - " + character.name);
+                        } else {
+                            outList.push(Bot.toProperCase(langLoc?.langKey) + " " + loc.level);
+                        }
                     } else {
                         loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
                         if (loc.type === "L") {
