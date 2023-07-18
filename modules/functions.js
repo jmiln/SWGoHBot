@@ -853,8 +853,10 @@ module.exports = (Bot, client) => {
         return [levels, avgLvls];
     };
 
+    const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;
     Bot.toProperCase = function(strIn) {
         return strIn.replace(/([^\W_]+[^\s-]*) */g, function(txt) {
+            if (ROMAN_REGEX.test(txt)) return txt.toUpperCase();
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
     };
