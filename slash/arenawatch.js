@@ -869,8 +869,8 @@ class ArenaWatch extends Command {
                         ].join("\n")
                     });
 
-                    const charChan        = await getChannelStr("arena",  "char");
-                    const fleetChan       = await getChannelStr("arena",  "fleet");
+                    const charChan  = await getChannelStr("arena",  "char");
+                    const fleetChan = await getChannelStr("arena",  "fleet");
                     return interaction.reply({embeds: [{
                         title: "Arena Watch Settings",
                         description: [
@@ -918,15 +918,11 @@ class ArenaWatch extends Command {
                 console.error("Invalid arenaType");
                 return null;
             }
-            let thisChan = interaction.guild ? interaction.guild.channels.cache.get(aw[alertType]?.[arenaType]?.channel) : null;
-            if (!thisChan) {
-                thisChan = await interaction.client.shard.broadcastEval((client, aw, alertType, arenaType) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: {aw, alertType, arenaType}})
-                    .then((thisChan) => {
-                        thisChan = thisChan.filter(a => !!a)[0];
-                        return thisChan ? `<#${thisChan.id}>` : "N/A";
-                    });
+            const thisAW = aw?.[alertType]?.[arenaType];
+            if (thisAW.channel) {
+                return `<#${thisAW.channel}>`;
             }
-            return thisChan || "N/A";
+            return "N/A";
         }
     }
 }
