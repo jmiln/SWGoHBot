@@ -375,6 +375,21 @@ class ArenaWatch extends Command {
                             name: "allycode",
                             type: ApplicationCommandOptionType.String,
                             description: "An allycode to check the specific settings for"
+                        },
+                        {
+                            name: "view_by",
+                            type: ApplicationCommandOptionType.String,
+                            description: "View the list sorted by char or fleet ranks",
+                            choices: [
+                                {
+                                    name: "Fleet Rank",
+                                    value: "fleet_rank"
+                                },
+                                {
+                                    name: "Char Rank",
+                                    value: "char_rank"
+                                }
+                            ]
                         }
                     ]
                 }
@@ -834,19 +849,33 @@ class ArenaWatch extends Command {
             case "view": {
                 // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
                 const allycode = interaction.options.getString("allycode")?.replace(/[^\d]/g, "");
+                const view_by = interaction.options.getString("view_by");
 
                 if (!allycode) {
                     // If there's any ally codes in the array, go ahead and format them
                     let ac =  aw.allycodes.length ? aw.allycodes : [];
                     ac = ac
                         // Sort by name
-                        .sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+                        .sort((a,b) => {
+                            if (!view_by) {
+                                return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+                            } else if (view_by === "char_rank") {
+                                return a.lastChar > b.lastChar ? 1 : -1;
+                            } else if (view_by === "fleet_rank") {
+                                return a.lastShip > b.lastShip ? 1 : -1;
+                            }
+                        })
                         // Then format the output strings
                         .map(a => {
-                            const isWarn = a?.warn?.min && a.warn?.arena ? "W": "";
-                            const isRes  = a.result ? "R" : "";
-                            const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
-                            return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                            if (!view_by) {
+                                const isWarn = a?.warn?.min && a.warn?.arena ? "W": "";
+                                const isRes  = a.result ? "R" : "";
+                                const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
+                                return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                            } else {
+                                // Current rank
+                                return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  **${a.mention ? `<@${a.mention}>` : a.name}**`;
+                            }
                         });
 
                     const fields = [];
@@ -854,7 +883,7 @@ class ArenaWatch extends Command {
                     const acChunks = Bot.msgArray(ac, "\n", 1000);
                     for (const [ ix, chunk ] of acChunks.entries()) {
                         fields.push({
-                            name: ix > 0 ? "-" : `AllyCodes: (${aw.allycodes.length}/${codeCap})`,
+                            name: ix > 0 ? "-" : `Members (${aw.allycodes.length}/${codeCap}):`,
                             value: chunk
                         });
                     }
@@ -869,8 +898,8 @@ class ArenaWatch extends Command {
                         ].join("\n")
                     });
 
-                    const charChan        = await getChannelStr("arena",  "char");
-                    const fleetChan       = await getChannelStr("arena",  "fleet");
+                    const charChan  = await getChannelStr("arena",  "char");
+                    const fleetChan = await getChannelStr("arena",  "fleet");
                     return interaction.reply({embeds: [{
                         title: "Arena Watch Settings",
                         description: [
@@ -918,15 +947,11 @@ class ArenaWatch extends Command {
                 console.error("Invalid arenaType");
                 return null;
             }
-            let thisChan = interaction.guild ? interaction.guild.channels.cache.get(aw[alertType]?.[arenaType]?.channel) : null;
-            if (!thisChan) {
-                thisChan = await interaction.client.shard.broadcastEval((client, aw, alertType, arenaType) => client.channels.cache.get(aw[alertType]?.[arenaType]?.channel), {context: {aw, alertType, arenaType}})
-                    .then((thisChan) => {
-                        thisChan = thisChan.filter(a => !!a)[0];
-                        return thisChan ? `<#${thisChan.id}>` : "N/A";
-                    });
+            const thisAW = aw?.[alertType]?.[arenaType];
+            if (thisAW.channel) {
+                return `<#${thisAW.channel}>`;
             }
-            return thisChan || "N/A";
+            return "N/A";
         }
     }
 }
