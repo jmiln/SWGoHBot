@@ -21,8 +21,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_triplezero"
@@ -1031,9 +1031,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -2605,7 +2605,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -2743,11 +2743,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_gamorreanguard"
     },
@@ -2803,9 +2803,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Potency"
         },
         "avatarName": "charui_zeb_s3"
     },
@@ -2835,7 +2835,7 @@
             "square": "Offense",
             "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Health"
         },
@@ -4387,7 +4387,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5047,8 +5047,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5394,7 +5393,18 @@
             "Attacker",
             "Ewok"
         ],
-        "mods": {}
+        "mods": {
+            "sets": [
+                "Crit. Chance x2",
+                "Crit. Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        }
     },
     {
         "name": "Princess Leia",

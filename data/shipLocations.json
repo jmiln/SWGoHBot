@@ -442,6 +442,11 @@
         ]
     },
     {
+        "name": "Leviathan",
+        "defId": "CAPITALLEVIATHAN",
+        "locations": []
+    },
+    {
         "name": "Malevolence",
         "defId": "CAPITALMALEVOLENCE",
         "locations": [
@@ -454,7 +459,13 @@
     {
         "name": "Mark VI Interceptor",
         "defId": "SITHSUPREMACYCLASS",
-        "locations": []
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "5-F",
+                "locId": "CANTINA"
+            }
+        ]
     },
     {
         "name": "MG-100 StarFortress SF-17",
@@ -502,7 +513,7 @@
             },
             {
                 "type": "Hard Modes (D)",
-                "level": "9-D",
+                "level": "1-A",
                 "locId": "HARD_DARK"
             }
         ]
@@ -736,7 +747,13 @@
     {
         "name": "TIE Dagger",
         "defId": "TIEDAGGER",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-D",
+                "locId": "HARD_DARK"
+            }
+        ]
     },
     {
         "name": "TIE Defender",

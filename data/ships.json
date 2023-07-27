@@ -1092,6 +1092,24 @@
         "avatarName": "charui_mil_fal_pristine"
     },
     {
+        "name": "Leviathan",
+        "uniqueName": "CAPITALLEVIATHAN",
+        "aliases": [
+            "Leviathan"
+        ],
+        "avatarName": "charui_leviathan",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leviathan.png",
+        "side": "dark",
+        "factions": [
+            "Capital Ship",
+            "Sith",
+            "Sith Empire"
+        ],
+        "crew": [
+            "Darth Revan"
+        ]
+    },
+    {
         "name": "Malevolence",
         "uniqueName": "CAPITALMALEVOLENCE",
         "aliases": [
