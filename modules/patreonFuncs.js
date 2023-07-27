@@ -465,24 +465,28 @@ module.exports = (Bot, client) => {
                     player.poOffset = newPlayer.poUTCOffsetMinutes;
                 }
                 if (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar) {
-                    compChar.push({
+                    const charOverview = {
                         name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                         allyCode: player.allyCode,
                         oldRank: player.lastChar || 0,
                         newRank: newPlayer.arena.char.rank,
                         mark: player.mark
-                    });
+                    };
+                    compChar.push(charOverview);
                     player.lastChar = newPlayer.arena.char.rank;
+                    player.lastCharChange = charOverview.oldRank - charOverview.newRank;
                 }
                 if (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip) {
-                    compShip.push({
+                    const shipOverview = {
                         name: player.mention ? `<@${player.mention}>`: newPlayer.name,
                         allyCode: player.allyCode,
                         oldRank: player.lastShip || 0,
                         newRank: newPlayer.arena.ship.rank,
                         mark: player.mark
-                    });
+                    };
+                    compShip.push(shipOverview);
                     player.lastShip = newPlayer.arena.ship.rank;
+                    player.lastShipChange = shipOverview.oldRank - shipOverview.newRank;
                 }
 
                 if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
