@@ -874,7 +874,7 @@ class ArenaWatch extends Command {
                                 return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                             } else {
                                 // Current rank
-                                return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  **${a.mention ? `<@${a.mention}>` : a.name}**`;
+                                return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                             }
                         });
 
