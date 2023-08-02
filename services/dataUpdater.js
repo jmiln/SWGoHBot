@@ -6,6 +6,8 @@ const { eachLimit } = require("async");
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
 
+const FORCE_UPDATE = true;
+
 const ComlinkStub = require("@swgoh-utils/comlink");
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
 
@@ -26,6 +28,8 @@ const CHAR_FILE      = dataDir + "characters.json";
 const CHAR_LOCATIONS = dataDir + "charLocations.json";
 const SHIP_FILE      = dataDir + "ships.json";
 const SHIP_LOCATIONS = dataDir + "shipLocations.json";
+
+const JOURNEY_FILE  = dataDir + "journeyReqs.json";
 
 const RAID_NAMES     = dataDir + "raidNames.json";
 
@@ -50,28 +54,32 @@ console.log("Starting data updater");
 // Run the upater when it's started
 init().then(async () => {
     const isNew = await updateMetaData();
-    if (isNew) {
+    if (isNew || FORCE_UPDATE) {
         await runGameDataUpdaters();
     }
-    await runModUpdaters();
+    if (!FORCE_UPDATE) {
+        await runModUpdaters();
+    }
 });
 
 // Set it to update the patreon data and every 15 minutes if doable
-if (config.patreon) {
-    setInterval(async () => {
-        await updatePatrons();
-    }, 15 * 60 * 1000);
-}
-
-// Set it to check/ update the game data daily if needed
-// - Also run the mods updater daily
-setInterval(async () => {
-    const isNew = await updateMetaData();
-    if (isNew) {
-        await runGameDataUpdaters();
+if (!FORCE_UPDATE) {
+    if (config.patreon) {
+        setInterval(async () => {
+            await updatePatrons();
+        }, 15 * 60 * 1000);
     }
-    await runModUpdaters();
-}, 24 * 60 * 60 * 1000);
+
+    // Set it to check/ update the game data daily if needed
+    // - Also run the mods updater daily
+    setInterval(async () => {
+        const isNew = await updateMetaData();
+        if (isNew) {
+            await runGameDataUpdaters();
+        }
+        await runModUpdaters();
+    }, 24 * 60 * 60 * 1000);
+}
 
 async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
@@ -80,6 +88,7 @@ async function init() {
 
 // Update the metadata file if it exists, create it otherwise
 async function updateMetaData() {
+    debugLog("Checking metadata");
     const meta = await comlinkStub.getMetaData();
     let metaFile = {};
     if (fs.existsSync(META_FILE)) {
@@ -90,6 +99,7 @@ async function updateMetaData() {
     for (const key of META_KEYS) {
         if (meta[key] !== metaFile[key]) {
             isUpdated = true;
+            debugLog(`Updating metadata ${key} from ${metaFile[key]} to ${meta[key]}`);
         }
         metaOut[key] = meta[key];
     }
@@ -125,6 +135,7 @@ async function runModUpdaters() {
 }
 
 async function runGameDataUpdaters() {
+    debugLog("Running gameData updater");
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = [];
 
@@ -134,6 +145,7 @@ async function runGameDataUpdaters() {
 
     // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
     await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
+    debugLog("Finished processing gameData chunks");
 
     // Run unit locations updaters
     const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
@@ -176,6 +188,7 @@ const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", 
 const slotNames = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
 async function getGuildIds() {
+    debugLog("Getting guildIds");
     const guildLeaderboardRes = await comlinkStub._postRequestPromiseAPI("/getGuildLeaderboard", {
         "payload" : {
             "leaderboardId":[ { "leaderboardType": 3, "monthOffset": 0 } ],
@@ -187,6 +200,7 @@ async function getGuildIds() {
 }
 
 async function getGuildPlayerIds(guildIds) {
+    debugLog("Getting guildPlayerIds");
     const playerIdArr = [];
 
     // Get all the players' IDs from each guild
@@ -201,6 +215,7 @@ async function getGuildPlayerIds(guildIds) {
 
 // Stick all of the characters from each player's rosters into an array ot be processed later
 async function getPlayerRosters(playerIds) {
+    debugLog("Getting player rosters");
     const rosterArr = [];
 
     await eachLimit(playerIds, MAX_CONCURRENT, async function(playerId) {
@@ -388,6 +403,7 @@ async function updatePatrons() {
 }
 
 async function updateLocs(unitListFile, currentLocFile) {
+    debugLog("Updating unit locations");
     const currentUnits = JSON.parse(fs.readFileSync(unitListFile, "utf-8"));
     const currentLocs = JSON.parse(fs.readFileSync(currentLocFile, "utf-8"));
     const matArr = [];
@@ -587,16 +603,28 @@ async function updateGameData() {
     if (!metadataFile.latestGamedataVersion) return console.error("[updateGameData] Missing latestGamedataVersion from metadata");
     const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
 
+    debugLog("Running main updaters");
+
     locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
 
     await processAbilities(gameData.ability, gameData.skill);
+    debugLog("Finished processing Abilities");
     await processCategories(gameData.category);
+    debugLog("Finished processing Categories");
     await processEquipment(gameData.equipment);
+    debugLog("Finished processing Equipment");
     await processMaterials(gameData.material);
+    debugLog("Finished processing Materials");
     await processModData(gameData.statMod);
+    debugLog("Finished processing Mod data");
     await processRecipes(gameData.recipe);
+    debugLog("Finished processing Recipes");
     await processUnits(gameData.units);
+    debugLog("Finished processing Units");
+    await processJourneyReqs(gameData);
+    debugLog("Finished processing Journey Reqs");
     await saveRaidNames();
+    debugLog("Finished processing Raid Names");
 
     /**
     * function
@@ -807,7 +835,8 @@ async function updateGameData() {
                     };
                 }),
                 crewList: unit.crew,
-                creationRecipeReference: unit.creationRecipeReference
+                creationRecipeReference: unit.creationRecipeReference,
+                legend: unit?.legend,   // True if GL?
             };
         });
 
@@ -1051,6 +1080,74 @@ async function updateGameData() {
             .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
         return [key, val];
     }
+
+    async function processJourneyReqs(gameData) {
+        let oldReqs = {};
+        // Grab the existing saved data if available
+        if (fs.existsSync(JOURNEY_FILE)) {
+            oldReqs = JSON.parse(fs.readFileSync(JOURNEY_FILE, "utf-8"));
+        }
+
+        // Grab all the units that have activation requirements to process
+        const unitGuides = gameData.unitGuideDefinition
+            .filter(g => g.additionalActivationRequirementId)
+            .map(g => {
+                return {
+                    defId: g.unitBaseId,
+                    guideId: g.additionalActivationRequirementId
+                };
+            });
+
+        // For each character in the guide that had useful data, process their requirements
+        const unitGuideOut = {};
+        for (const unit of unitGuides) {
+            const tempOut = {
+                guideId: unit.guideId,
+                type: "AUTO",
+                reqs: []
+            };
+
+            // For each required character, save the defId, the required stat, and it's level
+            const reqs = gameData.requirement.find(req => req.id === unit.guideId).requirementItem;
+            for (const req of reqs) {
+                const evs = gameData.challenge.find(chal => chal.id === req.id)?.task;
+                if (!evs) continue;
+
+                for (const ev of evs) {
+                    const splitDesc = ev.descKey.split("_");
+                    const tier = parseInt(splitDesc.pop(), 10);
+                    const type = splitDesc.pop();
+                    const defId = ev?.actionLinkDef?.link.split("=").pop();
+                    if (defId) tempOut.reqs.push({defId, type, tier});
+                }
+            }
+
+            // If it's found requirements for this unit, go ahead and keep em
+            if (tempOut.reqs?.length) {
+                unitGuideOut[unit.defId] = tempOut;
+            }
+        }
+
+
+        // Process the old reqs data to keep any manual entries, and wipe out/ replace any automated ones
+        const reqsOut = {};
+        if (oldReqs && Object.keys(oldReqs).length) {
+            for (const reqKey of Object.keys(oldReqs)) {
+                const thisReq = oldReqs[reqKey];
+                if (thisReq.type !== "AUTO") {
+                    reqsOut[reqKey] = thisReq;
+                }
+            }
+        }
+
+        debugLog(`Updating JourneyReqs file, ${Object.keys(oldReqs).length} manual entries, ${Object.keys(unitGuideOut).length} automatic entries`);
+
+        // Combine the old stuff with the new automated data
+        fs.writeFileSync(JOURNEY_FILE, JSON.stringify({
+            ...oldReqs,
+            ...unitGuideOut
+        }, null, 4), {encoding: "utf-8"});
+    }
 }
 
 const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;
@@ -1061,3 +1158,12 @@ function toProperCase(strIn) {
     });
 }
 
+const { inspect } = require("util");
+function debugLog(str) {
+    if (!FORCE_UPDATE) return;
+    if (typeof str === "string" && str.length) {
+        console.log(str);
+    } else {
+        console.log(inspect(...str, {depth: 5}));
+    }
+}
