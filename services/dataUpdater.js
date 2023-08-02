@@ -6,7 +6,7 @@ const { eachLimit } = require("async");
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
 
-const FORCE_UPDATE = true;
+const FORCE_UPDATE = false;
 
 const ComlinkStub = require("@swgoh-utils/comlink");
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
