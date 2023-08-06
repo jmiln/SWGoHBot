@@ -166,6 +166,7 @@ async function runGameDataUpdaters() {
     } else {
         // console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
     }
+    debugLog("Finished running gameData updaters");
 }
 
 function saveFile(filePath, jsonData, doPretty=true) {
@@ -1082,6 +1083,7 @@ async function updateGameData() {
     }
 
     async function processJourneyReqs(gameData) {
+        const characters = await JSON.parse(fs.readFileSync(CHAR_FILE));
         let oldReqs = {};
         // Grab the existing saved data if available
         if (fs.existsSync(JOURNEY_FILE)) {
@@ -1134,6 +1136,20 @@ async function updateGameData() {
         if (oldReqs && Object.keys(oldReqs).length) {
             for (const reqKey of Object.keys(oldReqs)) {
                 const thisReq = oldReqs[reqKey];
+                // Process and enter the characters for requirements that're just full factions
+                // - This will make it so as new characters are added to a faction, they're included as needed
+                if (thisReq.type === "FACTION") {
+                    thisReq.reqs = characters
+                        .filter(ch => ch.factions.includes(thisReq.faction.name))
+                        .map(ch => {
+                            return {
+                                defId: ch.uniqueName,
+                                type: thisReq.faction.type,
+                                tier: thisReq.faction.tier
+                            };
+                        });
+                }
+                // Wipe out any auto entries, so they'll be reformed
                 if (thisReq.type !== "AUTO") {
                     reqsOut[reqKey] = thisReq;
                 }
