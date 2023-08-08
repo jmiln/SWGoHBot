@@ -1084,6 +1084,7 @@ async function updateGameData() {
 
     async function processJourneyReqs(gameData) {
         const characters = await JSON.parse(fs.readFileSync(CHAR_FILE));
+        const ships = await JSON.parse(fs.readFileSync(SHIP_FILE));
         let oldReqs = {};
         // Grab the existing saved data if available
         if (fs.existsSync(JOURNEY_FILE)) {
@@ -1136,6 +1137,45 @@ async function updateGameData() {
         if (oldReqs && Object.keys(oldReqs).length) {
             for (const reqKey of Object.keys(oldReqs)) {
                 const thisReq = oldReqs[reqKey];
+                if (thisReq.type === "MIXED") {
+                    // Grab all the manually put in units
+                    const thisReqOut = thisReq.reqs.filter(unit => unit.manual);
+                    const currentUnits = thisReqOut.map(unit => unit.defId);
+                    // Go through each chunk from the auto section and get the units together
+
+                    for (const autoReq of thisReq.auto) {
+                        const searchArr = autoReq.ship ? ships : characters;
+                        const out = searchArr
+                            .filter(unit => {
+                                // Don't keep units that're already in the list manually
+                                if (currentUnits.includes(unit.uniqueName)) return false;
+
+                                // Don't list the character you're trying to unlock as a valid requirement
+                                if (unit.uniqueName === reqKey) return false;
+
+                                // If it needs capital ships only, filter the list down to that
+                                if (autoReq.capital) {
+                                    // If we want all capital ships, don't filter it down
+                                    if (autoReq.faction === "ALL") {
+                                        return true;
+                                    }
+                                    return unit.factions.includes("Capital Ship");
+                                }
+
+                                // If it gets here, just check the required faction against the unit's factions list
+                                return unit.factions.includes(autoReq.faction);
+                            })
+                            .map(unit => {
+                                return {
+                                    defId: unit.uniqueName,
+                                    type: autoReq.type,
+                                    tier: autoReq.tier
+                                };
+                            });
+                        thisReqOut.push(...out);
+                    }
+                    thisReq.reqs = thisReqOut;
+                }
                 // Process and enter the characters for requirements that're just full factions
                 // - This will make it so as new characters are added to a faction, they're included as needed
                 if (thisReq.type === "FACTION") {

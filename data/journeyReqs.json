@@ -1863,5 +1863,1209 @@
                 "tier": 7
             }
         ]
+    },
+    "DARTHREVAN": {
+        "type": "MANUAL",
+        "reqs": [
+            {
+                "defId": "BASTILASHANDARK",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CARTHONASI",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "JUHANI",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "HK47",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CANDEROUSORDO",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "JEDIKNIGHTREVAN": {
+        "type": "MANUAL",
+        "reqs": [
+            {
+                "defId": "BASTILASHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "JOLEEBINDO",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "T3_M4",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "ZAALBAR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "MISSIONVAO",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "DARTHMALAK": {
+        "type": "MANUAL",
+        "reqs": [
+            {
+                "defId": "JEDIKNIGHTREVAN",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "BASTILASHAN",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "JOLEEBINDO",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "MISSIONVAO",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "ZAALBAR",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "DARTHREVAN",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "BASTILASHANDARK",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "CARTHONASI",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "HK47",
+                "type": "GP",
+                "tier": 17500
+            },
+            {
+                "defId": "CANDEROUSORDO",
+                "type": "GP",
+                "tier": 17500
+            }
+        ]
+    },
+    "COMMANDERLUKESKYWALKER": {
+        "type": "MANUAL",
+        "reqs": [
+            {
+                "defId": "OLDBENKENOBI",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "LUKESKYWALKER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "PRINCESSLEIA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "STORMTROOPERHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "R2D2_LEGENDARY",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "REYJEDITRAINING": {
+        "type": "MANUAL",
+        "reqs": [
+            {
+                "defId": "REY",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "FINN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "BB8",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "SMUGGLERHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "SMUGGLERCHEWBACCA",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "THEMANDALORIANBESKARARMOR": {
+        "type": "MANUAL",
+        "reqs": [
+            {
+                "defId": "THEMANDALORIAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "GREEFKARGA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "KUILL",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CARADUNE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "IG11",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "CAPITALCHIMAERA": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "faction": "Rebel",
+                "ship": true,
+                "capital": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "faction": "Rebel",
+                "ship": true,
+                "capital": false,
+                "type": "STAR",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "GHOST",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "PHANTOM2",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALEXECUTOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALSTARDESTROYER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALFINALIZER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALLEVIATHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMALEVOLENCE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALRADDUS",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "XWINGRED3",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "UWINGSCARIF",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "UWINGROGUEONE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "MILLENNIUMFALCON",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "OUTRIDER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "RAVENSCLAW",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "YWINGREBEL",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "XWINGRED2",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "MILLENNIUMFALCON": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "faction": "ANY",
+                "ship": true,
+                "capital": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "faction": "Bounty Hunter",
+                "ship": true,
+                "capital": false,
+                "type": "STAR",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "defId": "CAPITALCHIMAERA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALEXECUTOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALSTARDESTROYER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALFINALIZER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALLEVIATHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMALEVOLENCE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALRADDUS",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "HOUNDSTOOTH",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "IG2000",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "RAZORCREST",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "SLAVE1",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "XANADUBLOOD",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "GENERALSKYWALKER": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "manual": true,
+                "faction": "Galactic Republic",
+                "ship": true,
+                "capital": true,
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "manual": true,
+                "faction": "Galactic Republic",
+                "ship": true,
+                "capital": false,
+                "type": "STAR",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "JEDISTARFIGHTERANAKIN",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "AHSOKATANO",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "C3POLEGENDARY",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "GENERALKENOBI",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "PADMEAMIDALA",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "SHAAKTI",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "ASAJVENTRESS",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "B1BATTLEDROIDV2",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "B2SUPERBATTLEDROID",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "DROIDEKA",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "MAGNAGUARD",
+                "type": "GP",
+                "tier": 17700
+            },
+            {
+                "defId": "CAPITALCHIMAERA",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALEXECUTOR",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALSTARDESTROYER",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALFINALIZER",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALLEVIATHAN",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALMALEVOLENCE",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "CAPITALRADDUS",
+                "type": "GP",
+                "tier": 40000
+            },
+            {
+                "defId": "JEDISTARFIGHTERAHSOKATANO",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "YWINGCLONEWARS",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "ARC170CLONESERGEANT",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "JEDISTARFIGHTERCONSULAR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "BLADEOFDORIN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "ARC170REX",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "UMBARANSTARFIGHTER",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "JEDIKNIGHTLUKE": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "manual": true,
+                "faction": "ANY",
+                "ship": true,
+                "capital": true,
+                "type": "STAR",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "MILLENNIUMFALCON",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "XWINGRED2",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "COMMANDERLUKESKYWALKER",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "HOTHLEIA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "HOTHHAN",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "CHEWBACCALEGENDARY",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "C3POLEGENDARY",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "ADMINISTRATORLANDO",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "HERMITYODA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "VADER",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "WAMPA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "CAPITALCHIMAERA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALEXECUTOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALSTARDESTROYER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALFINALIZER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALLEVIATHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALMALEVOLENCE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALRADDUS",
+                "type": "STAR",
+                "tier": 7
+            }
+        ]
+    },
+    "HOTHLEIA": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "manual": true,
+                "faction": "Rebel",
+                "type": "STAR",
+                "tier": 5
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "HOTHREBELSOLDIER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "ADMIRALACKBAR",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "ADMIRALRADDUS",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "FULCRUMAHSOKA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "BAZEMALBUS",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "BIGGSDARKLIGHTER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "BISTAN",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "BODHIROOK",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "C3POLEGENDARY",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "HOTHHAN",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CARADUNE",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CASSIANANDOR",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CHEWBACCALEGENDARY",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CHIRRUTIMWE",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CHOPPERS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "COMMANDERLUKESKYWALKER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "EZRABRIDGERS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "ZEBS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "HANSOLO",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "HERASYNDULLAS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "HOTHREBELSCOUT",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "JYNERSO",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "K2SO",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "KANANJARRUSS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "KYLEKATARN",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "ADMINISTRATORLANDO",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "LOBOT",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "LUKESKYWALKER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "MONMOTHMA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "OLDBENKENOBI",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "PAO",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "PRINCESSLEIA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "R2D2_LEGENDARY",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "SABINEWRENS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "SAWGERRERA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "SCARIFREBEL",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "STORMTROOPERHAN",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "C3POCHEWBACCA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "WEDGEANTILLES",
+                "type": "STAR",
+                "tier": 5
+            }
+        ]
+    },
+    "IMPERIALPROBEDROID": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "manual": true,
+                "faction": "Imperial Trooper",
+                "type": "STAR",
+                "tier": 5
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "VEERS",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "COLONELSTARCK",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "ADMIRALPIETT",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "DARKTROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "DEATHTROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "IDENVERSIOEMPIRE",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "MAGMATROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "MOFFGIDEONS1",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "RANGETROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "SHORETROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "SNOWTROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "STORMTROOPER",
+                "type": "STAR",
+                "tier": 5
+            }
+        ]
+    },
+    "WATTAMBOR": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "manual": true,
+                "faction": "Clone Trooper",
+                "type": "GP",
+                "tier": 22000
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "SHAAKTI",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "manual": true,
+                "required": true,
+                "defId": "ARCTROOPER501ST",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "CAPTAINREX",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "CC2224",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "CLONESERGEANTPHASEI",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "CT210408",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "CT5555",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "CT7567",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "BADBATCHECHO",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "BADBATCHHUNTER",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "BADBATCHOMEGA",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "BADBATCHTECH",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "BADBATCHWRECKER",
+                "type": "GP",
+                "tier": 22000
+            }
+        ]
+    },
+    "THIRDSISTER": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "manual": true,
+                "faction": "Inquisitorius",
+                "type": "RELIC",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "required": true,
+                "defId": "GRANDINQUISITOR",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "EIGHTHBROTHER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "FIFTHBROTHER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "NINTHSISTER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "SECONDSISTER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "SEVENTHSISTER",
+                "type": "RELIC",
+                "tier": 7
+            }
+        ]
     }
 }
