@@ -24,40 +24,6 @@ class Panic extends Command {
         });
     }
 
-    /*
-    *   Planned output before images:
-    *
-    *   Required List:
-    *   valid | requirement | unitName
-    *    ✓X   |  17,000 gp  | Darth Malak
-    *
-    *
-    *   Need X out of this list
-    *   valid | requirement | unitName
-    *    ✓X   |  17,000 gp  | Maul
-    *
-    *   With images, I want a row each for ships and characters if both are there.
-    *   - Some text up top to say if you're set or not, and what the required stats are for each section (Takes away the need for reqs on each unit)
-    *   - Need to figure out a template for ship images, already sorta have one for characters
-    *       * Probably can't fit 5 per row unless they're a lot shorter?
-    *   - Want to show the needed requirement, and the player's current one under each portrait, as well as a checkmark or X to show if it's viable?
-    *       * Or, overlay an X over the unit image?
-    *       * Probably the 2nd version below
-    *
-    *   +-------------------+-------------------+-------------------+-------------------+-------------------+
-    *   |                   |                   |                   |                   |                   |
-    *   |                   |                   |                   |                   |                   |
-    *   |     Character     |     Character     |     Character     |     Character     |     Character     |
-    *   |       Image       |       Image       |       Image       |       Image       |       Image       |
-    *   |                   |                   |                   |                   |                   |
-    *   |                   |                   |                   |                   |                   |
-    *   +-------------------+-------------------+-------------------+-------------------+-------------------+
-    *   | \/  15,345 GP     |   /  17,700 GP    |  X  15,345 GP     |  ✓  17,700 GP     |                   |
-    *   | /\  Darth Revan   | \/   Darth Maul   |  Darth Nihilus    |   Darth Sidious   |                   |
-    *   +-------------------+-------------------+-------------------+-------------------+-------------------+
-    *
-    */
-
     async run(Bot, interaction) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
