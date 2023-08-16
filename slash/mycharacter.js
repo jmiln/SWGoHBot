@@ -293,31 +293,31 @@ class MyCharacter extends Command {
                     footer: footer
                 }]
             });
-        } else {
-            // But if it could, go ahead and send it
-            return interaction.editReply({
-                content: null,
-                embeds: [{
-                    author: {
-                        name: (thisUnit.player ? thisUnit.player : player.name) + "'s " + unit.name,
-                        url: unit.url
-                    },
-                    thumbnail: { url: "attachment://image.png" },
-                    description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${thisUnit.rarity}* | ${parseInt(thisUnit.gp, 10)} gp\`${gearOut}`,
-                    fields: [
-                        {
-                            name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
-                            value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
-                        }
-                    ].concat(fields),
-                    footer: footer,
-                }],
-                files: [{
-                    attachment: unitImg,
-                    name: "image.png"
-                }]
-            });
         }
+
+        // But if it could, go ahead and send it
+        return interaction.editReply({
+            content: null,
+            embeds: [{
+                author: {
+                    name: (thisUnit.player ? thisUnit.player : player.name) + "'s " + unit.name,
+                    url: unit.url
+                },
+                thumbnail: { url: "attachment://image.png" },
+                description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${thisUnit.rarity}* | ${parseInt(thisUnit.gp, 10)} gp\`${gearOut}`,
+                fields: [
+                    {
+                        name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                        value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
+                    }
+                ].concat(fields),
+                footer: footer,
+            }],
+            files: [{
+                attachment: unitImg,
+                name: "image.png"
+            }]
+        });
     }
 }
 
