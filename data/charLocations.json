@@ -481,6 +481,11 @@
         "defId": "CAPTAINREX",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "3-F",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINREX_NAME",
                 "name": "The Lost Commander Marquee Event"
@@ -1750,11 +1755,6 @@
             {
                 "type": "Cantina Shipments",
                 "cost": "400/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "3-F",
-                "locId": "HARD_DARK"
             }
         ]
     },
@@ -2699,6 +2699,17 @@
                 "type": "Hard Modes (Fleet)",
                 "level": "2-C",
                 "locId": "HARD_FLEET"
+            }
+        ]
+    },
+    {
+        "name": "Scout Trooper",
+        "defId": "SCOUTTROOPER_V3",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SCOUTTROOPER_NAME",
+                "name": "Eyes Of The Emperor Marquee Event"
             }
         ]
     },

@@ -6,7 +6,7 @@ const { eachLimit } = require("async");
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
 
-const FORCE_UPDATE = false;
+const FORCE_UPDATE = true;
 
 const ComlinkStub = require("@swgoh-utils/comlink");
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
@@ -1121,7 +1121,13 @@ async function updateGameData() {
                     const tier = parseInt(splitDesc.pop(), 10);
                     const type = splitDesc.pop();
                     const defId = ev?.actionLinkDef?.link.split("=").pop();
-                    if (defId) tempOut.reqs.push({defId, type, tier});
+                    if (defId) {
+                        if (ships.find(sh => sh.uniqueName === defId)) {
+                            tempOut.reqs.push({defId, type, tier, ship: true});
+                        } else {
+                            tempOut.reqs.push({defId, type, tier});
+                        }
+                    }
                 }
             }
 
@@ -1141,8 +1147,8 @@ async function updateGameData() {
                     // Grab all the manually put in units
                     const thisReqOut = thisReq.reqs.filter(unit => unit.manual);
                     const currentUnits = thisReqOut.map(unit => unit.defId);
-                    // Go through each chunk from the auto section and get the units together
 
+                    // Go through each chunk from the auto section and get the units together
                     for (const autoReq of thisReq.auto) {
                         const searchArr = autoReq.ship ? ships : characters;
                         const out = searchArr
@@ -1166,11 +1172,13 @@ async function updateGameData() {
                                 return unit.factions.includes(autoReq.faction);
                             })
                             .map(unit => {
-                                return {
+                                const out = {
                                     defId: unit.uniqueName,
                                     type: autoReq.type,
-                                    tier: autoReq.tier
+                                    tier: autoReq.tier,
                                 };
+                                if (autoReq?.ship) out.ship = true;
+                                return out;
                             });
                         thisReqOut.push(...out);
                     }

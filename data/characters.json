@@ -5991,6 +5991,23 @@
         "avatarName": "charui_rebel_scarif"
     },
     {
+        "name": "Scout Trooper",
+        "uniqueName": "SCOUTTROOPER_V3",
+        "aliases": [
+            "Scout Trooper"
+        ],
+        "avatarName": "charui_trooperscout",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperscout.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Remnant",
+            "Imperial Trooper",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Second Sister",
         "uniqueName": "SECONDSISTER",
         "aliases": [
