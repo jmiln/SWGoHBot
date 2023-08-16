@@ -83,24 +83,39 @@ module.exports = async (Bot, client, interaction) => {
     } else if (interaction.isAutocomplete()) {
         // Process the autocomplete inputs
         const focusedOption = interaction.options.getFocused(true);
-
         let filtered = [];
-        if (focusedOption.name === "character") {
-            filtered = Bot.CharacterNames.filter(name => name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
-            if (!filtered?.length) {
-                filtered = Bot.CharacterNames.filter(name => name.toLowerCase().includes(focusedOption.value?.toLowerCase()));
+
+        if (interaction.commandName === "panic") {
+            // Process the autocompletions for the /panic command
+            filtered = Bot.journeyNames
+                .filter(unit => unit?.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()))
+                .map(unit => {
+                    return {
+                        name: unit.name,
+                        value: unit.defId
+                    };
+                });
+        } else {
+            if (focusedOption.name === "character") {
+                filtered = Bot.CharacterNames.filter(char => char.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+                if (!filtered?.length) {
+                    filtered = Bot.CharacterNames.filter(char => char.name.toLowerCase().includes(focusedOption.value?.toLowerCase()));
+                }
+            } else if (focusedOption.name === "ship") {
+                filtered = Bot.ShipNames.filter(ship => ship.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+                if (!filtered?.length) {
+                    filtered = Bot.ShipNames.filter(ship => ship.name.toLowerCase().includes(focusedOption.value?.toLowerCase()));
+                }
+            } else if (focusedOption.name === "command") {
+                filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
             }
-        } else if (focusedOption.name === "ship") {
-            filtered = Bot.ShipNames.filter(name => name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
-            if (!filtered?.length) {
-                filtered = Bot.ShipNames.filter(name => name.toLowerCase().includes(focusedOption.value?.toLowerCase()));
-            }
-        } else if (focusedOption.name === "command") {
-            filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
         }
         try {
             await interaction.respond(
-                filtered.map(choice => ({ name: choice, value: choice })).slice(0, 24)
+                filtered.map(choice => ({
+                    name: choice?.name || choice,
+                    value: choice?.value || choice
+                })).slice(0, 24)
             );
         } catch (err) {
             // If it's an unknown interaction error, just move on, nothing that I can do about it
