@@ -30,6 +30,10 @@ Bot.timezones    = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 Bot.constants    = require("./data/constants.js");
 Bot.help         = require("./data/help.js");
 
+// Load the journeyReqs and process the names for autocomplete
+Bot.journeyReqs  = JSON.parse(readFileSync("./data/journeyReqs.json", "utf-8"));
+processJourneyNames();
+
 // Load in various general functions for the bot
 require("./modules/functions.js")(Bot, client);
 
@@ -45,8 +49,8 @@ Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR",
 client.reloadLanguages();
 
 // List of all the unit names to use for autocomplete
-Bot.CharacterNames = Bot.characters.map(ch => ch.name);
-Bot.ShipNames = Bot.ships.map(ch => ch.name);
+Bot.CharacterNames = Bot.characters.map(ch => {return {name: ch.name, defId: ch.uniqueName};});
+Bot.ShipNames = Bot.ships.map(sh => {return {name: sh.name, defId: sh.uniqueName};});
 
 client.slashcmds = new Collection();
 
@@ -117,6 +121,22 @@ const init = async () => {
         }
     });
 };
+
+function processJourneyNames() {
+    const journeyKeys = Object.keys(Bot.journeyReqs);
+    Bot.journeyNames = [];
+    for (const key of journeyKeys) {
+        let unit = Bot.characters.find(ch => ch.uniqueName === key);
+        if (!unit) {
+            unit = Bot.ships.find(sh => sh.uniqueName === key);
+        }
+        if (!unit) continue;
+        Bot.journeyNames.push({
+            defId: key,
+            name: unit.name
+        });
+    }
+}
 
 init();
 client.login(Bot.config.token);
