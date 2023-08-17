@@ -57,22 +57,22 @@ class Panic extends Command {
             let isValid = false;
             switch (unitReq.type) {
                 case "GP": {
-                    isValid = playerUnit.gp >= unitReq.tier;
+                    isValid = playerUnit?.gp >= unitReq.tier;
                     break;
                 }
                 case "STAR": {
-                    isValid = playerUnit.rarity >= unitReq.tier;
+                    isValid = playerUnit?.rarity >= unitReq.tier;
                     break;
                 }
                 case "GEAR": {
-                    isValid = playerUnit.gear >= unitReq.tier;
+                    isValid = playerUnit?.gear >= unitReq.tier;
                     if (unitReq.tier > 11) {
                         reqs.rarity = 7;
                     }
                     break;
                 }
                 case "RELIC": {
-                    isValid = (playerUnit.relic?.currentTier - 2) >= unitReq.tier;
+                    isValid = (playerUnit?.relic?.currentTier - 2) >= unitReq.tier;
                     if (unitReq.tier > 0) {
                         reqs.rarity = 7;
                         reqs.gear   = 13;

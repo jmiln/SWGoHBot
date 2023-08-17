@@ -240,8 +240,8 @@ module.exports = (Bot, client) => {
             Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json",         "utf-8"));
             Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
 
-            Bot.CharacterNames = Bot.characters.map(ch => ch.name);
-            Bot.ShipNames = Bot.ships.map(ch => ch.name);
+            Bot.CharacterNames = Bot.characters.map(ch => {return {name: ch.name, defId: ch.uniqueName};});
+            Bot.ShipNames = Bot.ships.map(sh => {return {name: sh.name, defId: sh.uniqueName};});
 
             delete require.cache[require.resolve("../data/help.js")];
             Bot.help         = require("../data/help.js");

@@ -85,30 +85,36 @@ module.exports = async (Bot, client, interaction) => {
         const focusedOption = interaction.options.getFocused(true);
         let filtered = [];
 
-        if (interaction.commandName === "panic") {
-            // Process the autocompletions for the /panic command
-            filtered = Bot.journeyNames
-                .filter(unit => unit?.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()))
-                .map(unit => {
-                    return {
-                        name: unit.name,
-                        value: unit.defId
-                    };
-                });
-        } else {
-            if (focusedOption.name === "character") {
-                filtered = Bot.CharacterNames.filter(char => char.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(char => char.name);
-                if (!filtered?.length) {
-                    filtered = Bot.CharacterNames.filter(char => char.name.toLowerCase().includes(focusedOption.value?.toLowerCase())).map(char => char.name);
+        try {
+            if (interaction.commandName === "panic") {
+                // Process the autocompletions for the /panic command
+                filtered = Bot.journeyNames
+                    .filter(unit => unit?.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()))
+                    .map(unit => {
+                        return {
+                            name: unit.name,
+                            value: unit.defId
+                        };
+                    });
+            } else {
+                if (focusedOption.name === "character") {
+                    filtered = Bot.CharacterNames.filter(char => char.name?.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(char => char.name);
+                    if (!filtered?.length) {
+                        filtered = Bot.CharacterNames.filter(char => char.name?.toLowerCase().includes(focusedOption.value?.toLowerCase())).map(char => char.name);
+                    }
+                } else if (focusedOption.name === "ship") {
+                    filtered = Bot.ShipNames.filter(ship => ship.name?.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(ship => ship.name);
+                    if (!filtered?.length) {
+                        filtered = Bot.ShipNames.filter(ship => ship.name?.toLowerCase().includes(focusedOption.value?.toLowerCase())).map(ship => ship.name);
+                    }
+                } else if (focusedOption.name === "command") {
+                    filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
                 }
-            } else if (focusedOption.name === "ship") {
-                filtered = Bot.ShipNames.filter(ship => ship.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(ship => ship.name);
-                if (!filtered?.length) {
-                    filtered = Bot.ShipNames.filter(ship => ship.name.toLowerCase().includes(focusedOption.value?.toLowerCase())).map(ship => ship.name);
-                }
-            } else if (focusedOption.name === "command") {
-                filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
             }
+        } catch (err) {
+            logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unit name issue.`);
+            console.error(interaction);
+            console.error(err);
         }
         try {
             await interaction.respond(
