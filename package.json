@@ -21,10 +21,10 @@
         "@swgoh-utils/comlink": "^1.4.1",
         "async": "^3.2.4",
         "cheerio": "^1.0.0-rc.12",
-        "discord.js": "^14.11.0",
-        "mongodb": "^5.6.0",
-        "socket.io": "^4.6.2",
-        "socket.io-client": "^4.6.2"
+        "discord.js": "^14.13.0",
+        "mongodb": "^5.7.0",
+        "socket.io": "^4.7.2",
+        "socket.io-client": "^4.7.2"
     },
     "engines": {
         "node": ">=18"
