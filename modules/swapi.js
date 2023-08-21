@@ -26,7 +26,7 @@ const flatStats = [
     42  // defense
 ];
 
-const MAX_CONCURRENT = 20;
+const MAX_CONCURRENT = 18;
 
 let specialAbilityList = null;
 let cache = null;

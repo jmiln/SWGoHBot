@@ -2086,7 +2086,7 @@
                 "tier": 7
             },
             {
-                "defId": "KUILL",
+                "defId": "KUIIL",
                 "type": "STAR",
                 "tier": 7
             },
@@ -3170,6 +3170,252 @@
                 "defId": "SEVENTHSISTER",
                 "type": "RELIC",
                 "tier": 7
+            }
+        ]
+    },
+    "CAPITALRADDUS": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "faction": "ANY",
+                "ship": true,
+                "capital": true,
+                "type": "STAR",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "defId": "MILLENNIUMFALCONEP7",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "manual": true,
+                "defId": "XWINGRESISTANCE",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "manual": true,
+                "defId": "XWINGBLACKONE",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "manual": true,
+                "defId": "HOUNDSTOOTH",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "manual": true,
+                "defId": "EBONHAWK",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "manual": true,
+                "defId": "JEDISTARFIGHTERAHSOKATANO",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "manual": true,
+                "defId": "MILLENNIUMFALCONPRISTINE",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALCHIMAERA",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALEXECUTOR",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALSTARDESTROYER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALFINALIZER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALLEVIATHAN",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALMALEVOLENCE",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            }
+        ]
+    },
+    "CAPITALFINALIZER": {
+        "type": "MIXED",
+        "auto": [
+            {
+                "faction": "ANY",
+                "ship": true,
+                "capital": true,
+                "type": "STAR",
+                "tier": 7
+            }
+        ],
+        "reqs": [
+            {
+                "manual": true,
+                "defId": "TIEFIGHTERFIRSTORDER",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "defId": "HOUNDSTOOTH",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "defId": "COMMANDSHUTTLE",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "defId": "SLAVE1",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "defId": "TIESILENCER",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "defId": "TIEADVANCED",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "manual": true,
+                "defId": "XANADUBLOOD",
+                "ship": true,
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALCHIMAERA",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALJEDICRUISER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALEXECUTOR",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALSTARDESTROYER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALMONCALAMARICRUISER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALLEVIATHAN",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALMALEVOLENCE",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALPROFUNDITY",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "CAPITALRADDUS",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
             }
         ]
     }

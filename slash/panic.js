@@ -87,8 +87,8 @@ class Panic extends Command {
             reqsOut.push({
                 // Basic unit info & stats
                 defId: unitReq.defId,
-                name: baseChar.name,
-                charUrl: baseChar.avatarURL,
+                name: baseChar?.name,
+                charUrl: baseChar?.avatarURL,
                 rarity: playerUnit?.rarity || 0,
                 gear: playerUnit?.gear     || 0,
                 level: playerUnit?.level   || 0,
