@@ -88,14 +88,20 @@ module.exports = async (Bot, client, interaction) => {
         try {
             if (interaction.commandName === "panic") {
                 // Process the autocompletions for the /panic command
-                filtered = Bot.journeyNames
-                    .filter(unit => unit?.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()))
-                    .map(unit => {
-                        return {
-                            name: unit.name,
-                            value: unit.defId
-                        };
-                    });
+                filtered = Bot.journeyNames.filter(unit => unit?.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+                if (!filtered?.length) {
+                    filtered = Bot.journeyNames.filter(unit => unit.name?.toLowerCase().includes(focusedOption.value?.toLowerCase()));
+                }
+                if (!filtered?.length) {
+                    filtered = Bot.journeyNames.filter(unit => unit.aliases?.includes(focusedOption.value?.toLowerCase()));
+                }
+
+                filtered = filtered.map(unit => {
+                    return {
+                        name: unit.name,
+                        value: unit.defId
+                    };
+                });
             } else {
                 if (focusedOption.name === "character") {
                     filtered = Bot.CharacterNames.filter(char => char.name?.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(char => char.name);

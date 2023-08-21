@@ -133,7 +133,8 @@ function processJourneyNames() {
         if (!unit) continue;
         Bot.journeyNames.push({
             defId: key,
-            name: unit.name
+            name: unit.name,
+            aliases: unit?.aliases.map(u => u.toLowerCase()) || []
         });
     }
 }
