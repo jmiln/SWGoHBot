@@ -88,14 +88,7 @@ module.exports = async (Bot, client, interaction) => {
         try {
             if (interaction.commandName === "panic") {
                 // Process the autocompletions for the /panic command
-                filtered = Bot.journeyNames.filter(unit => unit?.name.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
-                if (!filtered?.length) {
-                    filtered = Bot.journeyNames.filter(unit => unit.name?.toLowerCase().includes(focusedOption.value?.toLowerCase()));
-                }
-                if (!filtered?.length) {
-                    filtered = Bot.journeyNames.filter(unit => unit.aliases?.includes(focusedOption.value?.toLowerCase()));
-                }
-
+                filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
                 filtered = filtered.map(unit => {
                     return {
                         name: unit.name,
@@ -104,15 +97,11 @@ module.exports = async (Bot, client, interaction) => {
                 });
             } else {
                 if (focusedOption.name === "character") {
-                    filtered = Bot.CharacterNames.filter(char => char.name?.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(char => char.name);
-                    if (!filtered?.length) {
-                        filtered = Bot.CharacterNames.filter(char => char.name?.toLowerCase().includes(focusedOption.value?.toLowerCase())).map(char => char.name);
-                    }
+                    filtered = filterAutocomplete(Bot.CharacterNames, focusedOption.value?.toLowerCase());
+                    filtered = filtered.map(char => char.name);
                 } else if (focusedOption.name === "ship") {
-                    filtered = Bot.ShipNames.filter(ship => ship.name?.toLowerCase().startsWith(focusedOption.value?.toLowerCase())).map(ship => ship.name);
-                    if (!filtered?.length) {
-                        filtered = Bot.ShipNames.filter(ship => ship.name?.toLowerCase().includes(focusedOption.value?.toLowerCase())).map(ship => ship.name);
-                    }
+                    filtered = filterAutocomplete(Bot.ShipNames, focusedOption.value?.toLowerCase());
+                    filtered = filtered.map(ship => ship.name);
                 } else if (focusedOption.name === "command") {
                     filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
                 }
@@ -142,6 +131,23 @@ module.exports = async (Bot, client, interaction) => {
                 logErr(err);
             }
         }
+    }
+
+    function filterAutocomplete(arrIn, search) {
+        let filtered = arrIn.filter(unit => unit?.name.toLowerCase().startsWith(search));
+        search = search.toLowerCase();
+        if (!filtered?.length) {
+            filtered = arrIn.filter(unit => unit.name?.toLowerCase().includes(search));
+        }
+        if (!filtered?.length) {
+            filtered = arrIn.filter(unit => {
+                return unit.aliases
+                    ?.map(u => u.toLowerCase())
+                    .includes(search);
+            });
+        }
+
+        return filtered;
     }
 
     function logErr(errStr, useWebhook=false) {

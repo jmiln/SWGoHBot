@@ -49,8 +49,8 @@ Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR",
 client.reloadLanguages();
 
 // List of all the unit names to use for autocomplete
-Bot.CharacterNames = Bot.characters.map(ch => {return {name: ch.name, defId: ch.uniqueName};});
-Bot.ShipNames = Bot.ships.map(sh => {return {name: sh.name, defId: sh.uniqueName};});
+Bot.CharacterNames = Bot.characters.map(ch => {return {name: ch.name, defId: ch.uniqueName, aliases: ch.aliases || []};});
+Bot.ShipNames = Bot.ships.map(sh => {return {name: sh.name, defId: sh.uniqueName, aliases: sh.aliases || []};});
 
 client.slashcmds = new Collection();
 
