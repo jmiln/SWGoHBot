@@ -22,7 +22,7 @@
         "async": "^3.2.4",
         "cheerio": "^1.0.0-rc.12",
         "discord.js": "^14.13.0",
-        "mongodb": "^5.7.0",
+        "mongodb": "^6.1.0",
         "socket.io": "^4.7.2",
         "socket.io-client": "^4.7.2"
     },
