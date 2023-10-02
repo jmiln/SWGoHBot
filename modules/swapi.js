@@ -26,13 +26,13 @@ const flatStats = [
     42  // defense
 ];
 
-const MAX_CONCURRENT = 18;
+const MAX_CONCURRENT = 15;
 
 let specialAbilityList = null;
 let cache = null;
 async function init() {
     const MongoClient = require("mongodb").MongoClient;
-    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    const mongo = await MongoClient.connect(config.mongodb.url);
     cache = require("../modules/cache.js")(mongo);
 
     // Set it to reload the api map files every hour
@@ -172,7 +172,7 @@ module.exports = (opts={}) => {
         await eachLimit(allycodes, MAX_CONCURRENT, async function(ac) {
             const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch((err) => {
                 console.error(`Error in eachLimit getPlayer (${ac}):`);
-                return console.error(err);
+                return console.error(err.toString());
             });
             if (!tempBare) console.error("[getPlayerUpdates] Broke while getting tempBare");
             else {
@@ -236,7 +236,7 @@ module.exports = (opts={}) => {
                     const oldSkill = oldUnit.skills.find(s => s.id === skillId);
                     const newSkill = newUnit.skills.find(s => s.id === skillId);
 
-                    if ((!oldSkill && newSkill?.tier) ||  oldSkill?.tier < newSkill?.tier) {
+                    if (newSkill?.tier && ((!oldSkill && newSkill?.tier) ||  oldSkill?.tier < newSkill?.tier)) {
                         const locSkill = locChar.skills.find(s => s.id == skillId);
 
                         // Grab zeta/ omicron data for the ability if available
@@ -381,6 +381,7 @@ module.exports = (opts={}) => {
                             }).then(res => res.json());
                             bareP.roster = statRoster;
                         } catch (error) {
+                            console.log(error);
                             throw new Error("Error getting player stats: " + error);
                         }
 
@@ -464,12 +465,13 @@ module.exports = (opts={}) => {
                     equipped: unit.equipment ? unit.equipment : [],
                     skills: unit.skill.map(sk => {
                         const thisSkill = skillMap[sk.id];
+                        if (!thisSkill) return null;
                         return {
                             id: sk.id,
                             tier: sk.tier + 2,
-                            tiers: thisSkill.tiers + 1
+                            tiers: thisSkill?.tiers ? thisSkill.tiers + 1 : null
                         };
-                    }),
+                    }).filter(sk => !!sk),
                     relic: unit.relic,
                     purchasedAbilityId: unit.purchasedAbilityId,
                     crew: thisUnit.crew,

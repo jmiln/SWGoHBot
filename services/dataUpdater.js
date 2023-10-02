@@ -82,7 +82,7 @@ if (!FORCE_UPDATE) {
 }
 
 async function init() {
-    const mongo = await MongoClient.connect(config.mongodb.url, { useNewUrlParser: true, useUnifiedTopology: true } );
+    const mongo = await MongoClient.connect(config.mongodb.url);
     cache = require(__dirname + "/../modules/cache.js")(mongo);
 }
 
