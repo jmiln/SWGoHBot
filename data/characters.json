@@ -439,7 +439,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Potency"
         },
         "avatarName": "charui_b2"
     },
@@ -1008,6 +1008,33 @@
         "avatarName": "charui_canderous"
     },
     {
+        "name": "Captain Drogan",
+        "uniqueName": "CAPTAINDROGAN",
+        "aliases": [
+            "Captain Drogan"
+        ],
+        "avatarName": "charui_captaindrogan",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captaindrogan.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Rebel",
+            "Rebel Fighter"
+        ],
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        }
+    },
+    {
         "name": "Captain Han Solo",
         "uniqueName": "HOTHHAN",
         "aliases": [
@@ -1083,15 +1110,15 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Potency"
+            "cross": "Health"
         }
     },
     {
@@ -1565,7 +1592,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Chance",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -1726,6 +1753,23 @@
             "cross": "Offense"
         },
         "avatarName": "charui_darktrooper"
+    },
+    {
+        "name": "Dark Trooper Moff Gideon",
+        "uniqueName": "MOFFGIDEONS3",
+        "aliases": [
+            "Dark Trooper Moff Gideon"
+        ],
+        "avatarName": "charui_moffgideons3",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_moffgideons3.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Remnant",
+            "Leader",
+            "Tank"
+        ],
+        "mods": {}
     },
     {
         "name": "Darth Malak",
@@ -3309,9 +3353,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -3702,7 +3746,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -3966,7 +4010,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -4516,6 +4560,34 @@
         "avatarName": "charui_landobespin"
     },
     {
+        "name": "Leia Organa",
+        "uniqueName": "GLLEIA",
+        "aliases": [
+            "Leia Organa"
+        ],
+        "avatarName": "charui_leiaendor",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leiaendor.png",
+        "side": "light",
+        "factions": [
+            "Galactic Legend",
+            "Leader",
+            "Rebel",
+            "Tank"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        }
+    },
+    {
         "name": "Lobot",
         "uniqueName": "LOBOT",
         "aliases": [
@@ -4690,7 +4762,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Potency"
         },
         "avatarName": "charui_macewindu"
     },
@@ -4998,9 +5070,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
-            "cross": "Offense"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5259,7 +5331,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -5868,7 +5940,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_sabine_s3"
     },
@@ -6593,7 +6665,18 @@
             "Attacker",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        }
     },
     {
         "name": "Tech",

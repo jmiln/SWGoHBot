@@ -456,6 +456,17 @@
         ]
     },
     {
+        "name": "Captain Drogan",
+        "defId": "CAPTAINDROGAN",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
+                "name": "Rebel Rouser Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Captain Han Solo",
         "defId": "HOTHHAN",
         "locations": [
@@ -634,11 +645,6 @@
             {
                 "type": "Guild Shop",
                 "cost": "450/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "5-C",
-                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -771,6 +777,11 @@
                 "name": "Tales From The Outer Rim V Marquee Event"
             }
         ]
+    },
+    {
+        "name": "Dark Trooper Moff Gideon",
+        "defId": "MOFFGIDEONS3",
+        "locations": []
     },
     {
         "name": "Darth Malak",
@@ -1986,6 +1997,17 @@
         ]
     },
     {
+        "name": "Leia Organa",
+        "defId": "GLLEIA",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "locId": "EVENT_GLLEIA_GALACTICLEGEND_NAME",
+                "name": "Rebel With A Cause Galactic Ascension"
+            }
+        ]
+    },
+    {
         "name": "Lobot",
         "defId": "LOBOT",
         "locations": [
@@ -2420,6 +2442,11 @@
         "name": "Princess Kneesaa",
         "defId": "PRINCESSKNEESAA",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "5-C",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PRINCESSKNEESAA_NAME",

@@ -678,7 +678,13 @@
     {
         "name": "Scythe",
         "defId": "SCYTHE",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Sith Fighter",

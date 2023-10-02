@@ -54,29 +54,29 @@
                 "tier": 3
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "CAPTAINDROGAN",
+                "type": "RELIC",
+                "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "COMMANDERLUKESKYWALKER",
+                "type": "RELIC",
+                "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "BOUSHH",
+                "type": "RELIC",
+                "tier": 5
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "C3POCHEWBACCA",
+                "type": "RELIC",
+                "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "LOBOT",
+                "type": "RELIC",
+                "tier": 3
             }
         ]
     },
@@ -1266,6 +1266,11 @@
                 "tier": 7
             },
             {
+                "defId": "CAPTAINDROGAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "HOTHHAN",
                 "type": "STAR",
                 "tier": 7
@@ -1352,6 +1357,11 @@
             },
             {
                 "defId": "ADMINISTRATORLANDO",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "GLLEIA",
                 "type": "STAR",
                 "tier": 7
             },
@@ -1747,6 +1757,11 @@
             },
             {
                 "defId": "DARKTROOPER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "MOFFGIDEONS3",
                 "type": "STAR",
                 "tier": 7
             },
@@ -2813,6 +2828,11 @@
                 "tier": 5
             },
             {
+                "defId": "CAPTAINDROGAN",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "HOTHHAN",
                 "type": "STAR",
                 "tier": 5
@@ -2894,6 +2914,11 @@
             },
             {
                 "defId": "ADMINISTRATORLANDO",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "GLLEIA",
                 "type": "STAR",
                 "tier": 5
             },
@@ -3416,6 +3441,87 @@
                 "type": "STAR",
                 "tier": 7,
                 "ship": true
+            }
+        ]
+    },
+    "GLLEIA": {
+        "guideId": "GLLEIA_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "CAPTAINREX",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "PRINCESSKNEESAA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "WICKET",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "ADMINISTRATORLANDO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "ADMIRALACKBAR",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "SCOUTTROOPER_V3",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "R2D2_LEGENDARY",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "HOTHHAN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "HOTHLEIA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CHIEFCHIRPA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "CAPTAINDROGAN",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "COMMANDERLUKESKYWALKER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BOUSHH",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "C3POCHEWBACCA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "LOBOT",
+                "type": "RELIC",
+                "tier": 3
             }
         ]
     }
