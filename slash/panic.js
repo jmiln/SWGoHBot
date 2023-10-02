@@ -46,6 +46,7 @@ class Panic extends Command {
         const playerArr = await Bot.swgohAPI.unitStats(allycode, cooldown);
 
         const player = playerArr[0];
+        if (!player?.roster) return super.error(interaction, "Sorry, but I'm having a hard time loading your roster. Please double check your ally code or try again in a bit.");
 
         const reqsOut = [];
         for (const unitReq of thisReq.reqs) {
