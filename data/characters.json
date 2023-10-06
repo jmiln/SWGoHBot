@@ -1592,7 +1592,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -3353,9 +3353,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -5070,9 +5070,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5331,7 +5331,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },

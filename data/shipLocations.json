@@ -457,6 +457,11 @@
         ]
     },
     {
+        "name": "Marauder",
+        "defId": "MARAUDER",
+        "locations": []
+    },
+    {
         "name": "Mark VI Interceptor",
         "defId": "SITHSUPREMACYCLASS",
         "locations": [

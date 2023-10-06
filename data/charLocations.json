@@ -2734,6 +2734,11 @@
         "defId": "SCOUTTROOPER_V3",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "5-C",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_SCOUTTROOPER_NAME",
                 "name": "Eyes Of The Emperor Marquee Event"

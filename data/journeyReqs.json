@@ -2586,6 +2586,12 @@
                 "ship": true
             },
             {
+                "defId": "MARAUDER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
                 "defId": "CAPITALNEGOTIATOR",
                 "type": "STAR",
                 "tier": 7,

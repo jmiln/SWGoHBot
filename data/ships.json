@@ -1128,6 +1128,26 @@
         "avatarName": "charui_malevolence"
     },
     {
+        "name": "Marauder",
+        "uniqueName": "MARAUDER",
+        "aliases": [
+            "Marauder"
+        ],
+        "avatarName": "charui_marauder",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_marauder.png",
+        "side": "light",
+        "factions": [
+            "Clone Trooper",
+            "Galactic Republic",
+            "Support"
+        ],
+        "crew": [
+            "Tech",
+            "Hunter",
+            "Wrecker"
+        ]
+    },
+    {
         "name": "Mark VI Interceptor",
         "uniqueName": "SITHSUPREMACYCLASS",
         "aliases": [
