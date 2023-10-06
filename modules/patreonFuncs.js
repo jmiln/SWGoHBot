@@ -797,7 +797,7 @@ module.exports = (Bot, client) => {
             // Get any updates for the guild
             let rawGuild;
             try {
-                rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode);
+                rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode, null, {forceUpdate: true});
             } catch (err) {
                 console.log(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gt.allycode}: ${err}`);
                 continue;

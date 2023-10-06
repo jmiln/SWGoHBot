@@ -767,7 +767,7 @@ module.exports = (opts={}) => {
         return rOut;
     }
 
-    async function getRawGuild(allycode, cooldown) {
+    async function getRawGuild(allycode, cooldown, {forceUpdate}={forceUpdate: false}) {
         const tempGuild = {};
         if (cooldown) {
             cooldown = cooldown.guild;
@@ -785,7 +785,7 @@ module.exports = (opts={}) => {
         if (!player.guildId) throw new Error("This player is not in a guild");
 
         let rawGuild  = await cache.get(config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
-        if ( !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
+        if ( forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true) ) {
             try {
                 rawGuild = await comlinkStub.getGuild(player.guildId, true);
             } catch (err) {
