@@ -6,7 +6,7 @@ class GuildTickets extends Command {
         super(Bot, {
             name: "guildtickets",
             guildOnly: false,
-            description: "(Patreon command) Set up the guild watcher to show the guild's tickets needed every 5min",
+            description: "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
             options: [
                 {
                     name: "set",
@@ -35,6 +35,21 @@ class GuildTickets extends Command {
                                 {
                                     name: "Name",
                                     value: "name"
+                                }
+                            ]
+                        },
+                        {
+                            name: "updates",
+                            description: "Choose how updates are displayed",
+                            type: ApplicationCommandOptionType.String,
+                            choices: [
+                                {
+                                    name: "Update every 5min",
+                                    value: "update"
+                                },
+                                {
+                                    name: "Send a message near reset",
+                                    value: "msg"
                                 }
                             ]
                         },
@@ -95,6 +110,7 @@ class GuildTickets extends Command {
             const updatedArr = [];
             const isEnabled = interaction.options.getBoolean("enabled");
             const channel = interaction.options.getChannel("channel");
+            const updateType = interaction.options.getString("update");
             const sortBy = interaction.options.getString("sortby");
             let allycode = interaction.options.getString("allycode");
             const tickets = interaction.options.getInteger("tickets");
@@ -110,6 +126,14 @@ class GuildTickets extends Command {
                 // This would be at lease MANAGE_CHANNEL perms, or the adminrole under the guildconf
                 gt.channel = channel.id;
                 updatedArr.push(`Channel: <#${channel.id}>`);
+            }
+            if (updateType) {
+                const updateTypeStrings = {
+                    update: "Update every 5min",
+                    msg: "Send a message near reset",
+                };
+                gt.updateType = updateType;
+                updatedArr.push(`Update: ${updateTypeStrings[updateType]}`);
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers

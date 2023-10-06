@@ -757,6 +757,8 @@ module.exports = (Bot, client) => {
     }
 
     // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
+    const min4 = 1000 * 60 * 4;
+    const min6 = 1000 * 60 * 6;
     Bot.guildTickets = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
@@ -817,6 +819,17 @@ module.exports = (Bot, client) => {
             let timeUntilReset = null;
             const chaTime = rawGuild.nextChallengesRefresh * 1000;
             const nowTime = new Date().getTime();
+
+            // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
+            if (gt?.updateType === "msg") {
+                if ( chaTime > nowTime ||          // We're after the target challenge time
+                    (chaTime - min4) < nowTime ||  // 4min before chaTime is past
+                    (chaTime - min6) > nowTime) {  // 6min before chaTime is in the future
+                    // It's not within the 5min before window, so move along
+                    continue;
+                }
+            }
+
             if (chaTime > nowTime) {
                 // It's in the future
                 timeUntilReset = Bot.formatDuration(chaTime - nowTime);
@@ -845,7 +858,13 @@ module.exports = (Bot, client) => {
                 timestamp: new Date().toISOString(),
             };
 
-            const sentMsg = await sendBroadcastMsg(gt.msgId, gt.channel, outEmbed);
+            // If the user wants the messages just before each reset, send a new message instead of updating an old one
+            //  - Just don't send the msg ID
+            const sentMsg = await sendBroadcastMsg(
+                gt?.updateType === "msg" ? null : gt.msgId,
+                gt.channel,
+                outEmbed
+            );
             if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
                 gt.msgId = sentMsg.id;
                 user.guildTickets = gt;
