@@ -1,6 +1,11 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
+const updateTypeStrings = {
+    update: "Update every 5min",
+    msg: "Send a message near reset",
+};
+
 class GuildTickets extends Command {
     constructor(Bot) {
         super(Bot, {
@@ -91,6 +96,7 @@ class GuildTickets extends Command {
             enabled: false,
             channel: null,
             allycode: null,
+            updateType: "msg",
             sortBy: "name"
         };
         if (!gt) {
@@ -110,7 +116,7 @@ class GuildTickets extends Command {
             const updatedArr = [];
             const isEnabled = interaction.options.getBoolean("enabled");
             const channel = interaction.options.getChannel("channel");
-            const updateType = interaction.options.getString("update");
+            const updateType = interaction.options.getString("updates");
             const sortBy = interaction.options.getString("sortby");
             let allycode = interaction.options.getString("allycode");
             const tickets = interaction.options.getInteger("tickets");
@@ -128,12 +134,8 @@ class GuildTickets extends Command {
                 updatedArr.push(`Channel: <#${channel.id}>`);
             }
             if (updateType) {
-                const updateTypeStrings = {
-                    update: "Update every 5min",
-                    msg: "Send a message near reset",
-                };
                 gt.updateType = updateType;
-                updatedArr.push(`Update: ${updateTypeStrings[updateType]}`);
+                updatedArr.push(`Update: **${updateTypeStrings[updateType]}**`);
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
@@ -177,6 +179,7 @@ class GuildTickets extends Command {
                     `Channel:  **${gt.channel ? "<#" + gt.channel + ">" : "N/A"}**`,
                     `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
                     `SortBy:   **${Bot.toProperCase(gt.sortBy)}**`,
+                    `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
                     `Tickets:  **${gt.tickets || 600}**`,
                 ].join("\n")
             }]});
