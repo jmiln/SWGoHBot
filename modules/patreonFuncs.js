@@ -757,10 +757,9 @@ module.exports = (Bot, client) => {
     }
 
     // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
-    const min4 = 1000 * 60 * 4;
-    const min6 = 1000 * 60 * 6;
     Bot.guildTickets = async () => {
         const patrons = await getActivePatrons();
+        const nowTime = new Date().getTime();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < 100) continue;
@@ -769,19 +768,31 @@ module.exports = (Bot, client) => {
             // If the guild update isn't enabled, then move along
             if (!user?.guildTickets?.enabled) continue;
             const MAX_TICKETS = user.guildTickets.tickets || 600;
-            const gt = user.guildTickets;
-            if (!gt?.allycode) continue;
-            if (!gt?.channel) continue;
 
             // This is what will be in the user.guildTickets, possibly add something
             // in to make it so it only shows above x gear lvl and such later?
-
             // gt = {
-            //     enabled:  false,             // If it's enabled or not
-            //     allycode: 123123123,         // Ally code to watch the guild of
-            //     channel:  channelID,         // The channel to log all this into
-            //     sortBy:   "name" / "tickets" // What to sort the list by (Defaults to name)
+            //     enabled:  false,                 // If it's enabled or not
+            //     allycode: 123123123,             // Ally code to watch the guild of
+            //     channel:  channelID,             // The channel to log all this into
+            //     sortBy:   "name" / "tickets",    // What to sort the list by (Defaults to name)
+            //     tickets: 600,                    // The ticket count to consider players to be finished at (Defaults to the game's max of 600)
+            //     updateType: "msg" / "update",    // Whether to send one message before the ticket reset, or update a message every 5min
+            //
+            //     // NOTE The following are automatically set (Not user-changeable)
+            //     msgId: messageID,                    // The ID for the saved message, if we're updating it each time
+            //     // NOTE This can help it not be checked constantly, for the msg type, so less game pulls
+            //     nextChallengesRefresh: refreshTime,  // The last rawGuild.nextChallengesRefresh that was checked
             // }
+            const gt = user.guildTickets;
+            if (!gt?.allycode) continue;
+            if (!gt?.channel)  continue;
+            const isMsgType = gt?.updateType === "msg";
+
+            // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
+            if (isMsgType && gt?.nextChallengesRefresh && !isWithinTime(gt.nextChallengesRefresh, nowTime, 1, 5)) {
+                continue;
+            }
 
             // Check if the bot is able to send messages into the set channel
             const channels = await client.shard.broadcastEval(async (client, {gtChan}) => {
@@ -805,8 +816,13 @@ module.exports = (Bot, client) => {
                 continue;
             }
 
+            // Set the nextChallengesRefresh to avoid extra api calls in the future
+            if (gt?.nextChallengesRefresh !== rawGuild?.nextChallengesRefresh && rawGuild?.nextChallengesRefresh) {
+                gt.nextChallengesRefresh = rawGuild.nextChallengesRefresh;
+            }
+
             if (!rawGuild?.roster?.length) {
-                return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gt.allycode}, guild output: ${rawGuild}`);
+                return console.log(`[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${rawGuild}`);
             }
 
             let roster = null;
@@ -817,33 +833,30 @@ module.exports = (Bot, client) => {
             }
 
             let timeUntilReset = null;
-            const chaTime = rawGuild.nextChallengesRefresh * 1000;
-            const nowTime = new Date().getTime();
+            const refreshTime = rawGuild.nextChallengesRefresh * 1000;
 
-            // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
-            if (gt?.updateType === "msg") {
-                if ( chaTime > nowTime ||          // We're after the target challenge time
-                    (chaTime - min4) < nowTime ||  // 4min before chaTime is past
-                    (chaTime - min6) > nowTime) {  // 6min before chaTime is in the future
-                    // It's not within the 5min before window, so move along
-                    continue;
-                }
-            }
-
-            if (chaTime > nowTime) {
+            if (refreshTime > nowTime) {
                 // It's in the future
-                timeUntilReset = Bot.formatDuration(chaTime - nowTime);
+                timeUntilReset = Bot.formatDuration(refreshTime - nowTime);
             } else {
                 // It's in the past, so calculate the next time
-                timeUntilReset = Bot.formatDuration(chaTime + dayMS - nowTime);
+                timeUntilReset = Bot.formatDuration(refreshTime + dayMS - nowTime);
+            }
+
+            // If the user only wants the message, and we didn't have a saved refreshTime for them, check here
+            if (isMsgType && !isWithinTime(refreshTime, nowTime, 1, 5)) {
+                continue;
             }
 
             let maxed = 0;
-            const out = [];
+            const outArr = [];
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
                 if (tickets < MAX_TICKETS) {
-                    out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
+                    outArr.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
+                } else if (isMsgType) {
+                    // Bold/ italicise the maxed players' counts
+                    outArr.push(Bot.expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${"**" + member.playerName + "**"}`));
                 } else {
                     maxed += 1;
                 }
@@ -854,7 +867,7 @@ module.exports = (Bot, client) => {
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
                 },
-                description: `${timeTilString}${maxedString}${out.join("\n")}`,
+                description: `${timeTilString}${maxedString}${outArr.join("\n")}`,
                 timestamp: new Date().toISOString(),
             };
 
@@ -872,6 +885,15 @@ module.exports = (Bot, client) => {
             }
         }
     };
+
+    function isWithinTime(targetTime, nowTime, min, max) {
+        if (min >= max) throw new Error("[patreonFuncs / isWithinTime] Min MUST be less than max.")
+        if ((targetTime - (min * 60_000)) < nowTime ||  // min minutes before targetTime is past
+            (targetTime - (max * 60_000)) > nowTime) {  // max minutes before targetTime is in the future
+            return false;
+        }
+        return true;
+    }
 
     function getTimeLeft(offset, hrDiff) {
         const now = new Date().getTime();
