@@ -22,4 +22,6 @@ If you want to support me and this bot through [Patreon](https://www.patreon.com
 - Alerts you if/ when your rank in either or both arena changes
 - Logs in a Discord channel when anyone in a list of players (Based on in-game ally codes, manually added) changes rank
 - An updated message in a given channel that updates every 5 minutes and shows how long until each player's arena payouts
+- An updated message in a given channel that updates every 5 minutes and shows how long until guild challenge reset, and each guild members' ticket count
 - Can let you know when a member of your guild unlocks or upgrades a character
+
