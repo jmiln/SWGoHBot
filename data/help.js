@@ -112,6 +112,12 @@ module.exports = {
                     "  [keyword] [shop] [faction]"
                 ]
             },
+            panic: {
+                desc: "Show how close you are to being ready for character events",
+                usage: [
+                    "**/panic** [allycode] <unit>"
+                ]
+            },
             randomchar: {
                 desc: "Pick random characters out of your roster.",
                 usage: [
@@ -306,14 +312,14 @@ module.exports = {
                     "**result** <allycode> <arena>",
                     "**showvs** <enable>",
                     "**use_marks_in_log** <enable>",
-                    "**view** [allycode]",
+                    "**view** [allycode] [view_by]",
                     "**warn** <allycode> <mins> <arena>",
                 ]
             },
             guildtickets: {
                 desc: "Set up the bot to send an updated list of who doesn't have the daily 600 (or set amount) tickets",
                 usage: [
-                    "**set** [enabled] [channel] [sortby] [allycode] [tickets]",
+                    "**set** [enabled] [channel] [sortby] [allycode] [tickets] [updates]",
                     "**view**",
                 ]
             },
