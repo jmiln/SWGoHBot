@@ -29,6 +29,11 @@ class GuildTickets extends Command {
                             type: ApplicationCommandOptionType.Channel
                         },
                         {
+                            name: "show_max",
+                            description: "Show players who have all of their tickets",
+                            type: ApplicationCommandOptionType.Boolean
+                        },
+                        {
                             name: "sortby",
                             description: "Choose how to sort the list",
                             type: ApplicationCommandOptionType.String,
@@ -93,11 +98,13 @@ class GuildTickets extends Command {
         }
         let gt = user.guildTickets;
         const defGT = {
-            enabled: false,
-            channel: null,
             allycode: null,
+            channel: null,
+            enabled: false,
+            showMax: false,
+            sortBy: "name",
+            tickets: 600,
             updateType: "msg",
-            sortBy: "name"
         };
         if (!gt) {
             gt = defGT;
@@ -114,12 +121,13 @@ class GuildTickets extends Command {
 
         if (subCommand === "set") {
             const updatedArr = [];
-            const isEnabled = interaction.options.getBoolean("enabled");
-            const channel = interaction.options.getChannel("channel");
+            const channel    = interaction.options.getChannel("channel");
+            const isEnabled  = interaction.options.getBoolean("enabled");
+            const showMax    = interaction.options.getBoolean("show_max");
+            const sortBy     = interaction.options.getString("sortby");
+            const tickets    = interaction.options.getInteger("tickets");
             const updateType = interaction.options.getString("updates");
-            const sortBy = interaction.options.getString("sortby");
-            let allycode = interaction.options.getString("allycode");
-            const tickets = interaction.options.getInteger("tickets");
+            let allycode     = interaction.options.getString("allycode");
 
             if (isEnabled !== null) {
                 gt.enabled = isEnabled;
@@ -153,6 +161,10 @@ class GuildTickets extends Command {
                 gt.allycode = parseInt(allycode, 10);
                 updatedArr.push(`Ally Code: **${allycode}**`);
             }
+            if (showMax) {
+                gt.showMax = showMax;
+                updatedArr.push(`Show max: **${showMax}**`);
+            }
             if (sortBy) {
                 gt.sortBy = sortBy;
                 updatedArr.push(`Sort By: **${sortBy}**`);
@@ -178,6 +190,7 @@ class GuildTickets extends Command {
                     `Enabled:  **${gt.enabled ? "ON" : "OFF"}**`,
                     `Channel:  **${gt.channel ? "<#" + gt.channel + ">" : "N/A"}**`,
                     `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
+                    `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
                     `SortBy:   **${Bot.toProperCase(gt.sortBy)}**`,
                     `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
                     `Tickets:  **${gt.tickets || 600}**`,

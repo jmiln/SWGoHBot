@@ -854,7 +854,7 @@ module.exports = (Bot, client) => {
                 const tickets = member.memberContribution["2"].currentValue;
                 if (tickets < MAX_TICKETS) {
                     outArr.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
-                } else if (isMsgType) {
+                } else if (isMsgType || gt?.showMax) {
                     // Bold/ italicise the maxed players' counts
                     outArr.push(Bot.expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${"**" + member.playerName + "**"}`));
                 } else {
