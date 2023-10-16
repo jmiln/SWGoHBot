@@ -161,7 +161,7 @@ class GuildTickets extends Command {
                 gt.allycode = parseInt(allycode, 10);
                 updatedArr.push(`Ally Code: **${allycode}**`);
             }
-            if (showMax) {
+            if (showMax !== null) {
                 gt.showMax = showMax;
                 updatedArr.push(`Show max: **${showMax}**`);
             }
