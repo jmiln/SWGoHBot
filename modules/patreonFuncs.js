@@ -763,14 +763,8 @@ module.exports = (Bot, client) => {
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < 100) continue;
-            const user = await Bot.userReg.getUser(patron.discordID);
 
-            // If the guild update isn't enabled, then move along
-            if (!user?.guildTickets?.enabled) continue;
-            const MAX_TICKETS = user.guildTickets.tickets || 600;
-
-            // This is what will be in the user.guildTickets, possibly add something
-            // in to make it so it only shows above x gear lvl and such later?
+            // This is what will be in the user.guildTickets
             // gt = {
             //     enabled:  false,                 // If it's enabled or not
             //     allycode: 123123123,             // Ally code to watch the guild of
@@ -784,13 +778,26 @@ module.exports = (Bot, client) => {
             //     // NOTE This can help it not be checked constantly, for the msg type, so less game pulls
             //     nextChallengesRefresh: refreshTime,  // The last rawGuild.nextChallengesRefresh that was checked
             // }
-            const gt = user.guildTickets;
+
+            // Get the user's saved data
+            const user = await Bot.userReg.getUser(patron.discordID);
+
+            // If the guild update isn't enabled, or is missing some needed info, move along
+            const gt = user?.guildTickets;
+            if (!gt?.enabled) continue;
             if (!gt?.allycode) continue;
             if (!gt?.channel)  continue;
+
+            const MAX_TICKETS = gt?.tickets || 600;
             const isMsgType = gt?.updateType === "msg";
 
             // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
-            if (isMsgType && gt?.nextChallengesRefresh && !isWithinTime(gt.nextChallengesRefresh, nowTime, 1, 5)) {
+            if (
+                isMsgType &&
+                gt?.nextChallengesRefresh &&
+                !isWithinTime(gt.nextChallengesRefresh, nowTime, 1, 5) &&
+                gt.nextChallengesRefresh > nowTime
+            ) {
                 continue;
             }
 
