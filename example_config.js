@@ -117,7 +117,6 @@ const config = {
     },
     // The default per-guild settings
     defaultSettings: {
-        prefix: ";",
         adminRole: ["Administrator"],
         enableWelcome: false,
         welcomeMessage: "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
@@ -163,19 +162,13 @@ const config = {
         logComs: false
     },
 
-    // Channel to send changelog messages to if you want to use the ;changelog command
-    changelog: {
-        changelogChannel: "",
-        sendChangelogs: false
-    },
-
     // If it should use the premium client
     "premium": false,
 
     // The premium IP/ port for it to use (localhost if local, external IP/port if not)
     // premiumIP_Port:   "http://localhost:PORT",
 
-    // The IP/ Port for the bot to use for the image server
+    // The IP/ Port for the bot to use for the image server if available
     imageServIP_Port: "http://localhost:PORT",
 
     // Some VIPs that can use patreon perks, put their Discord IDs in the array
