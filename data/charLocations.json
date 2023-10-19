@@ -2390,6 +2390,17 @@
         ]
     },
     {
+        "name": "Paz Vizsla",
+        "defId": "PAZVIZSLA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_PAZVIZSLA_NAME",
+                "name": "Defender Of The Creed Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Plo Koon",
         "defId": "PLOKOON",
         "locations": [
