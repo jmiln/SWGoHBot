@@ -1382,7 +1382,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_chirrut"
     },
@@ -2206,7 +2206,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -4431,7 +4431,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5378,7 +5378,19 @@
             "Mandalorian",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        }
     },
     {
         "name": "Plo Koon",
@@ -5609,9 +5621,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_astromech_r2d2"
     },
