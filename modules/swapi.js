@@ -688,6 +688,10 @@ module.exports = (opts={}) => {
             s.desc = skill.descKey
                 .replace(/\\n/g, " ")
                 .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+            const abTierCount = skill.abilityTiers?.length;
+            if (abTierCount && skill.abilityTiers[abTierCount-1].includes(skill.abilityTiers[abTierCount-2])) {
+                s.zetaDesc = skill.abilityTiers[abTierCount-1].replace(skill.abilityTiers[abTierCount-2], "").trim();
+            }
             if (skill.tierList.length) {
                 s.cost = {};
                 for (const tier of skill.tierList) {

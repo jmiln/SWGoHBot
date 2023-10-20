@@ -95,6 +95,10 @@ class Character extends Command {
                 cooldownString = interaction.language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
             }
 
+            if (ability.desc && ability.zetaDesc) {
+                ability.desc = ability.desc.replace(ability.zetaDesc, `**${ability.zetaDesc}**`);
+            }
+
             const msgArr = Bot.msgArray(Bot.expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
 
             msgArr.forEach((m, ix) => {
