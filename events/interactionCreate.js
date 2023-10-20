@@ -121,6 +121,7 @@ module.exports = async (Bot, client, interaction) => {
         } catch (err) {
             // If it's an unknown interaction error, just move on, nothing that I can do about it
             if (err.toString().toLowerCase().includes("unknown interaction")) return;
+            if (err.toString().toLowerCase().includes("bad gateway")) return;
 
             // Otherwise, print out what I can about it
             if (typeof err !== "string") {

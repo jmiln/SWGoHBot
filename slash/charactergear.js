@@ -98,12 +98,12 @@ class Charactergear extends Command {
                     gearString = Bot.expandSpaces(outK.map(g =>  "* " + " ".repeat(3 - out[g].count.toString().length) + out[g].count + "x " + g).join("\n"));
                 } else {
                     const sortedGear = Object.keys(allGear).sort((a, b) => {
-                        a = a.split(" ")[1];
-                        b = b.split(" ")[1];
-                        if (isNaN(a)) a = 0;
-                        if (isNaN(b)) b = 0;
+                        let aNum = parseInt(a.split(" ")[1], 10);
+                        let bNum = parseInt(b.split(" ")[1]);
+                        if (isNaN(aNum)) aNum = 0;
+                        if (isNaN(bNum)) bNum = 0;
 
-                        return a - b;
+                        return aNum - bNum;
                     });
                     for (var key of sortedGear) {
                         gearString += `* ${allGear[key]}x ${key}\n`;
@@ -289,7 +289,8 @@ async function getParts(Bot, gr, partList=[], amt=1) {
             _id: 0
         });
         if (Array.isArray(rec)) rec = rec[0];
-        if (rec.ingredientsList) rec = rec.ingredientsList.filter(r => r.id !== "GRIND");
+        if (!rec) return [];
+        if (rec?.ingredientsList) rec = rec.ingredientsList.filter(r => r.id !== "GRIND");
         for (const r of rec) {
             const gear = await Bot.cache.get(Bot.config.mongodb.swapidb, "gear", {
                 id: r.id,

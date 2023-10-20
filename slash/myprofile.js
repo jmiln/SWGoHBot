@@ -185,7 +185,7 @@ class MyProfile extends Command {
         });
 
         // Show the relic counts
-        const relicOut = Object.keys(relicCount).map(r => `\`  ${r}  |     ${relicCount[r]}\``);
+        const relicOut = Object.keys(relicCount).map(r => `\`  ${r}  |  ${relicCount[r].toString().padStart(3)} \``);
         fields.push({
             name: interaction.language.get("COMMAND_MYPROFILE_RELIC_HEADER"),
             value: ["`Tier | Count`"].concat(relicOut).join("\n")

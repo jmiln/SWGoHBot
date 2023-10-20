@@ -1234,7 +1234,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -1592,7 +1592,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Chance",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -2206,7 +2206,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -3353,9 +3353,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -3412,8 +3412,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
+            "triangle": "Offense",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_hondoohnaka"
@@ -4431,7 +4431,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -4981,8 +4981,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Tenacity x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5364,6 +5364,33 @@
             "cross": "Protection"
         },
         "avatarName": "charui_ewok_paploo"
+    },
+    {
+        "name": "Paz Vizsla",
+        "uniqueName": "PAZVIZSLA",
+        "aliases": [
+            "Paz Vizsla"
+        ],
+        "avatarName": "charui_pazvizsla",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_pazvizsla.png",
+        "side": "light",
+        "factions": [
+            "Mandalorian",
+            "Tank"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        }
     },
     {
         "name": "Plo Koon",
