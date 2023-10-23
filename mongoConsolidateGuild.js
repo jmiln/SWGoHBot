@@ -19,8 +19,8 @@ async function init() {
         for (let entry of collection) {
             // Grab any old entry for this guild
             const thisGuildId = getGuildId(table, entry);
-            const oldGuildIndex =  out.findIndex(gConf => gConf.id === thisGuildId)
-            const thisGuild = oldGuildIndex > -1 ? out[oldGuildIndex] : {id: thisGuildId, events: [], polls: [], shardtimes: []};
+            const oldGuildIndex =  out.findIndex(gConf => gConf.guildId === thisGuildId)
+            const thisGuild = oldGuildIndex > -1 ? out[oldGuildIndex] : {guildId: thisGuildId, events: [], polls: [], shardtimes: []};
 
             // Copy the entry
             const entryCopy = JSON.parse(JSON.stringify(entry));
@@ -30,6 +30,10 @@ async function init() {
             delete entryCopy.createdAt;
             delete entryCopy.updatedAt;
             delete entryCopy.updated;
+
+            if (table === "guildSettings") {
+                delete entryCopy.guildId;
+            }
 
             if (table === "eventDBs") {
                 // Grab just the event name out of the ID then add it to the events array
