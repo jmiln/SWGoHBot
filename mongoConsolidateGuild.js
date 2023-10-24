@@ -23,7 +23,7 @@ async function init() {
             const thisGuild = oldGuildIndex > -1 ? out[oldGuildIndex] : {guildId: thisGuildId, events: [], polls: [], shardtimes: []};
 
             // Copy the entry
-            const entryCopy = JSON.parse(JSON.stringify(entry));
+            let entryCopy = JSON.parse(JSON.stringify(entry));
 
             // Delete mongo bits that we don't need to have carried over
             delete entryCopy._id;
@@ -44,7 +44,13 @@ async function init() {
                 // Grab just the channel ID from the id then add it to it's array
                 entryCopy.channelId = entryCopy.id.split("-")[1];
                 delete entryCopy.id;
-                thisGuild[oldTables[table]].push(entryCopy);
+
+                if (table === "polls") {
+                    entryCopy.poll.channelId = entryCopy.channelId;
+                    thisGuild[oldTables[table]].push(entryCopy.poll);
+                } else {
+                    thisGuild[oldTables[table]].push(entryCopy);
+                }
             } else {
                 thisGuild[oldTables[table]] = entryCopy;
             }
