@@ -395,7 +395,7 @@ class Shardtimes extends Command {
 
         async function setTimes(guildId, stOut) {
             if (!Array.isArray(stOut)) throw new Error("[/shardTimes setTimes] Somehow have a non-array stOut");
-            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: shardArr}, false);
+            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: stOut}, false);
         }
     }
 }
