@@ -460,6 +460,11 @@
         "defId": "CAPTAINDROGAN",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "6-F",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
                 "name": "Rebel Rouser Marquee Event"
@@ -3317,11 +3322,6 @@
         "name": "Wedge Antilles",
         "defId": "WEDGEANTILLES",
         "locations": [
-            {
-                "type": "Cantina",
-                "level": "6-F",
-                "locId": "CANTINA"
-            },
             {
                 "type": "Fleet Shipments",
                 "cost": "400/10"

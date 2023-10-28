@@ -1382,7 +1382,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Protection"
         },
         "avatarName": "charui_chirrut"
     },
@@ -2206,7 +2206,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -3974,7 +3974,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5070,9 +5070,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
-            "cross": "Offense"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5331,7 +5331,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -6728,7 +6728,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Potency"
         },

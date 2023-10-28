@@ -5,6 +5,7 @@ module.exports.charChecklist = {
         ["JABBATHEHUTT",            "Jabba"],
         ["JEDIMASTERKENOBI",        "JM Kenobi"],
         ["GRANDMASTERLUKE",         "JM Luke"],
+        ["GLLEIA",                  "Leia Organa"],
         ["LORDVADER",               "Lord Vader"],
         ["SITHPALPATINE",           "SE Emperor"],
         ["SUPREMELEADERKYLOREN",    "SL Kylo Ren"]
@@ -53,6 +54,7 @@ module.exports.shipChecklist = {
         ["CAPITALSTARDESTROYER",      "Executrix"],
         ["CAPITALFINALIZER",          "Finalizer"],
         ["CAPITALMONCALAMARICRUISER", "Home One"],
+        ["CAPITALLEVIATHAN",          "Leviathan"],
         ["CAPITALMALEVOLENCE",        "Malevolence"],
         ["CAPITALNEGOTIATOR",         "Negotiator"],
         ["CAPITALPROFUNDITY",         "Profundity"],

@@ -279,6 +279,16 @@ class Zetas extends Command {
                     }
                 }
             } else {
+                const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+                if (!zetas[character.uniqueName]?.length) {
+                    return interaction.editReply({embeds: [{
+                        author: {
+                            name: interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
+                        },
+                        description: `It looks like nobody in your guild has any zetas for ${searchChar}.`,
+                        footer: footer
+                    }]});
+                }
                 for (const skill of Object.keys(zetas[character.uniqueName])) {
                     const name = await Bot.swgohAPI.abilities(skill, null, {min: true});
                     fields.push({
@@ -286,7 +296,6 @@ class Zetas extends Command {
                         value: zetas[character.uniqueName][skill].join("\n")
                     });
                 }
-                const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
                 return interaction.editReply({embeds: [{
                     author: {
                         name: interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
@@ -295,7 +304,6 @@ class Zetas extends Command {
                     footer: footer
                 }]});
             }
-
         }
     }
 }
