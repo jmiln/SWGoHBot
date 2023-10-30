@@ -18,30 +18,28 @@ module.exports = (Bot, client) => {
     };
 
     // BroadcastEval a message send
-    async function sendMsg(event, guildConf, guildID, announceMessage) {
-        if (guildConf.announceChan !== "" || event.eventChan !== "") {
+    async function sendMsg(event, guildConf, guildId, announceMessage) {
+        if (guildConf.announceChan !== "" || event.channel !== "") {
             let chan = "";
-            if (event?.eventChan !== "") { // If they've set a channel, use it
-                chan = event.eventChan;
+            if (event?.channel?.length) { // If they've set a channel, use it
+                chan = event.channel;
             } else {
                 chan = guildConf.announceChan;
             }
-            // Not sure what this replacement was suppsoed to be?
-            // if (announceMessage) announceMessage = announceMessage.replace(/\\`/g, "\\`");
             try {
-                await client.shard.broadcastEval(async (client, {guildID, announceMessage, chan, guildConf}) => {
-                    const targetGuild = await client.guilds.cache.find(g => g.id === guildID);
+                await client.shard.broadcastEval(async (client, {guildId, announceMessage, chan, guildConf}) => {
+                    const targetGuild = await client.guilds.cache.find(g => g.id === guildId);
                     if (targetGuild) {
                         client.announceMsg(targetGuild, announceMessage, chan, guildConf);
                     }
                 }, {context: {
-                    guildID: guildID,
+                    guildId,
                     announceMessage: announceMessage,
                     chan: chan,
                     guildConf: guildConf
                 }});
             } catch (e) {
-                Bot.logger.error(`Broke trying to announce event with ID: ${event.eventID} \n${e.stack}`);
+                Bot.logger.error(`Broke trying to announce event with name/channel: ${event.name} (${event.channel}) \n${e.stack}`);
             }
         }
     }
@@ -71,52 +69,54 @@ module.exports = (Bot, client) => {
         return ev;
     }
 
-    // Delete em here as needed
-    Bot.deleteEvent = async (eventID) => {
-        await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID})
-            .catch(error => {
-                Bot.logger.error(`Broke deleting an event (${eventID}) ${error}`);
-            });
-    };
+    async function getEvents(guildId) {
+        const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
+        return resArr[0]?.events || [];
+    }
+    async function setEvents(guildId, evArrOut) {
+        if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
+        return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: evArrOut}, false);
+    }
+    async function deleteGuildEvent({guildId, evName}) {
+        const res = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
+
+        // Filter out the specific one that we want gone, then re-save em
+        const evArrOut = res[0].events.filter(ev => ev.name !== evName);
+        return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: evArrOut}, false);
+    }
 
     // Send out an alert based on the guild's countdown settings
     Bot.countdownAnnounce = async (event) => {
-        let eventName = event.eventID.split("-");
-        const guildID = eventName.splice(0, 1)[0];
-        eventName = eventName.join("-");
-
-        const guildConf = await Bot.getGuildSettings(guildID);
+        const guildConf = await Bot.getGuildSettings(event.guildId);
         const diffNum = Math.abs(new Date().getTime() - event.eventDT);
         const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
 
-        var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", eventName, timeToGo);
+        var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
 
-        await sendMsg(event, guildConf, guildID, announceMessage);
+        await sendMsg(event, guildConf, event.guildId, announceMessage);
     };
 
     Bot.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
-        let eventName = event.eventID.split("-");
-        const guildID = eventName.splice(0, 1)[0];
-        eventName = eventName.join("-");
+        const guildConf = await Bot.getGuildSettings(event.guildId);
 
-        const guildConf = await Bot.getGuildSettings(guildID);
+        let outMsg = event?.message || "";
 
         // If it's running late, tack a notice onto the end of the message
         const diffTime = Math.abs(event.eventDT - new Date().getTime());
         if (diffTime > (2*minMS)) {
             const minPast = Math.floor(diffTime / minMS);
-            event.eventMessage += "\nThis event is " + minPast + " minutes past time.";
+            outMsg += "\n> This event is " + minPast + " minutes past time.";
         }
 
         // Announce the event
-        const announceMessage = `**${eventName}**\n${event.eventMessage}`;
-        await sendMsg(event, guildConf, guildID, announceMessage);
+        const announceMessage = `**${event.name}**\n${outMsg}`;
+        await sendMsg(event, guildConf, event.guildId, announceMessage);
 
         let doRepeat = false;
         if ((event.repeat && (event.repeat.repeatDay || event.repeat.repeatHour || event.repeat.repeatMin)) || event.repeatDays.length) {
             if (event.repeatDays?.length === 1) {
-                event.eventMessage += Bot.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
+                event.message += Bot.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
             }
 
             const tmpEv = await reCalc(event);
@@ -130,16 +130,19 @@ module.exports = (Bot, client) => {
         }
 
         if (doRepeat) {
-            // If it's been updated,
-            await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID}, {eventDT: event.eventDT, repeatDays: event.repeatDays, repeat: event.repeat})
+            // If it's set to repeat, just delete the old one, and save a new version of the event
+            const guildEvents = await getEvents(event.guildId);
+            const evArrOut = guildEvents.filter(ev => ev.name !== event.name);
+            evArrOut.push(event);
+            await setEvents(event.guildId, evArrOut)
                 .then(() => {
-                    // console.log(`Updating repeating event ${event.eventID}.`);
+                    // console.log(`Updating repeating event ${event.name} (${event.channel}).`);
                 })
                 .catch(error => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
         } else {
             // Just destroy it
-            await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID})
-                .then(() => { Bot.logger.debug(`Deleting non-repeating event ${event.eventID}`); })
+            await deleteGuildEvent({guildId: event.guildId, evName: event.name})
+                .then(() => { Bot.logger.debug(`Deleting non-repeating event ${event.name}`); })
                 .catch(error => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
         }
     };

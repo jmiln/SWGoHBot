@@ -141,7 +141,9 @@ class Event extends Command {
                     ]
                 },
                 {
-                    // TODO Possibly work this in to have the dropdowns?
+                    // TODO Possibly work this in to have the dropdowns / autocomplete?
+                    //  - This should be doable since we get the guild's config for each interaction
+                    //  - Should do so for view, delete, and any others that reference a specific event
                     name: "trigger",
                     description: "Trigger the selected event",
                     type: ApplicationCommandOptionType.Subcommand,
@@ -195,10 +197,10 @@ class Event extends Command {
         const guildConf = await Bot.getGuildSettings(interaction.guild.id);
 
         // const exampleEvent = {
-        //     "eventID": "guildID-eventName",
+        //     "name": "eventName",
         //     "eventDT": 1545299520000,
-        //     "eventMessage": "eventMsg",
-        //     "eventChan": "",
+        //     "message": "eventMsg",
+        //     "channel": null,
         //     "countdown": false,
         //     "repeat": {
         //         "repeatDay": 0,
@@ -227,18 +229,17 @@ class Event extends Command {
                 const channel   = interaction.options.getChannel("channel");
                 const countdown = interaction.options.getBoolean("countdown");
 
-                const guildEvents = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: new RegExp("^" + interaction.guild.id + "-")}, {attributes: 1});
+                const guildEvents = await getGuildEvents();
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
                     // 50 should be fine, as at the time of making this, the most anyone has is 31
                     return super.error(interaction, interaction.language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
                 }
-                const eventID = `${interaction.guild.id}-${evName}`;
 
                 // Check if that name/ event already exists
-                const exists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
-                if (exists) {
+                const exists = guildEvents.findIndex(ev => ev.name === evName);
+                if (exists > -1) {
                     return super.error(interaction, interaction.language.get("COMMAND_EVENT_JSON_EXISTS"));
                 }
 
@@ -246,8 +247,8 @@ class Event extends Command {
                     name: evName,
                     time: evTime,
                     day: evDate,
-                    message: evMsg?.length ? evMsg : null,
-                    channelID: channel?.id ? channel.id : null,
+                    message: evMsg?.length ? evMsg : "",
+                    channel: channel?.id ? channel.id : null,
                     countdown: countdown,
                     repeat: repeat,
                     repeatDay: repeatDay
@@ -260,9 +261,8 @@ class Event extends Command {
                 if (!validEV?.valid) {
                     return super.error(interaction, validEV.str);
                 }
-                await Bot.socket.emit("addEvents", validEV.event, (res) => {
+                await Bot.socket.emit("addEvents", {guildId: interaction.guild.id, events: [validEV.event]}, (res) => {
                     const ev = res[0];
-                    const evName = ev.evID.split("-").slice(1).join("-");
                     if (ev.success) {
                         return interaction.reply({content: interaction.language.get("COMMAND_EVENT_CREATED", evName, getDateTimeStr(validEV.event.eventDT, guildConf.timezone))});
                     } else {
@@ -314,11 +314,10 @@ class Event extends Command {
                             const evFailLog = [];
 
                             for (const ev of res) {
-                                const evName = ev.evID.split("-").slice(1).join("-");
                                 if (ev.success) {
-                                    evAddLog.push(interaction.language.get("COMMAND_EVENT_CREATED", evName, getDateTimeStr(ev.eventDT, guildConf.timezone)));
+                                    evAddLog.push(interaction.language.get("COMMAND_EVENT_CREATED", ev.name, getDateTimeStr(ev.eventDT, guildConf.timezone)));
                                 } else {
-                                    evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", evName, ev.error));
+                                    evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", ev.name, ev.error));
                                 }
                             }
                             return interaction.reply({embeds: [{
@@ -354,9 +353,7 @@ class Event extends Command {
 
                 if (eventName) {
                     // If they are looking to show a specific event
-                    const eventID = `${interaction.guild.id}-${eventName}`;
-
-                    await Bot.socket.emit("getEventsByID", eventID, async function(event) {
+                    await Bot.socket.emit("getEventByName", {guildId: interaction.guild.id, evName: eventName}, async function(event) {
                         // If it doesn't find the event, say so
                         if (Array.isArray(event) && !event.length) return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
 
@@ -364,14 +361,14 @@ class Event extends Command {
                         if (Array.isArray(event)) event = event[0];
                         const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
-                        let eventString = interaction.language.get("COMMAND_EVENT_TIME", eventName, eventDate);
+                        let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, eventDate);
                         eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
-                        if (event.eventChan?.length) {
-                            let chanName = "";
-                            if (interaction.guild.channels.cache.has(event.eventChan)) {
-                                chanName = `<#${interaction.guild.channels.cache.get(event.eventChan).id}>`;
+                        if (event.channel?.length) {
+                            let chanName = null;
+                            if (interaction.guild.channels.cache.has(event.channel)) {
+                                chanName = `<#${interaction.guild.channels.cache.get(event.channel).id}>`;
                             } else {
-                                chanName = event.eventChan;
+                                chanName = event.channel;
                             }
                             eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
                         }
@@ -380,9 +377,9 @@ class Event extends Command {
                         } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
                             eventString += interaction.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
                         }
-                        if (!minimal && event.eventMessage?.length) {
-                            // If they want to show all available events without the eventMessage showing
-                            eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, event.eventMessage));
+                        if (!minimal && event.message?.length) {
+                            // If they want to show all available events without the message showing
+                            eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, event.message));
                         }
                         return interaction.reply({content: eventString});
                     });
@@ -415,19 +412,16 @@ class Event extends Command {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            let thisEventName = event.eventID.split("-");
-                            thisEventName.splice(0, 1);
-                            thisEventName = thisEventName.join("-");
                             const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
-                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
+                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, eventDate);
                             eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
-                            if (event.eventChan && event.eventChan !== "") {
+                            if (event.channel?.length) {
                                 let chanName = "";
-                                if (interaction.guild.channels.cache.has(event.eventChan)) {
-                                    chanName = `<#${interaction.guild.channels.cache.get(event.eventChan).id}>`;
+                                if (interaction.guild.channels.cache.has(event.channel)) {
+                                    chanName = `<#${interaction.guild.channels.cache.get(event.channel).id}>`;
                                 } else {
-                                    chanName = event.eventChan;
+                                    chanName = event.channel;
                                 }
                                 eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
                             }
@@ -436,9 +430,9 @@ class Event extends Command {
                             } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
                                 eventString += interaction.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
                             }
-                            if (!minimal && event.eventMessage != "") {
-                                // If they want to show all available events with the eventMessage showing
-                                const msg = removeTags(interaction, event.eventMessage);
+                            if (!minimal && event.message != "") {
+                                // If they want to show all available events with the message showing
+                                const msg = removeTags(interaction, event.message);
                                 eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", msg);
                             }
                             array.push(eventString);
@@ -505,30 +499,27 @@ class Event extends Command {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            let thisEventName = event.eventID.split("-");
-                            thisEventName.splice(0, 1);
-                            thisEventName = thisEventName.join("-");
                             const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
-                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", thisEventName, eventDate);
+                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, eventDate);
                             eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
-                            if (event.eventChan && event.eventChan !== "") {
+                            if (event.channel && event.channel !== "") {
                                 let chanName = "";
-                                if (interaction.guild.channels.cache.has(event.eventChan)) {
-                                    chanName = `<#${interaction.guild.channels.cache.get(event.eventChan).id}>`;
+                                if (interaction.guild.channels.cache.has(event.channel)) {
+                                    chanName = `<#${interaction.guild.channels.cache.get(event.channel).id}>`;
                                 } else {
-                                    chanName = event.eventChan;
+                                    chanName = event.channel;
                                 }
                                 eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
                             }
-                            if (event["repeatDays"].length > 0) {
+                            if (event["repeatDays"]?.length > 0) {
                                 eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
                             } else if (event["repeat"] && (event.repeat["repeatDay"] !== 0 || event.repeat["repeatHour"] !== 0 || event.repeat["repeatMin"] !== 0)) { // At least one of em is more than 0
                                 eventString += interaction.language.get("COMMAND_EVENT_REPEAT", event.repeat["repeatDay"], event.repeat["repeatHour"], event.repeat["repeatMin"]);
                             }
-                            if (!minimal && event.eventMessage != "") {
-                                // If they want to show all available events with the eventMessage showing
-                                const msg = removeTags(interaction, event.eventMessage);
+                            if (!minimal && event.message?.length) {
+                                // If they want to show all available events with the message showing
+                                const msg = removeTags(interaction, event.message);
                                 eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", msg);
                             }
                             array.push(eventString);
@@ -569,9 +560,7 @@ class Event extends Command {
                 break;
             } case "delete": {
                 const eventName = interaction.options.getString("name");
-                const eventID = `${interaction.guild.id}-${eventName}`;
-
-                await Bot.socket.emit("delEvent", eventID, async (result) => {
+                await Bot.socket.emit("delEvent", eventName, async (result) => {
                     if (result.success) {
                         return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
                     } else {
@@ -581,43 +570,37 @@ class Event extends Command {
                 break;
             } case "trigger": {
                 const eventName = interaction.options.getString("name");
-                const eventID = `${interaction.guild.id}-${eventName}`;
+                console.log(`[event trigger] eventName: ${eventName}`);
 
-                const exists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
-
-                // Check if that name/ event already exists
-                if (!exists) {
-                    return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
-                } else {
-                    // As long as it does exist, go ahead and try triggering it
-                    await Bot.socket.emit("getEventsByID", eventID, async function(event) {
-                        if (Array.isArray(event)) event = event[0];
-                        var channel = null;
-                        var announceMessage = `**${eventName}**\n${event.eventMessage}`;
-                        if (event["eventChan"] && event.eventChan !== "") {  // If they"ve set a channel, try using it
-                            channel = interaction.guild.channels.cache.get(event.eventChan);
-                            if (!channel) {
-                                channel = interaction.guild.channels.cache.find(c => c.name === event.eventChan || c.id === event.eventChan);
-                            }
-                        } else { // Else, use the default one from their settings
-                            channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf.announceChan);
+                // As long as it does exist, go ahead and try triggering it
+                await Bot.socket.emit("getEventByName", {guildId: interaction.guild.id, evName: eventName}, async function(event) {
+                    console.log("[event trigger] event:");
+                    console.log(event);
+                    if (Array.isArray(event)) event = event[0];
+                    var channel = null;
+                    var announceMessage = `**${event.name}**\n${event.message}`;
+                    if (event["channel"] && event.channel !== "") {  // If they"ve set a channel, try using it
+                        channel = interaction.guild.channels.cache.get(event.channel);
+                        if (!channel) {
+                            channel = interaction.guild.channels.cache.find(c => c.name === event.channel || c.id === event.channel);
                         }
-                        if (channel && Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
-                            try {
-                                channel.send({content: announceMessage});
-                                return interaction.reply({content: "Successfully triggered " + eventName, ephemeral: true});
-                            } catch (e) {
-                                Bot.logger.error("Event trigger Broke! " + announceMessage);
-                                return interaction.reply({content: `Broke when trying to trigger *${eventName}*.\nIf this continues, please report it.`, ephemeral: true});
-                            }
+                    } else { // Else, use the default one from their settings
+                        channel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf.announceChan);
+                    }
+                    if (channel && Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
+                        try {
+                            channel.send({content: announceMessage});
+                            return interaction.reply({content: "Successfully triggered " + event.name, ephemeral: true});
+                        } catch (e) {
+                            Bot.logger.error("Event trigger Broke! " + announceMessage);
+                            return interaction.reply({content: `Broke when trying to trigger *${event.name}*.\nIf this continues, please report it.`, ephemeral: true});
                         }
-                    });
-                }
+                    }
+                });
                 break;
             } case "edit": {
                 // Edit an event
-                const evName = interaction.options.getString("event_name");
-                const eventID = `${interaction.guild.id}-${evName}`;
+                const eventName = interaction.options.getString("event_name");
 
                 const newEventName = interaction.options.getString("name");
 
@@ -629,22 +612,24 @@ class Event extends Command {
                 const newChannel   = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const eventRes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
-                const event = eventRes?.length ? eventRes[0] : null;
+                const eventRes = await getGuildEvents();
+                console.log(eventRes);
+                const event = eventRes?.find(ev => ev.name === eventName);
+                console.log(event);
 
                 // Check if that name/ event already exists
                 if (!event) {
-                    return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", evName)});
+                    return interaction.reply({content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName)});
                 } else {
                     const [oldDate, oldTime] = new Date(event.eventDT).toLocaleString("en-GB", {timeZone: "us/pacific", hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"}).split(", ");
 
                     // Put any new bits into an event skeleton
                     const newEvent = {
-                        name:      newEventName ? newEventName : evName,
+                        name:      newEventName ? newEventName : event.name,
                         day:       newEvDate ? newEvDate : oldDate,
                         time:      newEvTime ? newEvTime : oldTime,
-                        message:   newEvMsg ? newEvMsg : event.eventMessage,
-                        channelID: newChannel?.id ? newChannel.id : event.eventChan,
+                        message:   newEvMsg ? newEvMsg : event.message,
+                        channelID: newChannel?.id ? newChannel.id : event.channel,
                         countdown: newCountdown ? newCountdown : event.countdown,
                     };
                     if (newRepeat) {
@@ -665,7 +650,7 @@ class Event extends Command {
                     }
 
                     try {
-                        const res = await updateEvent(eventID, validEvent.event);
+                        const res = await updateGuildEvent(eventName, validEvent.event);
                         if (res.success) {
                             // Find all the fields that were updated
                             const outLog = [];
@@ -674,20 +659,16 @@ class Event extends Command {
                                 if (validEvent.event[field].toString() !== event[field]?.toString()) {
                                     let from = "N/A", to = "N/A";    // Default if there's nothing to show
                                     let code = true;    // Show in inline code blocks
-                                    if (field === "eventID") {
-                                        field = "Name";
-                                        from = evName;
-                                        to = newEventName;
-                                    } else if (field === "eventChan") {
-                                        if (event.eventChan) {
-                                            if (Bot.isChannelId(event.eventChan)) {
-                                                from = `<#${event.eventChan}>`;
+                                    if (field === "channel") {
+                                        if (event.channel) {
+                                            if (Bot.isChannelId(event.channel)) {
+                                                from = `<#${event.channel}>`;
                                             } else {
-                                                from = event.eventChan;
+                                                from = event.channel;
                                             }
                                         }
-                                        if (validEvent.event.eventChan) {
-                                            to = `<#${validEvent.event.eventChan}>`;
+                                        if (validEvent.event.channel) {
+                                            to = `<#${validEvent.event.channel}>`;
                                         }
                                         code = false;
                                     } else {
@@ -716,19 +697,8 @@ class Event extends Command {
             }
         }
 
-        async function updateEvent(id, event) {
-            const out = await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "eventDBs", {eventID: id}, event)
-                .then(() => {
-                    return { success: true, error: null };
-                })
-                .catch(error => {
-                    Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
-                    return { success: false, error: error };
-                });
-            return out;
-        }
-
         function removeTags(interaction, mess) {
+            if (!mess) return mess;
             const userReg = /<@!?(1|\d{17,19})>/g;
             const roleReg = /<@&(1|\d{17,19})>/g;
             const chanReg = /<#(1|\d{17,19})>/g;
@@ -776,10 +746,10 @@ class Event extends Command {
             eventArray.forEach((event, ix) => {
                 const err = [];
                 const newEvent = {
-                    eventID: "",
+                    name: "",
                     eventDT: 0,
-                    eventMessage: "",
-                    eventChan: "",
+                    message: "",
+                    channel: null,
                     countdown: false,
                     repeat: {
                         "repeatDay": 0,
@@ -789,7 +759,7 @@ class Event extends Command {
                     repeatDays: []
                 };
 
-                if (!event.name || !event.name.length) {
+                if (!event.name?.length) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
                 } else {
                     if (nameArr.includes(event.name)) {
@@ -797,7 +767,7 @@ class Event extends Command {
                     } else {
                         nameArr.push(event.name);
                     }
-                    newEvent.eventID = `${interaction.guild.id}-${event.name}`;
+                    newEvent.name = event.name
                 }
                 const dateSplit = event.day.split("/");
                 const mmddyyyDate = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
@@ -824,14 +794,13 @@ class Event extends Command {
                     if (event.message.length > MAX_MSG_SIZE) {
                         err.push(`Events have a maximum message length of ${MAX_MSG_SIZE} characters, this one is ${event.message.length} characters long`);
                     } else {
-                        newEvent.eventMessage = event.message;
+                        newEvent.message = event.message;
                     }
                 }
                 if (event.channel && !event.channelID) {
-                    event.channelID = event.channel;
-                }
-                if (event.channelID?.length) {
-                    newEvent.eventChan = event.channelID;
+                    newEvent.channel = event.channel;
+                } else if (event.channelID?.length) {
+                    newEvent.channel = event.channelID;
                 } else {
                     const announceChannel = interaction.guild.channels.cache.find(c => c.name === guildConf["announceChan"] || c.id === guildConf["announceChan"]);
                     if (!announceChannel) {
@@ -906,13 +875,39 @@ class Event extends Command {
             return outEvents;
         }
 
+        async function getGuildEvents() {
+            const resArr = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: 1, _id: 0});
+            return resArr?.events || [];
+        }
+        async function setGuildEvents(evArrOut) {
+            if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
+            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: evArrOut}, false);
+        }
+        async function updateGuildEvent(evName, event) {
+            const evList = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: 1, _id: 0});
+            const evIx = evList.events.findIndex(ev => ev.name === evName);
+
+            if (evIx < 0) return null; // Just to be doubly sure that it exists
+            evList.events[evIx] = event;
+
+            // Set the new event in the db
+            const out = await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: evList.events}, false)
+                .then(() => {
+                    return { success: true, error: null };
+                })
+                .catch(error => {
+                    Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
+                    return { success: false, error: error };
+                });
+            return out;
+        }
+
+
         function getDateTimeStr(timeNum, zone) {
             if (!Bot.isValidZone(zone)) return "Invalid Zone";
             const outStr = new Date(timeNum).toLocaleString("en-US", {timeZone: zone, hour12: false, month: "long", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
             return outStr;
         }
-
-        // Check if a given date is >= to the current time
     }
 }
 

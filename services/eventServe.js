@@ -9,12 +9,12 @@ async function init() {
     const cache   = require("../modules/cache.js")(mongo);
 
     io.on("connection", async socket => {
-        // console.log("Socket connected");
+        console.log("Socket connected");
 
         socket.on("checkEvents", async (callback) => {
             // Check all the events, and send back any that should be sent
             const nowTime = new Date().getTime();
-            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs");
+            const events = await getAllEvents();
 
             // Check on countdowns as well for each
             //  - This means for each event (With countdown enabled), we need to grab the guild's conf, and check their countdown settings
@@ -28,9 +28,8 @@ async function init() {
             // Grab all events that are in the future, but have countdowns enabled
             const futureCoutdownEvents = events.filter(e => (parseInt(e.eventDT, 10) > nowTime && e.countdown));
             for (const ev of futureCoutdownEvents) {
-                const guildID = ev.eventID.split("-")[0];
-                let guildConf = await cache.get(config.mongodb.swgohbotdb, "guildSettings", {guildId: guildID});
-                if (Array.isArray(guildConf)) guildConf = guildConf[0];
+                let guildConf = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: ev.guildId}, {settings: 1});
+                if (Array.isArray(guildConf)) guildConf = guildConf[0]?.settings;
 
                 if (!guildConf) continue;
 
@@ -50,7 +49,7 @@ async function init() {
                     });
                     if (cdMin) {
                         ev.isCD = true;
-                        ev.eventID = `${ev.eventID}-CD${cdMin}`;
+                        ev.name = `${ev.name}-CD${cdMin}`;
                         eventsOut.push(ev);
                     }
                 }
@@ -63,31 +62,30 @@ async function init() {
             return callback(eventsOut);
         });
 
-        socket.on("addEvents", async (events, callback) => {
+        socket.on("addEvents", async ({guildId, events}, callback) => {
             // Add new event(s) into the db
             if (!Array.isArray(events)) events = [events];
             const res = [];
-            // const res = {evID: eventID, success: true, error: null};
-            for (const event of events) { // eslint-disable-line no-unused-vars
-                // Check for the existence of any events that match the ID, and if not, add it in
-                const evRes = {evID: event.eventID, eventDT: event.eventDT, success: true, error: null};
-                const exists = await cache.exists(config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID});
+            for (const event of events) {
+                // Check for the existence of any events that match the name & channel, and if not, add it in
+                const evRes = {evName: event.name, eventDT: event.eventDT, success: true, error: null};
+                const exists = await guildEventExists({guildId: guildId, evName: event.name});
                 if (exists) { // If the event is already here, don't
                     evRes.success = false;
-                    evRes.error = "Event already exists";
+                    evRes.error = `Event "${event.name}" already exists in this channel`;
                     res.push(evRes);
                     continue;
                 }
                 if (event.countdown === "true") event.countdown = true;
                 if (event.countdown === "false") event.countdown = false;
-                await cache.put(config.mongodb.swgohbotdb, "eventDBs", {eventID: event.eventID}, event)
+                await addGuildEvent(guildId, event)
                     .then(() => {
                         // Push to the completed ones or whatever
                         res.push(evRes);
                     })
                     .catch((err) => {
                         // Push to invalid ones/ log the error
-                        console.error("Could not add the event " + event.eventID);
+                        console.error(`Could not add the event ${event.name} (${event.channel})`);
                         console.error(err);
 
                         evRes.success = false;
@@ -98,10 +96,10 @@ async function init() {
             callback(res);
         });
 
-        socket.on("delEvent", async (eventID, callback) => {
+        socket.on("delEvent", async (guildId, eventName, callback) => {
             // Remove specified event if it exists
-            const res = {evID: eventID, success: true, error: null};
-            const exists = await cache.exists(config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID});
+            const res = {evName: eventName, success: true, error: null};
+            const exists = await guildEventExists({guildId: guildId, evName: eventName});
             if (!exists) {
                 // Send back an error or something, and return
                 res.success = false;
@@ -109,7 +107,7 @@ async function init() {
                 return callback(res);
             }
 
-            await cache.remove(config.mongodb.swgohbotdb, "eventDBs", {eventID: eventID})
+            await deleteGuildEvent({guildId: guildId, evName: eventName})
                 .then(() => {
                     // Log it here, nothing needs to update
                 })
@@ -122,34 +120,67 @@ async function init() {
             return callback(res);
         });
 
-        socket.on("getEventsByID", async (eventIDs, callback) => { // eslint-disable-line no-unused-vars
-            if (!Array.isArray(eventIDs)) eventIDs = [eventIDs];
+        socket.on("getEventByName", async ({guildId, evName}, callback) => {
             // Get and return a specific event (For view or trigger)
-            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs", {eventID: {$in: eventIDs}});
-            return callback(events);
+            const events = await getGuildEvents(guildId);
+            return callback(events.filter(ev => ev.name === evName));
         });
 
         // Grab any events that match a filter
-        socket.on("getEventsByFilter", async (guildID, filterArr, callback) => { // eslint-disable-line no-unused-vars
+        socket.on("getEventsByFilter", async (guildId, filterArr, callback) => {
             // Get and return all matching events for a server/ guild
-            // select * from "eventDBs" WHERE string_to_array(LOWER("eventMessage"), ' ') || string_to_array(LOWER("eventID"), '-') @> '{"@everyone","301814154136649729"}';
             if (!filterArr) return [];
             if (!Array.isArray(filterArr)) filterArr = [filterArr];
-            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs", {
-                eventID: new RegExp(`^${guildID}-`)
-            });
+            const events = await getGuildEvents(guildId);
             const filteredEvents = events.filter(ev => {
-                return filterArr.every(e => `${ev.message} ${ev.eventID}`.includes(e));
+                return filterArr.every(ev => `${ev.message} ${ev.name}`.includes(ev));
             });
             return callback(filteredEvents);
         });
 
-        socket.on("getEventsByGuild", async (guildID, callback) => { // eslint-disable-line no-unused-vars
+        socket.on("getEventsByGuild", async (guildId, callback) => {
             // Get and return all events for a server/ guild (For full view)
-            const events = await cache.get(config.mongodb.swgohbotdb, "eventDBs", {eventID: new RegExp(`^${guildID}-`)});
+            const events = await getGuildEvents(guildId);
             return callback(events);
         });
     });
+
+    async function getGuildEvents(guildId) {
+        const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
+        return resArr[0]?.events || [];
+    }
+    async function addGuildEvent(guildId, newEvent) {
+        const events = await getGuildEvents(guildId);
+        events.push(newEvent);
+        await setGuildEvents(guildId, events);
+    }
+    async function setGuildEvents(guildId, evArrOut) {
+        if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array evArrOut");
+        return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: evArrOut}, false);
+    }
+    async function guildEventExists({guildId, evName}) {
+        const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
+        const resIx = resArr[0]?.events.indexOf(ev => ev.name === evName);
+        return resIx > -1;
+    }
+    async function deleteGuildEvent({guildId, evName}) {
+        const res = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
+        const evArr = res.events;
+
+        // Filter out the specific one that we want gone, then re-save em
+        const evArrOut = evArr.filter(ev => ev.name !== evName);
+        return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: evArrOut}, false);
+    }
+    async function getAllEvents() {
+        const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, {guildId: 1, events: 1, _id: 0});
+        return resArr.reduce((acc, curr) => {
+            return [...acc, ...curr.events.map(ev => {
+                ev.guildId = curr.guildId;
+                return ev;
+            })];
+        }, []);
+    }
+
 }
 
 function convertMS(milliseconds) {
