@@ -38,7 +38,11 @@ async function init() {
             if (table === "eventDBs") {
                 // Grab just the event name out of the ID then add it to the events array
                 entryCopy.name = entryCopy.eventID.split("-").slice(1).join("-");
+                entryCopy.channel = entryCopy?.eventChan;
+                entryCopy.message = entryCopy?.eventMessage;
                 delete entryCopy.eventID;
+                delete entryCopy.eventChan;
+                delete entryCopy.eventMessage;
                 thisGuild[oldTables[table]].push(entryCopy);
             } else if (["polls", "shardtimes"].includes(table)) {
                 // Grab just the channel ID from the id then add it to it's array
