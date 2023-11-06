@@ -58,8 +58,8 @@ class Showconf extends Command {
                             for (const role of guildConf.adminRole) {
                                 if (Bot.isUserID(role)) {
                                     // If it's a role ID, try and get a name for it
-                                    const roleName = await interaction.guild.roles.cache.find(r => r.id === role);
-                                    roleArr.push(roleName.name);
+                                    const roleRes = await interaction.guild.roles.cache.find(r => r.id === role);
+                                    roleArr.push(roleRes?.name || role);
                                 } else {
                                     roleArr.push(role);
                                 }

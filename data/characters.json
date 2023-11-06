@@ -2443,9 +2443,9 @@
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Tenacity"
         },
@@ -3353,9 +3353,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -4431,7 +4431,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5070,9 +5070,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -7070,8 +7070,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_ugnaught"
@@ -7240,7 +7240,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Tenacity x2"
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Health",
@@ -7473,9 +7473,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },
