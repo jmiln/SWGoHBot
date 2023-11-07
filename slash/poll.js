@@ -253,7 +253,7 @@ class Poll extends Command {
         }
 
         async function getPolls(guildId) {
-            let resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: 1});
+            const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: 1});
             const polls = resArr[0]?.polls;
             return polls || [];
         }

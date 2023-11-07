@@ -654,7 +654,7 @@ class Event extends Command {
                         if (res.success) {
                             // Find all the fields that were updated
                             const outLog = [];
-                            for (let field of Object.keys(validEvent.event)) {
+                            for (const field of Object.keys(validEvent.event)) {
                                 if (["updated", "updatedAt", "createdAt"].includes(field)) continue;
                                 if (validEvent.event[field].toString() !== event[field]?.toString()) {
                                     let from = "N/A", to = "N/A";    // Default if there's nothing to show
@@ -767,7 +767,7 @@ class Event extends Command {
                     } else {
                         nameArr.push(event.name);
                     }
-                    newEvent.name = event.name
+                    newEvent.name = event.name;
                 }
                 const dateSplit = event.day.split("/");
                 const mmddyyyDate = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
@@ -879,10 +879,10 @@ class Event extends Command {
             const resArr = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: 1, _id: 0});
             return resArr?.events || [];
         }
-        async function setGuildEvents(evArrOut) {
-            if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
-            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: evArrOut}, false);
-        }
+        // async function setGuildEvents(evArrOut) {
+        //     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
+        //     return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: evArrOut}, false);
+        // }
         async function updateGuildEvent(evName, event) {
             const evList = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: 1, _id: 0});
             const evIx = evList.events.findIndex(ev => ev.name === evName);

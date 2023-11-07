@@ -389,7 +389,7 @@ class Shardtimes extends Command {
         }
 
         async function getTimes(guildId) {
-            let resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: 1});
+            const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: 1});
             return resArr[0]?.shardtimes || [];
         }
 

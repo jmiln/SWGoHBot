@@ -890,7 +890,7 @@ module.exports = (Bot, client) => {
         if (!guildId) {
             return Bot.config.defaultSettings;
         }
-        let guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: 1});
+        const guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: 1});
         if (!guildSettings?.length) return Bot.config.defaultSettings;
         return {...Bot.config.defaultSettings, ...guildSettings[0].settings};
     };

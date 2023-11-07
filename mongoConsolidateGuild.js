@@ -1,5 +1,5 @@
 const config = require("./config.js");
-const { inspect } = require("util");
+// const { inspect } = require("util");
 
 async function init() {
     const { MongoClient } = require("mongodb");
@@ -16,14 +16,14 @@ async function init() {
 
     for (const table of Object.keys(oldTables)) {
         const collection = await mongo.db(config.mongodb.swgohbotdb).collection(table).find().toArray();
-        for (let entry of collection) {
+        for (const entry of collection) {
             // Grab any old entry for this guild
             const thisGuildId = getGuildId(table, entry);
-            const oldGuildIndex =  out.findIndex(gConf => gConf.guildId === thisGuildId)
+            const oldGuildIndex =  out.findIndex(gConf => gConf.guildId === thisGuildId);
             const thisGuild = oldGuildIndex > -1 ? out[oldGuildIndex] : {guildId: thisGuildId, events: [], polls: [], shardtimes: []};
 
             // Copy the entry
-            let entryCopy = JSON.parse(JSON.stringify(entry));
+            const entryCopy = JSON.parse(JSON.stringify(entry));
 
             // Delete mongo bits that we don't need to have carried over
             delete entryCopy._id;
@@ -81,10 +81,10 @@ function getGuildId(tableName, obj) {
             return obj.guildId;
         case "eventDBs":
             // console.log(obj);
-            return obj.eventID.split("-")[0]
+            return obj.eventID.split("-")[0];
         case "polls":
         case "shardtimes":
-            return obj.id.split("-")[0]
+            return obj.id.split("-")[0];
     }
 }
 

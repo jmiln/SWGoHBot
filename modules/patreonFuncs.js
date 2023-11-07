@@ -894,7 +894,7 @@ module.exports = (Bot, client) => {
     };
 
     function isWithinTime(targetTime, nowTime, min, max) {
-        if (min >= max) throw new Error("[patreonFuncs / isWithinTime] Min MUST be less than max.")
+        if (min >= max) throw new Error("[patreonFuncs / isWithinTime] Min MUST be less than max.");
         if ((targetTime - (min * 60_000)) < nowTime ||  // min minutes before targetTime is past
             (targetTime - (max * 60_000)) > nowTime) {  // max minutes before targetTime is in the future
             return false;

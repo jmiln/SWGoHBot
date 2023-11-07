@@ -133,7 +133,7 @@ async function init() {
             if (!Array.isArray(filterArr)) filterArr = [filterArr];
             const events = await getGuildEvents(guildId);
             const filteredEvents = events.filter(ev => {
-                return filterArr.every(ev => `${ev.message} ${ev.name}`.includes(ev));
+                return filterArr.every(e => `${e.message} ${e.name}`.includes(ev));
             });
             return callback(filteredEvents);
         });
