@@ -1,12 +1,13 @@
 # Directories
-/node_modules/
-/wipCommands/
 /data/img/
+/data/swgoh-json-files/
+/node_modules/
 /scripts
 /swgoh
 /swgohAPI
-/testOutput
 /testBk
+/testOutput
+/wipCommands/
 
 # Specific Files
 config.js
