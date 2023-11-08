@@ -73,13 +73,14 @@ class Poll extends Command {
         const action = interaction.options.getSubcommand();
 
 
-        let poll = { // ID = guildID-channelID
-            "question": "",
-            "options": [],
-            "votes": {
+        const poll = {
+            question: "",
+            options: [],
+            votes: {
                 // userID: vote#
             },
-            "anon": false
+            anon: false,
+            channelId: interaction.channel.id
         };
 
         if (!interaction.guild || !interaction.channel) {
@@ -87,26 +88,16 @@ class Poll extends Command {
             // TODO Lang this
             return super.error(interaction, "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.");
         }
-        const pollID = `${interaction.guild.id}-${interaction.channel.id}`;
 
-        // If they're just voting on the channel's poll
-        const oldPollRes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID});
-        let oldPoll = null;
-        if (Array.isArray(oldPollRes)) {
-            if (oldPollRes.length) {
-                oldPoll = oldPollRes[0];
-            }
-        }
+        const pollsArr = await getPolls(interaction.guild.id);
+        const oldPoll  = pollsArr.find(p => p.channelId === interaction.channel.id);
+
         if (oldPoll && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
             return super.error(interaction, interaction.language.get("COMMAND_POLL_ALREADY_RUNNING"));
         } else if (!oldPoll && action !== "create") {
             // If they're tyring to use a poll that doesn't exist, let them know
             return super.error(interaction, "Sorry, but there is no poll active in this channel.");
-        }
-
-        if (oldPoll) {
-            poll = oldPoll.poll;
         }
 
         // Make sure it's a mod or someone with the appropriate perms trying to create it
@@ -116,10 +107,11 @@ class Poll extends Command {
         }
 
         switch (action) {
+            // Create a poll (lvl 3+)
             case "create": {
                 const optionsString = interaction.options.getString("options");
                 poll.question       = interaction.options.getString("question");
-                poll.anon           = interaction.options.getBoolean("anonymous");
+                poll.anon           = interaction.options.getBoolean("anonymous") || false;
                 poll.options        = optionsString.split("|").map(opt => opt.trim());
 
                 // Make sure the question is kept within a reasonable length (Not sure why I chose 256 at the time)
@@ -134,67 +126,10 @@ class Poll extends Command {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_MANY_OPT"));
                 }
 
-                // Create a poll (lvl 3+)
-                await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID}, {
-                    id: pollID,
-                    poll: poll
-                })
-                    .then(() => {
-                        return interaction.reply({
-                            content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
-                            embeds: [{
-                                author: {
-                                    name: poll.question
-                                },
-                                description: pollCheck(poll),
-                                footer: getFooter(poll)
-                            }]
-                        });
-                    })
-                    .catch((err) => {
-                        Bot.logger.error("Broke when creating a poll: \n" + err);
-                        return super.error(interaction, "Sorry, but something went wrong when saving that poll. Please try again in a bit");
-                    });
-                break;
-            }
-            case "cancel": {
-                // Cancel the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
-                // Delete the current poll
-                await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID})
-                    .then(() => {
-                        // Then send a message confirming the deletion
-                        return super.success(interaction, "> Poll deleted.");
-                    })
-                    .catch(() => {
-                        // Or, if it breaks, tell them that it broke
-                        return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
-                    });
-                break;
-            }
-            case "end": {
-                // End the current poll in a channel, need to ask for confirmation, maybe try and use a button here at some point?
-                // Delete the current poll
-                await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID})
-                    .then(() => {
-                        // Then send a message showing the final results
-                        return interaction.reply({
-                            embeds: [{
-                                author: {
-                                    name: interaction.language.get("COMMAND_POLL_FINAL", "")
-                                },
-                                description: `**${poll.question}**\n${pollCheck(poll, true)}`
-                            }]
-                        });
-                    })
-                    .catch(() => {
-                        // Or, if it breaks, tell them that it broke
-                        return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
-                    });
-                break;
-            }
-            case "view": {
-                // View the current poll in a channel
+                pollsArr.push(poll);
+                await setPolls(interaction.guild.id, pollsArr);
                 return interaction.reply({
+                    content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
                     embeds: [{
                         author: {
                             name: poll.question
@@ -204,37 +139,85 @@ class Poll extends Command {
                     }]
                 });
             }
+            case "cancel": {
+                // Cancel the current poll in a channel, should ask for confirmation, maybe try and use a button here at some point?
+                // Delete the current poll
+                const targetIndex = pollsArr.find(p => p.channelId === interaction.channel.id);
+                try {
+                    pollsArr.splice(targetIndex, 1);
+                    await setPolls(interaction.guild.id, pollsArr);
+                    return super.success(interaction, "> Poll deleted.");
+                } catch (err) {
+                    return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
+                }
+            }
+            case "end": {
+                // End the current poll in a channel, should probably ask for confirmation, maybe try and use a button here at some point?
+                // Delete the current poll
+                const targetIndex = pollsArr.find(p => p.channelId === interaction.channel.id);
+                try {
+                    pollsArr.splice(targetIndex, 1);
+                    await setPolls(interaction.guild.id, pollsArr);
+                    return interaction.reply({
+                        embeds: [{
+                            author: {
+                                name: interaction.language.get("COMMAND_POLL_FINAL", "")
+                            },
+                            description: `**${oldPoll.question}**\n${pollCheck(oldPoll, true)}`
+                        }]
+                    });
+                } catch (err) {
+                    return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
+                }
+            }
+            case "view": {
+                // View the current poll in a channel
+                return interaction.reply({
+                    embeds: [{
+                        author: {
+                            name: oldPoll.question
+                        },
+                        description: pollCheck(oldPoll),
+                        footer: getFooter(oldPoll)
+                    }]
+                });
+            }
             case "vote": {
                 // Vote on the current poll in a channel, and don't show any output for this
                 // Doesn't need to be usable in DMs anymore because of the ephemeral reqponses now
                 const opt = interaction.options.getInteger("option") - 1;
-                if (poll.options.length <= opt || opt < 0) {
+                if (oldPoll.options.length <= opt || opt < 0) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_INVALID_OPTION"), {ephemeral: true});
                 } else {
+                    const targetIndex = pollsArr.find(p => p.channelId === interaction.channel.id);
                     let voted = null;
-                    if (poll.votes[interaction.user.id] === opt) {
+                    if (oldPoll.votes[interaction.user.id] === opt) {
                         // Warn em that they're voting for the same thing they already voted for, so it won't be registered
-                        return super.error(interaction, interaction.language.get("COMMAND_POLL_SAME_OPT", poll.options[opt]), {ephemeral: true});
-                    } else if (!Number.isNaN(poll.votes[interaction.user.id])) {
-                        voted = poll.votes[interaction.user.id];
+                        return super.error(interaction, interaction.language.get("COMMAND_POLL_SAME_OPT", oldPoll.options[opt]), {ephemeral: true});
+                    } else if (!Number.isNaN(oldPoll.votes[interaction.user.id])) {
+                        // If they've already voted, store that to use later
+                        voted = oldPoll.votes[interaction.user.id];
                     }
-                    poll.votes[interaction.user.id] = opt;
-                    await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "polls", {id: pollID}, {poll: poll})
-                        .then(() => {
-                            if (voted !== null && voted !== undefined) {
-                                return interaction.reply({
-                                    content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", poll.options[voted], poll.options[opt]),
-                                    ephemeral: true
-                                });
-                            } else {
-                                return interaction.reply({
-                                    content: interaction.language.get("COMMAND_POLL_REGISTERED", poll.options[opt]),
-                                    ephemeral: true
-                                });
-                            }
-                        });
+                    oldPoll.votes[interaction.user.id] = opt;
+
+                    try {
+                        pollsArr[targetIndex] = oldPoll;
+                        await setPolls(interaction.guild.id, pollsArr);
+                        if (voted !== null && voted !== undefined) {
+                            return interaction.reply({
+                                content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),
+                                ephemeral: true
+                            });
+                        } else {
+                            return interaction.reply({
+                                content: interaction.language.get("COMMAND_POLL_REGISTERED", oldPoll.options[opt]),
+                                ephemeral: true
+                            });
+                        }
+                    } catch (err) {
+                        return console.error(`[/poll vote] Error voting: ${err}`);
+                    }
                 }
-                break;
             }
         }
 
@@ -267,6 +250,18 @@ class Poll extends Command {
                 footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID));
             }
             return footer;
+        }
+
+        async function getPolls(guildId) {
+            const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: 1});
+            const polls = resArr[0]?.polls;
+            return polls || [];
+        }
+
+        async function setPolls(guildId, pollsOut) {
+            // Filter out any settings that are the same as the defaults
+            if (!Array.isArray(pollsOut)) throw new Error("[/poll setPolls] Somehow have a non-array pollsOut");
+            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: pollsOut}, false);
         }
     }
 }

@@ -1,6 +1,5 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
-const cache = require("../modules/cache");
 
 class Farm extends Command {
     constructor(Bot) {

@@ -90,20 +90,11 @@ class Shardtimes extends Command {
     async run(Bot, interaction, options) {
         // Shard ID will be guild.id-channel.id
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
-        const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
+        // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
-        let shardTimes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID})
-            .then(st => {
-                return st[0];
-            });
-
-
-        if (!shardTimes) {
-            shardTimes = await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID}, {
-                id: shardID,
-                times: {}
-            });
-        }
+        const shardArr = await getTimes(interaction.guild.id);
+        const targetIndex = await shardArr.findIndex(sh => sh.channelId === interaction.channel.id);
+        const shardTimes = targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : {channelId: interaction.channel.id, times: {}};
 
         const action = interaction.options.getSubcommand();
 
@@ -210,7 +201,12 @@ class Shardtimes extends Command {
                 "timezone": timezone,
                 "flag": flag
             };
-            await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID}, shardTimes)
+            if (targetIndex > -1) {
+                shardArr[targetIndex] = shardTimes;
+            } else {
+                shardArr.push(shardTimes);
+            }
+            await setTimes(interaction.guild.id, shardArr)
                 .then(() => {
                     if (tempUser) {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone)});
@@ -238,7 +234,8 @@ class Shardtimes extends Command {
 
             if (shardTimes.times[userID]) {
                 delete shardTimes.times[userID];
-                await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID}, shardTimes)
+                shardArr[targetIndex] = shardTimes;
+                await setTimes(interaction.guild.id, shardArr)
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS")});
                     })
@@ -262,7 +259,7 @@ class Shardtimes extends Command {
             }
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
-            if (Bot.hasViewAndSend(destChannel, interaction.guild.members.me)) {
+            if (!Bot.hasViewAndSend(destChannel, interaction.guild.members.me)) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 
@@ -271,35 +268,33 @@ class Shardtimes extends Command {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_SAME_CHAN"));
             }
 
-            const destShardID = `${interaction.guild.id}-${destChannel.id}`;
-
-            const destExists = await Bot.cache.exists(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: destShardID});
-
-            if (!destExists) {
+            const destTarget = shardArr.findIndex(sh => sh.channelId === destChannel.id);
+            const destTimes = shardArr[destTarget];
+            if (destTarget < 0) {
                 // If there's no shard info in the destination channel
-                await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: shardID, times: shardTimes})
+                shardTimes.channelId = destChannel.id;
+                shardArr.push(shardTimes);
+                await setTimes(interaction.guild.id, shardArr)
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                     })
                     .catch((err) => {
                         return super.error(interaction, err.message);
                     });
+            } else if (destTimes?.times && Object.keys(destTimes.times)?.length) {
+                // Or if there is shard info there with listings
+                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
             } else {
-                const thisShardTimes = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: destShardID});
-                const destHasTimes = thisShardTimes[0]?.times.length;
-                if (destHasTimes) {
-                    // Of if there is shard info there with listings
-                    return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
-                } else {
-                    // Or if there is shard info there, but no listings
-                    await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "shardtimes", {id: destShardID}, shardTimes)
-                        .then(() => {
-                            return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
-                        })
-                        .catch(() => {
-                            return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
-                        });
-                }
+                // Or if there is shard info there, but no listings
+                destTimes.times = shardTimes.times;
+                shardArr[destTarget] = destTimes;
+                await setTimes(interaction.guild.id, shardArr)
+                    .then(() => {
+                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
+                    })
+                    .catch(() => {
+                        return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
+                    });
             }
             return;
         } else if (action === "view") {
@@ -325,14 +320,13 @@ class Shardtimes extends Command {
             const sortedShardTimes = Object.keys(shardOut).sort((a, b) => a > b ? 1 : -1);
 
             const fields = [];
+            const maxLen = 20;
             for (const time of sortedShardTimes) {
                 const times = [];
                 for (const user of shardOut[time]) {
                     let userFlag = interaction.client.emojis.cache.get(shardTimes.times[user].flag);
-                    if (!userFlag) {
-                        userFlag = shardTimes.times[user].flag;
-                    }
-                    const maxLen = 20;
+                    if (!userFlag) userFlag = shardTimes.times[user]?.flag;
+
                     let uName = "";
                     if (!shardTimes.times[user].type || shardTimes.times[user].type === "id") {
                         const thisUser = await interaction.guild.members.fetch(user).catch(() => {});
@@ -369,29 +363,19 @@ class Shardtimes extends Command {
         }
 
         function timeTil(zone, timeToAdd, type) {
+            const nowTime = new Date().getTime();
             const hrMS = 1000 * 60 * 60;
             const dayMS = 1000 * 60 * 60 * 24;
-            const nowTime = new Date().getTime();
+
             let targetTime;
             if (type === "zone") {
                 const target = (Bot.getStartOfDay(zone)).getTime() + (hrMS * timeToAdd);
                 targetTime = (target + nowTime) > target ? target : target + dayMS;
-            } else if (type === "hhmm") {
-                const target = getUTCAtTime(zone);
-                if (target < nowTime) {
-                    // It's already passed
-                    targetTime = target + dayMS;
-                } else {
-                    targetTime = target;
-                }
             } else {
-                const target = Bot.getUTCFromOffset(zone) + (hrMS * timeToAdd);
-                if (target < nowTime) {
-                    // It's already passed
-                    targetTime = target + dayMS;
-                } else {
-                    targetTime = target;
-                }
+                const target = type === "hhmm" ? getUTCAtTime(zone) : Bot.getUTCFromOffset(zone) + (hrMS * timeToAdd);
+
+                // If it's already passed, add a day to grab the next one
+                targetTime = target + (target < nowTime ? dayMS : 0);
             }
             const times = Bot.convertMS(targetTime - new Date().getTime());
             return times.hour.toString().padStart(2, "0") + ":" + times.minute.toString().padStart(2, "0");
@@ -404,6 +388,15 @@ class Shardtimes extends Command {
             return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
         }
 
+        async function getTimes(guildId) {
+            const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: 1});
+            return resArr[0]?.shardtimes || [];
+        }
+
+        async function setTimes(guildId, stOut) {
+            if (!Array.isArray(stOut)) throw new Error("[/shardTimes setTimes] Somehow have a non-array stOut");
+            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: stOut}, false);
+        }
     }
 }
 

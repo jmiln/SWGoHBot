@@ -68,7 +68,7 @@ class SetConf extends Command {
 
         const guildConf = await Bot.getGuildSettings(interaction.guild.id);
         if (!guildConf) {
-            return super.error(interaction, "I cannot find a config for your guild. Please report this to the folks over at this bot's server, check `;info` or `/info` for the invite code");
+            return super.error(interaction, "I cannot find a config for your guild. Please report this to the folks over at this bot's server, check `/info` for the invite code");
         }
 
         const subCommand = interaction.options.getSubcommand();

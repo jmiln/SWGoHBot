@@ -415,7 +415,7 @@ module.exports = class extends Language {
                 `Required Lvl: ${lvl}`,
                 `Total GP:     ${gp}`
             ].join("\n"),
-            COMMAND_GUILDS_FOOTER: `\`/guild roster\` para mostrar los miembros de tu gremio`,
+            COMMAND_GUILDS_FOOTER: "`/guild roster` para mostrar los miembros de tu gremio",
             COMMAND_GUILDS_HELP: {
                 description: "Muestra todos los que estan en tu gremio/ algunas estadísticas básicas.",
                 actions: [
