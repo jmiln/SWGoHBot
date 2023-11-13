@@ -274,12 +274,13 @@ class Event extends Command {
             case "createjson": {
                 // Using the json code block method of creating events
                 const jsonIn = interaction.options.getString("json");
-                const regex = new RegExp(/([`]{3})([^```]*)([`]{3})/g);
-                const match = regex.exec(jsonIn);
+                // const regex = new RegExp(/([`]{3}\s*)([^```]*)(\s*[`]{3})/);     // This is flawed since it breaks as soon as it finds any backticks (`)
+                const regex = /(?<=[`]{3})(.*)(?=[`]{3})/;
+                const match = jsonIn.match(regex);
 
                 if (match) {
                     // Make sure the event objects are in an array
-                    const matchWhole = match[2].replace(/\n/g, "");
+                    const matchWhole = match[0].replace(/\n/g, "");
                     if (!matchWhole.startsWith("[") || !matchWhole.endsWith("]")) {
                         return super.error(interaction, "Invalid json, please make sure the events are surrounded by square brackets (`[]`) at the beginning and end.");
                     }
@@ -287,7 +288,7 @@ class Event extends Command {
 
                     let jsonWhole;
                     try {
-                        jsonWhole = JSON.parse(match[2]);
+                        jsonWhole = JSON.parse(match[0]);
                     } catch (e) {
                         return super.error(interaction, "**ERROR Parsing the json**" + Bot.codeBlock(e.message));
                     }
@@ -304,20 +305,22 @@ class Event extends Command {
                     // }]```
 
                     // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
-                    const result = validateEvents(jsonWhole);
+                    const guildEvents = await getGuildEvents();
+                    const result = validateEvents(jsonWhole, guildEvents);
                     if (result.filter(e => !e.valid).length) {
                         return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n")))});
                     } else {
                         // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
-                        await Bot.socket.emit("addEvents", result.map(e => e.event), (res) => {
+                        await Bot.socket.emit("addEvents", {guildId: interaction.guild.id, events: result.map(e => e.event)}, (res) => {
                             const evAddLog = [];
                             const evFailLog = [];
 
                             for (const ev of res) {
+                                const thisEvent = ev.event;
                                 if (ev.success) {
-                                    evAddLog.push(interaction.language.get("COMMAND_EVENT_CREATED", ev.name, getDateTimeStr(ev.eventDT, guildConf.timezone)));
+                                    evAddLog.push(interaction.language.get("COMMAND_EVENT_CREATED", thisEvent.name, getDateTimeStr(thisEvent.eventDT, guildConf.timezone)));
                                 } else {
-                                    evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", ev.name, ev.error));
+                                    evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", thisEvent.name, ev.error));
                                 }
                             }
                             return interaction.reply({embeds: [{
@@ -560,7 +563,7 @@ class Event extends Command {
                 break;
             } case "delete": {
                 const eventName = interaction.options.getString("name");
-                await Bot.socket.emit("delEvent", eventName, async (result) => {
+                await Bot.socket.emit("delEvent", {guildId: interaction.guild.id, eventName: eventName}, async (result) => {
                     if (result.success) {
                         return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
                     } else {
@@ -570,12 +573,9 @@ class Event extends Command {
                 break;
             } case "trigger": {
                 const eventName = interaction.options.getString("name");
-                console.log(`[event trigger] eventName: ${eventName}`);
 
                 // As long as it does exist, go ahead and try triggering it
                 await Bot.socket.emit("getEventByName", {guildId: interaction.guild.id, evName: eventName}, async function(event) {
-                    console.log("[event trigger] event:");
-                    console.log(event);
                     if (Array.isArray(event)) event = event[0];
                     var channel = null;
                     var announceMessage = `**${event.name}**\n${event.message}`;
@@ -613,9 +613,7 @@ class Event extends Command {
                 const newCountdown = interaction.options.getBoolean("countdown");
 
                 const eventRes = await getGuildEvents();
-                console.log(eventRes);
                 const event = eventRes?.find(ev => ev.name === eventName);
-                console.log(event);
 
                 // Check if that name/ event already exists
                 if (!event) {
@@ -736,7 +734,9 @@ class Event extends Command {
             mess = mess.replace(/`/g, "");
             return mess;
         }
-        function validateEvents(eventArray) {
+
+        // TODO When running validateEvents, check against the guild's other events as well as the ones being entered now
+        function validateEvents(eventArray, guildEvArray) {
             const now = new Date().getTime();
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
@@ -759,10 +759,10 @@ class Event extends Command {
                     repeatDays: []
                 };
 
-                if (!event.name?.length) {
+                if (!event?.name?.length) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
                 } else {
-                    if (nameArr.includes(event.name)) {
+                    if (nameArr.includes(event.name) || guildEvArray?.map(ev => ev.name).includes(event.name)) {
                         err.push(interaction.language.get("COMMAND_EVENT_JSON_DUPLICATE"));
                     } else {
                         nameArr.push(event.name);
@@ -863,7 +863,7 @@ class Event extends Command {
                 if (err.length) {
                     outStr = interaction.language.get("COMMAND_EVENT_JSON_ERROR_LIST", (ix+1), err.map(e => `* ${e}`).join("\n"));
                 } else {
-                    outStr = interaction.language.get("COMMAND_EVENT_JSON_EVENT_VALID", (ix+1), event.name, event.time, event.day);
+                    outStr = interaction.language.get("COMMAND_EVENT_JSON_EVENT_VALID", (ix+1), newEvent.name, event.time, event.day);
                 }
                 const result = {
                     event: newEvent,
