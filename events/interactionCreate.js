@@ -119,13 +119,14 @@ module.exports = async (Bot, client, interaction) => {
                 })).slice(0, 24)
             );
         } catch (err) {
-            // If it's an unknown interaction error, just move on, nothing that I can do about it
-            if (err.toString().toLowerCase().includes("unknown interaction")) return;
-            if (err.toString().toLowerCase().includes("bad gateway")) return;
+            // If it's one of the common errors, just move on, nothing that I can do about it
+            const ignoreArr = [ "unknown interaction", "bad gateway", "service unavailable" ];
+            const errStr = ignoreArr.find(elem => err.toString().toLowerCase().includes(elem));
+            if (errStr) return;
 
             // Otherwise, print out what I can about it
             if (typeof err !== "string") {
-                logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
+                logErr(`[${Bot.myTime()}] [interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
                 console.error(interaction);
                 console.error(err);
             } else {
