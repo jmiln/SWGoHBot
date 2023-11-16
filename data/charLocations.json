@@ -1607,6 +1607,17 @@
         ]
     },
     {
+        "name": "IG-12 & Grogu",
+        "defId": "IG12",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_IG12_NAME",
+                "name": "Metal Mediator Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "IG-86 Sentinel Droid",
         "defId": "IG86SENTINELDROID",
         "locations": [

@@ -3600,6 +3600,21 @@
         "avatarName": "charui_ig11_nurse"
     },
     {
+        "name": "IG-12 & Grogu",
+        "uniqueName": "IG12",
+        "aliases": [
+            "IG-12 & Grogu"
+        ],
+        "avatarName": "charui_ig12",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig12.png",
+        "side": "light",
+        "factions": [
+            "Healer",
+            "Mandalorian"
+        ],
+        "mods": {}
+    },
+    {
         "name": "IG-86 Sentinel Droid",
         "uniqueName": "IG86SENTINELDROID",
         "aliases": [
@@ -4636,7 +4651,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5070,9 +5085,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
-            "cross": "Offense"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -6675,7 +6690,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Protection"
+            "cross": "Health"
         },
         "avatarName": "charui_tarfful"
     },
@@ -6728,7 +6743,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Potency"
         },
