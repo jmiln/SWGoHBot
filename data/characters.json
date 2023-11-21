@@ -21,8 +21,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_triplezero"
@@ -1058,9 +1058,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1592,7 +1592,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -3353,9 +3353,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -3612,7 +3612,18 @@
             "Healer",
             "Mandalorian"
         ],
-        "mods": {}
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        }
     },
     {
         "name": "IG-86 Sentinel Droid",
@@ -4416,9 +4427,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_kuiil"
     },
@@ -4446,7 +4457,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5631,7 +5642,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Health",
@@ -6690,7 +6701,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Protection"
         },
         "avatarName": "charui_tarfful"
     },
@@ -6743,7 +6754,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -7085,8 +7096,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "triangle": "Crit. Chance",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_ugnaught"

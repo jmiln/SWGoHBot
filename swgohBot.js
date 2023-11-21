@@ -100,7 +100,9 @@ const init = async () => {
             "Internal Server Error",                // Something on Discord's end
             "The user aborted a request",           // Pretty sure this is also on Discord's end
             "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
-            "Unknown Message"                       // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
+            "Unknown Message",                      // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
+            "HTTPError: Service Unavailable",       // Issue connecting to Discord?
+            "HTTPError: Insufficient Storage",      // Not really sure, but it's not a storage issue here
         ];
         const errStr = ignoreArr.find(elem => errorMsg.includes(elem));
         if (errStr) {
