@@ -1,6 +1,5 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
-const { changelog } = require("../config");
 
 class ArenaAlert extends Command {
     constructor(Bot) {
@@ -79,16 +78,6 @@ class ArenaAlert extends Command {
         const payoutResult = interaction.options.getString("payout_result");
         const payoutWarning = interaction.options.getInteger("payout_warning");
 
-        // This is to let me view others' configs to help them out, but will need fiddling to work with slash commands
-        // if (options.subArgs.user && options.level < 9) {
-        //     return super.error(message, message.language.get("COMMAND_USERCONF_CANNOT_VIEW_OTHER"));
-        // } else if (options.subArgs.user) {
-        //     userID = options.subArgs.user.replace(/[^\d]*/g, "");
-        //     if (!Bot.isUserID(userID)) {
-        //         return super.error(message, "Invalid user ID");
-        //     }
-        // }
-
         // Grab the user's info
         const userID = interaction.user.id;
         const user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
@@ -97,7 +86,7 @@ class ArenaAlert extends Command {
         }
 
         // Make sure the user is a patreon
-        const pat = await Bot.getPatronUser(interaction.user.id);
+        const pat = await Bot.getPatronUser(userID);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
@@ -115,49 +104,42 @@ class ArenaAlert extends Command {
             }]});
         }
 
-        const changeLog = [];
+        const changelog = [];
 
         // ArenaAlert -> activate/ deactivate
-        if (enabledms) {
-            if (user.arenaAlert.enableRankDMs !== enabledms) {
-                changeLog.push(`Changed EnableDMs from ${user.arenaAlert.enableRankDMs} to ${enabledms}`);
-            }
+        if (enabledms && user.arenaAlert.enableRankDMs !== enabledms) {
+            changelog.push(`Changed EnableDMs from ${user.arenaAlert.enableRankDMs} to ${enabledms}`);
             user.arenaAlert.enableRankDMs = enabledms;
         }
 
         // Set which of the arenas to watch (char, fleet, both)
-        if (arena) {
-            if (user.arenaAlert.arena !== arena) {
-                changeLog.push(`Changed arena from ${user.arenaAlert.arena} to ${arena}`);
-            }
+        if (arena && user.arenaAlert.arena !== arena) {
+            changelog.push(`Changed arena from ${user.arenaAlert.arena} to ${arena}`);
             user.arenaAlert.arena = arena;
         }
 
         // Set to DM the user with their final result or not
-        if (payoutResult) {
-            if (user.arenaAlert.payoutResult !== payoutResult) {
-                changeLog.push(`Changed Payout Result from ${user.arenaAlert.payoutResult} to ${payoutResult}`);
-            }
+        if (payoutResult && user.arenaAlert.payoutResult !== payoutResult) {
+            changelog.push(`Changed Payout Result from ${user.arenaAlert.payoutResult} to ${payoutResult}`);
             user.arenaAlert.payoutResult = payoutResult;
         }
 
         // Set how long before their payout to warn them
-        if (payoutWarning) {
+        if (payoutWarning && !Number.isNaN(payoutWarning)) {
             if (payoutWarning < 0 || payoutWarning > 1439) {
-                changeLog.push(`Cannot change the Payout Warning to ${payoutWarning}. Value must be between 0 and 1439`);
-            } else {
-                if (user.arenaAlert.payoutWarning !== payoutWarning) {
-                    changeLog.push(`Changed Payout Warning from ${user.arenaAlert.payoutWarning} to ${payoutWarning}`);
-                }
+                changelog.push(`Cannot change the Payout Warning to ${payoutWarning}. Value must be between 0 and 1439`);
+            } else if (user.arenaAlert.payoutWarning !== payoutWarning) {
+                changelog.push(`Changed Payout Warning from ${user.arenaAlert.payoutWarning} to ${payoutWarning}`);
                 user.arenaAlert.payoutWarning = payoutWarning;
             }
         }
 
+        // TODO Get a res from this, so it can be replied to more accurately
         await Bot.userReg.updateUser(userID, user);
-        if (!changelog.length) {
+        if (!changelog?.length) {
             return super.success(interaction, "It looks like nothing was updated.");
         }
-        return super.success(interaction, changeLog.join("\n"));
+        return super.success(interaction, changelog.join("\n"));
     }
 }
 
