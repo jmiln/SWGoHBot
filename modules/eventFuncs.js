@@ -1,4 +1,5 @@
-const {getGuildEvents, setEvents, deleteGuildEvent, getGuildSettings} = require("./guildConfigFuncts");
+const { getGuildEvents, setEvents, deleteGuildEvent } = require("./guildConfig/events.js");
+const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 module.exports = (Bot, client) => {
     // Some base time conversions to milliseconds

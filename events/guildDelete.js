@@ -1,4 +1,4 @@
-const {deleteGuildConfig} = require("../modules/guildConfigFuncts.js");
+const {deleteGuildConfig} = require("../modules/guildConfig/settings.js");
 
 module.exports = async (Bot, guild) => {
     // Make sure it's not a server outage that's causing it to show as leaving/ re-joining

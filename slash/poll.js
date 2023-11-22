@@ -1,7 +1,7 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
-const {getGuildPolls, setGuildPolls} = require("../modules/guildConfigFuncts.js");
+const {getGuildPolls, setGuildPolls} = require("../modules/guildConfig/polls.js");
 
 class Poll extends Command {
     constructor(Bot) {
@@ -137,7 +137,7 @@ class Poll extends Command {
                             name: poll.question
                         },
                         description: pollCheck(poll),
-                        footer: getFooter(poll)
+                        footer: getFooter()
                     }]
                 });
             }
@@ -180,7 +180,7 @@ class Poll extends Command {
                             name: oldPoll.question
                         },
                         description: pollCheck(oldPoll),
-                        footer: getFooter(oldPoll)
+                        footer: getFooter()
                     }]
                 });
             }
@@ -244,12 +244,12 @@ class Poll extends Command {
             return outString;
         }
 
-        function getFooter(poll) {
+        function getFooter() {
             const footer = {};
             if (interaction.guild) {
-                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER", poll.pollID));
+                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER"));
             } else {
-                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID));
+                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER"));
             }
             return footer;
         }

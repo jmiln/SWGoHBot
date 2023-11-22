@@ -1,7 +1,7 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
-const {getGuildShardTimes, setGuildShardTimes} = require("../modules/guildConfigFuncts.js");
+const {getGuildShardTimes, setGuildShardTimes} = require("../modules/guildConfig/shardTimes.js");
 
 class Shardtimes extends Command {
     constructor(Bot) {

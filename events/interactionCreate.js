@@ -1,5 +1,5 @@
 const {inspect} = require("util");
-const { getGuildSettings } = require("../modules/guildConfigFuncts");
+const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
     "HTTPError [AbortError]: The user aborted a request.",

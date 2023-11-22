@@ -1,7 +1,8 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 
 const Command = require("../base/slashCommand");
-const {getGuildEvents, updateGuildEvent, getGuildSettings} = require("../modules/guildConfigFuncts.js");
+const {getGuildEvents, updateGuildEvent} = require("../modules/guildConfig/events.js");
+const {getGuildSettings} = require("../modules/guildConfig/settings.js");
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;

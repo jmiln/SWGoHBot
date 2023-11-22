@@ -1,7 +1,8 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
+
 const {charChecklist, shipChecklist} = require("../data/unitChecklist");
-const { getGuildSettings } = require("../modules/guildConfigFuncts");
+const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 class Guilds extends Command {
     constructor(Bot) {

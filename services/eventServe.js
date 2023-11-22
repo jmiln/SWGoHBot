@@ -5,8 +5,8 @@ const {
     getAllEvents,
     getGuildEvents,
     guildEventExists,
-    getGuildSettings,
-} = require("../modules/guildConfigFuncts.js");
+} = require("../modules/guildConfig/events.js");
+const {getGuildSettings} = require("../modules/guildConfig/settings.js");
 
 const { Server } = require("socket.io");
 const io = new Server(config.eventServe.port);

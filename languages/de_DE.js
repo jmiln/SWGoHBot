@@ -1096,7 +1096,7 @@ module.exports = class extends Language {
             COMMAND_POLL_CHANGED_OPT: (oldOpt, newOpt) => `Die Auswahl wurde geaendert von **${oldOpt}** zu **${newOpt}**`,
             COMMAND_POLL_REGISTERED: (opt) => `Wahl fuer **${opt}** gespeichert`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice} **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
-            COMMAND_POLL_FOOTER: (id, prefix) => `Poll id: ${id}  -  \`${prefix}poll <Nr>\` zum voten`,
+            COMMAND_POLL_FOOTER:  "/poll vote <Nr>` zum voten",
             // Remote poll strings
             COMMAND_POLL_INVALID_ID: "Eine Umfrage mit dieser ID existiert nicht.",
             COMMAND_POLL_NO_ACCESS: "Entschuldige, aber du hast keinen Zugriff auf diese Umfrage.",

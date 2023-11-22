@@ -1,5 +1,5 @@
 const {inspect} = require("util");
-const { getGuildSettings } = require("../modules/guildConfigFuncts");
+const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 module.exports = async (Bot, client, member) => {
     const guildConf = await getGuildSettings({cache: Bot.cache, guildId: member.guild.id});

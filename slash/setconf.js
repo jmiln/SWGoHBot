@@ -1,8 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
-const { getGuildSettings, setGuildSettings } = require("../modules/guildConfigFuncts");
-// const { inspect } = require("util");
+const { getGuildSettings, setGuildSettings } = require("../modules/guildConfig/settings.js");
 
 // Set the base subargs up
 const options = {

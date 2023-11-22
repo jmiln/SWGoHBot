@@ -1,6 +1,6 @@
 // const util = require("util");
 const Command = require("../base/slashCommand");
-const { getGuildSettings } = require("../modules/guildConfigFuncts");
+const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 class Showconf extends Command {
     constructor(Bot) {
