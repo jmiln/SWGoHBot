@@ -650,7 +650,7 @@ class Event extends Command {
                     }
 
                     try {
-                        const res = await updateGuildEvent({cache: Bot.cache, guildId: interaction.guild.id, eventName, event: validEvent.event});
+                        const res = await updateGuildEvent({cache: Bot.cache, guildId: interaction.guild.id, evName: eventName, event: validEvent.event});
                         if (res.success) {
                             // Find all the fields that were updated
                             const outLog = [];
