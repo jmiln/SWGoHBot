@@ -1,6 +1,8 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
+const {getGuildPolls, setGuildPolls} = require("../modules/guildConfigFuncts.js");
+
 class Poll extends Command {
     constructor(Bot) {
         super(Bot, {
@@ -89,7 +91,7 @@ class Poll extends Command {
             return super.error(interaction, "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.");
         }
 
-        const pollsArr = await getPolls(interaction.guild.id);
+        const pollsArr = await getGuildPolls({cache: Bot.cache, guildId: interaction.guild.id});
         const oldPoll  = pollsArr.find(p => p.channelId === interaction.channel.id);
 
         if (oldPoll && action === "create") {
@@ -127,7 +129,7 @@ class Poll extends Command {
                 }
 
                 pollsArr.push(poll);
-                await setPolls(interaction.guild.id, pollsArr);
+                await setGuildPolls({cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr});
                 return interaction.reply({
                     content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
                     embeds: [{
@@ -145,7 +147,7 @@ class Poll extends Command {
                 const targetIndex = pollsArr.find(p => p.channelId === interaction.channel.id);
                 try {
                     pollsArr.splice(targetIndex, 1);
-                    await setPolls(interaction.guild.id, pollsArr);
+                    await setGuildPolls({cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr});
                     return super.success(interaction, "> Poll deleted.");
                 } catch (err) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
@@ -157,7 +159,7 @@ class Poll extends Command {
                 const targetIndex = pollsArr.find(p => p.channelId === interaction.channel.id);
                 try {
                     pollsArr.splice(targetIndex, 1);
-                    await setPolls(interaction.guild.id, pollsArr);
+                    await setGuildPolls({cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr});
                     return interaction.reply({
                         embeds: [{
                             author: {
@@ -202,7 +204,7 @@ class Poll extends Command {
 
                     try {
                         pollsArr[targetIndex] = oldPoll;
-                        await setPolls(interaction.guild.id, pollsArr);
+                        await setGuildPolls({cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr});
                         if (voted !== null && voted !== undefined) {
                             return interaction.reply({
                                 content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),
@@ -250,18 +252,6 @@ class Poll extends Command {
                 footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER", poll.pollID));
             }
             return footer;
-        }
-
-        async function getPolls(guildId) {
-            const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: 1});
-            const polls = resArr[0]?.polls;
-            return polls || [];
-        }
-
-        async function setPolls(guildId, pollsOut) {
-            // Filter out any settings that are the same as the defaults
-            if (!Array.isArray(pollsOut)) throw new Error("[/poll setPolls] Somehow have a non-array pollsOut");
-            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: pollsOut}, false);
         }
     }
 }

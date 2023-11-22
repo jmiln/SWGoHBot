@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
+const { getGuildSettings, setGuildSettings } = require("../modules/guildConfigFuncts");
 // const { inspect } = require("util");
 
 // Set the base subargs up
@@ -66,7 +67,7 @@ class SetConf extends Command {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
 
-        const guildConf = await Bot.getGuildSettings(interaction.guild.id);
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild.id});
         if (!guildConf) {
             return super.error(interaction, "I cannot find a config for your guild. Please report this to the folks over at this bot's server, check `/info` for the invite code");
         }
@@ -171,7 +172,7 @@ class SetConf extends Command {
             }
 
             // Actually change stuff in the db
-            await Bot.setGuildSettings(interaction.guild.id, guildConf);
+            await setGuildSettings(interaction.guild.id, guildConf);
             return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`).join("\n")));
         } else {
             return super.error(interaction, "It looks like nothing needed to be updated");

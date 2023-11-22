@@ -1,6 +1,7 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 const {charChecklist, shipChecklist} = require("../data/unitChecklist");
+const { getGuildSettings } = require("../modules/guildConfigFuncts");
 
 class Guilds extends Command {
     constructor(Bot) {
@@ -211,7 +212,7 @@ class Guilds extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
-        const guildConf = await Bot.getGuildSettings(interaction.guild?.id || null);
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild?.id || null});
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {

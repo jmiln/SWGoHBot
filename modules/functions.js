@@ -885,51 +885,6 @@ module.exports = (Bot, client) => {
         }
     }
 
-    // Get the guildsettings from the mongo db
-    Bot.getGuildSettings = async (guildId) => {
-        if (!guildId) {
-            return Bot.config.defaultSettings;
-        }
-        const guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: 1});
-        if (!guildSettings?.length) return Bot.config.defaultSettings;
-        return {...Bot.config.defaultSettings, ...guildSettings[0].settings};
-    };
-    // Set any guildSettings that do not match the defaultSettings in the bot's config
-    Bot.setGuildSettings = async (guildId, settings) => {
-        // Filter out any settings that are the same as the defaults
-        const diffObj = {};
-
-        for (const key of Object.keys(Bot.config.defaultSettings)) {
-            const configVal = Bot.config.defaultSettings[key];
-            if (Array.isArray(configVal)) {
-                if (!arrayEquals(configVal, settings[key])) {
-                    diffObj[key] = settings[key];
-                }
-            } else if (Bot.config.defaultSettings[key] !== settings[key]) {
-                diffObj[key] = settings[key];
-            }
-        }
-
-        if (!Object.keys(diffObj)?.length) {
-            // In this case, there's nothing different than the default, so go ahead and set it to blank
-            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: {}}, false);
-        }
-        return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: diffObj}, false);
-    };
-    // Check if there are settings for the guild
-    Bot.hasGuildSettings = async (guildId) => {
-        const guildSettings = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: 1});
-        if (guildSettings?.length) {
-            return true;
-        } else {
-            return false;
-        }
-    };
-    // Remove all settings, events, polls, etc for the given guild
-    Bot.deleteGuildConfig = async (guildId) => {
-        const res = await Bot.cache.remove(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId});
-        return res;
-    };
 
     // Check the abilities table in the swapi db, and sort out what each omicron is good for
     Bot.sortOmicrons = async () => {
@@ -1039,10 +994,3 @@ module.exports = (Bot, client) => {
 
 
 
-function arrayEquals(a, b) {
-    if (!a?.length || !b?.length) return false;
-    return Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index]);
-}

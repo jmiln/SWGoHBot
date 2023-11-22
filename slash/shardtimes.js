@@ -1,6 +1,8 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
+const {getGuildShardTimes, setGuildShardTimes} = require("../modules/guildConfigFuncts.js");
+
 class Shardtimes extends Command {
     constructor(Bot) {
         super(Bot, {
@@ -92,7 +94,7 @@ class Shardtimes extends Command {
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
-        const shardArr = await getTimes(interaction.guild.id);
+        const shardArr = await getGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id});
         const targetIndex = await shardArr.findIndex(sh => sh.channelId === interaction.channel.id);
         const shardTimes = targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : {channelId: interaction.channel.id, times: {}};
 
@@ -206,7 +208,7 @@ class Shardtimes extends Command {
             } else {
                 shardArr.push(shardTimes);
             }
-            await setTimes(interaction.guild.id, shardArr)
+            await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
                 .then(() => {
                     if (tempUser) {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone)});
@@ -235,7 +237,7 @@ class Shardtimes extends Command {
             if (shardTimes.times[userID]) {
                 delete shardTimes.times[userID];
                 shardArr[targetIndex] = shardTimes;
-                await setTimes(interaction.guild.id, shardArr)
+                await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS")});
                     })
@@ -274,7 +276,7 @@ class Shardtimes extends Command {
                 // If there's no shard info in the destination channel
                 shardTimes.channelId = destChannel.id;
                 shardArr.push(shardTimes);
-                await setTimes(interaction.guild.id, shardArr)
+                await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                     })
@@ -288,7 +290,7 @@ class Shardtimes extends Command {
                 // Or if there is shard info there, but no listings
                 destTimes.times = shardTimes.times;
                 shardArr[destTarget] = destTimes;
-                await setTimes(interaction.guild.id, shardArr)
+                await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
                     .then(() => {
                         return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
                     })
@@ -386,16 +388,6 @@ class Shardtimes extends Command {
             const [hr, min] = hhmm.split(":").map(t => parseInt(t, 10));
             const nowDate = new Date();
             return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
-        }
-
-        async function getTimes(guildId) {
-            const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: 1});
-            return resArr[0]?.shardtimes || [];
-        }
-
-        async function setTimes(guildId, stOut) {
-            if (!Array.isArray(stOut)) throw new Error("[/shardTimes setTimes] Somehow have a non-array stOut");
-            return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {shardtimes: stOut}, false);
         }
     }
 }

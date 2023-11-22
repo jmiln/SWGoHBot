@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 
 const Command = require("../base/slashCommand");
+const {getGuildEvents, updateGuildEvent, getGuildSettings} = require("../modules/guildConfigFuncts.js");
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
@@ -194,7 +195,7 @@ class Event extends Command {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but I'm having trouble accessing your guild's info.");
         }
-        const guildConf = await Bot.getGuildSettings(interaction.guild.id);
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild.id});
 
         // const exampleEvent = {
         //     "name": "eventName",
@@ -229,7 +230,7 @@ class Event extends Command {
                 const channel   = interaction.options.getChannel("channel");
                 const countdown = interaction.options.getBoolean("countdown");
 
-                const guildEvents = await getGuildEvents();
+                const guildEvents = await getGuildEvents({cache: Bot.cache, guildId: interaction.guild.id});
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
@@ -305,7 +306,7 @@ class Event extends Command {
                     // }]```
 
                     // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
-                    const guildEvents = await getGuildEvents();
+                    const guildEvents = await getGuildEvents({cache: Bot.cache, guildId: interaction.guild.id});
                     const result = validateEvents(jsonWhole, guildEvents);
                     if (result.filter(e => !e.valid).length) {
                         return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n")))});
@@ -612,7 +613,7 @@ class Event extends Command {
                 const newChannel   = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const eventRes = await getGuildEvents();
+                const eventRes = await getGuildEvents({cache: Bot.cache, guildId: interaction.guild.id});
                 const event = eventRes?.find(ev => ev.name === eventName);
 
                 // Check if that name/ event already exists
@@ -648,7 +649,7 @@ class Event extends Command {
                     }
 
                     try {
-                        const res = await updateGuildEvent(eventName, validEvent.event);
+                        const res = await updateGuildEvent({cache: Bot.cache, guildId: interaction.guild.id, eventName, event: validEvent.event});
                         if (res.success) {
                             // Find all the fields that were updated
                             const outLog = [];
@@ -874,34 +875,6 @@ class Event extends Command {
             });
             return outEvents;
         }
-
-        async function getGuildEvents() {
-            const resArr = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: 1, _id: 0});
-            return resArr?.events || [];
-        }
-        // async function setGuildEvents(evArrOut) {
-        //     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
-        //     return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: evArrOut}, false);
-        // }
-        async function updateGuildEvent(evName, event) {
-            const evList = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: 1, _id: 0});
-            const evIx = evList.events.findIndex(ev => ev.name === evName);
-
-            if (evIx < 0) return null; // Just to be doubly sure that it exists
-            evList.events[evIx] = event;
-
-            // Set the new event in the db
-            const out = await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: interaction.guild.id}, {events: evList.events}, false)
-                .then(() => {
-                    return { success: true, error: null };
-                })
-                .catch(error => {
-                    Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
-                    return { success: false, error: error };
-                });
-            return out;
-        }
-
 
         function getDateTimeStr(timeNum, zone) {
             if (!Bot.isValidZone(zone)) return "Invalid Zone";

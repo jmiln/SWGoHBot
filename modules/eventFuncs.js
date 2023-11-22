@@ -1,3 +1,5 @@
+const {getGuildEvents, setEvents, deleteGuildEvent, getGuildSettings} = require("./guildConfigFuncts");
+
 module.exports = (Bot, client) => {
     // Some base time conversions to milliseconds
     const dayMS  = 86400000;
@@ -69,25 +71,9 @@ module.exports = (Bot, client) => {
         return ev;
     }
 
-    async function getEvents(guildId) {
-        const resArr = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
-        return resArr[0]?.events || [];
-    }
-    async function setEvents(guildId, evArrOut) {
-        if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
-        return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: evArrOut}, false);
-    }
-    async function deleteGuildEvent({guildId, evName}) {
-        const res = await Bot.cache.get(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
-
-        // Filter out the specific one that we want gone, then re-save em
-        const evArrOut = res[0].events.filter(ev => ev.name !== evName);
-        return await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: evArrOut}, false);
-    }
-
     // Send out an alert based on the guild's countdown settings
     Bot.countdownAnnounce = async (event) => {
-        const guildConf = await Bot.getGuildSettings(event.guildId);
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: event.guildId});
         const diffNum = Math.abs(new Date().getTime() - event.eventDT);
         const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
 
@@ -98,7 +84,7 @@ module.exports = (Bot, client) => {
 
     Bot.eventAnnounce = async (event) => {
         // Parse out the eventName and guildName from the ID
-        const guildConf = await Bot.getGuildSettings(event.guildId);
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: event.guildId});
 
         let outMsg = event?.message || "";
 
@@ -131,17 +117,17 @@ module.exports = (Bot, client) => {
 
         if (doRepeat) {
             // If it's set to repeat, just delete the old one, and save a new version of the event
-            const guildEvents = await getEvents(event.guildId);
+            const guildEvents = await getGuildEvents({cache: Bot.cache, guildId: event.guildId});
             const evArrOut = guildEvents.filter(ev => ev.name !== event.name);
             evArrOut.push(event);
-            await setEvents(event.guildId, evArrOut)
+            await setEvents({cache: Bot.cache, guildId: event.guildId, evArrOut})
                 .then(() => {
                     // console.log(`Updating repeating event ${event.name} (${event.channel}).`);
                 })
                 .catch(error => { Bot.logger.error(`Broke trying to replace event: ${error}`); });
         } else {
-            // Just destroy it
-            await deleteGuildEvent({guildId: event.guildId, evName: event.name})
+            // If it's not going to be repeating, just destroy it
+            await deleteGuildEvent({cache: Bot.cache, guildId: event.guildId, evName: event.name})
                 .then(() => { Bot.logger.debug(`Deleting non-repeating event ${event.name}`); })
                 .catch(error => { Bot.logger.error(`Broke trying to delete old event ${error}`); });
         }

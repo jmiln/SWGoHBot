@@ -1,5 +1,6 @@
 // const util = require("util");
 const Command = require("../base/slashCommand");
+const { getGuildSettings } = require("../modules/guildConfigFuncts");
 
 class Showconf extends Command {
     constructor(Bot) {
@@ -11,7 +12,7 @@ class Showconf extends Command {
     }
 
     async run(Bot, interaction) {
-        const guildID = interaction.guild.id;
+        const guildId = interaction.guild.id;
         let guildName = "";
 
         // // If I or an adminHelper adds a guild ID here, pull up that instead
@@ -43,7 +44,7 @@ class Showconf extends Command {
         guildName = interaction.guild.name;
         // }
 
-        const guildConf = await Bot.getGuildSettings(guildID);
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId});
 
         var outArr = [];
         if (guildConf) {
