@@ -1,5 +1,6 @@
 const {inspect} = require("util");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
+const { getGuildAliases } = require("../modules/guildConfig/aliases.js");
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
     "HTTPError [AbortError]: The user aborted a request.",
@@ -87,6 +88,9 @@ module.exports = async (Bot, client, interaction) => {
         let filtered = [];
 
         try {
+            // Grab any aliases that the guild has set
+            const aliases = await getGuildAliases({cache: Bot.cache, guildId: interaction.guild.id});
+
             if (interaction.commandName === "panic") {
                 // Process the autocompletions for the /panic command
                 filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
@@ -97,12 +101,38 @@ module.exports = async (Bot, client, interaction) => {
                     };
                 });
             } else {
-                if (focusedOption.name === "character") {
-                    filtered = filterAutocomplete(Bot.CharacterNames, focusedOption.value?.toLowerCase());
-                    filtered = filtered.map(char => char.name);
-                } else if (focusedOption.name === "ship") {
-                    filtered = filterAutocomplete(Bot.ShipNames, focusedOption.value?.toLowerCase());
-                    filtered = filtered.map(ship => ship.name);
+                const aliasList = aliases?.map(al => {
+                    return {
+                        ...al,
+                        isAlias: true
+                    };
+                }) || [];
+                if (["unit", "character", "ship"].includes(focusedOption.name)) {
+                    let unitList = [];
+                    if (focusedOption.name === "unit") {
+                        unitList = [
+                            ...aliasList,
+                            ...Bot.CharacterNames,
+                            ...Bot.ShipNames
+                        ];
+                    } else if (focusedOption.name === "character") {
+                        unitList = [
+                            ...aliasList.filter(al => Bot.CharacterNames.find(cn => cn.defId === al.defId)),
+                            ...Bot.CharacterNames
+                        ];
+                    } else if (focusedOption.name === "ship") {
+                        unitList = [
+                            ...aliasList.filter(al => Bot.ShipNames.find(sn => sn.defId === al.defId)),
+                            ...Bot.ShipNames
+                        ];
+                    }
+                    filtered = filterAutocomplete( unitList, focusedOption.value?.toLowerCase());
+                    filtered = filtered
+                        .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)
+                        .map(unit => {
+                            if (unit.isAlias) return {name: `${unit.name} (${unit.alias})`, value: unit.defId};
+                            return { name: unit.name, value: unit.defId };
+                        });
                 } else if (focusedOption.name === "command") {
                     filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
                 }
@@ -137,14 +167,17 @@ module.exports = async (Bot, client, interaction) => {
     }
 
     function filterAutocomplete(arrIn, search) {
-        let filtered = arrIn.filter(unit => unit?.name.toLowerCase().startsWith(search));
+        let filtered = arrIn.filter(unit => {
+            if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(search);
+            return unit?.name?.toLowerCase().startsWith(search);
+        });
         search = search.toLowerCase();
         if (!filtered?.length) {
             filtered = arrIn.filter(unit => unit.name?.toLowerCase().includes(search));
         }
         if (!filtered?.length) {
             filtered = arrIn.filter(unit => {
-                return unit.aliases
+                return unit?.aliases
                     ?.map(u => u.toLowerCase())
                     .includes(search);
             });

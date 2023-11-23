@@ -82,11 +82,13 @@ module.exports = (Bot, client) => {
         }
         searchName = searchName.toLowerCase();
 
-        // Try for an actual exact match first
-        let foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
-        if (foundChar?.length) {
-            return foundChar;
-        }
+        // Try for a defId/ uniqueName match first
+        let foundChar = charList.filter(char => char.uniqueName === searchName.toUpperCase());
+        if (foundChar?.length) return foundChar;
+
+        // Try for an actual exact match
+        foundChar = charList.filter(char => char.name.toLowerCase() === searchName);
+        if (foundChar?.length) return foundChar;
 
         // Clean out extra spaces and improper apostrophes
         searchName = searchName
