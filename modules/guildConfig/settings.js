@@ -2,9 +2,8 @@ const config = require("../../config.js");
 
 // Get the guildsettings from the mongo db
 exports.getGuildSettings = async ({cache, guildId}) => {
-    if (!guildId) {
-        return config.defaultSettings;
-    }
+    if (!guildId) return config.defaultSettings;
+
     const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: 1});
     if (!guildSettings?.length) return config.defaultSettings;
     return {...config.defaultSettings, ...guildSettings[0].settings};

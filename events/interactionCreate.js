@@ -89,7 +89,7 @@ module.exports = async (Bot, client, interaction) => {
 
         try {
             // Grab any aliases that the guild has set
-            const aliases = await getGuildAliases({cache: Bot.cache, guildId: interaction.guild.id});
+            const aliases = await getGuildAliases({cache: Bot.cache, guildId: interaction?.guild?.id});
 
             if (interaction.commandName === "panic") {
                 // Process the autocompletions for the /panic command

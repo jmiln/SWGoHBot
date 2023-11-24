@@ -1,9 +1,9 @@
 const config = require("../../config.js");
 
 exports.getGuildPolls = async function getGuildPolls({cache, guildId}) {
+    if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {polls: 1});
-    const polls = resArr[0]?.polls;
-    return polls || [];
+    return resArr[0]?.polls || [];
 };
 
 exports.setGuildPolls = async function setGuildPolls({cache, guildId, pollsOut}) {

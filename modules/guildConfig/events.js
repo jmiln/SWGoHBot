@@ -34,6 +34,7 @@ async function updateGuildEvent({cache, guildId, evName, event}) {
 }
 
 async function getGuildEvents({cache, guildId}) {
+    if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events: 1});
     return resArr[0]?.events || [];
 }

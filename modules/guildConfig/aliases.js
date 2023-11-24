@@ -1,6 +1,7 @@
 const config = require("../../config.js");
 
 exports.getGuildAliases = async function getGuildAliases({cache, guildId}) {
+    if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {aliases: 1});
     return resArr[0]?.aliases || [];
 };
