@@ -5,7 +5,8 @@
         "rancor_challenge": "深坑（挑战）",
         "sith_raid": "西斯三巨头",
         "kraytdragon": "克雷特龙猎杀",
-        "heroic": "英雄"
+        "heroic": "英雄",
+        "speederbike": "飞行摩托追击"
     },
     "cht_cn": {
         "aat": "肉盾擊倒",
@@ -13,7 +14,8 @@
         "rancor_challenge": "地窖（挑戰）",
         "sith_raid": "西斯三巨頭",
         "kraytdragon": "獵殺克雷特龍",
-        "heroic": "英雄"
+        "heroic": "英雄",
+        "speederbike": "飛行摩托車追逐"
     },
     "eng_us": {
         "aat": "TANK TAKEDOWN",
@@ -21,7 +23,8 @@
         "rancor_challenge": "THE PIT (CHALLENGE)",
         "sith_raid": "THE SITH TRIUMVIRATE",
         "kraytdragon": "KRAYT DRAGON HUNT",
-        "heroic": "HEROIC"
+        "heroic": "HEROIC",
+        "speederbike": "SPEEDER BIKE PURSUIT"
     },
     "fre_fr": {
         "aat": "ASSAUT DE CHAR",
@@ -29,7 +32,8 @@
         "rancor_challenge": "LA FOSSE (DÉFI)",
         "sith_raid": "LE TRIUMVIRAT SITH",
         "kraytdragon": "CHASSE AU DRAGON KRAYT",
-        "heroic": "HÉROÏQUE"
+        "heroic": "HÉROÏQUE",
+        "speederbike": "POURSUITE EN MOTOJET"
     },
     "ger_de": {
         "aat": "TANK-TAKEDOWN",
@@ -37,7 +41,8 @@
         "rancor_challenge": "DIE GRUBE (HERAUSFOR.)",
         "sith_raid": "DAS SITH-TRIUMVIRAT",
         "kraytdragon": "KRAYT-DRACHENJAGD",
-        "heroic": "HELDENHAFT"
+        "heroic": "HELDENHAFT",
+        "speederbike": "SPEEDER-VERFOLGUNG"
     },
     "ind_id": {
         "aat": "PELUMPUHAN TANK",
@@ -45,7 +50,8 @@
         "rancor_challenge": "GUA (TANTANGAN)",
         "sith_raid": "TIGA SERANGKAI SITH",
         "kraytdragon": "PERBURUAN KRAYT DRAGON",
-        "heroic": "HEROIK"
+        "heroic": "HEROIK",
+        "speederbike": "PENGEJARAN MOTOR SPEEDER"
     },
     "ita_it": {
         "aat": "ALL'ASSALTO DEL CARRO",
@@ -53,7 +59,8 @@
         "rancor_challenge": "LA FOSSA (SFIDA)",
         "sith_raid": "IL TRIUMVIRATO SITH",
         "kraytdragon": "CACCIA AL DRAGO KRAYT",
-        "heroic": "EROICO"
+        "heroic": "EROICO",
+        "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE"
     },
     "jpn_jp": {
         "aat": "タンク排除",
@@ -61,7 +68,8 @@
         "rancor_challenge": "ピット(チャレンジ)",
         "sith_raid": "シス三頭政治",
         "kraytdragon": "クレイト・ドラゴン・ハント",
-        "heroic": "ヒロイック"
+        "heroic": "ヒロイック",
+        "speederbike": "スピーダー・バイク・パシュート"
     },
     "kor_kr": {
         "aat": "탱크 테이크다운",
@@ -69,7 +77,8 @@
         "rancor_challenge": "핏 (챌린지)",
         "sith_raid": "시스 삼인방",
         "kraytdragon": "크레이트 드래곤 사냥",
-        "heroic": "영웅"
+        "heroic": "영웅",
+        "speederbike": "스피더 바이크 추격"
     },
     "por_br": {
         "aat": "ELIMINAÇÃO DE TANQUE",
@@ -77,7 +86,8 @@
         "rancor_challenge": "O FOSSO (DESAFIO)",
         "sith_raid": "O TRIUNVIRATO SITH",
         "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
-        "heroic": "HEROICA"
+        "heroic": "HEROICA",
+        "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE"
     },
     "rus_ru": {
         "aat": "УНИЧТОЖЕНИЕ ТАНКА",
@@ -85,7 +95,8 @@
         "rancor_challenge": "ЯМА (ИСПЫТАНИЕ)",
         "sith_raid": "ТРИУМВИРАТ СИТХОВ",
         "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
-        "heroic": "ГЕРОИЧЕСКИЙ"
+        "heroic": "ГЕРОИЧЕСКИЙ",
+        "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ"
     },
     "spa_xm": {
         "aat": "DERRIBO DE TANQUE",
@@ -93,7 +104,8 @@
         "rancor_challenge": "EL FOSO (DESAFÍO)",
         "sith_raid": "EL TRIUNVIRATO SITH",
         "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
-        "heroic": "HEROICO"
+        "heroic": "HEROICO",
+        "speederbike": "PERSECUCIÓN EN MOTO SPEEDER"
     },
     "tha_th": {
         "aat": "แทงค์บรรลัยกัลป์",
@@ -101,7 +113,8 @@
         "rancor_challenge": "อุโมงค์มรณะ (ภารกิจท้าทาย)",
         "sith_raid": "ไตรภาคีแห่งซิธ",
         "kraytdragon": "ล่ามังกรไครท์",
-        "heroic": "โหมดฮีโร่"
+        "heroic": "โหมดฮีโร่",
+        "speederbike": "ไล่ล่าสปีดเดอร์ไบค์"
     },
     "tur_tr": {
         "aat": "TANK PARÇALAMA",
@@ -109,6 +122,7 @@
         "rancor_challenge": "ÇUKUR (GÖREV)",
         "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
         "kraytdragon": "KRAYT DRAGON AVI",
-        "heroic": "EPİK"
+        "heroic": "EPİK",
+        "speederbike": "HIZ MOTOSİKLETİ TAKİBİ"
     }
 }

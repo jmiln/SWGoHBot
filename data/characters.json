@@ -1382,7 +1382,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Protection"
         },
         "avatarName": "charui_chirrut"
     },
@@ -3412,7 +3412,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -3770,7 +3770,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -6754,8 +6754,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
+            "triangle": "Offense",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_bb_tech"
