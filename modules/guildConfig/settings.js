@@ -11,7 +11,7 @@ exports.getGuildSettings = async ({cache, guildId}) => {
 };
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config
-exports.setGuildSettings = async (cache, guildId, settings) => {
+exports.setGuildSettings = async ({cache, guildId, settings}) => {
     // Filter out any settings that are the same as the defaults
     const diffObj = {};
 
@@ -53,5 +53,6 @@ function arrayEquals(a, b) {
     return Array.isArray(a) &&
         Array.isArray(b) &&
         a.length === b.length &&
-        a.every((val, index) => val === b[index]);
+        a.every((val, index) => val === b[index]) &&
+        b.every((val, index) => val === a[index]);
 }

@@ -171,7 +171,7 @@ class SetConf extends Command {
             }
 
             // Actually change stuff in the db
-            await setGuildSettings(interaction.guild.id, guildConf);
+            await setGuildSettings({cache: Bot.cache, guildId: interaction.guild.id, settings: guildConf});
             return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`).join("\n")));
         } else {
             return super.error(interaction, "It looks like nothing needed to be updated");
