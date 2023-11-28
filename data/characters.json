@@ -794,8 +794,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
+            "triangle": "Crit. Chance",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_bodhi"
@@ -1058,9 +1058,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -3353,9 +3353,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -4427,9 +4427,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -4457,7 +4457,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -4662,7 +4662,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5357,7 +5357,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -5379,8 +5379,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
