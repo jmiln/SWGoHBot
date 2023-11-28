@@ -3,6 +3,14 @@ module.exports = {
     Admin: {
         description: "Commands with limited access",
         commands: {
+            alaises: {
+                desc: "Set aliases for the various units",
+                usage: [
+                    "**aliases** <add> <unit> <alias>",
+                    "**aliases** <remove> <alias>",
+                    "**aliases** <view>",
+                ]
+            },
             event: {
                 desc: "Manage scheduled messages (Events).",
                 usage: [
