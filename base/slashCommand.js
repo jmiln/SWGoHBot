@@ -39,7 +39,6 @@ class slashCommand {
             errMsg = "Something broke, please try again in a bit, or report it.";
         }
         if (errMsg.includes("DiscordAPIError") && errMsg.includes("Unknown Message")) {
-            // console.error("Unknown Msg error...");
             return;
         }
         if (!options) options = {
@@ -64,6 +63,7 @@ class slashCommand {
     async embed(interaction, msgOut, options={}) {
         if (!interaction || !interaction.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
+        if (msgOut?.length > 1900) msgOut = msgOut.toString().substring(0, 1900) + "...";
         const title     = options.title || "TITLE HERE";
         const color     = options.color;
         const ephemeral = options.ephemeral || false;
@@ -74,44 +74,7 @@ class slashCommand {
             footer = {text: footer};
         }
 
-        // If the interaction has been replied to or deferred, edit the reply
-        if (interaction.replied || interaction.deferred) {
-            try {
-                return interaction.editReply({
-                    content: null,
-                    embeds: [{
-                        author: {
-                            name: title,
-                            icon_url: options.iconURL || null
-                        },
-                        description: msgOut.toString().substring(0, 1900) + "...",
-                        color: color,
-                        footer: footer
-                    }],
-                    ephemeral: ephemeral
-                });
-            } catch (e) {
-                // If something breaks with the editReply, log it, then just send a message to that channel
-                console.log(`[base/slashCommand Error: ${this.commandData.name}] ` + e.message);
-                console.log(`[base/slashCommand Message: ${this.commandData.name}] ` + interaction.content);
-                return interaction.channel.send({
-                    content: null,
-                    embeds: [{
-                        author: {
-                            name: title,
-                            icon_url: options.iconURL || null
-                        },
-                        description: msgOut,
-                        color: color,
-                        footer: footer
-                    }],
-                    ephemeral: ephemeral
-                });
-            }
-        }
-
-        // Otherwise, just reply
-        return interaction.reply({
+        const embedObj = {
             embeds: [{
                 author: {
                     name: title,
@@ -122,7 +85,22 @@ class slashCommand {
                 footer: footer
             }],
             ephemeral: ephemeral
-        });
+        };
+
+        // If the interaction has been replied to or deferred, edit the reply
+        if (interaction.replied || interaction.deferred) {
+            try {
+                return interaction.editReply(embedObj);
+            } catch (e) {
+                // If something breaks with the editReply, log it, then just send a message to that channel
+                console.log(`[base/slashCommand Error: ${this.commandData.name}] ` + e.message);
+                console.log(`[base/slashCommand Message: ${this.commandData.name}] ` + interaction.content);
+                return interaction.channel.send(embedObj);
+            }
+        }
+
+        // Otherwise, just reply
+        return interaction.reply(embedObj);
     }
 }
 
