@@ -1893,6 +1893,17 @@
         ]
     },
     {
+        "name": "Kelleran Beq",
+        "defId": "KELLERANBEQ",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_KELLERANBEQ_NAME",
+                "name": "Jedi Temple Challenge Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Ki-Adi-Mundi",
         "defId": "KIADIMUNDI",
         "locations": [
@@ -2409,6 +2420,11 @@
         "name": "Paz Vizsla",
         "defId": "PAZVIZSLA",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "4-A",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PAZVIZSLA_NAME",
@@ -3088,11 +3104,6 @@
                 "type": "Hard Modes (D)",
                 "level": "3-D",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "4-A",
-                "locId": "HARD_LIGHT"
             }
         ]
     },

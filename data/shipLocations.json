@@ -459,7 +459,13 @@
     {
         "name": "Marauder",
         "defId": "MARAUDER",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-E",
+                "locId": "HARD_FLEET"
+            }
+        ]
     },
     {
         "name": "Mark VI Interceptor",
@@ -696,9 +702,9 @@
         "defId": "SITHFIGHTER",
         "locations": [
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "3-E",
-                "locId": "HARD_FLEET"
+                "type": "Cantina",
+                "level": "6-C",
+                "locId": "CANTINA"
             }
         ]
     },
