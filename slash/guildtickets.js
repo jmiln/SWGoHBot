@@ -110,15 +110,14 @@ class GuildTickets extends Command {
             gt = defGT;
         }
 
-        // GuildTickets -> activate/ deactivate
         const pat = await Bot.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
-        // Whether it's setting values or view
         const subCommand = interaction.options.getSubcommand();
 
+        // Whether it's setting values or view
         if (subCommand === "set") {
             const updatedArr = [];
             const channel    = interaction.options.getChannel("channel");
@@ -129,6 +128,7 @@ class GuildTickets extends Command {
             const updateType = interaction.options.getString("updates");
             let allycode     = interaction.options.getString("allycode");
 
+            // GuildTickets -> activate/ deactivate
             if (isEnabled !== null) {
                 gt.enabled = isEnabled;
                 updatedArr.push(`Enabled: **${isEnabled}**`);

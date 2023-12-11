@@ -1,29 +1,32 @@
+const defCmdData = {
+    name: "",
+    description: "No description provided.",
+    options: [],
+    defaultPermissions: true,
+    guildOnly: true,  // false = global, true = guild.
+    enabled: true,
+    permLevel: 0
+};
 class slashCommand {
-    constructor(Bot, {
-        name = "",
-        description = "No description provided.",
-        options = [],
-        defaultPermissions = true,
-        guildOnly = true,  // false = global, true = guild.
-        enabled = true,
-        permLevel = 0,
-        aliases = []
-    }) {
+    constructor(Bot, commandData = {}) {
         this.Bot = Bot;
-        this.commandData = { name, description, options, defaultPermissions, enabled, permLevel, aliases };
-        this.guildOnly = guildOnly;
+        this.commandData = {
+            ...defCmdData,
+            ...commandData,
+        };
+        this.guildOnly = this.commandData.guildOnly;
     }
 
-    async getUser(message, userID, useAuth=false) {
+    async getUser(interaction, userID, useAuth=false) {
         let out = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
-            userID = message.author.id;
+            userID = interaction.author.id;
         }
         if (userID) {
             // If it got this far, it's got a valid userID (ally code or Discord ID)
             // so regardless of which, grab an ally code
-            const allyCodes = await this.Bot.getAllyCode(message, userID);
+            const allyCodes = await this.Bot.getAllyCode(interaction, userID);
             if (allyCodes && allyCodes.length) {
                 out = allyCodes[0];
             }
