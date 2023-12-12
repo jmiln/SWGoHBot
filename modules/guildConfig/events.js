@@ -39,7 +39,7 @@ async function getGuildEvents({cache, guildId}) {
     return resArr[0]?.events || [];
 }
 async function addGuildEvent({cache, guildId, newEvent}) {
-    const events = await getGuildEvents(guildId);
+    const events = await getGuildEvents({cache, guildId});
     events.push(newEvent);
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {events}, false);
 }
