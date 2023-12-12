@@ -794,8 +794,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_bodhi"
@@ -1592,7 +1592,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Chance",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -4317,6 +4317,34 @@
         "avatarName": "charui_kanan_s3"
     },
     {
+        "name": "Kelleran Beq",
+        "uniqueName": "KELLERANBEQ",
+        "aliases": [
+            "Kelleran Beq"
+        ],
+        "avatarName": "charui_kelleranbeq",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kelleranbeq.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Galactic Republic",
+            "Jedi",
+            "Leader"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        }
+    },
+    {
         "name": "Ki-Adi-Mundi",
         "uniqueName": "KIADIMUNDI",
         "aliases": [
@@ -4457,7 +4485,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -4662,7 +4690,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5096,9 +5124,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5869,8 +5897,9 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6700,7 +6729,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Protection"
+            "cross": "Health"
         },
         "avatarName": "charui_tarfful"
     },
