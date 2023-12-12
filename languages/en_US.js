@@ -539,7 +539,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_JSON_NO_SPACES: "Event name cannot contain spaces. You can use _ or - instead.",
             COMMAND_EVENT_JSON_EXISTS: "There is already an event with this name",
             COMMAND_EVENT_JSON_DUPLICATE: "You cannot make 2 events with the same name",
-            COMMAND_EVENT_JSON_MISSING_DAY: "Missing event date (DD/MM/YYYY)",
+            COMMAND_EVENT_JSON_MISSING_DAY: "Missing event day (DD/MM/YYYY)",
             COMMAND_EVENT_JSON_INVALID_DAY: (day) => `Invalid Day (${day}). Must be in the format DD/MM/YYYY`,
             COMMAND_EVENT_JSON_MISSING_TIME: "Missing event time (HH:MM)",
             COMMAND_EVENT_JSON_INVALID_TIME: (time) => `Invalid time (${time}). Must be in 24hr format HH:MM`,

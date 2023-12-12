@@ -277,14 +277,19 @@ class Event extends Command {
                 // Using the json code block method of creating events
                 const jsonIn = interaction.options.getString("json");
                 // const regex = new RegExp(/([`]{3}\s*)([^```]*)(\s*[`]{3})/);     // This is flawed since it breaks as soon as it finds any backticks (`)
-                const regex = /(?<=[`]{3})(.*)(?=[`]{3})/;
+
+                // Grab anything within the triple backticks
+                // const regex = /(?<=[`]{3})(.*)(?=[`]{3})/;
+
+                // Grab anything within backticks, or array/ object
+                const regex = /(?<=[`]{3})(.*)(?=[`]{3})|(\[[^\]]*])|(\{[^}]*})/;
                 const match = jsonIn.match(regex);
 
                 if (match) {
                     // Make sure the event objects are in an array
                     const matchWhole = match[0].replace(/\n/g, "");
-                    if (!matchWhole.startsWith("[") || !matchWhole.endsWith("]")) {
-                        return super.error(interaction, "Invalid json, please make sure the events are surrounded by square brackets (`[]`) at the beginning and end.");
+                    if ((!matchWhole.startsWith("[") || !matchWhole.endsWith("]")) && (!matchWhole.startsWith("{") || !matchWhole.endsWith("}"))) {
+                        return super.error(interaction, "Invalid json, please make sure the event(s) are surrounded by square brackets (`[]`) at the beginning and end, OR it's a proper json object inside curly brackets (`{}`).");
                     }
 
 
@@ -771,11 +776,11 @@ class Event extends Command {
                     }
                     newEvent.name = event.name;
                 }
-                const dateSplit = event.day.split("/");
-                const mmddyyyDate = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
+                const dateSplit = event.day?.split("/");
+                const mmddyyyDate = `${dateSplit?.[1]}/${dateSplit?.[0]}/${dateSplit?.[2]}`;
                 if (!event.day) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
-                } else if (!event.day.match(/\d{1,2}\/\d{1,2}\/\d{4}/) || !Date.parse(mmddyyyDate)) {
+                } else if (!event.day?.match(/\d{1,2}\/\d{1,2}\/\d{4}/) || !Date.parse(mmddyyyDate)) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_DAY", event.day));
                 }
                 if (!event.time) {
@@ -784,12 +789,14 @@ class Event extends Command {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", event.time));
                 }
 
-                newEvent.eventDT = Bot.getSetTimeForTimezone(`${mmddyyyDate} ${event.time}`, guildConf.timezone);
-                if (newEvent.eventDT < now) {
-                    const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
-                    const nowDATE = new Date().toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
+                if (event.day && event.time) {
+                    newEvent.eventDT = Bot.getSetTimeForTimezone(`${mmddyyyDate} ${event.time}`, guildConf.timezone);
+                    if (newEvent.eventDT < now) {
+                        const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
+                        const nowDATE = new Date().toLocaleString("en-GB", {timeZone: guildConf.timezone, hour12: false, month: "numeric", year: "numeric", day: "numeric", hour: "numeric", minute: "numeric"});
 
-                    err.push(interaction.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
+                        err.push(interaction.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
+                    }
                 }
 
                 if (event.message?.length) {
