@@ -62,8 +62,8 @@ init().then(async () => {
     }
 });
 
-// Set it to update the patreon data and every 15 minutes if doable
 if (!FORCE_UPDATE) {
+    // Set it to update the patreon data and every 15 minutes if doable
     if (config.patreon) {
         setInterval(async () => {
             await updatePatrons();
