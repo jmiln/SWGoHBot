@@ -290,6 +290,7 @@ async function getParts(Bot, gr, partList=[], amt=1) {
         });
         if (Array.isArray(rec)) rec = rec[0];
         if (!rec) return [];
+        if (!Array.isArray(rec) && !rec?.ingredientsList) return [];
         if (rec?.ingredientsList) rec = rec.ingredientsList.filter(r => r.id !== "GRIND");
         for (const r of rec) {
             const gear = await Bot.cache.get(Bot.config.mongodb.swapidb, "gear", {
