@@ -235,14 +235,21 @@ class MyCharacter extends Command {
             statNames[sn].forEach(s => {
                 if (s.indexOf("Rating") >= 0) s = s.replace("Rating", "Chance");
                 if (!stats.final[s]) stats.final[s] = 0;
-                const rep = maxLen - langStr[langMap[s]].length;
-                if (s === "Dodge Chance" || s === "Deflection Chance") {
-                    statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: 2.00%\n`;
+                const thisLangStr = langStr[langMap[s]];
+                if (!thisLangStr?.length) {
+                    console.log("[/mycharacter] Missing stat langStr:");
+                    console.log(s, thisLangStr);
+                    statStr += s + " ".repeat(8 - s.length) + "\n";
                 } else {
-                    statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
-                    const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
-                    const modStr = isShip ? "" : stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
-                    statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
+                    const rep = maxLen - (thisLangStr?.length || 0);
+                    if (s === "Dodge Chance" || s === "Deflection Chance") {
+                        statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: 2.00%\n`;
+                    } else {
+                        statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
+                        const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
+                        const modStr = isShip ? "" : stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
+                        statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
+                    }
                 }
             });
             statArr.push(Bot.expandSpaces(statStr));

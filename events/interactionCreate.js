@@ -4,6 +4,7 @@ const { getGuildAliases } = require("../modules/guildConfig/aliases.js");
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
     "HTTPError [AbortError]: The user aborted a request.",
+    "HTTPError: Service Unavailable",
     "Internal Server Error",                // Something on Discord's end
     "The user aborted a request",           // Pretty sure this is also on Discord's end
     "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
