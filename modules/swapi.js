@@ -340,7 +340,7 @@ module.exports = (opts={}) => {
             let players;
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
-                if (options && options.defId) {
+                if (options?.defId?.length) {
                     players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
                 } else {
                     players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: allycodes}});
@@ -349,11 +349,11 @@ module.exports = (opts={}) => {
 
             // If options.force is true (Apparently never used?), set the list of unexpired players to be empty
             // This will make it so that all players will be run through the updater
-            const updated = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
-            const updatedAC = updated.map(p => parseInt(p.allyCode, 10));
+            const updatedList  = options.force ? [] : players.filter(p => !isExpired(p.updated, cooldown));
+            const updatedAC    = updatedList.map(p => parseInt(p.allyCode, 10));
             const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
 
-            playerStats = playerStats.concat(updated);
+            playerStats = playerStats.concat(updatedList);
 
             let warning;
             if (needUpdating.length) {
@@ -1032,19 +1032,9 @@ module.exports = (opts={}) => {
 
     function isExpired( lastUpdated, cooldown, guild=false ) {
         if (!lastUpdated) return true;
-        if (guild) {
-            if (!cooldown) {
-                cooldown = guildMaxCooldown;
-            }
-            const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
-            return diff.totalMin >= cooldown;
-        } else {
-            if (!cooldown) {
-                cooldown = playerMaxCooldown;
-            }
-            const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
-            return diff.totalMin >= cooldown;
-        }
+        const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
+        if (!cooldown) cooldown = guild ? guildMaxCooldown : playerMaxCooldown;
+        return Math.floor(diff.totalMin/60) >= cooldown;
     }
 };
 
