@@ -1058,9 +1058,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1147,7 +1147,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Protection"
         },
         "avatarName": "charui_caradune"
     },
@@ -1234,7 +1234,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -1769,7 +1769,19 @@
             "Leader",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        }
     },
     {
         "name": "Darth Malak",
@@ -4337,7 +4349,7 @@
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -4455,9 +4467,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_kuiil"
     },
@@ -4485,7 +4497,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -4690,7 +4702,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5126,7 +5138,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5385,7 +5397,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -5407,7 +5419,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6727,9 +6740,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Defense",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Defense"
         },
         "avatarName": "charui_tarfful"
     },
@@ -7527,9 +7540,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },
