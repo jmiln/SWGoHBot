@@ -99,6 +99,11 @@ class MyMods extends Command {
                             type: ApplicationCommandOptionType.String
                         }
                     ]
+                },
+                {
+                    name: "missing",
+                    type: ApplicationCommandOptionType.Subcommand,
+                    description: "Show which characters have missing or underleveled mods."
                 }
             ]
         });
@@ -377,6 +382,30 @@ class MyMods extends Command {
                 description: "==============================\n" + outStr + "==============================",
                 footer: footer
             }]});
+        } else if (subCommand === "missing") {
+            // Check all g10+ characters that have missing or mods that are under lvl 15 (Max lvl)
+            const outArr = [];
+            for (const character of player.roster.filter(unit => unit.combatType !== 2)) {
+                if (character?.gear < 10) continue;
+                const missingMods = 6 - (character.mods?.length || 0);
+                const lowerLvl    = 6 - (character.mods?.filter(m => !m || m.level >= 15).length || 0) - missingMods;
+
+                if (missingMods || lowerLvl) {
+                    const langChar = await Bot.swgohAPI.langChar(character, interaction.guildSettings.swgohLanguage);
+                    outArr.push(`\`[${missingMods}][${lowerLvl}]\` ${langChar.nameKey || langChar.defId}`);
+                }
+            }
+            if (!outArr.length) return super.success(interaction, "It looks like your characters all have well leveled mods!");
+
+            const bottomDesc = "\n\n```[x]: Number of mods missing\n[▼]: Number of mods below lvl 15```";
+            return super.success(
+                interaction,
+                "__**`[x][▼]` Name**__\n" + outArr.join("\n") + bottomDesc,
+                {
+                    title: `${player.name || interaction.user.name}'s mod issues for gear 10+`,
+                    footer: footer
+                }
+            );
         }
     }
 }

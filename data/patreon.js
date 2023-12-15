@@ -1,5 +1,3 @@
-// TODO Change it out so there's comments per-unlock, so the later ones
-// override lower tier ones if available. (ArenaAlert/ ArenaWatch)
 module.exports = {
     tiers: {
         1: {
