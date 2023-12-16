@@ -397,10 +397,10 @@ class MyMods extends Command {
             }
             if (!outArr.length) return super.success(interaction, "It looks like your characters all have well leveled mods!");
 
-            const bottomDesc = "\n\n```[x]: Number of mods missing\n[▼]: Number of mods below lvl 15```";
+            const topDesc = "`[x]: Number of mods missing`\n`[▼]: Number of mods below lvl 15`";
             return super.success(
                 interaction,
-                "__**`[x][▼]` Name**__\n" + outArr.join("\n") + bottomDesc,
+                topDesc + "\n\n__**`[x][▼]` Name**__\n" + outArr.join("\n"),
                 {
                     title: `${player.name || interaction.user.name}'s mod issues for gear 10+`,
                     footer: footer
