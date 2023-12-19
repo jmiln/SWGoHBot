@@ -8,8 +8,8 @@ module.exports = {
                 GuildTickets: "Enable the GuildTickets command & monitor",
                 GuildUpdate: "Enable the GuildUpdate command & monitors"
             },
-            playerTime: 1,
-            guildTime: 6,
+            playerTime: 1*60,   // 1hr
+            guildTime:  6*60,   // 6hr
             awAccounts: 1,
         },
         5: {
@@ -18,8 +18,8 @@ module.exports = {
                 ArenaAlert: "Enable ArenaAlert to watch all registered accounts for arena drops",
                 ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 20 allycodes"
             },
-            playerTime: 1,
-            guildTime: 3,
+            playerTime: 1*60,   // 1hr
+            guildTime:  3*60,   // 3hr
             awAccounts: 20,
         },
         10: {
@@ -27,8 +27,8 @@ module.exports = {
             benefits: {
                 ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 50 allycodes"
             },
-            playerTime: 1,
-            guildTime: 3,
+            playerTime: 10,   // 10min
+            guildTime:  30,   // 30min
             awAccounts: 50,
         }
     },

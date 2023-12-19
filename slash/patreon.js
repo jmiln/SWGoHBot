@@ -48,8 +48,8 @@ class Patreon extends Command {
                     fields.push({
                         name: `${thisTier.name} - $${tier}`,
                         value: [
-                            `>>> Player data updates: **every ${thisTier.playerTime} hours**`,
-                            `Guild data updates: **every ${thisTier.guildTime} hours**`,
+                            `>>> Player data updates: **every ${getCooldowns(thisTier.playerTime)}**`,
+                            `Guild data updates: **every ${getCooldowns(thisTier.guildTime)}**`,
                             "",
                             `**__Benefits__:**${parseInt(tier, 10) > 1 ? "\nEverything above +" : ""}`,
                             Object.keys(thisTier.benefits).map(ben => {
@@ -88,8 +88,8 @@ class Patreon extends Command {
                     fields.push({
                         name: "Pull Times",
                         value: [
-                            `>>> Player data pulls: **2hr** => **${thisTier.playerTime}hr**`,
-                            `Guild data pulls: **6hr** ${thisTier.guildTime < 6 ? `=> **${thisTier.guildTime}hr**` : ""}`
+                            `>>> Player data pulls: **2hr** => **${getCooldowns(thisTier.playerTime)}**`,
+                            `Guild data pulls: **6hr** ${(thisTier.guildTime/60) < 6 ? `=> **${getCooldowns(thisTier.guildTime)}**` : ""}`
                         ].join("\n")
                     });
 
@@ -125,8 +125,14 @@ class Patreon extends Command {
             }],
             ephemeral: ephemeral
         });
-
     }
+}
+
+function getCooldowns(mins) {
+    if (mins < 60) {
+        return `${mins} minutes`;
+    }
+    return `${mins/60} hour${mins/60 > 1 ? "s" : ""}`;
 }
 
 function getTier(amount_cents) {

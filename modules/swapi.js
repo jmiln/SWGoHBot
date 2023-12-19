@@ -1034,7 +1034,7 @@ module.exports = (opts={}) => {
         if (!lastUpdated) return true;
         const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
         if (!cooldown) cooldown = guild ? guildMaxCooldown : playerMaxCooldown;
-        return Math.floor(diff.totalMin/60) >= cooldown;
+        return diff.totalMin >= cooldown;
     }
 };
 

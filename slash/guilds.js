@@ -716,7 +716,6 @@ class Guilds extends Command {
                 });
             }
 
-            const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
             const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
             return interaction.editReply({content: null, embeds: [{
                 author: {

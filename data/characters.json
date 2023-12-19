@@ -1058,9 +1058,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1147,7 +1147,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_caradune"
     },
@@ -1234,7 +1234,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -1592,7 +1592,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -3365,9 +3365,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -3424,7 +3424,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -3573,7 +3573,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -4467,9 +4467,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -4497,7 +4497,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5047,8 +5047,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5136,9 +5136,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -7131,8 +7131,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
