@@ -3535,5 +3535,31 @@
                 "tier": 3
             }
         ]
+    },
+    "MANDALORBOKATAN": {
+        "guideId": "MANDALORBOKATAN_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "KELLERANBEQ",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "PAZVIZSLA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "IG12",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "THEMANDALORIANBESKARARMOR",
+                "type": "RELIC",
+                "tier": 7
+            }
+        ]
     }
 }

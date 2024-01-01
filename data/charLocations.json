@@ -99,7 +99,13 @@
     {
         "name": "Admiral Trench",
         "defId": "TRENCH",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Ahsoka Tano",
@@ -308,6 +314,11 @@
                 "cost": "400/10"
             }
         ]
+    },
+    {
+        "name": "Bo-Katan (Mand'alor)",
+        "defId": "MANDALORBOKATAN",
+        "locations": []
     },
     {
         "name": "Bo-Katan Kryze",
@@ -786,6 +797,11 @@
     {
         "name": "Dark Trooper Moff Gideon",
         "defId": "MOFFGIDEONS3",
+        "locations": []
+    },
+    {
+        "name": "Darth Bane",
+        "defId": "DARTHBANE",
         "locations": []
     },
     {
