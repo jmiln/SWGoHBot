@@ -588,7 +588,11 @@ module.exports = (opts={}) => {
             for (const skill in char.skillReferenceList) {
                 let skillName = await cache.get(config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: lang}, {nameKey: 1, _id: 0});
                 if (Array.isArray(skillName)) skillName = skillName[0];
-                if (!skillName) throw new Error("Cannot find skillName for " + char.skillReferenceList[skill].skillId);
+                if (!skillName) {
+                    console.error("[swapi langChar] Cannot find skillName for " + char.skillReferenceList[skill].skillId);
+                    char.skillReferenceList[skill].nameKey = "N/A";
+                    continue;
+                }
                 char.skillReferenceList[skill].nameKey = skillName.nameKey;
             }
         }
@@ -598,7 +602,11 @@ module.exports = (opts={}) => {
             for (const skill in char.skills) {
                 let skillName = await cache.get(config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: lang}, {nameKey: 1, _id: 0});
                 if (Array.isArray(skillName)) skillName = skillName[0];
-                if (!skillName) throw new Error("Cannot find skillName for " + char.skills[skill].id);
+                if (!skillName) {
+                    console.error("[swapi langChar] Cannot find skillName for " + char.skills[skill].id);
+                    char.skills[skill].nameKey = "N/A";
+                    continue;
+                }
                 char.skills[skill].nameKey = skillName.nameKey;
             }
         }
