@@ -87,7 +87,7 @@ module.exports = class extends Language {
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
             BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Something went wrong, please make sure your account is synced correctly.",
-            BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date} ago`,
+            BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date}`,
             BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : "data"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,

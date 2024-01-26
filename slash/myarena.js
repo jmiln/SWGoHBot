@@ -108,15 +108,14 @@ class MyArena extends Command {
             });
         }
 
-        const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
+        const footerStr = Bot.updatedFooterStr(player.updated, interaction);
         return interaction.reply({
             embeds: [{
                 author: {
                     name: interaction.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name)
                 },
                 description: desc,
-                fields: fields,
-                footer: footer
+                fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
             }]
         });
 

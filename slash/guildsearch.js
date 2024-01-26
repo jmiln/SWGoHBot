@@ -341,13 +341,12 @@ class GuildSearch extends Command {
                 }
             }
 
-            const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
             return interaction.editReply({embeds: [{
                 author: {
                     name: guild.name
                 },
-                fields: fields,
-                footer: footer
+                fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
             }]});
         } else {
             // Not looking for stat info
@@ -374,10 +373,10 @@ class GuildSearch extends Command {
                 } else {
                     desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
                 }
-                const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+                const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
                 return super.error(interaction, desc, {
                     title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
-                    footer: footer,
+                    description: footerStr,
                     edit: true
                 });
             }
@@ -534,7 +533,7 @@ class GuildSearch extends Command {
                 }
             });
 
-            const footer = Bot.updatedFooter(Math.max(...guildChar.map(ch => ch.updated)), interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(Math.max(...guildChar.map(ch => ch.updated)), interaction);
             let description = null;
             if (doZeta || doOmicron) {
                 if (doZeta && doOmicron) {
@@ -553,8 +552,7 @@ class GuildSearch extends Command {
                             name: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked)
                         },
                         description: description,
-                        fields: fields,
-                        footer: footer
+                        fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
                     }]
                 });
             } catch (e) {

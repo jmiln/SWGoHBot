@@ -216,14 +216,13 @@ class Charactergear extends Command {
                     });
                 }
                 const totalLen = fields.reduce((acc, cur) => {return acc + cur.value.length;}, 0);
-                const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
+                const footerStr = Bot.updatedFooterStr(player.updated, interaction);
                 if (totalLen < 5500) {
                     return interaction.reply({embeds: [{
                         author: {
                             name: (gearLvl > 0) ? `${player.name}'s ${character.name} gear til g${gearLvl}` : `${player.name}'s ${character.name} needs:`
                         },
-                        fields: fields,
-                        footer: footer
+                        fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
                     }]});
                 } else {
                     const half = parseInt(fields.length/2, 10);
@@ -235,8 +234,7 @@ class Charactergear extends Command {
                     }]});
                     return await interaction.followUp({embeds: [{
                         title: Bot.constants.zws,
-                        fields: fields.slice(half),
-                        footer: footer
+                        fields: [...fields.slice(half), {name: Bot.constants.zws, value: footerStr}]
                     }]});
                 }
             }

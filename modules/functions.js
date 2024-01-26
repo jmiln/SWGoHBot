@@ -475,32 +475,19 @@ module.exports = (Bot, client) => {
         return day;
     };
 
-    /* LAST UPDATED FOOTER
-     * Simple one to make the "Last updated ____ " footers
+    /*
+     * LAST UPDATED FOOTER
+     * Simple one to make the "Last updated ____ " footer strings and display them with Discord's timestamp format
      */
-    Bot.updatedFooter = (updated, message=null, type="player", userCooldown) => {
+    Bot.updatedFooterStr = (updated, interaction=null) => {
         if (!updated) {
-            console.error("[updatedFooter] Missing updated timestamp");
+            console.error("[updatedFooterStr] Missing updated timestamp");
             return "";
         }
-        const baseCooldown = { player: 2, guild: 6 };
-        const minCooldown = { player: 1, guild: 3 };
 
-        const lang = message?.language || Bot.languages["eng_us"];
+        const lang = interaction?.language || Bot.languages["eng_us"];
 
-        if (!userCooldown) userCooldown = baseCooldown;
-        const timeDiff = new Date().getTime() - new Date(updated).getTime();
-        const betweenMS = Bot.convertMS(timeDiff);
-
-        let betweenStr = "";
-        if (betweenMS.hour >= minCooldown[type] && betweenMS.hour < userCooldown[type]) {
-            // If the data is between the shorter time they'd get from patreon, and the
-            // time they'd get without, stick the patreon link in the footer
-            betweenStr = " | patreon.com/swgohbot";
-        }
-        return {
-            text: lang.get("BASE_SWGOH_LAST_UPDATED", Bot.duration(updated, message)) + betweenStr
-        };
+        return lang.get("BASE_SWGOH_LAST_UPDATED", `<t:${Math.floor(updated/1000)}:R>`);
     };
 
     // Get the current user count

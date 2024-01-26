@@ -97,7 +97,7 @@ class MyCharacter extends Command {
         }
 
         const pName = player.name;
-        const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
+        const footerStr = Bot.updatedFooterStr(player.updated, interaction);
 
         const thisUnit = player.roster.find(c => c.defId === unit.uniqueName);
 
@@ -105,7 +105,7 @@ class MyCharacter extends Command {
         if (!thisUnit) {
             return super.error(interaction, interaction.language.get("BASE_SWGOH_LOCKED_CHAR"), {
                 title: `${pName}'s ${unit.name}`,
-                footer: footer
+                description: footerStr
             });
         }
 
@@ -280,6 +280,11 @@ class MyCharacter extends Command {
 
         const unitImg = await Bot.getUnitImage(thisUnit.defId, thisUnit);
 
+        fields.push({
+            name: Bot.constants.zws,
+            value: footerStr
+        });
+
         if (!unitImg) {
             // If it couldn't get an image for the character
             return interaction.editReply({
@@ -297,7 +302,6 @@ class MyCharacter extends Command {
                             value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
                         }
                     ].concat(fields),
-                    footer: footer
                 }]
             });
         }
@@ -318,7 +322,6 @@ class MyCharacter extends Command {
                         value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities"
                     }
                 ].concat(fields),
-                footer: footer,
             }],
             files: [{
                 attachment: unitImg,

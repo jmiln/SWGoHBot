@@ -454,15 +454,14 @@ class GrandArena extends Command {
             });
         }
 
-        const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), interaction, "player", cooldown);
+        const footerStr = Bot.updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
         return interaction.editReply({
             content: null,
             embeds: [{
                 author: {
                     name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name)
                 },
-                fields: fields,
-                footer: footer
+                fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
             }]
         });
     }

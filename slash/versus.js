@@ -207,7 +207,7 @@ class Versus extends Command {
             user2: {value: user2.name, align: "left"}
         }, statOut, {boldHeader: false, useHeader: false});
 
-        const footer = Bot.updatedFooter(Math.min(user1.updated, user2.updated), interaction, "player", cooldown);
+        const footerStr = Bot.updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
         return interaction.editReply({content: null, embeds: [{
             title: `${user1.name} vs. ${user2.name} (${charName})`,
             fields: [
@@ -218,9 +218,12 @@ class Versus extends Command {
                 {
                     name: "Stats",
                     value: Bot.codeBlock(statTable.join("\n"), "asciidoc")
+                },
+                {
+                    name: Bot.constants.zws,
+                    value: footerStr
                 }
             ],
-            footer: footer
         }]});
     }
 }

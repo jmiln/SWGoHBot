@@ -162,14 +162,13 @@ class Faction extends Command {
                     desc = msgArr[0];
                 }
 
-                const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
+                const footerStr = Bot.updatedFooterStr(player.updated, interaction);
                 return interaction.reply({embeds: [{
                     author: {
                         name: player.name + "'s matches for " + Bot.toProperCase(searchName) + extra
                     },
                     description: desc,
-                    fields: fields,
-                    footer: footer
+                    fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
                 }]});
             } else {
                 return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});

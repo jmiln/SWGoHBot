@@ -373,13 +373,16 @@ class Guilds extends Command {
                 });
             });
 
-            const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            fields.push({
+                name: Bot.constants.zws,
+                value: footerStr
+            });
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: `${guild.name} ${interaction.language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`
                 },
-                fields: fields,
-                footer: footer
+                fields: fields
             }]});
         }
 
@@ -637,15 +640,14 @@ class Guilds extends Command {
                     maxed += 1;
                 }
             }
-            const footer = Bot.updatedFooter(rawGuild.updated, interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(rawGuild.updated, interaction);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
             const maxedString   = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: `${rawGuild.profile.name}'s Ticket Counts`
                 },
-                description: `${timeTilString}${maxedString}${out.join("\n")}`,
-                footer: footer
+                description: `${timeTilString}${maxedString}${out.join("\n")}\n${footerStr}`
             }]});
         }
 
@@ -716,14 +718,17 @@ class Guilds extends Command {
                 });
             }
 
-            const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            fields.push({
+                name: Bot.constants.zws,
+                value: footerStr
+            });
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: guild.name
                 },
                 description: desc.length ? desc : "",
-                fields: fields.length ? fields : null,
-                footer: footer
+                fields: fields.length ? fields : null
             }]});
         }
 
@@ -803,13 +808,16 @@ class Guilds extends Command {
                     value: guild.warnings.join("\n")
                 });
             }
-            const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            fields.push({
+                name: Bot.constants.zws,
+                value: footerStr
+            });
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: `${Bot.toProperCase(showSide)} side GP`
                 },
-                fields: fields,
-                footer: footer
+                fields: fields
             }]});
         }
 
@@ -905,13 +913,16 @@ class Guilds extends Command {
                     value: guild.warnings.join("\n")
                 });
             }
-            const footer = Bot.updatedFooter(guild.updated, interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            fields.push({
+                name: Bot.constants.zws,
+                value: footerStr
+            });
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: interaction.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name)
                 },
-                fields: fields,
-                footer: footer
+                fields: fields
             }]});
         }
 
@@ -1044,13 +1055,16 @@ class Guilds extends Command {
                 });
             }
 
-            const footer = Bot.updatedFooter(Math.min(...guildMembers.map(m => m.updated)), interaction, "guild", cooldown);
+            const footerStr = Bot.updatedFooterStr(Math.min(...guildMembers.map(m => m.updated)), interaction);
+            fields.push({
+                name: Bot.constants.zws,
+                value: footerStr
+            });
             return interaction.editReply({content: null, embeds: [{
                 author: {
                     name: interaction.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name)
                 },
                 fields: fields,
-                footer: footer
             }]});
         }
     }

@@ -137,7 +137,7 @@ class GuildTickets extends Command {
                 if (options.level < 3) {
                     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                 }
-                // This would be at lease MANAGE_CHANNEL perms, or the adminrole under the guildconf
+                // This would be at least MANAGE_CHANNEL perms, or the adminrole from guildconf
                 gt.channel = channel.id;
                 updatedArr.push(`Channel: <#${channel.id}>`);
             }

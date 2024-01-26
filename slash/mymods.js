@@ -138,7 +138,7 @@ class MyMods extends Command {
                 footer: "Please try again in a bit."
             });
         }
-        const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown) || "";
+        const footerStr = Bot.updatedFooterStr(player.updated, interaction) || "";
 
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");
@@ -169,8 +169,7 @@ class MyMods extends Command {
                     author: {
                         name: player.name + "'s " + character.name
                     },
-                    description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR"),
-                    footer: footer
+                    description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR") + "\n\n" + footerStr,
                 }]});
             }
 
@@ -235,8 +234,7 @@ class MyMods extends Command {
                     icon_url: character.avatarURL
                 },
                 color: Bot.getSideColor(character.side),
-                fields: fields,
-                footer: footer
+                fields: [...fields, {name: Bot.constants.zws, value: footerStr}],
             }]});
         } else if (subCommand === "best") {
             const statToCheck = interaction.options.getString("stat");
@@ -326,8 +324,7 @@ class MyMods extends Command {
                     name: interaction.language.get(`COMMAND_MYMODS_HEADER_${showTotal ? "TOTAL" : "MODS"}`, player.name, statToCheck)
                 },
                 description: "==============================\n" + outStr + "==============================",
-                fields: fields,
-                footer: footer
+                fields: [...fields, {name: Bot.constants.zws, value: footerStr}],
             }]});
         } else if (subCommand === "bestmods") {
             // Check for best individual mods of a stat
@@ -379,8 +376,7 @@ class MyMods extends Command {
                 author: {
                     name: `${player.name}'s top ${statToCheck} values`
                 },
-                description: "==============================\n" + outStr + "==============================",
-                footer: footer
+                description: "==============================\n" + outStr + "==============================\n\n" + footerStr,
             }]});
         } else if (subCommand === "missing") {
             // Check all g10+ characters that have missing or mods that are under lvl 15 (Max lvl)
@@ -397,13 +393,13 @@ class MyMods extends Command {
             }
             if (!outArr.length) return super.success(interaction, "It looks like your characters all have well leveled mods!");
 
-            const topDesc = "`[x]: Number of mods missing`\n`[▼]: Number of mods below lvl 15`";
+            const topDesc = "`[x]: Number of mods missing     `\n`[▼]: Number of mods below lvl 15`";
             return super.success(
                 interaction,
                 topDesc + "\n\n__**`[x][▼]` Name**__\n" + outArr.join("\n"),
                 {
                     title: `${player.name || interaction.user.name}'s mod issues for gear 10+`,
-                    footer: footer
+                    description: footerStr
                 }
             );
         }

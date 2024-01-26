@@ -378,7 +378,11 @@ class TerritoryWar extends Command {
 
 
 
-        const footer = Bot.updatedFooter(Math.min(guild1.updated, guild2.updated), interaction, "player", cooldown);
+        const footerStr = Bot.updatedFooterStr(Math.min(guild1.updated, guild2.updated), interaction);
+        fields.push({
+            name: Bot.constants.zws,
+            value: footerStr
+        });
         return interaction.editReply({
             content: null,
             embeds: [{
@@ -386,8 +390,7 @@ class TerritoryWar extends Command {
                     // name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", guild1.name, guild2.name)
                     name: `Territory War, ${guild1.name} (${guild1.roster.length}) vs ${guild2.name} (${guild2.roster.length})`
                 },
-                fields: fields,
-                footer: footer
+                fields: fields
             }]
         });
     }

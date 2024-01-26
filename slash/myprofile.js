@@ -198,15 +198,14 @@ class MyProfile extends Command {
             });
         }
 
-        const footer = Bot.updatedFooter(player.updated, interaction, "player", cooldown);
+        const footerStr = Bot.updatedFooterStr(player.updated, interaction);
         return interaction.reply({embeds: [{
             author: {
                 name: interaction.language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),
             },
             // Need 6*, 15/20 spd, and 100 off
             description: interaction.language.get("COMMAND_MYPROFILE_DESC", player.guildName, player.level, player.arena.char.rank, player.arena.ship.rank, gpFull.toLocaleString(), mods),
-            fields: fields,
-            footer: footer
+            fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
         }]});
     }
 }
