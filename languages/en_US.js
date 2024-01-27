@@ -559,7 +559,7 @@ module.exports = class extends Language {
 
             // Event Command (View)
             COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,
-            COMMAND_EVENT_TIME_LEFT: (timeLeft) => `Time Remaining: ${timeLeft}\n`,
+            COMMAND_EVENT_TIME_LEFT: (timeTil) => `Sending ${timeTil}\n`,
             COMMAND_EVENT_CHAN: (eventChan) => `Sending on channel: ${eventChan}\n`,
             COMMAND_EVENT_SCHEDULE: (repeatDays) => `Repeat schedule: ${repeatDays}\n`,
             COMMAND_EVENT_REPEAT: (eventDays, eventHours, eventMins) => `Repeating every ${eventDays} days, ${eventHours} hours, and ${eventMins} minutes\n`,

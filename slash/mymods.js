@@ -169,7 +169,7 @@ class MyMods extends Command {
                     author: {
                         name: player.name + "'s " + character.name
                     },
-                    description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR") + "\n\n" + footerStr,
+                    description: interaction.language.get("BASE_SWGOH_LOCKED_CHAR") + "\n" + footerStr,
                 }]});
             }
 
@@ -376,7 +376,7 @@ class MyMods extends Command {
                 author: {
                     name: `${player.name}'s top ${statToCheck} values`
                 },
-                description: "==============================\n" + outStr + "==============================\n\n" + footerStr,
+                description: "==============================\n" + outStr + "==============================\n" + footerStr,
             }]});
         } else if (subCommand === "missing") {
             // Check all g10+ characters that have missing or mods that are under lvl 15 (Max lvl)

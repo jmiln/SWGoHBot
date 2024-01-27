@@ -369,10 +369,9 @@ class Event extends Command {
 
                         // From here on, it should have the event found, so process for viewing
                         if (Array.isArray(event)) event = event[0];
-                        const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
 
-                        let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, eventDate);
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
+                        let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, `<t:${Math.floor(event.eventDT/1000)}:f>`);
+                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(event.eventDT/1000)}:R>`);
                         if (event.channel?.length) {
                             let chanName = null;
                             if (interaction.guild.channels.cache.has(event.channel)) {
@@ -422,10 +421,8 @@ class Event extends Command {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
-
-                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
+                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, `<t:${Math.floor(event.eventDT/1000)}:f>`);
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(event.eventDT/1000)}:R>`);
                             if (event.channel?.length) {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.channel)) {
@@ -509,10 +506,8 @@ class Event extends Command {
                             }
                         }
                         sortedEvents.forEach(event => {
-                            const eventDate = getDateTimeStr(event.eventDT, guildConf.timezone);
-
-                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, eventDate);
-                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", Bot.formatDuration(event.eventDT - new Date().getTime()));
+                            let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, `<t:${Math.floor(event.eventDT/1000)}:f>`);
+                            eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(event.eventDT/1000)}:R>`);
                             if (event.channel && event.channel !== "") {
                                 let chanName = "";
                                 if (interaction.guild.channels.cache.has(event.channel)) {
