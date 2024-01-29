@@ -1,6 +1,6 @@
 # SWGoHBot
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a237e06cc77e473180b810d307763402)](https://www.codacy.com/gh/jmiln/SWGoHBot/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jmiln/SWGoHBot&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a237e06cc77e473180b810d307763402)](https://app.codacy.com/gh/jmiln/SWGoHBot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## About
 This is a bot I made to make looking up recommended setups for the game more convenient, since so many people use Discord to communicate.
