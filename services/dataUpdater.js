@@ -222,7 +222,7 @@ async function getPlayerRosters(playerIds) {
     await eachLimit(playerIds, MAX_CONCURRENT, async function(playerId) {
         const {rosterUnit} = await comlinkStub.getPlayer(null, playerId);
         const strippedUnits = rosterUnit
-            .filter(unit => unit?.equippedStatMod && unitMap[unit.definitionId.split(":")[0]].combatType === 1)
+            .filter(unit => unit?.equippedStatMod && unitMap[unit.definitionId.split(":")[0]]?.combatType === 1)
             .map(unit => {
                 return {
                     defId: unit.definitionId.split(":")[0],
