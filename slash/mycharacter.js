@@ -79,7 +79,7 @@ class MyCharacter extends Command {
 
         await interaction.reply({content: "Please wait while I look up your profile."});
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player = null;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);

@@ -42,7 +42,7 @@ class Panic extends Command {
         await interaction.reply({content: "Please wait while I process your request."});
 
         // Grab the player's info
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         const playerArr = await Bot.swgohAPI.unitStats(allycode, cooldown);
 
         const player = playerArr[0];

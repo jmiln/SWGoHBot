@@ -34,7 +34,7 @@ class MyArena extends Command {
             return super.error(interaction, "Invalid user ID, you need to use either the `me` keyword if you have a registered ally code, an ally code, or mention a Discord user");
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);

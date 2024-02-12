@@ -79,7 +79,7 @@ class Zetas extends Command {
             }
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let player;
         try {

@@ -93,7 +93,7 @@ class Need extends Command {
         }
         await interaction.reply({content: "Please wait while I look up your data."});
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
         if (Array.isArray(player)) player = player[0];
         if (!player) {

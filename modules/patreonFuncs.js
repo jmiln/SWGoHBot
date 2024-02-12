@@ -1,5 +1,6 @@
 const { PermissionsBitField } = require("discord.js");
 const {tiers: patronTiers} = require("../data/patreon.js");
+const { getTopSupporterTier } = require("./guildConfig/patreonSettings.js");
 
 module.exports = (Bot, client) => {
     const honPat = 500;
@@ -75,8 +76,20 @@ module.exports = (Bot, client) => {
     }
 
     // Get the cooldown
-    Bot.getPlayerCooldown = async (authorID) => {
+    const MAX_TIER = 10;
+    Bot.getPlayerCooldown = async (authorID, guildId=null) => {
         const patron = await Bot.getPatronUser(authorID);
+
+        // If the user isn't subbed or if there's a possible higher tier, check if
+        // someone else on the server has subscribed and shared their top tier
+        if ((!patron || (patron.amount_cents/100) < MAX_TIER) && guildId) {
+            const topSupporter = await getTopSupporterTier(guildId);
+            if (topSupporter && topSupporter >= MAX_TIER) {
+                const currentTier = patronTiers[MAX_TIER];
+                patron.playerTime = currentTier.playerTime;
+                patron.guildTime = currentTier.guildTime;
+            }
+        }
         return {
             player: patron?.playerTime || 2*60,
             guild: patron?.guildTime || 6*60

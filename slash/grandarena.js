@@ -99,7 +99,7 @@ class GrandArena extends Command {
             }
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
             try {

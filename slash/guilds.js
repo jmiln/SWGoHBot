@@ -212,7 +212,7 @@ class Guilds extends Command {
             return super.error(interaction, "No valid ally code found. Please make sure that you have a registered ally code via the `userconf` command, or have entered a valid ally code");
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild?.id || null});
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead

@@ -28,7 +28,7 @@ class TerritoryWar extends Command {
         const problemArr = [];
 
         await interaction.reply({content: "> Please wait while I look up the info."});
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         // Get the first user's ally code if possible
         const user1str = interaction.options.getString("allycode_1");
