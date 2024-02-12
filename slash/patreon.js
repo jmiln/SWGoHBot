@@ -95,6 +95,13 @@ class Patreon extends Command {
                             ].join("\n")
                         });
 
+                        // Show which server they have marked to support/ share the benefits with
+                        const userConf = await Bot.userReg.getUser(interaction.user.id);
+                        fields.push({
+                            name: "Selected Server",
+                            value: userConf?.bonusServer ? `<#${userConf.bonusServer}>` : "N/A"
+                        });
+
                         // Benefits: patreonInfo[tier].benefits
                         //   - For this, it'd be everything prior + each new bit
                         const tiers = Object.keys(patreonInfo.tiers)
