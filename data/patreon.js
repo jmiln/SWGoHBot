@@ -3,13 +3,13 @@ module.exports = {
         1: {
             name: "Youngling",
             benefits : {
-                ArenaAlert: "Enable the ArenaAlert command to watch your primary registered account for arena drops",
-                ArenaWatch: "Enable ArenaWatch and it's payout monitor for 1 allycode",
+                ArenaAlert  : "Enable the ArenaAlert command to watch your primary registered account for arena drops",
+                ArenaWatch  : "Enable ArenaWatch and it's payout monitor for 1 allycode",
                 GuildTickets: "Enable the GuildTickets command & monitor",
-                GuildUpdate: "Enable the GuildUpdate command & monitors"
+                GuildUpdate : "Enable the GuildUpdate command & monitors"
             },
             playerTime: 1*60,   // 1hr
-            guildTime:  6*60,   // 6hr
+            guildTime:  3*60,   // 3hr
             awAccounts: 1,
         },
         5: {
@@ -18,17 +18,18 @@ module.exports = {
                 ArenaAlert: "Enable ArenaAlert to watch all registered accounts for arena drops",
                 ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 20 allycodes"
             },
-            playerTime: 1*60,   // 1hr
-            guildTime:  3*60,   // 3hr
+            playerTime: 5,    // 5min
+            guildTime:  10,   // 10min
             awAccounts: 20,
         },
         10: {
             name: "Jedi Knight",
             benefits: {
-                ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 50 allycodes"
+                ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 50 allycodes",
+                Cooldowns:  "Enable sharing cooldowns with a selected Discord server"
             },
-            playerTime: 10,   // 10min
-            guildTime:  30,   // 30min
+            playerTime: 5,    // 5min       (Share-able with a selected server)
+            guildTime:  10,   // 10min      (Share-able with a selected server)
             awAccounts: 50,
         }
     },

@@ -53,9 +53,9 @@ class Patreon extends Command {
                                 `>>> Player data updates: **every ${getCooldowns(thisTier.playerTime)}**`,
                                 `Guild data updates: **every ${getCooldowns(thisTier.guildTime)}**`,
                                 "",
-                                `**__Benefits__:**${parseInt(tier, 10) > 1 ? "\nEverything above +" : ""}`,
+                                `**__BENEFITS__:**${parseInt(tier, 10) > 1 ? "\nEverything above +\n" : ""}`,
                                 Object.keys(thisTier.benefits).map(ben => {
-                                    return `${ben}:\n${thisTier.benefits[ben]}`;
+                                    return `**${ben}**:\n${thisTier.benefits[ben]}`;
                                 }).join("\n\n")
                             ].join("\n")
                         });
