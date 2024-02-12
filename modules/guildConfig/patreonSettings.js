@@ -1,0 +1,126 @@
+const config = require("../../config.js");
+
+exports.getPatreonSettings = async ({cache, guildId}) => {
+    if (!guildId) return {};
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
+    return res?.patreonSettings || {};
+};
+
+exports.setPatreonSettings = async ({cache, guildId, patreonSettingsOut}) => {
+    // Filter out any settings that are the same as the defaults
+    const res = await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: patreonSettingsOut}, false)
+        .then(() => {
+            return { success: true, error: null };
+        })
+        .catch(error => {
+            return { success: false, error: error };
+        });
+    return res;
+};
+
+// Function to:
+//  - Add/update/remove a user & tier to the supporters list
+//  - Supports consist of userID (Discord user ID), and tier (amount_cents/100)
+// Returns success/ error for both the user setting & the guild one
+exports.addServerSupporter = async ({cache, guildId, userInfo}) => {
+    if (!guildId) return {success: false, error: "Missing guild ID."};
+    if (!userInfo?.userId || !userInfo?.tier) return {success: false, error: "Missing userId or tier."};
+
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
+    const resOut = { user: null, guild: null };
+
+    // If this guild doesn't have the supporters array, create it
+    if (!res?.supporters) res.supporters = [];
+
+    // Check if the user is already set in there
+    if (res.supporters?.filter(supp => supp.id === userInfo.id)?.length) return {success: false, error: "User already set."};
+
+    // If the user isn't there yet, put them in
+    res.supporters.push(userInfo);
+
+    resOut.guild = await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: res}, false)
+        .then(() => { return { success: true, error: null }; })
+        .catch(error => { return { success: false, error: error }; });
+
+    // ################
+    // Set the userconf settings here too
+    // ################
+
+    // Get the userConf for the user running it
+    const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", {id: userInfo.userId});
+    if (!userConf) {
+        resOut.user = { success: false, error: `Cannot find userConf for <@${userInfo.userId}>` };
+    } else {
+        // Set this server's ID in the user's config
+        userConf.bonusServer = guildId;
+        const newUser = await cache.put(config.mongodb.swgohbotdb, "users", {id: userInfo.userId}, userConf);
+
+        if (!newUser && !newUser[0])
+            resOut.user = { success: false, error: `Cannot update userConf for <@${userInfo.userId}>` };
+        else
+            resOut.user = { success: true, error: null };
+    }
+
+    return resOut;
+};
+
+//  - Get the users from the given guilds' supporters list if available
+exports.getServerSupporters = async ({cache, guildId}) => {
+    if (!guildId) return [];
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
+    return res?.patreonSettings?.supporters || [];
+};
+
+
+// Remove a user from the given guilds' supporters
+exports.removeServerSupporter = async ({cache, guildId, userId}) => {
+    if (!guildId) return [];
+    const guildPatSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
+    const hasUser = guildPatSettings?.patreonSettings?.supporters.filter(sup => sup.userId === userId)?.length > 1 ? true : false;
+
+    // If the user isn't in the supporters arr, say so
+    if (!hasUser) return { success: false, error: "User not in supporters array" };
+
+    // Get the list of supporters without the user, then save it as such
+    guildPatSettings.patreonSettings.supporters = guildPatSettings.patreonSettings.supporters.filter(sup => sup.userId !== userId);
+    return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: guildPatSettings}, false)
+        .then(() => { return { success: true, error: null }; })
+        .catch(error => { return { success: false, error: error }; });
+};
+
+// Remove all the server & user settings for a given user
+// Returns success/ error for both the user setting & the guild one
+exports.clearSupporterInfo = async ({cache, userId}) => {
+    const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", {id: userId});
+    const resOut = {user: null, guild: null};
+
+    // If there's no bonus server set, then don't bother
+    if (!userConf?.bonusServer) return {success: true, error: null};
+
+    // Otherwise, remove the set bonusServer from the user
+    const thisBonusServer = userConf.bonusServer;
+    userConf.bonusServer = null;
+    try {
+        await cache.put(config.mongodb.swgohbotdb, "users", {id: userId}, userConf);
+        resOut.user = {success: true, error: null};
+    } catch (err) {
+        resOut.user = {success: false, error: err.toString()};
+    }
+
+    // Then remove the user info from the previously bonusServer guild
+    const gRemRes = this.removeServerSupporter({cache, guildId: thisBonusServer, userId});
+    if (gRemRes.error) resOut.guild = {success: false, error: gRemRes.error};
+
+    return resOut;
+};
+
+//  - Get the highest tier from the supporters of a given server
+exports.getTopSupporterTier = async ({cache, guildId}) => {
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
+    const sortedRes = res?.patreonSettings?.supporters?.sort((a, b) => a.tier < b.tier ? 1 : -1);
+    return sortedRes?.length ? sortedRes?.[0].tier : 0;
+};
+
+
+//  - Figure out the settings for various sub-chunks, like auto-commands or guildtickets, etc
+//  - Change settings for each of the various sub-chunks

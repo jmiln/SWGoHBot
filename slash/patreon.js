@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const patreonInfo = require("../data/patreon.js");
+const { addServerSupporter } = require("../modules/guildConfig/patreonSettings");
 
 class Patreon extends Command {
     constructor(Bot) {
@@ -10,121 +11,142 @@ class Patreon extends Command {
             guildOnly: false,
             options: [
                 {
-                    name: "display",
-                    description: "Choose what to show",
-                    type: ApplicationCommandOptionType.String,
-                    required: false,
-                    choices: [
-                        {
-                            name: "Commands",
-                            value: "commands"
-                        },
-                        {
-                            name: "Benefits",
-                            value: "benefits"
-                        },
-                        {
-                            name: "my_info",
-                            value: "my_info"
-                        }
-                    ]
+                    name: "commands",
+                    description: "Show the available Patreon related commands.",
+                    type: ApplicationCommandOptionType.Subcommand
+                },
+                {
+                    name: "benefits",
+                    description: "Show the various benefits from supporting through Patreon.",
+                    type: ApplicationCommandOptionType.Subcommand
+                },
+                {
+                    name: "my_info",
+                    description: "Show what benefits your currently have available to you",
+                    type: ApplicationCommandOptionType.Subcommand
+                },
+                {
+                    name: "set_server",
+                    description: "Select this server to share your patreon benefits with",
+                    type: ApplicationCommandOptionType.Subcommand
                 }
             ]
         });
     }
 
     async run(Bot, interaction) {
-        const display = interaction.options.getString("display") || "none";
+        const subCom = interaction.options.getSubcommand() || "none";
         const fields = [];
         let description = null;
         let ephemeral = false;
 
-        switch (display) {
-            case "benefits": {
-                // Spit out the benefits data
-                for (const tier of Object.keys(patreonInfo.tiers)) {
-                    const thisTier = patreonInfo.tiers[tier];
+        if (subCom !== "set_server") {
+            switch (subCom) {
+                case "benefits": {
+                    // Spit out the benefits data
+                    for (const tier of Object.keys(patreonInfo.tiers)) {
+                        const thisTier = patreonInfo.tiers[tier];
 
-                    fields.push({
-                        name: `${thisTier.name} - $${tier}`,
-                        value: [
-                            `>>> Player data updates: **every ${getCooldowns(thisTier.playerTime)}**`,
-                            `Guild data updates: **every ${getCooldowns(thisTier.guildTime)}**`,
-                            "",
-                            `**__Benefits__:**${parseInt(tier, 10) > 1 ? "\nEverything above +" : ""}`,
-                            Object.keys(thisTier.benefits).map(ben => {
-                                return `${ben}:\n${thisTier.benefits[ben]}`;
-                            }).join("\n\n")
-                        ].join("\n")
-                    });
+                        fields.push({
+                            name: `${thisTier.name} - $${tier}`,
+                            value: [
+                                `>>> Player data updates: **every ${getCooldowns(thisTier.playerTime)}**`,
+                                `Guild data updates: **every ${getCooldowns(thisTier.guildTime)}**`,
+                                "",
+                                `**__Benefits__:**${parseInt(tier, 10) > 1 ? "\nEverything above +" : ""}`,
+                                Object.keys(thisTier.benefits).map(ben => {
+                                    return `${ben}:\n${thisTier.benefits[ben]}`;
+                                }).join("\n\n")
+                            ].join("\n")
+                        });
+                    }
+                    break;
                 }
-                break;
-            }
-            case "commands": {
-                // Spit out the commands data
-                const info = patCmdinfo();
-                fields.push(info);
-                break;
-            }
-            case "my_info":
-            default: {
-                const pat = await Bot.getPatronUser(interaction.user.id);
-                ephemeral = true;
-
-                if (!pat || pat.amount_cents < 100) {
-                    // If the user isn't subscribed, say so, provide a link to show more & show command examples
-                    description = "You are not currently subscribed through [Patreon](https://patreon.com/swgohbot)";
-
+                case "commands": {
+                    // Spit out the commands data
                     const info = patCmdinfo();
                     fields.push(info);
-                } else {
-                    // If they are subscribed, show what they have available
-                    const tierNum = getTier(pat.amount_cents);
-                    const thisTier = patreonInfo.tiers[tierNum];
+                    break;
+                }
+                case "my_info":
+                default: {
+                    const pat = await Bot.getPatronUser(interaction.user.id);
+                    ephemeral = true;
 
-                    // Player-specific pulls: patreonInfo.tiers[tier].playerTime
-                    // Guild-specific pulls: patreonInfo.tiers[tier].guildTime
-                    description = `**__${thisTier.name} tier__**:`;
-                    fields.push({
-                        name: "Pull Times",
-                        value: [
-                            `>>> Player data pulls: **2hr** => **${getCooldowns(thisTier.playerTime)}**`,
-                            `Guild data pulls: **6hr** ${(thisTier.guildTime/60) < 6 ? `=> **${getCooldowns(thisTier.guildTime)}**` : ""}`
-                        ].join("\n")
-                    });
+                    if (!pat || pat.amount_cents < 100) {
+                        // If the user isn't subscribed, say so, provide a link to show more & show command examples
+                        description = "You are not currently subscribed through [Patreon](https://patreon.com/swgohbot)";
 
-                    // Benefits: patreonInfo[tier].benefits
-                    //   - For this, it'd be everything prior + each new bit
-                    const tiers = Object.keys(patreonInfo.tiers)
-                        .map(t => parseInt(t, 10))  // Make sure they're numbers instead of strings
-                        .filter(t => t < tierNum)   // Grab just the ones under the current tier
-                        .sort().reverse();          // Sort it backwards so it's highest first
-                    const outObj = {...thisTier.benefits};
-                    for (const t of tiers) {
-                        const thisT = patreonInfo.tiers[t];
-                        for (const benefit of Object.keys(thisT.benefits)) {
-                            if (!outObj[benefit]) {
-                                outObj[benefit] = thisT.benefits[benefit];
+                        const info = patCmdinfo();
+                        fields.push(info);
+                    } else {
+                        // If they are subscribed, show what they have available
+                        const tierNum = getTier(pat.amount_cents);
+                        const thisTier = patreonInfo.tiers[tierNum];
+
+                        // Player-specific pulls: patreonInfo.tiers[tier].playerTime
+                        // Guild-specific pulls: patreonInfo.tiers[tier].guildTime
+                        description = `**__${thisTier.name} tier__**:`;
+                        fields.push({
+                            name: "Pull Times",
+                            value: [
+                                `>>> Player data pulls: **2hr** => **${getCooldowns(thisTier.playerTime)}**`,
+                                `Guild data pulls: **6hr** ${(thisTier.guildTime/60) < 6 ? `=> **${getCooldowns(thisTier.guildTime)}**` : ""}`
+                            ].join("\n")
+                        });
+
+                        // Benefits: patreonInfo[tier].benefits
+                        //   - For this, it'd be everything prior + each new bit
+                        const tiers = Object.keys(patreonInfo.tiers)
+                            .map(t => parseInt(t, 10))  // Make sure they're numbers instead of strings
+                            .filter(t => t < tierNum)   // Grab just the ones under the current tier
+                            .sort().reverse();          // Sort it backwards so it's highest first
+                        const outObj = {...thisTier.benefits};
+                        for (const t of tiers) {
+                            const thisT = patreonInfo.tiers[t];
+                            for (const benefit of Object.keys(thisT.benefits)) {
+                                if (!outObj[benefit]) {
+                                    outObj[benefit] = thisT.benefits[benefit];
+                                }
                             }
                         }
+                        fields.push({
+                            name: "Command Benefits",
+                            value: ">>> " + Object.keys(outObj).map(ben => `**${ben}:** ${outObj[ben]}`).join("\n")
+                        });
                     }
-                    fields.push({
-                        name: "Command Benefits",
-                        value: ">>> " + Object.keys(outObj).map(ben => `**${ben}:** ${outObj[ben]}`).join("\n")
-                    });
+                    break;
                 }
-                break;
             }
-        }
 
-        return interaction.reply({
-            embeds: [{
-                author: {name: interaction.user.username + "'s current Patreon info"},
-                description: description,
-                fields: fields,
-            }],
-            ephemeral: ephemeral
-        });
+            return interaction.reply({
+                embeds: [{
+                    author: {name: interaction.user.username + "'s current Patreon info"},
+                    description: description,
+                    fields: fields,
+                }],
+                ephemeral: ephemeral
+            });
+        } else {
+            // Grab the current server and set it to the user's selected server to support with their patreon subscription
+            //  - If they're not a subscriber, reply with an error
+            const pat = await Bot.getPatronUser(interaction.user.id);
+            if (!pat) {
+                return super.error(interaction, "Sorry, but you need to be subscribed through [Patreon](https://patreon.com/swgohbot) in order to select a server.");
+            }
+
+            const userInfo = {
+                userId: interaction.user.id,
+                tier: Math.floor(pat.amount_cents / 100)
+            };
+            const res = await addServerSupporter({cache: Bot.cache, guildId: interaction.guild.id, userInfo});
+            if (res.error) {
+                return super.error(interaction, res.error);
+            }
+            // TODO Better wording?
+            //  - You are now supporting this server?
+            return super.success(interaction, "Server set as your primary!");
+        }
     }
 }
 
