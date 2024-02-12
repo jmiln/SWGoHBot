@@ -27,18 +27,19 @@ exports.addServerSupporter = async ({cache, guildId, userInfo}) => {
     if (!userInfo?.userId || !userInfo?.tier) return {success: false, error: "Missing userId or tier."};
 
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
+    const patSettings = res?.patreonSettings || {};
     const resOut = { user: null, guild: null };
 
     // If this guild doesn't have the supporters array, create it
-    if (!res?.supporters) res.supporters = [];
+    if (!patSettings?.supporters) patSettings.supporters = [];
 
     // Check if the user is already set in there
-    if (res.supporters?.filter(supp => supp.id === userInfo.id)?.length) return {success: false, error: "User already set."};
+    if (patSettings.supporters?.filter(supp => supp.id === userInfo.id)?.length) return {success: false, error: "User already set."};
 
     // If the user isn't there yet, put them in
-    res.supporters.push(userInfo);
+    patSettings.supporters.push(userInfo);
 
-    resOut.guild = await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: res}, false)
+    resOut.guild = await cache.put(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: patSettings}, false)
         .then(() => { return { success: true, error: null }; })
         .catch(error => { return { success: false, error: error }; });
 
