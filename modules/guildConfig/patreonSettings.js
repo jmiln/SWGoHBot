@@ -93,7 +93,10 @@ exports.removeServerSupporter = async ({cache, guildId, userId}) => {
 // Returns success/ error for both the user setting & the guild one
 exports.clearSupporterInfo = async ({cache, userId}) => {
     const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", {id: userId});
-    const resOut = {user: null, guild: null};
+    const resOut = {
+        user: {success: true, error: null},
+        guild: {success: true, error: null}
+    };
 
     // If there's no bonus server set, then don't bother
     if (!userConf?.bonusServer) return {success: true, error: null};
@@ -103,7 +106,6 @@ exports.clearSupporterInfo = async ({cache, userId}) => {
     userConf.bonusServer = null;
     try {
         await cache.put(config.mongodb.swgohbotdb, "users", {id: userId}, userConf);
-        resOut.user = {success: true, error: null};
     } catch (err) {
         resOut.user = {success: false, error: err.toString()};
     }
@@ -124,4 +126,6 @@ exports.getTopSupporterTier = async ({cache, guildId}) => {
 
 
 //  - Figure out the settings for various sub-chunks, like auto-commands or guildtickets, etc
-//  - Change settings for each of the various sub-chunks
+//      * Getter/ setter/ changer
+//      * Change the guildtickets to be part of this mess/ allow any of the server mods to change it?
+//      * Update the arenawatch to be saved in the guild config too, so anyone with perms can update it?
