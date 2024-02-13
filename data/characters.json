@@ -1085,9 +1085,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1261,7 +1261,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -3408,9 +3408,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_yodahermit"
     },
@@ -3467,7 +3467,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -4240,11 +4240,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity"
+            "cross": "Health"
         },
         "avatarName": "charui_joleebindo"
     },
@@ -5463,7 +5463,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7174,9 +7175,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
