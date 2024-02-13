@@ -281,8 +281,8 @@ class Event extends Command {
                 // Grab anything within the triple backticks
                 // const regex = /(?<=[`]{3})(.*)(?=[`]{3})/;
 
-                // Grab anything within backticks, or array/ object
-                const regex = /(?<=[`]{3})(.*)(?=[`]{3})|(\[[^\]]*])|(\{[^}]*})/;
+                // Grab anything within backticks,        or array    or object
+                const regex = /(?<=[`]{3})(.*)(?=[`]{3})|(\[.*]$)|(\{[^}]*}$)/;
                 const match = jsonIn.match(regex);
 
                 if (match) {
@@ -291,7 +291,6 @@ class Event extends Command {
                     if ((!matchWhole.startsWith("[") || !matchWhole.endsWith("]")) && (!matchWhole.startsWith("{") || !matchWhole.endsWith("}"))) {
                         return super.error(interaction, "Invalid json, please make sure the event(s) are surrounded by square brackets (`[]`) at the beginning and end, OR it's a proper json object inside curly brackets (`{}`).");
                     }
-
 
                     let jsonWhole;
                     try {
