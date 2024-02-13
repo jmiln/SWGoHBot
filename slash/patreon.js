@@ -29,6 +29,11 @@ class Patreon extends Command {
                     name: "set_server",
                     description: "Select this server to share your patreon benefits with",
                     type: ApplicationCommandOptionType.Subcommand
+                },
+                {
+                    name: "unset_server",
+                    description: "Unset your selected server",
+                    type: ApplicationCommandOptionType.Subcommand
                 }
             ]
         });
