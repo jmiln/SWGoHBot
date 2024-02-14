@@ -312,9 +312,12 @@ class UserConf extends Command {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_VIEW_NO_CONFIG"));
                     }
                     const fields = [];
+                    const MAX_ALLYCODES = 20;
+                    let codeTable = user.accounts.slice(0,MAX_ALLYCODES).map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n");
+                    if (user.accounts.length > MAX_ALLYCODES) codeTable += `\n* _Not displaying ${user.accounts.length-MAX_ALLYCODES} codes_`;
                     fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_HEADER"),
-                        value: ">>> " + (user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + user.accounts.map((a, ix) => `\`[${ix+1}] ${a.allyCode}\`: ` + (a.primary ? `**${a.name}**` : a.name)).join("\n") : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC"))
+                        value: ">>> " + (user.accounts.length ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + codeTable : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC"))
                     });
                     fields.push({
                         name: interaction.language.get("COMMAND_USERCONF_VIEW_LANG_HEADER") ,
