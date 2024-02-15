@@ -1,7 +1,7 @@
 const config = require(__dirname + "/../config.js");
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
-const { clearSupporterInfo, getServerSupporters, addServerSupporter } = require("../modules/guildConfig/patreonSettings");
+const { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } = require("../modules/guildConfig/patreonSettings");
 
 const fs = require("node:fs");
 const { eachLimit } = require("async");
@@ -427,37 +427,21 @@ async function updatePatrons() {
                 // If there are issues, log em
                 console.error(`[dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`);
             } else {
-                // If the user is active, and has a server linked, make sure it shows up in that guild's settings
-                const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", {id: newUser.discordID});
+                // Make sure everything is set correctly
+                const {user: userRes, guild: guildRes} = await ensureBonusServerSet({cache, userId: newUser.discordID, amount_cents: newUser.amount_cents});
 
-                // If they don't have their bonusServer set, move on
-                if (!userConf?.bonusServer?.length) return;
-
-                // If they do have one set, try and get that guild's supporter list and make sure they're in there
-                const guildSupArr = await getServerSupporters({cache, guildId: userConf.bonusServer});
-
-                // The user is already in the guild's supporter array, move on
-                if (guildSupArr.filter(sup => sup.userId === newUser.discordID)?.length > 0) return;
-
-                // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
-                const {user: userRes, guild: guildRes} = await addServerSupporter({
-                    cache,
-                    guildId: userConf.bonusServer,
-                    userInfo: {
-                        userId: newUser.discordId,
-                        tier: Math.floor(newUser.amount_cents/100)
-                    }
-                });
-
-                // No issues, move on
+                // If there are no issues, move along
                 if (!userRes?.error && !guildRes?.error) return;
 
                 // If there are issues, log em
                 console.error(`[dataUpdater addServerSupporter] Issue adding info for user\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`);
             }
         });
+
+        // Go through each of the guilds that have a supporter and make sure all of the lsited users are supposed to be there
+        await ensureGuildSupporter({cache});
     } catch (e) {
-        console.log("Error getting patrons");
+        console.log("[UpdatePatrons] Error getting patrons");
     }
 }
 
