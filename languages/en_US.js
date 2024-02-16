@@ -555,7 +555,7 @@ module.exports = class extends Language {
             COMMAND_EVENT_JSON_EV_ADD_ERROR: (name, msg) => `Failed to create event \`${name}\` ${msg}`,
             COMMAND_EVENT_JSON_YES_NO: (errCount, errLog, addCount, addLog) => `**${errCount} Events failed to add**\n${errLog}\n**${addCount} Added**\n${addLog}`,
             COMMAND_EVENT_JSON_ADDED: (count, log) => `**${count} Events added successfully:**\n${log}`,
-            COMMAND_EVENT_JSON_BAD_JSON: "If you're using the `-json` flag, you need valid json inside a code block",
+            COMMAND_EVENT_JSON_BAD_JSON: "If you're using the `createjson` option, you need to make sure you have valid json. If you are on mobile, please make sure the json is all in one line or it doesn't seem to work",
 
             // Event Command (View)
             COMMAND_EVENT_TIME: (eventName, eventDate) => `**${eventName}** \nEvent Time: ${eventDate}\n`,

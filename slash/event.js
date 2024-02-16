@@ -345,7 +345,7 @@ class Event extends Command {
                         });
                     }
                 } else {
-                    return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_BAD_JSON")});
+                    return super.error(interaction, interaction.language.get("COMMAND_EVENT_JSON_BAD_JSON"));
                 }
                 break;
             }
