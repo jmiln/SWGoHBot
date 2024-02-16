@@ -1261,7 +1261,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -5954,9 +5954,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7584,9 +7583,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },
