@@ -36,7 +36,7 @@ module.exports = {
     commands: {
         "Arena Alert"  : "Get DMs when your registered accounts' arena rank changes",
         "Arena Watch"  : "Watch up to 50 ally codes for arena rank changes & payouts, and log them to a channel",
-        "Guild Updates": "The bot will check every hour and log any changes in each member's roster",
+        "Guild Updates": "The bot will check every hour and log Gear/ Relic, Level, and Ability changes in each member's roster",
         "Guild Tickets": "Watch each guild member & keep a log of who has not hit the daily 600 tickets",
     }
 };
