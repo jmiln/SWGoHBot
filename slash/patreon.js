@@ -50,6 +50,7 @@ class Patreon extends Command {
                 // Spit out the benefits data
                 for (const tier of Object.keys(patreonInfo.tiers)) {
                     const thisTier = patreonInfo.tiers[tier];
+                    if (!thisTier?.benefits) continue;
 
                     fields.push({
                         name: `${thisTier.name} - $${tier}`,
@@ -150,6 +151,7 @@ class Patreon extends Command {
                     const outObj = {...thisTier.benefits};
                     for (const t of tiers) {
                         const thisT = patreonInfo.tiers[t];
+                        if (!thisT?.benefits) continue;
                         for (const benefit of Object.keys(thisT.benefits)) {
                             if (!outObj[benefit]) {
                                 outObj[benefit] = thisT.benefits[benefit];
@@ -178,7 +180,7 @@ class Patreon extends Command {
 
 function getCooldowns(mins) {
     if (mins < 60) {
-        return `${mins} minutes`;
+        return `${mins} minute${mins > 1 ? "s" : ""}`;
     }
     return `${mins/60} hour${mins/60 > 1 ? "s" : ""}`;
 }

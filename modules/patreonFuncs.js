@@ -46,9 +46,9 @@ module.exports = (Bot, client) => {
 
     function getPatreonTier(user) {
         const tiers = Object.keys(patronTiers).map(t => parseInt(t, 10));
-        const amount_dollars = user.amount_cents / 100;
+        const amount_dollars = (user?.amount_cents || 0)/ 100;
         const minTier = Math.min(...tiers);
-        if (amount_dollars < minTier) return null;
+        if (amount_dollars && amount_dollars < minTier) return 0;
 
         let tierNum = minTier;
         for (const tier of tiers) {
@@ -75,24 +75,31 @@ module.exports = (Bot, client) => {
         return patrons;
     }
 
-    // Get the cooldown
-    const MAX_TIER = 10;
+    // Get the cooldown for the given player
+    //  - If the user is a Patreon subscriber or someone in their server selected it as their bonus
+    //      * Give them the best lowered times available to them
+    //  - If the user isn't a subscriber, and no one in their server selected it
+    //      * Give them the defaults set in the data/patreon.js file
     Bot.getPlayerCooldown = async (authorID, guildId=null) => {
         const patron = await Bot.getPatronUser(authorID);
 
-        // If the user isn't subbed or if there's a possible higher tier, check if
-        // someone else on the server has subscribed and shared their top tier
-        if ((!patron || (patron.amount_cents/100) < MAX_TIER) && guildId) {
-            const topSupporter = await getTopSupporterTier(guildId);
-            if (topSupporter && topSupporter >= MAX_TIER) {
-                const currentTier = patronTiers[MAX_TIER];
-                patron.playerTime = currentTier.playerTime;
-                patron.guildTime = currentTier.guildTime;
-            }
-        }
+        // This will give the highest tier that anyone has set for the server, or 0 if none
+        const topSupporter = await getTopSupporterTier(guildId);
+
+        // Grab the best times available based on the supporterTier
+        const supporterTimes = !patronTiers?.[topSupporter]?.sharePlayer ? patronTiers[0] : {
+            playerTime: patronTiers[topSupporter].sharePlayer,
+            guildTime:  patronTiers[topSupporter].shareGuild
+        };
+
+        // Grab the best times for the user themselves, patreon sub or not
+        const playerTier = getPatreonTier(patron);
+        const playerTimes = patronTiers?.[playerTier] || patronTiers[0];
+
+        // Return the best times available between the supporter and the user
         return {
-            player: patron?.playerTime || 2*60,
-            guild: patron?.guildTime || 6*60
+            player: playerTimes?.playerTime > supporterTimes?.playerTime ? playerTimes.playerTime : supporterTimes.playerTime,
+            guild:  playerTimes?.guildTime  > supporterTimes?.guildTime  ? playerTimes.guildTime  : supporterTimes.guildTime
         };
     };
 
