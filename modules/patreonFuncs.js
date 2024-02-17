@@ -80,8 +80,8 @@ module.exports = (Bot, client) => {
     //      * Give them the best lowered times available to them
     //  - If the user isn't a subscriber, and no one in their server selected it
     //      * Give them the defaults set in the data/patreon.js file
-    Bot.getPlayerCooldown = async (authorID, guildId=null) => {
-        const patron = await Bot.getPatronUser(authorID);
+    Bot.getPlayerCooldown = async (userID, guildId=null) => {
+        const patron = await Bot.getPatronUser(userID);
 
         // This will give the highest tier that anyone has set for the server, or 0 if none
         const topSupporter = await getTopSupporterTier(guildId);

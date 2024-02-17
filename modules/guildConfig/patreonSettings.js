@@ -183,6 +183,9 @@ exports.ensureBonusServerSet = async ({cache, userId, amount_cents}) => {
 
 //  - Get the highest tier from the supporters of a given server
 exports.getTopSupporterTier = async ({cache, guildId}) => {
+    // If no guildId supplied, return the lowest tier available (0)
+    if (!guildId) return 0;
+
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
     const sortedRes = res?.patreonSettings?.supporters?.sort((a, b) => a.tier < b.tier ? 1 : -1);
 
