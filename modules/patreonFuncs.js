@@ -1,6 +1,6 @@
 const { PermissionsBitField } = require("discord.js");
 const {tiers: patronTiers} = require("../data/patreon.js");
-const { getTopSupporterTier } = require("./guildConfig/patreonSettings.js");
+const { getGuildSupporterTier } = require("./guildConfig/patreonSettings.js");
 
 module.exports = (Bot, client) => {
     const honPat = 500;
@@ -83,13 +83,13 @@ module.exports = (Bot, client) => {
     Bot.getPlayerCooldown = async (userID, guildId=null) => {
         const patron = await Bot.getPatronUser(userID);
 
-        // This will give the highest tier that anyone has set for the server, or 0 if none
-        const topSupporter = await getTopSupporterTier(guildId);
+        // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
+        const supporterTier = await getGuildSupporterTier(guildId);
 
         // Grab the best times available based on the supporterTier
-        const supporterTimes = !patronTiers?.[topSupporter]?.sharePlayer ? patronTiers[0] : {
-            playerTime: patronTiers[topSupporter].sharePlayer,
-            guildTime:  patronTiers[topSupporter].shareGuild
+        const supporterTimes = !patronTiers?.[supporterTier]?.sharePlayer ? patronTiers[0] : {
+            playerTime: patronTiers[supporterTier].sharePlayer,
+            guildTime:  patronTiers[supporterTier].shareGuild
         };
 
         // Grab the best times for the user themselves, patreon sub or not

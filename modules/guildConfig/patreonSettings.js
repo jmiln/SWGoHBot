@@ -1,5 +1,8 @@
 const config = require("../../config.js");
 
+// Grab the tiers data file for use later
+const patreonTiers = require("../../data/patreon.js");
+
 exports.getPatreonSettings = async ({cache, guildId}) => {
     if (!guildId) return {};
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
@@ -180,10 +183,9 @@ exports.ensureBonusServerSet = async ({cache, userId, amount_cents}) => {
     return addServerRes;
 };
 
-//  - Get the highest tier from the supporters of a given server
-const patreonTiers = require("../../data/patreon.js");
+//  - Get the combined / highest available tier from the supporters of a given server
 const tierNums = Object.keys(patreonTiers);
-exports.getTopSupporterTier = async ({cache, guildId}) => {
+exports.getGuildSupporterTier = async ({cache, guildId}) => {
     // If no guildId supplied, return the lowest tier available (0)
     if (!guildId) return 0;
 
