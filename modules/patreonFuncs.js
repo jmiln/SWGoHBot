@@ -80,11 +80,11 @@ module.exports = (Bot, client) => {
     //      * Give them the best lowered times available to them
     //  - If the user isn't a subscriber, and no one in their server selected it
     //      * Give them the defaults set in the data/patreon.js file
-    Bot.getPlayerCooldown = async (userID, guildId=null) => {
-        const patron = await Bot.getPatronUser(userID);
+    Bot.getPlayerCooldown = async (userId, guildId=null) => {
+        const patron = await Bot.getPatronUser(userId);
 
         // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
-        const supporterTier = await getGuildSupporterTier(guildId);
+        const supporterTier = await getGuildSupporterTier({cache: Bot.cache, guildId});
 
         // Grab the best times available based on the supporterTier
         const supporterTimes = !patronTiers?.[supporterTier]?.sharePlayer ? patronTiers[0] : {
@@ -98,8 +98,8 @@ module.exports = (Bot, client) => {
 
         // Return the best times available between the supporter and the user
         return {
-            player: playerTimes?.playerTime > supporterTimes?.playerTime ? playerTimes.playerTime : supporterTimes.playerTime,
-            guild:  playerTimes?.guildTime  > supporterTimes?.guildTime  ? playerTimes.guildTime  : supporterTimes.guildTime
+            player: playerTimes?.playerTime < supporterTimes?.playerTime ? playerTimes.playerTime : supporterTimes.playerTime,
+            guild:  playerTimes?.guildTime  < supporterTimes?.guildTime  ? playerTimes.guildTime  : supporterTimes.guildTime
         };
     };
 
