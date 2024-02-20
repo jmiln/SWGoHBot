@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const patreonInfo = require("../data/patreon.js");
-const { addServerSupporter, clearSupporterInfo } = require("../modules/guildConfig/patreonSettings");
+const { addServerSupporter, clearSupporterInfo, getGuildSupporterTier } = require("../modules/guildConfig/patreonSettings");
 
 class Patreon extends Command {
     constructor(Bot) {
@@ -13,6 +13,11 @@ class Patreon extends Command {
                 {
                     name: "commands",
                     description: "Show the available Patreon related commands.",
+                    type: ApplicationCommandOptionType.Subcommand
+                },
+                {
+                    name: "cooldowns",
+                    description: "Show your current gamedata cooldowns",
                     type: ApplicationCommandOptionType.Subcommand
                 },
                 {
@@ -66,6 +71,17 @@ class Patreon extends Command {
                     });
                 }
                 break;
+            }
+            case "cooldowns": {
+                const currentCooldowns = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id || null);
+                console.log(currentCooldowns);
+                return interaction.reply({
+                    content: null,
+                    embeds: [{
+                        title: `${interaction.user.username}'s Current Cooldowns`,
+                        description: `Player: ${getCooldowns(currentCooldowns.player)}\nGuild: ${getCooldowns(currentCooldowns.guild)}`
+                    }]
+                });
             }
             case "commands": {
                 // Spit out the commands data
