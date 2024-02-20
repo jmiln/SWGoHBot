@@ -168,7 +168,6 @@ exports.ensureBonusServerSet = async ({cache, userId, amount_cents}) => {
     if (guildSupArr.filter(sup => sup.userId === userId)?.length > 0) return {};
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
-    // TODO Should make sure the user is still in the supplied guild if they have it set and the server is missing it
     const addServerRes = await this.addServerSupporter({
         cache,
         guildId: userConf.bonusServer,
@@ -182,16 +181,23 @@ exports.ensureBonusServerSet = async ({cache, userId, amount_cents}) => {
 };
 
 //  - Get the highest tier from the supporters of a given server
+const patreonTiers = require("../../data/patreon.js");
+const tierNums = Object.keys(patreonTiers);
 exports.getTopSupporterTier = async ({cache, guildId}) => {
     // If no guildId supplied, return the lowest tier available (0)
     if (!guildId) return 0;
 
+    // Get the guild's patreon settings
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
-    const sortedRes = res?.patreonSettings?.supporters?.sort((a, b) => a.tier < b.tier ? 1 : -1);
 
-    // TODO Add up tiers from here, and return a higher tier if they add up to one
+    // Add up tiers from here, and return a higher tier if they add up to one
+    const totalRes = res?.patreonSettings?.supporters?.reduce((acc, curr) => curr += acc.tier, 0);
+    for (const tier of tierNums.reverse()) {
+        if (totalRes >= tier) return tier;
+    }
 
-    return sortedRes?.length ? sortedRes?.[0].tier : 0;
+    // If it gets to here (It shouldn't), return 0
+    return 0;
 };
 
 

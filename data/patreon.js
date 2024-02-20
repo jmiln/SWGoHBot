@@ -1,10 +1,12 @@
+const DEFAULT_PLAYER_TIME = 2*60;
+const DEFAULT_GUILD_TIME  = 6*60;
 module.exports = {
     tiers: {
         0: {    // The default non-subscriber times
             name: "default",
             benefits: null,
-            playerTime: 2*60,   // 2hr
-            guildTime:  6*60,   // 6hr
+            playerTime: DEFAULT_PLAYER_TIME,   // 2hr
+            guildTime:  DEFAULT_GUILD_TIME     // 6hr
         },
         1: {
             name: "Youngling",
@@ -18,8 +20,8 @@ module.exports = {
             guildTime:  3*60,   // 3hr
 
             // Share the cooldown from prev tier with guild (The base non-sub tier)
-            sharePlayer: 2*60,  // 2hr
-            shareGuild:  6*60,  // 6hr
+            sharePlayer: DEFAULT_PLAYER_TIME,   // 2hr
+            shareGuild:  DEFAULT_GUILD_TIME,    // 6hr
 
             // Arena watch account slots
             awAccounts: 1,
