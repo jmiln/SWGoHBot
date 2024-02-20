@@ -74,11 +74,10 @@ class Patreon extends Command {
             }
             case "cooldowns": {
                 const currentCooldowns = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id || null);
-                console.log(currentCooldowns);
                 return interaction.reply({
                     content: null,
                     embeds: [{
-                        title: `${interaction.user.username}'s Current Cooldowns`,
+                        title: `${interaction.user.displayName}'s Current Cooldowns`,
                         description: `Player: ${getCooldowns(currentCooldowns.player)}\nGuild: ${getCooldowns(currentCooldowns.guild)}`
                     }]
                 });
