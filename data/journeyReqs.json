@@ -1731,6 +1731,11 @@
                 "tier": 7
             },
             {
+                "defId": "STAP",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "SUNFAC",
                 "type": "STAR",
                 "tier": 7

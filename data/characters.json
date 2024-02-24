@@ -828,6 +828,34 @@
         "avatarName": "charui_bodhi"
     },
     {
+        "name": "Boss Nass",
+        "uniqueName": "BOSSNASS",
+        "aliases": [
+            "Boss Nass"
+        ],
+        "avatarName": "charui_bossnass",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bossnass.png",
+        "side": "light",
+        "factions": [
+            "Gungan",
+            "Leader",
+            "Support"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        }
+    },
+    {
         "name": "Bossk",
         "uniqueName": "BOSSK",
         "aliases": [
@@ -1174,7 +1202,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Potency"
         },
         "avatarName": "charui_caradune"
     },
@@ -1261,7 +1289,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Protection"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -2704,7 +2732,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -2873,9 +2901,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_gar_saxon"
     },
@@ -3467,7 +3495,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -5954,8 +5982,9 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6552,6 +6581,33 @@
             "cross": "Offense"
         },
         "avatarName": "charui_troopersnow"
+    },
+    {
+        "name": "STAP",
+        "uniqueName": "STAP",
+        "aliases": [
+            "STAP"
+        ],
+        "avatarName": "charui_stap",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_stap.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Droid",
+            "Separatist"
+        ],
+        "mods": {
+            "sets": [
+                "Crit. Chance x2",
+                "Crit. Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        }
     },
     {
         "name": "Starkiller",
@@ -7174,8 +7230,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7583,9 +7640,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_zamwesell"
     },

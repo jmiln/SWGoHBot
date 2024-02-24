@@ -377,6 +377,17 @@
         ]
     },
     {
+        "name": "Boss Nass",
+        "defId": "BOSSNASS",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BOSSNASS_NAME",
+                "name": "Battlefield: Naboo I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Bossk",
         "defId": "BOSSK",
         "locations": [
@@ -1627,6 +1638,11 @@
         "defId": "IG12",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-C",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_IG12_NAME",
                 "name": "Metal Mediator Marquee Event"
@@ -1913,6 +1929,11 @@
         "defId": "KELLERANBEQ",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "2-E",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_KELLERANBEQ_NAME",
                 "name": "Jedi Temple Challenge Marquee Event"
@@ -2113,11 +2134,6 @@
             {
                 "type": "GW Shipments",
                 "cost": "400/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "2-E",
-                "locId": "HARD_DARK"
             }
         ]
     },
@@ -2780,11 +2796,6 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/10"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "2-C",
-                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -2964,6 +2975,17 @@
                 "type": "Hard Modes (L)",
                 "level": "8-C",
                 "locId": "HARD_LIGHT"
+            }
+        ]
+    },
+    {
+        "name": "STAP",
+        "defId": "STAP",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_STAP_NAME",
+                "name": "Repulsorcraft Reconnaissance Marquee Event"
             }
         ]
     },

@@ -64,11 +64,6 @@
             {
                 "type": "Guild Event Shop",
                 "cost": "400/4"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "2-C",
-                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -134,6 +129,11 @@
                 "locId": "HARD_FLEET"
             }
         ]
+    },
+    {
+        "name": "Comeuppance",
+        "defId": "COMEUPPANCE",
+        "locations": []
     },
     {
         "name": "Ebon Hawk",

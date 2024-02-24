@@ -604,6 +604,30 @@ async function updateGameData() {
     if (!metadataFile.latestGamedataVersion) return console.error("[updateGameData] Missing latestGamedataVersion from metadata");
     const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
 
+    /* This downloads the gameData in chunks, but some part of it is different/ doesn't end up the same */
+    // const { GameDataSegment } = await comlinkStub.getEnums();
+    // if (!GameDataSegment) return console.error("[updateGameData] Missing GameDataSegment");
+    //
+    // const gameData = {};
+    // const segments = Object.entries(GameDataSegment);
+    // for (let ix = 0; ix < segments.length - 1; ix++) {
+    //     const [key, val] = segments[ix];
+    //     if (!val) continue;
+    //     let data;
+    //     try {
+    //         debugLog(`[updateGameData] Trying to get data for segment ${key} - ${val}`);
+    //         data = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false, val);
+    //     } catch (err) {
+    //         console.error(`[updateGameData] Broke while trying to download segment #${val} of the gameData`);
+    //         console.error(err);
+    //         continue;
+    //     }
+    //     const collections = Object.keys(data);
+    //     for (const collection of collections) {
+    //         gameData[collection] = data[collection];
+    //     }
+    // }
+
     debugLog("Running main updaters");
 
     locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);

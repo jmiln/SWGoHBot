@@ -335,6 +335,25 @@
         "avatarName": "charui_arc170"
     },
     {
+        "name": "Comeuppance",
+        "uniqueName": "COMEUPPANCE",
+        "aliases": [
+            "Comeuppance"
+        ],
+        "avatarName": "charui_comeuppance",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_comeuppance.png",
+        "side": "light",
+        "factions": [
+            "Resistance",
+            "Scoundrel",
+            "Smuggler",
+            "Support"
+        ],
+        "crew": [
+            "Zorii Bliss"
+        ]
+    },
+    {
         "name": "Ebon Hawk",
         "uniqueName": "EBONHAWK",
         "aliases": [
