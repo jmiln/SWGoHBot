@@ -1,7 +1,7 @@
 const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const patreonInfo = require("../data/patreon.js");
-const { addServerSupporter, clearSupporterInfo, getGuildSupporterTier } = require("../modules/guildConfig/patreonSettings");
+const { addServerSupporter, clearSupporterInfo } = require("../modules/guildConfig/patreonSettings");
 
 class Patreon extends Command {
     constructor(Bot) {
@@ -106,6 +106,7 @@ class Patreon extends Command {
                 }
                 // TODO Better wording?
                 //  - You are now supporting this server?
+                //  - You have now selected this server to share your sub benefits with
                 return super.success(interaction, "Server set as your primary to share your subscriber benefits with!");
             }
             case "unset_server": {
