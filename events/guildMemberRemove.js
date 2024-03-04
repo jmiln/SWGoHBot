@@ -4,7 +4,6 @@ const { clearSupporterInfo } = require("../modules/guildConfig/patreonSettings.j
 
 module.exports = async (Bot, client, member) => {
     const guildConf = await getGuildSettings({cache: Bot.cache, guildId: member.guild.id});
-    if (!guildConf?.enablePart || !guildConf?.partMessage) return;
 
     if (guildConf.enablePart && guildConf.partMessage?.length && guildConf.announceChan?.length) { // If they have it turned on, and it's not empty
         const partMessage = guildConf.partMessage
@@ -20,7 +19,7 @@ module.exports = async (Bot, client, member) => {
     }
 
     // Grab the user's config, and check if they have this server marked as their bonus
-    const userConf = await Bot.getUser(member.id);
+    const userConf = await Bot.userReg.getUser(member.id);
     if (!userConf?.bonusServer) return;
     if (userConf.bonusServer !== member.guild.id) return;
 
