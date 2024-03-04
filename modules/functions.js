@@ -155,10 +155,10 @@ module.exports = (Bot, client) => {
         if (!guild?.id) return;
 
         // Use the guildConf announcement channel
-        let announceChan = guildConf.announceChan || "";
+        let announceChan = guildConf?.announceChan || "";
 
         // But if there's a channel specified for this, use that instead
-        if (channel && channel !== "") {
+        if (channel?.length) {
             announceChan = channel;
         }
 
@@ -179,7 +179,7 @@ module.exports = (Bot, client) => {
             // If everything is ok, go ahead and try sending the message
             await chan.send(announceMsg).catch((err) => {
                 // if (err.stack.toString().includes("user aborted a request")) return;
-                console.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${channel || guildConf?.announceChan}\nMsg: ${announceMsg}\n` );
+                console.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n` );
             });
         }
     };

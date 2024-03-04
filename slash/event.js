@@ -579,7 +579,7 @@ class Event extends Command {
                 await Bot.socket.emit("getEventByName", {guildId: interaction.guild.id, evName: eventName}, async function(event) {
                     if (Array.isArray(event)) event = event[0];
                     var channel = null;
-                    var announceMessage = `**${event?.name || eventName}**\n${event.message}`;
+                    var announceMessage = `**${event?.name || eventName}**\n${event?.message || ""}`;
                     if (event["channel"] && event.channel !== "") {  // If they"ve set a channel, try using it
                         channel = interaction.guild.channels.cache.get(event.channel);
                         if (!channel) {
