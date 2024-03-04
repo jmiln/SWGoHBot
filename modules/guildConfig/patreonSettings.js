@@ -184,7 +184,7 @@ exports.ensureBonusServerSet = async ({cache, userId, amount_cents}) => {
 };
 
 //  - Get the combined / highest available tier from the supporters of a given server
-const tierNums = Object.keys(patreonTiers);
+const tierNums = Object.keys(patreonTiers.tiers);
 exports.getGuildSupporterTier = async ({cache, guildId}) => {
     // If no guildId supplied, return the lowest tier available (0)
     if (!guildId) return 0;
@@ -193,9 +193,9 @@ exports.getGuildSupporterTier = async ({cache, guildId}) => {
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
 
     // Add up tiers from here, and return a higher tier if they add up to one
-    const totalRes = res?.patreonSettings?.supporters?.reduce((acc, curr) => curr += acc.tier, 0);
+    const totalRes = res?.patreonSettings?.supporters?.reduce((curr, acc) => curr += acc.tier, 0);
     for (const tier of tierNums.reverse()) {
-        if (totalRes >= tier) return tier;
+        if (totalRes >= tier) return parseInt(tier, 10);
     }
 
     // If it gets to here (It shouldn't), return 0

@@ -1,5 +1,6 @@
 // const util = require("util");
 const Command = require("../base/slashCommand");
+const { getServerSupporters, getGuildSupporterTier } = require("../modules/guildConfig/patreonSettings");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 class Showconf extends Command {
@@ -12,39 +13,7 @@ class Showconf extends Command {
     }
 
     async run(Bot, interaction) {
-        const guildId = interaction.guild.id;
-        let guildName = "";
-
-        // // If I or an adminHelper adds a guild ID here, pull up that instead
-        // if (args[0] && options && options.level >= 9) {
-        //     let found = false;
-        //     if (!client.guilds.cache.has(args[0]) && client.shard) {
-        //         const names = await client.shard.broadcastEval((client, args) => {
-        //             if (client.guilds.cache.has(args[0])) {
-        //                 return client.guilds.cache.get(args[0]).name;
-        //             }
-        //         }, {context: args});
-        //         names.forEach(gName => {
-        //             if (gName !== null) {
-        //                 found = true;
-        //                 guildName = gName;
-        //             }
-        //         });
-        //     } else {
-        //         guildName = client.guilds.cache.get(guildID).name;
-        //         found = true;
-        //     }
-        //     if (found) {
-        //         guildID = args[0];
-        //     } else {
-        //         return super.error(interaction, `Sorry, but I don't seem to be in the guild ${args[0]}.`);
-        //     }
-        //
-        // } else {
-        guildName = interaction.guild.name;
-        // }
-
-        const guildConf = await getGuildSettings({cache: Bot.cache, guildId});
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild.id});
 
         var outArr = [];
         if (guildConf) {
@@ -84,8 +53,19 @@ class Showconf extends Command {
                         break;
                 }
             }
-            var configKeys = outArr.join("\n");
-            return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName)});
+
+            const supporterList = [];
+            const totalSuppTier = await getGuildSupporterTier({cache: Bot.cache, guildId: interaction.guild.id});
+            const guildSupporters = await getServerSupporters({cache: Bot.cache, guildId: interaction.guild.id});
+            for (const supp of guildSupporters) {
+                const user = await interaction.guild.members.cache.get(supp.userId);
+                if (!user?.displayName) continue;
+
+                supporterList.push(user.displayName);
+            }
+            outArr.push(`* Current supporters${totalSuppTier > 0 && ` (Combined tier: $${totalSuppTier})`}: ${supporterList?.length ? "\n" : "N/A"}${supporterList.map(s => "  - " + s).join("\n")}`);
+
+            return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || "")});
         } else {
             Bot.logger.error("Something broke in showconf");
         }
