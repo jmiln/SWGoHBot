@@ -91,7 +91,7 @@ class Versus extends Command {
             if (Array.isArray(char)) char = char[0];
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         try {
             user1 = await Bot.swgohAPI.unitStats(user1, cooldown);
             if (Array.isArray(user1)) user1 = user1[0];

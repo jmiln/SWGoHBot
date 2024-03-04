@@ -110,7 +110,7 @@ class MyMods extends Command {
     }
 
     async run(Bot, interaction) {
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         const subCommand = interaction.options.getSubcommand();
         let allycode = interaction.options.getString("allycode");

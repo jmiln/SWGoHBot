@@ -23,7 +23,7 @@ class Register extends Command {
     }
 
     async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let allycode = interaction.options.getString("allycode");
         let user = interaction.options.getUser("user");

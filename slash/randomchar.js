@@ -58,7 +58,7 @@ class Randomchar extends Command {
 
         if (allycode) {
             // If there is a valid allycode provided, grab the user's roster
-            const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+            const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player = null;
             try {
                 player = await Bot.swgohAPI.unitStats(allycode, cooldown);

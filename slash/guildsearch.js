@@ -185,7 +185,7 @@ class GuildSearch extends Command {
         const doOmicron    = interaction.options.getBoolean("omicrons");
 
         await interaction.reply({content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT")});
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let unitList = null;
         let foundUnit = null;

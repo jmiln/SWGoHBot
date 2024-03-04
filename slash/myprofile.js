@@ -25,7 +25,7 @@ class MyProfile extends Command {
             return super.error(interaction, `Sorry, but ${allycodeIn} is not a valid allycode`);
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id);
+        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player;
         try {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);

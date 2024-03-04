@@ -141,7 +141,7 @@ class UserConf extends Command {
         const subCommand = interaction.options.getSubcommand();
 
         const userID = interaction.user.id;
-        const cooldown = await Bot.getPlayerCooldown(userID);
+        const cooldown = await Bot.getPlayerCooldown(userID, interaction?.guild?.id);
 
         let user = await Bot.userReg.getUser(userID);
         if (!user) {

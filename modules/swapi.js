@@ -50,7 +50,7 @@ module.exports = (opts={}) => {
     // Set the max cooldowns (In minutes)
     const playerMinCooldown = 1;    // 1 min
     const playerMaxCooldown = 3*60; // 3 hours
-    const guildMinCooldown  = 3*60; // 3 hours
+    const guildMinCooldown  = 1;    // 1 min
     const guildMaxCooldown  = 6*60; // 6 hours
 
     return {

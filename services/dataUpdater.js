@@ -1,5 +1,8 @@
 const config = require(__dirname + "/../config.js");
 
+// Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
+const { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } = require("../modules/guildConfig/patreonSettings");
+
 const fs = require("node:fs");
 const { eachLimit } = require("async");
 
@@ -75,12 +78,14 @@ if (!FORCE_UPDATE) {
     setInterval(async () => {
         const isNew = await updateMetaData();
         if (isNew) {
+            console.log("Found new metadata, running updaters");
             await runGameDataUpdaters();
         }
         await runModUpdaters();
     }, 24 * 60 * 60 * 1000);
 }
 
+init();
 async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url);
     cache = require(__dirname + "/../modules/cache.js")(mongo);
@@ -362,44 +367,81 @@ async function updatePatrons() {
         return;
     }
     try {
-        let response = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
+        // Run this to get the patreon ID from the auth token in the config file
+        // https://docs.patreon.com/#fetch-a-creator-profile-and-campaign-info
+        const campaignRes = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
             {
                 headers: {
                     Authorization: "Bearer " + patreon.creatorAccessToken
                 }
             }).then(res => res.json());
 
-        if (response && response.data && response.data.length) {
-            response = await fetch("https://www.patreon.com/api/oauth2/api/campaigns/1328738/pledges?page%5Bcount%5D=100", {
-                headers: {
-                    Authorization: "Bearer " + patreon.creatorAccessToken
-                }
-            }).then(res => res.json());
+        // If there's no valid data or ID in campaignRes, then there's nothing to work from. Move along
+        const patId = campaignRes?.data?.[0]?.id;
+        if (!patId) return;
 
-            const data = response?.data;
-            const included = response?.included;
+        // Use the given patId to get all of the supporters
+        // https://docs.patreon.com/#get-api-oauth2-v2-campaigns
+        const {data, included} = await fetch(`https://www.patreon.com/api/oauth2/api/campaigns/${patId}/pledges?page%5Bcount%5D=100`, {
+            headers: {
+                Authorization: "Bearer " + patreon.creatorAccessToken
+            }
+        }).then(res => res.json());
 
-            const pledges = data.filter(data => data.type === "pledge");
-            const users = included.filter(inc => inc.type === "user");
+        const pledges = data.filter(data => data.type === "pledge");
+        const users = included.filter(inc => inc.type === "user");
 
-            pledges.forEach(pledge => {
-                const user = users.find(user => user.id === pledge.relationships.patron.data.id);
-                if (user) {
-                    cache.put("swgohbot", "patrons", {id: pledge.relationships.patron.data.id}, {
-                        id:                 pledge.relationships.patron.data.id,
-                        full_name:          user.attributes.full_name,
-                        vanity:             user.attributes.vanity,
-                        email:              user.attributes.email,
-                        discordID:          user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
-                        amount_cents:       pledge.attributes.amount_cents,
-                        declined_since:     pledge.attributes.declined_since,
-                        pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
-                    });
-                }
+        pledges.forEach(async (pledge) => {
+            const user = users.find(user => user.id === pledge.relationships.patron.data.id);
+
+            // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
+            if (!user) return;
+
+            // Save this user's info to the db
+            const newUser = await cache.put("swgohbot", "patrons", {id: pledge.relationships.patron.data.id}, {
+                id:                 pledge.relationships.patron.data.id,
+                full_name:          user.attributes.full_name,
+                vanity:             user.attributes.vanity,
+                email:              user.attributes.email,
+                discordID:          user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
+                amount_cents:       pledge.attributes.amount_cents,
+                declined_since:     pledge.attributes.declined_since,
+                pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
             });
-        }
+
+            // If they don't have a discord id to work with, move on
+            if (!newUser.discordID) return;
+
+            if (newUser.declined_since || !newUser.amount_cents) {
+                // If the user isn't currently active, make sure they don't have any bonusServers linked
+                const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", {id: newUser.discordID});
+
+                // If they don't have bonusServer set (As it should be), move on
+                if (!userConf?.bonusServer?.length) return;
+
+                const {user: userRes, guild: guildRes} = await clearSupporterInfo({cache, userId: newUser.discordID});
+
+                // No issues, move on
+                if (!userRes?.error && !guildRes?.error) return;
+
+                // If there are issues, log em
+                console.error(`[dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`);
+            } else {
+                // Make sure everything is set correctly
+                const {user: userRes, guild: guildRes} = await ensureBonusServerSet({cache, userId: newUser.discordID, amount_cents: newUser.amount_cents});
+
+                // If there are no issues, move along
+                if (!userRes?.error && !guildRes?.error) return;
+
+                // If there are issues, log em
+                console.error(`[dataUpdater addServerSupporter] Issue adding info for user\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`);
+            }
+        });
+
+        // Go through each of the guilds that have a supporter and make sure all of the lsited users are supposed to be there
+        await ensureGuildSupporter({cache});
     } catch (e) {
-        console.log("Error getting patrons");
+        console.log("[UpdatePatrons] Error getting patrons");
     }
 }
 

@@ -1,5 +1,6 @@
 // const util = require("util");
 const Command = require("../base/slashCommand");
+const { getServerSupporters, getGuildSupporterTier } = require("../modules/guildConfig/patreonSettings");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 class Showconf extends Command {
@@ -12,83 +13,60 @@ class Showconf extends Command {
     }
 
     async run(Bot, interaction) {
-        const guildId = interaction.guild.id;
-        let guildName = "";
-
-        // // If I or an adminHelper adds a guild ID here, pull up that instead
-        // if (args[0] && options && options.level >= 9) {
-        //     let found = false;
-        //     if (!client.guilds.cache.has(args[0]) && client.shard) {
-        //         const names = await client.shard.broadcastEval((client, args) => {
-        //             if (client.guilds.cache.has(args[0])) {
-        //                 return client.guilds.cache.get(args[0]).name;
-        //             }
-        //         }, {context: args});
-        //         names.forEach(gName => {
-        //             if (gName !== null) {
-        //                 found = true;
-        //                 guildName = gName;
-        //             }
-        //         });
-        //     } else {
-        //         guildName = client.guilds.cache.get(guildID).name;
-        //         found = true;
-        //     }
-        //     if (found) {
-        //         guildID = args[0];
-        //     } else {
-        //         return super.error(interaction, `Sorry, but I don't seem to be in the guild ${args[0]}.`);
-        //     }
-        //
-        // } else {
-        guildName = interaction.guild.name;
-        // }
-
-        const guildConf = await getGuildSettings({cache: Bot.cache, guildId});
+        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild.id});
 
         var outArr = [];
-        if (guildConf) {
-            // TODO Make this show nicer instead of just a basic code block
-            // Change it so adminRoles show the names instead of ID
-            // Change eventCountdown so it shows just a list of numbers instead of as an array, same for the rest, make it look nicer instead of inspected strings and such
-            for (const key of Object.keys(Bot.config.typedDefaultSettings)) {
-                switch (key) {
-                    case "adminRole": {
-                        const roleArr = [];
-                        if (guildConf.adminRole?.length) {
-                            for (const role of guildConf.adminRole) {
-                                if (Bot.isUserID(role)) {
-                                    // If it's a role ID, try and get a name for it
-                                    const roleRes = await interaction.guild.roles.cache.find(r => r.id === role);
-                                    roleArr.push(roleRes?.name || role);
-                                } else {
-                                    roleArr.push(role);
-                                }
+        if (!guildConf) Bot.logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
+
+        // TODO Make this show nicer instead of just a basic code block
+        // Change it so adminRoles show the names instead of ID
+        // Change eventCountdown so it shows just a list of numbers instead of as an array, same for the rest, make it look nicer instead of inspected strings and such
+        for (const key of Object.keys(Bot.config.typedDefaultSettings)) {
+            switch (key) {
+                case "adminRole": {
+                    const roleArr = [];
+                    if (guildConf.adminRole?.length) {
+                        for (const role of guildConf.adminRole) {
+                            if (Bot.isUserID(role)) {
+                                // If it's a role ID, try and get a name for it
+                                const roleRes = await interaction.guild.roles.cache.find(r => r.id === role);
+                                roleArr.push(roleRes?.name || role);
+                            } else {
+                                roleArr.push(role);
                             }
-                            outArr.push(`* ${key}: \n${roleArr.sort().map(r => "  - " + r).join("\n")}`);
-                        } else {
-                            outArr.push(`* ${key}: N/A`);
                         }
-                        break;
+                        outArr.push(`* ${key}: \n${roleArr.sort().map(r => "  - " + r).join("\n")}`);
+                    } else {
+                        outArr.push(`* ${key}: N/A`);
                     }
-                    case "eventCountdown": {
-                        if (guildConf.eventCountdown?.length) {
-                            outArr.push(`* ${key}: ${guildConf.eventCountdown.join(", ")}`);
-                        } else {
-                            outArr.push(`* ${key}: N/A`);
-                        }
-                        break;
-                    }
-                    default:
-                        outArr.push(`* ${key}: ${guildConf[key]}`);
-                        break;
+                    break;
                 }
+                case "eventCountdown": {
+                    if (guildConf.eventCountdown?.length) {
+                        outArr.push(`* ${key}: ${guildConf.eventCountdown.join(", ")}`);
+                    } else {
+                        outArr.push(`* ${key}: N/A`);
+                    }
+                    break;
+                }
+                default:
+                    outArr.push(`* ${key}: ${guildConf[key]}`);
+                    break;
             }
-            var configKeys = outArr.join("\n");
-            return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", configKeys, guildName)});
-        } else {
-            Bot.logger.error("Something broke in showconf");
         }
+
+        const supporterList = [];
+        const totalSuppTier = await getGuildSupporterTier({cache: Bot.cache, guildId: interaction.guild.id});
+        const guildSupporters = await getServerSupporters({cache: Bot.cache, guildId: interaction.guild.id});
+        for (const supp of guildSupporters) {
+            const user = await interaction.guild.members.cache.get(supp.userId);
+            if (!user?.displayName) continue;
+
+            supporterList.push(user.displayName);
+        }
+        outArr.push(`* Current supporters${totalSuppTier > 0 && ` (Combined tier: $${totalSuppTier})`}: ${supporterList?.length ? "\n" : "N/A"}${supporterList.map(s => "  - " + s).join("\n")}`);
+
+        return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || "")});
     }
 }
 
