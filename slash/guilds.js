@@ -427,7 +427,8 @@ class Guilds extends Command {
                                     mods.spd20 += 1;
                                 } else {
                                     mods.spd15 += 1;
-                                }                             }
+                                }
+                            }
                             if (off) mods.off100 += 1;
                         });
                     }

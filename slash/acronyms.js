@@ -1,6 +1,8 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
+const usageExample = "/acronyms acronym:CLS";
+
 /**
  * The list of acronyms defined in data/acronym.json was transposed from the SWGoH forum. Any update there will need to make it's way into here.
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
@@ -29,7 +31,7 @@ class Acronyms extends Command {
 
         if (!acronym?.length) {
             // Apparently this should never happen because it's set as a required argument, but who knows/ just in case
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_INVALID"), {example: "acronym cls"});
+            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_INVALID"), {example: usageExample});
         }
 
         // Split it up in case they're looking for more than one
@@ -40,7 +42,7 @@ class Acronyms extends Command {
 
         if (!matchingItems.length) {
             // If there were no matches, go ahead and let the user know
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"), {example: "acronym cls"});
+            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"), {example: usageExample});
         }
 
         let acronymMeaningMessage = "";

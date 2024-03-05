@@ -31,10 +31,9 @@ class Register extends Command {
         if (!Bot.isAllyCode(allycode)) {
             return super.error(interaction, `**${allycode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`);
             // return super.error(interaction, interaction.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
-        } else {
-            // Wipe out any non-number characters just in case
-            allycode = allycode.replace(/[^\d]*/g, "");
         }
+        // Wipe out any non-number characters just in case
+        allycode = allycode.replace(/[^\d]*/g, "");
 
         // If they don't supply a user, themselves or otherwise, set it to use themself
         if (!user) {
@@ -98,33 +97,32 @@ class Register extends Command {
             if (Array.isArray(player)) player = player[0];
             if (!player) {
                 return super.error(interaction, (interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode));
-            } else {
-                userReg.accounts.push({
-                    allyCode: allycode,
-                    name: player.name,
-                    primary: true
-                });
-                await Bot.userReg.updateUser(user.id, userReg)
-                    .then(async () => {
-                        return super.success(interaction,
-                            Bot.codeBlock(interaction.language.get(
-                                "COMMAND_REGISTER_SUCCESS_DESC",
-                                player,
-                                player.allyCode.toString().match(/\d{3}/g).join("-"),
-                                player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
-                            ), "asciiDoc"), {
-                                title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
-                            });
-                    })
-                    .catch(e => {
-                        Bot.logger.error("REGISTER", "Broke while trying to link new user: " + e);
-                        return super.error(interaction, Bot.codeBlock(e.message), {
-                            title: interaction.lanugage.get("BASE_SOMETHING_BROKE"),
-                            footer: "Please try again in a bit.",
-                            edit: true
-                        });
-                    });
             }
+            userReg.accounts.push({
+                allyCode: allycode,
+                name: player.name,
+                primary: true
+            });
+            await Bot.userReg.updateUser(user.id, userReg)
+                .then(async () => {
+                    return super.success(interaction,
+                        Bot.codeBlock(interaction.language.get(
+                            "COMMAND_REGISTER_SUCCESS_DESC",
+                            player,
+                            player.allyCode.toString().match(/\d{3}/g).join("-"),
+                            player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
+                        ), "asciiDoc"), {
+                            title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
+                        });
+                })
+                .catch(e => {
+                    Bot.logger.error("REGISTER", "Broke while trying to link new user: " + e);
+                    return super.error(interaction, Bot.codeBlock(e.message), {
+                        title: interaction.lanugage.get("BASE_SOMETHING_BROKE"),
+                        footer: "Please try again in a bit.",
+                        edit: true
+                    });
+                });
         } catch (e) {
             Bot.logger.error("ERROR[REG]: Incorrect Ally Code: " + e);
             return super.error(interaction, ("Something broke. Make sure you've got the correct ally code" + Bot.codeBlock(e.message)));

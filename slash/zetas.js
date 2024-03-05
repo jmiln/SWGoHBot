@@ -64,19 +64,18 @@ class Zetas extends Command {
         if (searchChar) {
             const chars = Bot.findChar(searchChar, Bot.characters);
 
-            if (chars.length > 1) {
+            if (!chars?.length) {
+                // No character found
+                return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            } else if (chars.length > 1) {
                 const charL = [];
                 const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
                 charS.forEach(c => {
                     charL.push(c.name);
                 });
                 return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
-            } else if (chars.length === 1) {
-                character = chars[0];
-            } else {
-                // No character found
-                return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
+            character = chars[0];
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
@@ -185,17 +184,16 @@ class Zetas extends Command {
                         name: "image.png"
                     }]
                 });
-            } else {
-                return interaction.editReply({
-                    content: null,
-                    embeds: [{
-                        color: Bot.constants.colors.black,
-                        author: author,
-                        description: desc.join("\n"),
-                        fields: fields
-                    }],
-                });
             }
+            return interaction.editReply({
+                content: null,
+                embeds: [{
+                    color: Bot.constants.colors.black,
+                    author: author,
+                    description: desc.join("\n"),
+                    fields: fields
+                }],
+            });
         } else if (subCommand === "guild") {
             // Display the zetas for the whole guild (Takes a while)
             await interaction.reply({content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD")});
@@ -270,17 +268,16 @@ class Zetas extends Command {
 
                 for (const [index, fieldChunk] of fieldArrChunks.entries()) {
                     if (index === 0) {
-                        interaction.editReply({content: null, embeds: [{
+                        return interaction.editReply({content: null, embeds: [{
                             author: {
                                 name: interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name)
                             },
                             fields: fieldChunk,
                         }]});
-                    } else {
-                        interaction.followUp({embeds: [{
-                            fields: fieldChunk,
-                        }]});
                     }
+                    return interaction.followUp({embeds: [{
+                        fields: fieldChunk,
+                    }]});
                 }
             } else {
                 const footerStr = Bot.updatedFooterStr(guild.updated, interaction);

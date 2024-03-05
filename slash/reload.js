@@ -29,27 +29,27 @@ class Reload extends Command {
         }
         if (!command) {
             return super.error(interaction, interaction.language.get("COMMAND_RELOAD_INVALID_CMD", commandName));
+        }
+
+        command = command.commandData.name;
+        await interaction.reply(`Reloading ${command}...`);
+        if (interaction.client.shard && interaction.client.shard.count > 0) {
+            await interaction.client.shard.broadcastEval((client, command) => client.reloadSlash(command), {context: command})
+                .then(() => {
+                    interaction.editReply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command)});
+                })
+                .catch(e => {
+                    super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)));
+                });
         } else {
-            command = command.commandData.name;
-            await interaction.reply(`Reloading ${command}...`);
-            if (interaction.client.shard && interaction.client.shard.count > 0) {
-                await interaction.client.shard.broadcastEval((client, command) => client.reloadSlash(command), {context: command})
-                    .then(() => {
-                        interaction.editReply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command)});
-                    })
-                    .catch(e => {
-                        super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)));
-                    });
-            } else {
-                Bot.logger.log("Trying to reload out of shards");
-                Bot.reloadSlash(command)
-                    .then(() => {
-                        interaction.editReply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command)});
-                    })
-                    .catch(e => {
-                        super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack)));
-                    });
-            }
+            Bot.logger.log("Trying to reload out of shards");
+            Bot.reloadSlash(command)
+                .then(() => {
+                    interaction.editReply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command)});
+                })
+                .catch(e => {
+                    super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack)));
+                });
         }
     }
 }

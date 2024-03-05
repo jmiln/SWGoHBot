@@ -29,13 +29,10 @@ class Ships extends Command {
             return super.error(interaction, `Sorry, but I cannot find **${searchName}**. Please double check the spelling, and that it's a proper ship/ crew crew member.`);
         } else if (ships.length > 1) {
             return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", ships.map(s => {
-                let outStr = null;
                 if (s.crew?.length) {
-                    outStr = `${s.name}${"\n" + s.crew.map(c => "- " + c).join("\n") + "\n"}`;
-                } else {
-                    outStr = s.name;
+                    return `${s.name}${"\n" + s.crew.map(c => "- " + c).join("\n") + "\n"}`;
                 }
-                return outStr;
+                return s.name;
             }).join("\n")));
         }
 

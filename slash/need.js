@@ -82,11 +82,11 @@ class Need extends Command {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }
 
-        const battle = interaction.options.getString("battle");
+        const battle   = interaction.options.getString("battle");
         const faction1 = interaction.options.getString("faction_group_1");
         const faction2 = interaction.options.getString("faction_group_2");
-        const keyword = interaction.options.getString("keyword");
-        const shop = interaction.options.getString("shop");
+        const keyword  = interaction.options.getString("keyword");
+        const shop     = interaction.options.getString("shop");
 
         if (!battle && !faction1 && !faction2 && !keyword && !shop) {
             return super.error(interaction, "You need to specify a location or faction.");

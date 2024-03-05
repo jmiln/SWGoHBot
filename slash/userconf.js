@@ -155,11 +155,10 @@ class UserConf extends Command {
             // This means the user is working with the allycode, so go from there
 
             let allycode = interaction.options.getString("allycode");
-            if (Bot.isAllyCode(allycode)) {
-                allycode = allycode.replace(/[^\d]*/g, "");
-            } else {
+            if (!Bot.isAllyCode(allycode)) {
                 return super.error(interaction, `${allycode} is not a valid ally code, please double check your digits.`);
             }
+            allycode = allycode.replace(/[^\d]*/g, "");
 
             switch (subCommand) {
                 case "add": {
@@ -277,9 +276,8 @@ class UserConf extends Command {
                     if (updateLog.length) {
                         await Bot.userReg.updateUser(userID, user);
                         return super.success(interaction, `Updated the following:\n ${Bot.codeBlock(updateLog.map(update => " * " + update).join("\n"), "asciidoc")}`);
-                    } else {
-                        return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
                     }
+                    return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
                 }
                 case "lang": {
                     // Work through bot_language & swgoh_language
@@ -302,9 +300,8 @@ class UserConf extends Command {
                     if (updateLog.length) {
                         await Bot.userReg.updateUser(userID, user);
                         return super.success(interaction, `Updated the following:\n ${Bot.codeBlock(updateLog.map(update => " * " + update).join("\n"), "asciidoc")}`);
-                    } else {
-                        return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
                     }
+                    return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
                 }
                 case "view": {
                     // Just display all the valid info here

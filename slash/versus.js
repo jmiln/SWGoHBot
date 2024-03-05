@@ -86,10 +86,9 @@ class Versus extends Command {
         } else if (char.length > 1) {
             // If found more than 1 match
             return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", char.map(c => c.name).join("\n")));
-        } else {
-            // It only found one match
-            if (Array.isArray(char)) char = char[0];
         }
+        // It only found one match
+        if (Array.isArray(char)) char = char[0];
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         try {

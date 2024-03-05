@@ -210,12 +210,11 @@ class Poll extends Command {
                                 content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),
                                 ephemeral: true
                             });
-                        } else {
-                            return interaction.reply({
-                                content: interaction.language.get("COMMAND_POLL_REGISTERED", oldPoll.options[opt]),
-                                ephemeral: true
-                            });
                         }
+                        return interaction.reply({
+                            content: interaction.language.get("COMMAND_POLL_REGISTERED", oldPoll.options[opt]),
+                            ephemeral: true
+                        });
                     } catch (err) {
                         return console.error(`[/poll vote] Error voting: ${err}`);
                     }

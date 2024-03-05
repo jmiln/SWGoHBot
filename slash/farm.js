@@ -56,43 +56,44 @@ class Farm extends Command {
         }
 
 
-        if (unitLocs) {
-            for (const loc of unitLocs.locations) {
-                if (loc.cost) {
-                    // This will be anything in a store
-                    outList.push( `${loc.type} \n * ${loc.cost.split("\n").map(cost => cost.replace("/", " per ")).join(" shards\n * ")} shards`);
-                } else if (loc.level) {
-                    // It's a node, fleet, cantina, light/ dark side
-                    if (loc.locId) {
-                        const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {id: loc.locId, language: interaction.swgohLanguage.toLowerCase()});
-
-                        // If it's a proving grounds event, stick the unit name after
-                        if (loc.locId === "EVENT_CONQUEST_UNIT_TRIALS_NAME") {
-                            outList.push(Bot.toProperCase(langLoc.langKey) + " - " + character.name);
-                        } else {
-                            outList.push(Bot.toProperCase(langLoc?.langKey) + " " + loc.level);
-                        }
-                    } else {
-                        loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
-                        if (loc.type === "L") {
-                            outList.push(`Light Side Hard ${loc.level}`);
-                        } else if (loc.type === "D") {
-                            outList.push(`Dark Side Hard ${loc.level}`);
-                        } else if (loc.type === "Fleet") {
-                            outList.push(`Fleet Hard ${loc.level}`);
-                        } else if (loc.type === "Cantina") {
-                            outList.push(`Cantina ${loc.level}`);
-                        }
-                    }
-                } else if (loc.name) {
-                    // This will be any of the events
-                    outList.push(Bot.expandSpaces(`__${loc.type}__: ${loc.name}`));
-                } else if (loc.locId) {
-                    // Just has the location id, so probably a marquee
+        if (!unitLocs) {
+            return super.error(interaction, `I couldn't get the location data for *${character.name}*`);
+        }
+        for (const loc of unitLocs.locations) {
+            if (loc.cost) {
+                // This will be anything in a store
+                outList.push( `${loc.type} \n * ${loc.cost.split("\n").map(cost => cost.replace("/", " per ")).join(" shards\n * ")} shards`);
+            } else if (loc.level) {
+                // It's a node, fleet, cantina, light/ dark side
+                if (loc.locId) {
                     const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {id: loc.locId, language: interaction.swgohLanguage.toLowerCase()});
-                    if (!langLoc) continue;
-                    outList.push(Bot.toProperCase(langLoc?.langKey));
+
+                    // If it's a proving grounds event, stick the unit name after
+                    if (loc.locId === "EVENT_CONQUEST_UNIT_TRIALS_NAME") {
+                        outList.push(Bot.toProperCase(langLoc.langKey) + " - " + character.name);
+                    } else {
+                        outList.push(Bot.toProperCase(langLoc?.langKey) + " " + loc.level);
+                    }
+                } else {
+                    loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
+                    if (loc.type === "L") {
+                        outList.push(`Light Side Hard ${loc.level}`);
+                    } else if (loc.type === "D") {
+                        outList.push(`Dark Side Hard ${loc.level}`);
+                    } else if (loc.type === "Fleet") {
+                        outList.push(`Fleet Hard ${loc.level}`);
+                    } else if (loc.type === "Cantina") {
+                        outList.push(`Cantina ${loc.level}`);
+                    }
                 }
+            } else if (loc.name) {
+                // This will be any of the events
+                outList.push(Bot.expandSpaces(`__${loc.type}__: ${loc.name}`));
+            } else if (loc.locId) {
+                // Just has the location id, so probably a marquee
+                const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {id: loc.locId, language: interaction.swgohLanguage.toLowerCase()});
+                if (!langLoc) continue;
+                outList.push(Bot.toProperCase(langLoc?.langKey));
             }
         }
         if (!outList.length) {

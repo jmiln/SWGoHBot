@@ -110,76 +110,75 @@ class Faction extends Command {
                 });
             }
         }
-        if (allycode) {
-            if (chars.length) {
-                chars = chars.map(c => c.baseId);
-                const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-                let player;
-                try {
-                    player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                    if (Array.isArray(player)) player = player[0];
-                } catch (e) {
-                    return super.error(interaction, e.message);
-                }
-                if (!player?.roster?.length) {
-                    return super.error(interaction, "I couldn't get that player's roster. Please try again later.");
-                }
-                const playerChars = [];
-                for (const c of chars) {
-                    let found = player.roster.find(char => char.defId === c);
-                    if (found) {
-                        found = await Bot.swgohAPI.langChar(found, interaction.guildSettings.swgohLanguage);
-                        found.gp = found.gp.toLocaleString();
-                        playerChars.push(found);
-                    }
-                }
-
-                const gpMax   = Math.max(...playerChars.map(c => c.gp.length));
-                const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
-                const lvlMax  = Math.max(...playerChars.map(c => c.level.toString().length));
-
-                factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat((gpMax > 5 ?  6 : gpMax) -5)}| ⚙${" ".repeat(gearMax)}]\`**`);
-                factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
-
-                playerChars.forEach(c => {
-                    const lvlStr  = " ".repeat(lvlMax  - c.level.toString().length) + c.level;
-                    const gpStr   = " ".repeat(gpMax   - c.gp.length) + c.gp;
-                    const gearStr = " ".repeat(gearMax - c.gear.toString().length) + c.gear;
-                    const zetas   = "z".repeat(c.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length);
-                    factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
-                });
-                const msgArr = Bot.msgArray(factionChars, "\n", 1000);
-                const fields = [];
-                let desc;
-                if (msgArr.length > 1) {
-                    msgArr.forEach((m, ix) => {
-                        fields.push({
-                            name: `${ix+1}`,
-                            value: m
-                        });
-                    });
-                } else {
-                    desc = msgArr[0];
-                }
-
-                const footerStr = Bot.updatedFooterStr(player.updated, interaction);
-                return interaction.reply({embeds: [{
-                    author: {
-                        name: player.name + "'s matches for " + Bot.toProperCase(searchName) + extra
-                    },
-                    description: desc,
-                    fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
-                }]});
-            } else {
-                return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
-            }
-        } else {
+        if (!allycode) {
             return interaction.reply({embeds: [{
                 author: {
                     name: "Matches for " + Bot.toProperCase(searchName) + extra
                 },
                 description: chars.map(c => c.nameKey).join("\n")
             }]});
+        }
+        if (chars.length) {
+            chars = chars.map(c => c.baseId);
+            const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+            let player;
+            try {
+                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                if (Array.isArray(player)) player = player[0];
+            } catch (e) {
+                return super.error(interaction, e.message);
+            }
+            if (!player?.roster?.length) {
+                return super.error(interaction, "I couldn't get that player's roster. Please try again later.");
+            }
+            const playerChars = [];
+            for (const c of chars) {
+                let found = player.roster.find(char => char.defId === c);
+                if (found) {
+                    found = await Bot.swgohAPI.langChar(found, interaction.guildSettings.swgohLanguage);
+                    found.gp = found.gp.toLocaleString();
+                    playerChars.push(found);
+                }
+            }
+
+            const gpMax   = Math.max(...playerChars.map(c => c.gp.length));
+            const gearMax = Math.max(...playerChars.map(c => c.gear.toString().length));
+            const lvlMax  = Math.max(...playerChars.map(c => c.level.toString().length));
+
+            factionChars.push(`**\`[ * | Lvl${" ".repeat(lvlMax)}|   GP  ${" ".repeat((gpMax > 5 ?  6 : gpMax) -5)}| ⚙${" ".repeat(gearMax)}]\`**`);
+            factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
+
+            playerChars.forEach(c => {
+                const lvlStr  = " ".repeat(lvlMax  - c.level.toString().length) + c.level;
+                const gpStr   = " ".repeat(gpMax   - c.gp.length) + c.gp;
+                const gearStr = " ".repeat(gearMax - c.gear.toString().length) + c.gear;
+                const zetas   = "z".repeat(c.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length);
+                factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
+            });
+            const msgArr = Bot.msgArray(factionChars, "\n", 1000);
+            const fields = [];
+            let desc;
+            if (msgArr.length > 1) {
+                msgArr.forEach((m, ix) => {
+                    fields.push({
+                        name: `${ix+1}`,
+                        value: m
+                    });
+                });
+            } else {
+                desc = msgArr[0];
+            }
+
+            const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+            return interaction.reply({embeds: [{
+                author: {
+                    name: player.name + "'s matches for " + Bot.toProperCase(searchName) + extra
+                },
+                description: desc,
+                fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
+            }]});
+        } else {
+            return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"), example: "faction sith"});
         }
     }
 }

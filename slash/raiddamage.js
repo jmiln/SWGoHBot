@@ -73,6 +73,7 @@ class RaidDamage extends Command {
         let amount = interaction.options.getString("amount");
 
         const thisRaid = raids.find(r => r.name === raid);
+        if (!thisRaid) return super.error(interaction, "I cannot find that raid, please try again");
 
         const thisPhase = thisRaid.phases[phase];
 

@@ -170,10 +170,8 @@ class Shardtimes extends Command {
                 timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
                 tempZone = timezone + " UTC";
             }
-            if (flag) {
-                if (flag.match(/<:.+:\d+>/)) {
-                    flag = flag.replace(/<:.*:/, "").replace(/>$/, "");
-                }
+            if (flag?.match(/<:.+:\d+>/)) {
+                flag = flag.replace(/<:.*:/, "").replace(/>$/, "");
             } else {
                 flag = "";
             }

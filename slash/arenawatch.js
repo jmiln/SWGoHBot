@@ -763,12 +763,11 @@ class ArenaWatch extends Command {
                     for (let code of codesIn) {
                         code = code.replace(/[^\d]/g, "");
                         code = parseInt(code, 10);
-                        if (aw.allycodes.find(ac => ac.allyCode === code)) {
-                            aw.allycodes = aw.allycodes.filter(ac => ac.allyCode !== code);
-                            outLog.push(code + " has been removed");
-                        } else {
-                            return super.error(interaction, "That ally code was not available to be removed");
-                        }
+                        const codes = aw.allycodes.filter(ac => ac.allyCode !== code);
+                        if (!codes?.length) return super.error(interaction, "That ally code was not available to be removed");
+
+                        aw.allycodes = codes;
+                        outLog.push(code + " has been removed");
                     }
                 }
                 break;
@@ -867,15 +866,13 @@ class ArenaWatch extends Command {
                         })
                         // Then format the output strings
                         .map(a => {
-                            if (!view_by) {
-                                const isWarn = a?.warn?.min && a.warn?.arena ? "W": "";
-                                const isRes  = a.result ? "R" : "";
-                                const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
-                                return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
-                            } else {
-                                // Current rank
+                            if (view_by) {
                                 return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                             }
+                            const isWarn = a?.warn?.min && a.warn?.arena ? "W": "";
+                            const isRes  = a.result ? "R" : "";
+                            const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
+                            return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                         });
 
                     const fields = [];

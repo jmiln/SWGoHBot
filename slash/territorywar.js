@@ -54,9 +54,8 @@ class TerritoryWar extends Command {
 
         if (problemArr.length) {
             return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
-        } else {
-            interaction.editReply({content: "> Found matching ally codes for both users, getting guilds..."});
         }
+        interaction.editReply({content: "> Found matching ally codes for both users, getting guilds..."});
 
         // Get the name & ally code for each player in each of the guilds
         let guild1 = null;
@@ -78,9 +77,8 @@ class TerritoryWar extends Command {
 
         if (problemArr.length) {
             return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
-        } else {
-            interaction.editReply({content: "> Found guilds for both ally codes, getting stats..."});
         }
+        interaction.editReply({content: "> Found guilds for both ally codes, getting stats..."});
 
         // Run each of the players through to get the stats of each players' roster
         let guild1Stats = null;
@@ -117,9 +115,8 @@ class TerritoryWar extends Command {
 
         if (problemArr.length) {
             return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
-        } else {
-            interaction.editReply({content: "> Got stats for both guilds, processing now..."});
         }
+        interaction.editReply({content: "> Got stats for both guilds, processing now..."});
 
         // Localized labels for each row
         const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES");

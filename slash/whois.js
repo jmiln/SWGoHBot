@@ -26,13 +26,12 @@ class WhoIs extends Command {
 
         if (!players.length) {
             return interaction.reply({content: "No results found for that name.\n Probably a wrong name or that person is not registered with the bot."});
-        } else {
-            const playerLen = players.length;
-            if (playerLen > 25) {
-                players = players.slice(0, 25);
-            }
-            return interaction.reply({content: `>>> **Results for search: \`${name}\`** ${playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""}\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n")}); //TODO , {split: {char: "\n"}});
         }
+        const playerLen = players.length;
+        if (playerLen > 25) {
+            players = players.slice(0, 25);
+        }
+        return interaction.reply({content: `>>> **Results for search: \`${name}\`** ${playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""}\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n")}); //TODO , {split: {char: "\n"}});
     }
 }
 

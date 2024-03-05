@@ -431,21 +431,19 @@ class GrandArena extends Command {
         const len = 18;
         const checkLen = Object.keys(checkArr).length;
         Object.keys(checkArr).forEach((c, ix) => {
-            if (checkLen <= 21 || ix < 21) {
-                let halfLen = (len - c.length) / 2;
-                if (halfLen < 0) halfLen = 0;
-                fields.push({
-                    name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
-                    value: Bot.codeBlock(Bot.makeTable({
-                        check: {value: "", align: "left", endWith: "::"},
-                        user1: {value: "", align: "right"},
-                        user2: {value: "", align: "left"}
-                    }, checkArr[c], {useHeader: false}).map(e => e.replace(" ::", "::")).join("\n"), "asciiDoc"),
-                    inline: true
-                });
-            } else {
-                extra++;
-            }
+            if (checkLen > 21 && ix >= 21) extra++;
+
+            let halfLen = (len - c.length) / 2;
+            if (halfLen < 0) halfLen = 0;
+            fields.push({
+                name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
+                value: Bot.codeBlock(Bot.makeTable({
+                    check: {value: "", align: "left", endWith: "::"},
+                    user1: {value: "", align: "right"},
+                    user2: {value: "", align: "left"}
+                }, checkArr[c], {useHeader: false}).map(e => e.replace(" ::", "::")).join("\n"), "asciiDoc"),
+                inline: true
+            });
         });
         if (extra > 0) {
             fields.push({
