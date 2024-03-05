@@ -149,9 +149,9 @@ class Faction extends Command {
             factionChars.push("**`=================" + "=".repeat(lvlMax + gpMax + gearMax) + "`**");
 
             playerChars.forEach(c => {
-                const lvlStr  = " ".repeat(lvlMax  - c.level.toString().length) + c.level;
-                const gpStr   = " ".repeat(gpMax   - c.gp.length) + c.gp;
-                const gearStr = " ".repeat(gearMax - c.gear.toString().length) + c.gear;
+                const lvlStr  = c.level.toString().padStart(lvlMax  - c.level.toString().length);
+                const gpStr   = c.gp.toString().padStart(gpMax   - c.gp.length);
+                const gearStr = c.gear.toString().padStart(gearMax - c.gear.toString().length);
                 const zetas   = "z".repeat(c.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1)).length);
                 factionChars.push(`**\`[ ${c.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${c.nameKey}**`);
             });

@@ -239,7 +239,7 @@ class MyCharacter extends Command {
                 if (!thisLangStr?.length) {
                     console.log("[/mycharacter] Missing stat langStr:");
                     console.log(s, thisLangStr);
-                    statStr += s + " ".repeat(8 - s.length) + "\n";
+                    statStr += s.toString().padEnd(8-s.length) + "\n";
                 } else {
                     const rep = maxLen - (thisLangStr?.length || 0);
                     if (s === "Dodge Chance" || s === "Deflection Chance") {
@@ -248,7 +248,7 @@ class MyCharacter extends Command {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
                         const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
                         const modStr = isShip ? "" : stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
-                        statStr += str + " ".repeat(8 - str.length) + modStr + "\n";
+                        statStr += s.toString().padEnd(8-s.length) + modStr + "\n";
                     }
                 }
             });
