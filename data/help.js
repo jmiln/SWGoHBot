@@ -342,7 +342,10 @@ module.exports = {
                 desc: "See benefits/ commands available via Patreon, or check on your current tier info",
                 usage: [
                     "**/patreon**",
-                    "**/patreon** details <Commands|Benefits|my_info>"
+                    "**/patreon** cooldowns",
+                    "**/patreon** details <Commands|Benefits|my_info>",
+                    "**/patreon** set_server",
+                    "**/patreon** unset_server",
                 ]
             },
         }
