@@ -531,6 +531,17 @@
         ]
     },
     {
+        "name": "Captain Tarpals",
+        "defId": "CAPTAINTARPALS",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CAPTAINTARPALS_NAME",
+                "name": "Battlefield: Naboo Ii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Cara Dune",
         "defId": "CARADUNE",
         "locations": [
