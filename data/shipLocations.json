@@ -133,7 +133,13 @@
     {
         "name": "Comeuppance",
         "defId": "COMEUPPANCE",
-        "locations": []
+        "locations": [
+            {
+                "type": "Cantina",
+                "level": "3-A",
+                "locId": "CANTINA"
+            }
+        ]
     },
     {
         "name": "Ebon Hawk",
@@ -228,7 +234,13 @@
     {
         "name": "Fury-class Interceptor",
         "defId": "FURYCLASSINTERCEPTOR",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Gauntlet Starfighter",

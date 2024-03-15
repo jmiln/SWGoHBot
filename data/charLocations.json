@@ -1787,11 +1787,6 @@
         "defId": "JEDIKNIGHTCONSULAR",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "3-A",
-                "locId": "CANTINA"
-            },
-            {
                 "type": "Fleet Shipments",
                 "cost": "400/10"
             },
@@ -2569,6 +2564,11 @@
                 "locId": "CANTINA"
             }
         ]
+    },
+    {
+        "name": "Queen Amidala",
+        "defId": "QUEENAMIDALA",
+        "locations": []
     },
     {
         "name": "Qui-Gon Jinn",

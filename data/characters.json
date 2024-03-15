@@ -81,7 +81,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_aaylasecura"
@@ -1197,9 +1197,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Health"
+            "cross": "Offense"
         }
     },
     {
@@ -1673,7 +1673,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -4306,11 +4306,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity"
+            "cross": "Health"
         },
         "avatarName": "charui_joleebindo"
     },
@@ -5529,7 +5529,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5738,6 +5739,22 @@
             "cross": "Potency"
         },
         "avatarName": "charui_qira"
+    },
+    {
+        "name": "Queen Amidala",
+        "uniqueName": "QUEENAMIDALA",
+        "aliases": [
+            "Queen Amidala"
+        ],
+        "avatarName": "charui_queenamidala",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_queenamidala.png",
+        "side": "light",
+        "factions": [
+            "Galactic Republic",
+            "Leader",
+            "Support"
+        ],
+        "mods": {}
     },
     {
         "name": "Qui-Gon Jinn",
@@ -7267,9 +7284,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
