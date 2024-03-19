@@ -1,3 +1,4 @@
+const { codeBlock } = require("discord.js");
 const Command = require("../base/slashCommand");
 
 class Modsets extends Command {
@@ -10,7 +11,7 @@ class Modsets extends Command {
     }
 
     run(Bot, interaction) {
-        return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_MODSETS_OUTPUT"), "md")});
+        return interaction.reply({content: codeBlock("md", interaction.language.get("COMMAND_MODSETS_OUTPUT"))});
     }
 }
 

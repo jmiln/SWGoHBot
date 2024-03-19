@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 const {inspect} = require("util");      // eslint-disable-line no-unused-vars
 
 class MyCharacter extends Command {
@@ -86,7 +86,7 @@ class MyCharacter extends Command {
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
             console.error(e);
-            return super.error(interaction, Bot.codeBlock(e.message), {
+            return super.error(interaction, codeBlock(e.message), {
                 title: interaction.language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit."
             });
@@ -259,7 +259,7 @@ class MyCharacter extends Command {
         Bot.msgArray(statArr, "\n", 1000).forEach((m, ix) => {
             fields.push({
                 name: ix === 0 ? "Stats" : "-",
-                value: Bot.codeBlock(m, "asciidoc")
+                value: codeBlock("asciidoc", m)
             });
         });
 

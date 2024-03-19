@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 class Charactergear extends Command {
     constructor(Bot) {
@@ -112,9 +112,9 @@ class Charactergear extends Command {
                 const msgArr = Bot.msgArray(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
                 for (const [ix, msg] of msgArr.entries()) {
                     if (ix === 0) {
-                        await interaction.reply({content: Bot.codeBlock(msg, "md")});
+                        await interaction.reply({content: codeBlock("md", msg)});
                     } else if (ix > 0) {
-                        await interaction.followUp({content: Bot.codeBlock(msg, "md")});
+                        await interaction.followUp({content: codeBlock("md", msg)});
                     }
                 }
             } else {

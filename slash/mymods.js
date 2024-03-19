@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, PermissionsBitField } = require("discord.js");
+const { ApplicationCommandOptionType, PermissionsBitField, codeBlock } = require("discord.js");
 const statEnums = require("../data/statEnum.js");
 const emoteStrings = require("../data/emoteStrings.js");
 
@@ -126,7 +126,7 @@ class MyMods extends Command {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
-            return super.error(interaction, Bot.codeBlock(e.message), {
+            return super.error(interaction, codeBlock(e.message), {
                 title: interaction.language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit."
             });

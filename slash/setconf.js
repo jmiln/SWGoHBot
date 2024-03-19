@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 const Command = require("../base/slashCommand");
 const { typedDefaultSettings } = require("../config.js");
 const { getGuildSettings, setGuildSettings } = require("../modules/guildConfig/settings.js");
@@ -161,7 +161,7 @@ class SetConf extends Command {
 
         // If there are any errors, tell em and don't actually change anything
         if (errors.length) {
-            return super.error(interaction, Bot.codeBlock(errors.map(e => "* " + e).join("\n")));
+            return super.error(interaction, codeBlock(errors.map(e => "* " + e).join("\n")));
         }
 
         if (Object.keys(settingsIn)?.length) {
@@ -172,7 +172,7 @@ class SetConf extends Command {
 
             // Actually change stuff in the db
             await setGuildSettings({cache: Bot.cache, guildId: interaction.guild.id, settings: guildConf});
-            return super.success(interaction, Bot.codeBlock(changeLog.map(c => `* ${c}`).join("\n")));
+            return super.success(interaction, codeBlock(changeLog.map(c => `* ${c}`).join("\n")));
         } else {
             return super.error(interaction, "It looks like nothing needed to be updated");
         }

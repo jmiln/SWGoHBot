@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 const unitChecklist = require("../data/unitChecklist.js");
 
 class TerritoryWar extends Command {
@@ -53,7 +53,7 @@ class TerritoryWar extends Command {
         }
 
         if (problemArr.length) {
-            return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
+            return super.error(interaction, codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
         interaction.editReply({content: "> Found matching ally codes for both users, getting guilds..."});
 
@@ -76,7 +76,7 @@ class TerritoryWar extends Command {
         }
 
         if (problemArr.length) {
-            return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
+            return super.error(interaction, codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
         interaction.editReply({content: "> Found guilds for both ally codes, getting stats..."});
 
@@ -114,7 +114,7 @@ class TerritoryWar extends Command {
         }
 
         if (problemArr.length) {
-            return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
+            return super.error(interaction, codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
         interaction.editReply({content: "> Got stats for both guilds, processing now..."});
 
@@ -162,11 +162,11 @@ class TerritoryWar extends Command {
 
         fields.push({
             name: "GP Stats Overview",
-            value: Bot.codeBlock(Bot.makeTable({
+            value: codeBlock("asciiDoc", Bot.makeTable({
                 check: {value: "", align: "left", endWith: "::"},
                 user1: {value: "", endWith: "vs", align: "right"},
                 user2: {value: "", align: "left"}
-            }, gpStats, {useHeader: false}).join("\n"), "asciiDoc")
+            }, gpStats, {useHeader: false}).join("\n"))
         });
 
 
@@ -190,11 +190,11 @@ class TerritoryWar extends Command {
 
         fields.push({
             name: "Ability Stats Overview",
-            value: "*How many abilities with zetas/ omicrons*" + Bot.codeBlock(Bot.makeTable({
+            value: "*How many abilities with zetas/ omicrons*" + codeBlock("asciiDoc", Bot.makeTable({
                 check: {value: "", align: "left", endWith: "::"},
                 user1: {value: "", endWith: "vs", align: "right"},
                 user2: {value: "", align: "left"}
-            }, abilityStats, {useHeader: false}).join("\n"), "asciiDoc")
+            }, abilityStats, {useHeader: false}).join("\n"))
         });
 
         // Get the overall gear levels for each user
@@ -214,11 +214,11 @@ class TerritoryWar extends Command {
             user1: g1AvgGear,
             user2: g2AvgGear
         });
-        gearOverview = Bot.codeBlock(Bot.makeTable({
+        gearOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, gearOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, gearOverview, {useHeader: false}).join("\n"));
         fields.push({
             name: "Character Gear Counts",
             value: "*How many characters at each gear level*" + gearOverview
@@ -245,11 +245,11 @@ class TerritoryWar extends Command {
             user1: g1AvgRelic,
             user2: g2AvgRelic
         });
-        relicOverview = Bot.codeBlock(Bot.makeTable({
+        relicOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, relicOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, relicOverview, {useHeader: false}).join("\n"));
         fields.push({
             name: "Character Relic Counts",
             value: "*How many characters at each relic level*" + relicOverview
@@ -273,11 +273,11 @@ class TerritoryWar extends Command {
             user1: g1AvgRarity,
             user2: g2AvgRarity
         });
-        rarityOverview = Bot.codeBlock(Bot.makeTable({
+        rarityOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, rarityOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, rarityOverview, {useHeader: false}).join("\n"));
 
         fields.push({
             name: "Character Rarity Counts",
@@ -327,11 +327,11 @@ class TerritoryWar extends Command {
         }
         fields.push({
             name: "Galactic Legend Overview",
-            value: "*How many Galactic Legends each guild has*\nFormat is `Activated Count`**+**`Ult Count`\n" + Bot.codeBlock(Bot.makeTable({
+            value: "*How many Galactic Legends each guild has*\nFormat is `Activated Count`**+**`Ult Count`\n" + codeBlock("asciiDoc", Bot.makeTable({
                 check: {value: "", align: "left", endWith: "::"},
                 user1: {value: "", endWith: "vs", align: "right"},
                 user2: {value: "", align: "left"}
-            }, glOverview, {useHeader: false}).join("\n"), "asciiDoc")
+            }, glOverview, {useHeader: false}).join("\n"))
         });
 
 
@@ -366,11 +366,11 @@ class TerritoryWar extends Command {
         }
         fields.push({
             name: "Capital Ship Overview",
-            value: "*How many of each Capital Ship each guild has*\n" + Bot.codeBlock(Bot.makeTable({
+            value: "*How many of each Capital Ship each guild has*\n" + codeBlock("asciiDoc", Bot.makeTable({
                 check: {value: "", align: "left", endWith: "::"},
                 user1: {value: "", endWith: "vs", align: "right"},
                 user2: {value: "", align: "left"}
-            }, capitalOverview, {useHeader: false}).join("\n"), "asciiDoc")
+            }, capitalOverview, {useHeader: false}).join("\n"))
         });
 
 

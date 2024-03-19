@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 const {inspect} = require("util"); // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
@@ -69,7 +69,7 @@ class MyArena extends Command {
             } catch (e) {
                 console.log("[ERROR MyArena]");
                 console.error(e);
-                return super.error(interaction, Bot.codeBlock(e.interaction), {
+                return super.error(interaction, codeBlock(e.interaction), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });

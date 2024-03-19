@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 const patreonInfo = require("../data/patreon.js");
 
 
@@ -185,18 +185,18 @@ class UserConf extends Command {
                             });
                             await Bot.userReg.updateUser(userID, user);
                             return super.success(interaction,
-                                Bot.codeBlock(interaction.language.get(
+                                codeBlock("asciiDoc", interaction.language.get(
                                     "COMMAND_REGISTER_SUCCESS_DESC",
                                     player,
                                     player.allyCode.toString().match(/\d{3}/g).join("-"),
                                     player.stats.find(s => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString()
-                                ), "asciiDoc"), {
+                                )), {
                                     title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name)
                                 });
                         }
                     } catch (e) {
                         Bot.logger.error("ERROR[UC AC ADD]: Incorrect Ally Code(" + allycode + "): " + e);
-                        return super.error(interaction, ("Something broke. Please make sure you've got the correct ally code" + Bot.codeBlock(e.message)));
+                        return super.error(interaction, ("Something broke. Please make sure you've got the correct ally code" + codeBlock(e.message)));
                     }
                     break;
                 }
@@ -275,7 +275,7 @@ class UserConf extends Command {
 
                     if (updateLog.length) {
                         await Bot.userReg.updateUser(userID, user);
-                        return super.success(interaction, `Updated the following:\n ${Bot.codeBlock(updateLog.map(update => " * " + update).join("\n"), "asciidoc")}`);
+                        return super.success(interaction, `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map(update => " * " + update).join("\n"))}`);
                     }
                     return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
                 }
@@ -299,7 +299,7 @@ class UserConf extends Command {
 
                     if (updateLog.length) {
                         await Bot.userReg.updateUser(userID, user);
-                        return super.success(interaction, `Updated the following:\n ${Bot.codeBlock(updateLog.map(update => " * " + update).join("\n"), "asciidoc")}`);
+                        return super.success(interaction, `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map(update => " * " + update).join("\n"))}`);
                     }
                     return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
                 }

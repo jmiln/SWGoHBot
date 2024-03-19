@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 class ReloadData extends Command {
     constructor(Bot) {
@@ -178,7 +178,7 @@ class ReloadData extends Command {
         });
         const uniqueErrors = [...new Set(errors)];
         return interaction.reply({
-            content: uniqueErrors.length ? "**ERROR**\n" + Bot.codeBlock(uniqueErrors.join("\n")) : `> ${reloadType} reloaded!`
+            content: uniqueErrors.length ? "**ERROR**\n" + codeBlock(uniqueErrors.join("\n")) : `> ${reloadType} reloaded!`
         });
     }
 
@@ -190,7 +190,7 @@ class ReloadData extends Command {
         errors = [...new Set(errors)];
         const resOut = res.map(r => `${r.succArr.length.toString().padStart(4)} | ${r.errArr.length}`);
         return interaction.reply({
-            content: Bot.codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? "\n\nErrors in files:\n" + errors.join("\n") : ""}`)
+            content: codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? "\n\nErrors in files:\n" + errors.join("\n") : ""}`)
         });
     }
 }

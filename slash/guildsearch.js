@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 // const {inspect} = require('util');
 
 class GuildSearch extends Command {
@@ -223,7 +223,7 @@ class GuildSearch extends Command {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, "Sorry, but it looks like that player is not in a guild");
             }
-            return super.error(interaction, Bot.codeBlock(e) + "Please try again in a bit.", {title: "Something Broke while getting your guild's roster"});
+            return super.error(interaction, codeBlock(e) + "Please try again in a bit.", {title: "Something Broke while getting your guild's roster"});
         }
 
         if (!guild?.roster?.length) {
@@ -249,7 +249,7 @@ class GuildSearch extends Command {
         try {
             guildChar = await Bot.swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
-            return super.error(interaction, Bot.codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
+            return super.error(interaction, codeBlock(e), {title: "Something Broke while getting your guild's characters", footer: "Please try again in a bit", edit: true});
         }
 
         if (stat) {

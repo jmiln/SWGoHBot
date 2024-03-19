@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 const Command = require("../base/slashCommand");
 const {getGuildEvents, updateGuildEvent} = require("../modules/guildConfig/events.js");
@@ -294,7 +294,7 @@ class Event extends Command {
                 try {
                     jsonWhole = JSON.parse(match[0]);
                 } catch (e) {
-                    return super.error(interaction, "**ERROR Parsing the json**" + Bot.codeBlock(e.message));
+                    return super.error(interaction, "**ERROR Parsing the json**" + codeBlock(e.message));
                 }
 
                 // ```[{
@@ -312,7 +312,7 @@ class Event extends Command {
                 const guildEvents = await getGuildEvents({cache: Bot.cache, guildId: interaction.guild.id});
                 const result = validateEvents(jsonWhole, guildEvents);
                 if (result.filter(e => !e.valid).length) {
-                    return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", Bot.codeBlock(result.map(e => e.str).join("\n\n")))});
+                    return interaction.reply({content: interaction.language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", codeBlock(result.map(e => e.str).join("\n\n")))});
                 }
 
                 // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
@@ -519,7 +519,7 @@ class Event extends Command {
                             }
                             return super.error(interaction,
                                 "**__UPDATED:__**\n" + outLog.map(e => `- ${e}`).join("\n"),
-                                // `Updated event from ${Bot.codeBlock(JSON.stringify(event, null, 2))}to ${Bot.codeBlock(JSON.stringify(validEvent.event, null, 2))}`,
+                                // `Updated event from ${codeBlock(JSON.stringify(event, null, 2))}to ${codeBlock(JSON.stringify(validEvent.event, null, 2))}`,
                                 {title: "Success", color: Bot.constants.colors.green}
                             );
                         } else {

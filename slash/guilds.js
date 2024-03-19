@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 const {charChecklist, shipChecklist} = require("../data/unitChecklist");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
@@ -230,7 +230,7 @@ class Guilds extends Command {
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter(mem => mem.guildMemberLevel > 1);
         } catch (e) {
-            return super.error(interaction, "Issue getting guild: " + Bot.codeBlock(e));
+            return super.error(interaction, "Issue getting guild: " + codeBlock(e));
         }
 
         if (!guild) {
@@ -315,7 +315,7 @@ class Guilds extends Command {
                 // Spit out the gId so I can go check on why it's breaking
                 Bot.logger.error("GuildID: " + guild.id);
                 return interaction.editReply({content: null, embeds: [{
-                    description: Bot.codeBlock(e),
+                    description: codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
                     footer: "Please try again in a bit",
                     color: Bot.constants.colors.red
@@ -396,7 +396,7 @@ class Guilds extends Command {
                     content: null,
                     embeds: [{
                         title: "Something Broke while getting your guild's characters",
-                        description: " " +Bot.codeBlock(err),
+                        description: " " + codeBlock(err),
                         footer: "Please try again in a bit"
                     }]
                 });
@@ -494,7 +494,7 @@ class Guilds extends Command {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return interaction.editReply({content: null, embeds: [{
                     title: "Something Broke while getting your guild's characters",
-                    description: Bot.codeBlock(e),
+                    description: codeBlock(e),
                     footer: "Please try again in a bit."
                 }]});
             }
@@ -683,7 +683,7 @@ class Guilds extends Command {
             if (raids) {
                 fields.push({
                     name: raidStr.header || "Raids",
-                    value: Bot.codeBlock(raids) || "N/A",
+                    value: codeBlock(raids) || "N/A",
                     inline: true
                 });
             }
@@ -703,7 +703,7 @@ class Guilds extends Command {
             );
             fields.push({
                 name: interaction.language.get("COMMAND_GUILDS_STAT_HEADER"),
-                value: Bot.codeBlock(stats) || "N/A",
+                value: codeBlock(stats) || "N/A",
                 inline: true
             });
 
@@ -756,7 +756,7 @@ class Guilds extends Command {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return interaction.editReply({content: null, embeds: [{
                     title: "Something Broke while getting your guild's characters",
-                    description: Bot.codeBlock(e),
+                    description: codeBlock(e),
                     footer: "Please try again in a bit."
                 }]});
             }
@@ -902,7 +902,7 @@ class Guilds extends Command {
             });
             fields.push({
                 name: interaction.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
-                value: Bot.codeBlock(interaction.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
+                value: codeBlock(interaction.language.get("COMMAND_GUILDS_GUILD_GP", guild.gp.toLocaleString(), Math.floor(guild.gp/users.length).toLocaleString()))
             });
             if (badCount > 0) {
                 guild.warnings = guild.warnings || [];
@@ -953,7 +953,7 @@ class Guilds extends Command {
             } catch (e) {
                 Bot.logger.error("ERROR(GS) getting guild: " + e);
                 return interaction.editReply({content: null, embeds: [{
-                    description: Bot.codeBlock(e),
+                    description: codeBlock(e),
                     title: "Something Broke while getting your guild's characters",
                     color: Bot.constants.colors.brightred,
                     footer: "Please try again in a bit."
@@ -978,7 +978,7 @@ class Guilds extends Command {
             }
             fields.push({
                 name: "General Stats",
-                value: Bot.codeBlock([
+                value: codeBlock([
                     `Members:        ${guild.roster.length}`,
                     `Total GP:       ${Bot.shortenNum(guild.gp)}`,
                     `Average GP:     ${Bot.shortenNum(avgMemberGP)}`,
@@ -993,7 +993,7 @@ class Guilds extends Command {
             fields.push({
                 name: "Character Gear Counts",
                 value: "*How many characters at each gear level*" +
-                Bot.codeBlock(Object.keys(gearLvls)
+                codeBlock(Object.keys(gearLvls)
                     .slice(doExpand ? 0 : -4)
                     .map(g => `G${g + " ".repeat(12-g.length)}:: ${" ".repeat(7-gearLvls[g].toLocaleString().length) + gearLvls[g].toLocaleString()}`).join("\n") +
                     `\nAVG Gear Lvl :: ${" ".repeat(7-avgGear.toString().length) + avgGear}`
@@ -1005,7 +1005,7 @@ class Guilds extends Command {
             fields.push({
                 name: "Character Rarity Counts",
                 value: "*How many characters at each star level*" +
-                Bot.codeBlock(Object.keys(rarityLvls).splice(doExpand ? 0 : -4).map(g => `${g}*           :: ${" ".repeat(7-rarityLvls[g].toLocaleString().length) + rarityLvls[g].toLocaleString()}`).join("\n") +
+                codeBlock(Object.keys(rarityLvls).splice(doExpand ? 0 : -4).map(g => `${g}*           :: ${" ".repeat(7-rarityLvls[g].toLocaleString().length) + rarityLvls[g].toLocaleString()}`).join("\n") +
                     `\nAVG Star Lvl :: ${" ".repeat(7-avgRarity.toString().length) + avgRarity}`)
             });
 
@@ -1027,7 +1027,7 @@ class Guilds extends Command {
             fields.push({
                 name: "Character Relic Counts",
                 value: "*How many characters at each relic tier*" +
-                Bot.codeBlock(Object.keys(relicLvls).splice(doExpand ? 0 : -4).map(g => `R${g}            :: ${" ".repeat(7-relicLvls[g].toLocaleString().length) + relicLvls[g].toLocaleString()}`).join("\n") +
+                codeBlock(Object.keys(relicLvls).splice(doExpand ? 0 : -4).map(g => `R${g}            :: ${" ".repeat(7-relicLvls[g].toLocaleString().length) + relicLvls[g].toLocaleString()}`).join("\n") +
                     `\nAVG Relic Lvl :: ${" ".repeat(7-avgRelic.toFixed(2).toString().length) + avgRelic.toFixed(2)}`)
             });
 

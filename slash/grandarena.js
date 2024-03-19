@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -120,7 +120,7 @@ class GrandArena extends Command {
         }
         if (problemArr.length) {
             // Otherwise, spit out the list of issues
-            return super.error(interaction, Bot.codeBlock(problemArr.map(p => "* " + p).join("\n")));
+            return super.error(interaction, codeBlock(problemArr.map(p => "* " + p).join("\n")));
         }
 
         // If there are no problems, continue
@@ -211,11 +211,11 @@ class GrandArena extends Command {
         });
 
 
-        gpStats = Bot.codeBlock(Bot.makeTable({
+        gpStats = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, gpStats, {useHeader: false}).join("\n"), "asciiDoc");
+        }, gpStats, {useHeader: false}).join("\n"));
 
         fields.push({
             name: "GP Stats Overview",
@@ -240,11 +240,11 @@ class GrandArena extends Command {
             user1: u1AvgGear,
             user2: u2AvgGear
         });
-        gearOverview = Bot.codeBlock(Bot.makeTable({
+        gearOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, gearOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, gearOverview, {useHeader: false}).join("\n"));
         fields.push({
             name: "Character Gear Counts",
             value: "*How many characters at each gear level*" + gearOverview
@@ -268,11 +268,11 @@ class GrandArena extends Command {
             user1: u1AvgRarity,
             user2: u2AvgRarity
         });
-        rarityOverview = Bot.codeBlock(Bot.makeTable({
+        rarityOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, rarityOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, rarityOverview, {useHeader: false}).join("\n"));
 
         fields.push({
             name: "Character Rarity Counts",
@@ -300,11 +300,11 @@ class GrandArena extends Command {
                 user2: `${getGearStr(u2Char)}${u2Char?.purchasedAbilityId?.length > 0 ? "U" : ""}`
             });
         }
-        glOverview = Bot.codeBlock(Bot.makeTable({
+        glOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, glOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, glOverview, {useHeader: false}).join("\n"));
         fields.push({
             name: "Galactic Legend Overview",
             value:glOverview
@@ -330,11 +330,11 @@ class GrandArena extends Command {
             user1: u1AvgRelic,
             user2: u2AvgRelic
         });
-        relicOverview = Bot.codeBlock(Bot.makeTable({
+        relicOverview = codeBlock("asciiDoc", Bot.makeTable({
             check: {value: "", align: "left", endWith: "::"},
             user1: {value: "", endWith: "vs", align: "right"},
             user2: {value: "", align: "left"}
-        }, relicOverview, {useHeader: false}).join("\n"), "asciiDoc");
+        }, relicOverview, {useHeader: false}).join("\n"));
         fields.push({
             name: "Character Relic Counts",
             value: "*How many characters at each relic level*" + relicOverview
@@ -362,11 +362,11 @@ class GrandArena extends Command {
 
         fields.push({
             name: "Mod Stats Overview",
-            value: Bot.codeBlock(Bot.makeTable({
+            value: codeBlock("asciiDoc", Bot.makeTable({
                 check: {value: "", align: "left", endWith: "::"},
                 user1: {value: "", endWith: "vs", align: "right"},
                 user2: {value: "", align: "left"}
-            }, modOverview, {useHeader: false}).join("\n"), "asciiDoc")
+            }, modOverview, {useHeader: false}).join("\n"))
 
         });
 
@@ -437,11 +437,11 @@ class GrandArena extends Command {
             if (halfLen < 0) halfLen = 0;
             fields.push({
                 name: "=".repeat(halfLen) + " " + c + " " + "=".repeat(halfLen),
-                value: Bot.codeBlock(Bot.makeTable({
+                value: codeBlock("asciiDoc", Bot.makeTable({
                     check: {value: "", align: "left", endWith: "::"},
                     user1: {value: "", align: "right"},
                     user2: {value: "", align: "left"}
-                }, checkArr[c], {useHeader: false}).map(e => e.replace(" ::", "::")).join("\n"), "asciiDoc"),
+                }, checkArr[c], {useHeader: false}).map(e => e.replace(" ::", "::")).join("\n")),
                 inline: true
             });
         });
@@ -523,11 +523,11 @@ function getOverview(Bot, user1, user2, labels) {
         user1: user1.roster.reduce((a, b) => a + b.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length, 0),
         user2: user2.roster.reduce((a, b) => a + b.skills.filter(s => s.isOmicron && s.tier >= s.tiers).length, 0)
     });
-    return Bot.codeBlock(Bot.makeTable({
+    return codeBlock("asciiDoc", Bot.makeTable({
         check: {value: "", align: "left", endWith: "::"},
         user1: {value: "", endWith: "vs", align: "right"},
         user2: {value: "", align: "left"}
-    }, overview, {useHeader: false}).join("\n"), "asciiDoc");
+    }, overview, {useHeader: false}).join("\n"));
 }
 
 // Quick little function to add up all the gp frm a given chunk of roster

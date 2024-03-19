@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 class Challenges extends Command {
     constructor(Bot) {
@@ -100,7 +100,7 @@ class Challenges extends Command {
                 return sendDay("Saturday");
         }
         function sendDay(day) {
-            return interaction.reply({content: Bot.codeBlock(dayString(day), "asciidoc")});
+            return interaction.reply({content: codeBlock("asciiDoc", dayString(day))});
         }
     }
 }

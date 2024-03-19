@@ -652,7 +652,8 @@ module.exports = (opts={}) => {
         if (!opts) opts = {};
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
-        } else if (!Array.isArray(skillArray)) {
+        }
+        if (!Array.isArray(skillArray)) {
             skillArray = [skillArray];
         }
 
@@ -685,6 +686,8 @@ module.exports = (opts={}) => {
                 skill = skill[0];
             }
             if (!skill) {
+                console.error("[swapi getCharacter] Missing ability - ");
+                console.error(s);
                 throw new Error("Missing character ability");
             }
             s.isZeta = skill.isZeta;

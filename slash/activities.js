@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 const Command = require("../base/slashCommand");
 
 class Activites extends Command {
@@ -60,19 +60,19 @@ class Activites extends Command {
 
         switch (day) {
             case "day_Sunday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_SUNDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_SUNDAY"))});
             case "day_Monday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_MONDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_MONDAY"))});
             case "day_Tuesday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_TUESDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_TUESDAY"))});
             case "day_Wednesday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_WEDNESDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_WEDNESDAY"))});
             case "day_Thursday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_THURSDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_THURSDAY"))});
             case "day_Friday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_FRIDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_FRIDAY"))});
             case "day_Saturday":
-                return interaction.reply({content: Bot.codeBlock(interaction.language.get("COMMAND_ACTIVITIES_SATURDAY"), "asciidoc")});
+                return interaction.reply({content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_SATURDAY"))});
         }
     }
 }

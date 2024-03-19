@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 class Randomchar extends Command {
     constructor(Bot) {
@@ -65,7 +65,7 @@ class Randomchar extends Command {
                 if (Array.isArray(player)) player = player[0];
             } catch (e) {
                 console.error(e);
-                return super.error(interaction, Bot.codeBlock(e.message), {
+                return super.error(interaction, codeBlock(e.message), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit."
                 });
@@ -100,7 +100,7 @@ class Randomchar extends Command {
         }
         const charString = charOut.join("\n");
 
-        return interaction.reply({content: Bot.codeBlock(charString)});
+        return interaction.reply({content: codeBlock(charString)});
     }
 }
 module.exports = Randomchar;

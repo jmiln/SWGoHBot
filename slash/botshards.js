@@ -1,4 +1,4 @@
-const { Status } = require("discord.js");
+const { Status, codeBlock } = require("discord.js");
 const Command = require("../base/slashCommand");
 
 class BotShards extends Command {
@@ -28,7 +28,7 @@ class BotShards extends Command {
                         `${ping} ms`
                     ].join(" | "));
                 });
-                interaction.reply({ content: Bot.codeBlock(shardInfoArr.join("\n"), "prolog") });
+                interaction.reply({ content: codeBlock("prolog", shardInfoArr.join("\n")) });
             })
             .catch((error) => {
                 console.error(error);

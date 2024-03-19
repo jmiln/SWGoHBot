@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
 
 class Versus extends Command {
     constructor(Bot) {
@@ -212,11 +212,11 @@ class Versus extends Command {
             fields: [
                 {
                     name: "General Info",
-                    value: Bot.codeBlock(generalTable.join("\n"), "asciidoc")
+                    value: codeBlock(generalTable.join("\n"), "asciidoc")
                 },
                 {
                     name: "Stats",
-                    value: Bot.codeBlock(statTable.join("\n"), "asciidoc")
+                    value: codeBlock(statTable.join("\n"), "asciidoc")
                 },
                 {
                     name: Bot.constants.zws,

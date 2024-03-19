@@ -49,9 +49,12 @@ class Character extends Command {
         }
 
         const character = chars[0];
-
-        const char = await Bot.swgohAPI.getCharacter(character.uniqueName, interaction.guildSettings.swgohLanguage);
-
+        let char;
+        try {
+            char = await Bot.swgohAPI.getCharacter(character.uniqueName, interaction.guildSettings.swgohLanguage);
+        } catch (err) {
+            return super.error(interaction, err.toString());
+        }
         const fields = [];
 
         if (char.factions.length) {

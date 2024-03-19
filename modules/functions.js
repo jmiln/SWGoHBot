@@ -1,4 +1,4 @@
-const { WebhookClient, ChannelType, PermissionsBitField } = require("discord.js");
+const { WebhookClient, ChannelType, PermissionsBitField, time } = require("discord.js");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
 const fs = require("fs");
 const readdir = promisify(require("fs").readdir);
@@ -356,13 +356,6 @@ module.exports = (Bot, client) => {
         return messages;
     };
 
-    /* CODE BLOCK MAKER
-     * Makes a codeblock with the specified lang for highlighting.
-     */
-    Bot.codeBlock = (str, lang="") => {
-        return `\`\`\`${lang}\n${str}\`\`\``;
-    };
-
     // Return a duration string
     Bot.duration = (time, interaction=null) => {
         const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
@@ -487,7 +480,7 @@ module.exports = (Bot, client) => {
 
         const lang = interaction?.language || Bot.languages["eng_us"];
 
-        return lang.get("BASE_SWGOH_LAST_UPDATED", `<t:${Math.floor(updated/1000)}:R>`);
+        return lang.get("BASE_SWGOH_LAST_UPDATED", time(Math.floor(updated/1000)));
     };
 
     // Get the current user count

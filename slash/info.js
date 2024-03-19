@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { version } = require("discord.js");
+const { version, codeBlock } = require("discord.js");
 
 class Info extends Command {
     constructor(Bot) {
@@ -53,7 +53,7 @@ class Info extends Command {
                 author: {
                     name: interaction.client.shard?.count ? content.shardHeader : content.header
                 },
-                description: Bot.codeBlock(desc, "asciidoc"),
+                description: codeBlock("asciidoc", desc),
                 fields: fields,
                 color: Math.floor(Math.random()*16777215)
             }]});

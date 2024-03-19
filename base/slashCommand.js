@@ -1,3 +1,5 @@
+const { codeBlock } = require("discord.js");
+
 const defCmdData = {
     name: "",
     description: "No description provided.",
@@ -50,7 +52,7 @@ class slashCommand {
         options.title = options.title || "Error";
         options.color = options.color || this.Bot.constants.colors.red;
         if (options.example) {
-            errMsg += `\n\n**Example:**${this.Bot.codeBlock(options.example)}`;
+            errMsg += `\n\n**Example:**${codeBlock(options.example)}`;
         }
         await this.embed(interaction, errMsg, options);
     }
