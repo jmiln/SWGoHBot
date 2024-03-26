@@ -493,7 +493,7 @@ class ArenaWatch extends Command {
         switch (target) {
             // ArenaWatch -> activate/ deactivate
             case "enabled": {
-                const isEnabled = interaction.options.getBoolean("enabled");
+                const isEnabled = interaction.options.getBoolean("toggle");
                 aw.enabled = isEnabled;
                 break;
             }
