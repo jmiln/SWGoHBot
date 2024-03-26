@@ -81,7 +81,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_aaylasecura"
@@ -1313,7 +1313,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -1673,7 +1673,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -2937,7 +2937,7 @@
                 "Potency x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
@@ -4306,11 +4306,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_joleebindo"
     },
@@ -4520,8 +4520,8 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            "circle": "Health",
+            "cross": "Offense"
         },
         "avatarName": "charui_kitfisto"
     },
@@ -4607,7 +4607,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5220,7 +5220,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -5529,8 +5529,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
