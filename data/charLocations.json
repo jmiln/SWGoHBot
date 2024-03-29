@@ -1487,6 +1487,17 @@
         ]
     },
     {
+        "name": "Gungan Boomadier",
+        "defId": "BOOMADIER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BOOMADIER_NAME",
+                "name": "Battlefield: Naboo Iii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Han Solo",
         "defId": "HANSOLO",
         "locations": [

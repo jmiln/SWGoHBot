@@ -258,7 +258,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
@@ -1673,7 +1673,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -2057,7 +2057,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
+                "Potency x2",
+                "Potency x2",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -3393,6 +3394,32 @@
         "avatarName": "charui_greefkarga"
     },
     {
+        "name": "Gungan Boomadier",
+        "uniqueName": "BOOMADIER",
+        "aliases": [
+            "Gungan Boomadier"
+        ],
+        "avatarName": "charui_gunganboomadier",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gunganboomadier.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Gungan"
+        ],
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        }
+    },
+    {
         "name": "Han Solo",
         "uniqueName": "HANSOLO",
         "aliases": [
@@ -3533,7 +3560,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -7692,9 +7719,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_zamwesell"
     },
