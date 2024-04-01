@@ -12,7 +12,7 @@ const { Server } = require("socket.io");
 const io = new Server(config.eventServe.port);
 
 async function init() {
-    const MongoClient = require("mongodb").MongoClient;
+    const { MongoClient } = require("mongodb");
     const mongo = await MongoClient.connect(config.mongodb.url);
     const cache = require("../modules/cache.js")(mongo);
 
@@ -21,7 +21,7 @@ async function init() {
 
         socket.on("checkEvents", async (callback) => {
             // Check all the events, and send back any that should be sent
-            const nowTime = new Date().getTime();
+            const nowTime = Date.now();
             const events = await getAllEvents({cache});
 
             // Check on countdowns as well for each
@@ -46,15 +46,9 @@ async function init() {
                     const timesToCountdown = guildConf.eventCountdown;
                     const nowTime = new Date().getTime();
                     const timeTil = ev.eventDT - nowTime;
-                    const msTil = convertMS(timeTil);
-                    let cdMin = null;
+                    const { minute } = convertMS(timeTil);
+                    const cdMin = timesToCountdown.find(time => time === minute);
 
-                    timesToCountdown.forEach(time => {
-                        if (time === msTil.minute) {
-                            cdMin = time;
-                            return;
-                        }
-                    });
                     if (cdMin) {
                         ev.isCD = true;
                         ev.name = `${ev.name}-CD${cdMin}`;
@@ -63,10 +57,9 @@ async function init() {
                 }
             }
 
-            // callback(pastEvents, futureCoutdownEvents);
-            if (eventsOut.length) {
-                // console.log(`Sending ${eventsOut.length} event(s) to the client`);
-            }
+            // if (eventsOut.length) {
+            //     console.log(`Sending ${eventsOut.length} event(s) to the client`);
+            // }
             return callback(eventsOut);
         });
 
@@ -76,7 +69,7 @@ async function init() {
             const res = [];
             for (const event of events) {
                 // Check for the existence of any events that match the name & channel, and if not, add it in
-                const evRes = {event: event, success: true, error: null};
+                const evRes = {event, success: true, error: null};
                 const exists = await guildEventExists({cache, guildId, evName: event.name});
                 if (exists) { // If the event is already here, don't
                     evRes.success = false;
@@ -84,8 +77,7 @@ async function init() {
                     res.push(evRes);
                     continue;
                 }
-                if (event.countdown === "true") event.countdown = true;
-                if (event.countdown === "false") event.countdown = false;
+                event.countdown = event.countdown === "true" || event.countdown === true;
                 await addGuildEvent({cache, guildId, newEvent: event})
                     .then(() => {
                         // Push to the completed ones or whatever
@@ -159,17 +151,16 @@ async function init() {
 }
 
 function convertMS(milliseconds) {
-    var hour, totalMin, minute, seconds;
-    seconds = Math.floor(milliseconds / 1000);
-    totalMin = Math.floor(seconds / 60);
-    seconds = seconds % 60;
-    hour = Math.floor(totalMin / 60);
-    minute = totalMin % 60;
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const totalMin = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    const hour = Math.floor(totalMin / 60);
+    const minute = totalMin % 60;
     return {
-        hour: hour,
-        minute: minute,
-        totalMin: totalMin,
-        seconds: seconds
+        hour,
+        minute,
+        totalMin,
+        seconds
     };
 }
 
