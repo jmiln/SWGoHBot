@@ -74,11 +74,11 @@ class Register extends Command {
             userReg = await Bot.userReg.updateUser(user.id, userReg);
             const u = userReg.accounts.find(a => a.primary);
             return super.success(interaction,
-                Bot.codeBlock(interaction.language.get(
+                codeBlock("asciiDoc", interaction.language.get(
                     "COMMAND_REGISTER_SUCCESS_DESC",
                     u,
                     u.allyCode.toString().match(/\d{3}/g).join("-"),
-                ), "asciiDoc"), {
+                )), {
                     title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name)
                 });
         } else {
