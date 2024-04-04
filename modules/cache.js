@@ -10,6 +10,7 @@ module.exports = clientMongo => {
         remove:  remove,
         replace: replace,
         exists:  exists,
+        putMany: putMany,
     };
 
     async function wipe( database, collection ) {
@@ -49,6 +50,18 @@ module.exports = clientMongo => {
         );
 
         return saveObject;
+    }
+
+    // Getting it to work with bulkWrite
+    async function putMany( database, collection, saveObjectArray ) {
+        if ( !database ) { throw new Error("No database specified to putMany"); }
+        if ( !collection ) { throw new Error("No collection specified to putMany"); }
+        if ( !saveObjectArray ) { throw new Error("No object array provided to putMany"); }
+        if ( !saveObjectArray.length ) { throw new Error("Object array is empty"); }
+        const dbo = await mongo.db( database );
+
+        await dbo.collection(collection).bulkWrite(saveObjectArray);
+        return saveObjectArray;
     }
 
     async function get( database, collection, matchCondition, projection ) {
