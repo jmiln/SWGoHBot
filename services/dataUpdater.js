@@ -9,7 +9,7 @@ const { eachLimit } = require("async");
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
 
-const FORCE_UPDATE = false;
+const FORCE_UPDATE = process.argv.includes("--force") || false;
 
 const ComlinkStub = require("@swgoh-utils/comlink");
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
@@ -23,6 +23,7 @@ const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
 const dataDir = __dirname + "/../data/";
+const gameDataDir = __dirname + "/../data/gameDataFiles/";
 
 const campaignMapNames = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNames.json", "utf-8"))[0];
 const campaignMapNodes = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/campaignMapNodes.json", "utf-8"))[0];
@@ -62,6 +63,9 @@ init().then(async () => {
     }
     if (!FORCE_UPDATE) {
         await runModUpdaters();
+    } else {
+        // If we're forcing an update, we only want it to run once then exit
+        process.exit(0);
     }
 });
 
@@ -305,9 +309,11 @@ function processModResults(unitsIn) {
     for (const unit of Object.keys(unitsIn)) {
         const thisUnit = unitsIn[unit];
 
-        const maxPrim = Math.max(...Object.values(thisUnit.primaries));
+        const maxPrimaryCount = Math.max(...Object.values(thisUnit.primaries));
+        const maxSetCount = Math.max(...Object.values(thisUnit.sets));
+
         for (const [prim, count] of Object.entries(thisUnit.primaries)) {
-            if (count !== maxPrim) delete thisUnit.primaries[prim];
+            if (count !== maxPrimaryCount) delete thisUnit.primaries[prim];
         }
         const primaries = {};
         Object.keys(thisUnit.primaries)[0]
@@ -322,9 +328,8 @@ function processModResults(unitsIn) {
             ...primaries
         };
 
-        const maxSets = Math.max(...Object.values(thisUnit.sets));
         for (const [set, count] of Object.entries(thisUnit.sets)) {
-            if (count !== maxSets) delete thisUnit.sets[set];
+            if (count !== maxSetCount) delete thisUnit.sets[set];
         }
         const totalSets = Object.keys(thisUnit.sets)[0]
             .split("_")
@@ -363,18 +368,16 @@ async function mergeModsToCharacters(modsIn) {
 
 async function updatePatrons() {
     const patreon = config.patreon;
-    if (!patreon) {
-        return;
-    }
+    if (!patreon) return;
+
     try {
         // Run this to get the patreon ID from the auth token in the config file
         // https://docs.patreon.com/#fetch-a-creator-profile-and-campaign-info
-        const campaignRes = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns",
-            {
-                headers: {
-                    Authorization: "Bearer " + patreon.creatorAccessToken
-                }
-            }).then(res => res.json());
+        const campaignRes = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns", {
+            headers: {
+                Authorization: "Bearer " + patreon.creatorAccessToken
+            }
+        }).then(res => res.json());
 
         // If there's no valid data or ID in campaignRes, then there's nothing to work from. Move along
         const patId = campaignRes?.data?.[0]?.id;
@@ -447,12 +450,17 @@ async function updatePatrons() {
 
 async function updateLocs(unitListFile, currentLocFile) {
     debugLog("Updating unit locations");
-    const currentUnits = JSON.parse(fs.readFileSync(unitListFile, "utf-8"));
-    const currentLocs = JSON.parse(fs.readFileSync(currentLocFile, "utf-8"));
-    const matArr = [];
+    const [currentUnits, currentLocs] = await Promise.all([
+        fs.promises.readFile(unitListFile, "utf-8").then(JSON.parse),
+        fs.promises.readFile(currentLocFile, "utf-8").then(JSON.parse)
+    ]);
 
+    const shardNameMap = currentUnits.map(unit => `unitshard_${unit.uniqueName}`);
+    const shardNameRes = await cache.get(config.mongodb.swapidb, "materials", {id: {$in: shardNameMap}});
+
+    const matArr = [];
     for (const unit of currentUnits) {
-        const res = await cache.get(config.mongodb.swapidb, "materials", {id: `unitshard_${unit.uniqueName}`});
+        const res = shardNameRes.find(mat => mat?.id === `unitshard_${unit.uniqueName}`);
         if (res?.length) {
             matArr.push({
                 defId: unit.uniqueName,
@@ -460,6 +468,7 @@ async function updateLocs(unitListFile, currentLocFile) {
             });
         }
     }
+
     if (!matArr.length) return;
 
     const langList = Object.keys(locales);
@@ -469,16 +478,22 @@ async function updateLocs(unitListFile, currentLocFile) {
         HARD_LIGHT: ["FeatureTitle_LightCampaigns", "DIFF_HARD"],
         CANTINA:    ["FeatureTitle_DatacronBattles"],
     };
+    const bulkLocPut = [];
     for (const lang of langList) {
         for (const target of Object.keys(targets)) {
-            const out = {
-                id: target,
-                language: lang,
-                langKey: targets[target].map(t => locales[lang][t] || `ERROR: ${t}`).join(" ")
-            };
-            await cache.put(config.mongodb.swapidb, "locations", {id: target, language: lang}, out);
+            const langKey = targets[target].map(t => locales[lang][t] || `ERROR: ${t}`).join(" ");
+            bulkLocPut.push({
+                updateOne: {
+                    filter: { id: target, language: lang },
+                    update: {
+                        $set: { id: target, language: lang, langKey }
+                    },
+                    upsert: true
+                }
+            });
         }
     }
+    await cache.putMany(config.mongodb.swapidb, "locations", bulkLocPut);
 
     const outArr = [];
     for (const mat of matArr) {
@@ -486,36 +501,25 @@ async function updateLocs(unitListFile, currentLocFile) {
         if (!missions?.length) continue;
 
         const charArr = [];
-        const usedLocId = [];
+        const usedLocId = new Set();
         for (const node of missions) {
+            let locId = null;
+            let charObj = {};
+
             if (node.campaignId === "EVENTS") {
-                let locId = null;
-                const charObj = {};
                 if (node.campaignMapId === "MARQUEE") {
                     // Run through stuff for Marquee events
                     locId = `EVENT_MARQUEE_${node.campaignNodeId.split("_")[0]}_NAME`;
-                    if (usedLocId.includes(locId)) continue;
-                    usedLocId.push(locId);
-
-                    charObj.type = "Marquee";
-                    charObj.locId = locId;
+                    charObj = {type: "Marquee", locId};
                 } else if (node.campaignMapId === "PROGRESSION") {
                     // Process the two progression events (GMY / EP)
                     locId = `PROGRESSIONEVENT_${node.campaignNodeId}_NAME`;
-                    if (usedLocId.includes(locId)) continue;
-                    usedLocId.push(locId);
-
-                    charObj.type = "Legendary Event";
-                    charObj.locId = locId;
+                    charObj = {type: "Legendary Event", locId};
                 } else if (node.campaignMapId === "SCHEDULED" && node.campaignNodeId === "CONQUEST_UNIT_TRIALS") {
                     // Process the Proving Grounds events
                     // - Really just localize "Proving Grounds" since the rest is just the unit's name
                     locId = "EVENT_CONQUEST_UNIT_TRIALS_NAME";
-                    if (usedLocId.includes(locId)) continue;
-                    usedLocId.push(locId);
-
-                    charObj.type = "Proving Grounds";
-                    charObj.locId = locId;
+                    charObj = {type: "Proving Grounds", locId};
                 } else if (node.campaignMapId === "GALACTIC") {
                     // Process galactic legends events
                     //  - Still not sure how to manage LORDVADER in place of VADER
@@ -534,15 +538,14 @@ async function updateLocs(unitListFile, currentLocFile) {
                         }
                     }
 
-                    if (usedLocId.includes(locId)) continue;
-                    usedLocId.push(locId);
-
-                    charObj.type = "Galactic Ascension";
-                    charObj.locId = locId;
+                    charObj = {type: "Galactic Legend", locId};
                 }
 
+
+                if (!locId || usedLocId.has(locId)) continue;
+                usedLocId.add(locId);
+
                 // Go through and save all the locale strings into the db
-                if (!locId) continue;
                 let isAvailable = true;
                 for (const lang of langList) {
                     const langKey = locales[lang][locId];
@@ -567,32 +570,21 @@ async function updateLocs(unitListFile, currentLocFile) {
 
                 const outNode = campaignMapNodes?.[node.campaignId]?.[node.campaignMapId]?.[node.campaignNodeDifficulty]?.[node.campaignNodeId]?.[node.campaignMissionId];
 
-                let locId = null;
                 // ONLY /farm and /need use these
-                let typeStr = "Hard Modes";
-                switch (outMode) {
-                    case "Light Side Battles":
-                        typeStr += " (L)";
-                        locId = "HARD_LIGHT";
-                        break;
-                    case "Dark Side Battles":
-                        typeStr += " (D)";
-                        locId = "HARD_DARK";
-                        break;
-                    case "Cantina Battles":
-                        typeStr = "Cantina";
-                        locId = "CANTINA";
-                        break;
-                    case "Fleet Battles":
-                        typeStr += " (Fleet)";
-                        locId = "HARD_FLEET";
-                        break;
-                    default:
-                        typeStr = "N/A";
-                        break;
-                }
+                const modeMap = {
+                    "Light Side Battles": { suffix: " (L)", locId: "HARD_LIGHT" },
+                    "Dark Side Battles": { suffix: " (D)", locId: "HARD_DARK" },
+                    "Cantina Battles": { suffix: "", locId: "CANTINA" },
+                    "Fleet Battles": { suffix: " (Fleet)", locId: "HARD_FLEET" },
+                    "default": { suffix: "N/A", locId: null }
+                };
+                const { suffix, locId } = modeMap[outMode] || modeMap["default"];
+
+                let type = outMode === "Cantina Battles" ? "Cantina" : "Hard Modes";
+                if (suffix.length) type += suffix;
+
                 charArr.push({
-                    type: typeStr,
+                    type,
                     level: outNode,
                     locId
                 });
@@ -602,73 +594,75 @@ async function updateLocs(unitListFile, currentLocFile) {
     }
 
     // Wipe out all previous locations so we can replace them later, but leave the shop info alone
-    const whitelistTypeLocs = [
-        "Achievements",
-        "Assault Battle",
-        "Epic Confrontation",
-        "Challenges",
-        "Hero's Journey",
-        "Heroic Event",
-        "Legacy Event",
-        "Legendary Event",
-        "Raids",
-        "Special Event",
-        "Territory Battle",
-    ];
-    const filteredLocations = currentLocs.map(loc => {
-        loc.locations = loc.locations.filter(thisLoc => thisLoc?.cost?.length || (whitelistTypeLocs.includes(thisLoc?.type) && !thisLoc.locId));
-        return loc;
-    });
-
+    const whitelistTypeLocs = [ "Achievements", "Assault Battle", "Epic Confrontation", "Challenges", "Hero's Journey", "Heroic Event", "Legacy Event", "Legendary Event", "Raids", "Special Event", "Territory Battle" ];
     const finalOut = [];
-    for (const unit of currentUnits) {
-        const thisUnitLoc = filteredLocations.find(loc => loc.defId === unit.uniqueName);
-        const unitLoc = outArr.find(loc => loc.defId === unit.uniqueName) || {defId: unit.uniqueName};
-        const locations = [];
-        if (thisUnitLoc?.locations) locations.push(...thisUnitLoc.locations);
-        if (unitLoc?.locations) locations.push(...unitLoc.locations);
-        const unitName = thisUnitLoc?.name || unitLoc?.name || unit?.name;
+    const locationMap = {};
 
-        // If it somehow doesn't have anything to identify it, move along
-        if (!unitName && !unitLoc.defId) continue;
-
-        finalOut.push({
-            name: unitName,
-            defId: unitLoc.defId,
-            locations: locations?.sort((a,b) => a.type?.toLowerCase() > b.type?.toLowerCase() ? 1 : -1) || []
-        });
+    // Filter locations and build a hash map for quick lookup
+    for (const loc of currentLocs) {
+        const filteredLocations = loc.locations.filter(thisLoc => thisLoc?.cost?.length || whitelistTypeLocs.includes(thisLoc?.type) && !thisLoc.locId);
+        if (filteredLocations.length) {
+            locationMap[loc.defId] = filteredLocations;
+        }
     }
 
-    return finalOut.sort((a,b) => a?.name && b?.name ? (a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1) : (a.defId.toLowerCase() > b.defId.toLowerCase() ? 1 : -1));
+    // Merge location data and construct final output
+    for (const unit of currentUnits) {
+        const thisUnitLoc = locationMap[unit.uniqueName] || [];
+        const unitLoc = outArr.find(loc => loc.defId === unit.uniqueName) || { defId: unit.uniqueName };
+
+        const locations = [...thisUnitLoc.locations, ...unitLoc.locations];
+        const unitName = thisUnitLoc.name || unitLoc.name || unit.name;
+
+        if (unitName || unitLoc.defId) {
+            finalOut.push({
+                name: unitName,
+                defId: unitLoc.defId,
+                locations: locations.sort((a, b) => a.type?.toLowerCase() > b.type?.toLowerCase() ? 1 : -1)
+            });
+        }
+    }
+
+    // Sort the final output array then return it
+    return finalOut.sort((a,b) => {
+        const nameA = a?.name?.toLowerCase() || "";
+        const nameB = b?.name?.toLowerCase() || "";
+        return nameA > nameB ? 1 : -1 || a.defId.toLowerCase() > b.defId.toLowerCase() ? 1 : -1;
+    });
+}
+
+async function getMostRecentGameData(version) {
+    let gameData = null;
+    const dataFile = `gameData_${version}.json`;
+    const filePath = gameDataDir + dataFile;
+
+    // Check if the file exists
+    if (fs.existsSync(filePath)) {
+        debugLog("Found gameData for " + version);
+
+        // Load up our local gameData file and send it back
+        gameData = await fs.readFileSync(filePath);
+        return JSON.parse(gameData);
+    }
+
+    // If we don't have the most recent version locally, grab a new copy of the gameData from CG
+    gameData = await comlinkStub.getGameData(version, false);
+
+    // This is going to be a new version, so we can just delete the old files
+    fs.readdirSync(gameDataDir)
+        .filter(fileName => fileName.startsWith("gameData_") && fileName !== dataFile)
+        .forEach(f => fs.unlinkSync(gameDataDir + f));
+
+    // Then save it
+    await fs.writeFileSync(filePath, JSON.stringify(gameData));
+
+    // Then return the gameData
+    return gameData;
 }
 
 async function updateGameData() {
     if (!metadataFile.latestGamedataVersion) return console.error("[updateGameData] Missing latestGamedataVersion from metadata");
-    const gameData = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false);
-
-    /* This downloads the gameData in chunks, but some part of it is different/ doesn't end up the same */
-    // const { GameDataSegment } = await comlinkStub.getEnums();
-    // if (!GameDataSegment) return console.error("[updateGameData] Missing GameDataSegment");
-    //
-    // const gameData = {};
-    // const segments = Object.entries(GameDataSegment);
-    // for (let ix = 0; ix < segments.length - 1; ix++) {
-    //     const [key, val] = segments[ix];
-    //     if (!val) continue;
-    //     let data;
-    //     try {
-    //         debugLog(`[updateGameData] Trying to get data for segment ${key} - ${val}`);
-    //         data = await comlinkStub.getGameData(metadataFile.latestGamedataVersion, false, val);
-    //     } catch (err) {
-    //         console.error(`[updateGameData] Broke while trying to download segment #${val} of the gameData`);
-    //         console.error(err);
-    //         continue;
-    //     }
-    //     const collections = Object.keys(data);
-    //     for (const collection of collections) {
-    //         gameData[collection] = data[collection];
-    //     }
-    // }
+    const gameData = await getMostRecentGameData(metadataFile.latestGamedataVersion);
 
     debugLog("Running main updaters");
 
@@ -703,27 +697,29 @@ async function updateGameData() {
     */
     async function processLocalization(rawDataIn, dbTarget, targetKeys, dbIdKey="id", langList) {
         if (!langList) langList = Object.keys(locales);
+        const bulkWriteArr = [];
         for (const lang of langList) {    // For each language that we need to localize for...
             const dataIn = structuredClone(rawDataIn);
             for (const data of dataIn) {    // For each chunk of the dataIn (ability, gear, recipes, unit, etc)
+                data.language = lang;
                 for (const target of targetKeys) {      // For each of the specified keys of each chunk
-                    data.language = lang;
-                    if (Array.isArray(data[target])) {
-                        for (const ix in data[target]) {    // If it's an array, go ahead and localize each entry inside
-                            if (locales[lang][data[target][ix]]) {
-                                data[target][ix] = locales[lang][data[target][ix]];
-                            }
-                        }
-                    } else {
-                        if (locales[lang][data[target]]) {
-                            data[target] = locales[lang][data[target]];
-                        }
-                    }
+                    const localizedData = Array.isArray(data[target]) ?
+                        data[target].map(entry => locales[lang][entry] || entry) :
+                        locales[lang][data[target]] || data[target];
+
+                    data[target] = localizedData;
                 }
-                await cache.put(config.mongodb.swapidb, dbTarget, {[dbIdKey]: data[dbIdKey], language: lang}, data);
+                bulkWriteArr.push({
+                    updateOne: {
+                        filter: { [dbIdKey]: data[dbIdKey], language: lang }, // Filter by the given key, and language
+                        update: { $set: data }, // Update with the localized data
+                        upsert: true // Insert if document doesn't exist
+                    }
+                });
             }
             // console.log(`Finished localizing ${dbTarget} for ${lang}`);
         }
+        await cache.putMany(config.mongodb.swapidb, dbTarget, bulkWriteArr);
         // console.log(`Finished localizing ${dbTarget}`);
     }
 
@@ -743,8 +739,8 @@ async function updateGameData() {
         const out = {};
         for (const lang of langList) {
             out[lang] = {};
-            for (const key of Object.keys(raidKeys)) {
-                out[lang][raidKeys[key]] = locales[lang][key];
+            for (const [key, value] of Object.entries(raidKeys)) {
+                out[lang][value] = locales[lang][key];
             }
         }
         saveFile(RAID_NAMES, out);
@@ -758,30 +754,21 @@ async function updateGameData() {
             const skill = skillIn.find(sk => sk.abilityReference === ability.id);
             if (!skill) continue;
 
-            const abOut = {
+            const abTiers = ability.tier?.map(ti => ti.descKey) || [];
+            abilitiesOut.push({
                 id: ability.id,
                 type: ability.type,
                 nameKey: ability.nameKey,
-                descKey: ability.descKey,
+                descKey: abTiers.slice(-1)[0] || ability.descKey,
                 cooldown: ability.cooldown,
-                isZeta: skill.isZeta || false,
+                abilityTiers: abTiers,
                 skillId: skill.id,
-                tierList: skill.tier.map(t => t.recipeId)
-            };
-            if (ability?.tier?.length) {
-                abOut.abilityTiers = ability.tier?.map(ti => ti.descKey);
-                abOut.descKey = abOut.abilityTiers[abOut.abilityTiers.length-1];
-            }
-            if (skill.tier.filter(t => t.isOmicronTier)?.length) {
-                abOut.isOmicron = true;
-            }
-            if (abOut.isOmicron) {
-                abOut.omicronTier = abOut.tierList.length;
-            }
-            if (abOut.isZeta) {
-                abOut.zetaTier = abOut.isOmicron ? abOut.tierList.length-1 : abOut.tierList.length;
-            }
-            abilitiesOut.push(abOut);
+                tierList: skill.tier.map(t => t.recipeId),
+                isOmicron: skill.tier.some(t => t.isOmicronTier),
+                omicronTier: skill.tier.filter(t => t.isOmicronTier).length || null,
+                isZeta: skill.isZeta || false,
+                zetaTier: skill.isZeta ? (skill.tier.length - (skill.tier.some(t => t.isOmicronTier) ? 1 : 0)) : null
+            });
 
             skillMap[skill.id] = {
                 nameKey: ability.nameKey,
@@ -797,63 +784,56 @@ async function updateGameData() {
     async function processCategories(catsIn) {
         const catMapOut = catsIn
             .filter(cat => cat.visible || cat.id.startsWith("alignment"))
-            .map(({id, descKey}) => {
-                return {id, descKey};
-            });
+            .map(({id, descKey}) => ({id, descKey}));
 
         // await saveFile(dataDir + "catMap.json", catMapOut, false);
         await processLocalization(catMapOut, "categories", ["descKey"], "id", null);
     }
 
     async function processEquipment(equipmentIn) {
-        const mappedEquipmentList = equipmentIn.map(equipment => {
-            return {
-                id: equipment.id,
-                nameKey: equipment.nameKey,
-                recipeId: equipment.recipeId,
-                mark: equipment.mark
-            };
-        });
+        const mappedEquipmentList = equipmentIn.map(({ id, nameKey, recipeId, mark }) => ({ id, nameKey, recipeId, mark }));
         await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", null);
     }
 
     async function processMaterials(materialIn) {
-        // Filter the list to just be unit shards for now
-        const filteredList = materialIn.filter(mat => {
-            return mat.id.startsWith("unitshard");
-        });
+        unitShardList = [];
+        const bulkWriteArr = [];
 
-        // Then map em to just grab the bits that we want for later
-        const mappedMatList = filteredList.map(mat => {
-            return {
-                id: mat.id,
-                lookupMissionList: mat.lookupMission.map(mis => mis.missionIdentifier),
-                raidLookupList: mat.raidLookup.map(mis => mis.missionIdentifier),
-                iconKey: mat.iconKey
-            };
-        });
+        for (const mat of materialIn) {
+            if (!mat.id.startsWith("unitshard")) continue;
 
-        unitShardList = filteredList.map(mat => {
-            return {
+            const unitShard = {
                 id: mat.id,
                 iconKey: mat.iconKey.replace(/^tex\./, "")
             };
-        });
+            unitShardList.push(unitShard);
 
-        // Then stick em in the db for later use
-        for (const mat of mappedMatList) {
-            await cache.put(config.mongodb.swapidb, "materials", {id: mat.id}, mat);
+            bulkWriteArr.push({
+                updateOne: {
+                    filter: { id: mat.id },
+                    update: {
+                        $set: {
+                            id: mat.id,
+                            lookupMissionList: mat.lookupMission.map(mis => mis.missionIdentifier),
+                            raidLookupList: mat.raidLookup.map(mis => mis.missionIdentifier),
+                            iconKey: mat.iconKey
+                        }
+                    },
+                    upsert: true
+                }
+            });
         }
+        await cache.putMany(config.mongodb.swapidb, "materials", bulkWriteArr.filter(Boolean));
     }
 
     async function processModData(modIn) {
         // gameData.statMod  ->  This is used to get slot, set, and pip of each mod
         const modsOut = {};
-        modIn.forEach(m => {
-            modsOut[m.id] = {
-                pips:  m.rarity,
-                set:  m.setId,
-                slot: m.slot
+        modIn.forEach(({ id, rarity, setId, slot })  => {
+            modsOut[id] = {
+                pips: rarity,
+                set:  setId,
+                slot: slot
             };
         });
 
@@ -862,28 +842,33 @@ async function updateGameData() {
     }
 
     async function processRecipes(recipeIn) {
-        const mappedRecipeList = recipeIn.map(recipe => {
-            return {
-                id: recipe.id,
-                descKey: recipe.descKey,
-                ingredients: recipe.ingredients.filter(ing => ing.id !== "GRIND")
-            };
-        });
+        const mappedRecipeList = [];
+        unitRecipeList = [];
 
-        // Set up a list of just creationRecipeReference IDs, and unitshard names to access later
-        unitRecipeList = recipeIn.map(r => {
-            const unitshardList = r.ingredients.filter(ing => ing.id?.startsWith("unitshard"));
+        for (const recipe of recipeIn) {
+            const { id, descKey, ingredients } = recipe;
+            const filteredIngredients = ingredients.filter(ing => ing.id !== "GRIND");
+
+            // Add recipe to mappedRecipeList
+            mappedRecipeList.push({
+                id,
+                descKey,
+                ingredients: filteredIngredients
+            });
+
+            // Add unitshard information to unitRecipeList
+            const unitshardList = filteredIngredients.filter(ing => ing.id?.startsWith("unitshard"));
             if (unitshardList.length) {
-                return {
-                    id: r.id,
+                unitRecipeList.push({
+                    id,
                     unitshard: unitshardList[0].id
-                };
-            } else {
-                return;
+                });
             }
-        }).filter(r => !!r);
+        }
+
         await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", ["eng_us"]);
     }
+
 
     async function processUnits(unitsIn) {
         const filteredList = unitsIn.filter(unit => {
@@ -913,178 +898,148 @@ async function updateGameData() {
             unitDefIdMap[unit.baseId] = locales["eng_us"][unit.nameKey];
         }
 
-        // Pass in a copy of the list so nothing gets altered that would be needed later
-        // This will convert everything to the format we're used to in the characters db table
-        await unitsToCharacterDB(JSON.parse(JSON.stringify(filteredList)));
-        // Then send the list to be processed
+        // Copy the list so we don't alter the original for each of the functions
+        await unitsToCharacterDB (JSON.parse(JSON.stringify(filteredList)));
         await processLocalization(JSON.parse(JSON.stringify(filteredList)), "units", ["nameKey"], "baseId", null);
-        // Then send a copy through for the unitMap to help format player rosters
-        await unitsToUnitMapFile(JSON.parse(JSON.stringify(filteredList)));
-        // Format everything and save to the characters.json/ ships.json files
-        await unitsToUnitFiles(JSON.parse(JSON.stringify(filteredList)));
+        await unitsToUnitMapFile (JSON.parse(JSON.stringify(filteredList)));
+        await unitsToUnitFiles   (JSON.parse(JSON.stringify(filteredList)));
     }
 
     async function unitsToUnitFiles(filteredList) {
-        const oldCharFile = JSON.parse(fs.readFileSync(CHAR_FILE));
-        const oldShipFile = JSON.parse(fs.readFileSync(SHIP_FILE));
-
+        const oldCharFile = await fs.promises.readFile(CHAR_FILE, "utf-8").then(JSON.parse);
+        const oldShipFile = await fs.promises.readFile(SHIP_FILE, "utf-8").then(JSON.parse);
         const eng = locales["eng_us"];
 
-        // Process the units into the character or ship files
         const charactersOut = [];
         const shipsOut = [];
 
-        for (const unit of filteredList) {
+        await Promise.all(filteredList.map(async unit => {
             const charUIName = getCharUIName(unit.creationRecipeReference);
-            unit.name = eng[unit.nameKey];
-            let oldUnit;
-            if (unit.combatType === CHAR_COMBAT_TYPE) {
-                // If it already exists in the file, don't overwrite
-                oldUnit = oldCharFile.find(ch => ch.uniqueName === unit.baseId);
-            } else {
-                oldUnit = oldShipFile.find(sh => sh.uniqueName === unit.baseId);
-            }
-
-            let unitObj;
-
-            if (oldUnit) {
-                // Don't overwrite, just make sure the info is up to date
-                unitObj = oldUnit;
-                // delete unitObj.avatarURL;
-                delete unitObj.nameVariant;
-                unitObj.avatarName = charUIName;
-                unitObj.avatarURL  = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
-            } else {
-                // Work up a new character to put in
-                unitObj = await createNewUnit(unit, charUIName);
-            }
-
-            // Sort out where the unit goes
+            const name = eng[unit.nameKey];
+            const unitObj = await createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile);
             if (unit.combatType === CHAR_COMBAT_TYPE) {
                 charactersOut.push(unitObj);
             } else if (unit.combatType === SHIP_COMBAT_TYPE) {
                 shipsOut.push(unitObj);
             } else {
-                console.error("Bad combatType for:");
-                console.error(unitObj);
+                console.error("Bad combatType for:", unitObj);
             }
-        }
+        }));
 
-        function getCharUIName(creationRecipeId) {
-            const thisRecipe = unitRecipeList.find(rec => rec.id === creationRecipeId);
-            const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe.unitshard);
-            return thisUnitShard?.iconKey;
-        }
+        await Promise.all([
+            saveFile(CHAR_FILE, sortByName(charactersOut)),
+            saveFile(SHIP_FILE, sortByName(shipsOut))
+        ]);
 
-        function getSide(factions) {
-            for (const side of ["dark", "light", "neutral"]) {
-                const factIx = factions.findIndex(fact => fact.id === `alignment_${side}`);
-                if (factIx > -1) {
-                    factions.splice(factIx, 1);
-                    return {
-                        side: side,
-                        factions: factions.map(fact => fact.descKey)
-                    };
-                }
-            }
-        }
-
-        async function createNewUnit(unit, charUIName) {
-            const unitFactionsObj = await cache.get(config.mongodb.swapidb, "categories", {id: {$in: unit.categoryIdList}, language: "eng_us"}, {id: 1, descKey: 1, _id: 0});
-            const {factions, side} = getSide(unitFactionsObj);
-            const unitOut = {
-                name:        unit.name,
-                uniqueName:  unit.baseId,
-                aliases:     [unit.name],
-                avatarName:  charUIName,
-                avatarURL:   `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
-                side:        side,
-                factions:    factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
-            };
-
-            if (unit.combatType === CHAR_COMBAT_TYPE) {
-                // If it's a character, stick mods in
-                unitOut.mods = {};
-            } else {
-                // If its' a ship, map the crew out to be just the names
-                unitOut.crew = unit?.crewList
-                    .map(cr => {
-                        return unitDefIdMap[cr.unitId];
-                    });
-            }
-            console.log(`Creating a new unit: ${unitOut.name}   (${unitOut.uniqueName})`);
-            return unitOut;
-        }
-
-        // Write to the characters & ships files
-        const sortedChars = charactersOut.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
-        await saveFile(CHAR_FILE, sortedChars);
-        const sortedShips = shipsOut.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
-        await saveFile(SHIP_FILE, sortedShips);
         console.log("Unit files updated");
+    }
 
-        // Wipe out the recipe and mats lists so it'll be clean next time
-        unitRecipeList = [];
-        unitShardList = [];
+    async function createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile) {
+        const oldFile = unit.combatType === CHAR_COMBAT_TYPE ? oldCharFile : oldShipFile;
+        const oldUnit = oldFile.find(u => u.uniqueName === unit.baseId);
+
+        let unitObj;
+        if (oldUnit) {
+            unitObj = oldUnit;
+            delete unitObj.nameVariant;
+            unitObj.avatarName = charUIName;
+            unitObj.avatarURL = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
+        } else {
+            unitObj = await createNewUnit(unit, charUIName, name, unit.combatType);
+        }
+        return unitObj;
+    }
+
+    async function createNewUnit(unit, charUIName, name, combatType) {
+        const unitFactionsObj = await cache.get(config.mongodb.swapidb, "categories", {id: {$in: unit.categoryIdList}, language: "eng_us"}, {id: 1, descKey: 1, _id: 0});
+        const { factions, side } = getSide(unitFactionsObj);
+        return {
+            name,
+            uniqueName: unit.baseId,
+            aliases: [name],
+            avatarName: charUIName,
+            avatarURL: `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
+            side,
+            factions: factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
+            mods: combatType === CHAR_COMBAT_TYPE ? {} : null,
+            crew: combatType === SHIP_COMBAT_TYPE && unit.crewList?.length ? unit.crewList.map(cr => unitDefIdMap[cr.unitId]) : []
+        };
+    }
+
+    function getCharUIName(creationRecipeId) {
+        const thisRecipe = unitRecipeList.find(rec => rec.id === creationRecipeId);
+        const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe?.unitshard);
+        return thisUnitShard?.iconKey;
+    }
+
+    function getSide(factions) {
+        for (const side of ["dark", "light", "neutral"]) {
+            const found = factions.find(fact => fact.id === `alignment_${side}`);
+            if (found) {
+                const filteredFactions = factions.filter(fact => fact !== found);
+                return {
+                    side: side,
+                    factions: filteredFactions.map(fact => fact.descKey)
+                };
+            }
+        }
+    }
+
+    function sortByName(list) {
+        return list.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
     }
 
     async function unitsToCharacterDB(unitsIn) {
-        // Process the units list to go into the characters db table
-        const catList = ["alignment", "profession", "affiliation", "role", "shipclass"];
-        const ignoreArr = [
+        const catList = new Set(["alignment", "profession", "affiliation", "role", "shipclass"]);
+        const ignoreSet = new Set([
             "fomilitary",      "galactic",         "order66",       "sithlord",       "palp", "rebfalconcrew",
             "smuggled",        "foexecutionsquad", "gacs2fireteam", "jacket",         "el16", "ptisfalconcrew",
             "forcelightning",  "doubleblade",      "kenobi",        "translator",     "rey",  "veteransmuggler",
             "crimsondawn",     "sabacc",           "dathbro",       "prisfalconcrew", "kylo", "capital",
             "resistancexwing", "fotie",            "millennium"
-        ];
+        ]);
         const factionMap = {
-            badbatch       : "bad batch",
-            bountyhunter   : "bounty hunter",
-            capitalship    : "capital ship",
-            cargoship      : "cargo ship",
-            clonetrooper   : "clone trooper",
-            dark           : "dark side",
-            firstorder     : "first order",
-            huttcartel     : "hutt cartel",
-            imperialremnant: "imerpial remnant",
-            imperialtrooper: "imperial trooper",
-            inquisitoriu   : "inquisitorius",
-            light          : "light side",
-            oldrepublic    : "old republic",
-            rebelfighter   : "rebel fighter",
-            republic       : "galactic republic",
-            rogue          : "rogue one",
-            sithempire     : "sith empire",
+            badbatch       : "bad batch",        bountyhunter   : "bounty hunter", capitalship    : "capital ship",
+            cargoship      : "cargo ship",       clonetrooper   : "clone trooper", dark           : "dark side",
+            firstorder     : "first order",      huttcartel     : "hutt cartel",   imperialremnant: "imerpial remnant",
+            imperialtrooper: "imperial trooper", inquisitoriu   : "inquisitorius", light          : "light side",
+            oldrepublic    : "old republic",     rebelfighter   : "rebel fighter", republic       : "galactic republic",
+            rogue          : "rogue one",        sithempire     : "sith empire",
         };
 
+        // Process the units list to go into the characters db table
         for (const unit of unitsIn) {
-            unit.factions = [];
+            const factions = new Set();
+            const crewIds = [];
+            const skillReferences = unit.skillReferenceList || [];
+
             delete unit.nameKey;
             delete unit.creationRecipeReference;
+
             if (!unit.categoryIdList) {
                 console.error("Missing baseCharacter abilities for " + unit.baseId);
                 continue;
             }
-            unit.categoryIdList.forEach(cat => {
-                if (catList.some(str => cat.startsWith(str + "_"))) {
-                    let faction = cat.split("_")[1];
-                    if (ignoreArr.includes(faction)) return;
-                    if (factionMap[faction]) faction = factionMap[faction];
-                    faction = toProperCase(faction);
-                    unit.factions.push(faction);
-                }
-            });
-            delete unit.categoryIdList;
-            unit.crew = [];
-            unit.factions = [...new Set(unit.factions)];
-            if (unit.crewList.length) {
-                for (const crewChar of unit.crewList) {
-                    unit.crew.push(crewChar.unitId);
-                    unit.skillReferenceList = unit.skillReferenceList.concat(crewChar.skillReference);
+            for (const category of unit.categoryIdList) {
+                const [prefix, faction] = category.split("_");
+                if (catList.has(prefix) && !ignoreSet.has(faction)) {
+                    factions.add(toProperCase(factionMap[faction] || faction));
                 }
             }
+
+            unit.factions = Array.from(factions);
+            delete unit.categoryIdList;
+
+            if (unit.crewList?.length) {
+                for (const crewChar of unit.crewList) {
+                    crewIds.push(crewChar.unitId);
+                    skillReferences.push(crewChar.skillReference);
+                }
+            }
+
             delete unit.crewList;
+            unit.crew = crewIds;
+            unit.skillReferenceList = skillReferences;
             unitFactionMap[unit.baseId] = unit.factions;
             await cache.put(config.mongodb.swapidb, "characters", {baseId: unit.baseId}, unit);
         }
@@ -1092,50 +1047,50 @@ async function updateGameData() {
 
     async function unitsToUnitMapFile(unitsIn) {
         // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
-        const unitsOut = {};
-        unitsIn.forEach(unit => {
-            unitsOut[unit.baseId] = {
+        const unitsOut = unitsIn.reduce((acc, unit) => {
+            acc[unit.baseId] = {
                 nameKey: unit.nameKey,
                 combatType: unit.combatType,
-                crew: unit.crewList.map(cr => {
-                    return {
-                        skillReferenceList: cr.skillReference,
-                        unitId: cr.unitId,
-                        slot: cr.slot
-                    };
-                })
+                crew: unit.crewList.map(cr => ({
+                    skillReferenceList: cr.skillReference,
+                    unitId: cr.unitId,
+                    slot: cr.slot
+                }))
             };
-        });
+            return acc;
+        }, {});
 
         unitMap = unitsOut;
         await saveFile(dataDir + "unitMap.json", unitsOut, false);
     }
 
     async function getLocalizationData(bundleVersion) {
-        const ignoreArr = ["datacron", "anniversary", "promo", "subscription", "marquee"];
-        const localeData = await comlinkStub.getLocalizationBundle(
-            bundleVersion,
-            true    // unzip: true
-        );
-        delete localeData["Loc_Key_Mapping.txt"];
+        const IGNORE_KEYS = ["datacron", "anniversary", "promo", "subscription", "marquee"];
+        try {
+            const localeData = await comlinkStub.getLocalizationBundle( bundleVersion, true );
+            delete localeData["Loc_Key_Mapping.txt"];
 
-        const localeOut = {};
-        for (const [lang, content] of Object.entries(localeData)) {
-            const out = {};
-            const contentSplit = content.split("\n");
-            const langKey = lang.replace("Loc_", "").replace(".txt", "").toLowerCase();
+            const localeOut = {};
+            for (const [lang, content] of Object.entries(localeData)) {
 
-            for (const row of contentSplit) {
-                if (ignoreArr.some(ign => row.includes(ign.toLowerCase()))) continue;
-                const res = processLocalizationLine(row);
-                if (!res) continue;
-                const [key, val] = res;
-                if (!key || !val) continue;
-                out[key] = val;
+                const out = {};
+                const langKey = lang.replace(/^Loc_|\.txt$/gi, "").toLowerCase();
+
+                for (const row of content.split("\n")) {
+                    if (IGNORE_KEYS.some(ign => row.toLowerCase().includes(ign))) continue;
+                    const res = processLocalizationLine(row);
+                    if (res) {
+                        const [key, val] = res;
+                        if (key && val) out[key] = val;
+                    }
+                }
+                localeOut[langKey] = out;
             }
-            localeOut[langKey] = out;
+            return localeOut;
+        } catch (error) {
+            console.error("[getLocalizationData] Error fetching or processing localization data:", error);
+            throw error; // Rethrow the error for further handling
         }
-        return localeOut;
     }
 
     function processLocalizationLine(line) {
@@ -1161,12 +1116,10 @@ async function updateGameData() {
         // Grab all the units that have activation requirements to process
         const unitGuides = gameData.unitGuideDefinition
             .filter(g => g.additionalActivationRequirementId)
-            .map(g => {
-                return {
-                    defId: g.unitBaseId,
-                    guideId: g.additionalActivationRequirementId
-                };
-            });
+            .map(g => ({
+                defId: g.unitBaseId,
+                guideId: g.additionalActivationRequirementId
+            }));
 
         // For each character in the guide that had useful data, process their requirements
         const unitGuideOut = {};
