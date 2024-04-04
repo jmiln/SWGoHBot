@@ -1,6 +1,7 @@
 # Directories
 /data/img/
 /data/swgoh-json-files/
+/data/gameDataFiles/
 /node_modules/
 /scripts
 /swgoh

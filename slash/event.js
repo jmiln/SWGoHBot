@@ -345,11 +345,10 @@ class Event extends Command {
                 break;
             }
             case "view": {
-                const array = [];
                 const eventName = interaction.options.getString("name");
-                const minimal = interaction.options.getBoolean("minimal");
-                const page = interaction.options.getInteger("page_num");
-                const evFilter = interaction.options.getString("filter");
+                const minimal   = interaction.options.getBoolean("minimal");
+                const page      = interaction.options.getInteger("page_num");
+                const evFilter  = interaction.options.getString("filter");
 
                 if (eventName && evFilter) {
                     return super.error(interaction, "Sorry, but you cannot use both name and filter. Please try again with just one of those options.");
