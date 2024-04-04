@@ -258,7 +258,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
@@ -2771,7 +2771,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -5247,7 +5247,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -7310,8 +7310,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7719,9 +7720,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },

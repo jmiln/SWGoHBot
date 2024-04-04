@@ -398,7 +398,7 @@ async function updatePatrons() {
             const user = users.find(user => user.id === pledge.relationships.patron.data.id);
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
-            if (!user) return;
+            if (!user) return console.log(`Patreon user ${user.attributes.full_name} vanished`);
 
             // Save this user's info to the db
             const newUser = await cache.put("swgohbot", "patrons", {id: pledge.relationships.patron.data.id}, {
@@ -413,7 +413,7 @@ async function updatePatrons() {
             });
 
             // If they don't have a discord id to work with, move on
-            if (!newUser.discordID) return;
+            if (!newUser.discordID) return console.log(`There's an issue getting the discord id from user (${newUser.full_name})`);
 
             if (newUser.declined_since || !newUser.amount_cents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
@@ -422,15 +422,17 @@ async function updatePatrons() {
                 // If they don't have bonusServer set (As it should be), move on
                 if (!userConf?.bonusServer?.length) return;
 
+                // If it is set, remove it
                 const {user: userRes, guild: guildRes} = await clearSupporterInfo({cache, userId: newUser.discordID});
 
                 // No issues, move on
-                if (!userRes?.error && !guildRes?.error) return;
+                if (!userRes?.error && !guildRes?.error) return console.log(`User ${newUser.discordID} has been ended their Patreon support`);
 
-                // If there are issues, log em
+                // If it somehow got here / there are issues, log em
                 console.error(`[dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`);
             } else {
-                // Make sure everything is set correctly
+                // If the user exists, and they're active, make sure everything is set correctly
+                // Make sure that if they have a bonus server set in their user settings, it's set properly in the given guild
                 const {user: userRes, guild: guildRes} = await ensureBonusServerSet({cache, userId: newUser.discordID, amount_cents: newUser.amount_cents});
 
                 // If there are no issues, move along
