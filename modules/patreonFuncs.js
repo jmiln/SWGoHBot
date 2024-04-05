@@ -15,8 +15,9 @@ module.exports = (Bot, client) => {
     // Check if a given user is a patron, and if so, return their info
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
-        if (userId === Bot.config.ownerid || (Bot.config.patrons && Bot.config.patrons.indexOf(userId) > -1)) {
-            const currentTierNum = getPatreonTier({amount_cents: userId === Bot.config.ownerid ? 1500 : honPat});
+        const permUser = Bot.config.patrons?.[userId];
+        if (userId === Bot.config.ownerid || (Bot.config.patrons && permUser)) {
+            const currentTierNum = getPatreonTier({amount_cents: userId === Bot.config.ownerid ? 1500 : permUser.amount_cents});
             const currentTier = patronTiers[currentTierNum];
             return {
                 playerTime: currentTier.playerTime,
@@ -65,7 +66,7 @@ module.exports = (Bot, client) => {
     async function getActivePatrons() {
         let patrons = await Bot.cache.get("swgohbot", "patrons", {});
         patrons = patrons.filter(p => !p.declined_since);
-        const others = Bot.config.patrons ? Bot.config.patrons.concat([Bot.config.ownerid]) : [Bot.config.ownerid];
+        const others = Object.keys(Bot.config.patrons) ? Object.keys(Bot.config.patrons).concat([Bot.config.ownerid]) : [Bot.config.ownerid];
         for (const u of others) {
             const user = patrons.find(p => p.discordID === u);
             if (!user) {
