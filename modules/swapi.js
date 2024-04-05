@@ -653,9 +653,7 @@ module.exports = (opts={}) => {
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
         }
-        if (!Array.isArray(skillArray)) {
-            skillArray = [skillArray];
-        }
+        if (!Array.isArray(skillArray)) skillArray = [skillArray];
 
         // All the skills should be loaded, so just get em from the cache
         if (opts.min) {
@@ -682,13 +680,13 @@ module.exports = (opts={}) => {
 
         for (const s of char.skillReferenceList) {
             let skill = await abilities([s.skillId], lang);
-            if (Array.isArray(skill)) {
-                skill = skill[0];
-            }
+            if (Array.isArray(skill)) skill = skill[0];
+
             if (!skill) {
+                console.log(s);
                 console.error("[swapi getCharacter] Missing ability - ");
                 console.error(s);
-                throw new Error("Missing character ability");
+                throw new Error(`Missing character ability ${s.skillId}`);
             }
             s.isZeta = skill.isZeta;
             s.isOmicron = skill.isOmicron;
