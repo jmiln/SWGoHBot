@@ -35,7 +35,7 @@ const SHIP_LOCATIONS = dataDir + "shipLocations.json";
 
 const JOURNEY_FILE  = dataDir + "journeyReqs.json";
 
-const RAID_NAMES     = dataDir + "raidNames.json";
+const RAID_NAMES_FILE     = dataDir + "raidNames.json";
 
 const META_FILE      = dataDir + "metadata.json";
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
@@ -50,8 +50,6 @@ let unitRecipeList = [];
 let unitShardList = [];
 const unitFactionMap = {};
 const unitDefIdMap = {};
-
-let locales = {};
 
 console.log("Starting data updater");
 
@@ -160,12 +158,12 @@ async function runGameDataUpdaters() {
     const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
     if (newCharLocs && JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
         log.push("Detected a change in character locations.");
-        saveFile(CHAR_LOCATIONS, newCharLocs);
+        await saveFile(CHAR_LOCATIONS, newCharLocs);
     }
     const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS);
     if (newShipLocs && JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
         log.push("Detected a change in ship locations.");
-        saveFile(SHIP_LOCATIONS, newShipLocs);
+        await saveFile(SHIP_LOCATIONS, newShipLocs);
     }
 
 
@@ -178,17 +176,13 @@ async function runGameDataUpdaters() {
     debugLog("Finished running gameData updaters");
 }
 
-function saveFile(filePath, jsonData, doPretty=true) {
+async function saveFile(filePath, jsonData, doPretty=true) {
     try {
-        if (doPretty) {
-            fs.writeFileSync(filePath, JSON.stringify(jsonData, null, 4), {encoding: "utf8"});
-        } else {
-            fs.writeFileSync(filePath, JSON.stringify(jsonData), {encoding: "utf8"});
-        }
-    } catch (err) {
-        if (err) {
-            console.log("ERROR in dataUpdater/saveFile: " + err);
-        }
+        const content = doPretty ? JSON.stringify(jsonData, null, 4) : JSON.stringify(jsonData);
+        await fs.promises.writeFile(filePath, content);
+        console.log("[dataUpdater/saveFile] Saved " + filePath);
+    } catch (error) {
+        console.log(`[dataUpdater/saveFile] ERROR while saving file ${filePath}: ${error.message}`);
     }
 }
 
@@ -352,7 +346,7 @@ function processModResults(unitsIn) {
 }
 
 async function mergeModsToCharacters(modsIn) {
-    const characters = await JSON.parse(fs.readFileSync(CHAR_FILE));
+    const characters = await fs.promises.readFile(CHAR_FILE, "utf-8").then(JSON.parse);
 
     for (const defId of Object.keys(modsIn)) {
         const thisChar = characters.find(ch => ch.uniqueName === defId);
@@ -450,7 +444,7 @@ async function updatePatrons() {
     }
 }
 
-async function updateLocs(unitListFile, currentLocFile) {
+async function updateLocs(unitListFile, currentLocFile, locales) {
     debugLog("Updating unit locations");
     const [currentUnits, currentLocs] = await Promise.all([
         fs.promises.readFile(unitListFile, "utf-8").then(JSON.parse),
@@ -663,33 +657,61 @@ async function getMostRecentGameData(version) {
 }
 
 async function updateGameData() {
-    if (!metadataFile.latestGamedataVersion) return console.error("[updateGameData] Missing latestGamedataVersion from metadata");
-    const gameData = await getMostRecentGameData(metadataFile.latestGamedataVersion);
+    try {
+        if (!metadataFile.latestGamedataVersion) {
+            throw new Error("[updateGameData] Missing latestGamedataVersion from metadata");
+        }
 
-    debugLog("Running main updaters");
+        debugLog("Running main updaters");
 
-    locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
+        const gameData = await getMostRecentGameData(metadataFile.latestGamedataVersion);
 
-    await processAbilities(gameData.ability, gameData.skill);
-    debugLog("Finished processing Abilities");
-    await processCategories(gameData.category);
-    debugLog("Finished processing Categories");
-    await processEquipment(gameData.equipment);
-    debugLog("Finished processing Equipment");
-    await processMaterials(gameData.material);
-    debugLog("Finished processing Materials");
-    await processModData(gameData.statMod);
-    debugLog("Finished processing Mod data");
-    await processRecipes(gameData.recipe);
-    debugLog("Finished processing Recipes");
-    await processUnits(gameData.units);
-    debugLog("Finished processing Units");
-    await processJourneyReqs(gameData);
-    debugLog("Finished processing Journey Reqs");
-    await saveRaidNames();
-    debugLog("Finished processing Raid Names");
+        await processGameData(gameData, metadataFile);
 
-    /**
+        return "Update successful";
+    } catch (error) {
+        console.error("[updateGameData] Error:", error);
+        throw error;
+    }
+
+}
+async function processGameData(gameData, metadataFile, locales) {
+    try {
+        locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
+
+        await processAbilities(gameData.ability, gameData.skill, locales);
+        debugLog("Finished processing Abilities");
+
+        await processCategories(gameData.category, locales);
+        debugLog("Finished processing Categories");
+
+        await processEquipment(gameData.equipment, locales);
+        debugLog("Finished processing Equipment");
+
+        await processMaterials(gameData.material);
+        debugLog("Finished processing Materials");
+
+        await processModData(gameData.statMod,);
+        debugLog("Finished processing Mod data");
+
+        await processRecipes(gameData.recipe, locales);
+        debugLog("Finished processing Recipes");
+
+        await processUnits(gameData.units, locales);
+        debugLog("Finished processing Units");
+
+        await processJourneyReqs(gameData);
+        debugLog("Finished processing Journey Reqs");
+
+        await saveRaidNames(locales);
+        debugLog("Finished processing Raid Names");
+    } catch (error) {
+        console.error("[processGameData] Error:", error);
+        throw error;
+    }
+}
+
+/**
     * function
     * @param {Object[]} rawDataIn  - The array of objects to localize
     * @param {string}   dbTarget   - The mongo table to insert into
@@ -697,543 +719,542 @@ async function updateGameData() {
     * @param {string}   dbIdKey    - The key to use as the unique db key
     * @param {string[]} langList   - An array of localization languages
     */
-    async function processLocalization(rawDataIn, dbTarget, targetKeys, dbIdKey="id", langList) {
-        if (!langList) langList = Object.keys(locales);
-        const bulkWriteArr = [];
-        for (const lang of langList) {    // For each language that we need to localize for...
-            const dataIn = structuredClone(rawDataIn);
-            for (const data of dataIn) {    // For each chunk of the dataIn (ability, gear, recipes, unit, etc)
-                data.language = lang;
-                for (const target of targetKeys) {      // For each of the specified keys of each chunk
-                    const localizedData = Array.isArray(data[target]) ?
-                        data[target].map(entry => locales[lang][entry] || entry) :
-                        locales[lang][data[target]] || data[target];
+async function processLocalization(rawDataIn, dbTarget, targetKeys, dbIdKey="id", locales, langList=null) {
+    if (!langList) langList = Object.keys(locales);
+    const bulkWriteArr = [];
+    for (const lang of langList) {    // For each language that we need to localize for...
+        const dataIn = structuredClone(rawDataIn);
+        for (const data of dataIn) {    // For each chunk of the dataIn (ability, gear, recipes, unit, etc)
+            data.language = lang;
+            for (const target of targetKeys) {      // For each of the specified keys of each chunk
+                const localizedData = Array.isArray(data[target]) ?
+                    data[target].map(entry => locales[lang][entry] || entry) :
+                    locales[lang][data[target]] || data[target];
 
-                    data[target] = localizedData;
-                }
-                bulkWriteArr.push({
-                    updateOne: {
-                        filter: { [dbIdKey]: data[dbIdKey], language: lang }, // Filter by the given key, and language
-                        update: { $set: data }, // Update with the localized data
-                        upsert: true // Insert if document doesn't exist
-                    }
-                });
+                data[target] = localizedData;
             }
-            // console.log(`Finished localizing ${dbTarget} for ${lang}`);
-        }
-        await cache.putMany(config.mongodb.swapidb, dbTarget, bulkWriteArr);
-        // console.log(`Finished localizing ${dbTarget}`);
-    }
-
-    async function saveRaidNames() {
-        const langList = Object.keys(locales);
-
-        // The keys that match in the lang files, and the keys that the guild raids give
-        const raidKeys = {
-            RAID_AAT_NAME: "aat",
-            RAID_RANCOR_NAME: "rancor",
-            RAID_RANCOR_CHALLENGE_NAME: "rancor_challenge",
-            RAID_TRIUMVIRATE_NAME: "sith_raid",
-            MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon",
-            MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic",
-            MISSION_GUILDRAIDS_SPEEDERBIKE_NAME: "speederbike"
-        };
-        const out = {};
-        for (const lang of langList) {
-            out[lang] = {};
-            for (const [key, value] of Object.entries(raidKeys)) {
-                out[lang][value] = locales[lang][key];
-            }
-        }
-        saveFile(RAID_NAMES, out);
-    }
-
-    async function processAbilities(abilityIn, skillIn) {
-        const abilitiesOut = [];
-        const skillMap = {};
-
-        for (const ability of abilityIn) {
-            const skill = skillIn.find(sk => sk.abilityReference === ability.id);
-            if (!skill) continue;
-
-            const abTiers = ability.tier?.map(ti => ti.descKey) || [];
-            abilitiesOut.push({
-                id: ability.id,
-                type: ability.type,
-                nameKey: ability.nameKey,
-                descKey: abTiers.slice(-1)[0] || ability.descKey,
-                cooldown: ability.cooldown,
-                abilityTiers: abTiers,
-                skillId: skill.id,
-                tierList: skill.tier.map(t => t.recipeId),
-                isOmicron: skill.tier.some(t => t.isOmicronTier),
-                omicronTier: skill.tier.filter(t => t.isOmicronTier).length || null,
-                isZeta: skill.isZeta || false,
-                zetaTier: skill.isZeta ? (skill.tier.length - (skill.tier.some(t => t.isOmicronTier) ? 1 : 0)) : null
-            });
-
-            skillMap[skill.id] = {
-                nameKey: ability.nameKey,
-                isZeta: skill.isZeta,
-                tiers: skill.tier.length,
-                abilityId: skill.abilityReference
-            };
-        }
-        await saveFile(dataDir + "skillMap.json", skillMap, false);
-        await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", null);
-    }
-
-    async function processCategories(catsIn) {
-        const catMapOut = catsIn
-            .filter(cat => cat.visible || cat.id.startsWith("alignment"))
-            .map(({id, descKey}) => ({id, descKey}));
-
-        // await saveFile(dataDir + "catMap.json", catMapOut, false);
-        await processLocalization(catMapOut, "categories", ["descKey"], "id", null);
-    }
-
-    async function processEquipment(equipmentIn) {
-        const mappedEquipmentList = equipmentIn.map(({ id, nameKey, recipeId, mark }) => ({ id, nameKey, recipeId, mark }));
-        await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", null);
-    }
-
-    async function processMaterials(materialIn) {
-        unitShardList = [];
-        const bulkWriteArr = [];
-
-        for (const mat of materialIn) {
-            if (!mat.id.startsWith("unitshard")) continue;
-
-            const unitShard = {
-                id: mat.id,
-                iconKey: mat.iconKey.replace(/^tex\./, "")
-            };
-            unitShardList.push(unitShard);
-
             bulkWriteArr.push({
                 updateOne: {
-                    filter: { id: mat.id },
-                    update: {
-                        $set: {
-                            id: mat.id,
-                            lookupMissionList: mat.lookupMission.map(mis => mis.missionIdentifier),
-                            raidLookupList: mat.raidLookup.map(mis => mis.missionIdentifier),
-                            iconKey: mat.iconKey
-                        }
-                    },
-                    upsert: true
+                    filter: { [dbIdKey]: data[dbIdKey], language: lang }, // Filter by the given key, and language
+                    update: { $set: data }, // Update with the localized data
+                    upsert: true // Insert if document doesn't exist
                 }
             });
         }
-        await cache.putMany(config.mongodb.swapidb, "materials", bulkWriteArr.filter(Boolean));
+        // console.log(`Finished localizing ${dbTarget} for ${lang}`);
     }
+    await cache.putMany(config.mongodb.swapidb, dbTarget, bulkWriteArr);
+    // console.log(`Finished localizing ${dbTarget}`);
+}
 
-    async function processModData(modIn) {
-        // gameData.statMod  ->  This is used to get slot, set, and pip of each mod
-        const modsOut = {};
-        modIn.forEach(({ id, rarity, setId, slot })  => {
-            modsOut[id] = {
-                pips: rarity,
-                set:  setId,
-                slot: slot
-            };
+async function saveRaidNames(locales) {
+    const langList = Object.keys(locales);
+
+    // The keys that match in the lang files, and the keys that the guild raids give
+    const raidKeys = {
+        RAID_AAT_NAME: "aat",
+        RAID_RANCOR_NAME: "rancor",
+        RAID_RANCOR_CHALLENGE_NAME: "rancor_challenge",
+        RAID_TRIUMVIRATE_NAME: "sith_raid",
+        MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon",
+        MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic",
+        MISSION_GUILDRAIDS_SPEEDERBIKE_NAME: "speederbike"
+    };
+    const out = {};
+    for (const lang of langList) {
+        out[lang] = {};
+        for (const [key, value] of Object.entries(raidKeys)) {
+            out[lang][value] = locales[lang][key];
+        }
+    }
+    await saveFile(RAID_NAMES_FILE, out);
+}
+
+async function processAbilities(abilityIn, skillIn, locales) {
+    const abilitiesOut = [];
+    const skillMap = {};
+
+    for (const ability of abilityIn) {
+        const skill = skillIn.find(sk => sk.abilityReference === ability.id);
+        if (!skill) continue;
+
+        const abTiers = ability.tier?.map(ti => ti.descKey) || [];
+        abilitiesOut.push({
+            id: ability.id,
+            type: ability.type,
+            nameKey: ability.nameKey,
+            descKey: abTiers.slice(-1)[0] || ability.descKey,
+            cooldown: ability.cooldown,
+            abilityTiers: abTiers,
+            skillId: skill.id,
+            tierList: skill.tier.map(t => t.recipeId),
+            isOmicron: skill.tier.some(t => t.isOmicronTier),
+            omicronTier: skill.tier.filter(t => t.isOmicronTier).length || null,
+            isZeta: skill.isZeta || false,
+            zetaTier: skill.isZeta ? (skill.tier.length - (skill.tier.some(t => t.isOmicronTier) ? 1 : 0)) : null
         });
 
-        modMap = modsOut;
-        await saveFile(dataDir + "modMap.json", modsOut, false);
+        skillMap[skill.id] = {
+            nameKey: ability.nameKey,
+            isZeta: skill.isZeta,
+            tiers: skill.tier.length,
+            abilityId: skill.abilityReference
+        };
     }
+    await saveFile(dataDir + "skillMap.json", skillMap, false);
+    await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales);
+}
 
-    async function processRecipes(recipeIn) {
-        const mappedRecipeList = [];
-        unitRecipeList = [];
+async function processCategories(catsIn, locales) {
+    const catMapOut = catsIn
+        .filter(cat => cat.visible || cat.id.startsWith("alignment"))
+        .map(({id, descKey}) => ({id, descKey}));
 
-        for (const recipe of recipeIn) {
-            const { id, descKey, ingredients } = recipe;
-            const filteredIngredients = ingredients.filter(ing => ing.id !== "GRIND");
+    // await saveFile(dataDir + "catMap.json", catMapOut, false);
+    await processLocalization(catMapOut, "categories", ["descKey"], "id", locales, null);
+}
 
-            // Add recipe to mappedRecipeList
-            mappedRecipeList.push({
+async function processEquipment(equipmentIn, locales) {
+    const mappedEquipmentList = equipmentIn.map(({ id, nameKey, recipeId, mark }) => ({ id, nameKey, recipeId, mark }));
+    await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales, null);
+}
+
+async function processMaterials(materialIn) {
+    unitShardList = [];
+    const bulkWriteArr = [];
+
+    for (const mat of materialIn) {
+        if (!mat.id.startsWith("unitshard")) continue;
+
+        const unitShard = {
+            id: mat.id,
+            iconKey: mat.iconKey.replace(/^tex\./, "")
+        };
+        unitShardList.push(unitShard);
+
+        bulkWriteArr.push({
+            updateOne: {
+                filter: { id: mat.id },
+                update: {
+                    $set: {
+                        id: mat.id,
+                        lookupMissionList: mat.lookupMission.map(mis => mis.missionIdentifier),
+                        raidLookupList: mat.raidLookup.map(mis => mis.missionIdentifier),
+                        iconKey: mat.iconKey
+                    }
+                },
+                upsert: true
+            }
+        });
+    }
+    await cache.putMany(config.mongodb.swapidb, "materials", bulkWriteArr.filter(Boolean));
+}
+
+async function processModData(modIn) {
+    // gameData.statMod  ->  This is used to get slot, set, and pip of each mod
+    const modsOut = {};
+    modIn.forEach(({ id, rarity, setId, slot })  => {
+        modsOut[id] = {
+            pips: rarity,
+            set:  setId,
+            slot: slot
+        };
+    });
+
+    modMap = modsOut;
+    await saveFile(dataDir + "modMap.json", modsOut, false);
+}
+
+async function processRecipes(recipeIn, locales) {
+    const mappedRecipeList = [];
+    unitRecipeList = [];
+
+    for (const recipe of recipeIn) {
+        const { id, descKey, ingredients } = recipe;
+        const filteredIngredients = ingredients.filter(ing => ing.id !== "GRIND");
+
+        // Add recipe to mappedRecipeList
+        mappedRecipeList.push({
+            id,
+            descKey,
+            ingredients: filteredIngredients
+        });
+
+        // Add unitshard information to unitRecipeList
+        const unitshardList = filteredIngredients.filter(ing => ing.id?.startsWith("unitshard"));
+        if (unitshardList.length) {
+            unitRecipeList.push({
                 id,
-                descKey,
-                ingredients: filteredIngredients
+                unitshard: unitshardList[0].id
             });
-
-            // Add unitshard information to unitRecipeList
-            const unitshardList = filteredIngredients.filter(ing => ing.id?.startsWith("unitshard"));
-            if (unitshardList.length) {
-                unitRecipeList.push({
-                    id,
-                    unitshard: unitshardList[0].id
-                });
-            }
         }
-
-        await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", ["eng_us"]);
     }
 
+    await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", ["eng_us"], locales);
+}
 
-    async function processUnits(unitsIn) {
-        const filteredList = unitsIn.filter(unit => {
-            if (unit.rarity !== 7 || !unit.obtainable || (unit.obtainableTime !== 0 && unit.obtainableTime !== "0")) return false;
-            return true;
-        }).map(unit => {
+
+async function processUnits(unitsIn, locales) {
+    const filteredList = unitsIn.filter(unit => {
+        if (unit.rarity !== 7 || !unit.obtainable || (unit.obtainableTime !== 0 && unit.obtainableTime !== "0")) return false;
+        return true;
+    }).map(unit => {
+        return {
+            baseId: unit.baseId, // uniqueName
+            nameKey: unit.nameKey, // name
+            skillReferenceList: unit.skillReference,
+            categoryIdList: unit.categoryId,
+            combatType: unit.combatType,
+            unitTierList: unit.unitTier?.map(tier => {
+                return {
+                    tier: tier.tier,
+                    equipmentSetList: tier.equipmentSet
+                };
+            }),
+            crewList: unit.crew,
+            creationRecipeReference: unit.creationRecipeReference,
+            legend: unit?.legend,   // True if GL?
+        };
+    });
+
+    // Put all the baseId and english names together for later use with the crew
+    for (const unit of filteredList) {
+        unitDefIdMap[unit.baseId] = locales["eng_us"][unit.nameKey];
+    }
+
+    // Copy the list so we don't alter the original for each of the functions
+    await unitsToCharacterDB (JSON.parse(JSON.stringify(filteredList)));
+    await processLocalization(JSON.parse(JSON.stringify(filteredList)), "units", ["nameKey"], "baseId", locales);
+    await unitsToUnitMapFile (JSON.parse(JSON.stringify(filteredList)));
+    await unitsToUnitFiles   (JSON.parse(JSON.stringify(filteredList)));
+}
+
+async function unitsToUnitFiles(filteredList, locales) {
+    const oldCharFile = await fs.promises.readFile(CHAR_FILE, "utf-8").then(JSON.parse);
+    const oldShipFile = await fs.promises.readFile(SHIP_FILE, "utf-8").then(JSON.parse);
+    const eng = locales["eng_us"];
+
+    const charactersOut = [];
+    const shipsOut = [];
+
+    await Promise.all(filteredList.map(async unit => {
+        const charUIName = getCharUIName(unit.creationRecipeReference);
+        const name = eng[unit.nameKey];
+        const unitObj = await createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile);
+        if (unit.combatType === CHAR_COMBAT_TYPE) {
+            charactersOut.push(unitObj);
+        } else if (unit.combatType === SHIP_COMBAT_TYPE) {
+            shipsOut.push(unitObj);
+        } else {
+            console.error("Bad combatType for:", unitObj);
+        }
+    }));
+
+    await Promise.all([
+        saveFile(CHAR_FILE, sortByName(charactersOut)),
+        saveFile(SHIP_FILE, sortByName(shipsOut))
+    ]);
+
+    console.log("Unit files updated");
+}
+
+async function createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile) {
+    const oldFile = unit.combatType === CHAR_COMBAT_TYPE ? oldCharFile : oldShipFile;
+    const oldUnit = oldFile.find(u => u.uniqueName === unit.baseId);
+
+    let unitObj;
+    if (oldUnit) {
+        unitObj = oldUnit;
+        delete unitObj.nameVariant;
+        unitObj.avatarName = charUIName;
+        unitObj.avatarURL = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
+    } else {
+        unitObj = await createNewUnit(unit, charUIName, name, unit.combatType);
+    }
+    return unitObj;
+}
+
+async function createNewUnit(unit, charUIName, name, combatType) {
+    const unitFactionsObj = await cache.get(config.mongodb.swapidb, "categories", {id: {$in: unit.categoryIdList}, language: "eng_us"}, {id: 1, descKey: 1, _id: 0});
+    const { factions, side } = getSide(unitFactionsObj);
+    return {
+        name,
+        uniqueName: unit.baseId,
+        aliases: [name],
+        avatarName: charUIName,
+        avatarURL: `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
+        side,
+        factions: factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
+        mods: combatType === CHAR_COMBAT_TYPE ? {} : null,
+        crew: combatType === SHIP_COMBAT_TYPE && unit.crewList?.length ? unit.crewList.map(cr => unitDefIdMap[cr.unitId]) : []
+    };
+}
+
+function getCharUIName(creationRecipeId) {
+    const thisRecipe = unitRecipeList.find(rec => rec.id === creationRecipeId);
+    const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe?.unitshard);
+    return thisUnitShard?.iconKey;
+}
+
+function getSide(factions) {
+    for (const side of ["dark", "light", "neutral"]) {
+        const found = factions.find(fact => fact.id === `alignment_${side}`);
+        if (found) {
+            const filteredFactions = factions.filter(fact => fact !== found);
             return {
-                baseId: unit.baseId, // uniqueName
-                nameKey: unit.nameKey, // name
-                skillReferenceList: unit.skillReference,
-                categoryIdList: unit.categoryId,
-                combatType: unit.combatType,
-                unitTierList: unit.unitTier?.map(tier => {
-                    return {
-                        tier: tier.tier,
-                        equipmentSetList: tier.equipmentSet
-                    };
-                }),
-                crewList: unit.crew,
-                creationRecipeReference: unit.creationRecipeReference,
-                legend: unit?.legend,   // True if GL?
+                side: side,
+                factions: filteredFactions.map(fact => fact.descKey)
             };
-        });
+        }
+    }
+}
 
-        // Put all the baseId and english names together for later use with the crew
-        for (const unit of filteredList) {
-            unitDefIdMap[unit.baseId] = locales["eng_us"][unit.nameKey];
+function sortByName(list) {
+    return list.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
+}
+
+async function unitsToCharacterDB(unitsIn) {
+    const catList = new Set(["alignment", "profession", "affiliation", "role", "shipclass"]);
+    const ignoreSet = new Set([
+        "fomilitary",      "galactic",         "order66",       "sithlord",       "palp", "rebfalconcrew",
+        "smuggled",        "foexecutionsquad", "gacs2fireteam", "jacket",         "el16", "ptisfalconcrew",
+        "forcelightning",  "doubleblade",      "kenobi",        "translator",     "rey",  "veteransmuggler",
+        "crimsondawn",     "sabacc",           "dathbro",       "prisfalconcrew", "kylo", "capital",
+        "resistancexwing", "fotie",            "millennium"
+    ]);
+    const factionMap = {
+        badbatch       : "bad batch",        bountyhunter   : "bounty hunter", capitalship    : "capital ship",
+        cargoship      : "cargo ship",       clonetrooper   : "clone trooper", dark           : "dark side",
+        firstorder     : "first order",      huttcartel     : "hutt cartel",   imperialremnant: "imerpial remnant",
+        imperialtrooper: "imperial trooper", inquisitoriu   : "inquisitorius", light          : "light side",
+        oldrepublic    : "old republic",     rebelfighter   : "rebel fighter", republic       : "galactic republic",
+        rogue          : "rogue one",        sithempire     : "sith empire",
+    };
+
+    // Process the units list to go into the characters db table
+    for (const unit of unitsIn) {
+        const factions = new Set();
+        const crewIds = [];
+        const skillReferences = unit.skillReferenceList || [];
+
+        delete unit.nameKey;
+        delete unit.creationRecipeReference;
+
+        if (!unit.categoryIdList) {
+            console.error("Missing baseCharacter abilities for " + unit.baseId);
+            continue;
+        }
+        for (const category of unit.categoryIdList) {
+            const [prefix, faction] = category.split("_");
+            if (catList.has(prefix) && !ignoreSet.has(faction)) {
+                factions.add(toProperCase(factionMap[faction] || faction));
+            }
         }
 
-        // Copy the list so we don't alter the original for each of the functions
-        await unitsToCharacterDB (JSON.parse(JSON.stringify(filteredList)));
-        await processLocalization(JSON.parse(JSON.stringify(filteredList)), "units", ["nameKey"], "baseId", null);
-        await unitsToUnitMapFile (JSON.parse(JSON.stringify(filteredList)));
-        await unitsToUnitFiles   (JSON.parse(JSON.stringify(filteredList)));
+        unit.factions = Array.from(factions);
+        delete unit.categoryIdList;
+
+        if (unit.crewList?.length) {
+            for (const crewChar of unit.crewList) {
+                crewIds.push(crewChar.unitId);
+                skillReferences.push(crewChar.skillReference);
+            }
+        }
+
+        delete unit.crewList;
+        unit.crew = crewIds;
+        unit.skillReferenceList = skillReferences;
+        unitFactionMap[unit.baseId] = unit.factions;
+        await cache.put(config.mongodb.swapidb, "characters", {baseId: unit.baseId}, unit);
+    }
+}
+
+async function unitsToUnitMapFile(unitsIn) {
+    // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
+    const unitsOut = unitsIn.reduce((acc, unit) => {
+        acc[unit.baseId] = {
+            nameKey: unit.nameKey,
+            combatType: unit.combatType,
+            crew: unit.crewList.map(cr => ({
+                skillReferenceList: cr.skillReference,
+                unitId: cr.unitId,
+                slot: cr.slot
+            }))
+        };
+        return acc;
+    }, {});
+
+    unitMap = unitsOut;
+    await saveFile(dataDir + "unitMap.json", unitsOut, false);
+}
+
+async function getLocalizationData(bundleVersion) {
+    const IGNORE_KEYS = ["datacron", "anniversary", "promo", "subscription", "marquee"];
+    try {
+        const localeData = await comlinkStub.getLocalizationBundle( bundleVersion, true );
+        delete localeData["Loc_Key_Mapping.txt"];
+
+        const localeOut = {};
+        for (const [lang, content] of Object.entries(localeData)) {
+
+            const out = {};
+            const langKey = lang.replace(/^Loc_|\.txt$/gi, "").toLowerCase();
+
+            for (const row of content.split("\n")) {
+                if (IGNORE_KEYS.some(ign => row.toLowerCase().includes(ign))) continue;
+                const res = processLocalizationLine(row);
+                if (res) {
+                    const [key, val] = res;
+                    if (key && val) out[key] = val;
+                }
+            }
+            localeOut[langKey] = out;
+        }
+        return localeOut;
+    } catch (error) {
+        console.error("[getLocalizationData] Error fetching or processing localization data:", error);
+        throw error; // Rethrow the error for further handling
+    }
+}
+
+function processLocalizationLine(line) {
+    if (line.startsWith("#")) return;
+    let [ key, val ] = line.split(/\|/g).map(s => s.trim());
+    if (!key || !val) return;
+    val = val
+        .replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (m,p1) => p1)
+        .replace(/\\n/g, " ")
+        .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+    return [key, val];
+}
+
+async function processJourneyReqs(gameData) {
+    const characters = await fs.promises.readFile(CHAR_FILE, "utf-8").then(JSON.parse);
+    const ships = await fs.promises.readFile(SHIP_FILE, "utf-8").then(JSON.parse);
+    let oldReqs = {};
+    // Grab the existing saved data if available
+    if (fs.existsSync(JOURNEY_FILE)) {
+        oldReqs = JSON.parse(fs.readFileSync(JOURNEY_FILE, "utf-8"));
     }
 
-    async function unitsToUnitFiles(filteredList) {
-        const oldCharFile = await fs.promises.readFile(CHAR_FILE, "utf-8").then(JSON.parse);
-        const oldShipFile = await fs.promises.readFile(SHIP_FILE, "utf-8").then(JSON.parse);
-        const eng = locales["eng_us"];
-
-        const charactersOut = [];
-        const shipsOut = [];
-
-        await Promise.all(filteredList.map(async unit => {
-            const charUIName = getCharUIName(unit.creationRecipeReference);
-            const name = eng[unit.nameKey];
-            const unitObj = await createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile);
-            if (unit.combatType === CHAR_COMBAT_TYPE) {
-                charactersOut.push(unitObj);
-            } else if (unit.combatType === SHIP_COMBAT_TYPE) {
-                shipsOut.push(unitObj);
-            } else {
-                console.error("Bad combatType for:", unitObj);
-            }
+    // Grab all the units that have activation requirements to process
+    const unitGuides = gameData.unitGuideDefinition
+        .filter(g => g.additionalActivationRequirementId)
+        .map(g => ({
+            defId: g.unitBaseId,
+            guideId: g.additionalActivationRequirementId
         }));
 
-        await Promise.all([
-            saveFile(CHAR_FILE, sortByName(charactersOut)),
-            saveFile(SHIP_FILE, sortByName(shipsOut))
-        ]);
-
-        console.log("Unit files updated");
-    }
-
-    async function createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile) {
-        const oldFile = unit.combatType === CHAR_COMBAT_TYPE ? oldCharFile : oldShipFile;
-        const oldUnit = oldFile.find(u => u.uniqueName === unit.baseId);
-
-        let unitObj;
-        if (oldUnit) {
-            unitObj = oldUnit;
-            delete unitObj.nameVariant;
-            unitObj.avatarName = charUIName;
-            unitObj.avatarURL = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
-        } else {
-            unitObj = await createNewUnit(unit, charUIName, name, unit.combatType);
-        }
-        return unitObj;
-    }
-
-    async function createNewUnit(unit, charUIName, name, combatType) {
-        const unitFactionsObj = await cache.get(config.mongodb.swapidb, "categories", {id: {$in: unit.categoryIdList}, language: "eng_us"}, {id: 1, descKey: 1, _id: 0});
-        const { factions, side } = getSide(unitFactionsObj);
-        return {
-            name,
-            uniqueName: unit.baseId,
-            aliases: [name],
-            avatarName: charUIName,
-            avatarURL: `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
-            side,
-            factions: factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
-            mods: combatType === CHAR_COMBAT_TYPE ? {} : null,
-            crew: combatType === SHIP_COMBAT_TYPE && unit.crewList?.length ? unit.crewList.map(cr => unitDefIdMap[cr.unitId]) : []
-        };
-    }
-
-    function getCharUIName(creationRecipeId) {
-        const thisRecipe = unitRecipeList.find(rec => rec.id === creationRecipeId);
-        const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe?.unitshard);
-        return thisUnitShard?.iconKey;
-    }
-
-    function getSide(factions) {
-        for (const side of ["dark", "light", "neutral"]) {
-            const found = factions.find(fact => fact.id === `alignment_${side}`);
-            if (found) {
-                const filteredFactions = factions.filter(fact => fact !== found);
-                return {
-                    side: side,
-                    factions: filteredFactions.map(fact => fact.descKey)
-                };
-            }
-        }
-    }
-
-    function sortByName(list) {
-        return list.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
-    }
-
-    async function unitsToCharacterDB(unitsIn) {
-        const catList = new Set(["alignment", "profession", "affiliation", "role", "shipclass"]);
-        const ignoreSet = new Set([
-            "fomilitary",      "galactic",         "order66",       "sithlord",       "palp", "rebfalconcrew",
-            "smuggled",        "foexecutionsquad", "gacs2fireteam", "jacket",         "el16", "ptisfalconcrew",
-            "forcelightning",  "doubleblade",      "kenobi",        "translator",     "rey",  "veteransmuggler",
-            "crimsondawn",     "sabacc",           "dathbro",       "prisfalconcrew", "kylo", "capital",
-            "resistancexwing", "fotie",            "millennium"
-        ]);
-        const factionMap = {
-            badbatch       : "bad batch",        bountyhunter   : "bounty hunter", capitalship    : "capital ship",
-            cargoship      : "cargo ship",       clonetrooper   : "clone trooper", dark           : "dark side",
-            firstorder     : "first order",      huttcartel     : "hutt cartel",   imperialremnant: "imerpial remnant",
-            imperialtrooper: "imperial trooper", inquisitoriu   : "inquisitorius", light          : "light side",
-            oldrepublic    : "old republic",     rebelfighter   : "rebel fighter", republic       : "galactic republic",
-            rogue          : "rogue one",        sithempire     : "sith empire",
+    // For each character in the guide that had useful data, process their requirements
+    const unitGuideOut = {};
+    for (const unit of unitGuides) {
+        const tempOut = {
+            guideId: unit.guideId,
+            type: "AUTO",
+            reqs: []
         };
 
-        // Process the units list to go into the characters db table
-        for (const unit of unitsIn) {
-            const factions = new Set();
-            const crewIds = [];
-            const skillReferences = unit.skillReferenceList || [];
+        // For each required character, save the defId, the required stat, and it's level
+        const reqs = gameData.requirement.find(req => req.id === unit.guideId).requirementItem;
+        for (const req of reqs) {
+            const evs = gameData.challenge.find(chal => chal.id === req.id)?.task;
+            if (!evs) continue;
 
-            delete unit.nameKey;
-            delete unit.creationRecipeReference;
-
-            if (!unit.categoryIdList) {
-                console.error("Missing baseCharacter abilities for " + unit.baseId);
-                continue;
-            }
-            for (const category of unit.categoryIdList) {
-                const [prefix, faction] = category.split("_");
-                if (catList.has(prefix) && !ignoreSet.has(faction)) {
-                    factions.add(toProperCase(factionMap[faction] || faction));
-                }
-            }
-
-            unit.factions = Array.from(factions);
-            delete unit.categoryIdList;
-
-            if (unit.crewList?.length) {
-                for (const crewChar of unit.crewList) {
-                    crewIds.push(crewChar.unitId);
-                    skillReferences.push(crewChar.skillReference);
-                }
-            }
-
-            delete unit.crewList;
-            unit.crew = crewIds;
-            unit.skillReferenceList = skillReferences;
-            unitFactionMap[unit.baseId] = unit.factions;
-            await cache.put(config.mongodb.swapidb, "characters", {baseId: unit.baseId}, unit);
-        }
-    }
-
-    async function unitsToUnitMapFile(unitsIn) {
-        // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
-        const unitsOut = unitsIn.reduce((acc, unit) => {
-            acc[unit.baseId] = {
-                nameKey: unit.nameKey,
-                combatType: unit.combatType,
-                crew: unit.crewList.map(cr => ({
-                    skillReferenceList: cr.skillReference,
-                    unitId: cr.unitId,
-                    slot: cr.slot
-                }))
-            };
-            return acc;
-        }, {});
-
-        unitMap = unitsOut;
-        await saveFile(dataDir + "unitMap.json", unitsOut, false);
-    }
-
-    async function getLocalizationData(bundleVersion) {
-        const IGNORE_KEYS = ["datacron", "anniversary", "promo", "subscription", "marquee"];
-        try {
-            const localeData = await comlinkStub.getLocalizationBundle( bundleVersion, true );
-            delete localeData["Loc_Key_Mapping.txt"];
-
-            const localeOut = {};
-            for (const [lang, content] of Object.entries(localeData)) {
-
-                const out = {};
-                const langKey = lang.replace(/^Loc_|\.txt$/gi, "").toLowerCase();
-
-                for (const row of content.split("\n")) {
-                    if (IGNORE_KEYS.some(ign => row.toLowerCase().includes(ign))) continue;
-                    const res = processLocalizationLine(row);
-                    if (res) {
-                        const [key, val] = res;
-                        if (key && val) out[key] = val;
-                    }
-                }
-                localeOut[langKey] = out;
-            }
-            return localeOut;
-        } catch (error) {
-            console.error("[getLocalizationData] Error fetching or processing localization data:", error);
-            throw error; // Rethrow the error for further handling
-        }
-    }
-
-    function processLocalizationLine(line) {
-        if (line.startsWith("#")) return;
-        let [ key, val ] = line.split(/\|/g).map(s => s.trim());
-        if (!key || !val) return;
-        val = val
-            .replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (m,p1) => p1)
-            .replace(/\\n/g, " ")
-            .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
-        return [key, val];
-    }
-
-    async function processJourneyReqs(gameData) {
-        const characters = await JSON.parse(fs.readFileSync(CHAR_FILE));
-        const ships = await JSON.parse(fs.readFileSync(SHIP_FILE));
-        let oldReqs = {};
-        // Grab the existing saved data if available
-        if (fs.existsSync(JOURNEY_FILE)) {
-            oldReqs = JSON.parse(fs.readFileSync(JOURNEY_FILE, "utf-8"));
-        }
-
-        // Grab all the units that have activation requirements to process
-        const unitGuides = gameData.unitGuideDefinition
-            .filter(g => g.additionalActivationRequirementId)
-            .map(g => ({
-                defId: g.unitBaseId,
-                guideId: g.additionalActivationRequirementId
-            }));
-
-        // For each character in the guide that had useful data, process their requirements
-        const unitGuideOut = {};
-        for (const unit of unitGuides) {
-            const tempOut = {
-                guideId: unit.guideId,
-                type: "AUTO",
-                reqs: []
-            };
-
-            // For each required character, save the defId, the required stat, and it's level
-            const reqs = gameData.requirement.find(req => req.id === unit.guideId).requirementItem;
-            for (const req of reqs) {
-                const evs = gameData.challenge.find(chal => chal.id === req.id)?.task;
-                if (!evs) continue;
-
-                for (const ev of evs) {
-                    const splitDesc = ev.descKey.split("_");
-                    const tier = parseInt(splitDesc.pop(), 10);
-                    const type = splitDesc.pop();
-                    const defId = ev?.actionLinkDef?.link.split("=").pop();
-                    if (defId) {
-                        if (ships.find(sh => sh.uniqueName === defId)) {
-                            tempOut.reqs.push({defId, type, tier, ship: true});
-                        } else {
-                            tempOut.reqs.push({defId, type, tier});
-                        }
+            for (const ev of evs) {
+                const splitDesc = ev.descKey.split("_");
+                const tier = parseInt(splitDesc.pop(), 10);
+                const type = splitDesc.pop();
+                const defId = ev?.actionLinkDef?.link.split("=").pop();
+                if (defId) {
+                    if (ships.find(sh => sh.uniqueName === defId)) {
+                        tempOut.reqs.push({defId, type, tier, ship: true});
+                    } else {
+                        tempOut.reqs.push({defId, type, tier});
                     }
                 }
             }
-
-            // If it's found requirements for this unit, go ahead and keep em
-            if (tempOut.reqs?.length) {
-                unitGuideOut[unit.defId] = tempOut;
-            }
         }
 
+        // If it's found requirements for this unit, go ahead and keep em
+        if (tempOut.reqs?.length) {
+            unitGuideOut[unit.defId] = tempOut;
+        }
+    }
 
-        // Process the old reqs data to keep any manual entries, and wipe out/ replace any automated ones
-        const reqsOut = {};
-        if (oldReqs && Object.keys(oldReqs).length) {
-            for (const reqKey of Object.keys(oldReqs)) {
-                const thisReq = oldReqs[reqKey];
-                if (thisReq.type === "MIXED") {
-                    // Grab all the manually put in units
-                    const thisReqOut = thisReq.reqs.filter(unit => unit.manual);
-                    const currentUnits = thisReqOut.map(unit => unit.defId);
 
-                    // Go through each chunk from the auto section and get the units together
-                    for (const autoReq of thisReq.auto) {
-                        const searchArr = autoReq.ship ? ships : characters;
-                        const out = searchArr
-                            .filter(unit => {
-                                // Don't keep units that're already in the list manually
-                                if (currentUnits.includes(unit.uniqueName)) return false;
+    // Process the old reqs data to keep any manual entries, and wipe out/ replace any automated ones
+    const reqsOut = {};
+    if (oldReqs && Object.keys(oldReqs).length) {
+        for (const reqKey of Object.keys(oldReqs)) {
+            const thisReq = oldReqs[reqKey];
+            if (thisReq.type === "MIXED") {
+                // Grab all the manually put in units
+                const thisReqOut = thisReq.reqs.filter(unit => unit.manual);
+                const currentUnits = thisReqOut.map(unit => unit.defId);
 
-                                // Don't list the character you're trying to unlock as a valid requirement
-                                if (unit.uniqueName === reqKey) return false;
+                // Go through each chunk from the auto section and get the units together
+                for (const autoReq of thisReq.auto) {
+                    const searchArr = autoReq.ship ? ships : characters;
+                    const out = searchArr
+                        .filter(unit => {
+                        // Don't keep units that're already in the list manually
+                            if (currentUnits.includes(unit.uniqueName)) return false;
 
-                                // If it needs capital ships only, filter the list down to that
-                                if (autoReq.capital) {
-                                    // If we want all capital ships, don't filter it down
-                                    if (autoReq.faction === "ALL") {
-                                        return true;
-                                    }
-                                    return unit.factions.includes("Capital Ship");
+                            // Don't list the character you're trying to unlock as a valid requirement
+                            if (unit.uniqueName === reqKey) return false;
+
+                            // If it needs capital ships only, filter the list down to that
+                            if (autoReq.capital) {
+                            // If we want all capital ships, don't filter it down
+                                if (autoReq.faction === "ALL") {
+                                    return true;
                                 }
+                                return unit.factions.includes("Capital Ship");
+                            }
 
-                                // If it gets here, just check the required faction against the unit's factions list
-                                return unit.factions.includes(autoReq.faction);
-                            })
-                            .map(unit => {
-                                const out = {
-                                    defId: unit.uniqueName,
-                                    type: autoReq.type,
-                                    tier: autoReq.tier,
-                                };
-                                if (autoReq?.ship) out.ship = true;
-                                return out;
-                            });
-                        thisReqOut.push(...out);
-                    }
-                    thisReq.reqs = thisReqOut;
-                }
-                // Process and enter the characters for requirements that're just full factions
-                // - This will make it so as new characters are added to a faction, they're included as needed
-                if (thisReq.type === "FACTION") {
-                    thisReq.reqs = characters
-                        .filter(ch => ch.factions.includes(thisReq.faction.name))
-                        .map(ch => {
-                            return {
-                                defId: ch.uniqueName,
-                                type: thisReq.faction.type,
-                                tier: thisReq.faction.tier
+                            // If it gets here, just check the required faction against the unit's factions list
+                            return unit.factions.includes(autoReq.faction);
+                        })
+                        .map(unit => {
+                            const out = {
+                                defId: unit.uniqueName,
+                                type: autoReq.type,
+                                tier: autoReq.tier,
                             };
+                            if (autoReq?.ship) out.ship = true;
+                            return out;
                         });
+                    thisReqOut.push(...out);
                 }
-                // Wipe out any auto entries, so they'll be reformed
-                if (thisReq.type !== "AUTO") {
-                    reqsOut[reqKey] = thisReq;
-                }
+                thisReq.reqs = thisReqOut;
+            }
+            // Process and enter the characters for requirements that're just full factions
+            // - This will make it so as new characters are added to a faction, they're included as needed
+            if (thisReq.type === "FACTION") {
+                thisReq.reqs = characters
+                    .filter(ch => ch.factions.includes(thisReq.faction.name))
+                    .map(ch => {
+                        return {
+                            defId: ch.uniqueName,
+                            type: thisReq.faction.type,
+                            tier: thisReq.faction.tier
+                        };
+                    });
+            }
+            // Wipe out any auto entries, so they'll be reformed
+            if (thisReq.type !== "AUTO") {
+                reqsOut[reqKey] = thisReq;
             }
         }
-
-        debugLog(`Updating JourneyReqs file, ${Object.keys(oldReqs).length} manual entries, ${Object.keys(unitGuideOut).length} automatic entries`);
-
-        // Combine the old stuff with the new automated data
-        fs.writeFileSync(JOURNEY_FILE, JSON.stringify({
-            ...oldReqs,
-            ...unitGuideOut
-        }, null, 4), {encoding: "utf-8"});
     }
+
+    debugLog(`Updating JourneyReqs file, ${Object.keys(oldReqs).length} manual entries, ${Object.keys(unitGuideOut).length} automatic entries`);
+
+    // Combine the old stuff with the new automated data
+    fs.writeFileSync(JOURNEY_FILE, JSON.stringify({
+        ...oldReqs,
+        ...unitGuideOut
+    }, null, 4), {encoding: "utf-8"});
 }
 
 const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;
