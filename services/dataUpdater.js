@@ -406,7 +406,7 @@ async function updatePatrons() {
                 full_name:          user.attributes.full_name,
                 vanity:             user.attributes.vanity,
                 email:              user.attributes.email,
-                discordID:          user.attributes.social_connections.discord ? user.attributes.social_connections.discord.user_id : null,
+                discordID:          user.attributes.social_connections.discord?.user_id || user.attributes.discord_id,
                 amount_cents:       pledge.attributes.amount_cents,
                 declined_since:     pledge.attributes.declined_since,
                 pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
@@ -1035,7 +1035,7 @@ async function updateGameData() {
             if (unit.crewList?.length) {
                 for (const crewChar of unit.crewList) {
                     crewIds.push(crewChar.unitId);
-                    skillReferences.push(crewChar.skillReference);
+                    skillReferences.push(...crewChar.skillReference);
                 }
             }
 
