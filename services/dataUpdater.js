@@ -180,7 +180,6 @@ async function saveFile(filePath, jsonData, doPretty=true) {
     try {
         const content = doPretty ? JSON.stringify(jsonData, null, 4) : JSON.stringify(jsonData);
         await fs.promises.writeFile(filePath, content);
-        console.log("[dataUpdater/saveFile] Saved " + filePath);
     } catch (error) {
         console.log(`[dataUpdater/saveFile] ERROR while saving file ${filePath}: ${error.message}`);
     }
@@ -712,13 +711,13 @@ async function processGameData(gameData, metadataFile, locales) {
 }
 
 /**
-    * function
-    * @param {Object[]} rawDataIn  - The array of objects to localize
-    * @param {string}   dbTarget   - The mongo table to insert into
-    * @param {string[]} targetKeys - An array of keys to localize
-    * @param {string}   dbIdKey    - The key to use as the unique db key
-    * @param {string[]} langList   - An array of localization languages
-    */
+  * function
+  * @param {Object[]} rawDataIn  - The array of objects to localize
+  * @param {string}   dbTarget   - The mongo table to insert into
+  * @param {string[]} targetKeys - An array of keys to localize
+  * @param {string}   dbIdKey    - The key to use as the unique db key
+  * @param {string[]} langList   - An array of localization languages
+  */
 async function processLocalization(rawDataIn, dbTarget, targetKeys, dbIdKey="id", locales, langList=null) {
     if (!langList) langList = Object.keys(locales);
     const bulkWriteArr = [];
@@ -811,12 +810,12 @@ async function processCategories(catsIn, locales) {
         .map(({id, descKey}) => ({id, descKey}));
 
     // await saveFile(dataDir + "catMap.json", catMapOut, false);
-    await processLocalization(catMapOut, "categories", ["descKey"], "id", locales, null);
+    await processLocalization(catMapOut, "categories", ["descKey"], "id", locales);
 }
 
 async function processEquipment(equipmentIn, locales) {
     const mappedEquipmentList = equipmentIn.map(({ id, nameKey, recipeId, mark }) => ({ id, nameKey, recipeId, mark }));
-    await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales, null);
+    await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales);
 }
 
 async function processMaterials(materialIn) {
@@ -890,7 +889,7 @@ async function processRecipes(recipeIn, locales) {
         }
     }
 
-    await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", ["eng_us"], locales);
+    await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", locales, ["eng_us"]);
 }
 
 
@@ -926,7 +925,7 @@ async function processUnits(unitsIn, locales) {
     await unitsToCharacterDB (JSON.parse(JSON.stringify(filteredList)));
     await processLocalization(JSON.parse(JSON.stringify(filteredList)), "units", ["nameKey"], "baseId", locales);
     await unitsToUnitMapFile (JSON.parse(JSON.stringify(filteredList)));
-    await unitsToUnitFiles   (JSON.parse(JSON.stringify(filteredList)));
+    await unitsToUnitFiles   (JSON.parse(JSON.stringify(filteredList)), locales);
 }
 
 async function unitsToUnitFiles(filteredList, locales) {
@@ -1057,7 +1056,7 @@ async function unitsToCharacterDB(unitsIn) {
         if (unit.crewList?.length) {
             for (const crewChar of unit.crewList) {
                 crewIds.push(crewChar.unitId);
-                skillReferences.push(crewChar.skillReference);
+                skillReferences.push(...crewChar.skillReference);
             }
         }
 
