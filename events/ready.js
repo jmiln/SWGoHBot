@@ -10,8 +10,8 @@ module.exports = async (Bot, client) => {
     const application = client.application;
     if (!Bot.isMain() && application.botPublic && application.owner.id !== "124579977474736129") {
         Bot.logger.error(Buffer.from("RkFUQUwgRVJST1I6IElOVkFMSUQgQk9UIFNFVFVQCgpHbyB0byB5b3VyIEJvdCdzIGFwcGxpY2F0aW9uIHBhZ2UgaW4gRGlzY29yZCBEZXZlbG9wZXJzIHNpdGUgYW5kIGRpc2FibGUgdGhlICJQdWJsaWMgQm90IiBvcHRpb24uCgpQbGVhc2UgY29udGFjdCB0aGUgc3VwcG9ydCB0ZWFtIGF0IFNXR29IQm90IEhRIC0gaHR0cHM6Ly9kaXNjb3JkLmdnL0Zmd0d2aHIgLSBmb3IgbW9yZSBpbmZvcm1hdGlvbi4=", "base64").toString("utf-8"));
-        if (client.shard) { await client.shard.broadcastEval(client => client.destroy());
-        } else { process.exit(); }
+        if (client.shard) await client.shard.broadcastEval(client => client.destroy());
+        else process.exit();
         return null;
     }
 
