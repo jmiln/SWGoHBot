@@ -1089,8 +1089,22 @@ async function unitsToUnitMapFile(unitsIn) {
 
 async function getLocalizationData(bundleVersion) {
     const IGNORE_KEYS = ["datacron", "anniversary", "promo", "subscription", "marquee"];
+    let localeData = null;
+    const dataFile = `localizationBundle_${bundleVersion}.json`;
+    const filePath = gameDataDir + dataFile;
+
+    // Check if the file exists
+    if (fs.existsSync(filePath)) {
+        debugLog("Found localeData for " + bundleVersion);
+
+        // Load up our local gameData file and send it back
+        localeData = await fs.readFileSync(filePath);
+        return JSON.parse(localeData);
+    }
+
     try {
-        const localeData = await comlinkStub.getLocalizationBundle( bundleVersion, true );
+        // If we don't have the most recent version locally, grab a new copy of the gameData from CG
+        localeData = await comlinkStub.getLocalizationBundle( bundleVersion, true );
         delete localeData["Loc_Key_Mapping.txt"];
 
         const localeOut = {};
@@ -1109,6 +1123,16 @@ async function getLocalizationData(bundleVersion) {
             }
             localeOut[langKey] = out;
         }
+        // This is going to be a new version, so we can just delete the old files
+        fs.readdirSync(gameDataDir)
+            .filter(fileName => fileName.startsWith("localizationBundle_") && fileName !== dataFile)
+            .forEach(f => fs.unlinkSync(gameDataDir + f));
+
+        // Then save it
+        console.log("Saving localeData for " + bundleVersion);
+        await fs.writeFileSync(filePath, JSON.stringify(localeOut));
+
+        // Then finally, return it
         return localeOut;
     } catch (error) {
         console.error("[getLocalizationData] Error fetching or processing localization data:", error);
