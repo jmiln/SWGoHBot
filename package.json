@@ -5,7 +5,8 @@
     "main": "swgohBot.js",
     "scripts": {
         "lint": "eslint",
-        "start": "node swgohBotShard.js"
+        "start": "node swgohBotShard.js",
+        "test": "node --test ./test"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",
@@ -27,7 +28,7 @@
         "socket.io-client": "^4.7.5"
     },
     "engines": {
-        "node": ">=18"
+        "node": ">=20"
     },
     "devDependencies": {
         "eslint": "^8.57.0"

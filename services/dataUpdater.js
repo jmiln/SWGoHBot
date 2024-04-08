@@ -46,48 +46,45 @@ let modMap = JSON.parse(fs.readFileSync(dataDir + "modMap.json"));
 let unitMap = JSON.parse(fs.readFileSync(dataDir + "unitMap.json"));
 
 // Use these to store data in to use when needing data from a different part of the gameData processing
-let unitRecipeList = [];
-let unitShardList = [];
 const unitFactionMap = {};
-const unitDefIdMap = {};
 
 console.log("Starting data updater");
 
-// Run the upater when it's started
-init().then(async () => {
-    const isNew = await updateMetaData();
-    if (isNew || FORCE_UPDATE) {
-        await runGameDataUpdaters();
-    }
-    if (!FORCE_UPDATE) {
-        await runModUpdaters();
-    } else {
-        // If we're forcing an update, we only want it to run once then exit
-        process.exit(0);
-    }
-});
-
-if (!FORCE_UPDATE) {
-    // Set it to update the patreon data and every 15 minutes if doable
-    if (config.patreon) {
-        setInterval(async () => {
-            await updatePatrons();
-        }, 15 * 60 * 1000);
-    }
-
-    // Set it to check/ update the game data daily if needed
-    // - Also run the mods updater daily
-    setInterval(async () => {
+// Run the updater when it's started, only if we're not running tests
+if (!process.env.TESTING_ENV) {
+    init().then(async () => {
         const isNew = await updateMetaData();
-        if (isNew) {
-            console.log("Found new metadata, running updaters");
+        if (!FORCE_UPDATE) {
+            // Set it to update the patreon data and every 15 minutes if doable
+            if (config.patreon) {
+                setInterval(async () => {
+                    await updatePatrons();
+                }, 15 * 60 * 1000);
+            }
+
+            // Set it to check/ update the game data daily if needed
+            // - Also run the mods updater daily
+            (async function runUpdatersAsNeeded() {
+                const isNew = await updateMetaData();
+                if (isNew) {
+                    console.log("Found new metadata, running updaters");
+                    await runGameDataUpdaters();
+                }
+                await runModUpdaters();
+
+                // Run it again each 24 hours
+                setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
+            })();
+        } else {
+            // If we're forcing an update, just run the game data updaters
             await runGameDataUpdaters();
+            process.exit(0);
         }
-        await runModUpdaters();
-    }, 24 * 60 * 60 * 1000);
+    });
+
+    init();
 }
 
-init();
 async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url);
     cache = require(__dirname + "/../modules/cache.js")(mongo);
@@ -674,35 +671,65 @@ async function updateGameData() {
     }
 
 }
-async function processGameData(gameData, metadataFile, locales) {
-    try {
-        locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
 
-        await processAbilities(gameData.ability, gameData.skill, locales);
+async function processGameData(gameData, metadataFile) {
+    try {
+        const locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
+
+        const {abilitiesOut, skillMap} = processAbilities(gameData.ability, gameData.skill);
+        await saveFile(dataDir + "skillMap.json", skillMap, false);
+        await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales);
         debugLog("Finished processing Abilities");
 
-        await processCategories(gameData.category, locales);
+        const catMapOut = await processCategories(gameData.category);
+        // await saveFile(dataDir + "catMap.json", catMapOut, false);
+        await processLocalization(catMapOut, "categories", ["descKey"], "id", locales);
         debugLog("Finished processing Categories");
 
-        await processEquipment(gameData.equipment, locales);
+        const mappedEquipmentList = await processEquipment(gameData.equipment);
+        await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales);
         debugLog("Finished processing Equipment");
 
-        await processMaterials(gameData.material);
+        const { unitShardList, bulkMatArr } = processMaterials(gameData.material);
+        await cache.putMany(config.mongodb.swapidb, "materials", bulkMatArr);
         debugLog("Finished processing Materials");
 
-        await processModData(gameData.statMod,);
+        const modsOut = processModData(gameData.statMod);
+        modMap = modsOut;   // Set the global modMap for use later (Should get rid of this... TODO)
+        await saveFile(dataDir + "modMap.json", modsOut, false);
         debugLog("Finished processing Mod data");
 
-        await processRecipes(gameData.recipe, locales);
+        const {unitRecipeList, mappedRecipeList} = processRecipes(gameData.recipe);
+        await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", locales, ["eng_us"]);
         debugLog("Finished processing Recipes");
 
-        await processUnits(gameData.units, locales);
+        const processedUnitList = processUnits(gameData.units);
+
+        // Put all the baseId and english names together for later use with the crew
+        const unitDefIdMap = {};
+        for (const unit of processedUnitList) {
+            unitDefIdMap[unit.baseId] = locales["eng_us"][unit.nameKey];
+        }
+
+        const bulkUnitArr = unitsToCharacterDB(JSON.parse(JSON.stringify(processedUnitList)));
+        await cache.putMany(config.mongodb.swapidb, "characters", bulkUnitArr);
+        await processLocalization(JSON.parse(JSON.stringify(processedUnitList)), "units", ["nameKey"], "baseId", locales);
+
+        const unitsOut = unitsForUnitMapFile(JSON.parse(JSON.stringify(processedUnitList)));
+        unitMap = unitsOut; // TODO This should be changed, but it's currently needed as a global for the mod updater
+        await saveFile(dataDir + "unitMap.json", unitsOut, false);
+
+        // Update & save the character/ship.json files (Not being tested, because it mashes so many bits together to make it work)
+        const {charactersOut, shipsOut} = unitsToUnitFiles(JSON.parse(JSON.stringify(processedUnitList)), locales, catMapOut, unitDefIdMap, unitRecipeList, unitShardList);
+        await saveFile(CHAR_FILE, sortByName(charactersOut)),
+        await saveFile(SHIP_FILE, sortByName(shipsOut))
         debugLog("Finished processing Units");
 
-        await processJourneyReqs(gameData);
+        // await processJourneyReqs(gameData);
         debugLog("Finished processing Journey Reqs");
 
-        await saveRaidNames(locales);
+        const raidNamesOut = saveRaidNames(locales);
+        await saveFile(RAID_NAMES_FILE, raidNamesOut);
         debugLog("Finished processing Raid Names");
     } catch (error) {
         console.error("[processGameData] Error:", error);
@@ -746,7 +773,7 @@ async function processLocalization(rawDataIn, dbTarget, targetKeys, dbIdKey="id"
     // console.log(`Finished localizing ${dbTarget}`);
 }
 
-async function saveRaidNames(locales) {
+function saveRaidNames(locales) {
     const langList = Object.keys(locales);
 
     // The keys that match in the lang files, and the keys that the guild raids give
@@ -759,17 +786,17 @@ async function saveRaidNames(locales) {
         MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic",
         MISSION_GUILDRAIDS_SPEEDERBIKE_NAME: "speederbike"
     };
-    const out = {};
+    const raidNamesOut = {};
     for (const lang of langList) {
-        out[lang] = {};
+        raidNamesOut[lang] = {};
         for (const [key, value] of Object.entries(raidKeys)) {
-            out[lang][value] = locales[lang][key];
+            raidNamesOut[lang][value] = locales[lang][key];
         }
     }
-    await saveFile(RAID_NAMES_FILE, out);
+    return raidNamesOut;
 }
 
-async function processAbilities(abilityIn, skillIn, locales) {
+function processAbilities(abilityIn, skillIn) {
     const abilitiesOut = [];
     const skillMap = {};
 
@@ -800,38 +827,34 @@ async function processAbilities(abilityIn, skillIn, locales) {
             abilityId: skill.abilityReference
         };
     }
-    await saveFile(dataDir + "skillMap.json", skillMap, false);
-    await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales);
+    return {abilitiesOut, skillMap};
 }
 
-async function processCategories(catsIn, locales) {
+function processCategories(catsIn) {
     const catMapOut = catsIn
         .filter(cat => cat.visible || cat.id.startsWith("alignment"))
         .map(({id, descKey}) => ({id, descKey}));
 
-    // await saveFile(dataDir + "catMap.json", catMapOut, false);
-    await processLocalization(catMapOut, "categories", ["descKey"], "id", locales);
+    return catMapOut;
 }
 
-async function processEquipment(equipmentIn, locales) {
+function processEquipment(equipmentIn) {
     const mappedEquipmentList = equipmentIn.map(({ id, nameKey, recipeId, mark }) => ({ id, nameKey, recipeId, mark }));
-    await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales);
+    return mappedEquipmentList;
 }
 
-async function processMaterials(materialIn) {
-    unitShardList = [];
-    const bulkWriteArr = [];
+function processMaterials(materialIn) {
+    const unitShardList = [];
+    const bulkMatArr = [];
 
     for (const mat of materialIn) {
         if (!mat.id.startsWith("unitshard")) continue;
-
-        const unitShard = {
+        unitShardList.push({
             id: mat.id,
             iconKey: mat.iconKey.replace(/^tex\./, "")
-        };
-        unitShardList.push(unitShard);
+        });
 
-        bulkWriteArr.push({
+        bulkMatArr.push({
             updateOne: {
                 filter: { id: mat.id },
                 update: {
@@ -846,27 +869,25 @@ async function processMaterials(materialIn) {
             }
         });
     }
-    await cache.putMany(config.mongodb.swapidb, "materials", bulkWriteArr.filter(Boolean));
+    return { unitShardList, bulkMatArr };
 }
 
-async function processModData(modIn) {
+function processModData(modsIn) {
     // gameData.statMod  ->  This is used to get slot, set, and pip of each mod
     const modsOut = {};
-    modIn.forEach(({ id, rarity, setId, slot })  => {
+    modsIn.forEach(({ id, rarity, setId, slot })  => {
         modsOut[id] = {
             pips: rarity,
             set:  setId,
             slot: slot
         };
     });
-
-    modMap = modsOut;
-    await saveFile(dataDir + "modMap.json", modsOut, false);
+    return modsOut;
 }
 
-async function processRecipes(recipeIn, locales) {
+function processRecipes(recipeIn, locales) {
     const mappedRecipeList = [];
-    unitRecipeList = [];
+    const unitRecipeList = [];
 
     for (const recipe of recipeIn) {
         const { id, descKey, ingredients } = recipe;
@@ -880,20 +901,20 @@ async function processRecipes(recipeIn, locales) {
         });
 
         // Add unitshard information to unitRecipeList
-        const unitshardList = filteredIngredients.filter(ing => ing.id?.startsWith("unitshard"));
-        if (unitshardList.length) {
+        const unitShardList = filteredIngredients.filter(ing => ing.id?.startsWith("unitshard"));
+        if (unitShardList.length) {
             unitRecipeList.push({
                 id,
-                unitshard: unitshardList[0].id
+                unitShard: unitShardList[0].id
             });
         }
     }
 
-    await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", locales, ["eng_us"]);
+    return {unitRecipeList, mappedRecipeList};
 }
 
 
-async function processUnits(unitsIn, locales) {
+function processUnits(unitsIn) {
     const filteredList = unitsIn.filter(unit => {
         if (unit.rarity !== 7 || !unit.obtainable || (unit.obtainableTime !== 0 && unit.obtainableTime !== "0")) return false;
         return true;
@@ -916,30 +937,45 @@ async function processUnits(unitsIn, locales) {
         };
     });
 
-    // Put all the baseId and english names together for later use with the crew
-    for (const unit of filteredList) {
-        unitDefIdMap[unit.baseId] = locales["eng_us"][unit.nameKey];
-    }
-
-    // Copy the list so we don't alter the original for each of the functions
-    await unitsToCharacterDB (JSON.parse(JSON.stringify(filteredList)));
-    await processLocalization(JSON.parse(JSON.stringify(filteredList)), "units", ["nameKey"], "baseId", locales);
-    await unitsToUnitMapFile (JSON.parse(JSON.stringify(filteredList)));
-    await unitsToUnitFiles   (JSON.parse(JSON.stringify(filteredList)), locales);
+    return filteredList;
 }
 
-async function unitsToUnitFiles(filteredList, locales) {
-    const oldCharFile = await fs.promises.readFile(CHAR_FILE, "utf-8").then(JSON.parse);
-    const oldShipFile = await fs.promises.readFile(SHIP_FILE, "utf-8").then(JSON.parse);
-    const eng = locales["eng_us"];
+function unitsToUnitFiles(filteredList, locales, catMap, unitDefIdMap, unitRecipeList, unitShardList) {
+    const oldCharFile = JSON.parse(fs.readFileSync(CHAR_FILE, "utf-8"));
+    const oldShipFile = JSON.parse(fs.readFileSync(SHIP_FILE, "utf-8"));
+    const engStringMap = locales["eng_us"];
 
     const charactersOut = [];
     const shipsOut = [];
 
-    await Promise.all(filteredList.map(async unit => {
-        const charUIName = getCharUIName(unit.creationRecipeReference);
-        const name = eng[unit.nameKey];
-        const unitObj = await createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile);
+    for (const unit of filteredList) {
+        const oldFile = unit.combatType === CHAR_COMBAT_TYPE ? oldCharFile : oldShipFile;
+        const oldUnit = oldFile.find(u => u.uniqueName === unit.baseId);
+        const charUIName = getCharUIName(unit.creationRecipeReference, unitRecipeList, unitShardList);
+        const name = engStringMap?.[unit.nameKey] || unit.nameKey;
+
+        let unitObj;
+        if (oldUnit) {
+            unitObj = oldUnit;
+            delete unitObj.nameVariant;
+            unitObj.avatarName = charUIName;
+            unitObj.avatarURL = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
+        } else {
+            const unitFactionsObj = catMap.filter(cat => unit.categoryIdList.includes(cat.id));
+            const { factions, side } = getSide(unitFactionsObj);
+            unitObj = {
+                name,
+                uniqueName: unit.baseId,
+                aliases: [name],
+                avatarName: charUIName,
+                avatarURL: `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
+                side,
+                factions: factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
+                mods: unit.combatType === CHAR_COMBAT_TYPE ? {} : null,
+                crew: unit.combatType === SHIP_COMBAT_TYPE && unit.crewList?.map(cr => unitDefIdMap[cr.unitId]) || []
+            };
+        }
+
         if (unit.combatType === CHAR_COMBAT_TYPE) {
             charactersOut.push(unitObj);
         } else if (unit.combatType === SHIP_COMBAT_TYPE) {
@@ -947,51 +983,14 @@ async function unitsToUnitFiles(filteredList, locales) {
         } else {
             console.error("Bad combatType for:", unitObj);
         }
-    }));
-
-    await Promise.all([
-        saveFile(CHAR_FILE, sortByName(charactersOut)),
-        saveFile(SHIP_FILE, sortByName(shipsOut))
-    ]);
-
-    console.log("Unit files updated");
-}
-
-async function createUnitObject(unit, charUIName, name, oldCharFile, oldShipFile) {
-    const oldFile = unit.combatType === CHAR_COMBAT_TYPE ? oldCharFile : oldShipFile;
-    const oldUnit = oldFile.find(u => u.uniqueName === unit.baseId);
-
-    let unitObj;
-    if (oldUnit) {
-        unitObj = oldUnit;
-        delete unitObj.nameVariant;
-        unitObj.avatarName = charUIName;
-        unitObj.avatarURL = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
-    } else {
-        unitObj = await createNewUnit(unit, charUIName, name, unit.combatType);
     }
-    return unitObj;
+
+    return { charactersOut, shipsOut };
 }
 
-async function createNewUnit(unit, charUIName, name, combatType) {
-    const unitFactionsObj = await cache.get(config.mongodb.swapidb, "categories", {id: {$in: unit.categoryIdList}, language: "eng_us"}, {id: 1, descKey: 1, _id: 0});
-    const { factions, side } = getSide(unitFactionsObj);
-    return {
-        name,
-        uniqueName: unit.baseId,
-        aliases: [name],
-        avatarName: charUIName,
-        avatarURL: `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
-        side,
-        factions: factions.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1),
-        mods: combatType === CHAR_COMBAT_TYPE ? {} : null,
-        crew: combatType === SHIP_COMBAT_TYPE && unit.crewList?.length ? unit.crewList.map(cr => unitDefIdMap[cr.unitId]) : []
-    };
-}
-
-function getCharUIName(creationRecipeId) {
+function getCharUIName(creationRecipeId, unitRecipeList, unitShardList) {
     const thisRecipe = unitRecipeList.find(rec => rec.id === creationRecipeId);
-    const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe?.unitshard);
+    const thisUnitShard = unitShardList.find(sh => sh.id === thisRecipe?.unitShard);
     return thisUnitShard?.iconKey;
 }
 
@@ -1012,7 +1011,7 @@ function sortByName(list) {
     return list.sort((a, b) => a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1);
 }
 
-async function unitsToCharacterDB(unitsIn) {
+function unitsToCharacterDB(unitsIn) {
     const catList = new Set(["alignment", "profession", "affiliation", "role", "shipclass"]);
     const ignoreSet = new Set([
         "fomilitary",      "galactic",         "order66",       "sithlord",       "palp", "rebfalconcrew",
@@ -1029,6 +1028,8 @@ async function unitsToCharacterDB(unitsIn) {
         oldrepublic    : "old republic",     rebelfighter   : "rebel fighter", republic       : "galactic republic",
         rogue          : "rogue one",        sithempire     : "sith empire",
     };
+
+    const bulkLocPut = [];
 
     // Process the units list to go into the characters db table
     for (const unit of unitsIn) {
@@ -1064,27 +1065,36 @@ async function unitsToCharacterDB(unitsIn) {
         unit.crew = crewIds;
         unit.skillReferenceList = skillReferences;
         unitFactionMap[unit.baseId] = unit.factions;
-        await cache.put(config.mongodb.swapidb, "characters", {baseId: unit.baseId}, unit);
+
+        bulkLocPut.push({
+            updateOne: {
+                filter: { baseId: unit.baseId },
+                update: {
+                    $set: unit
+                },
+                upsert: true
+            }
+        });
     }
+    return bulkLocPut;
 }
 
-async function unitsToUnitMapFile(unitsIn) {
+function unitsForUnitMapFile(unitsIn) {
     // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
     const unitsOut = unitsIn.reduce((acc, unit) => {
         acc[unit.baseId] = {
             nameKey: unit.nameKey,
             combatType: unit.combatType,
-            crew: unit.crewList.map(cr => ({
+            crew: unit.crewList?.map(cr => ({
                 skillReferenceList: cr.skillReference,
                 unitId: cr.unitId,
                 slot: cr.slot
-            }))
+            })) || []
         };
         return acc;
     }, {});
 
-    unitMap = unitsOut;
-    await saveFile(dataDir + "unitMap.json", unitsOut, false);
+    return unitsOut;
 }
 
 async function getLocalizationData(bundleVersion) {
@@ -1296,4 +1306,23 @@ function debugLog(str) {
     } else {
         console.log(inspect(...str, {depth: 5}));
     }
+}
+
+module.exports = {
+    processAbilities,
+    processCategories,
+    processEquipment,
+    processMaterials,
+    processModData,
+    processRecipes,
+    processUnits,
+    unitsToCharacterDB,
+    unitsForUnitMapFile,
+    unitsToUnitFiles,
+
+    processJourneyReqs,
+    saveRaidNames,
+
+    saveFile,
+    processLocalization,
 }
