@@ -3,7 +3,6 @@ const {tiers: patronTiers} = require("../data/patreon.js");
 const { getGuildSupporterTier } = require("./guildConfig/patreonSettings.js");
 
 module.exports = (Bot, client) => {
-    const honPat = 500;
 
     // Time chunks, in milliseconds
     //             ms    sec  min  hr
@@ -15,19 +14,22 @@ module.exports = (Bot, client) => {
     // Check if a given user is a patron, and if so, return their info
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
-        const permUser = Bot.config.patrons?.[userId];
-        if (userId === Bot.config.ownerid || (Bot.config.patrons && permUser)) {
-            const currentTierNum = getPatreonTier({amount_cents: userId === Bot.config.ownerid ? 1500 : permUser.amount_cents});
+
+        // If we have them manually set, prioritize that setting since Patreaon is missing bits now
+        if (Bot.config.patrons && Bot.config.patrons?.[userId]) {
+            const currentAmountCents = Bot.config.patrons[userId];
+            const currentTierNum = getPatreonTier({amount_cents: currentAmountCents});
             const currentTier = patronTiers[currentTierNum];
             return {
                 playerTime: currentTier.playerTime,
                 guildTime: currentTier.guildTime,
                 awAccounts: currentTier.awAccounts,
                 discordID: userId,
-                amount_cents: userId === Bot.config.ownerid ? 1500 : honPat
+                amount_cents: currentAmountCents
             };
         }
 
+        // Otherwise, try and get em from the db, hoping that we actually gor usable infor from Patreon
         const patron = await Bot.cache.getOne("swgohbot", "patrons", {discordID: userId});
         if (!patron) return null;
 
