@@ -53,7 +53,6 @@ console.log("Starting data updater");
 // Run the updater when it's started, only if we're not running tests
 if (!process.env.TESTING_ENV) {
     init().then(async () => {
-        const isNew = await updateMetaData();
         if (!FORCE_UPDATE) {
             // Set it to update the patreon data and every 15 minutes if doable
             if (config.patreon) {
@@ -81,8 +80,6 @@ if (!process.env.TESTING_ENV) {
             process.exit(0);
         }
     });
-
-    init();
 }
 
 async function init() {
@@ -357,55 +354,41 @@ async function mergeModsToCharacters(modsIn) {
 
 
 async function updatePatrons() {
-    const patreon = config.patreon;
+    const patreon = config.patreonV2;
     if (!patreon) return;
 
     try {
-        // Run this to get the patreon ID from the auth token in the config file
-        // https://docs.patreon.com/#fetch-a-creator-profile-and-campaign-info
-        const campaignRes = await fetch("https://www.patreon.com/api/oauth2/api/current_user/campaigns", {
-            headers: {
-                Authorization: "Bearer " + patreon.creatorAccessToken
-            }
-        }).then(res => res.json());
-
-        // If there's no valid data or ID in campaignRes, then there's nothing to work from. Move along
-        const patId = campaignRes?.data?.[0]?.id;
-        if (!patId) return;
-
         // Use the given patId to get all of the supporters
         // https://docs.patreon.com/#get-api-oauth2-v2-campaigns
-        const {data, included} = await fetch(`https://www.patreon.com/api/oauth2/api/campaigns/${patId}/pledges?page%5Bcount%5D=100`, {
+        const {data, included} = await fetch(`https://www.patreon.com/api/oauth2/v2/campaigns/${patreon.campaignId}/members?include=user&fields%5Bmember%5D=full_name,currently_entitled_amount_cents,patron_status,email&fields%5Buser%5D=social_connections&page%5Bcount%5D=200`, {
             headers: {
                 Authorization: "Bearer " + patreon.creatorAccessToken
             }
         }).then(res => res.json());
 
-        const pledges = data.filter(data => data.type === "pledge");
+        const members = data.filter(data => data.type === "member" && data.attributes.patron_status === "active_patron");
         const users = included.filter(inc => inc.type === "user");
 
-        pledges.forEach(async (pledge) => {
-            const user = users.find(user => user.id === pledge.relationships.patron.data.id);
+        members.forEach(async (member) => {
+            const user = users.find(user => user.id === member.relationships.user.data.id);
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
             if (!user) return console.log(`Patreon user ${user.attributes.full_name} vanished`);
 
             // Save this user's info to the db
-            const newUser = await cache.put("swgohbot", "patrons", {id: pledge.relationships.patron.data.id}, {
-                id:                 pledge.relationships.patron.data.id,
-                full_name:          user.attributes.full_name,
-                vanity:             user.attributes.vanity,
-                email:              user.attributes.email,
-                discordID:          user.attributes.social_connections.discord?.user_id || user.attributes.discord_id,
-                amount_cents:       pledge.attributes.amount_cents,
-                declined_since:     pledge.attributes.declined_since,
-                pledge_cap_cents:   pledge.attributes.pledge_cap_cents,
+            const newUser = await cache.put("swgohbot", "patrons", {id: member.relationships.user.data.id}, {
+                id:                 member.relationships.user.data.id,
+                full_name:          member.attributes.full_name,
+                email:              member.attributes.email,
+                discordID:          user.attributes.social_connections?.discord?.user_id,
+                amount_cents:       member.attributes.currently_entitled_amount_cents,
+                patron_status:      member.attributes.patron_status,
             });
 
             // If they don't have a discord id to work with, move on
-            if (!newUser.discordID) return console.log(`There's an issue getting the discord id from user (${newUser.full_name})`);
+            if (!newUser.discordID) return;
 
-            if (newUser.declined_since || !newUser.amount_cents) {
+            if (newUser.patron_status !== "active_patron" || !newUser.amount_cents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
                 const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", {id: newUser.discordID});
 
@@ -721,8 +704,8 @@ async function processGameData(gameData, metadataFile) {
 
         // Update & save the character/ship.json files (Not being tested, because it mashes so many bits together to make it work)
         const {charactersOut, shipsOut} = unitsToUnitFiles(JSON.parse(JSON.stringify(processedUnitList)), locales, catMapOut, unitDefIdMap, unitRecipeList, unitShardList);
-        await saveFile(CHAR_FILE, sortByName(charactersOut)),
-        await saveFile(SHIP_FILE, sortByName(shipsOut))
+        await saveFile(CHAR_FILE, sortByName(charactersOut));
+        await saveFile(SHIP_FILE, sortByName(shipsOut));
         debugLog("Finished processing Units");
 
         // await processJourneyReqs(gameData);
@@ -885,7 +868,7 @@ function processModData(modsIn) {
     return modsOut;
 }
 
-function processRecipes(recipeIn, locales) {
+function processRecipes(recipeIn) {
     const mappedRecipeList = [];
     const unitRecipeList = [];
 
@@ -1325,4 +1308,4 @@ module.exports = {
 
     saveFile,
     processLocalization,
-}
+};
