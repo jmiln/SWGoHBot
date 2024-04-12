@@ -1313,9 +1313,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -2064,7 +2064,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -3420,6 +3420,34 @@
         }
     },
     {
+        "name": "Gungan Phalanx",
+        "uniqueName": "GUNGANPHALANX",
+        "aliases": [
+            "Gungan Phalanx"
+        ],
+        "avatarName": "charui_gunganphalanx",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gunganphalanx.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GUNGAN_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        },
+        "crew": []
+    },
+    {
         "name": "Han Solo",
         "uniqueName": "HANSOLO",
         "aliases": [
@@ -4333,11 +4361,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity"
+            "cross": "Health"
         },
         "avatarName": "charui_joleebindo"
     },
@@ -5247,7 +5275,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -5556,7 +5584,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7310,9 +7339,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
