@@ -686,10 +686,8 @@ module.exports = (Bot, client) => {
                 console.log(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
                 continue;
             }
-            // const guild = await Bot.swgohAPI.guild(gu.allycode);
-            if (!guild?.roster) {
-                return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${guild}`);
-            }
+            if (!guild?.roster) return console.log(`[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${guild}`);
+
             let guildLog;
             try {
                 if (!guild?.roster?.length) {

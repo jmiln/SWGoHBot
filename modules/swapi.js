@@ -2,6 +2,10 @@ const { inspect } = require("util"); // eslint-disable-line no-unused-vars
 const statEnums = require("../data/statEnum.js");
 const { eachLimit } = require("async");
 const { readFileSync } = require("node:fs");
+const { Worker } = require("node:worker_threads");
+
+const os = require("node:os");
+const THREAD_COUNT = os.cpus().length;
 
 const config = require(__dirname + "/../config.js");
 const abilityCosts = JSON.parse(readFileSync(__dirname + "/../data/abilityCosts.json", "utf-8"));
@@ -180,122 +184,61 @@ module.exports = (opts={}) => {
                 updatedBare.push(formattedComlinkPlayer);
             }
         });
-
         const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes.map(ac => parseInt(ac, 10))}});
-        const guildLog = {};
+        const processMemberChunk = async (updatedBare, chunkIx) => {
+            return new Promise((resolve, reject) => {
+                const worker = new Worker(__dirname+"/workers/getPlayerUpdates.js", {workerData: {oldMembers, updatedBare, specialAbilities, chunkIx}});
+                worker.on("message", resolve);
+                worker.on("error", reject);
+                worker.on("exit", (code) => {
+                    if (code !== 0) console.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
+                    worker.terminate();
+                });
+            });
+        };
 
-        // For each of the up to 50 players in the guild
-        for (const newPlayer of updatedBare) {
-            const oldPlayer = oldMembers.find(p => p.allyCode === newPlayer.allyCode);
-            if (!oldPlayer?.roster) {
-                // If they've not been in there before, stick em into the db
-                await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
-
-                // Then move on, since there's no old data to compare against
-                continue;
-            }
-            if (JSON.stringify(oldPlayer.roster) == JSON.stringify(newPlayer.roster)) continue;
-
-            const playerLog = {
-                abilities: [],
-                geared: [],
-                leveled: [],
-                reliced: [],
-                starred: [],
-                unlocked: [],
-                ultimate: []
-            };
-
-            // Check through each of the 250ish? units in their roster for differences
-            for (const newUnit of newPlayer.roster) {
-                const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
-                if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
-                const locChar = await langChar({defId: newUnit.defId, skills: newUnit.skills});
-                if (!locChar?.nameKey) {
-                    console.log(locChar);
-                    locChar.nameKey = newUnit.defId;
-                }
-                if (!oldUnit) {
-                    playerLog.unlocked.push(`Unlocked ${locChar.nameKey}!`);
-                    if (newUnit?.level > 1) {
-                        playerLog.unlocked.push(` - Upgraded to level ${newUnit.level}`);
-                    }
-                    if (newUnit.gear > 1) {
-                        playerLog.unlocked.push(` - Upgraded to gear ${newUnit.gear}`);
-                    }
-                    continue;
-                }
-                if (oldUnit.level < newUnit.level) {
-                    playerLog.leveled.push(`Leveled up ${locChar.nameKey} to ${newUnit.level}!`);
-                }
-                if (oldUnit.rarity < newUnit.rarity) {
-                    playerLog.starred.push(`Starred up ${locChar.nameKey} to ${newUnit.rarity} star!`);
-                }
-                for (const skillId of newUnit.skills.map(s => s.id)) {
-                    // For each of the skills, see if it's changed
-                    const oldSkill = oldUnit.skills.find(s => s.id === skillId);
-                    const newSkill = newUnit.skills.find(s => s.id === skillId);
-
-                    if (newSkill?.tier && ((!oldSkill && newSkill?.tier) ||  oldSkill?.tier < newSkill?.tier)) {
-                        const locSkill = locChar.skills.find(s => s.id == skillId);
-
-                        // Grab zeta/ omicron data for the ability if available
-                        const thisAbility = specialAbilities.find(abi => abi.skillId == newSkill.id);
-                        if (thisAbility?.omicronTier) {
-                            newSkill.isOmicron = true;
-                            newSkill.omicronTier = thisAbility.omicronTier + 1;
-                            newSkill.omicronMode = thisAbility.omicronMode;
-                        }
-                        if (thisAbility?.zetaTier) {
-                            newSkill.isZeta = true;
-                            newSkill.zetaTier = thisAbility.zetaTier + 1;
-                        }
-
-                        // if (!oldSkill) {
-                        //     playerLog.abilities.push(`Unlocked ${locChar.nameKey}'s **${locSkill.nameKey}**`);
-                        // }
-
-                        if ((newSkill.isOmicron || newSkill.isZeta) && (newSkill.tier >= newSkill.zetaTier || newSkill.tier >= newSkill.omicronTier)) {
-                            // If the skill has zeta/ omicron tiers, and is high enough level
-                            if (oldSkill?.tier < newSkill.zetaTier && newSkill.tier >= newSkill.zetaTier) {
-                                // If it was below the Zeta tier before, and at or above it now
-                                playerLog.abilities.push(`Zeta'd ${locChar.nameKey}'s **${locSkill.nameKey}**`);
-                            }
-
-                            if (oldSkill?.tier < newSkill.omicronTier && newSkill.tier >= newSkill.omicronTier) {
-                                // If it was below the Omicron tier before, and at or above it now
-                                playerLog.abilities.push(`Omicron'd ${locChar.nameKey}'s **${locSkill.nameKey}**`);
-                            }
-                        } else {
-                            // In case it's either too low to be a zeta or omicron tier upgrade, or just doesn't have one
-                            playerLog.abilities.push(`Upgraded ${locChar.nameKey}'s **${locSkill.nameKey}** to level ${newSkill.tier}`);
-                        }
-                    }
-                }
-                if (oldUnit.gear < newUnit.gear) {
-                    playerLog.geared.push(`Geared up ${locChar.nameKey} to G${newUnit.gear}!`);
-                }
-                if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && (newUnit.relic.currentTier - 2) > 0) {
-                    playerLog.reliced.push(`Upgraded ${locChar.nameKey} to relic ${newUnit.relic.currentTier-2}!`);
-                }
-                if (oldUnit?.purchasedAbilityId?.length < newUnit?.purchasedAbilityId?.length) {
-                    playerLog.ultimate.push(`Unlocked ${locChar.nameKey}'s **ultimate**'`);
-                }
-            }
-            if (isPlayerUpdated(playerLog)) {
-                guildLog[newPlayer.name] = playerLog;
-                await cache.put(config.mongodb.swapidb, "rawPlayers", {allyCode: newPlayer.allyCode}, newPlayer);
-            }
+        const memberChunks = [];
+        const chunkSize = Math.ceil(updatedBare.length / THREAD_COUNT);
+        for (let ix = 0, len = updatedBare.length; ix < len; ix += chunkSize) {
+            const chunk = updatedBare.slice(ix, ix + chunkSize);
+            memberChunks.push(chunk);
         }
+        const guildLog = {};
+        await Promise.all(memberChunks.map((mChunk,ix) => {
+            return processMemberChunk(mChunk, ix+1);
+        })).then(async (res) => {
+            const skillsArr = [];
+            const defIdArr = [];
+            for (const {guildLogOut, cacheUpdatesOut, skills, defIds} of res) {
+                for (const [key, value] of Object.entries(guildLogOut)) {
+                    guildLog[key] = value;
+                }
+                skillsArr.push(...skills);
+                defIdArr.push(...defIds);
+                await cache.putMany(config.mongodb.swapidb, "rawPlayers", cacheUpdatesOut);
+            }
+            const skillNames = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillsArr}, language: "eng_us"}, {nameKey: 1, skillId: 1});
+            const unitNames  = await cache.get(config.mongodb.swapidb, "units", {baseId: {$in: defIdArr}, language: "eng_us"}, {baseId: 1, nameKey: 1});
+            const langKeys = {};
+            for (const nameId of [...skillNames, ...unitNames]) {
+                langKeys[nameId?.skillId || nameId?.baseId] = nameId.nameKey;
+            }
+
+            for (const [userName, changeObj] of Object.entries(guildLog)) {
+                // Run through all the skill/ unit names and replace the IDs with normal names
+                for (const [changeType, strArr] of Object.entries(changeObj)) {
+                    // Update the strings with namekeys for anything inside `{}` braces
+                    const updatedArr = strArr.map((str) => str.replace(/\{([^}]*)\}/g, (match, p1) => {
+                        return langKeys[p1] || p1;
+                    }));
+                    guildLog[userName][changeType] = updatedArr;
+                }
+            }
+        }).catch((err) => {
+            console.error("Error running workers: " + err);
+        });
 
         return guildLog;
-    }
-
-    function isPlayerUpdated(playerLog) {
-        for (const key of Object.keys(playerLog)) {
-            if (playerLog[key]?.length) return true;
-        }
-        return false;
     }
 
     /**
