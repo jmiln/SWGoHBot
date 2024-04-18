@@ -141,8 +141,8 @@ async function runGameDataUpdaters() {
     const log = [];
 
     // Load the files of char/ship locations
-    const currentCharLocs     = JSON.parse(fs.readFileSync(CHAR_LOCATIONS));
-    const currentShipLocs     = JSON.parse(fs.readFileSync(SHIP_LOCATIONS));
+    const currentCharLocs = JSON.parse(fs.readFileSync(CHAR_LOCATIONS));
+    const currentShipLocs = JSON.parse(fs.readFileSync(SHIP_LOCATIONS));
 
     // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
     await updateGameData();     // Run the stuff to grab all new game data, and update listings in the db
@@ -159,7 +159,6 @@ async function runGameDataUpdaters() {
         log.push("Detected a change in ship locations.");
         await saveFile(SHIP_LOCATIONS, newShipLocs);
     }
-
 
     if (log?.length) {
         console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);

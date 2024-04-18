@@ -15,8 +15,11 @@ module.exports = (Bot, client) => {
     Bot.getPatronUser = async (userId) => {
         if (!userId) return new Error("Missing user ID");
 
-        // If we have them manually set, prioritize that setting since Patreaon is missing bits now
-        if (Bot.config.patrons && Bot.config.patrons?.[userId]) {
+        // Try and get em from the db
+        const patron = await Bot.cache.getOne("swgohbot", "patrons", {discordID: userId});
+
+        // If they aren't in the db, see if we have em in there manually
+        if (!patron && Bot.config.patrons && Bot.config.patrons?.[userId]) {
             const currentAmountCents = Bot.config.patrons[userId];
             const currentTierNum = getPatreonTier({amount_cents: currentAmountCents});
             const currentTier = patronTiers[currentTierNum];
@@ -29,8 +32,7 @@ module.exports = (Bot, client) => {
             };
         }
 
-        // Otherwise, try and get em from the db, hoping that we actually gor usable infor from Patreon
-        const patron = await Bot.cache.getOne("swgohbot", "patrons", {discordID: userId});
+        // If they're not in either spot, return null
         if (!patron) return null;
 
         const currentTierNum = getPatreonTier(patron);
