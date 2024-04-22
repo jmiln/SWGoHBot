@@ -3,7 +3,6 @@ module.exports = clientMongo => {
     const mongo = clientMongo;
 
     return {
-        wipe:    wipe,
         put:     put,
         get:     get,
         getOne:  getOne,
@@ -13,18 +12,6 @@ module.exports = clientMongo => {
         putMany: putMany,
     };
 
-    async function wipe( database, collection ) {
-        if ( !database ) { throw new Error("No database specified to put"); }
-        if ( !collection ) { throw new Error("No collection specified to put"); }
-
-        const dbo = await mongo.db( database );
-
-        //Try update or insert
-        await dbo.collection(collection).deleteMany({});
-
-        return;
-    }
-
     async function put( database, collection, matchCondition, saveObject, autoUpdate=true ) {
         if ( !database ) { throw new Error("No database specified to put"); }
         if ( !collection ) { throw new Error("No collection specified to put"); }
@@ -32,13 +19,9 @@ module.exports = clientMongo => {
 
         const dbo = await mongo.db( database );
 
-        if (!saveObject.updated && autoUpdate) {
+        if (autoUpdate) {
             //set updated time to now
-            saveObject.updated = new Date().getTime();
-        }
-
-        // Use a format that works with mongo's auto-cleaning
-        if (!saveObject.updatedAt && autoUpdate) {
+            saveObject.updated   = Date.now();
             saveObject.updatedAt = new Date();
         }
 
@@ -56,8 +39,7 @@ module.exports = clientMongo => {
     async function putMany( database, collection, saveObjectArray ) {
         if ( !database ) { throw new Error("No database specified to putMany"); }
         if ( !collection ) { throw new Error("No collection specified to putMany"); }
-        if ( !saveObjectArray ) { throw new Error("No object array provided to putMany"); }
-        if ( !saveObjectArray.length ) { throw new Error("Object array is empty"); }
+        if ( !saveObjectArray?.length ) { throw new Error("Object array is empty or missing"); }
         const dbo = await mongo.db( database );
 
         await dbo.collection(collection).bulkWrite(saveObjectArray);
@@ -83,7 +65,7 @@ module.exports = clientMongo => {
 
         matchCondition = matchCondition || {};
         projection = projection || {};
-        return await dbo.collection(collection).findOne(matchCondition, {projection: projection});
+        return await dbo.collection(collection).findOne(matchCondition, {projection});
     }
 
     async function remove( database, collection, matchCondition ) {
@@ -105,14 +87,9 @@ module.exports = clientMongo => {
 
         const dbo = await mongo.db( database );
 
-        if (!saveObject.updated && autoUpdate) {
-            // Set updated time to now
-            saveObject.updated = new Date();
-            saveObject.updated = saveObject.updated.getTime();
-        }
-
-        // Use a format that works with mongo's auto-cleaning
-        if (!saveObject.updatedAt && autoUpdate) {
+        if (autoUpdate) {
+            //set updated time to now
+            saveObject.updated   = Date.now();
             saveObject.updatedAt = new Date();
         }
 
@@ -130,6 +107,6 @@ module.exports = clientMongo => {
         const dbo = await mongo.db( database );
 
         const exists = await dbo.collection(collection).findOne(matchCondition);
-        return exists ? true : false;
+        return !!exists;
     }
 };
