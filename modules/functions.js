@@ -1,4 +1,4 @@
-const { WebhookClient, ChannelType, PermissionsBitField, time } = require("discord.js");
+const { WebhookClient, PermissionsBitField, time } = require("discord.js");
 const {promisify, inspect} = require("util");     // eslint-disable-line no-unused-vars
 const fs = require("fs");
 const readdir = promisify(require("fs").readdir);
@@ -21,7 +21,7 @@ module.exports = (Bot, client) => {
     Bot.permLevel = async (interaction) => {
         // Depending on message or interaction, grab the ID of the user
         const permMap = Bot.constants.permMap;
-        const authId = interaction.author ? interaction.author.id : interaction.user.id;
+        const authId = interaction.author?.id || interaction.user.id;
 
         // If bot owner, return max perm level
         if (authId === Bot.config.ownerid) {
@@ -36,11 +36,8 @@ module.exports = (Bot, client) => {
 
         // Guild Owner gets an extra level, wooh!
         const gOwner = await interaction.guild.fetchOwner();
-        if (interaction.channel?.type === ChannelType.GuildText && interaction.guild && gOwner) {
-            // message.author for text message, message.user for interactions
-            if (interaction.user?.id === gOwner.id) {
-                return permMap.GUILD_OWNER;
-            }
+        if (gOwner?.id && interaction.user?.id === gOwner.id) {
+            return permMap.GUILD_OWNER;
         }
 
         // Also giving them the permissions if they have the manage server role,
@@ -51,24 +48,14 @@ module.exports = (Bot, client) => {
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
-        try {
-            const adminRoles = guildConf.adminRole;
-
-            for (var ix = 0, len = adminRoles.length; ix < len; ix++) {
-                const adminRole = interaction.guild.roles.cache.find(r => r.name.toLowerCase() === adminRoles[ix].toLowerCase() || r.id === adminRoles[ix]);
-                if (adminRole && interaction.member.roles.cache.has(adminRole.id)) {
-                    return permMap.GUILD_ADMIN;
-                }
-            }
-        } catch (e) {() => {};}
-        return permMap.BASE_USER;
+        return guildConf?.adminRoles.some(roleId => {
+            const adminRole = interaction.guild.roles.cache.find(r => [r.name.toLowerCase(), r.id].includes(roleId.toLowerCase()));
+            return adminRole && interaction.member.roles.cache.has(adminRole.id);
+        }) ? permMap.GUILD_ADMIN : permMap.BASE_USER;
     };
 
     // Check if the bot's account is the main (real) bot
-    Bot.isMain = () => {
-        if (client.user.id === "315739499932024834") return true;
-        return false;
-    };
+    Bot.isMain = () => client.user.id === "315739499932024834";
 
     // Default formatting for current US/Pacific time
     Bot.myTime = () => {
@@ -132,20 +119,15 @@ module.exports = (Bot, client) => {
 
     // Parse the webhook url, and get the id & token from the end
     function parseWebhook(url) {
-        const webhookCredentials = url.split("/").slice(-2);
-        return {
-            id: webhookCredentials[0],
-            token: webhookCredentials[1]
-        };
+        const [id, token] = url.split("/").slice(-2);
+        return { id, token };
     }
 
     // Send a message to a webhook url, takes the url & the embed to send
     Bot.sendWebhook = (hookUrl, embed) => {
-        const h = parseWebhook(hookUrl);
-        const hook = new WebhookClient({id: h.id, token: h.token});
-        hook.send({embeds: [
-            embed
-        ]}).catch(() => {});
+        const {id, token} = parseWebhook(hookUrl);
+        const hook = new WebhookClient({id, token});
+        hook.send({embeds: [embed]}).catch(console.error);
     };
 
     /* ANNOUNCEMENT MESSAGE
@@ -155,12 +137,7 @@ module.exports = (Bot, client) => {
         if (!guild?.id) return;
 
         // Use the guildConf announcement channel
-        let announceChan = guildConf?.announceChan || "";
-
-        // But if there's a channel specified for this, use that instead
-        if (channel?.length) {
-            announceChan = channel;
-        }
+        const announceChan = channel || guildConf?.announceChan || "";
 
         // Try and get the channel by ID first
         let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
@@ -171,34 +148,29 @@ module.exports = (Bot, client) => {
         }
 
         // If that still didn't work, or if it doesn't have the base required perms, return
-        if (!chan?.send || !chan?.permissionsFor(client.user)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
-            // TODO Should probably log this / tell users about the issue somehow?
-            return;
-            // return console.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
-        } else {
-            // If everything is ok, go ahead and try sending the message
-            await chan.send(announceMsg).catch((err) => {
-                // if (err.stack.toString().includes("user aborted a request")) return;
-                console.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n` );
-            });
-        }
+        if (!chan?.send || !chan?.permissionsFor(client.user)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) return;
+        // TODO Should probably log this / tell users about the issue somehow?
+        // return console.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
+
+        // If everything is ok, go ahead and try sending the message
+        await chan.send(announceMsg).catch((err) => {
+            // if (err.stack.toString().includes("user aborted a request")) return;
+            console.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n` );
+        });
     };
 
 
     // Reload the functions (this) file
     client.reloadFunctions = async () => {
+        const modules = ["../modules/functions.js", "../modules/patreonFuncs.js", "../modules/eventFuncs.js", "../modules/Logger.js"];
         try {
-            delete require.cache[require.resolve("../modules/functions.js")];
-            require("../modules/functions.js")(Bot, client);
-            delete require.cache[require.resolve("../modules/patreonFuncs.js")];
-            require("../modules/patreonFuncs.js")(Bot, client);
-            delete require.cache[require.resolve("../modules/eventFuncs.js")];
-            require("../modules/eventFuncs.js")(Bot, client);
-            delete require.cache[require.resolve("../modules/Logger.js")];
-            delete Bot.logger;
-            const Logger = require("../modules/Logger.js");
-            Bot.logger = new Logger(Bot, client);
+            modules.forEach(mod => {
+                delete require.cache[require.resolve(mod)];
+                require(mod)(Bot, client);
+            });
+            Bot.logger = new (require("../modules/Logger.js"))(Bot, client);
         } catch (err) {
+            console.error("Failed to reload functions: " + err.stack);
             return {err: err.stack};
         }
     };
@@ -272,57 +244,6 @@ module.exports = (Bot, client) => {
         return err;
     };
 
-    /* SINGLE-LINE AWAITMESSAGE
-     * A simple way to grab a single reply, from the user that initiated
-     * the command. Useful to get "precisions" on certain things...
-     * USAGE
-     * const response = await Bot.awaitReply(msg, "Favourite Color?");
-     * msg.reply(`Oh, I really love ${response} too!`);
-     */
-    Bot.awaitReply = async (msg, question, limit = 60000) => {
-        const filter = m => m.author.id === msg.author.id;
-        await msg.channel.send({content: question}).catch(() => {Bot.logger.error("Broke in awaitReply");});
-        try {
-            const collected = await msg.channel.awaitMessages(filter, {max: 1, time: limit, errors: ["time"]});
-            return collected.first().content;
-        } catch (e) {
-            return false;
-        }
-    };
-
-    // String Truncate function
-    // Bot.truncate = (string, len, terminator="...") => {
-    //     const termLength = terminator.length;
-    //
-    //     if (string.length > len) {
-    //         return string.substring(0, len - termLength) + terminator;
-    //     } else {
-    //         return string;
-    //     }
-    // };
-
-    /* MESSAGE CLEAN FUNCTION
-     * "Clean" removes @everyone pings, as well as tokens, and makes code blocks
-     * escaped so they're shown more easily. As a bonus it resolves promises
-     * and stringifies objects!
-     * This is mostly only used by the Eval and Exec commands.
-     */
-    // Bot.clean = async (client, text) => {
-    //     if (text && text.constructor.name == "Promise")
-    //         text = await text;
-    //     if (typeof evaled !== "string")
-    //         text = inspect(text, {
-    //             depth: 0
-    //         });
-    //
-    //     text = text
-    //         .replace(/`/g, "`" + String.fromCharCode(8203))
-    //         .replace(/@/g, "@" + String.fromCharCode(8203))
-    //         .replace(client.token, "mfa.VkO_2G4Qv3T--NO--lWetW_tjND--TOKEN--QFTm6YGtzq9PH--4U--tG0");
-    //
-    //     return text;
-    // };
-
     /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
 
     // `await wait(1000);` to "pause" for 1 second.
@@ -335,24 +256,23 @@ module.exports = (Bot, client) => {
     Bot.msgArray = (arr, join="\n", maxLen=1900) => {
         const messages = [];
         if (!Array.isArray(arr)) arr = arr.toString().split("\n");
+        let currentMsg = "";
         arr.forEach((elem) => {
+            if (typeof elem !== "string") return Bot.logger.error("In msgArray, " + elem + " Is not a string!");
             elem = Bot.expandSpaces(elem);
-            if (typeof elem !== "string") Bot.logger.error("In msgArray, " + elem + " Is not a string!");
             // Check if something big somehow got in
             if (elem.length > maxLen) {
                 throw new Error("[MsgArray] Element too big! " + elem);
             }
-            if  (messages.length === 0) {
-                messages.push(elem);
+
+            if (currentMsg.length + elem.length + join.length > maxLen) {
+                messages.push(currentMsg);
+                currentMsg = elem;
             } else {
-                const lastMsgLen = messages[messages.length - 1].length;
-                if ((lastMsgLen + elem.length) > maxLen) {
-                    messages.push(elem);
-                } else {
-                    messages[messages.length - 1] = messages[messages.length - 1] + join + elem;
-                }
+                currentMsg += (currentMsg.length > 0 ? join : "") + elem;
             }
         });
+        if (currentMsg?.length) messages.push(currentMsg);
         return messages;
     };
 
@@ -369,9 +289,7 @@ module.exports = (Bot, client) => {
     Bot.formatDuration = (duration, lang) => {
         if (!lang) lang = Bot.languages[Bot.config.defaultSettings.language];
 
-        // console.log("[Bot.FormatDuration] in: " + duration);
         const durationMS = Bot.convertMS(duration);
-        // console.log("[Bot.FormatDuration] durationMS: " + inspect(durationMS));
         const outArr = [];
 
         if (durationMS.day) {
@@ -382,31 +300,32 @@ module.exports = (Bot, client) => {
         }
         outArr.push(`${durationMS.minute || "0"} ${lang.getTime("MINUTE", "SHORT_SING")}`);
 
-        // console.log("[Bot.FormatDuration] out: " + outArr);
-
         return outArr.join(", ");
     };
 
     Bot.formatCurrentTime = (zone) => {
-        if (!zone || !Bot.isValidZone(zone)) {
-            // Format it with whatever zone the server is
-            return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric"}).format(new Date());
-        }
+        // Format it with whatever zone the server is
+        if (!zone || !Bot.isValidZone(zone)) zone = "UTC";
 
-        return Intl.DateTimeFormat("en", {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", timeZone: zone}).format(new Date());
+        return Intl.DateTimeFormat("en", {
+            year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", timeZone: zone
+        }).format(new Date());
     };
 
     // Check against the list of timezones to make sure the given one is valid
     Bot.isValidZone = (zone) => {
         // Check if the entered string is a valid timezone (According to Wikipedia's list), so go ahead and process
-        return Bot.timezones.find(tz => tz.toLowerCase() === zone?.toLowerCase()) || false;
+        try {
+            Intl.DateTimeFormat(undefined, { timeZone: zone });
+            return true;
+        } catch (e) {
+            return false;
+        }
     };
 
     // Return the full name of whatever day of the week it is
     Bot.getCurrentWeekday = (zone) => {
-        if (!zone || !Bot.isValidZone(zone)) {
-            return Intl.DateTimeFormat("en", {weekday: "long"}).format(new Date());
-        }
+        if (!zone || !Bot.isValidZone(zone)) zone = "UTC";
         return Intl.DateTimeFormat("en", {weekday: "long", timeZone: zone}).format(new Date());
     };
 
@@ -419,7 +338,7 @@ module.exports = (Bot, client) => {
         }
         const timeZoneName = Intl.DateTimeFormat("ia", {timeZoneName: "short", timeZone: zone})
             .formatToParts()
-            .find((i) => i.type === "timeZoneName")?.value || [];
+            .find((i) => i.type === "timeZoneName")?.value || "";
         const offset = timeZoneName.slice(3);
         if (!offset) return 0;
 
@@ -451,20 +370,15 @@ module.exports = (Bot, client) => {
         const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
         const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
 
-        day.setHours(day.getHours() - parseInt(localeHour, 10));
-        day.setMinutes(0);
-        day.setSeconds(0);
-        day.setMilliseconds(0);
+        day.setHours(day.getHours() - parseInt(localeHour, 10), 0, 0, 0);
         return day;
     };
+
     Bot.getEndOfDay = (zone) => {
         const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
         const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
 
-        day.setHours(day.getHours() - parseInt(localeHour, 10) + 23);
-        day.setMinutes(59);
-        day.setSeconds(59);
-        day.setMilliseconds(999);
+        day.setHours(day.getHours() - parseInt(localeHour, 10) + 23, 59, 59, 999);
         return day;
     };
 
@@ -485,32 +399,22 @@ module.exports = (Bot, client) => {
 
     // Get the current user count
     Bot.userCount = async () => {
-        let users = 0;
-        if (client.shard && client.shard.count > 0) {
-            await client.shard.fetchClientValues("users.cache.size")
-                .then(results => {
-                    users =  results.reduce((prev, val) => prev + val, 0);
-                })
+        if (client.shard?.count) {
+            return await client.shard.fetchClientValues("users.cache.size")
+                .then(results => results.reduce((prev, val) => prev + val, 0))
                 .catch(console.error);
-            return users;
-        } else {
-            return client.users.cache.size;
         }
+        return client.users.cache.size;
     };
 
     // Get the current guild count
     Bot.guildCount = async () => {
-        let guilds = 0;
-        if (client.shard) {
-            await client.shard.fetchClientValues("guilds.cache.size")
-                .then(results => {
-                    guilds =  results.reduce((prev, val) => prev + val, 0);
-                })
+        if (client.shard?.count) {
+            return await client.shard.fetchClientValues("guilds.cache.size")
+                .then(results => results.reduce((prev, val) => prev + val, 0))
                 .catch(console.error);
-            return guilds;
-        } else {
-            return client.guilds.cache.size;
         }
+        return client.guilds.cache.size;
     };
 
     /* isUserID
@@ -742,46 +646,11 @@ module.exports = (Bot, client) => {
         return divChar.repeat(count);
     };
 
-    // Clean mentions out of messages and replace them with the text version
-    Bot.cleanMentions = (guild, input) => {
-        return input
-            .replace(/@(here|everyone)/g, `@${Bot.constants.zws}$1`)
-            .replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
-                switch (type) {
-                    case "@":
-                    case "@!": {
-                        const  user = guild.members.cache.get(id);
-                        return user ? `@${user.displayname}` : `<${type}${Bot.constants.zws}${id}>`;
-                    }
-                    case "@&": {
-                        const  role = guild.roles.cache.get(id);
-                        return role ? `@${role.name}` : match;
-                    }
-                    case "#": {
-                        const  channel  = guild.channels.cache.get(id);
-                        return channel ? `#${channel.name}` : `<${type}${Bot.constants.zws}${id}>`;
-                    }
-                    default: return `<${type}${Bot.constants.zws}${id}>`;
-                }
-            });
-    };
+    Bot.isChannelId = (mention) => /^\d{17,19}/.test(mention);
+    Bot.isChannelMention = (mention) => /^<#\d{17,19}>/.test(mention);
+    Bot.isRoleMention = (mention) => /^<@&\d{17,19}>/.test(mention);
+    Bot.isUserMention = (mention) => /^<@!\d{17,19}>/.test(mention);
 
-    Bot.isChannelId = (mention) => {
-        const channelRegex = /^\d{17,19}/;
-        return mention.match(channelRegex);
-    };
-    Bot.isChannelMention = (mention) => {
-        const channelRegex = /^<#\d{17,19}>/;
-        return mention.match(channelRegex);
-    };
-    Bot.isRoleMention = (mention) => {
-        const roleRegex = /^<@&\d{17,19}>/;
-        return mention.match(roleRegex);
-    };
-    Bot.isUserMention = (mention) => {
-        const userRegex = /^<@!?\d{17,19}>/;
-        return mention.match(userRegex);
-    };
     Bot.chunkArray = (inArray, chunkSize) => {
         var res = [];
         if (!Array.isArray(inArray)) inArray = [inArray];
@@ -812,7 +681,7 @@ module.exports = (Bot, client) => {
             relic: 9,
             rarity: 7
         };
-        if (!Object.keys(max).includes(type)) return new Error(`[summarizeLevels] Invalid type (${type})`);
+        if (!max?.[type]) return new Error(`[summarizeLevels] Invalid type (${type})`);
         if (!Array.isArray(guildMembers)) guildMembers = [guildMembers];
 
         const levels = {};
@@ -931,8 +800,10 @@ module.exports = (Bot, client) => {
             thisChar = unitsList.find(ch => ch.uniqueName === defId);
 
             // If it doesn't find it, try remaking the list (Lazy reload)
-            if (!thisChar) unitsList = [...Bot.characters, ...Bot.ships];
-            thisChar = unitsList.find(ch => ch.uniqueName === defId);
+            if (!thisChar) {
+                unitsList = [...Bot.characters, ...Bot.ships];
+                thisChar = unitsList.find(ch => ch.uniqueName === defId);
+            }
         } catch (err) {
             console.error("Issue getting character image:");
             console.error(err);
@@ -943,12 +814,12 @@ module.exports = (Bot, client) => {
             return null;
         }
         const fetchBody = {
-            defId: defId,
+            defId,
             charUrl: thisChar?.avatarURL,
             avatarName: thisChar?.avatarName,
-            rarity: rarity,
-            level: level,
-            gear: gear,
+            rarity,
+            level,
+            gear,
             zetas: skills?.filter(s => s.isZeta && (s.tier >= s?.zetaTier || (s.isOmicron && s.tier >= s.tiers-1))).length || 0,
             relic: relic?.currentTier || 0,
             omicron: skills?.filter(s => s.isOmicron && s.tier === s.tiers).length || 0,
@@ -956,16 +827,13 @@ module.exports = (Bot, client) => {
         };
 
         try {
-            return await fetch(Bot.config.imageServIP_Port + "/char/", {
+            const res = await fetch(Bot.config.imageServIP_Port + "/char/", {
                 method: "post",
                 body: JSON.stringify(fetchBody),
                 headers: { "Content-Type": "application/json" }
-            })
-                .then(async response => {
-                    const resBuf = await response.arrayBuffer();
-                    if (!resBuf) return null;
-                    return Buffer.from(resBuf);
-                });
+            });
+            const resBuf = await res.arrayBuffer();
+            return resBuf ? Buffer.from(resBuf) : null;
         } catch (e) {
             Bot.logger.error("[Bot.getUnitImage] Something broke while requesting image.\n" + e);
             return null;
