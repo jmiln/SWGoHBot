@@ -237,8 +237,7 @@ class MyCharacter extends Command {
                 if (!stats.final[s]) stats.final[s] = 0;
                 const thisLangStr = langStr[langMap[s]];
                 if (!thisLangStr?.length) {
-                    console.log("[/mycharacter] Missing stat langStr:");
-                    console.log(s, thisLangStr);
+                    console.log(`[/mycharacter] Missing stat for ${unit.name}\nLangStr: \n${inspect(s)}\nThisLangMap: ${langMap[s]}\nThisLangStr: ${inspect(thisLangStr)}`);
                     statStr += s.toString().padEnd(8-s.length) + "\n";
                 } else {
                     const rep = maxLen - (thisLangStr?.length || 0);
@@ -248,7 +247,7 @@ class MyCharacter extends Command {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
                         const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : (stats.final[s] * 100).toFixed(2)+"%";
                         const modStr = isShip ? "" : stats.mods[s] ? (stats.mods[s] % 1 === 0 ? `(${stats.mods[s].toLocaleString()})` : `(${(stats.mods[s] * 100).toFixed(2)}%)`) : "";
-                        statStr += s.toString().padEnd(8-s.length) + modStr + "\n";
+                        statStr += str.toString().padEnd(8-str.length) + modStr + "\n";
                     }
                 }
             });

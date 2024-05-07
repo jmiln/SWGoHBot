@@ -158,6 +158,11 @@ class Charactergear extends Command {
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
+
+            if (!player?.roster) {
+                return super.error(interaction, "Sorry, but I'm having trouble getting your roster. Please make sure you have the correct ally code, and try again in a bit.");
+            }
+
             const playerChar = player.roster.find(c => c.defId === character.uniqueName);
 
             if (!playerChar) {

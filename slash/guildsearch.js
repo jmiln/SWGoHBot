@@ -40,19 +40,19 @@ class GuildSearch extends Command {
                             description: "Which stat you want it to show",
                             type: ApplicationCommandOptionType.String,
                             choices: [
-                                { name: "Health", value: "Health" },
-                                { name: "Protection", value: "Protection" },
-                                { name: "Speed", value: "Speed" },
-                                { name: "Potency", value: "Potency" },
+                                { name: "Health",                   value: "Health" },
+                                { name: "Protection",               value: "Protection" },
+                                { name: "Speed",                    value: "Speed" },
+                                { name: "Potency",                  value: "Potency" },
                                 { name: "Physical Critical Chance", value: "Physical Critical Chance" },
-                                { name: "Physical Damage", value: "Physical Damage" },
-                                { name: "Special Critical Chance", value: "Special Critical Chance" },
-                                { name: "Special Damage", value: "Special Damage" },
-                                { name: "Critical Damage", value: "Critical Damage" },
-                                { name: "Tenacity", value: "Tenacity" },
-                                { name: "Accuracy", value: "Accuracy" },
-                                { name: "Armor", value: "Armor" },
-                                { name: "Resistance", value: "Resistance" }
+                                { name: "Physical Damage",          value: "Physical Damage" },
+                                { name: "Special Critical Chance",  value: "Special Critical Chance" },
+                                { name: "Special Damage",           value: "Special Damage" },
+                                { name: "Critical Damage",          value: "Critical Damage" },
+                                { name: "Tenacity",                 value: "Tenacity" },
+                                { name: "Accuracy",                 value: "Accuracy" },
+                                { name: "Armor",                    value: "Armor" },
+                                { name: "Resistance",               value: "Resistance" }
                             ]
                         },
                         // INTEGER: top, rarity/ stars

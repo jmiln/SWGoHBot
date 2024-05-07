@@ -11,8 +11,7 @@ class MyProfile extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the profile you want view",
-                    type: ApplicationCommandOptionType.String,
-                    required: true
+                    type: ApplicationCommandOptionType.String
                 },
             ]
         });

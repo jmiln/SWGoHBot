@@ -37,7 +37,7 @@ module.exports = async (Bot, client) => {
             // Deploy all commands in case anything's been updated
             setTimeout(async () => {
                 await Bot.deployCommands();
-            }, 2 * 60 * 1000);
+            }, 1 * 60 * 1000);
 
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {

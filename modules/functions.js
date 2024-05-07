@@ -48,7 +48,7 @@ module.exports = (Bot, client) => {
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
-        return guildConf?.adminRoles.some(roleId => {
+        return guildConf?.adminRoles?.some(roleId => {
             const adminRole = interaction.guild.roles.cache.find(r => [r.name.toLowerCase(), r.id].includes(roleId.toLowerCase()));
             return adminRole && interaction.member.roles.cache.has(adminRole.id);
         }) ? permMap.GUILD_ADMIN : permMap.BASE_USER;

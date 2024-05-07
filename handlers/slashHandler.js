@@ -103,18 +103,20 @@ module.exports = (Bot, client) => {
         client.slashcmds.forEach(({ commandData }) => {
             const existingCmd = existingCommands.find(cmd => cmd.name === commandData.name);
             if (!existingCmd) {
-                updateRequired.push({ command: commandData.name, reason: `New command${commandData?.guildOnly ? " (guild only)" : ""}` });
+                updateRequired.push({ command: commandData, reason: `New command${commandData?.guildOnly ? " (guild only)" : ""}` });
             } else {
                 const areOptionsEqual = compareOptions(commandData.options || [], existingCmd.options || []);
                 if (!areOptionsEqual) {
-                    updateRequired.push({ command: commandData.name, reason: `Update required${commandData?.guildOnly ? " (guild only)" : ""}` });
+                    updateRequired.push({ command: commandData, reason: `Update required${commandData?.guildOnly ? " (guild only)" : ""}` });
                 }
             }
         });
 
         if (updateRequired?.length) {
-            console.log("Updates required for the following commands:", updateRequired);
-            await sendCommandData(updateRequired.map(r => r.command));
+            console.log(`Updates required for the following commands: \n - ${updateRequired.map(r => `${r.command.name} - ${r.reason}`).join("\n - ")}`);
+
+            // If any of em need to be updated, send it all
+            await sendCommandData(client.slashcmds.map(r => r.commandData));
         }
     };
     function compareOptions(localOptions, existingOptions) {
@@ -140,7 +142,7 @@ module.exports = (Bot, client) => {
 
     // Fetch and compare commands as previously described
     async function fetchCommands() {
-        const rest = new REST({ version: "9" }).setToken(Bot.config.token);
+        const rest = new REST().setToken(Bot.config.token);
         const cmdOut = [];
         try {
             if (Bot.config.dev_server) {
@@ -160,26 +162,28 @@ module.exports = (Bot, client) => {
     }
 
     async function sendCommandData(commands) {
-        const rest = new REST({ version: "9" }).setToken(Bot.config.token);
+        const rest = new REST().setToken(Bot.config.token);
 
         try {
             const globalCommands = commands.filter(cmd => !cmd.guildOnly);
             const guildCommands = commands.filter(cmd => cmd.guildOnly && Bot.config?.dev_server);
 
             // Deploy global commands
-            if (Bot.config.enableGlobalCmds) {
-                await rest.put(
+            if (Bot.config.enableGlobalCmds && globalCommands.length) {
+                const response = await rest.put(
                     Routes.applicationCommands(Bot.config.clientId),
                     { body: globalCommands }
                 );
+                console.log(`Successfully reloaded ${response.length} global (/) commands.`);
             }
 
             // Deploy guild commands if there's a dev_server set
-            if (Bot.config?.dev_server && guildCommands.length > 0) {
-                await rest.put(
+            if (Bot.config?.dev_server && guildCommands.length) {
+                const response = await rest.put(
                     Routes.applicationGuildCommands(Bot.config.clientId, Bot.config?.dev_server),
                     { body: guildCommands }
                 );
+                console.log(`Successfully reloaded ${response.length} guild (/) commands.`);
             }
         } catch (error) {
             console.error("Failed to refresh application commands:", error);

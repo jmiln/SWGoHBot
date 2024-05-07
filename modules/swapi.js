@@ -215,6 +215,7 @@ module.exports = (opts={}) => {
                 }
                 skillsArr.push(...skills);
                 defIdArr.push(...defIds);
+                if (!cacheUpdatesOut.length) continue;
                 await cache.putMany(config.mongodb.swapidb, "rawPlayers", cacheUpdatesOut);
             }
             const skillNames = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillsArr}, language: "eng_us"}, {nameKey: 1, skillId: 1});
