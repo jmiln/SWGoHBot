@@ -258,7 +258,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
@@ -2174,8 +2174,8 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Crit. Damage x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2357,7 +2357,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -2942,7 +2942,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Offense"
         },
         "avatarName": "charui_gar_saxon"
     },
@@ -4036,7 +4036,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -4689,7 +4689,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_kylekatarn"
@@ -5302,7 +5302,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -5537,6 +5537,23 @@
         "avatarName": "charui_badbatchomega"
     },
     {
+        "name": "Padawan Obi-Wan",
+        "uniqueName": "PADAWANOBIWAN",
+        "aliases": [
+            "Padawan Obi-Wan"
+        ],
+        "avatarName": "charui_padawanobiwan",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_padawanobiwan.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTICREPUBLIC_DESC",
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Padmé Amidala",
         "uniqueName": "PADMEAMIDALA",
         "aliases": [
@@ -5611,7 +5628,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6911,8 +6929,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
