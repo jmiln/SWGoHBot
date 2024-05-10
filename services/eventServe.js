@@ -86,9 +86,9 @@ function setupEventHandlers(socket, cache) {
 async function processEvents(cache) {
     const nowTime = Date.now();
     const events = await getAllEvents({ cache });
-    const eventsOut = events.filter(e => parseInt(e.eventDT, 10) <= nowTime);
+    const eventsOut = events.filter(e => Number.parseInt(e.eventDT, 10) <= nowTime);
 
-    for (const ev of events.filter(e => parseInt(e.eventDT, 10) > nowTime && e.countdown)) {
+    for (const ev of events.filter(e => Number.parseInt(e.eventDT, 10) > nowTime && e.countdown)) {
         const guildConf = await getGuildSettings({ cache, guildId: ev.guildId });
 
         if (!guildConf?.eventCountdown?.length) continue;
@@ -108,10 +108,10 @@ async function processEvents(cache) {
 }
 
 async function addEvents(cache, guildId, events) {
-    if (!Array.isArray(events)) events = [events];
+    const eventArr = Array.isArray(events) ? events : [events];
     const results = [];
 
-    for (const event of events) {
+    for (const event of eventArr) {
         const evRes = { event, success: true, error: null };
         const exists = await guildEventExists({ cache, guildId, evName: event.name });
         if (exists) {
@@ -153,8 +153,8 @@ async function removeEvent(cache, guildId, eventName) {
     return res;
 }
 
-async function getEventsByFilter(cache, guildId, filterArr) {
-    if (!Array.isArray(filterArr)) filterArr = [filterArr];
+async function getEventsByFilter(cache, guildId, filter) {
+    const filterArr = Array.isArray(filter) ? filter : [filter];
     const events = await getGuildEvents({ cache, guildId });
     return events.filter(ev => filterArr.every(e => `${ev.message} ${ev.name}`.includes(e)));
 }
