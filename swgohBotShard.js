@@ -26,6 +26,6 @@ Manager.on("shardCreate", (shard) => {
         console.log(`  [${shard.id}] Shard Died`);
     });
     shard.on("error", (err) => {
-        console.log("ERROR: Shard had issues starting: \n" + err);
+        console.log(`ERROR: Shard had issues starting: \n${err}`);
     });
 });

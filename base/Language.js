@@ -14,23 +14,23 @@ class Language {
                     res = defLang.get(str, ...args);
                 }
             } catch (e) {
-                res = "MISSING STRING: " + str;
-            }
-            return res;
-        } else {
-            // return (args.length > 0 && typeof this.language[str] === "function") ? this.language[str](...args) : this.language[str];
-            let res = "";
-            try {
-                if (!args?.length) {
-                    res = this.language[str];
-                } else {
-                    res = this.language[str](...args);
-                }
-            } catch (err) {
-                res = "ERROR: Broken string for: " + str;
+                res = `MISSING STRING: ${str}`;
             }
             return res;
         }
+
+        // return (args.length > 0 && typeof this.language[str] === "function") ? this.language[str](...args) : this.language[str];
+        let res = "";
+        try {
+            if (!args?.length) {
+                res = this.language[str];
+            } else {
+                res = this.language[str](...args);
+            }
+        } catch (err) {
+            res = `ERROR: Broken string for: ${str}`;
+        }
+        return res;
     }
 }
 

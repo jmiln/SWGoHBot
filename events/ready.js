@@ -68,7 +68,7 @@ module.exports = async (Bot, client) => {
                         // Reload all the data files on a timer so it'll catch new changes
                         if (client.shard?.count > 0) {
                             client.shard.broadcastEval(client => client.reloadDataFiles())
-                                .catch(err => console.log("[Ready/ReloadData data]\n" + err));
+                                .catch(err => console.log(`[Ready/ReloadData data]\n${err}`));
                         } else {
                             client.reloadDataFiles();
                         }
@@ -100,6 +100,6 @@ module.exports = async (Bot, client) => {
     try {
         client.user.setPresence({ activity: { name: playingString, type: 0} });
     } catch (err) {
-        console.log("[READY] Error when setting presence.\n" + err);
+        console.log(`[READY] Error when setting presence.\n${err}`);
     }
 };

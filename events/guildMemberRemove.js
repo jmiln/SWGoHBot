@@ -1,4 +1,4 @@
-const {inspect} = require("util");
+const {inspect} = require("node:util");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 const { clearSupporterInfo } = require("../modules/guildConfig/patreonSettings.js");
 

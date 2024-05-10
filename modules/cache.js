@@ -1,110 +1,101 @@
-module.exports = clientMongo => {
-
+module.exports = (clientMongo) => {
     const mongo = clientMongo;
 
     return {
-        put:     put,
-        get:     get,
-        getOne:  getOne,
-        remove:  remove,
+        put: put,
+        get: get,
+        getOne: getOne,
+        remove: remove,
         replace: replace,
-        exists:  exists,
+        exists: exists,
         putMany: putMany,
     };
 
-    async function put( database, collection, matchCondition, saveObject, autoUpdate=true ) {
-        if ( !database ) { throw new Error("No database specified to put"); }
-        if ( !collection ) { throw new Error("No collection specified to put"); }
-        if ( !saveObject ) { throw new Error("No object provided to put"); }
+    async function put(database, collection, matchCondition, saveObject, autoUpdate = true) {
+        if (!database) throw new Error("No database specified to put");
+        if (!collection) throw new Error("No collection specified to put");
+        if (!saveObject) throw new Error("No object provided to put");
 
-        const dbo = await mongo.db( database );
+        const dbo = await mongo.db(database);
 
         if (autoUpdate) {
             //set updated time to now
-            saveObject.updated   = Date.now();
+            saveObject.updated = Date.now();
             saveObject.updatedAt = new Date();
         }
 
         //Try update or insert
-        matchCondition = matchCondition || {};
-        await dbo.collection(collection).updateOne(matchCondition,
-            { $set: saveObject },
-            { upsert:true }
-        );
+        await dbo.collection(collection).updateOne(matchCondition || {}, { $set: saveObject }, { upsert: true });
 
         return saveObject;
     }
 
     // Getting it to work with bulkWrite
-    async function putMany( database, collection, saveObjectArray ) {
-        if ( !database ) { throw new Error("No database specified to putMany"); }
-        if ( !collection ) { throw new Error("No collection specified to putMany"); }
-        if ( !saveObjectArray?.length ) { throw new Error("Object array is empty or missing"); }
-        const dbo = await mongo.db( database );
+    async function putMany(database, collection, saveObjectArray) {
+        if (!database) throw new Error("No database specified to putMany");
+        if (!collection) throw new Error("No collection specified to putMany");
+        if (!saveObjectArray?.length) throw new Error("Object array is empty or missing");
+
+        const dbo = await mongo.db(database);
 
         await dbo.collection(collection).bulkWrite(saveObjectArray);
         return saveObjectArray;
     }
 
-    async function get( database, collection, matchCondition, projection ) {
-        if ( !database ) { throw new Error("No database specified to get"); }
-        if ( !collection ) { throw new Error("No collection specified to get"); }
+    async function get(database, collection, matchCondition, projection) {
+        if (!database) throw new Error("No database specified to get");
+        if (!collection) throw new Error("No collection specified to get");
 
-        const dbo = await mongo.db( database );
-
-        matchCondition = matchCondition || {};
-        projection = projection || {};
-        return await dbo.collection(collection).find(matchCondition).project(projection).toArray();
+        const dbo = await mongo.db(database);
+        return await dbo
+            .collection(collection)
+            .find(matchCondition || {})
+            .project(projection || {})
+            .toArray();
     }
 
-    async function getOne( database, collection, matchCondition, projection ) {
-        if ( !database ) { throw new Error("No database specified to get"); }
-        if ( !collection ) { throw new Error("No collection specified to get"); }
+    async function getOne(database, collection, matchCondition, projection) {
+        if (!database) throw new Error("No database specified to get");
+        if (!collection) throw new Error("No collection specified to get");
 
-        const dbo = await mongo.db( database );
-
-        matchCondition = matchCondition || {};
-        projection = projection || {};
-        return await dbo.collection(collection).findOne(matchCondition, {projection});
+        const dbo = await mongo.db(database);
+        return await dbo.collection(collection).findOne(matchCondition || {}, { projection: projection || {} });
     }
 
-    async function remove( database, collection, matchCondition ) {
-        if ( !database ) { throw new Error("No database specified to get"); }
-        if ( !collection ) { throw new Error("No collection specified to get"); }
+    async function remove(database, collection, matchCondition) {
+        if (!database) throw new Error("No database specified to get");
+        if (!collection) throw new Error("No collection specified to get");
 
-        const dbo = await mongo.db( database );
-
-        matchCondition = matchCondition || {};
-        const res = await dbo.collection(collection).deleteOne(matchCondition);
-        return res;
+        const dbo = await mongo.db(database);
+        return await dbo.collection(collection).deleteOne(matchCondition || {});
     }
 
-    async function replace( database, collection, matchCondition, saveObject, autoUpdate=true ) {
-        if ( !database )        throw new Error("No database specified to replace");
-        if ( !collection )      throw new Error("No collection specified to replace");
-        if ( !saveObject )      throw new Error("No object provided to replace");
-        if ( !matchCondition )  throw new Error("No match condition specified to replace");
+    async function replace(database, collection, matchCondition, saveObject, autoUpdate = true) {
+        if (!database) throw new Error("No database specified to replace");
+        if (!collection) throw new Error("No collection specified to replace");
+        if (!saveObject) throw new Error("No object provided to replace");
+        if (!matchCondition) throw new Error("No match condition specified to replace");
 
-        const dbo = await mongo.db( database );
+        const dbo = await mongo.db(database);
 
         if (autoUpdate) {
             //set updated time to now
-            saveObject.updated   = Date.now();
+            saveObject.updated = Date.now();
             saveObject.updatedAt = new Date();
         }
 
         // Delete the old one then replace it with the new version
-        await dbo.collection(collection).replaceOne(matchCondition, saveObject, {upsert: true});
+        await dbo.collection(collection).replaceOne(matchCondition, saveObject, { upsert: true });
 
         return saveObject;
     }
 
     async function exists(database, collection, matchCondition) {
-        if ( !database )        throw new Error("No database specified to replace");
-        if ( !collection )      throw new Error("No collection specified to replace");
-        if ( !matchCondition )  throw new Error("No match condition specified to replace");
+        if (!database) throw new Error("No database specified to replace");
+        if (!collection) throw new Error("No collection specified to replace");
+        if (!matchCondition) throw new Error("No match condition specified to replace");
 
-        const dbo = await mongo.db( database );
+        const dbo = await mongo.db(database);
 
         const exists = await dbo.collection(collection).findOne(matchCondition);
         return !!exists;

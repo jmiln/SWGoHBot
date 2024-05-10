@@ -26,8 +26,8 @@ class Mods extends Command {
             const localizationKeyMap = {
                 "Critical Chance x2" : "COMMAND_MODS_CRIT_CHANCE_SET",
                 "Critical Damage x4" : "COMMAND_MODS_CRIT_DAMAGE_SET",
-                "Crit. Chance x2" : "COMMAND_MODS_CRIT_CHANCE_SET",
-                "Crit. Damage x4" : "COMMAND_MODS_CRIT_DAMAGE_SET",
+                "Crit. Chance x2"    : "COMMAND_MODS_CRIT_CHANCE_SET",
+                "Crit. Damage x4"    : "COMMAND_MODS_CRIT_DAMAGE_SET",
                 "Speed x4"           : "COMMAND_MODS_SPEED_SET",
                 "Tenacity x2"        : "COMMAND_MODS_TENACITY_SET",
                 "Offense x4"         : "COMMAND_MODS_OFFENSE_SET",

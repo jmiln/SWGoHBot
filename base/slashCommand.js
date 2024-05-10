@@ -20,55 +20,56 @@ class slashCommand {
     }
 
     async getUser(interaction, userID, useAuth=false) {
-        let out = null;
+        let id = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
-            userID = interaction.author.id;
-        }
-        if (userID) {
-            // If it got this far, it's got a valid userID (ally code or Discord ID)
-            // so regardless of which, grab an ally code
-            const allyCodes = await this.Bot.getAllyCode(interaction, userID);
-            if (allyCodes && allyCodes.length) {
-                out = allyCodes[0];
-            }
+            id = interaction.author.id;
         }
 
-        return out;
+        // If it still somehow doesn't have a valid userID, return null
+        if (!id) return null;
+
+        // If it got this far, it's got a valid userID (ally code or Discord ID)
+        // so regardless of which, grab an ally code
+        const allyCodes = await this.Bot.getAllyCode(interaction, id);
+        if (allyCodes?.length) {
+            return allyCodes[0] || null;
+        }
     }
 
-    async error(interaction, errMsg, options) {
-        if (!interaction || !interaction.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
+    async error(interaction, errMsg, options={ephemeral: true}) {
+        let msgOut = null;
+        if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {
             console.error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
-            errMsg = "Something broke, please try again in a bit, or report it.";
+            msgOut = "Something broke, please try again in a bit, or report it.";
         }
-        if (errMsg.includes("DiscordAPIError") && errMsg.includes("Unknown Message")) {
+        if (msgOut?.includes("DiscordAPIError") && msgOut.includes("Unknown Message")) {
             return;
         }
-        if (!options) options = {
-            ephemeral: true
-        };
+
         options.title = options.title || "Error";
         options.color = options.color || this.Bot.constants.colors.red;
         if (options.example) {
-            errMsg += `\n\n**Example:**${codeBlock(options.example)}`;
+            msgOut += `\n\n**Example:**${codeBlock(options.example)}`;
         }
-        await this.embed(interaction, errMsg, options);
+        await this.embed(interaction, msgOut, options);
     }
 
     async success(interaction, msgOut, options={}) {
-        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
+        if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
         options.title = options.title || "Success!";
         options.color = options.color || this.Bot.constants.colors.green;
         await this.embed(interaction, msgOut, options);
     }
 
-    async embed(interaction, msgOut, options={}) {
-        if (!interaction || !interaction.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
-        if (!msgOut) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
-        if (msgOut?.length > 1900) msgOut = msgOut.toString().substring(0, 1900) + "...";
+    async embed(interaction, msgIn, options={}) {
+        let msgOut = null;
+        if (!interaction?.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
+        if (!msgIn) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
+        if (msgIn?.length > 1900) msgOut = `${msgIn.toString().substring(0, 1900)}...`;
+
         const title     = options.title || "TITLE HERE";
         const color     = options.color;
         const ephemeral = options.ephemeral || false;
@@ -98,8 +99,8 @@ class slashCommand {
                 return interaction.editReply(embedObj);
             } catch (e) {
                 // If something breaks with the editReply, log it, then just send a message to that channel
-                console.log(`[base/slashCommand Error: ${this.commandData.name}] ` + e.message);
-                console.log(`[base/slashCommand Message: ${this.commandData.name}] ` + interaction.content);
+                console.log(`[base/slashCommand Error: ${this.commandData.name}] ${e.message}`);
+                console.log(`[base/slashCommand Message: ${this.commandData.name}] ${interaction?.content}`);
                 return interaction.channel.send(embedObj);
             }
         }

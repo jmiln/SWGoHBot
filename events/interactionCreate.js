@@ -1,6 +1,7 @@
-const {inspect} = require("util");
+const {inspect} = require("node:util");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 const { getGuildAliases } = require("../modules/guildConfig/aliases.js");
+const { send } = require("node:process");
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
     "HTTPError [AbortError]: The user aborted a request.",
@@ -43,15 +44,10 @@ module.exports = async (Bot, client, interaction) => {
 
         // Load the language file for whatever language they have set
         const user = await Bot.userReg.getUser(interaction.user.id);
-        if (user && user.lang) {
-            if (user.lang.language) {
-                interaction.guildSettings.language = user.lang.language || Bot.config.defaultSettings.language;
-            }
-            if (user.lang.swgohLanguage) {
-                interaction.guildSettings.swgohLanguage = user.lang.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
-            }
-        }
-        interaction.language = Bot.languages[interaction.guildSettings.language] || Bot.languages[Bot.config.defaultSettings.language];
+        interaction.guildSettings.selectedLanguage = user?.lang?.language || Bot.config.defaultSettings.language;
+        interaction.guildSettings.swgohLanguage    = user?.lang?.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
+
+        interaction.language = Bot.languages[interaction.guildSettings.selectedLanguage] || Bot.languages[Bot.config.defaultSettings.language];
         interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
         // Run the command
@@ -73,15 +69,14 @@ module.exports = async (Bot, client, interaction) => {
 
             const replyObj = {content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`, ephemeral: true};
             if (interaction.replied) {
-                return interaction.followUp(replyObj)
-                    .catch(e => logErr(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
-            } else if (interaction.deferred) {
+                return interaction.followUp(replyObj) .catch(e => logErr(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
+            }
+            if (interaction.deferred) {
                 return interaction.editReply(replyObj)
                     .catch(e => logErr(`[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
-            } else {
-                return interaction.reply(replyObj)
-                    .catch(e => logErr(`[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
             }
+            return interaction.reply(replyObj)
+                .catch(e => logErr(`[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
         }
     } else if (interaction.isAutocomplete()) {
         // Process the autocomplete inputs
@@ -95,19 +90,12 @@ module.exports = async (Bot, client, interaction) => {
             if (interaction.commandName === "panic") {
                 // Process the autocompletions for the /panic command
                 filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
-                filtered = filtered.map(unit => {
-                    return {
-                        name: unit.name,
-                        value: unit.defId
-                    };
-                });
+                filtered = filtered.map(unit => ({ name: unit.name, value: unit.defId }));
+            } else if (focusedOption.name === "command") {
+                filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
             } else {
-                const aliasList = aliases?.map(al => {
-                    return {
-                        ...al,
-                        isAlias: true
-                    };
-                }) || [];
+                const aliasList = aliases?.map(al => ({ ...al, isAlias: true })) || [];
+
                 if (["unit", "character", "ship"].includes(focusedOption.name)) {
                     let unitList = [];
                     if (focusedOption.name === "unit") {
@@ -134,8 +122,6 @@ module.exports = async (Bot, client, interaction) => {
                             if (unit.isAlias) return {name: `${unit.name} (${unit.alias})`, value: unit.defId};
                             return { name: unit.name, value: unit.defId };
                         });
-                } else if (focusedOption.name === "command") {
-                    filtered = Bot.commandList.filter(cmdName => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
                 }
             }
         } catch (err) {
@@ -168,19 +154,19 @@ module.exports = async (Bot, client, interaction) => {
     }
 
     function filterAutocomplete(arrIn, search) {
+        const searchTerm = search?.toLowerCase() || "";
         let filtered = arrIn.filter(unit => {
-            if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(search);
-            return unit?.name?.toLowerCase().startsWith(search);
+            if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(searchTerm);
+            return unit?.name?.toLowerCase().startsWith(searchTerm);
         });
-        search = search.toLowerCase();
         if (!filtered?.length) {
-            filtered = arrIn.filter(unit => unit.name?.toLowerCase().includes(search));
+            filtered = arrIn.filter(unit => unit.name?.toLowerCase().includes(searchTerm));
         }
         if (!filtered?.length) {
             filtered = arrIn.filter(unit => {
                 return unit?.aliases
                     ?.map(u => u.toLowerCase())
-                    .includes(search);
+                    .includes(searchTerm);
             });
         }
 

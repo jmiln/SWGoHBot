@@ -1,6 +1,6 @@
 const { Client, Collection } = require("discord.js");
 const { readFileSync } = require("node:fs");
-const { inspect } = require("util");
+const { inspect } = require("node:util");
 
 const Bot = {};
 
