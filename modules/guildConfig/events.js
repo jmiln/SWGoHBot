@@ -59,9 +59,9 @@ async function getAllEvents({cache}) {
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, {guildId: 1, events: 1, _id: 0});
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
-        return [...acc, ...curr.events.map(ev => {
+        return acc.concat(curr.events.map(ev => {
             ev.guildId = curr.guildId;
             return ev;
-        })];
+        }));
     }, []);
 }

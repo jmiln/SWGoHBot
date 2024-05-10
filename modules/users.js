@@ -5,7 +5,7 @@ module.exports = (Bot) => {
     return {
         addUser: addUser,
         getUser: getUser,
-        getUserFromAlly: getUserFromAlly,
+        getUserFromAlly: getUsersFromAlly,
         updateUser: updateUser,
         removeAllyCode: removeAllyCode,
         removeUser: removeUser
@@ -45,11 +45,9 @@ module.exports = (Bot) => {
         return user || null;
     }
 
-    async function getUserFromAlly(allyCode) {
-        allyCode = allyCode.toString();
-        const users = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {"accounts.allyCode": allyCode});
-        if (!users || !users.length) return null;
-        return users;
+    async function getUsersFromAlly(allyCode) {
+        const users = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {"accounts.allyCode": allyCode?.toString()});
+        return users?.length ? users : null;
     }
 
     async function updateUser(userId, userObj) {

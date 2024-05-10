@@ -37,9 +37,8 @@ exports.hasGuildSettings = async (cache, guildId) => {
     const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {guildId: guildId}, {settings: 1});
     if (guildSettings?.length) {
         return true;
-    } else {
-        return false;
     }
+    return false;
 };
 
 // Remove all settings, events, polls, etc for the given guild

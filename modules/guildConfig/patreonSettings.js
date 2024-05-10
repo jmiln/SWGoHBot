@@ -80,7 +80,7 @@ exports.getServerSupporters = async ({cache, guildId}) => {
 exports.removeServerSupporter = async ({cache, guildId, userId}) => {
     if (!guildId) return [];
     const guildPatSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
-    const hasUser = guildPatSettings?.patreonSettings?.supporters.filter(sup => sup.userId === userId)?.length > 1 ? true : false;
+    const hasUser = guildPatSettings?.patreonSettings?.supporters.filter(sup => sup.userId === userId)?.length  > 1;
 
     // If the user isn't in the supporters arr, say so
     if (!hasUser) return { success: false, error: "User not in supporters array" };
@@ -193,9 +193,9 @@ exports.getGuildSupporterTier = async ({cache, guildId}) => {
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", {guildId}, {patreonSettings: 1, _id: 0});
 
     // Add up tiers from here, and return a higher tier if they add up to one
-    const totalRes = res?.patreonSettings?.supporters?.reduce((curr, acc) => curr += acc.tier, 0);
+    const totalRes = res?.patreonSettings?.supporters?.reduce((curr, acc) => {return curr + acc.tier}, 0);
     for (const tier of tierNums.reverse()) {
-        if (totalRes >= tier) return parseInt(tier, 10);
+        if (totalRes >= tier) return Number.parseInt(tier, 10);
     }
 
     // If it gets to here (It shouldn't), return 0

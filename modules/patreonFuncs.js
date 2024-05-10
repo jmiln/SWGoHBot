@@ -50,7 +50,7 @@ module.exports = (Bot, client) => {
     };
 
     function getPatreonTier(user) {
-        const tiers = Object.keys(patronTiers).map(t => parseInt(t, 10));
+        const tiers = Object.keys(patronTiers).map(t => Number.parseInt(t, 10));
         const amount_dollars = (user?.amount_cents || 0)/ 100;
         const minTier = Math.min(...tiers);
         if (amount_dollars && amount_dollars < minTier) return 0;
@@ -139,7 +139,7 @@ module.exports = (Bot, client) => {
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
                     await Bot.wait(750);
-                    return Bot.logger.error("Broke in getRanks: " + e);
+                    return Bot.logger.error(`Broke in getRanks: ${e}`);
                 }
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;
@@ -172,7 +172,7 @@ module.exports = (Bot, client) => {
                     if (["both", "char"].includes(user.arenaAlert.arena)) {
                         const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, 6);
                         const minTil = Math.floor(timeLeft / minMS);
-                        const payoutTime = Bot.formatDuration(timeLeft) + " until payout.";
+                        const payoutTime = `${Bot.formatDuration(timeLeft)} until payout.`;
 
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
@@ -212,7 +212,7 @@ module.exports = (Bot, client) => {
                                     // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
-                                Bot.logger.error("Broke getting ranks: " + e);
+                                Bot.logger.error(`Broke getting ranks: ${e}`);
                             }
                         }
                     }
@@ -223,7 +223,7 @@ module.exports = (Bot, client) => {
                     if (["both", "fleet"].includes(user.arenaAlert.arena)) {
                         const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, 5);
                         const minTil = Math.floor(timeLeft / minMS);
-                        const payoutTime = Bot.formatDuration(timeLeft) + " until payout.";
+                        const payoutTime = `${Bot.formatDuration(timeLeft)} until payout.`;
 
                         const pUser = await client.users.fetch(patron.discordID);
                         if (pUser) {
@@ -263,6 +263,7 @@ module.exports = (Bot, client) => {
                                     // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
+                                // biome-ignore lint/style/useTemplate: <explanation>
                                 Bot.logger.error("Broke getting ranks: " + e);
                             }
                         }
@@ -307,23 +308,23 @@ module.exports = (Bot, client) => {
             if (!players || !players.length) continue;
 
             // If char is enabled, send it there
-            if (aw?.payout?.char && aw.payout.char.enabled && aw.payout.char.channel) {
+            if (aw?.payout?.char?.enabled && aw.payout.char.channel) {
                 const playerTimes    = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
                 const sentMessage    = await sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed);
                 if (sentMessage) {
-                    user.arenaWatch.payout["char"].msgID = sentMessage.id;
+                    user.arenaWatch.payout.char.msgID = sentMessage.id;
                 } else {
                     // console.log(`Could not send char arena message for ${user.id}, patreon ${inspect(patron)}`);
                 }
             }
             // Then if fleet is enabled, send it there as well/ instead
-            if (aw.payout?.fleet && aw.payout.fleet.enabled && aw.payout.fleet.channel) {
+            if (aw.payout?.fleet?.enabled && aw.payout.fleet.channel) {
                 const playerTimes    = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
                 const sentMessage    = await sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed);
                 if (sentMessage) {
-                    user.arenaWatch.payout["fleet"].msgID = sentMessage.id;
+                    user.arenaWatch.payout.fleet.msgID = sentMessage.id;
                 } else {
                     // If it gets here, then someone couldn't be found
                     // console.log(`Could not send fleet arena message for ${user.id}`);
@@ -337,12 +338,11 @@ module.exports = (Bot, client) => {
     // Format the output for the payouts embed
     function formatPayouts(players, arena) {
         const times = {};
-        arena = (arena === "fleet") ? "ship" : arena;
-        const arenaString = "last" + Bot.toProperCase(arena);
+        const arenaString = `last${Bot.toProperCase((arena === "fleet") ? "ship" : arena)}`;
 
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);
-            player.outString = Bot.expandSpaces(`**\`${Bot.constants.zws} ${rankString} ${Bot.constants.zws}\`** - ${player.mark ? player.mark + " " : ""}${player.name}`);
+            player.outString = Bot.expandSpaces(`**\`${Bot.constants.zws} ${rankString} ${Bot.constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`);
             if (times[player.timeTil]) {
                 times[player.timeTil].players.push(player);
             } else {
@@ -355,7 +355,7 @@ module.exports = (Bot, client) => {
         for (const key of Object.keys(times)) {
             const time = times[key];
             fieldOut.push({
-                name: "PO in " + key,
+                name: `PO in ${key}`,
                 value: time.players.sort((a, b) => a[arenaString] - b[arenaString]).map(p => p.outString).join("\n")
             });
         }
@@ -378,7 +378,7 @@ module.exports = (Bot, client) => {
 
             const timeLeft = getTimeLeft(player.poOffset, offsets[arena]);
             player.duration = Math.floor(timeLeft / minMS);
-            player.timeTil  = Bot.formatDuration(timeLeft) + " until payout.";
+            player.timeTil  = `${Bot.formatDuration(timeLeft)} until payout.`;
         }
         return players.sort((a, b) => a.duration > b.duration ? 1 : -1);
     }
@@ -395,8 +395,8 @@ module.exports = (Bot, client) => {
         for (const arena of ["fleet", "char"]) {
             if (!payout.poOffset && payout.poOffset !== 0) continue;
             const timeLeft = getTimeLeft(player.poOffset, offsets[arena]);
-            payout[arena + "Duration"] = Math.floor(timeLeft / minMS);
-            payout[arena + "TimeTil"]  = Bot.formatDuration(timeLeft) + " until payout.";
+            payout[`${arena}Duration`] = Math.floor(timeLeft / minMS);
+            payout[`${arena}TimeTil`]  = `${Bot.formatDuration(timeLeft)} until payout.`;
         }
         return payout;
     }
@@ -480,9 +480,9 @@ module.exports = (Bot, client) => {
             let charOut = [];
             let shipOut = [];
             accountsToCheck.forEach((player, ix) => {
-                let newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player.allyCode, 10));
+                let newPlayer = newPlayers.find(p => Number.parseInt(p.allyCode, 10) === Number.parseInt(player.allyCode, 10));
                 if (!newPlayer) {
-                    newPlayer = newPlayers.find(p => parseInt(p.allyCode, 10) === parseInt(player, 10));
+                    newPlayer = newPlayers.find(p => Number.parseInt(p.allyCode, 10) === Number.parseInt(player, 10));
                 }
                 if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
                     // Both, since low level players can have just char arena I believe
@@ -531,21 +531,21 @@ module.exports = (Bot, client) => {
                         // If they have char payouts turned on, do that here
                         charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
                     }
-                    if (player.warn && player.warn.min
+                    if (player.warn?.min
                         && ["char", "both"].includes(player.warn.arena)
                         && charMinLeft === player.warn.min) {
                         // Warn them of their upcoming payout if this is enabled
-                        charOut.push(`${pName}'s **character** arena payout is in ${player.warn.min + " minutes"}`);
+                        charOut.push(`${pName}'s **character** arena payout is in ${`${player.warn.min} minutes`}`);
                     }
                     if (fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
                         // If they have fleet payouts turned on, do that here
                         shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
                     }
-                    if (player.warn && player.warn.min
+                    if (player.warn?.min
                         && ["fleet", "both"].includes(player.warn.arena)
                         && fleetMinLeft === player.warn.min) {
                         // Warn them of their upcoming payout if this is enabled
-                        shipOut.push(`${pName}'s **fleet** arena payout is in ${player.warn.min + " minutes"}`);
+                        shipOut.push(`${pName}'s **fleet** arena payout is in ${`${player.warn.min} minutes`}`);
                     }
                 }
                 accountsToCheck[ix] = player;
@@ -562,11 +562,11 @@ module.exports = (Bot, client) => {
             const shipFields = [];
             if (charOut.length) {
                 charFields.push("**Character Arena:**");
-                charFields.push(charOut.map(c => "- " + c).join("\n"));
+                charFields.push(charOut.map(c => `- ${c}`).join("\n"));
             }
             if (shipOut.length) {
                 shipFields.push("**Fleet Arena:**");
-                shipFields.push(shipOut.map(c => "- " + c).join("\n"));
+                shipFields.push(shipOut.map(c => `- ${c}`).join("\n"));
             }
             if (charFields.length || shipFields.length) {
                 // If something has changed, update the user & let them know
@@ -578,7 +578,7 @@ module.exports = (Bot, client) => {
                     const fields = charFields.concat(shipFields);
                     client.shard.broadcastEval((client, {aw, fields}) => {
                         const chan = client.channels.cache.get(aw.arena.char.channel);
-                        if (chan && chan.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                        if (chan?.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                             chan.send(`>>> ${fields.join("\n")}`);
                         }
                     }, {context: {aw: aw, fields: fields}});
@@ -587,7 +587,7 @@ module.exports = (Bot, client) => {
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
                         client.shard.broadcastEval((client, {aw, charFields}) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
-                            if (chan && chan.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                            if (chan?.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                                 chan.send(`>>> ${charFields.join("\n")}`);
                             }
                         }, {context: {aw: aw, charFields: charFields}});
@@ -595,7 +595,7 @@ module.exports = (Bot, client) => {
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
                         client.shard.broadcastEval((client, {aw, shipFields}) => {
                             const chan = client.channels.cache.get(aw.arena.fleet.channel);
-                            if (chan && chan.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
+                            if (chan?.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                                 chan.send(`>>> ${shipFields.join("\n")}`);
                             }
                         }, {context: {aw: aw, shipFields: shipFields}});
@@ -632,7 +632,7 @@ module.exports = (Bot, client) => {
             }
         }
         // Then check for anyone that wasn't matched up with a partner
-        inArr.forEach(player => {
+        for (const player of inArr) {
             if (!checked.includes(player.allyCode)) {
                 const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
                 if (player.oldRank < player.newRank && aw.report !== "climb") {
@@ -641,7 +641,7 @@ module.exports = (Bot, client) => {
                     outArr.push(`${pName} has climbed from ${player.oldRank} to ${player.newRank}`);
                 }
             }
-        });
+        }
         return outArr;
     }
 
@@ -693,11 +693,11 @@ module.exports = (Bot, client) => {
             let guildLog;
             try {
                 if (!guild?.roster?.length) {
-                    return console.log("[patreonFuncs/guildsUpdate] Cannot get the roster for " + gu.allycode);
+                    return console.log(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
                 }
                 guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map(m => m.allyCode));
             } catch (err) {
-                return console.log(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n` + err);
+                return console.log(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
             }
 
             // If there were not changes found, move along, not the changes we were looking for
@@ -757,7 +757,8 @@ module.exports = (Bot, client) => {
         const messages = await client.shard.broadcastEval(async (client, {msgIdIn, chanIn, outEmbed}) => {
             const channel = client.channels.cache.find(chan => chan.id === chanIn || chan.name === chanIn);
 
-            let msg, targetMsg = null;
+            let msg;
+            let targetMsg = null;
             if (channel?.guild && channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])) {
                 if (!msgIdIn) {
                     targetMsg = await channel.send({embeds: [outEmbed]});
@@ -862,7 +863,7 @@ module.exports = (Bot, client) => {
 
             let roster = null;
             if (gt.sortBy === "tickets") {
-                roster = rawGuild.roster.sort((a, b) => parseInt(a.memberContribution[2]?.currentValue, 10) > parseInt(b.memberContribution[2]?.currentValue, 10) ? 1 : -1);
+                roster = rawGuild.roster.sort((a, b) => Number.parseInt(a.memberContribution[2]?.currentValue, 10) > Number.parseInt(b.memberContribution[2]?.currentValue, 10) ? 1 : -1);
             } else {
                 roster = rawGuild.roster.sort((a, b) => a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1);
             }
@@ -888,10 +889,10 @@ module.exports = (Bot, client) => {
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
                 if (tickets < MAX_TICKETS) {
-                    outArr.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${"**" + member.playerName + "**"}`));
+                    outArr.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else if (isMsgType || gt?.showMax) {
                     // Bold/ italicise the maxed players' counts
-                    outArr.push(Bot.expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${"**" + member.playerName + "**"}`));
+                    outArr.push(Bot.expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${`**${member.playerName}**`}`));
                 } else {
                     maxed += 1;
                 }

@@ -1,18 +1,18 @@
 const { REST, Routes } = require("discord.js");
-const {readdirSync} = require("fs");
-const slashDir = __dirname + "/../slash/";
+const {readdirSync} = require("node:fs");
+const slashDir = `${__dirname}/../slash/`;
 
 module.exports = (Bot, client) => {
     const slashFiles = readdirSync(slashDir);
     const slashError = [];
-    slashFiles.forEach(file => {
+    for (const file of slashFiles) {
         try {
             if (!file.endsWith(".js")) return;
             const commandName = file.split(".")[0];
             try {
                 const cmd = new (require(`${slashDir}${commandName}`))(Bot);
                 if (!cmd.commandData.enabled) {
-                    return console.error(commandName + " is not enabled");
+                    return console.error(`${commandName} is not enabled`);
                 }
                 client.slashcmds.set(cmd.commandData.name, cmd);
                 return false;
@@ -23,9 +23,9 @@ module.exports = (Bot, client) => {
         } catch (err) {
             return console.error(err);
         }
-    });
+    }
     if (slashError.length) {
-        console.error("slashLoad: " + slashError.join("\n"));
+        console.error(`slashLoad: ${slashError.join("\n")}`);
     }
 
 
@@ -41,7 +41,7 @@ module.exports = (Bot, client) => {
         try {
             const cmd = new (require(`${slashDir}${commandName}`))(Bot);
             if (!cmd.commandData.enabled) {
-                return commandName + " is not enabled";
+                return `${commandName} is not enabled`;
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
             return false;
@@ -54,11 +54,10 @@ module.exports = (Bot, client) => {
         let response = client.unloadSlash(commandName);
         if (response) {
             return new Error(`Error Unloading: ${response}`);
-        } else {
-            response = client.loadSlash(commandName);
-            if (response) {
-                return new Error(`Error Loading: ${response}`);
-            }
+        }
+        response = client.loadSlash(commandName);
+        if (response) {
+            return new Error(`Error Loading: ${response}`);
         }
         return commandName;
     };
@@ -67,12 +66,13 @@ module.exports = (Bot, client) => {
     // Will not remove a command if it's been loaded,
     // but will load a new command if it's been added
     client.reloadAllSlashCommands = async () => {
-        [...client.slashcmds.keys()].forEach(c => {
+        for (const c of [...client.slashcmds.keys()]) {
             client.unloadSlash(c);
-        });
+        }
         const cmdFiles = await readdirSync(slashDir);
-        const coms = [], errArr = [];
-        cmdFiles.forEach(async (f) => {
+        const coms = [];
+        const errArr = [];
+        for (const f of cmdFiles) {
             try {
                 const cmd = f.split(".")[0];
                 if (f.split(".").slice(-1)[0] !== "js") {
@@ -86,10 +86,10 @@ module.exports = (Bot, client) => {
                     }
                 }
             } catch (e) {
-                Bot.logger.error("Error: " + e);
+                Bot.logger.error(`Error: ${e}`);
                 errArr.push(f);
             }
-        });
+        }
         return {
             succArr: coms,
             errArr: errArr
@@ -100,7 +100,7 @@ module.exports = (Bot, client) => {
         const existingCommands = await fetchCommands();
         const updateRequired = [];
 
-        client.slashcmds.forEach(({ commandData }) => {
+        for (const {commandData} of client.slashcmds) {
             const existingCmd = existingCommands.find(cmd => cmd.name === commandData.name);
             if (!existingCmd) {
                 updateRequired.push({ command: commandData, reason: `New command${commandData?.guildOnly ? " (guild only)" : ""}` });
@@ -110,7 +110,7 @@ module.exports = (Bot, client) => {
                     updateRequired.push({ command: commandData, reason: `Update required${commandData?.guildOnly ? " (guild only)" : ""}` });
                 }
             }
-        });
+        }
 
         if (updateRequired?.length) {
             console.log(`Updates required for the following commands: \n - ${updateRequired.map(r => `${r.command.name} - ${r.reason}`).join("\n - ")}`);

@@ -1,4 +1,4 @@
-const { workerData, parentPort } = require("worker_threads");
+const { workerData, parentPort } = require("node:worker_threads");
 // const {langChar} = require("../../modules/swapi.js")(null);
 
 const guildLogOut = [];
@@ -23,7 +23,7 @@ async function init(workerData) {
             // Then move on, since there's no old data to compare against
             continue;
         }
-        if (JSON.stringify(oldPlayer.roster) == JSON.stringify(newPlayer.roster)) continue;
+        if (JSON.stringify(oldPlayer.roster) === JSON.stringify(newPlayer.roster)) continue;
 
         const playerLog = { abilities: [], geared: [], leveled: [], reliced: [], starred: [], unlocked: [], ultimate: [] };
 
@@ -36,7 +36,7 @@ async function init(workerData) {
             // const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
             const oldUnit = oldRoster?.[newUnit.defId];
             if (!oldUnit) continue;
-            if (JSON.stringify(oldUnit) == JSON.stringify(newUnit)) continue;
+            if (JSON.stringify(oldUnit) === JSON.stringify(newUnit)) continue;
             if (!oldUnit) {
                 playerLog.unlocked.push(`Unlocked {${newUnit.defId}}!`);
                 if (newUnit?.level > 1) {
@@ -60,7 +60,7 @@ async function init(workerData) {
 
                 if (newSkill?.tier && ((!oldSkill && newSkill?.tier) ||  oldSkill?.tier < newSkill?.tier)) {
                     // Grab zeta/ omicron data for the ability if available
-                    const thisAbility = workerData.specialAbilities.find(abi => abi.skillId == newSkill.id);
+                    const thisAbility = workerData.specialAbilities.find(abi => abi.skillId === newSkill.id);
                     if (thisAbility?.omicronTier) {
                         newSkill.isOmicron = true;
                         newSkill.omicronTier = thisAbility.omicronTier + 1;

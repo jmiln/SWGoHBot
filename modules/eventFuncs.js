@@ -53,8 +53,8 @@ module.exports = (Bot, client) => {
         if (ev.repeatDays.length > 0) { // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
-                const days = parseInt(ev.repeatDays.splice(0, 1)[0], 10);
-                ev.eventDT = parseInt(ev.eventDT, 10) + parseInt(dayMS * days, 10);
+                const days = Number.parseInt(ev.repeatDays.splice(0, 1)[0], 10);
+                ev.eventDT = Number.parseInt(ev.eventDT, 10) + Number.parseInt(dayMS * days, 10);
             }
             if (nowTime > ev.eventDT) { // It ran out of days
                 return null;
@@ -63,7 +63,7 @@ module.exports = (Bot, client) => {
             // Else it's using basic repeat
             while (nowTime >= ev.eventDT) {
                 ev.eventDT =
-                    parseInt(ev.eventDT, 10)        +
+                    Number.parseInt(ev.eventDT, 10)        +
                     (ev.repeat.repeatDay  * dayMS)  +
                     (ev.repeat.repeatHour * hourMS) +
                     (ev.repeat.repeatMin  * minMS);
@@ -78,7 +78,7 @@ module.exports = (Bot, client) => {
         const diffNum = Math.abs(new Date().getTime() - event.eventDT);
         const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
 
-        var announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
+        const  announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
 
         await sendMsg(event, guildConf, event.guildId, announceMessage);
     };
@@ -93,7 +93,7 @@ module.exports = (Bot, client) => {
         const diffTime = Math.abs(event.eventDT - new Date().getTime());
         if (diffTime > (2*minMS)) {
             const minPast = Math.floor(diffTime / minMS);
-            outMsg += "\n> This event is " + minPast + " minutes past time.";
+            outMsg += `\n> This event is ${minPast} minutes past time.`;
         }
 
         // Announce the event
