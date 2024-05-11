@@ -10,28 +10,28 @@ Bot.config = require("./config.js");
 const client = new Client({
     intents: Bot.config.botIntents,
     partials: Bot.config.partials,
-    closeTimeout: 30_000
+    closeTimeout: 30_000,
 });
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
 Bot.abilityCosts = JSON.parse(readFileSync("./data/abilityCosts.json", "utf-8"));
-Bot.acronyms     = JSON.parse(readFileSync("./data/acronyms.json", "utf-8"));
-Bot.arenaJumps   = JSON.parse(readFileSync("./data/arenaJumps.json", "utf-8"));
-Bot.charLocs     = JSON.parse(readFileSync("./data/charLocations.json", "utf-8"));
-Bot.characters   = JSON.parse(readFileSync("./data/characters.json", "utf-8"));
-Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.missions     = JSON.parse(readFileSync("./data/missions.json", "utf-8"));
-Bot.raidNames    = JSON.parse(readFileSync("./data/raidNames.json", "utf-8"));
-Bot.resources    = JSON.parse(readFileSync("./data/resources.json", "utf-8"));
-Bot.shipLocs     = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8"));
-Bot.ships        = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
-Bot.timezones    = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
+Bot.acronyms = JSON.parse(readFileSync("./data/acronyms.json", "utf-8"));
+Bot.arenaJumps = JSON.parse(readFileSync("./data/arenaJumps.json", "utf-8"));
+Bot.charLocs = JSON.parse(readFileSync("./data/charLocations.json", "utf-8"));
+Bot.characters = JSON.parse(readFileSync("./data/characters.json", "utf-8"));
+Bot.factions = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
+Bot.missions = JSON.parse(readFileSync("./data/missions.json", "utf-8"));
+Bot.raidNames = JSON.parse(readFileSync("./data/raidNames.json", "utf-8"));
+Bot.resources = JSON.parse(readFileSync("./data/resources.json", "utf-8"));
+Bot.shipLocs = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8"));
+Bot.ships = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
+Bot.timezones = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 
-Bot.constants    = require("./data/constants.js");
-Bot.help         = require("./data/help.js");
+Bot.constants = require("./data/constants.js");
+Bot.help = require("./data/help.js");
 
 // Load the journeyReqs and process the names for autocomplete
-Bot.journeyReqs  = JSON.parse(readFileSync("./data/journeyReqs.json", "utf-8"));
+Bot.journeyReqs = JSON.parse(readFileSync("./data/journeyReqs.json", "utf-8"));
 processJourneyNames();
 
 // Load in various general functions for the bot
@@ -45,12 +45,31 @@ require("./modules/patreonFuncs.js")(Bot, client);
 
 // Languages
 Bot.languages = {};
-Bot.swgohLangList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
+Bot.swgohLangList = [
+    "ENG_US",
+    "GER_DE",
+    "SPA_XM",
+    "FRE_FR",
+    "RUS_RU",
+    "POR_BR",
+    "KOR_KR",
+    "ITA_IT",
+    "TUR_TR",
+    "CHS_CN",
+    "CHT_CN",
+    "IND_ID",
+    "JPN_JP",
+    "THA_TH",
+];
 client.reloadLanguages();
 
 // List of all the unit names to use for autocomplete
-Bot.CharacterNames = Bot.characters.map(ch => {return {name: ch.name, defId: ch.uniqueName, aliases: ch.aliases || []};});
-Bot.ShipNames = Bot.ships.map(sh => {return {name: sh.name, defId: sh.uniqueName, aliases: sh.aliases || []};});
+Bot.CharacterNames = Bot.characters.map((ch) => {
+    return { name: ch.name, defId: ch.uniqueName, aliases: ch.aliases || [] };
+});
+Bot.ShipNames = Bot.ships.map((sh) => {
+    return { name: sh.name, defId: sh.uniqueName, aliases: sh.aliases || [] };
+});
 
 client.slashcmds = new Collection();
 
@@ -58,7 +77,7 @@ const init = async () => {
     const { MongoClient } = require("mongodb");
     Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url);
     // Set up the caching
-    Bot.cache   = require("./modules/cache.js")(Bot.mongo);
+    Bot.cache = require("./modules/cache.js")(Bot.mongo);
     Bot.userReg = require("./modules/users.js")(Bot);
 
     if (Bot.config.swapiConfig || Bot.config.fakeSwapiConfig) {
@@ -84,7 +103,7 @@ const init = async () => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg?.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel)?.send("```inspect(errorMsg)```",{split: true});
+                client.channels.cache.get(Bot.config.logs.channel)?.send("```inspect(errorMsg)```", { split: true });
             }
         } catch (e) {
             // Don't bother doing anything
@@ -97,14 +116,14 @@ const init = async () => {
 
         // If it's something I can't do anything about, ignore it
         const ignoreArr = [
-            "Internal Server Error",                // Something on Discord's end
-            "The user aborted a request",           // Pretty sure this is also on Discord's end
-            "Cannot send messages to this user",    // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
-            "Unknown Message",                      // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
-            "HTTPError: Service Unavailable",       // Issue connecting to Discord?
-            "HTTPError: Insufficient Storage",      // Not really sure, but it's not a storage issue here
+            "Internal Server Error", // Something on Discord's end
+            "The user aborted a request", // Pretty sure this is also on Discord's end
+            "Cannot send messages to this user", // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
+            "Unknown Message", // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
+            "HTTPError: Service Unavailable", // Issue connecting to Discord?
+            "HTTPError: Insufficient Storage", // Not really sure, but it's not a storage issue here
         ];
-        const errStr = ignoreArr.find(elem => errorMsg.includes(elem));
+        const errStr = ignoreArr.find((elem) => errorMsg.includes(elem));
         if (errStr) {
             return console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errStr}`);
         }
@@ -116,7 +135,7 @@ const init = async () => {
         console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
         try {
             if (Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel)?.send(`\`\`\`${inspect(errorMsg)}\`\`\``,{split: true});
+                client.channels.cache.get(Bot.config.logs.channel)?.send(`\`\`\`${inspect(errorMsg)}\`\`\``, { split: true });
             }
         } catch (e) {
             // Don't bother doing anything
@@ -128,15 +147,15 @@ function processJourneyNames() {
     const journeyKeys = Object.keys(Bot.journeyReqs);
     Bot.journeyNames = [];
     for (const key of journeyKeys) {
-        let unit = Bot.characters.find(ch => ch.uniqueName === key);
+        let unit = Bot.characters.find((ch) => ch.uniqueName === key);
         if (!unit) {
-            unit = Bot.ships.find(sh => sh.uniqueName === key);
+            unit = Bot.ships.find((sh) => sh.uniqueName === key);
         }
         if (!unit) continue;
         Bot.journeyNames.push({
             defId: key,
             name: unit.name,
-            aliases: unit?.aliases.map(u => u.toLowerCase()) || []
+            aliases: unit?.aliases.map((u) => u.toLowerCase()) || [],
         });
     }
 }

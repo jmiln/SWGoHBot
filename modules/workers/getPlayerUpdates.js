@@ -9,15 +9,15 @@ const skillIdList = new Set();
 async function init(workerData) {
     if (!workerData?.updatedBare) return null;
     for (const newPlayer of workerData.updatedBare) {
-        const oldPlayer = workerData.oldMembers.find(p => p.allyCode === newPlayer.allyCode);
+        const oldPlayer = workerData.oldMembers.find((p) => p.allyCode === newPlayer.allyCode);
         if (!oldPlayer?.roster) {
             // If they've not been in there before, stick em into the db
             cacheUpdatesOut.push({
                 updateOne: {
                     filter: { allyCode: newPlayer.allyCode },
                     update: { $set: newPlayer },
-                    upsert: true
-                }
+                    upsert: true,
+                },
             });
 
             // Then move on, since there's no old data to compare against
@@ -53,14 +53,14 @@ async function init(workerData) {
             if (oldUnit.rarity < newUnit.rarity) {
                 playerLog.starred.push(`Starred up {${newUnit.defId}} to ${newUnit.rarity} star!`);
             }
-            for (const skillId of newUnit.skills.map(s => s.id)) {
+            for (const skillId of newUnit.skills.map((s) => s.id)) {
                 // For each of the skills, see if it's changed
-                const oldSkill = oldUnit.skills.find(s => s.id === skillId);
-                const newSkill = newUnit.skills.find(s => s.id === skillId);
+                const oldSkill = oldUnit.skills.find((s) => s.id === skillId);
+                const newSkill = newUnit.skills.find((s) => s.id === skillId);
 
-                if (newSkill?.tier && ((!oldSkill && newSkill?.tier) ||  oldSkill?.tier < newSkill?.tier)) {
+                if (newSkill?.tier && ((!oldSkill && newSkill?.tier) || oldSkill?.tier < newSkill?.tier)) {
                     // Grab zeta/ omicron data for the ability if available
-                    const thisAbility = workerData.specialAbilities.find(abi => abi.skillId === newSkill.id);
+                    const thisAbility = workerData.specialAbilities.find((abi) => abi.skillId === newSkill.id);
                     if (thisAbility?.omicronTier) {
                         newSkill.isOmicron = true;
                         newSkill.omicronTier = thisAbility.omicronTier + 1;
@@ -75,7 +75,10 @@ async function init(workerData) {
                     //     playerLog.abilities.push(`Unlocked ${newUnit.defId}'s **${locSkill.nameKey}**`);
                     // }
 
-                    if ((newSkill.isOmicron || newSkill.isZeta) && (newSkill.tier >= newSkill.zetaTier || newSkill.tier >= newSkill.omicronTier)) {
+                    if (
+                        (newSkill.isOmicron || newSkill.isZeta) &&
+                        (newSkill.tier >= newSkill.zetaTier || newSkill.tier >= newSkill.omicronTier)
+                    ) {
                         // If the skill has zeta/ omicron tiers, and is high enough level
                         if (oldSkill?.tier < newSkill.zetaTier && newSkill.tier >= newSkill.zetaTier) {
                             // If it was below the Zeta tier before, and at or above it now
@@ -95,8 +98,8 @@ async function init(workerData) {
             if (oldUnit.gear < newUnit.gear) {
                 playerLog.geared.push(`Geared up {${newUnit.defId}} to G${newUnit.gear}!`);
             }
-            if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && (newUnit.relic.currentTier - 2) > 0) {
-                playerLog.reliced.push(`Upgraded {${newUnit.defId}} to relic ${newUnit.relic.currentTier-2}!`);
+            if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && newUnit.relic.currentTier - 2 > 0) {
+                playerLog.reliced.push(`Upgraded {${newUnit.defId}} to relic ${newUnit.relic.currentTier - 2}!`);
             }
             if (oldUnit?.purchasedAbilityId?.length < newUnit?.purchasedAbilityId?.length) {
                 playerLog.ultimate.push(`Unlocked {${newUnit.defId}}'s **ultimate**'`);
@@ -114,15 +117,15 @@ async function init(workerData) {
                 updateOne: {
                     filter: { allyCode: newPlayer.allyCode },
                     update: { $set: newPlayer },
-                    upsert: true
-                }
+                    upsert: true,
+                },
             });
         }
     }
 }
 
 function isPlayerUpdated(playerLog) {
-    for (const key of Object.keys(playerLog).filter(p => p !== "name")) {
+    for (const key of Object.keys(playerLog).filter((p) => p !== "name")) {
         if (playerLog[key]?.length) return true;
     }
     return false;

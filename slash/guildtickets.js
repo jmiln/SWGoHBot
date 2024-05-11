@@ -21,17 +21,17 @@ class GuildTickets extends Command {
                         {
                             name: "enabled",
                             description: "Turn the updates on or off",
-                            type: ApplicationCommandOptionType.Boolean
+                            type: ApplicationCommandOptionType.Boolean,
                         },
                         {
                             name: "channel",
                             description: "Set which channel to log updates to",
-                            type: ApplicationCommandOptionType.Channel
+                            type: ApplicationCommandOptionType.Channel,
                         },
                         {
                             name: "show_max",
                             description: "Show players who have all of their tickets",
-                            type: ApplicationCommandOptionType.Boolean
+                            type: ApplicationCommandOptionType.Boolean,
                         },
                         {
                             name: "sortby",
@@ -40,13 +40,13 @@ class GuildTickets extends Command {
                             choices: [
                                 {
                                     name: "Tickets",
-                                    value: "tickets"
+                                    value: "tickets",
                                 },
                                 {
                                     name: "Name",
-                                    value: "name"
-                                }
-                            ]
+                                    value: "name",
+                                },
+                            ],
                         },
                         {
                             name: "updates",
@@ -55,38 +55,39 @@ class GuildTickets extends Command {
                             choices: [
                                 {
                                     name: "Update every 5min",
-                                    value: "update"
+                                    value: "update",
                                 },
                                 {
                                     name: "Send a message near reset",
-                                    value: "msg"
-                                }
-                            ]
+                                    value: "msg",
+                                },
+                            ],
                         },
                         {
                             name: "tickets",
                             description: "Set the max expected tickets",
                             type: ApplicationCommandOptionType.Integer,
                             minValue: 1,
-                            maxValue: 600
+                            maxValue: 600,
                         },
                         {
                             name: "allycode",
                             description: "Set what ally code to get the guild's info from",
-                            type: ApplicationCommandOptionType.String
-                        }
-                    ]
+                            type: ApplicationCommandOptionType.String,
+                        },
+                    ],
                 },
                 {
                     name: "view",
                     description: "View the settings for your guild updates",
-                    type: ApplicationCommandOptionType.Subcommand
-                }
-            ]
+                    type: ApplicationCommandOptionType.Subcommand,
+                },
+            ],
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction, options) {
+        // eslint-disable-line no-unused-vars
         const cmdOut = null;
         const outLog = [];
 
@@ -120,13 +121,13 @@ class GuildTickets extends Command {
         // Whether it's setting values or view
         if (subCommand === "set") {
             const updatedArr = [];
-            const channel    = interaction.options.getChannel("channel");
-            const isEnabled  = interaction.options.getBoolean("enabled");
-            const showMax    = interaction.options.getBoolean("show_max");
-            const sortBy     = interaction.options.getString("sortby");
-            const tickets    = interaction.options.getInteger("tickets");
+            const channel = interaction.options.getChannel("channel");
+            const isEnabled = interaction.options.getBoolean("enabled");
+            const showMax = interaction.options.getBoolean("show_max");
+            const sortBy = interaction.options.getString("sortby");
+            const tickets = interaction.options.getInteger("tickets");
             const updateType = interaction.options.getString("updates");
-            let allycode     = interaction.options.getString("allycode");
+            let allycode = interaction.options.getString("allycode");
 
             // GuildTickets -> activate/ deactivate
             if (isEnabled !== null) {
@@ -147,7 +148,8 @@ class GuildTickets extends Command {
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!Bot.isAllyCode(allycode) && allycode !== "me")  return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!Bot.isAllyCode(allycode) && allycode !== "me")
+                    return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
                 allycode = await Bot.getAllyCode(interaction, allycode);
@@ -158,7 +160,7 @@ class GuildTickets extends Command {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gt.allycode = parseInt(allycode, 10);
+                gt.allycode = Number.parseInt(allycode, 10);
                 updatedArr.push(`Ally Code: **${allycode}**`);
             }
             if (showMax !== null) {
@@ -177,30 +179,44 @@ class GuildTickets extends Command {
             if (updatedArr.length) {
                 user.guildTickets = gt;
                 await Bot.userReg.updateUser(userID, user);
-                return interaction.reply({content: null, embeds: [{
-                    title: "Settings updated",
-                    description: updatedArr.join("\n")
-                }]});
+                return interaction.reply({
+                    content: null,
+                    embeds: [
+                        {
+                            title: "Settings updated",
+                            description: updatedArr.join("\n"),
+                        },
+                    ],
+                });
             }
         } else if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-            return interaction.reply({embeds: [{
-                title: `Guild Tickets settings for ${interaction.user.username}`,
-                description: [
-                    `Enabled:  **${gt.enabled ? "ON" : "OFF"}**`,
-                    `Channel:  **${gt.channel ? "<#" + gt.channel + ">" : "N/A"}**`,
-                    `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
-                    `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
-                    `SortBy:   **${Bot.toProperCase(gt.sortBy)}**`,
-                    `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
-                    `Tickets:  **${gt.tickets || 600}**`,
-                ].join("\n")
-            }]});
+            return interaction.reply({
+                embeds: [
+                    {
+                        title: `Guild Tickets settings for ${interaction.user.username}`,
+                        description: [
+                            `Enabled:  **${gt.enabled ? "ON" : "OFF"}**`,
+                            `Channel:  **${gt.channel ? `<#${gt.channel}>` : "N/A"}**`,
+                            `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
+                            `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
+                            `SortBy:   **${Bot.toProperCase(gt.sortBy)}**`,
+                            `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
+                            `Tickets:  **${gt.tickets || 600}**`,
+                        ].join("\n"),
+                    },
+                ],
+            });
         }
 
-        return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: Bot.constants.colors.blue});
+        return super.error(
+            interaction,
+            outLog.length
+                ? outLog.join("\n")
+                : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
+            { title: " ", color: Bot.constants.colors.blue },
+        );
     }
 }
-
 
 module.exports = GuildTickets;

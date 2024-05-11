@@ -12,26 +12,33 @@ class WhoIs extends Command {
                     name: "name",
                     type: ApplicationCommandOptionType.String,
                     description: "The player that you're looking for",
-                    required: true
-                }
-            ]
+                    required: true,
+                },
+            ],
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
+        // eslint-disable-line no-unused-vars
         const name = interaction.options.getString("name");
         if (name.length > 50) return super.error(interaction, "Invalid name, max length is 50 characters");
 
         let players = await Bot.swgohAPI.playerByName(name);
 
         if (!players.length) {
-            return interaction.reply({content: "No results found for that name.\n Probably a wrong name or that person is not registered with the bot."});
+            return interaction.reply({
+                content: "No results found for that name.\n Probably a wrong name or that person is not registered with the bot.",
+            });
         }
         const playerLen = players.length;
         if (playerLen > 25) {
             players = players.slice(0, 25);
         }
-        return interaction.reply({content: `>>> **Results for search: \`${name}\`** ${playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""}\n` + players.map(p => `\`${p.allyCode}\` - ${p.name}`).join("\n")}); //TODO , {split: {char: "\n"}});
+        return interaction.reply({
+            content: `>>> **Results for search: \`${name}\`** ${
+                playerLen > players.length ? `\n**Showing (${players.length}/${playerLen})**` : ""
+            }\n${players.map((p) => `\`${p.allyCode}\` - ${p.name}`).join("\n")}`,
+        }); //TODO , {split: {char: "\n"}});
     }
 }
 

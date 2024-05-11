@@ -1,15 +1,16 @@
-const {inspect} = require("node:util");
+const { inspect } = require("node:util");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 const { clearSupporterInfo } = require("../modules/guildConfig/patreonSettings.js");
 
 module.exports = async (Bot, client, member) => {
-    const guildConf = await getGuildSettings({cache: Bot.cache, guildId: member.guild.id});
+    const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: member.guild.id });
 
-    if (guildConf.enablePart && guildConf.partMessage?.length && guildConf.announceChan?.length) { // If they have it turned on, and it's not empty
+    if (guildConf.enablePart && guildConf.partMessage?.length && guildConf.announceChan?.length) {
+        // If they have it turned on, and it's not empty
         const partMessage = guildConf.partMessage
-            .replace(/{{user}}/gi,        member.displayName)
+            .replace(/{{user}}/gi, member.displayName)
             .replace(/{{usermention}}/gi, member.user)
-            .replace(/{{server}}/gi,      member.guild.name);
+            .replace(/{{server}}/gi, member.guild.name);
 
         try {
             await client.announceMsg(member.guild, partMessage, null, guildConf);
@@ -24,5 +25,5 @@ module.exports = async (Bot, client, member) => {
     if (userConf.bonusServer !== member.guild.id) return;
 
     // If they're leaving the server they have set as their bonus, remove the setting from them and the server
-    await clearSupporterInfo({cache: Bot.cache, userId: member.id});
+    await clearSupporterInfo({ cache: Bot.cache, userId: member.id });
 };

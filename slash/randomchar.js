@@ -10,7 +10,7 @@ class Randomchar extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: ApplicationCommandOptionType.String
+                    type: ApplicationCommandOptionType.String,
                 },
                 {
                     name: "rarity",
@@ -24,7 +24,7 @@ class Randomchar extends Command {
                         { name: "5*", value: 5 },
                         { name: "6*", value: 6 },
                         { name: "7*", value: 7 },
-                    ]
+                    ],
                 },
                 {
                     name: "count",
@@ -36,9 +36,9 @@ class Randomchar extends Command {
                         { name: "3", value: 3 },
                         { name: "4", value: 4 },
                         { name: "5", value: 5 },
-                    ]
-                }
-            ]
+                    ],
+                },
+            ],
         });
     }
 
@@ -67,17 +67,17 @@ class Randomchar extends Command {
                 console.error(e);
                 return super.error(interaction, codeBlock(e.message), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit."
+                    footer: "Please try again in a bit.",
                 });
             }
 
             // Filter out all the ships from the player's roster, so it only shows characters
             // Replace the default list with this
-            chars = player.roster.filter(c => c.combatType === 1);
+            chars = player.roster.filter((c) => c.combatType === 1);
 
             // If they're looking for a certain min star lvl, filter out everything lower
             if (star) {
-                chars = chars.filter(c => c.rarity >= star);
+                chars = chars.filter((c) => c.rarity >= star);
             }
 
             // In case a new player tries using it before they get enough characters?
@@ -94,13 +94,14 @@ class Randomchar extends Command {
                 const playerChar = await Bot.swgohAPI.units(newChar.defId);
                 name = playerChar.nameKey;
             }
-            if (!charOut.includes(name)) {    // If it's already picked a character, don't let it pick them again
+            if (!charOut.includes(name)) {
+                // If it's already picked a character, don't let it pick them again
                 charOut.push(name);
             }
         }
         const charString = charOut.join("\n");
 
-        return interaction.reply({content: codeBlock(charString)});
+        return interaction.reply({ content: codeBlock(charString) });
     }
 }
 module.exports = Randomchar;

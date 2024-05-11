@@ -6,12 +6,12 @@ class Modsets extends Command {
         super(Bot, {
             name: "modsets",
             guildOnly: false,
-            description: "Displays how many mods you need per type for a full set"
+            description: "Displays how many mods you need per type for a full set",
         });
     }
 
     run(Bot, interaction) {
-        return interaction.reply({content: codeBlock("md", interaction.language.get("COMMAND_MODSETS_OUTPUT"))});
+        return interaction.reply({ content: codeBlock("md", interaction.language.get("COMMAND_MODSETS_OUTPUT")) });
     }
 }
 

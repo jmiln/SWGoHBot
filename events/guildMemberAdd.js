@@ -1,11 +1,12 @@
-const {inspect} = require("node:util");
+const { inspect } = require("node:util");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 module.exports = async (Bot, client, member) => {
     // This executes when a member joins, so let's welcome them!
-    const guildConf = await getGuildSettings({cache: Bot.cache, guildId: member.guild.id});
+    const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: member.guild.id });
 
-    if (guildConf.enableWelcome && guildConf.welcomeMessage?.length && guildConf.announceChan?.length) { // If they have it turned on, and it's not empty
+    if (guildConf.enableWelcome && guildConf.welcomeMessage?.length && guildConf.announceChan?.length) {
+        // If they have it turned on, and it's not empty
         const welcomeMessage = guildConf.welcomeMessage
             .replace(/{{user}}/gi, member.user.username)
             .replace(/{{usermention}}/gi, member.user)

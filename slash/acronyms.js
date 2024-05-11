@@ -13,12 +13,14 @@ class Acronyms extends Command {
             name: "acronyms",
             description: "Show what common acronyms mean",
             guildOnly: false,
-            options: [{
-                name: "acronym",
-                type: ApplicationCommandOptionType.String,
-                description: "The acronym to look for",
-                required: true,
-            }]
+            options: [
+                {
+                    name: "acronym",
+                    type: ApplicationCommandOptionType.String,
+                    description: "The acronym to look for",
+                    required: true,
+                },
+            ],
         });
     }
 
@@ -31,18 +33,18 @@ class Acronyms extends Command {
 
         if (!acronym?.length) {
             // Apparently this should never happen because it's set as a required argument, but who knows/ just in case
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_INVALID"), {example: usageExample});
+            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_INVALID"), { example: usageExample });
         }
 
         // Split it up in case they're looking for more than one
-        const lookupList = acronym.split(" ").map(a => a.trim().toLowerCase());
+        const lookupList = acronym.split(" ").map((a) => a.trim().toLowerCase());
 
         // Match up as many of the entered ones as possible
-        const matchingItems = acronyms.filter(acr => lookupList.includes(acr.toLowerCase()));
+        const matchingItems = acronyms.filter((acr) => lookupList.includes(acr.toLowerCase()));
 
         if (!matchingItems.length) {
             // If there were no matches, go ahead and let the user know
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"), {example: usageExample});
+            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"), { example: usageExample });
         }
 
         let acronymMeaningMessage = "";
@@ -58,19 +60,20 @@ class Acronyms extends Command {
             acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymsLookup[matchingItems[i]]}`;
         }
 
-        await interaction.reply({embeds: [
-            {
-                description: `**Acronyms for:**\n${lookupList.map((l) => `- ${l}`).join("\n")}`,
-                fields: [
-                    {
-                        name: "Results",
-                        value: acronymMeaningMessage
-                    }
-                ]
-            }
-        ]});
+        await interaction.reply({
+            embeds: [
+                {
+                    description: `**Acronyms for:**\n${lookupList.map((l) => `- ${l}`).join("\n")}`,
+                    fields: [
+                        {
+                            name: "Results",
+                            value: acronymMeaningMessage,
+                        },
+                    ],
+                },
+            ],
+        });
     }
 }
 
 module.exports = Acronyms;
-

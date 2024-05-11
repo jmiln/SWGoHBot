@@ -2,12 +2,12 @@
 const config = require("./config.js");
 
 const Discord = require("discord.js");
-const Manager = new Discord.ShardingManager("./swgohBot.js",{
-    totalShards: config.shardCount  // Tell it how many shards we want (Approx. 1100 servers per shard)
+const Manager = new Discord.ShardingManager("./swgohBot.js", {
+    totalShards: config.shardCount, // Tell it how many shards we want (Approx. 1100 servers per shard)
 });
 
 // Give it a large timeout since it refuses to work otherwise
-Manager.spawn({timeout: 60000});
+Manager.spawn({ timeout: 60000 });
 
 Manager.on("shardCreate", (shard) => {
     // shard.on("reconnecting", () => {

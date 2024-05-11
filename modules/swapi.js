@@ -23,11 +23,11 @@ let skillMap = JSON.parse(readFileSync(`${__dirname}/../data/skillMap.json`, "ut
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
 const flatStats = [
-    1,  // health
-    5,  // speed
+    1, // health
+    5, // speed
     28, // prot
     41, // offense
-    42  // defense
+    42, // defense
 ];
 
 const MAX_CONCURRENT = 15;
@@ -47,53 +47,62 @@ async function init() {
     }, 360_000);
 }
 
-module.exports = (opts={}) => {
+module.exports = (opts = {}) => {
     // This is just here so it'll actually accept it properly when I require() this file... Doesn't work with just `module.exports = () => ` for some reason
     if (opts?.noop) return null;
     init();
     // Set the max cooldowns (In minutes)
-    const playerMinCooldown = 1;    // 1 min
-    const playerMaxCooldown = 3*60; // 3 hours
-    const guildMinCooldown  = 1;    // 1 min
-    const guildMaxCooldown  = 6*60; // 6 hours
+    const playerMinCooldown = 1; // 1 min
+    const playerMaxCooldown = 3 * 60; // 3 hours
+    const guildMinCooldown = 1; // 1 min
+    const guildMaxCooldown = 6 * 60; // 6 hours
 
     return {
-        abilities        : abilities,
-        character        : character,
-        gear             : gear,
-        getCharacter     : getCharacter,
-        getPayoutFromAC  : getPayoutFromAC,
-        getPlayerUpdates : getPlayerUpdates,
-        getPlayersArena  : getPlayersArena,
-        getRawGuild      : getRawGuild,
-        guild            : guild,
-        guildByName      : guildByName,
-        guildUnitStats   : guildUnitStats,
-        langChar         : langChar,
-        playerByName     : playerByName,
-        recipes          : recipes,
-        unitStats        : unitStats,
-        units            : units,
-        zetaRec          : zetaRec,
+        abilities: abilities,
+        character: character,
+        gear: gear,
+        getCharacter: getCharacter,
+        getPayoutFromAC: getPayoutFromAC,
+        getPlayerUpdates: getPlayerUpdates,
+        getPlayersArena: getPlayersArena,
+        getRawGuild: getRawGuild,
+        guild: guild,
+        guildByName: guildByName,
+        guildUnitStats: guildUnitStats,
+        langChar: langChar,
+        playerByName: playerByName,
+        recipes: recipes,
+        unitStats: unitStats,
+        units: units,
+        zetaRec: zetaRec,
     };
 
     // Grab the abilities that have Zeta / Omicron levels for future reference
     async function getSpecialAbilities() {
         if (!specialAbilityList) {
-            const abilityList = await cache.get(config.mongodb.swapidb, "abilities", {
-                $or: [
-                    {
-                        isOmicron: true,
-                        language: "eng_us"
-                    },
-                    {
-                        isZeta: true,
-                        language: "eng_us"
-                    }
-                ]
-            }, {
-                skillId: 1, _id: 0, zetaTier: 1, omicronTier: 1, omicronMode: 1
-            });
+            const abilityList = await cache.get(
+                config.mongodb.swapidb,
+                "abilities",
+                {
+                    $or: [
+                        {
+                            isOmicron: true,
+                            language: "eng_us",
+                        },
+                        {
+                            isZeta: true,
+                            language: "eng_us",
+                        },
+                    ],
+                },
+                {
+                    skillId: 1,
+                    _id: 0,
+                    zetaTier: 1,
+                    omicronTier: 1,
+                    omicronMode: 1,
+                },
+            );
             specialAbilityList = abilityList;
         }
         return specialAbilityList;
@@ -104,7 +113,12 @@ module.exports = (opts={}) => {
             if (!name?.length || typeof name !== "string") return null;
 
             /** Try to get player's ally code from cache */
-            const player = await cache.get(config.mongodb.swapidb, "playerStats", {name: new RegExp(name, "i")}, {name: 1, allyCode: 1, _id: 0});
+            const player = await cache.get(
+                config.mongodb.swapidb,
+                "playerStats",
+                { name: new RegExp(name, "i") },
+                { name: 1, allyCode: 1, _id: 0 },
+            );
 
             return player;
         } catch (e) {
@@ -116,41 +130,50 @@ module.exports = (opts={}) => {
     async function getPayoutFromAC(allycodes) {
         // Make sure the allycode(s) are in an array
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
-        return await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: acArr.map(a => Number.parseInt(a, 10))}}, {_id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1});
+        return await cache.get(
+            config.mongodb.swapidb,
+            "playerStats",
+            { allyCode: { $in: acArr.map((a) => Number.parseInt(a, 10)) } },
+            { _id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1 },
+        );
     }
 
     async function getPlayersArena(allycodes) {
         let acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
-        acArr = acArr.filter(ac => !!ac).map(ac => ac.toString()).filter(ac => ac.length === 9);
+        acArr = acArr
+            .filter((ac) => !!ac)
+            .map((ac) => ac.toString())
+            .filter((ac) => ac.length === 9);
         if (!allycodes.length) throw new Error("No valid ally code(s) entered");
 
         const playersOut = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-                const p = await comlinkStub.getPlayerArenaProfile(ac.toString())
-                    .catch(() => { });
-                // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
-                playersOut.push(p);
-            });
+            const p = await comlinkStub.getPlayerArenaProfile(ac.toString()).catch(() => {});
+            // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
+            playersOut.push(p);
+        });
 
-        return playersOut.map(p => {
-            if (p) {
-                const charArena = p.pvpProfile.find(t => t.tab === 1);
-                const shipArena = p.pvpProfile.find(t => t.tab === 2);
-                return {
-                    name: p.name,
-                    allyCode: Number.parseInt(p.allyCode, 10),
-                    arena: {
-                        char: {
-                            rank: charArena ? charArena.rank : null
+        return playersOut
+            .map((p) => {
+                if (p) {
+                    const charArena = p.pvpProfile.find((t) => t.tab === 1);
+                    const shipArena = p.pvpProfile.find((t) => t.tab === 2);
+                    return {
+                        name: p.name,
+                        allyCode: Number.parseInt(p.allyCode, 10),
+                        arena: {
+                            char: {
+                                rank: charArena ? charArena.rank : null,
+                            },
+                            ship: {
+                                rank: shipArena ? shipArena.rank : null,
+                            },
                         },
-                        ship: {
-                            rank: shipArena ? shipArena.rank : null
-                        }
-                    },
-                    poUTCOffsetMinutes: p.localTimeZoneOffsetMinutes
-                };
-            }
-        }).filter(p => !!p);
+                        poUTCOffsetMinutes: p.localTimeZoneOffsetMinutes,
+                    };
+                }
+            })
+            .filter((p) => !!p);
     }
 
     async function getPlayerUpdates(allycodes) {
@@ -159,20 +182,24 @@ module.exports = (opts={}) => {
 
         const updatedBare = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-                const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch((err) => {
-                    console.error(`Error in eachLimit getPlayer (${ac}):`);
-                    return console.error(err.toString());
-                });
-                if (!tempBare) console.error("[getPlayerUpdates] Broke while getting tempBare");
-                else {
-                    const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
-                    updatedBare.push(formattedComlinkPlayer);
-                }
+            const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch((err) => {
+                console.error(`Error in eachLimit getPlayer (${ac}):`);
+                return console.error(err.toString());
             });
-        const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {allyCode: {$in: allycodes.map(ac => Number.parseInt(ac, 10))}});
+            if (!tempBare) console.error("[getPlayerUpdates] Broke while getting tempBare");
+            else {
+                const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                updatedBare.push(formattedComlinkPlayer);
+            }
+        });
+        const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {
+            allyCode: { $in: allycodes.map((ac) => Number.parseInt(ac, 10)) },
+        });
         const processMemberChunk = async (updatedBare, chunkIx) => {
             return new Promise((resolve, reject) => {
-                const worker = new Worker(`${__dirname}/workers/getPlayerUpdates.js`, {workerData: {oldMembers, updatedBare, specialAbilities, chunkIx}});
+                const worker = new Worker(`${__dirname}/workers/getPlayerUpdates.js`, {
+                    workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
+                });
                 worker.on("message", resolve);
                 worker.on("error", reject);
                 worker.on("exit", (code) => {
@@ -189,40 +216,56 @@ module.exports = (opts={}) => {
             memberChunks.push(chunk);
         }
         const guildLog = {};
-        await Promise.all(memberChunks.map((mChunk,ix) => {
-            return processMemberChunk(mChunk, ix+1);
-        })).then(async (res) => {
-            const skillsArr = [];
-            const defIdArr = [];
-            for (const {guildLogOut, cacheUpdatesOut, skills, defIds} of res) {
-                for (const [key, value] of Object.entries(guildLogOut)) {
-                    guildLog[key] = value;
+        await Promise.all(
+            memberChunks.map((mChunk, ix) => {
+                return processMemberChunk(mChunk, ix + 1);
+            }),
+        )
+            .then(async (res) => {
+                const skillsArr = [];
+                const defIdArr = [];
+                for (const { guildLogOut, cacheUpdatesOut, skills, defIds } of res) {
+                    for (const [key, value] of Object.entries(guildLogOut)) {
+                        guildLog[key] = value;
+                    }
+                    skillsArr.push(...skills);
+                    defIdArr.push(...defIds);
+                    if (!cacheUpdatesOut.length) continue;
+                    await cache.putMany(config.mongodb.swapidb, "rawPlayers", cacheUpdatesOut);
                 }
-                skillsArr.push(...skills);
-                defIdArr.push(...defIds);
-                if (!cacheUpdatesOut.length) continue;
-                await cache.putMany(config.mongodb.swapidb, "rawPlayers", cacheUpdatesOut);
-            }
-            const skillNames = await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillsArr}, language: "eng_us"}, {nameKey: 1, skillId: 1});
-            const unitNames  = await cache.get(config.mongodb.swapidb, "units", {baseId: {$in: defIdArr}, language: "eng_us"}, {baseId: 1, nameKey: 1});
-            const langKeys = {};
-            for (const nameId of [...skillNames, ...unitNames]) {
-                langKeys[nameId?.skillId || nameId?.baseId] = nameId.nameKey;
-            }
+                const skillNames = await cache.get(
+                    config.mongodb.swapidb,
+                    "abilities",
+                    { skillId: { $in: skillsArr }, language: "eng_us" },
+                    { nameKey: 1, skillId: 1 },
+                );
+                const unitNames = await cache.get(
+                    config.mongodb.swapidb,
+                    "units",
+                    { baseId: { $in: defIdArr }, language: "eng_us" },
+                    { baseId: 1, nameKey: 1 },
+                );
+                const langKeys = {};
+                for (const nameId of [...skillNames, ...unitNames]) {
+                    langKeys[nameId?.skillId || nameId?.baseId] = nameId.nameKey;
+                }
 
-            for (const [userName, changeObj] of Object.entries(guildLog)) {
-                // Run through all the skill/ unit names and replace the IDs with normal names
-                for (const [changeType, strArr] of Object.entries(changeObj)) {
-                    // Update the strings with namekeys for anything inside `{}` braces
-                    const updatedArr = strArr.map((str) => str.replace(/\{([^}]*)\}/g, (match, p1) => {
-                        return langKeys[p1] || p1;
-                    }));
-                    guildLog[userName][changeType] = updatedArr;
+                for (const [userName, changeObj] of Object.entries(guildLog)) {
+                    // Run through all the skill/ unit names and replace the IDs with normal names
+                    for (const [changeType, strArr] of Object.entries(changeObj)) {
+                        // Update the strings with namekeys for anything inside `{}` braces
+                        const updatedArr = strArr.map((str) =>
+                            str.replace(/\{([^}]*)\}/g, (match, p1) => {
+                                return langKeys[p1] || p1;
+                            }),
+                        );
+                        guildLog[userName][changeType] = updatedArr;
+                    }
                 }
-            }
-        }).catch((err) => {
-            console.error(`Error running workers: ${err}`);
-        });
+            })
+            .catch((err) => {
+                console.error(`Error running workers: ${err}`);
+            });
 
         return guildLog;
     }
@@ -232,7 +275,7 @@ module.exports = (opts={}) => {
      * @param {number} cooldown
      * @param {Object} options
      */
-    async function unitStats(allycodes, cooldown={}, options={}) {
+    async function unitStats(allycodes, cooldown = {}, options = {}) {
         // Make sure the allycode(s) are in an array
         if (!allycodes) return false;
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
@@ -262,25 +305,28 @@ module.exports = (opts={}) => {
             if (!allycodes?.length) {
                 throw new Error("No valid ally code(s) entered");
             }
-            const filtereredAcArr = acArr
-                .filter(a => a.toString().length === 9)
-                .map(a => Number.parseInt(a, 10));
+            const filtereredAcArr = acArr.filter((a) => a.toString().length === 9).map((a) => Number.parseInt(a, 10));
 
             let players;
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options?.defId?.length) {
-                    players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: filtereredAcArr}}, {_id: 0, name: 1, allyCode: 1, roster: {$elemMatch: {defId: options.defId}}, updated: 1});
+                    players = await cache.get(
+                        config.mongodb.swapidb,
+                        "playerStats",
+                        { allyCode: { $in: filtereredAcArr } },
+                        { _id: 0, name: 1, allyCode: 1, roster: { $elemMatch: { defId: options.defId } }, updated: 1 },
+                    );
                 } else {
-                    players = await cache.get(config.mongodb.swapidb, "playerStats", {allyCode: {$in: filtereredAcArr}});
+                    players = await cache.get(config.mongodb.swapidb, "playerStats", { allyCode: { $in: filtereredAcArr } });
                 }
             }
 
             // If options.force is true (Apparently never used?), set the list of unexpired players to be empty
             // This will make it so that all players will be run through the updater
-            const updatedList  = options.force ? [] : players.filter(p => !isExpired(p.updated, thisCooldown));
-            const updatedAC    = updatedList.map(p => Number.parseInt(p.allyCode, 10));
-            const needUpdating = allycodes.filter(a => !updatedAC.includes(a));
+            const updatedList = options.force ? [] : players.filter((p) => !isExpired(p.updated, thisCooldown));
+            const updatedAC = updatedList.map((p) => Number.parseInt(p.allyCode, 10));
+            const needUpdating = allycodes.filter((a) => !updatedAC.includes(a));
 
             playerStats = playerStats.concat(updatedList);
 
@@ -289,12 +335,12 @@ module.exports = (opts={}) => {
                 const updatedBare = [];
                 try {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
-                            const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch(() => { });
-                            if (tempBare) {
-                                const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
-                                updatedBare.push(formattedComlinkPlayer);
-                            }
-                        });
+                        const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch(() => {});
+                        if (tempBare) {
+                            const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                            updatedBare.push(formattedComlinkPlayer);
+                        }
+                    });
                 } catch (error) {
                     // Couldn't get the data from the api, so send old stuff
                     return players;
@@ -306,8 +352,8 @@ module.exports = (opts={}) => {
                             const statRoster = await fetch(`${config.fakeSwapiConfig.statCalc.url}/api?flags=gameStyle,calcGP`, {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify(bareP.roster)
-                            }).then(res => res.json());
+                                body: JSON.stringify(bareP.roster),
+                            }).then((res) => res.json());
                             bareP.roster = statRoster;
                         } catch (error) {
                             console.log(error);
@@ -316,7 +362,7 @@ module.exports = (opts={}) => {
 
                         for (const char of bareP.roster) {
                             for (const ability of char.skills) {
-                                const thisAbility = specialAbilities.find(abi => abi.skillId === ability.id);
+                                const thisAbility = specialAbilities.find((abi) => abi.skillId === ability.id);
                                 if (thisAbility) {
                                     if (thisAbility.omicronTier) {
                                         ability.isOmicron = true;
@@ -331,15 +377,15 @@ module.exports = (opts={}) => {
                             }
                         }
 
-                        const charStats = await cache.put(config.mongodb.swapidb, "playerStats", {allyCode: bareP.allyCode}, bareP);
+                        const charStats = await cache.put(config.mongodb.swapidb, "playerStats", { allyCode: bareP.allyCode }, bareP);
                         charStats.warnings = warning;
                         playerStats.push(charStats);
                     }
                 }
                 if (options?.defId) {
                     for (const p of playerStats) {
-                        if (!p.roster) return;
-                        p.roster = p.roster.filter(ch => ch.defId === options.defId);
+                        if (!p.roster) continue;
+                        p.roster = p.roster.filter((ch) => ch.defId === options.defId);
                     }
                 }
             }
@@ -357,17 +403,18 @@ module.exports = (opts={}) => {
 
     async function formatComlinkPlayer(comlinkPlayer) {
         const comlinkPlayerArena = {};
-        const emptyArena = {rank: null, squad: null};
+        const emptyArena = { rank: null, squad: null };
 
         for (const { tab, rank, squad } of comlinkPlayer.pvpProfile) {
             comlinkPlayerArena[tab] = {
                 rank: rank,
-                squad: squad?.cell?.map(unit => {
-                    return {
-                        id: unit.unitId,
-                        defId: getUnitDefId(unit.unitDefId),
-                    };
-                }) || [],
+                squad:
+                    squad?.cell?.map((unit) => {
+                        return {
+                            id: unit.unitId,
+                            defId: getUnitDefId(unit.unitDefId),
+                        };
+                    }) || [],
                 // TODO Should probably look into making use of this if I ever get around to figuring out datacrons
                 // unformattedSquad: squad
             };
@@ -380,47 +427,52 @@ module.exports = (opts={}) => {
             id: comlinkPlayer.playerId,
             name: comlinkPlayer.name,
             level: comlinkPlayer.level,
-            roster: comlinkPlayer.rosterUnit.map(unit => {
-                const thisDefId = unit.definitionId.split(":")[0];
-                const thisUnit = unitMap[thisDefId];
-                if (!thisUnit?.nameKey) return;
-                return {
-                    id: unit.id,
-                    defId: thisDefId,
-                    nameKey: thisUnit?.nameKey,
-                    level: unit.currentLevel,
-                    rarity: unit.currentRarity,
-                    gear: unit.currentTier,
-                    equipped: unit.equipment ? unit.equipment : [],
-                    skills: unit.skill.map(sk => {
-                        const thisSkill = skillMap[sk.id];
-                        if (!thisSkill) return null;
-                        return {
-                            id: sk.id,
-                            tier: sk.tier + 2,
-                            tiers: thisSkill?.tiers ? thisSkill.tiers + 1 : null
-                        };
-                    }).filter(sk => !!sk),
-                    relic: unit.relic,
-                    purchasedAbilityId: unit.purchasedAbilityId,
-                    crew: thisUnit.crew,
-                    combatType: thisUnit.combatType,
-                    mods: unit.equippedStatMod ? unit.equippedStatMod.map(mod => formatMod(mod)) : [],
-                };
-            }).filter(unit => !!unit),
-            stats: comlinkPlayer.profileStat
-                ?.filter(({nameKey}) => {
-                    return nameKey?.includes("GALACTIC_POWER");
-                })
-                .map(({nameKey, value}) => {
+            roster: comlinkPlayer.rosterUnit
+                .map((unit) => {
+                    const thisDefId = unit.definitionId.split(":")[0];
+                    const thisUnit = unitMap[thisDefId];
+                    if (!thisUnit?.nameKey) return;
                     return {
-                        nameKey,
-                        value: Number(value)
+                        id: unit.id,
+                        defId: thisDefId,
+                        nameKey: thisUnit?.nameKey,
+                        level: unit.currentLevel,
+                        rarity: unit.currentRarity,
+                        gear: unit.currentTier,
+                        equipped: unit.equipment ? unit.equipment : [],
+                        skills: unit.skill
+                            .map((sk) => {
+                                const thisSkill = skillMap[sk.id];
+                                if (!thisSkill) return null;
+                                return {
+                                    id: sk.id,
+                                    tier: sk.tier + 2,
+                                    tiers: thisSkill?.tiers ? thisSkill.tiers + 1 : null,
+                                };
+                            })
+                            .filter((sk) => !!sk),
+                        relic: unit.relic,
+                        purchasedAbilityId: unit.purchasedAbilityId,
+                        crew: thisUnit.crew,
+                        combatType: thisUnit.combatType,
+                        mods: unit.equippedStatMod ? unit.equippedStatMod.map((mod) => formatMod(mod)) : [],
                     };
-                }) || [],
+                })
+                .filter((unit) => !!unit),
+            stats:
+                comlinkPlayer.profileStat
+                    ?.filter(({ nameKey }) => {
+                        return nameKey?.includes("GALACTIC_POWER");
+                    })
+                    .map(({ nameKey, value }) => {
+                        return {
+                            nameKey,
+                            value: Number(value),
+                        };
+                    }) || [],
             arena: {
                 char: comlinkPlayerArena[1] || emptyArena,
-                ship: comlinkPlayerArena[2] || emptyArena
+                ship: comlinkPlayerArena[2] || emptyArena,
             },
             guildBannerColor: comlinkPlayer.guildBannerColor,
             guildBannerLogo: comlinkPlayer.guildBannerLogo,
@@ -458,22 +510,24 @@ module.exports = (opts={}) => {
             id,
             level,
             tier,
-            slot: modSchema.slot-1, // mod slots are numbered 2-7
+            slot: modSchema.slot - 1, // mod slots are numbered 2-7
             set: Number(modSchema.set),
             pips: modSchema.pips,
             primaryStat: {
                 unitStat: primaryStat.stat.unitStatId,
-                value: primaryStat.stat.unscaledDecimalValue / primaryStatScaler
+                value: primaryStat.stat.unscaledDecimalValue / primaryStatScaler,
             },
-            secondaryStat: secondaryStat ? secondaryStat.map(stat => {
-                const statId = stat.stat.unitStatId;
-                const statScaler = flatStats.includes(statId) ? 1e8 : 1e6;
-                return {
-                    unitStat: stat.stat.unitStatId,
-                    value: stat.stat.unscaledDecimalValue / statScaler,
-                    roll: stat.statRolls
-                };
-            }) : []
+            secondaryStat: secondaryStat
+                ? secondaryStat.map((stat) => {
+                      const statId = stat.stat.unitStatId;
+                      const statScaler = flatStats.includes(statId) ? 1e8 : 1e6;
+                      return {
+                          unitStat: stat.stat.unitStatId,
+                          value: stat.stat.unscaledDecimalValue / statScaler,
+                          roll: stat.statRolls,
+                      };
+                  })
+                : [],
         };
     }
 
@@ -505,7 +559,12 @@ module.exports = (opts={}) => {
         if (char.factions) {
             for (const factionIx in char.factions) {
                 const thisFaction = char.factions[factionIx];
-                let factionName = await cache.get(config.mongodb.swapidb, "categories", {id:thisFaction , language: thisLang}, {nameKey: 1, _id: 0});
+                let factionName = await cache.get(
+                    config.mongodb.swapidb,
+                    "categories",
+                    { id: thisFaction, language: thisLang },
+                    { nameKey: 1, _id: 0 },
+                );
                 if (Array.isArray(factionName)) factionName = factionName[0];
                 if (!factionName) throw new Error(`Cannot find factionName for ${thisFaction}`);
                 char.factions[factionIx] = factionName.nameKey;
@@ -515,7 +574,12 @@ module.exports = (opts={}) => {
         // In case it has skillReferenceList
         if (char.skillReferenceList) {
             for (const skill in char.skillReferenceList) {
-                let skillName = await cache.get(config.mongodb.swapidb, "abilities", {skillId: char.skillReferenceList[skill].skillId, language: thisLang}, {nameKey: 1, _id: 0});
+                let skillName = await cache.get(
+                    config.mongodb.swapidb,
+                    "abilities",
+                    { skillId: char.skillReferenceList[skill].skillId, language: thisLang },
+                    { nameKey: 1, _id: 0 },
+                );
                 if (Array.isArray(skillName)) skillName = skillName[0];
                 if (!skillName) {
                     console.error(`[swapi langChar] Cannot find skillName for ${char.skillReferenceList[skill].skillId}`);
@@ -529,7 +593,12 @@ module.exports = (opts={}) => {
         // In case it doesn't
         if (char.skills) {
             for (const skill in char.skills) {
-                let skillName = await cache.get(config.mongodb.swapidb, "abilities", {skillId: char.skills[skill].id, language: thisLang}, {nameKey: 1, _id: 0});
+                let skillName = await cache.get(
+                    config.mongodb.swapidb,
+                    "abilities",
+                    { skillId: char.skills[skill].id, language: thisLang },
+                    { nameKey: 1, _id: 0 },
+                );
                 if (Array.isArray(skillName)) skillName = skillName[0];
                 if (!skillName) {
                     console.error(`[swapi langChar] Cannot find skillName for ${char.skills[skill].id}`);
@@ -548,35 +617,47 @@ module.exports = (opts={}) => {
      * @param {{player: number, guild: number}} cooldown - The cooldown for the user requesting the info
      * @returns {Promise<Object[]>}                      - Returns an array of player objects with just the specified character in their roster
      */
-    async function guildUnitStats( allyCodes, defId, cooldown ) {
+    async function guildUnitStats(allyCodes, defId, cooldown) {
         if (!cooldown?.guild || cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
         if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
 
         const outStats = [];
-        const blankUnit = { defId: defId, gear: 0, gp: 0, level: 0, rarity: 0, skills: [], zetas: [], omicrons: [], relic: {currentTier: 0}, equipped: [], stats: {} };
-        const players = await unitStats(allyCodes, cooldown, {defId: defId});
+        const blankUnit = {
+            defId: defId,
+            gear: 0,
+            gp: 0,
+            level: 0,
+            rarity: 0,
+            skills: [],
+            zetas: [],
+            omicrons: [],
+            relic: { currentTier: 0 },
+            equipped: [],
+            stats: {},
+        };
+        const players = await unitStats(allyCodes, cooldown, { defId: defId });
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
             let unit;
 
             if (player?.roster?.length) {
-                unit = player.roster.find(c => c.defId === defId);
+                unit = player.roster.find((c) => c.defId === defId);
             }
             if (!unit) {
                 unit = JSON.parse(JSON.stringify(blankUnit));
             }
-            unit.zetas    = unit.skills.filter(s => s.isZeta    && s.tier >= s.zetaTier);
-            unit.omicrons = unit.skills.filter(s => s.isOmicron && s.tier >= s.omicronTier);
-            unit.player   = player.name;
+            unit.zetas = unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier);
+            unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier);
+            unit.player = player.name;
             unit.allyCode = player.allyCode;
-            unit.updated  = player.updated;
+            unit.updated = player.updated;
             outStats.push(unit);
         }
         return outStats;
     }
 
-    async function abilities( skillArray, lang="eng_us", opts={} ) {
+    async function abilities(skillArray, lang = "eng_us", opts = {}) {
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
         }
@@ -584,9 +665,19 @@ module.exports = (opts={}) => {
 
         // All the skills should be loaded, so just get em from the cache
         if (opts.min) {
-            return await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArr}, language: lang.toLowerCase()}, {nameKey: 1, _id: 0});
+            return await cache.get(
+                config.mongodb.swapidb,
+                "abilities",
+                { skillId: { $in: skillArr }, language: lang.toLowerCase() },
+                { nameKey: 1, _id: 0 },
+            );
         }
-        return await cache.get(config.mongodb.swapidb, "abilities", {skillId: {$in: skillArr}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+        return await cache.get(
+            config.mongodb.swapidb,
+            "abilities",
+            { skillId: { $in: skillArr }, language: lang.toLowerCase() },
+            { _id: 0, updated: 0 },
+        );
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
@@ -611,16 +702,12 @@ module.exports = (opts={}) => {
             }
             s.isZeta = skill.isZeta;
             s.isOmicron = skill.isOmicron;
-            s.name = skill.nameKey
-                .replace(/\\n/g, " ")
-                .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+            s.name = skill.nameKey.replace(/\\n/g, " ").replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g, "");
             s.cooldown = skill.cooldown;
-            s.desc = skill.descKey
-                .replace(/\\n/g, " ")
-                .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g,"");
+            s.desc = skill.descKey.replace(/\\n/g, " ").replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g, "");
             const abTierCount = skill.abilityTiers?.length;
-            if (abTierCount && skill.abilityTiers[abTierCount-1].includes(skill.abilityTiers[abTierCount-2])) {
-                s.zetaDesc = skill.abilityTiers[abTierCount-1].replace(skill.abilityTiers[abTierCount-2], "").trim();
+            if (abTierCount && skill.abilityTiers[abTierCount - 1].includes(skill.abilityTiers[abTierCount - 2])) {
+                s.zetaDesc = skill.abilityTiers[abTierCount - 1].replace(skill.abilityTiers[abTierCount - 2], "").trim();
             }
             if (skill.tierList.length) {
                 s.cost = {};
@@ -636,27 +723,27 @@ module.exports = (opts={}) => {
 
         for (const tier of char.unitTierList) {
             const eqList = await gear(tier.equipmentSetList, thisLang);
-            tier.equipmentSetList.forEach((e, ix) => {
-                const eq = eqList.find(equipment => equipment.id === e);
+            for (const [ix, e] of tier.equipmentSetList.entries()) {
+                const eq = eqList.find((equipment) => equipment.id === e);
                 if (!eq) {
                     console.error(`Missing equipment for char ${char.name}, make sure to update the gear lang stuff${inspect(e)}`);
-                    return;
+                    continue;
                 }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
-            });
+            }
         }
 
         return char;
     }
 
     // Function for updating all the stored character data from the game
-    async function character( defId ) {
-        const outChar = await cache.get(config.mongodb.swapidb, "characters", {baseId: defId}, {_id: 0, updated: 0});
+    async function character(defId) {
+        const outChar = await cache.get(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 });
         return outChar?.[0] || outChar;
     }
 
     // Get the gear for a given character
-    async function gear( gearArray, lang ) {
+    async function gear(gearArray, lang) {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!gearArray) {
             throw new Error("You need to have a list of gear here");
@@ -664,21 +751,31 @@ module.exports = (opts={}) => {
         const gearArr = Array.isArray(gearArray) ? gearArray : [gearArray];
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(config.mongodb.swapidb, "gear", {id: {$in: gearArr}, language: thisLang.toLowerCase()}, {_id: 0, updated: 0});
+        return await cache.get(
+            config.mongodb.swapidb,
+            "gear",
+            { id: { $in: gearArr }, language: thisLang.toLowerCase() },
+            { _id: 0, updated: 0 },
+        );
     }
 
     // Used by farm, randomchar, and reloaddata
-    async function units( defId, lang ) {
+    async function units(defId, lang) {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!defId) throw new Error("You need to specify a defId");
 
         // All the skills should be loaded, so just get em from the cache
-        const uOut = await cache.get(config.mongodb.swapidb, "units", {baseId: defId, language: thisLang.toLowerCase()}, {_id: 0, updated: 0});
+        const uOut = await cache.get(
+            config.mongodb.swapidb,
+            "units",
+            { baseId: defId, language: thisLang.toLowerCase() },
+            { _id: 0, updated: 0 },
+        );
         return uOut?.[0] || uOut;
     }
 
     // Get gear recipes
-    async function recipes( recArray, lang ) {
+    async function recipes(recArray, lang) {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!recArray) {
             throw new Error("You need to have a list of gear here");
@@ -686,10 +783,15 @@ module.exports = (opts={}) => {
         const recArr = Array.isArray(recArray) ? recArray : [recArray];
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(config.mongodb.swapidb, "recipes", {id: {$in: recArr}, language: lang.toLowerCase()}, {_id: 0, updated: 0});
+        return await cache.get(
+            config.mongodb.swapidb,
+            "recipes",
+            { id: { $in: recArr }, language: lang.toLowerCase() },
+            { _id: 0, updated: 0 },
+        );
     }
 
-    async function getRawGuild(allycode, cooldown={}, {forceUpdate}={forceUpdate: false}) {
+    async function getRawGuild(allycode, cooldown = {}, { forceUpdate } = { forceUpdate: false }) {
         const tempGuild = {};
         let thisCooldown = null;
         if (cooldown) {
@@ -700,15 +802,17 @@ module.exports = (opts={}) => {
             thisCooldown = guildMaxCooldown;
         }
         const thisAC = allycode?.toString().replace(/[^\d]/g, "");
-        if ( !allycode || Number.isNaN(allycode) || allycode.length !== 9 ) { throw new Error("Please provide a valid allycode"); }
+        if (!allycode || Number.isNaN(allycode) || allycode.length !== 9) {
+            throw new Error("Please provide a valid allycode");
+        }
 
         const player = await comlinkStub.getPlayer(allycode);
         if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
 
-        let rawGuild  = await cache.get(config.mongodb.swapidb, "rawGuilds", {id: player.guildId});
-        if ( forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, thisCooldown, true) ) {
+        let rawGuild = await cache.get(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
+        if (forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, thisCooldown, true)) {
             try {
                 rawGuild = await comlinkStub.getGuild(player.guildId, true);
             } catch (err) {
@@ -741,7 +845,7 @@ module.exports = (opts={}) => {
                         for (const contType of member.memberContribution) {
                             contribution[contType.type] = {
                                 currentValue: contType.currentValue,
-                                lifetimeValue: contType.lifetimeValue
+                                lifetimeValue: contType.lifetimeValue,
                             };
                         }
                         tempMember.memberContribution = contribution;
@@ -754,7 +858,7 @@ module.exports = (opts={}) => {
                     tempGuild[key] = rawGuild[key];
                 }
             }
-            rawGuild = await cache.put(config.mongodb.swapidb, "rawGuilds", {id: player.guildId}, tempGuild);
+            rawGuild = await cache.put(config.mongodb.swapidb, "rawGuilds", { id: player.guildId }, tempGuild);
         } else {
             /** If found and valid, serve from cache */
             rawGuild = rawGuild[0];
@@ -766,7 +870,7 @@ module.exports = (opts={}) => {
         return rawGuild;
     }
 
-    async function guild( allycode, cooldown ) {
+    async function guild(allycode, cooldown) {
         let thisCooldown = null;
         if (cooldown) {
             thisCooldown = cooldown.guild;
@@ -783,13 +887,15 @@ module.exports = (opts={}) => {
         /** Get player from cache */
         let player = await unitStats(allycode);
         if (Array.isArray(player)) player = player[0];
-        if (!player) { throw new Error("I don't know this player, make sure they're registered first"); }
+        if (!player) {
+            throw new Error("I don't know this player, make sure they're registered first");
+        }
         if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
 
-        let guild = await cache.get(config.mongodb.swapidb, "guilds", {id: player.guildId});
+        let guild = await cache.get(config.mongodb.swapidb, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
-        if ( !guild || !guild[0] || isExpired(guild[0].updated, thisCooldown, true) ) {
+        if (!guild || !guild[0] || isExpired(guild[0].updated, thisCooldown, true)) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild;
             try {
@@ -803,7 +909,7 @@ module.exports = (opts={}) => {
 
             if (Array.isArray(tempGuild)) {
                 tempGuild = tempGuild[0];
-                if (tempGuild?._id) tempGuild._id = undefined;  // Delete this since it's always whining about it being different
+                if (tempGuild?._id) tempGuild._id = undefined; // Delete this since it's always whining about it being different
             }
 
             if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
@@ -817,7 +923,7 @@ module.exports = (opts={}) => {
             if (tempGuild.roster?.length !== tempGuild.members) {
                 console.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
-            guild = await cache.put(config.mongodb.swapidb, "guilds", {id: tempGuild.id}, tempGuild);
+            guild = await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
             if (warnings) guild.warnings = warnings;
         } else {
             /** If found and valid, serve from cache */
@@ -834,15 +940,8 @@ module.exports = (opts={}) => {
     }
 
     async function formatGuild({ guild, raidLaunchConfig, ...topRest }) {
-        const {
-            profile,
-            guildEventTracker,
-            nextChallengesRefresh,
-            recentTerritoryWarResult,
-            recentRaidResult,
-            member,
-            ...guildRest
-        } = guild;
+        const { profile, guildEventTracker, nextChallengesRefresh, recentTerritoryWarResult, recentRaidResult, member, ...guildRest } =
+            guild;
         const {
             id,
             name,
@@ -864,47 +963,47 @@ module.exports = (opts={}) => {
         //     }
         // }
         if (recentRaidResult?.length) {
-            for (const {identifier, guildRewardScore, raidId} of recentRaidResult) {
+            for (const { identifier, guildRewardScore, raidId } of recentRaidResult) {
                 raids[raidId] = {
                     diffId: identifier.campaignMissionId,
-                    progress: guildRewardScore
+                    progress: guildRewardScore,
                 };
             }
         }
 
         const members = [];
         await eachLimit(member, MAX_CONCURRENT, async ({ playerId, memberLevel, memberContribution, ...rest }) => {
-                // Grab each player and process their info
-                const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
+            // Grab each player and process their info
+            const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
 
-                let gp;
-                let gpChar;
-                let gpShip;
-                for (const stat of profileStat) {
-                    if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
-                        gpShip = Number(stat.value);
-                    } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
-                        gp = Number(stat.value);
-                    } else if (stat.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
-                        gpChar = Number(stat.value);
-                    }
-                    if (gp && gpChar && gpShip) break;
+            let gp;
+            let gpChar;
+            let gpShip;
+            for (const stat of profileStat) {
+                if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
+                    gpShip = Number(stat.value);
+                } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
+                    gp = Number(stat.value);
+                } else if (stat.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
+                    gpChar = Number(stat.value);
                 }
+                if (gp && gpChar && gpShip) break;
+            }
 
-                members.push({
-                    ...rest,
-                    id: playerId,
-                    guildMemberLevel: memberLevel,
-                    memberContribution,
-                    name,
-                    level,
-                    allyCode: Number(allyCode),
-                    gp,
-                    gpChar,
-                    gpShip,
-                    updated: new Date().getTime()
-                });
+            members.push({
+                ...rest,
+                id: playerId,
+                guildMemberLevel: memberLevel,
+                memberContribution,
+                name,
+                level,
+                allyCode: Number(allyCode),
+                gp,
+                gpChar,
+                gpShip,
+                updated: new Date().getTime(),
             });
+        });
 
         return {
             ...profileRest,
@@ -926,15 +1025,15 @@ module.exports = (opts={}) => {
             recentTerritoryWarResult,
             nextChallengesRefresh,
             guildEventTracker,
-            raidLaunchConfig
+            raidLaunchConfig,
         };
     }
 
-    async function guildByName( gName ) {
+    async function guildByName(gName) {
         try {
-            const guild  = await cache.get(config.mongodb.swapidb, "guilds", {name: gName});
+            const guild = await cache.get(config.mongodb.swapidb, "guilds", { name: gName });
 
-            if ( !guild || !guild[0] ) {
+            if (!guild || !guild[0]) {
                 return null;
             }
             return guild[0];
@@ -944,19 +1043,18 @@ module.exports = (opts={}) => {
         }
     }
 
-    async function zetaRec( lang="ENG_US" ) {
-        const zetas = await cache.get(config.mongodb.swapidb, "zetaRec", {lang:lang});
+    async function zetaRec(lang = "ENG_US") {
+        const zetas = await cache.get(config.mongodb.swapidb, "zetaRec", { lang: lang });
         return zetas[0].zetas;
     }
 
-    function isExpired( lastUpdated, cooldown, guild=false ) {
+    function isExpired(lastUpdated, cooldown, guild = false) {
         if (!lastUpdated) return true;
-        const diff = convertMS( new Date().getTime() - new Date(lastUpdated).getTime() );
+        const diff = convertMS(new Date().getTime() - new Date(lastUpdated).getTime());
         const thisCooldown = guild ? guildMaxCooldown : playerMaxCooldown;
         return diff.totalMin >= thisCooldown;
     }
 };
-
 
 const convertMS = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -968,6 +1066,6 @@ const convertMS = (milliseconds) => {
         hour: hour,
         minute: minute,
         totalMin: totalMin,
-        seconds: seconds
+        seconds: seconds,
     };
 };

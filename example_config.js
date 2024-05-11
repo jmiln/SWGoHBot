@@ -17,13 +17,11 @@ const config = {
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.DirectMessages
+        GatewayIntentBits.DirectMessages,
     ],
 
     // Partials your bot may need should go here, CHANNEL is required for DM's
-    partials: [
-        Partials.Channel
-    ],
+    partials: [Partials.Channel],
 
     // Let it register global commands or not
     enableGlobalCmds: true,
@@ -31,17 +29,17 @@ const config = {
     // Unit locations google sheet links
     locations: {
         char: "",
-        ship: ""
+        ship: "",
     },
 
     // Mongo DB, url for login & db name in mongo
     mongodb: {
         url: "",
-        swapidb: ""
+        swapidb: "",
     },
     // The event manager's port
     eventServe: {
-        port: 0
+        port: 0,
     },
 
     // Default guild config settings, leave these as-is
@@ -54,48 +52,48 @@ const config = {
             value: ["Administrator"],
             type: ApplicationCommandOptionType.Role,
             isArray: true,
-            description: "A list of the roles that are allowed to mess with settings/ events."
+            description: "A list of the roles that are allowed to mess with settings/ events.",
         },
         enableWelcome: {
             value: false,
             type: ApplicationCommandOptionType.Boolean,
-            description: "Toggle the welcome message"
+            description: "Toggle the welcome message",
         },
         welcomeMessage: {
             value: "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
             type: ApplicationCommandOptionType.String,
-            description: "Set the welcome message text"
+            description: "Set the welcome message text",
         },
         enablePart: {
             value: false,
             type: ApplicationCommandOptionType.Boolean,
-            description: "Toggle the parting/ leaving message"
+            description: "Toggle the parting/ leaving message",
         },
         partMessage: {
             value: "Goodbye {{user}}, thanks for stopping by!",
             type: ApplicationCommandOptionType.String,
-            description: "Set the part message text"
+            description: "Set the part message text",
         },
         timezone: {
             value: "America/Los_Angeles",
             type: ApplicationCommandOptionType.String,
-            description: "Set the timezone to be referenced for events and such in the guild"
+            description: "Set the timezone to be referenced for events and such in the guild",
         },
         announceChan: {
             value: "",
             type: ApplicationCommandOptionType.Channel,
-            description: "Set the default channel for events to announce to"
+            description: "Set the default channel for events to announce to",
         },
         useEventPages: {
             value: false,
             type: ApplicationCommandOptionType.Boolean,
-            description: "Set it to show your events list in pages"
+            description: "Set it to show your events list in pages",
         },
         eventCountdown: {
             value: [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
             type: ApplicationCommandOptionType.Integer,
             isArray: true,
-            description: "Set how long before events is should warn you."
+            description: "Set how long before events is should warn you.",
         },
         language: {
             value: "en_US",
@@ -106,14 +104,29 @@ const config = {
         swgohLanguage: {
             value: "ENG_US",
             type: ApplicationCommandOptionType.String,
-            choices: ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"],
-            description: "Change the language of the data from in-game"
+            choices: [
+                "ENG_US",
+                "GER_DE",
+                "SPA_XM",
+                "FRE_FR",
+                "RUS_RU",
+                "POR_BR",
+                "KOR_KR",
+                "ITA_IT",
+                "TUR_TR",
+                "CHS_CN",
+                "CHT_CN",
+                "IND_ID",
+                "JPN_JP",
+                "THA_TH",
+            ],
+            description: "Change the language of the data from in-game",
         },
         shardtimeVertical: {
             value: false,
             type: ApplicationCommandOptionType.Boolean,
-            description: "Display the shardtimes info vertically"
-        }
+            description: "Display the shardtimes info vertically",
+        },
     },
     // The default per-guild settings
     defaultSettings: {
@@ -129,7 +142,7 @@ const config = {
         eventCountdown: [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
         language: "en_US",
         swgohLanguage: "ENG_US",
-        shardtimeVertical: false
+        shardtimeVertical: false,
     },
 
     // Default config for users (Leave these blank)
@@ -141,14 +154,14 @@ const config = {
         // Settings for the arena alerts
         arenaAlert: {
             enableRankDMs: false,
-            arena: "none",    // both, char, fleet
-            payoutWarning: 0,  // If higher than 0, send someone a DM that their payout is in x min
-            enablePayoutResult: false
+            arena: "none", // both, char, fleet
+            payoutWarning: 0, // If higher than 0, send someone a DM that their payout is in x min
+            enablePayoutResult: false,
         },
         lang: {
             language: null,
-            swgohLanguage: null
-        }
+            swgohLanguage: null,
+        },
     },
 
     // The webhook URL to send the logs to
@@ -159,11 +172,11 @@ const config = {
     logs: {
         logToChannel: false,
         channel: "",
-        logComs: false
+        logComs: false,
     },
 
     // If it should use the premium client
-    "premium": false,
+    premium: false,
 
     // The premium IP/ port for it to use (localhost if local, external IP/port if not)
     // premiumIP_Port:   "http://localhost:PORT",
@@ -185,15 +198,15 @@ const config = {
     arenaWatchConfig: {
         tier1: 1,
         tier2: 20,
-        tier3: 50
+        tier3: 50,
     },
     // SWGoH.help config
     swapiConfig: {
-        username:      "",
-        password:      "",
-        client_id:     "",
+        username: "",
+        password: "",
+        client_id: "",
         client_secret: "YOUR_SECRET",
-        host:          "api.swgoh.help"
+        host: "api.swgoh.help",
     },
     // Alternative source
     fakeSwapiConfig: {
@@ -201,19 +214,19 @@ const config = {
         options: {
             username: "",
             password: "",
-            host:     "",
-            port:     "",
-            protocol: ""
+            host: "",
+            port: "",
+            protocol: "",
         },
         statCalc: {
-            url: ""
+            url: "",
         },
         clientStub: {
             url: "",
             accessKey: "",
-            secretKey: ""
-        }
-    }
+            secretKey: "",
+        },
+    },
 };
 
 module.exports = config;

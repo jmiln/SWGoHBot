@@ -15,17 +15,17 @@ class ArenaAlert extends Command {
                     choices: [
                         {
                             name: "All",
-                            value: "all"
+                            value: "all",
                         },
                         {
                             name: "Primary",
-                            value: "primary"
+                            value: "primary",
                         },
                         {
                             name: "Off",
-                            value: "off"
-                        }
-                    ]
+                            value: "off",
+                        },
+                    ],
                 },
                 {
                     name: "arena",
@@ -34,17 +34,17 @@ class ArenaAlert extends Command {
                     choices: [
                         {
                             name: "Char",
-                            value: "char"
+                            value: "char",
                         },
                         {
                             name: "Fleet",
-                            value: "fleet"
+                            value: "fleet",
                         },
                         {
                             name: "Both",
-                            value: "both"
-                        }
-                    ]
+                            value: "both",
+                        },
+                    ],
                 },
                 {
                     name: "payout_result",
@@ -53,13 +53,13 @@ class ArenaAlert extends Command {
                     choices: [
                         {
                             name: "On",
-                            value: "on"
+                            value: "on",
                         },
                         {
                             name: "Off",
-                            value: "off"
-                        }
-                    ]
+                            value: "off",
+                        },
+                    ],
                 },
                 {
                     name: "payout_warning",
@@ -67,12 +67,13 @@ class ArenaAlert extends Command {
                     description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
                     minValue: 0,
                     maxValue: 1440,
-                }
-            ]
+                },
+            ],
         });
     }
 
-    async run(Bot, interaction) {  // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
+        // eslint-disable-line no-unused-vars
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");
@@ -91,17 +92,27 @@ class ArenaAlert extends Command {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
-        if (!enabledms && !arena && !payoutResult && (!payoutWarning && payoutWarning !== 0)) {
+        if (!enabledms && !arena && !payoutResult && !payoutWarning && payoutWarning !== 0) {
             // If none of the arguments are used, just view
-            return interaction.reply({embeds: [{
-                title: interaction.language.get("COMMAND_ARENAALERT_VIEW_HEADER"),
-                description: [
-                    `${interaction.language.get("COMMAND_ARENAALERT_VIEW_DM")}: **${user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"}**`,
-                    `${interaction.language.get("COMMAND_ARENAALERT_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
-                    `${interaction.language.get("COMMAND_ARENAALERT_VIEW_WARNING")}: **${user.arenaAlert.payoutWarning ? user.arenaAlert.payoutWarning + " min" : "disabled"}**`,
-                    `${interaction.language.get("COMMAND_ARENAALERT_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`
-                ].join("\n")
-            }]});
+            return interaction.reply({
+                embeds: [
+                    {
+                        title: interaction.language.get("COMMAND_ARENAALERT_VIEW_HEADER"),
+                        description: [
+                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_DM")}: **${
+                                user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"
+                            }**`,
+                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
+                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_WARNING")}: **${
+                                user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"
+                            }**`,
+                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_RESULT")}: **${
+                                user.arenaAlert.enablePayoutResult ? "ON" : "OFF"
+                            }**`,
+                        ].join("\n"),
+                    },
+                ],
+            });
         }
 
         const changelog = [];

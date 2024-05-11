@@ -15,23 +15,24 @@ class ReloadData extends Command {
                     type: ApplicationCommandOptionType.String,
                     required: true,
                     choices: [
-                        {name: "Data", value: "Data"},
-                        {name: "Debug", value: "Debug"},
-                        {name: "Deploy Commands", value: "Deploy"},
-                        {name: "Events", value: "Events"},
-                        {name: "Functions", value: "Functions"},
-                        {name: "Languages", value: "Languages"},
-                        {name: "Slash Commands", value: "SlashCommands"},
-                        {name: "SWAPI", value: "SWAPI"},
-                        {name: "SWLang", value: "SWLang"},
-                        {name: "Users", value: "Users"},
-                    ]
-                }
-            ]
+                        { name: "Data", value: "Data" },
+                        { name: "Debug", value: "Debug" },
+                        { name: "Deploy Commands", value: "Deploy" },
+                        { name: "Events", value: "Events" },
+                        { name: "Functions", value: "Functions" },
+                        { name: "Languages", value: "Languages" },
+                        { name: "Slash Commands", value: "SlashCommands" },
+                        { name: "SWAPI", value: "SWAPI" },
+                        { name: "SWLang", value: "SWLang" },
+                        { name: "Users", value: "Users" },
+                    ],
+                },
+            ],
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
+        // eslint-disable-line no-unused-vars
         const channelId = interaction.channel.id;
         const action = interaction.options.getString("target").toLowerCase();
 
@@ -39,9 +40,10 @@ class ReloadData extends Command {
             case "com":
             case "slashcommands": // Reloads all the slash commands,
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    await interaction.client.shard.broadcastEval(async client =>  await client.reloadAllSlashCommands())
-                        .then(res =>  this.thenResFiles(Bot, interaction, res))
-                        .catch(err => console.log("[ReloadData slash com]\n" + err));
+                    await interaction.client.shard
+                        .broadcastEval(async (client) => await client.reloadAllSlashCommands())
+                        .then((res) => this.thenResFiles(Bot, interaction, res))
+                        .catch((err) => console.log(`[ReloadData slash com]\n${err}`));
                 } else {
                     interaction.client.reloadAllSlashCommands();
                 }
@@ -58,18 +60,19 @@ class ReloadData extends Command {
                         {
                             title: "Deployed Commands",
                             description: outLog?.length ? null : "Nothing deployed",
-                            fields: outLog?.length ? outLog : null
-                        }
+                            fields: outLog?.length ? outLog : null,
+                        },
                     ],
-                    ephemeral: true
+                    ephemeral: true,
                 });
             }
             case "ev":
             case "events": // Reload the events
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard.broadcastEval(client => client.reloadAllEvents())
-                        .then(res =>  this.thenResFiles(Bot, interaction, res))
-                        .catch(err => console.log("[ReloadData ev]\n" + err));
+                    interaction.client.shard
+                        .broadcastEval((client) => client.reloadAllEvents())
+                        .then((res) => this.thenResFiles(Bot, interaction, res))
+                        .catch((err) => console.log(`[ReloadData ev]\n${err}`));
                 } else {
                     interaction.client.reloadAllEvents(channelId);
                 }
@@ -80,9 +83,12 @@ class ReloadData extends Command {
             case "function":
             case "functions": // Reload the functions file
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard.broadcastEval(client => client.reloadFunctions())
-                        .then(res => { this.thenRes(Bot, interaction, res, "Functions"); })
-                        .catch(err => console.log("[ReloadData funct]\n" + err));
+                    interaction.client.shard
+                        .broadcastEval((client) => client.reloadFunctions())
+                        .then((res) => {
+                            this.thenRes(Bot, interaction, res, "Functions");
+                        })
+                        .catch((err) => console.log(`[ReloadData funct]\n${err}`));
                 } else {
                     interaction.client.reloadFunctions();
                 }
@@ -90,18 +96,24 @@ class ReloadData extends Command {
             case "api":
             case "swapi": // Reload the swapi file
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard.broadcastEval(client => client.reloadSwapi())
-                        .then(res => { this.thenRes(Bot, interaction, res, "swApi"); })
-                        .catch(err => console.log("[ReloadData swapi]\n" + err));
+                    interaction.client.shard
+                        .broadcastEval((client) => client.reloadSwapi())
+                        .then((res) => {
+                            this.thenRes(Bot, interaction, res, "swApi");
+                        })
+                        .catch((err) => console.log(`[ReloadData swapi]\n${err}`));
                 } else {
                     interaction.client.reloadSwapi();
                 }
                 break;
             case "data": // Reload the character/ ship data files
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard.broadcastEval(client => client.reloadDataFiles())
-                        .then(res => { this.thenRes(Bot, interaction, res, "Data"); })
-                        .catch(err => console.log("[ReloadData data]\n" + err));
+                    interaction.client.shard
+                        .broadcastEval((client) => client.reloadDataFiles())
+                        .then((res) => {
+                            this.thenRes(Bot, interaction, res, "Data");
+                        })
+                        .catch((err) => console.log(`[ReloadData data]\n${err}`));
                 } else {
                     interaction.client.reloadDataFiles();
                 }
@@ -110,9 +122,12 @@ class ReloadData extends Command {
             case "language":
             case "languages":
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard.broadcastEval(client => client.reloadLanguages())
-                        .then(res => { this.thenRes(Bot, interaction, res, "Languages"); })
-                        .catch(err => console.log("[ReloadData data]\n" + err));
+                    interaction.client.shard
+                        .broadcastEval((client) => client.reloadLanguages())
+                        .then((res) => {
+                            this.thenRes(Bot, interaction, res, "Languages");
+                        })
+                        .catch((err) => console.log(`[ReloadData data]\n${err}`));
                 } else {
                     interaction.client.reloadLanguages();
                 }
@@ -159,9 +174,12 @@ class ReloadData extends Command {
             }
             case "users": // Reload the users file
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard.broadcastEval(client => client.reloadUserReg())
-                        .then(res => { this.thenRes(Bot, interaction, res, "Users"); })
-                        .catch(err => console.log("[ReloadData users]\n" + err));
+                    interaction.client.shard
+                        .broadcastEval((client) => client.reloadUserReg())
+                        .then((res) => {
+                            this.thenRes(Bot, interaction, res, "Users");
+                        })
+                        .catch((err) => console.log(`[ReloadData users]\n${err}`));
                 } else {
                     interaction.client.reloadUserReg();
                 }
@@ -173,24 +191,24 @@ class ReloadData extends Command {
 
     thenRes(Bot, interaction, res, reloadType) {
         const errors = [];
-        res.forEach(r => {
+        for (const r of res) {
             if (r?.err) errors.push(r.err);
-        });
+        }
         const uniqueErrors = [...new Set(errors)];
         return interaction.reply({
-            content: uniqueErrors.length ? "**ERROR**\n" + codeBlock(uniqueErrors.join("\n")) : `> ${reloadType} reloaded!`
+            content: uniqueErrors.length ? `**ERROR**\n${codeBlock(uniqueErrors.join("\n"))}` : `> ${reloadType} reloaded!`,
         });
     }
 
     thenResFiles(Bot, interaction, res) {
         let errors = [];
-        res.forEach(r => {
+        for (const r of res) {
             if (r.errArr?.length) errors.push(...r.errArr);
-        });
+        }
         errors = [...new Set(errors)];
-        const resOut = res.map(r => `${r.succArr.length.toString().padStart(4)} | ${r.errArr.length}`);
+        const resOut = res.map((r) => `${r.succArr.length.toString().padStart(4)} | ${r.errArr.length}`);
         return interaction.reply({
-            content: codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? "\n\nErrors in files:\n" + errors.join("\n") : ""}`)
+            content: codeBlock(`Succ | Err\n${resOut.join("\n")}${errors.length ? `\n\nErrors in files:\n${errors.join("\n")}` : ""}`),
         });
     }
 }

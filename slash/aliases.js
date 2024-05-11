@@ -29,7 +29,7 @@ class Aliases extends Command {
                             description: "The alias for the selected unit",
                             required: true,
                         },
-                    ]
+                    ],
                 },
                 {
                     name: "remove",
@@ -42,14 +42,14 @@ class Aliases extends Command {
                             description: "The alias to remove",
                             required: true,
                         },
-                    ]
+                    ],
                 },
                 {
                     name: "view",
                     type: ApplicationCommandOptionType.Subcommand,
-                    description: "View your current aliases"
-                }
-            ]
+                    description: "View your current aliases",
+                },
+            ],
         });
     }
 
@@ -59,7 +59,7 @@ class Aliases extends Command {
         const alias = interaction.options.getString("alias");
 
         // Load up all the guild's settings and such
-        const guildAliases = await getGuildAliases({cache: Bot.cache, guildId: interaction.guild.id});
+        const guildAliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction.guild.id });
 
         // Make sure this is running in a server, since it doesn't do any good in DMs
         if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
@@ -69,38 +69,39 @@ class Aliases extends Command {
             if (!searchUnit || !alias) return super.error(interaction, "Both fields MUST be filled in. Please try again.");
 
             // Grab the unit if available, then complain if not found
-            const unit = Bot.characters.find(char => char.uniqueName === searchUnit) || Bot.ships.find(ship => ship.uniqueName === searchUnit);
+            const unit =
+                Bot.characters.find((char) => char.uniqueName === searchUnit) || Bot.ships.find((ship) => ship.uniqueName === searchUnit);
             if (!unit) return super.error(interaction, `I couldn't find a matching unit for '${searchUnit}'`);
 
             // If the selected alias is already in use, alert em and back out
-            if (guildAliases.filter(al => al.alias === alias)?.length) return super.error(interaction, `This alias is already in use for ***${unit.name}***`);
+            if (guildAliases.filter((al) => al.alias === alias)?.length)
+                return super.error(interaction, `This alias is already in use for ***${unit.name}***`);
 
             // If it makes it here, everything *should* be fine, so go ahead and save it
-            guildAliases.push({alias: alias, defId: unit.uniqueName, name: unit.name});
-            const res = await setGuildAliases({cache: Bot.cache, guildId: interaction.guild.id, aliasesOut: guildAliases});
+            guildAliases.push({ alias: alias, defId: unit.uniqueName, name: unit.name });
+            const res = await setGuildAliases({ cache: Bot.cache, guildId: interaction.guild.id, aliasesOut: guildAliases });
 
             // Then report on it either saving properly or breaking
             if (res?.error) return super.error(interaction, `There was an issue when submitting that: \n${res.error}`);
             super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
         } else if (action === "remove") {
             // We're removing an alias
-            if (!guildAliases.filter(al => al.alias === alias)?.length) return super.error(interaction, "That isn't a current alias.");
+            if (!guildAliases.filter((al) => al.alias === alias)?.length) return super.error(interaction, "That isn't a current alias.");
 
             // Set the aliases back, with the specified one removed
             const res = await setGuildAliases({
                 cache: Bot.cache,
                 guildId: interaction.guild.id,
-                aliasesOut: guildAliases.filter(al => al.alias !== alias)
+                aliasesOut: guildAliases.filter((al) => al.alias !== alias),
             });
 
             // Then report on it either saving properly or breaking
             if (res?.error) return super.error(interaction, `There was an issue when submitting that: \n${res.error}`);
             super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
         } else {
-            return interaction.reply({content: `>>> ${"- " + guildAliases.map(al => al.alias + " - " + al.name).join("\n- ")}`});
+            return interaction.reply({ content: `>>> ${`- ${guildAliases.map((al) => `${al.alias} - ${al.name}`).join("\n- ")}`}` });
         }
     }
 }
 
 module.exports = Aliases;
-

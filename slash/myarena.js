@@ -1,6 +1,6 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const {inspect} = require("util"); // eslint-disable-line no-unused-vars
+const { inspect } = require("node:util"); // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class MyArena extends Command {
@@ -13,25 +13,29 @@ class MyArena extends Command {
                 {
                     name: "allycode",
                     description: "The ally code of the user you want to see",
-                    type: ApplicationCommandOptionType.String
+                    type: ApplicationCommandOptionType.String,
                 },
                 {
                     name: "stats",
                     type: ApplicationCommandOptionType.Boolean,
-                    description: "Show some general stats for your arena team"
-                }
-            ]
+                    description: "Show some general stats for your arena team",
+                },
+            ],
         });
     }
 
-    async run(Bot, interaction) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
+        // eslint-disable-line no-unused-vars
         let allycode = interaction.options.getString("allycode");
-        const showStats    = interaction.options.getBoolean("stats");
+        const showStats = interaction.options.getBoolean("stats");
 
         allycode = await Bot.getAllyCode(interaction, allycode);
 
         if (!allycode) {
-            return super.error(interaction, "Invalid user ID, you need to use either the `me` keyword if you have a registered ally code, an ally code, or mention a Discord user");
+            return super.error(
+                interaction,
+                "Invalid user ID, you need to use either the `me` keyword if you have a registered ally code, an ally code, or mention a Discord user",
+            );
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
@@ -40,7 +44,7 @@ class MyArena extends Command {
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
-            Bot.logger.error("Broke getting player in myarena: " + e);
+            Bot.logger.error(`Broke getting player in myarena: ${e}`);
             return super.error(interaction, "Something broke, please try again in a bit");
         }
 
@@ -49,8 +53,8 @@ class MyArena extends Command {
         }
 
         const fields = [];
-        const positions = [ "L|", "2|", "3|", "4|", "5|" ];
-        const sPositions = [ "L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|" ];
+        const positions = ["L|", "2|", "3|", "4|", "5|"];
+        const sPositions = ["L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|"];
 
         let desc = "";
         if (!showStats) {
@@ -71,7 +75,7 @@ class MyArena extends Command {
                 console.error(e);
                 return super.error(interaction, codeBlock(e.interaction), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit."
+                    footer: "Please try again in a bit.",
                 });
             }
 
@@ -80,46 +84,51 @@ class MyArena extends Command {
                 const charId = player.arena.char.squad[ix].defId;
                 const unitName = await getUnitName(player, charId);
 
-                const thisChar = playerStats.roster.find(c => c.defId === charId);
-                const speed    = thisChar.stats.final.Speed?.toLocaleString() || 0;
-                const health   = thisChar.stats.final.Health?.toLocaleString() || 0;
-                const prot     = thisChar.stats.final.Protection?.toLocaleString() || 0;
+                const thisChar = playerStats.roster.find((c) => c.defId === charId);
+                const speed = thisChar.stats.final.Speed?.toLocaleString() || 0;
+                const health = thisChar.stats.final.Health?.toLocaleString() || 0;
+                const prot = thisChar.stats.final.Protection?.toLocaleString() || 0;
                 chars.push({
                     pos: positions[ix],
                     speed: speed,
                     health: health,
                     prot: prot,
-                    name: unitName
+                    name: unitName,
                 });
             }
-            desc = Bot.makeTable({
-                pos:    {value: "",    startWith: "`"},
-                speed:  {value: "Spd", startWith: "[",  endWith: "|"},
-                health: {value: "HP",                    endWith: "|"},
-                prot:   {value: "Prot",                  endWith: "]`"},
-                name:   {value: "",    align: "left"}
-            }, chars).join("\n");
+            desc = Bot.makeTable(
+                {
+                    pos: { value: "", startWith: "`" },
+                    speed: { value: "Spd", startWith: "[", endWith: "|" },
+                    health: { value: "HP", endWith: "|" },
+                    prot: { value: "Prot", endWith: "]`" },
+                    name: { value: "", align: "left" },
+                },
+                chars,
+            ).join("\n");
         }
 
         if (player.warnings) {
             fields.push({
                 name: "Warnings",
-                value: player.warnings.join("\n")
+                value: player.warnings.join("\n"),
             });
         }
 
         const footerStr = Bot.updatedFooterStr(player.updated, interaction);
         return interaction.reply({
-            embeds: [{
-                author: {
-                    name: interaction.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name)
+            embeds: [
+                {
+                    author: {
+                        name: interaction.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name),
+                    },
+                    description: desc,
+                    fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
                 },
-                description: desc,
-                fields: [...fields, {name: Bot.constants.zws, value: footerStr}]
-            }]
+            ],
         });
 
-        async function getArenaStrings(player, type="char") {
+        async function getArenaStrings(player, type = "char") {
             if (!player.arena?.[type]?.squad?.length) return null;
             const arenaArr = [];
             for (let ix = 0; ix < player.arena[type].squad.length; ix++) {
@@ -128,16 +137,16 @@ class MyArena extends Command {
                 arenaArr.push(`\`${type === "char" ? positions[ix] : sPositions[ix]}\` ${unitName}`);
             }
             return {
-                name: interaction.language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA": "FLEET"}`, player.arena[type].rank),
-                value: arenaArr.join("\n") + "\n`------------------------------`",
-                inline: true
+                name: interaction.language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA" : "FLEET"}`, player.arena[type].rank),
+                value: `${arenaArr.join("\n")}\n\`------------------------------\``,
+                inline: true,
             };
         }
 
         async function getUnitName(player, defId) {
-            const thisChar = player.roster.find(c => c.defId === defId);
+            const thisChar = player.roster.find((c) => c.defId === defId);
             const thisLangChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
-            const thisZ = thisLangChar.skills.filter(s => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers-1));
+            const thisZ = thisLangChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
             if (thisLangChar.name && !thisLangChar.nameKey) thisLangChar.nameKey = thisLangChar.name;
             return `${"z".repeat(thisZ.length)}${thisLangChar.nameKey}`;
         }

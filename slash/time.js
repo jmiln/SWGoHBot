@@ -11,9 +11,9 @@ class Time extends Command {
                 {
                     name: "timezone",
                     type: ApplicationCommandOptionType.String,
-                    description: "A valid timezone to view"
-                }
-            ]
+                    description: "A valid timezone to view",
+                },
+            ],
         });
     }
 
@@ -23,44 +23,31 @@ class Time extends Command {
 
         if (timezone && Bot.isValidZone(timezone)) {
             return interaction.reply({
-                content: interaction.language.get(
-                    "COMMAND_TIME_CURRENT",
-                    Bot.formatCurrentTime(timezone),
-                    timezone
-                )
+                content: interaction.language.get("COMMAND_TIME_CURRENT", Bot.formatCurrentTime(timezone), timezone),
             });
         }
 
         if (guildConf?.timezone && Bot.isValidZone(guildConf.timezone)) {
             // If we got here because timezone above had issues, say so, but if it's just here because they left it empty, don'tcomplain
             if (timezone?.length) {
-                return super.error(
-                    interaction,
-                    interaction.language.get(
-                        "COMMAND_TIME_INVALID_ZONE",
-                        Bot.formatCurrentTime()
-                    )
-                );
+                return super.error(interaction, interaction.language.get("COMMAND_TIME_INVALID_ZONE", Bot.formatCurrentTime()));
             }
             return interaction.reply({
-                content:
-                "Here's your guild's default time:\n" +
-                interaction.language.get(
+                content: `Here's your guild's default time:\n${interaction.language.get(
                     "COMMAND_TIME_CURRENT",
                     Bot.formatCurrentTime(guildConf.timezone),
-                    guildConf.timezone
-                )
+                    guildConf.timezone,
+                )}`,
             });
         }
 
         // Otherwise, no valid zone was available, so note that and spit out whatever default zone the bot has
         return super.error(
             interaction,
-            "I couldn't find a valid timezone to match your request, so this is my default one:\n" +
-            interaction.language.get(
+            `I couldn't find a valid timezone to match your request, so this is my default one:\n${interaction.language.get(
                 "COMMAND_TIME_INVALID_ZONE",
-                Bot.formatCurrentTime()
-            )
+                Bot.formatCurrentTime(),
+            )}`,
         );
     }
 }

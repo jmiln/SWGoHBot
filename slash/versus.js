@@ -12,38 +12,38 @@ class Versus extends Command {
                     name: "allycode_1",
                     description: "The ally code of the first user you want to compare",
                     type: ApplicationCommandOptionType.String,
-                    required: true
+                    required: true,
                 },
                 {
                     name: "allycode_2",
                     description: "The ally code of the second user you want to compare",
                     type: ApplicationCommandOptionType.String,
-                    required: true
+                    required: true,
                 },
                 {
                     name: "character",
                     autocomplete: true,
                     description: "A character you want to compare the stats of",
                     type: ApplicationCommandOptionType.String,
-                    required: true
-                }
-            ]
+                    required: true,
+                },
+            ],
         });
     }
 
     async run(Bot, interaction) {
         const statList = [
-            {stat: "Health",                   short: "Health"},
-            {stat: "Protection",               short: "Prot"  },
-            {stat: "Speed",                    short: "Speed" },
-            {stat: "Armor",                    short: "Armor" },
-            {stat: "Physical Damage",          short: "P Dmg" },
-            {stat: "Physical Critical Chance", short: "P Crit"},
-            {stat: "Special Damage",           short: "S Dmg" },
-            {stat: "Special Critical Chance",  short: "S Crit"},
-            {stat: "Critical Damage",          short: "Crit D"},
-            {stat: "Potency",                  short: "Pot"   },
-            {stat: "Tenacity",                 short: "Ten"   }
+            { stat: "Health", short: "Health" },
+            { stat: "Protection", short: "Prot" },
+            { stat: "Speed", short: "Speed" },
+            { stat: "Armor", short: "Armor" },
+            { stat: "Physical Damage", short: "P Dmg" },
+            { stat: "Physical Critical Chance", short: "P Crit" },
+            { stat: "Special Damage", short: "S Dmg" },
+            { stat: "Special Critical Chance", short: "S Crit" },
+            { stat: "Critical Damage", short: "Crit D" },
+            { stat: "Potency", short: "Pot" },
+            { stat: "Tenacity", short: "Ten" },
         ];
         const user1str = interaction.options.getString("allycode_1");
         const user2str = interaction.options.getString("allycode_2");
@@ -61,17 +61,19 @@ class Versus extends Command {
          *  -- If character is invalid, spit out an error
          */
 
-        await interaction.reply({content: "Please wait while I process your data."});
+        await interaction.reply({ content: "Please wait while I process your data." });
 
         let user1 = await Bot.getAllyCode(interaction, user1str, false);
         let user2 = await Bot.getAllyCode(interaction, user2str, false);
 
         if (!user1 && !user2) {
             return super.error(interaction, "Both ally codes were invalid");
-        } else if (!user1) {
+        }
+        if (!user1) {
             // Spit out an error because the interaction author is not registered
             return super.error(interaction, "Ally code #1 was invalid");
-        } else if (!user2) {
+        }
+        if (!user2) {
             // Something went wrong with user2, let's spit out an error
             return super.error(interaction, "Ally code #2 was invalid");
         }
@@ -83,9 +85,10 @@ class Versus extends Command {
         }
         if (!char.length) {
             return super.error(interaction, interaction.language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
-        } else if (char.length > 1) {
+        }
+        if (char.length > 1) {
             // If found more than 1 match
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", char.map(c => c.name).join("\n")));
+            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", char.map((c) => c.name).join("\n")));
         }
         // It only found one match
         if (Array.isArray(char)) char = char[0];
@@ -115,14 +118,14 @@ class Versus extends Command {
         }
 
         // From here, we should have both user's rosters, so grab the characters and make the table
-        const char1 = user1.roster.find(c => c.defId === char.uniqueName);
-        const char2 = user2.roster.find(c => c.defId === char.uniqueName);
+        const char1 = user1.roster.find((c) => c.defId === char.uniqueName);
+        const char2 = user2.roster.find((c) => c.defId === char.uniqueName);
 
         if (!char1 && !char2) {
-            return super.error(interaction, "Neither user seems to have that character unlocked!") ;
+            return super.error(interaction, "Neither user seems to have that character unlocked!");
         }
 
-        const isShip = (char1 ? char1.combatType : char2.combatType) === 1 ? false : true;
+        const isShip = (char1 ? char1.combatType : char2.combatType) !== 1;
 
         const genOut = [];
 
@@ -130,25 +133,25 @@ class Versus extends Command {
         genOut.push({
             stat: "Lvl",
             user1: char1?.level,
-            user2: char2?.level
+            user2: char2?.level,
         });
 
         // Add in the Star level / rarity
         genOut.push({
             stat: "Rarity",
             user1: char1?.rarity,
-            user2: char2?.rarity
+            user2: char2?.rarity,
         });
 
         if (!isShip) {
             // Add in the zeta count
-            const user1Zetas = char1?.skills.filter(sk => sk.isZeta && sk.tiers === sk.tier).length;
-            const user2Zetas = char2?.skills.filter(sk => sk.isZeta && sk.tiers === sk.tier).length;
+            const user1Zetas = char1?.skills.filter((sk) => sk.isZeta && sk.tiers === sk.tier).length;
+            const user2Zetas = char2?.skills.filter((sk) => sk.isZeta && sk.tiers === sk.tier).length;
             if (user1Zetas || user2Zetas) {
                 genOut.push({
                     stat: "Zetas",
                     user1: user1Zetas,
-                    user2: user2Zetas
+                    user2: user2Zetas,
                 });
             }
 
@@ -156,7 +159,7 @@ class Versus extends Command {
             genOut.push({
                 stat: "Gear",
                 user1: char1?.gear,
-                user2: char2?.gear
+                user2: char2?.gear,
             });
 
             const user1Relic = char1?.relic?.currentTier - 2;
@@ -180,52 +183,64 @@ class Versus extends Command {
             }
         }
 
-        const generalTable = Bot.makeTable({
-            stat:  {value: "Stat", align: "right", endWith: "::"},
-            user1: {value: user1.name, align: "right", endWith: "vs"},
-            user2: {value: user2.name, align: "left"}
-        }, genOut, {boldHeader: false, useHeader: false});
+        const generalTable = Bot.makeTable(
+            {
+                stat: { value: "Stat", align: "right", endWith: "::" },
+                user1: { value: user1.name, align: "right", endWith: "vs" },
+                user2: { value: user2.name, align: "left" },
+            },
+            genOut,
+            { boldHeader: false, useHeader: false },
+        );
 
         // For each stat in a list, add onto the statOut array
         const statOut = [];
-        statList.forEach(stat => {
+        for (const stat of statList) {
             const s1 = char1?.stats?.final[stat.stat];
             const s2 = char2?.stats?.final[stat.stat];
             statOut.push({
                 stat: stat.short,
-                user1: s1 ? (s1 % 1 === 0 ? s1.toLocaleString() : (s1 * 100).toFixed(2)+"%") : "N/A",
-                user2: s2 ? (s2 % 1 === 0 ? s2.toLocaleString() : (s2 * 100).toFixed(2)+"%") : "N/A",
+                user1: s1 ? (s1 % 1 === 0 ? s1.toLocaleString() : `${(s1 * 100).toFixed(2)}%`) : "N/A",
+                user2: s2 ? (s2 % 1 === 0 ? s2.toLocaleString() : `${(s2 * 100).toFixed(2)}%`) : "N/A",
             });
-        });
+        }
 
-        const langChar = await Bot.swgohAPI.langChar({defId: char1 ? char1.defId : char2.defId});
+        const langChar = await Bot.swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId });
         const charName = langChar.nameKey;
-        const statTable = Bot.makeTable({
-            stat:  {value: "Stat", align: "right", endWith: "::"},
-            user1: {value: user1.name, align: "right", endWith: "vs"},
-            user2: {value: user2.name, align: "left"}
-        }, statOut, {boldHeader: false, useHeader: false});
+        const statTable = Bot.makeTable(
+            {
+                stat: { value: "Stat", align: "right", endWith: "::" },
+                user1: { value: user1.name, align: "right", endWith: "vs" },
+                user2: { value: user2.name, align: "left" },
+            },
+            statOut,
+            { boldHeader: false, useHeader: false },
+        );
 
         const footerStr = Bot.updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
-        return interaction.editReply({content: null, embeds: [{
-            title: `${user1.name} vs. ${user2.name} (${charName})`,
-            fields: [
+        return interaction.editReply({
+            content: null,
+            embeds: [
                 {
-                    name: "General Info",
-                    value: codeBlock(generalTable.join("\n"), "asciidoc")
+                    title: `${user1.name} vs. ${user2.name} (${charName})`,
+                    fields: [
+                        {
+                            name: "General Info",
+                            value: codeBlock(generalTable.join("\n"), "asciidoc"),
+                        },
+                        {
+                            name: "Stats",
+                            value: codeBlock(statTable.join("\n"), "asciidoc"),
+                        },
+                        {
+                            name: Bot.constants.zws,
+                            value: footerStr,
+                        },
+                    ],
                 },
-                {
-                    name: "Stats",
-                    value: codeBlock(statTable.join("\n"), "asciidoc")
-                },
-                {
-                    name: Bot.constants.zws,
-                    value: footerStr
-                }
             ],
-        }]});
+        });
     }
 }
 
 module.exports = Versus;
-

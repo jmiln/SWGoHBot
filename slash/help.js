@@ -11,28 +11,26 @@ class Help extends Command {
                 {
                     name: "details",
                     description: "Show details about each command's argument",
-                    type: ApplicationCommandOptionType.Boolean
+                    type: ApplicationCommandOptionType.Boolean,
                 },
                 {
                     name: "category",
                     description: "Show a list of commands in a given category",
                     type: ApplicationCommandOptionType.String,
-                    choices: [
-                        "Admin", "Gamedata", "General", "Patreon"
-                    ] .map(choice => {
+                    choices: ["Admin", "Gamedata", "General", "Patreon"].map((choice) => {
                         return {
                             name: choice,
-                            value: choice
+                            value: choice,
                         };
-                    })
+                    }),
                 },
                 {
                     name: "command",
                     description: "Show a specific command's details",
                     autocomplete: true,
-                    type: ApplicationCommandOptionType.String
-                }
-            ]
+                    type: ApplicationCommandOptionType.String,
+                },
+            ],
         });
     }
 
@@ -41,7 +39,7 @@ class Help extends Command {
         const category = interaction.options.getString("category");
         const isDetailed = interaction.options.getBoolean("details");
 
-        const color = Math.floor(Math.random()*16777215);
+        const color = Math.floor(Math.random() * 16777215);
 
         if (!search) {
             const fields = [];
@@ -64,7 +62,7 @@ class Help extends Command {
                                 const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
                                 if (!formattedUse.startsWith("*")) {
                                     cmdArr.push(`** │** ${formattedUse}`);
-                                } else if (ix === usageLen-1) {
+                                } else if (ix === usageLen - 1) {
                                     cmdArr.push(`** └** ${formattedUse}`);
                                 } else {
                                     cmdArr.push(`** ├** ${formattedUse}`);
@@ -76,7 +74,7 @@ class Help extends Command {
                 }
 
                 // Put a divider after this section / before the next
-                if (ix < helpKeys.length-1) {
+                if (ix < helpKeys.length - 1) {
                     outArr.push(div);
                 }
 
@@ -85,33 +83,40 @@ class Help extends Command {
                 for (const [ix, chunk] of chunks.entries()) {
                     fields.push({
                         name: ix > 0 ? Bot.constants.zws : cat.toUpperCase(),
-                        value: chunk
+                        value: chunk,
                     });
                 }
             }
 
-            await interaction.reply({embeds: [{
-                title: "Slash Commands List",
-                description: " - Options are either `<required>` or `[optional]`",
-                fields: fields.slice(0, 4),
-                color: color
-            }]});
+            await interaction.reply({
+                embeds: [
+                    {
+                        title: "Slash Commands List",
+                        description: " - Options are either `<required>` or `[optional]`",
+                        fields: fields.slice(0, 4),
+                        color: color,
+                    },
+                ],
+            });
             if (fields.length > 4) {
-                return interaction.followUp({embeds: [{
-                    fields: fields.slice(4),
-                    color: color
-                }]});
+                return interaction.followUp({
+                    embeds: [
+                        {
+                            fields: fields.slice(4),
+                            color: color,
+                        },
+                    ],
+                });
             }
         } else {
             // Searching for info on a certain command
             const commands = Object.keys(Bot.help).reduce((acc, curr) => {
                 const currCat = Bot.help[curr].commands;
-                return {...acc, ...currCat};
+                return acc.concat(currCat);
             }, {});
 
             const thisCom = commands[search.toLowerCase()];
             if (!thisCom) return super.error(interaction, "I couldn't find a match for that command name.");
-
 
             const cmdArr = [`**/${search.toLowerCase()}**\n${thisCom.desc}`];
             const usageLen = thisCom.usage?.length;
@@ -120,7 +125,7 @@ class Help extends Command {
                     const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
                     if (!formattedUse.startsWith("*")) {
                         cmdArr.push(`** │** ${formattedUse}`);
-                    } else if (ix === usageLen-1) {
+                    } else if (ix === usageLen - 1) {
                         cmdArr.push(`** └** ${formattedUse}`);
                     } else {
                         cmdArr.push(`** ├** ${formattedUse}`);
@@ -128,11 +133,15 @@ class Help extends Command {
                 }
             }
 
-            await interaction.reply({embeds: [{
-                title: `Command description for ${Bot.toProperCase(search)}`,
-                description: ` - Options are either \`<required>\` or \`[optional]\`\n\n${cmdArr.join("\n")}`,
-                color: color
-            }]});
+            await interaction.reply({
+                embeds: [
+                    {
+                        title: `Command description for ${Bot.toProperCase(search)}`,
+                        description: ` - Options are either \`<required>\` or \`[optional]\`\n\n${cmdArr.join("\n")}`,
+                        color: color,
+                    },
+                ],
+            });
         }
     }
 }

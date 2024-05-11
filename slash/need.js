@@ -2,24 +2,24 @@ const { ApplicationCommandOptionType } = require("discord.js");
 const Command = require("../base/slashCommand");
 const factionMap = require("../data/factionMap");
 const shopMap = [
-    { name: "Arena Shop",        value: "Arena Shipments" },
-    { name: "Cantina Shop",      value: "Cantina Shipments" },
-    { name: "Fleet Shop",        value: "Fleet Shipments" },
+    { name: "Arena Shop", value: "Arena Shipments" },
+    { name: "Cantina Shop", value: "Cantina Shipments" },
+    { name: "Fleet Shop", value: "Fleet Shipments" },
     { name: "Galactic War Shop", value: "GW Shipments" },
-    { name: "Guild Event Shop",  value: "Guild Event Shop" },
-    { name: "Guild Shop",        value: "Guild Shop" },
-    { name: "Shard Shop",        value: "Shard Shop" }
+    { name: "Guild Event Shop", value: "Guild Event Shop" },
+    { name: "Guild Shop", value: "Guild Shop" },
+    { name: "Shard Shop", value: "Shard Shop" },
 ];
 const kwMap = [
     { name: "All Battles", value: "battles" },
-    { name: "All Shops",   value: "shops" },
-    { name: "Everything",  value: "*" }
+    { name: "All Shops", value: "shops" },
+    { name: "Everything", value: "*" },
 ];
 const battleMap = [
-    { name: "Cantina Battles",    value: "Cantina" },
-    { name: "Dark Side Battles",  value: "Hard Modes (D)" },
-    { name: "Fleet Battles",      value: "Hard Modes (Fleet)" },
-    { name: "Light Side Battles", value: "Hard Modes (L)" }
+    { name: "Cantina Battles", value: "Cantina" },
+    { name: "Dark Side Battles", value: "Hard Modes (D)" },
+    { name: "Fleet Battles", value: "Hard Modes (Fleet)" },
+    { name: "Light Side Battles", value: "Hard Modes (L)" },
 ];
 
 class Need extends Command {
@@ -34,26 +34,26 @@ class Need extends Command {
                 {
                     name: "allycode",
                     description: "The ally code for the user you want to look up",
-                    type: ApplicationCommandOptionType.String
+                    type: ApplicationCommandOptionType.String,
                 },
                 // Put in faction|shop|battle|keyword on their own
                 {
                     name: "battle",
                     description: "Which section of battles you want to check on",
                     type: ApplicationCommandOptionType.String,
-                    choices: battleMap
+                    choices: battleMap,
                 },
                 {
                     name: "keyword",
                     description: "Choose all of a section",
                     type: ApplicationCommandOptionType.String,
-                    choices: kwMap
+                    choices: kwMap,
                 },
                 {
                     name: "shop",
                     description: "Which shop you want to check the progress on",
                     type: ApplicationCommandOptionType.String,
-                    choices: shopMap
+                    choices: shopMap,
                 },
                 // The faction tags listed as in game, but needed to be split up into multiple lists because of
                 // how many there are (Choices are limited to 20 choices...)
@@ -61,15 +61,15 @@ class Need extends Command {
                     name: "faction_group_1",
                     description: "Which faction you want to check the progress on",
                     type: ApplicationCommandOptionType.String,
-                    choices: factionMap.slice(0, 20)
+                    choices: factionMap.slice(0, 20),
                 },
                 {
                     name: "faction_group_2",
                     description: "Which faction you want to check the progress on",
                     type: ApplicationCommandOptionType.String,
-                    choices: factionMap.slice(20, 40)
+                    choices: factionMap.slice(20, 40),
                 },
-            ]
+            ],
         });
     }
 
@@ -82,23 +82,24 @@ class Need extends Command {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }
 
-        const battle   = interaction.options.getString("battle");
+        const battle = interaction.options.getString("battle");
         const faction1 = interaction.options.getString("faction_group_1");
         const faction2 = interaction.options.getString("faction_group_2");
-        const keyword  = interaction.options.getString("keyword");
-        const shop     = interaction.options.getString("shop");
+        const keyword = interaction.options.getString("keyword");
+        const shop = interaction.options.getString("shop");
 
         if (!battle && !faction1 && !faction2 && !keyword && !shop) {
             return super.error(interaction, "You need to specify a location or faction.");
         }
-        await interaction.reply({content: "Please wait while I look up your data."});
+        await interaction.reply({ content: "Please wait while I look up your data." });
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
         if (Array.isArray(player)) player = player[0];
         if (!player) {
             return super.error(interaction, "I couldn't find that player, please make sure you've got the corect ally code.");
-        } else if (!player.roster) {
+        }
+        if (!player.roster) {
             return super.error(interaction, "I couldn't find your roster.");
         }
 
@@ -125,16 +126,16 @@ class Need extends Command {
                 // Just get everything
                 namesToSearch.push("*");
             } else if (keyword === "battles") {
-                namesToSearch.push(...battleMap.map(b => b.value));
+                namesToSearch.push(...battleMap.map((b) => b.value));
             } else if (keyword === "shops") {
-                namesToSearch.push(...shopMap.map(s => s.value));
+                namesToSearch.push(...shopMap.map((s) => s.value));
             }
         }
         namesToSearch = [...new Set(namesToSearch)];
         if (namesToSearch.includes("*")) {
             // Just stick everything in there
-            units = [...Bot.characters, ...Bot.ships].map(u => {
-                return {...u, baseId: u.uniqueName};
+            units = [...Bot.characters, ...Bot.ships].map((u) => {
+                return { ...u, baseId: u.uniqueName };
             });
         } else {
             const matchingChars = await getUnitsExact(namesToSearch);
@@ -149,61 +150,58 @@ class Need extends Command {
         let outShips = [];
         for (const unit of units) {
             // Go through the found characters and check them against the player's roster
-            let u = player.roster.find(c => c.defId === unit.baseId);
+            let u = player.roster.find((c) => c.defId === unit.baseId);
             if (!u) {
                 // If Malak (I don't remember why...)
                 if (unit.baseId === "DARTHMALAK") continue;
                 u = {
-                    rarity:  0,
-                    nameKey: unit.nameKey || unit.name
+                    rarity: 0,
+                    nameKey: unit.nameKey || unit.name,
                 };
             }
             if (u.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[u.rarity];
             u = await Bot.swgohAPI.langChar(u, interaction.guildSettings.swgohLanguage);
-            if (Bot.characters.find(c => c.uniqueName === unit.baseId)) {
+            if (Bot.characters.find((c) => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({
                     rarity: u.rarity,
-                    name: u.nameKey
+                    name: u.nameKey,
                 });
-            } else if (Bot.ships.find(s => s.uniqueName === unit.baseId)) {
+            } else if (Bot.ships.find((s) => s.uniqueName === unit.baseId)) {
                 // It's a ship
                 outShips.push({
                     rarity: u.rarity,
-                    name: u.nameKey
+                    name: u.nameKey,
                 });
-            } else {
-                // It's neither and shouldn't be there
-                continue;
             }
         }
 
         const fields = [];
         if (outChars.length) {
-            outChars = outChars.filter(c => c.name);
-            outChars = outChars.sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-            outChars = outChars.map(c => `\`${c.rarity}*\` ${c.rarity ? c.name : "~~" + c.name + "~~"}`);
+            outChars = outChars.filter((c) => c.name);
+            outChars = outChars.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+            outChars = outChars.map((c) => `\`${c.rarity}*\` ${c.rarity ? c.name : `~~${c.name}~~`}`);
             const msgArr = Bot.msgArray(outChars, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
-                if (msgArr.length > 1) end = `(${ix+1})`;
+                if (msgArr.length > 1) end = `(${ix + 1})`;
                 fields.push({
                     name: interaction.language.get("COMMAND_NEED_CHAR_HEADER") + end,
-                    value: m
+                    value: m,
                 });
             });
         }
         if (outShips.length) {
-            outShips = outShips.filter(a => !!a.name).sort((a,b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
-            outShips = outShips.map(s => `\`${s.rarity}*\` ${s.rarity ? s.name : "~~" + s.name + "~~"}`);
+            outShips = outShips.filter((a) => !!a.name).sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+            outShips = outShips.map((s) => `\`${s.rarity}*\` ${s.rarity ? s.name : `~~${s.name}~~`}`);
             const msgArr = Bot.msgArray(outShips, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
-                if (msgArr.length > 1) end = `(${ix+1})`;
+                if (msgArr.length > 1) end = `(${ix + 1})`;
                 fields.push({
                     name: interaction.language.get("COMMAND_NEED_SHIP_HEADER") + end,
-                    value: m
+                    value: m,
                 });
             });
         }
@@ -212,48 +210,59 @@ class Need extends Command {
         if (shardsLeft === 0) {
             desc = interaction.language.get("COMMAND_NEED_COMPLETE");
         } else {
-            desc = interaction.language.get("COMMAND_NEED_PARTIAL", (((totalShards - shardsLeft)/ totalShards) * 100).toFixed(1));
+            desc = interaction.language.get("COMMAND_NEED_PARTIAL", (((totalShards - shardsLeft) / totalShards) * 100).toFixed(1));
         }
 
         const headerNames = getHeaderNames(namesToSearch);
-        if (fields.map(f => f.value).join("\n").length > 5000) {
+        if (fields.map((f) => f.value).join("\n").length > 5000) {
             // Just in case it's too big for one embed (Someone without a enough characters unlocked/ 7*), split it up
-            await interaction.editReply({content: null, embeds: [
+            await interaction.editReply({
+                content: null,
+                embeds: [
+                    {
+                        author: {
+                            name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", "))),
+                        },
+                        description: desc,
+                        fields: fields.slice(0, Math.floor(fields.length / 2)),
+                    },
+                ],
+            });
+            return interaction.followUp({
+                content: null,
+                embeds: [
+                    {
+                        fields: fields.slice(Math.floor(fields.length / 2), 500),
+                    },
+                ],
+            });
+        }
+        // It's small enough for one embed, just send it
+        return interaction.editReply({
+            content: null,
+            embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", ")))
+                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", "))),
                     },
                     description: desc,
-                    fields: fields.slice(0, Math.floor(fields.length/2))
-                }
-            ]});
-            return interaction.followUp({content: null, embeds: [
-                {
-                    fields: fields.slice(Math.floor(fields.length/2), 500)
-                }
-            ]});
-        } else {
-            // It's small enough for one embed, just send it
-            return interaction.editReply({content: null, embeds: [{
-                author: {
-                    name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", ")))
+                    fields: fields,
                 },
-                description: desc,
-                fields: fields
-            }]});
-        }
+            ],
+        });
+
         function getHeaderNames(namesIn) {
             const namesOut = [];
             for (const name of namesIn) {
-                let n = kwMap.find(k => k.value === name)?.name;
+                let n = kwMap.find((k) => k.value === name)?.name;
                 if (!n) {
-                    n = shopMap.find(k => k.value === name)?.name;
+                    n = shopMap.find((k) => k.value === name)?.name;
                 }
                 if (!n) {
-                    n = battleMap.find(k => k.value === name)?.name;
+                    n = battleMap.find((k) => k.value === name)?.name;
                 }
                 if (!n) {
-                    n = factionMap.find(k => k.value === name)?.name;
+                    n = factionMap.find((k) => k.value === name)?.name;
                 }
                 if (n) {
                     namesOut.push(n);
@@ -262,24 +271,28 @@ class Need extends Command {
             return namesOut;
         }
 
-        async function getUnitsExact(searchNames) {
+        async function getUnitsExact(searchArr) {
             // Get unit matches based on the exact name of their locations
-            if (!Array.isArray(searchNames)) searchNames = [searchNames];
+            const searchNames = Array.isArray(searchArr) ? searchArr : [searchArr];
             let unitsOut = [];
             if (searchNames.includes("*")) {
                 unitsOut.push(...Bot.charLocs);
                 unitsOut.push(...Bot.shipLocs);
             } else {
                 for (const searchName of searchNames) {
-                    unitsOut = unitsOut.concat(Bot.charLocs.filter(c => c.locations.filter(l => l.type === searchName).length));
-                    unitsOut = unitsOut.concat(Bot.shipLocs.filter(s => s.locations.filter(l => l.type === searchName).length));
+                    unitsOut = unitsOut.concat(Bot.charLocs.filter((c) => c.locations.filter((l) => l.type === searchName).length));
+                    unitsOut = unitsOut.concat(Bot.shipLocs.filter((s) => s.locations.filter((l) => l.type === searchName).length));
                 }
             }
             for (const c of unitsOut) {
                 // The char/ ship locations don't have the baseId so need to get those
-                let char = Bot.characters.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                let char = Bot.characters.find(
+                    (char) => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase(),
+                );
                 if (!char) {
-                    char = Bot.ships.find(char => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase());
+                    char = Bot.ships.find(
+                        (char) => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase(),
+                    );
                     if (char) char.isShip = true;
                 }
                 if (!char) {
@@ -292,9 +305,11 @@ class Need extends Command {
 
         async function getFactionUnits(searchName) {
             // Get units based on their faction
-            const units = await Bot.cache.get(Bot.config.mongodb.swapidb, "units",
-                {categoryIdList: searchName, language: interaction.guildSettings.swgohLanguage.toLowerCase()},
-                {_id: 0, baseId: 1, nameKey: 1}
+            const units = await Bot.cache.get(
+                Bot.config.mongodb.swapidb,
+                "units",
+                { categoryIdList: searchName, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
+                { _id: 0, baseId: 1, nameKey: 1 },
             );
             return units;
         }

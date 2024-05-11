@@ -22,14 +22,14 @@ class ArenaWatch extends Command {
                                     name: "allycodes",
                                     description: "AllyCodes or allycode:mention, comma seperated",
                                     type: ApplicationCommandOptionType.String,
-                                    required: true
+                                    required: true,
                                 },
                                 {
                                     name: "mark",
                                     type: ApplicationCommandOptionType.String,
-                                    description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
-                                }
-                            ]
+                                    description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
+                                },
+                            ],
                         },
                         {
                             name: "remove",
@@ -40,9 +40,9 @@ class ArenaWatch extends Command {
                                     name: "allycodes",
                                     description: "AllyCodes, comma seperated",
                                     type: ApplicationCommandOptionType.String,
-                                    required: true
-                                }
-                            ]
+                                    required: true,
+                                },
+                            ],
                         },
                         {
                             name: "edit",
@@ -53,17 +53,17 @@ class ArenaWatch extends Command {
                                     name: "old_allycode",
                                     type: ApplicationCommandOptionType.String,
                                     description: "Ally code of the person you want to modify",
-                                    required: true
+                                    required: true,
                                 },
                                 {
                                     name: "new_allycode",
                                     type: ApplicationCommandOptionType.String,
                                     description: "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
-                                    required: true
-                                }
-                            ]
+                                    required: true,
+                                },
+                            ],
                         },
-                    ]
+                    ],
                 },
                 {
                     name: "arena",
@@ -84,23 +84,23 @@ class ArenaWatch extends Command {
                             choices: [
                                 {
                                     name: "Char",
-                                    value: "char"
+                                    value: "char",
                                 },
                                 {
                                     name: "Fleet",
-                                    value: "fleet"
+                                    value: "fleet",
                                 },
                                 {
                                     name: "Both",
-                                    value: "both"
+                                    value: "both",
                                 },
                                 {
                                     name: "None",
-                                    value: "none"
-                                }
-                            ]
-                        }
-                    ]
+                                    value: "none",
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     name: "channel",
@@ -111,7 +111,7 @@ class ArenaWatch extends Command {
                             name: "target_channel",
                             type: ApplicationCommandOptionType.Channel,
                             required: true,
-                            description: "The channel to put the logs in"
+                            description: "The channel to put the logs in",
                         },
                         {
                             name: "arena",
@@ -121,42 +121,46 @@ class ArenaWatch extends Command {
                             choices: [
                                 {
                                     name: "Char",
-                                    value: "char"
+                                    value: "char",
                                 },
                                 {
                                     name: "Fleet",
-                                    value: "fleet"
-                                }
-                            ]
-                        }
-                    ]
+                                    value: "fleet",
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     name: "enabled",
                     type: ApplicationCommandOptionType.Subcommand,
                     description: "Enable/ Disable arenawatch",
-                    options: [{
-                        name: "toggle",
-                        description: "Enable/ Disable arenawatch",
-                        type: ApplicationCommandOptionType.Boolean,
-                        required: true
-                    }]
+                    options: [
+                        {
+                            name: "toggle",
+                            description: "Enable/ Disable arenawatch",
+                            type: ApplicationCommandOptionType.Boolean,
+                            required: true,
+                        },
+                    ],
                 },
                 {
                     name: "report",
                     type: ApplicationCommandOptionType.Subcommand,
                     description: "Choose whether you want it to report on climbs, drops, or both",
-                    options: [{
-                        name: "arena",
-                        type: ApplicationCommandOptionType.String,
-                        description: "Choose whether you want it to report on climbs, drops, or both",
-                        required: true,
-                        choices: [
-                            {name: "climb", value: "climb"},
-                            {name: "drop", value: "drop"},
-                            {name: "both", value: "both"}
-                        ]
-                    }]
+                    options: [
+                        {
+                            name: "arena",
+                            type: ApplicationCommandOptionType.String,
+                            description: "Choose whether you want it to report on climbs, drops, or both",
+                            required: true,
+                            choices: [
+                                { name: "climb", value: "climb" },
+                                { name: "drop", value: "drop" },
+                                { name: "both", value: "both" },
+                            ],
+                        },
+                    ],
                 },
                 {
                     name: "showvs",
@@ -167,10 +171,9 @@ class ArenaWatch extends Command {
                             name: "enable",
                             description: "True/ False",
                             type: ApplicationCommandOptionType.Boolean,
-                            required: true
-
-                        }
-                    ]
+                            required: true,
+                        },
+                    ],
                 },
                 {
                     name: "warn",
@@ -181,7 +184,7 @@ class ArenaWatch extends Command {
                             name: "allycode",
                             type: ApplicationCommandOptionType.String,
                             description: "The user's ally code",
-                            required: true
+                            required: true,
                         },
                         {
                             name: "mins",
@@ -199,23 +202,23 @@ class ArenaWatch extends Command {
                             choices: [
                                 {
                                     name: "Char",
-                                    value: "char"
+                                    value: "char",
                                 },
                                 {
                                     name: "Fleet",
-                                    value: "fleet"
+                                    value: "fleet",
                                 },
                                 {
                                     name: "None",
-                                    value: "none"
+                                    value: "none",
                                 },
                                 {
                                     name: "Both",
-                                    value: "both"
-                                }
-                            ]
-                        }
-                    ]
+                                    value: "both",
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     name: "payout",
@@ -241,19 +244,19 @@ class ArenaWatch extends Command {
                                     choices: [
                                         {
                                             name: "Char",
-                                            value: "char"
+                                            value: "char",
                                         },
                                         {
                                             name: "Fleet",
-                                            value: "fleet"
+                                            value: "fleet",
                                         },
                                         {
                                             name: "Both",
-                                            value: "both"
-                                        }
-                                    ]
-                                }
-                            ]
+                                            value: "both",
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         {
                             name: "channel",
@@ -264,10 +267,9 @@ class ArenaWatch extends Command {
                                     name: "target_channel",
                                     type: ApplicationCommandOptionType.Channel,
                                     description: "The channel to send to",
-                                    required: true
+                                    required: true,
                                 },
                                 {
-
                                     name: "arena",
                                     type: ApplicationCommandOptionType.String,
                                     description: "Set which arena it will log to this channel",
@@ -275,19 +277,19 @@ class ArenaWatch extends Command {
                                     choices: [
                                         {
                                             name: "Char",
-                                            value: "char"
+                                            value: "char",
                                         },
                                         {
                                             name: "Fleet",
-                                            value: "fleet"
+                                            value: "fleet",
                                         },
                                         {
                                             name: "Both",
-                                            value: "both"
-                                        }
-                                    ]
-                                }
-                            ]
+                                            value: "both",
+                                        },
+                                    ],
+                                },
+                            ],
                         },
                         {
                             name: "mark",
@@ -298,23 +300,23 @@ class ArenaWatch extends Command {
                                     name: "allycode",
                                     type: ApplicationCommandOptionType.String,
                                     description: "The ally code of the player to mark",
-                                    required: true
+                                    required: true,
                                 },
                                 {
                                     name: "mark",
                                     type: ApplicationCommandOptionType.String,
                                     required: false,
-                                    description: "The emote or symbol to mark them with. Leaving this empty will remove it if available"
+                                    description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
                                 },
                                 {
                                     name: "remove_mark",
                                     type: ApplicationCommandOptionType.Boolean,
                                     required: false,
-                                    description: "Choose this to delete the mark on a selected user"
-                                }
-                            ]
-                        }
-                    ]
+                                    description: "Choose this to delete the mark on a selected user",
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     name: "result",
@@ -325,7 +327,7 @@ class ArenaWatch extends Command {
                             name: "allycode",
                             type: ApplicationCommandOptionType.String,
                             description: "The user's ally code",
-                            required: true
+                            required: true,
                         },
                         {
                             name: "arena",
@@ -335,23 +337,23 @@ class ArenaWatch extends Command {
                             choices: [
                                 {
                                     name: "Char",
-                                    value: "char"
+                                    value: "char",
                                 },
                                 {
                                     name: "Fleet",
-                                    value: "fleet"
+                                    value: "fleet",
                                 },
                                 {
                                     name: "None",
-                                    value: "none"
+                                    value: "none",
                                 },
                                 {
                                     name: "Both",
-                                    value: "both"
-                                }
-                            ]
-                        }
-                    ]
+                                    value: "both",
+                                },
+                            ],
+                        },
+                    ],
                 },
                 {
                     name: "use_marks_in_log",
@@ -363,8 +365,8 @@ class ArenaWatch extends Command {
                             type: ApplicationCommandOptionType.Boolean,
                             required: true,
                             description: "Show marks in arena log?",
-                        }
-                    ]
+                        },
+                    ],
                 },
                 {
                     name: "view",
@@ -374,7 +376,7 @@ class ArenaWatch extends Command {
                         {
                             name: "allycode",
                             type: ApplicationCommandOptionType.String,
-                            description: "An allycode to check the specific settings for"
+                            description: "An allycode to check the specific settings for",
                         },
                         {
                             name: "view_by",
@@ -383,17 +385,17 @@ class ArenaWatch extends Command {
                             choices: [
                                 {
                                     name: "Fleet Rank",
-                                    value: "fleet_rank"
+                                    value: "fleet_rank",
                                 },
                                 {
                                     name: "Char Rank",
-                                    value: "char_rank"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+                                    value: "char_rank",
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         });
     }
 
@@ -419,32 +421,32 @@ class ArenaWatch extends Command {
             char: {
                 enabled: false,
                 channel: null,
-                msgID: null
+                msgID: null,
             },
             fleet: {
                 enabled: false,
                 channel: null,
-                msgID: null
-            }
+                msgID: null,
+            },
         };
         if (!aw) {
             aw = {
                 enabled: false,
                 useMarksInLog: false,
-                report: "both",     // This can be climb, drop, or both
-                showvs: true,       // Show both sides of a battle between monitored players
+                report: "both", // This can be climb, drop, or both
+                showvs: true, // Show both sides of a battle between monitored players
                 arena: {
                     fleet: {
                         channel: null,
-                        enabled: false
+                        enabled: false,
                     },
                     char: {
                         channel: null,
-                        enabled: false
-                    }
+                        enabled: false,
+                    },
                 },
                 payout: defPayout,
-                allycodes: []
+                allycodes: [],
             };
         }
         if (!aw.payout) aw.payout = defPayout;
@@ -452,19 +454,18 @@ class ArenaWatch extends Command {
         if (!aw.report) aw.report = "both";
         if (aw.showvs !== true && aw.showvs !== false) aw.showvs = true;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
-            const flEnabled = ["fleet", "both"].includes(aw.arena) ? true : false;
-            const chEnabled = ["char", "both"].includes(aw.arena) ? true : false;
+            const flEnabled = !!["fleet", "both"].includes(aw.arena);
+            const chEnabled = !!["char", "both"].includes(aw.arena);
             aw.arena = {};
             aw.arena.fleet = {
                 channel: aw.channel,
-                enabled: flEnabled
+                enabled: flEnabled,
             };
-            aw.arena.char  = {
+            aw.arena.char = {
                 channel: aw.channel,
-                enabled: chEnabled
+                enabled: chEnabled,
             };
         }
-
 
         function getAcMention(code) {
             let [ac, mention] = code.split(":");
@@ -472,17 +473,19 @@ class ArenaWatch extends Command {
             ac = ac.replace(/[^\d]/g, "");
 
             mention = Bot.isUserMention(mention || "") ? mention.replace(/[^\d]/g, "") : null;
-            return [parseInt(ac, 10), mention];
+            return [Number.parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players, code, isEdit=false) {
+        function checkPlayer(players, code, isEdit = false) {
             if (!players) throw new Error("Missing players in checkPlayer");
-            const player = players.find(p => parseInt(p.allyCode, 10) === parseInt(code.code, 10));
+            const player = players.find((p) => Number.parseInt(p.allyCode, 10) === Number.parseInt(code.code, 10));
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
-            if (aw.allycodes.find(usercode => parseInt(usercode.allyCode, 10) === parseInt(code.code, 10))) {
-                throw new Error(`${code.code} was already in the list. If you're trying to change something, try using the \`/arenawatch allycode edit\` command`);
+            if (aw.allycodes.find((usercode) => Number.parseInt(usercode.allyCode, 10) === Number.parseInt(code.code, 10))) {
+                throw new Error(
+                    `${code.code} was already in the list. If you're trying to change something, try using the \`/arenawatch allycode edit\` command`,
+                );
             }
             if (!isEdit && aw.allycodes.length >= codeCap) {
                 throw new Error(`Could not add ${code.code}, ally code cap reached!`);
@@ -504,7 +507,10 @@ class ArenaWatch extends Command {
 
                 if (!channel?.guild) {
                     // They choose an invalid channel/ one that doesn't exist?
-                    return super.error(interaction, "Invalid channel, please make sure you're choosing a channel in this server, and are mentioning it.");
+                    return super.error(
+                        interaction,
+                        "Invalid channel, please make sure you're choosing a channel in this server, and are mentioning it.",
+                    );
                 }
 
                 if (channel?.guild?.id !== interaction?.guild?.id) {
@@ -522,13 +528,13 @@ class ArenaWatch extends Command {
                 switch (targetArena) {
                     case "both": {
                         // Set the channel for both the char and fleet arenas
-                        aw.arena.char.channel  = channel.id;
+                        aw.arena.char.channel = channel.id;
                         aw.arena.fleet.channel = channel.id;
                         break;
                     }
                     case "char": {
                         // Set just the char arena channel
-                        aw.arena.char.channel  = channel.id;
+                        aw.arena.char.channel = channel.id;
                         break;
                     }
                     case "fleet": {
@@ -590,8 +596,7 @@ class ArenaWatch extends Command {
                     if (!mark && !remove_mark) return super.error(interaction, "You MUST choose either a mark, or to remove a mark");
                     if (mark && remove_mark) return super.error(interaction, "You MUST choose only one of: mark, remove_mark");
 
-
-                    const player = aw.allycodes.find(p => p.allyCode.toString() === ac.toString());
+                    const player = aw.allycodes.find((p) => p.allyCode.toString() === ac.toString());
                     if (!player) {
                         return super.error(interaction, "Sorry, but you can only apply a mark to an already present player/ allycode");
                     }
@@ -600,9 +605,10 @@ class ArenaWatch extends Command {
                     // If they're trying to use a custom emote, make sure it's available for the bot to use
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
-                        cmdOut = "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from";
+                        cmdOut =
+                            "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from";
                     }
-                    aw.allycodes = aw.allycodes.map(p => {
+                    aw.allycodes = aw.allycodes.map((p) => {
                         if (p.allyCode.toString() === ac.toString()) {
                             if (remove_mark) {
                                 p.mark = null;
@@ -620,10 +626,10 @@ class ArenaWatch extends Command {
                 const arena = interaction.options.getString("arena");
 
                 if (arena === "both") {
-                    aw.arena.char.enabled  = enabled;
+                    aw.arena.char.enabled = enabled;
                     aw.arena.fleet.enabled = enabled;
                 } else if (arena === "char") {
-                    aw.arena.char.enabled  = enabled;
+                    aw.arena.char.enabled = enabled;
                 } else if (arena === "fleet") {
                     aw.arena.fleet.enabled = enabled;
                 }
@@ -636,15 +642,18 @@ class ArenaWatch extends Command {
                 // Logic for add/ remove
                 if (action === "add") {
                     // List of ally codes to add or remove
-                    const codesIn = interaction.options.getString("allycodes")
+                    const codesIn = interaction.options
+                        .getString("allycodes")
                         .split(",") // Split em at the commas if there are more than one
-                        .map(a => a.trim());    // Trim off any spaces in case
+                        .map((a) => a.trim()); // Trim off any spaces in case
 
                     // The mark to put with the ally code (Optional)
                     const mark = interaction.options.getString("mark");
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
-                        outLog.push("If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from");
+                        outLog.push(
+                            "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from",
+                        );
                     }
 
                     // Bunch of checks before getting to the logic
@@ -653,8 +662,9 @@ class ArenaWatch extends Command {
                     }
                     const codes = [];
 
-                    codesIn.forEach(code => {
-                        let ac, mention;
+                    for (const code of codesIn) {
+                        let ac;
+                        let mention;
                         try {
                             [ac, mention] = getAcMention(code);
                             if (!Bot.isAllyCode(ac)) {
@@ -667,10 +677,10 @@ class ArenaWatch extends Command {
                         }
 
                         codes.push({
-                            code: parseInt(ac, 10),
-                            mention: mention
+                            code: Number.parseInt(ac, 10),
+                            mention: mention,
                         });
-                    });
+                    }
 
                     if (!codes.length) {
                         // return interaction.reply("There were no valid ally codes entered.");
@@ -679,9 +689,12 @@ class ArenaWatch extends Command {
 
                     // There are more than one valid code, try adding them all
                     await interaction.deferReply();
-                    const players = await Bot.swgohAPI.unitStats(codes.map(c => c.code));
+                    const players = await Bot.swgohAPI.unitStats(codes.map((c) => c.code));
                     if (!players?.length) {
-                        return super.error(interaction, "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.");
+                        return super.error(
+                            interaction,
+                            "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.",
+                        );
                     }
                     for (const c of codes) {
                         let player;
@@ -694,14 +707,14 @@ class ArenaWatch extends Command {
 
                         aw.allycodes.push({
                             allyCode: c.code,
-                            name:     player.name,
-                            mention:  c.mention,
+                            name: player.name,
+                            mention: c.mention,
                             lastChar: player.arena.char ? player.arena.char.rank : null,
                             lastShip: player.arena.ship ? player.arena.ship.rank : null,
                             poOffset: player.poUTCOffsetMinutes,
-                            mark:     mark ? mark : null
+                            mark: mark ? mark : null,
                         });
-                        outLog.push(c.code + " added!");
+                        outLog.push(`${c.code} added!`);
                     }
                 } else if (action === "edit") {
                     // Used to add or remove a mention
@@ -717,7 +730,8 @@ class ArenaWatch extends Command {
                         return super.error(interaction, "Sorry, but that was not a valid ally code");
                     }
 
-                    let ac, mention;
+                    let ac;
+                    let mention;
                     try {
                         [ac, mention] = getAcMention(newCode);
                     } catch (e) {
@@ -727,47 +741,48 @@ class ArenaWatch extends Command {
                     // Check if the specified code is available to edit
                     // If not, just add it in fresh
                     // If so, delte it then add it back
-                    const exists = aw.allycodes.find(p => p.allyCode === oldCode);
+                    const exists = aw.allycodes.find((p) => p.allyCode === oldCode);
                     if (exists) {
-                        aw.allycodes = aw.allycodes.filter(p => parseInt(p.allyCode, 10) !== parseInt(oldCode, 10));
+                        aw.allycodes = aw.allycodes.filter((p) => Number.parseInt(p.allyCode, 10) !== Number.parseInt(oldCode, 10));
                     }
                     let player = null;
                     try {
                         await interaction.deferReply();
                         const players = await Bot.swgohAPI.unitStats(ac);
                         if (!players?.length) console.error(`[AW Edit] Missing players ${ac}`);
-                        player = checkPlayer(players, {code: ac}, true);
+                        player = checkPlayer(players, { code: ac }, true);
                         if (!player) console.error(`[AW Edit] Missing player after check ${ac}`);
                     } catch (e) {
-                        return super.error(interaction, "Error getting player info.\n" + e);
+                        return super.error(interaction, `Error getting player info.\n${e}`);
                     }
                     aw.allycodes.push({
                         allyCode: ac,
-                        name:     player.name,
-                        mention:  mention,
+                        name: player.name,
+                        mention: mention,
                         lastChar: player.arena.char ? player.arena.char.rank : null,
                         lastShip: player.arena.ship ? player.arena.ship.rank : null,
-                        poOffset: player.poUTCOffsetMinutes
+                        poOffset: player.poUTCOffsetMinutes,
                     });
-                    outLog.push(ac + ` ${exists ? "updated" : "added"}!`);
+                    outLog.push(`${ac} ${exists ? "updated" : "added"}!`);
                 } else if (["remove", "delete"].includes(action)) {
                     // List of ally codes to add or remove
-                    const codesIn = interaction.options.getString("allycodes")
+                    const codesIn = interaction.options
+                        .getString("allycodes")
                         .split(",") // Split em at the commas if there are more than one
-                        .map(a => a.trim())    // Trim off any spaces in case
-                        .filter(a => Bot.isAllyCode(a));
+                        .map((a) => a.trim()) // Trim off any spaces in case
+                        .filter((a) => Bot.isAllyCode(a));
 
                     // Some checks before getting to the logic
                     if (!codesIn.length) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
 
                     for (let code of codesIn) {
                         code = code.replace(/[^\d]/g, "");
-                        code = parseInt(code, 10);
-                        const codes = aw.allycodes.filter(ac => ac.allyCode !== code);
+                        code = Number.parseInt(code, 10);
+                        const codes = aw.allycodes.filter((ac) => ac.allyCode !== code);
                         if (!codes?.length) return super.error(interaction, "That ally code was not available to be removed");
 
                         aw.allycodes = codes;
-                        outLog.push(code + " has been removed");
+                        outLog.push(`${code} has been removed`);
                     }
                 }
                 break;
@@ -793,46 +808,47 @@ class ArenaWatch extends Command {
             }
             case "warn": {
                 // ;aw warn 123123123 <# of min> <none|both|char|fleet>
-                const code  = interaction.options.getString("allycode");
-                let mins  = interaction.options.getInteger("mins");
+                const code = interaction.options.getString("allycode");
+                let mins = interaction.options.getInteger("mins");
                 const arena = interaction.options.getString("arena");
-
 
                 if (!Bot.isAllyCode(code)) {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
 
-                mins = parseInt(mins, 10);
+                mins = Number.parseInt(mins, 10);
                 if (!mins || mins <= 0) {
-                    return super.error(interaction, "Invalid minute count. Only values of 1 and above are valid.", {example: "aw warn 123123123 30 both"});
+                    return super.error(interaction, "Invalid minute count. Only values of 1 and above are valid.", {
+                        example: "aw warn 123123123 30 both",
+                    });
                 }
 
-                const exists = aw.allycodes.find(p => parseInt(p.allyCode, 10) === parseInt(code, 10));
+                const exists = aw.allycodes.find((p) => Number.parseInt(p.allyCode, 10) === Number.parseInt(code, 10));
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter(p => parseInt(p.allyCode, 10) !== parseInt(code, 10));
+                aw.allycodes = aw.allycodes.filter((p) => Number.parseInt(p.allyCode, 10) !== Number.parseInt(code, 10));
 
-                if (typeof exists.allyCode === "string") exists.allyCode = parseInt(exists.allyCode, 10);
+                if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
                 exists.warn = {
                     min: mins && mins > 0 ? mins : null,
-                    arena: arena === "none" ? null : arena
+                    arena: arena === "none" ? null : arena,
                 };
                 aw.allycodes.push(exists);
                 break;
             }
             case "result": {
                 // ;aw result 123123123 <none|char|fleet|both>
-                const code  = interaction.options.getString("allycode");
+                const code = interaction.options.getString("allycode");
                 const arena = interaction.options.getString("arena");
 
                 if (!Bot.isAllyCode(code)) {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
 
-                const exists = aw.allycodes.find(p => p.allyCode === code);
+                const exists = aw.allycodes.find((p) => p.allyCode === code);
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter(p => p.allyCode !== code);
+                aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== code);
                 exists.result = arena === "none" ? null : arena;
                 aw.allycodes.push(exists);
                 break;
@@ -852,79 +868,91 @@ class ArenaWatch extends Command {
 
                 if (!allycode) {
                     // If there's any ally codes in the array, go ahead and format them
-                    let ac =  aw.allycodes.length ? aw.allycodes : [];
+                    let ac = aw.allycodes.length ? aw.allycodes : [];
                     ac = ac
                         // Sort by name
-                        .sort((a,b) => {
+                        .sort((a, b) => {
                             if (!view_by) {
                                 return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
-                            } else if (view_by === "char_rank") {
+                            }
+                            if (view_by === "char_rank") {
                                 return a.lastChar > b.lastChar ? 1 : -1;
-                            } else if (view_by === "fleet_rank") {
+                            }
+                            if (view_by === "fleet_rank") {
                                 return a.lastShip > b.lastShip ? 1 : -1;
                             }
                         })
                         // Then format the output strings
-                        .map(a => {
+                        .map((a) => {
                             if (view_by) {
-                                return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                                return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  ${
+                                    a.mark ? `${a.mark} ` : ""
+                                }**${a.mention ? `<@${a.mention}>` : a.name}**`;
                             }
-                            const isWarn = a?.warn?.min && a.warn?.arena ? "W": "";
-                            const isRes  = a.result ? "R" : "";
-                            const tags   = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
-                            return `\`${a.allyCode}\` ${tags} ${a.mark ? a.mark + " " : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                            const isWarn = a?.warn?.min && a.warn?.arena ? "W" : "";
+                            const isRes = a.result ? "R" : "";
+                            const tags = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
+                            return `\`${a.allyCode}\` ${tags} ${a.mark ? `${a.mark} ` : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
                         });
 
                     const fields = [];
                     // Chunk the codes down so they'll fit within the 1024 character limit of a field value
                     const acChunks = Bot.msgArray(ac, "\n", 1000);
-                    for (const [ ix, chunk ] of acChunks.entries()) {
+                    for (const [ix, chunk] of acChunks.entries()) {
                         fields.push({
                             name: ix > 0 ? "-" : `Members (${aw.allycodes.length}/${codeCap}):`,
-                            value: chunk
+                            value: chunk,
                         });
                     }
 
-                    const charPayoutChan  = await getChannelStr("payout", "char");
+                    const charPayoutChan = await getChannelStr("payout", "char");
                     const fleetPayoutChan = await getChannelStr("payout", "fleet");
                     fields.push({
                         name: "**Payout Settings**",
                         value: [
-                            `Char:     **${(aw.payout.char.enabled  && aw.payout.char.channel)  ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
-                            `Ship:     **${(aw.payout.fleet.enabled && aw.payout.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`
-                        ].join("\n")
+                            `Char:     **${aw.payout.char.enabled && aw.payout.char.channel ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
+                            `Ship:     **${aw.payout.fleet.enabled && aw.payout.fleet.channel ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`,
+                        ].join("\n"),
                     });
 
-                    const charChan  = await getChannelStr("arena",  "char");
-                    const fleetChan = await getChannelStr("arena",  "fleet");
-                    return interaction.reply({embeds: [{
-                        title: "Arena Watch Settings",
-                        description: [
-                            `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
-                            `Char:     **${(aw.arena.char.enabled  && aw.arena.char.channel)  ? "ON " : "OFF"}**  -  ${charChan}`,
-                            `Ship:     **${(aw.arena.fleet.enabled && aw.arena.fleet.channel) ? "ON " : "OFF"}**  -  ${fleetChan}`,
-                        ].join("\n"),
-                        fields: fields
-                    }]});
-                } else {
-                    if (!Bot.isAllyCode(allycode)) {
-                        return super.error(interaction, `${allycode} is not a valid ally code.`);
-                    } else if (!aw.allycodes.filter(a => parseInt(a.allyCode, 10) === parseInt(allycode, 10)).length) {
-                        return super.error(interaction, `${allycode} is not listed in your registered ally codes.`);
-                    }
-
-                    const player = aw.allycodes.find(p => parseInt(p.allyCode, 10) === parseInt(allycode, 10));
-                    return interaction.reply({embeds: [{
-                        title: `Arena Watch Settings (${allycode})`,
-                        description: [
-                            `Name: **${player.name}**`,
-                            `Mention: **${player.mention ? "<@" + player.mention + ">" : "N/A"}**`,
-                            `Payout Result: **${player.result ? player.result : "N/A"}**`,
-                            `Warn Mins: **${player.warn ? player.warn.min : "N/A"}**`,
-                            `Warn Arena: **${player.warn ? player.warn.arena : "N/A"}**`
-                        ].join("\n")
-                    }]});
+                    const charChan = await getChannelStr("arena", "char");
+                    const fleetChan = await getChannelStr("arena", "fleet");
+                    return interaction.reply({
+                        embeds: [
+                            {
+                                title: "Arena Watch Settings",
+                                description: [
+                                    `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
+                                    `Char:     **${aw.arena.char.enabled && aw.arena.char.channel ? "ON " : "OFF"}**  -  ${charChan}`,
+                                    `Ship:     **${aw.arena.fleet.enabled && aw.arena.fleet.channel ? "ON " : "OFF"}**  -  ${fleetChan}`,
+                                ].join("\n"),
+                                fields: fields,
+                            },
+                        ],
+                    });
                 }
+                if (!Bot.isAllyCode(allycode)) {
+                    return super.error(interaction, `${allycode} is not a valid ally code.`);
+                }
+                if (!aw.allycodes.filter((a) => Number.parseInt(a.allyCode, 10) === Number.parseInt(allycode, 10)).length) {
+                    return super.error(interaction, `${allycode} is not listed in your registered ally codes.`);
+                }
+
+                const player = aw.allycodes.find((p) => Number.parseInt(p.allyCode, 10) === Number.parseInt(allycode, 10));
+                return interaction.reply({
+                    embeds: [
+                        {
+                            title: `Arena Watch Settings (${allycode})`,
+                            description: [
+                                `Name: **${player.name}**`,
+                                `Mention: **${player.mention ? `<@${player.mention}>` : "N/A"}**`,
+                                `Payout Result: **${player.result ? player.result : "N/A"}**`,
+                                `Warn Mins: **${player.warn ? player.warn.min : "N/A"}**`,
+                                `Warn Arena: **${player.warn ? player.warn.arena : "N/A"}**`,
+                            ].join("\n"),
+                        },
+                    ],
+                });
             }
             default:
                 return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
@@ -933,7 +961,13 @@ class ArenaWatch extends Command {
             user.arenaWatch = aw;
             await Bot.userReg.updateUser(interaction.user.id, user);
         }
-        return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: Bot.constants.colors.blue});
+        return super.error(
+            interaction,
+            outLog.length
+                ? outLog.join("\n")
+                : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
+            { title: " ", color: Bot.constants.colors.blue },
+        );
 
         async function getChannelStr(alertType, arenaType) {
             if (!["arena", "payout"].includes(alertType)) {
@@ -952,6 +986,5 @@ class ArenaWatch extends Command {
         }
     }
 }
-
 
 module.exports = ArenaWatch;

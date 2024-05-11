@@ -1,5 +1,5 @@
 const { REST, Routes } = require("discord.js");
-const {readdirSync} = require("node:fs");
+const { readdirSync } = require("node:fs");
 const slashDir = `${__dirname}/../slash/`;
 
 module.exports = (Bot, client) => {
@@ -15,7 +15,6 @@ module.exports = (Bot, client) => {
                     return console.error(`${commandName} is not enabled`);
                 }
                 client.slashcmds.set(cmd.commandData.name, cmd);
-                return false;
             } catch (err) {
                 slashError.push(`Unable to load command ${commandName}: ${err}`);
                 console.log(err);
@@ -28,8 +27,7 @@ module.exports = (Bot, client) => {
         console.error(`slashLoad: ${slashError.join("\n")}`);
     }
 
-
-    client.unloadSlash = commandName => {
+    client.unloadSlash = (commandName) => {
         if (client.slashcmds.has(commandName)) {
             const command = client.slashcmds.get(commandName);
             client.slashcmds.delete(command);
@@ -37,7 +35,7 @@ module.exports = (Bot, client) => {
         }
         return;
     };
-    client.loadSlash = commandName => {
+    client.loadSlash = (commandName) => {
         try {
             const cmd = new (require(`${slashDir}${commandName}`))(Bot);
             if (!cmd.commandData.enabled) {
@@ -92,7 +90,7 @@ module.exports = (Bot, client) => {
         }
         return {
             succArr: coms,
-            errArr: errArr
+            errArr: errArr,
         };
     };
 
@@ -100,23 +98,31 @@ module.exports = (Bot, client) => {
         const existingCommands = await fetchCommands();
         const updateRequired = [];
 
-        for (const {commandData} of client.slashcmds) {
-            const existingCmd = existingCommands.find(cmd => cmd.name === commandData.name);
+        for (const cmd of Array.from(client.slashcmds.values())) {
+            const commandData = cmd.commandData;
+            const existingCmd = existingCommands.find((cmd) => cmd.name === commandData?.name);
             if (!existingCmd) {
                 updateRequired.push({ command: commandData, reason: `New command${commandData?.guildOnly ? " (guild only)" : ""}` });
             } else {
                 const areOptionsEqual = compareOptions(commandData.options || [], existingCmd.options || []);
                 if (!areOptionsEqual) {
-                    updateRequired.push({ command: commandData, reason: `Update required${commandData?.guildOnly ? " (guild only)" : ""}` });
+                    updateRequired.push({
+                        command: commandData,
+                        reason: `Update required${commandData?.guildOnly ? " (guild only)" : ""}`,
+                    });
                 }
             }
         }
 
         if (updateRequired?.length) {
-            console.log(`Updates required for the following commands: \n - ${updateRequired.map(r => `${r.command.name} - ${r.reason}`).join("\n - ")}`);
+            console.log(
+                `Updates required for the following commands: \n - ${updateRequired
+                    .map((r) => `${r.command.name} - ${r.reason}`)
+                    .join("\n - ")}`,
+            );
 
             // If any of em need to be updated, send it all
-            await sendCommandData(client.slashcmds.map(r => r.commandData));
+            await sendCommandData(client.slashcmds.map((r) => r.commandData));
         }
     };
     function compareOptions(localOptions, existingOptions) {
@@ -126,10 +132,12 @@ module.exports = (Bot, client) => {
             if (!existingOption || existingOption.name !== localOption.name || existingOption.type !== localOption.type) {
                 return false;
             }
-            if (localOption.options) { // Handle subcommands or groups
+            if (localOption.options) {
+                // Handle subcommands or groups
                 return compareOptions(localOption.options, existingOption.options || []);
             }
-            if (localOption.choices) { // Handle choices
+            if (localOption.choices) {
+                // Handle choices
                 if (!existingOption.choices || localOption.choices.length !== existingOption.choices.length) return false;
                 return localOption.choices.every((choice, choiceIndex) => {
                     const existingChoice = existingOption.choices[choiceIndex];
@@ -165,32 +173,24 @@ module.exports = (Bot, client) => {
         const rest = new REST().setToken(Bot.config.token);
 
         try {
-            const globalCommands = commands.filter(cmd => !cmd.guildOnly);
-            const guildCommands = commands.filter(cmd => cmd.guildOnly && Bot.config?.dev_server);
+            const globalCommands = commands.filter((cmd) => !cmd.guildOnly);
+            const guildCommands = commands.filter((cmd) => cmd.guildOnly && Bot.config?.dev_server);
 
             // Deploy global commands
             if (Bot.config.enableGlobalCmds && globalCommands.length) {
-                const response = await rest.put(
-                    Routes.applicationCommands(Bot.config.clientId),
-                    { body: globalCommands }
-                );
+                const response = await rest.put(Routes.applicationCommands(Bot.config.clientId), { body: globalCommands });
                 console.log(`Successfully reloaded ${response.length} global (/) commands.`);
             }
 
             // Deploy guild commands if there's a dev_server set
             if (Bot.config?.dev_server && guildCommands.length) {
-                const response = await rest.put(
-                    Routes.applicationGuildCommands(Bot.config.clientId, Bot.config?.dev_server),
-                    { body: guildCommands }
-                );
+                const response = await rest.put(Routes.applicationGuildCommands(Bot.config.clientId, Bot.config?.dev_server), {
+                    body: guildCommands,
+                });
                 console.log(`Successfully reloaded ${response.length} guild (/) commands.`);
             }
         } catch (error) {
             console.error("Failed to refresh application commands:", error);
         }
-
     }
 };
-
-
-

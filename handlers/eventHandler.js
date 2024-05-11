@@ -1,4 +1,4 @@
-const {readdirSync} = require("node:fs");
+const { readdirSync } = require("node:fs");
 const needsClient = ["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${__dirname}/../events/`;
 
@@ -17,7 +17,7 @@ module.exports = (Bot, client) => {
 
     // Reload the events files (message, guildCreate, etc)
     client.reloadAllEvents = async () => {
-        const ev = []
+        const ev = [];
         const errEv = [];
 
         const evtFiles = await readdirSync(evDir);
@@ -40,10 +40,7 @@ module.exports = (Bot, client) => {
         }
         return {
             succArr: ev,
-            errArr: errEv
+            errArr: errEv,
         };
     };
 };
-
-
-

@@ -14,9 +14,9 @@ class Reload extends Command {
                     autocomplete: true,
                     type: ApplicationCommandOptionType.String,
                     description: "The command to reload",
-                    required: true
-                }
-            ]
+                    required: true,
+                },
+            ],
         });
     }
 
@@ -34,25 +34,25 @@ class Reload extends Command {
         command = command.commandData.name;
         await interaction.reply(`Reloading ${command}...`);
         if (interaction.client.shard && interaction.client.shard.count > 0) {
-            await interaction.client.shard.broadcastEval((client, command) => client.reloadSlash(command), {context: command})
+            await interaction.client.shard
+                .broadcastEval((client, command) => client.reloadSlash(command), { context: command })
                 .then(() => {
-                    interaction.editReply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command)});
+                    interaction.editReply({ content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command) });
                 })
-                .catch(e => {
-                    super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE",command, e.stack)));
+                .catch((e) => {
+                    super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack));
                 });
         } else {
             Bot.logger.log("Trying to reload out of shards");
             Bot.reloadSlash(command)
                 .then(() => {
-                    interaction.editReply({content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command)});
+                    interaction.editReply({ content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command) });
                 })
-                .catch(e => {
-                    super.error(interaction, (interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack)));
+                .catch((e) => {
+                    super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack));
                 });
         }
     }
 }
 
 module.exports = Reload;
-

@@ -8,14 +8,14 @@ class Showconf extends Command {
         super(Bot, {
             name: "showconf",
             guildOnly: false,
-            permLevel: 3
+            permLevel: 3,
         });
     }
 
     async run(Bot, interaction) {
-        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild.id});
+        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: interaction.guild.id });
 
-        var outArr = [];
+        const outArr = [];
         if (!guildConf) Bot.logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
 
         // TODO Make this show nicer instead of just a basic code block
@@ -29,13 +29,18 @@ class Showconf extends Command {
                         for (const role of guildConf.adminRole) {
                             if (Bot.isUserID(role)) {
                                 // If it's a role ID, try and get a name for it
-                                const roleRes = await interaction.guild.roles.cache.find(r => r.id === role);
+                                const roleRes = await interaction.guild.roles.cache.find((r) => r.id === role);
                                 roleArr.push(roleRes?.name || role);
                             } else {
                                 roleArr.push(role);
                             }
                         }
-                        outArr.push(`* ${key}: \n${roleArr.sort().map(r => "  - " + r).join("\n")}`);
+                        outArr.push(
+                            `* ${key}: \n${roleArr
+                                .sort()
+                                .map((r) => `  - ${r}`)
+                                .join("\n")}`,
+                        );
                     } else {
                         outArr.push(`* ${key}: N/A`);
                     }
@@ -56,17 +61,23 @@ class Showconf extends Command {
         }
 
         const supporterList = [];
-        const totalSuppTier = await getGuildSupporterTier({cache: Bot.cache, guildId: interaction.guild.id});
-        const guildSupporters = await getServerSupporters({cache: Bot.cache, guildId: interaction.guild.id});
+        const totalSuppTier = await getGuildSupporterTier({ cache: Bot.cache, guildId: interaction.guild.id });
+        const guildSupporters = await getServerSupporters({ cache: Bot.cache, guildId: interaction.guild.id });
         for (const supp of guildSupporters) {
             const user = await interaction.guild.members.cache.get(supp.userId);
             if (!user?.displayName) continue;
 
             supporterList.push(user.displayName);
         }
-        outArr.push(`* Current supporters${totalSuppTier > 0 && ` (Combined tier: $${totalSuppTier})`}: ${supporterList?.length ? "\n" : "N/A"}${supporterList.map(s => "  - " + s).join("\n")}`);
+        outArr.push(
+            `* Current supporters${totalSuppTier > 0 && ` (Combined tier: $${totalSuppTier})`}: ${
+                supporterList?.length ? "\n" : "N/A"
+            }${supporterList.map((s) => `  - ${s}`).join("\n")}`,
+        );
 
-        return interaction.reply({content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || "")});
+        return interaction.reply({
+            content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || ""),
+        });
     }
 }
 

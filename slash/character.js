@@ -14,9 +14,9 @@ class Character extends Command {
                     autocomplete: true,
                     type: ApplicationCommandOptionType.String,
                     description: "The character you want to see the gear of",
-                    required: true
+                    required: true,
                 },
-            ]
+            ],
         });
     }
 
@@ -25,10 +25,10 @@ class Character extends Command {
 
         const searchName = interaction.options.getString("character");
 
-        const abilityMatMK3 = emoteStrings["abilityMatMK3"];
-        const omega         = emoteStrings["omegaMat"];
-        const zeta          = emoteStrings["zetaMat"];
-        const omicron       = emoteStrings["omicronMat"];
+        const abilityMatMK3 = emoteStrings.abilityMatMK3;
+        const omega = emoteStrings.omegaMat;
+        const zeta = emoteStrings.zetaMat;
+        const omicron = emoteStrings.omicronMat;
 
         // Find any characters that match what they're looking for
         const chars = Bot.findChar(searchName, charList);
@@ -36,15 +36,16 @@ class Character extends Command {
             const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER");
             if (err.indexOf("\n") > -1) {
                 const [title, usage] = err.split("\n");
-                return super.error(interaction, usage, {title: title, example: "abilities Han Solo"});
+                return super.error(interaction, usage, { title: title, example: "abilities Han Solo" });
             }
-            return super.error(interaction, err, {example: "abilities Han Solo"});
-        } else if (chars.length > 1) {
+            return super.error(interaction, err, { example: "abilities Han Solo" });
+        }
+        if (chars.length > 1) {
             const charL = [];
-            const charS = chars.sort((p, c) => p.name > c.name ? 1 : -1);
-            charS.forEach(c => {
+            const charS = chars.sort((p, c) => (p.name > c.name ? 1 : -1));
+            for (const c of charS) {
                 charL.push(c.name);
-            });
+            }
             return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
 
@@ -60,7 +61,7 @@ class Character extends Command {
         if (char.factions.length) {
             fields.push({
                 name: "Factions",
-                value: char.factions.map(f => Bot.toProperCase(f)).join(", ")
+                value: char.factions.map((f) => Bot.toProperCase(f)).join(", "),
             });
         }
 
@@ -68,11 +69,11 @@ class Character extends Command {
             // Get the ability type
             const types = ["basic", "special", "leader", "unique", "contract"];
             let type = "Basic";
-            types.forEach(t => {
+            for (const t of types) {
                 if (ability.skillId.startsWith(t)) {
                     type = Bot.toProperCase(t);
                 }
-            });
+            }
 
             const costs = [];
             if (ability.cost) {
@@ -93,7 +94,7 @@ class Character extends Command {
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 
-            var cooldownString = "";
+            let cooldownString = "";
             if (ability.cooldown > 0) {
                 cooldownString = interaction.language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
             }
@@ -102,18 +103,24 @@ class Character extends Command {
                 ability.desc = ability.desc.replace(ability.zetaDesc, `**${ability.zetaDesc}**`);
             }
 
-            const msgArr = Bot.msgArray(Bot.expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
+            const msgArr = Bot.msgArray(
+                Bot.expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(
+                    " ",
+                ),
+                " ",
+                1000,
+            );
 
             msgArr.forEach((m, ix) => {
                 if (ix === 0) {
                     fields.push({
-                        "name": ability.name,
-                        "value": m
+                        name: ability.name,
+                        value: m,
                     });
                 } else {
                     fields.push({
-                        "name": "-",
-                        "value": m
+                        name: "-",
+                        value: m,
                     });
                 }
             });
@@ -122,18 +129,20 @@ class Character extends Command {
         let embeds1Len = 0;
         let useEmbeds2 = false;
         const charImage = await Bot.getBlankUnitImage(character.uniqueName);
-        const embeds = [{
-            color: Bot.getSideColor(character.side),
-            author: {
-                name: character.name,
-                url: character?.url || null,
+        const embeds = [
+            {
+                color: Bot.getSideColor(character.side),
+                author: {
+                    name: character.name,
+                    url: character?.url || null,
+                },
+                thumbnail: charImage ? { url: "attachment://image.png" } : null,
+                fields: [],
             },
-            thumbnail: charImage ? {url: "attachment://image.png"} : null,
-            fields: [],
-        }];
+        ];
 
         for (const thisField of fields) {
-            if (!useEmbeds2 && (embeds1Len + thisField.value.length) < 5000) {
+            if (!useEmbeds2 && embeds1Len + thisField.value.length < 5000) {
                 // Use msg1
                 embeds[0].fields.push(thisField);
                 embeds1Len += thisField.value.length;
@@ -143,10 +152,10 @@ class Character extends Command {
                     embeds.push({
                         color: Bot.getSideColor(character.side),
                         author: {
-                            name: character.name + " continued...",
-                            url: null
+                            name: `${character.name} continued...`,
+                            url: null,
                         },
-                        fields: []
+                        fields: [],
                     });
                 }
                 embeds[1].fields.push(thisField);
@@ -157,13 +166,17 @@ class Character extends Command {
         await interaction.reply({
             content: null,
             embeds: [embeds[0]],
-            files: charImage ? [{
-                attachment: charImage,
-                name: "image.png"
-            }] : null
+            files: charImage
+                ? [
+                      {
+                          attachment: charImage,
+                          name: "image.png",
+                      },
+                  ]
+                : null,
         });
         if (embeds.length > 1) {
-            await interaction.followUp({content: null, embeds: [embeds[1]]});
+            await interaction.followUp({ content: null, embeds: [embeds[1]] });
         }
         return;
     }

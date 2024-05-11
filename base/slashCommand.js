@@ -5,9 +5,9 @@ const defCmdData = {
     description: "No description provided.",
     options: [],
     defaultPermissions: true,
-    guildOnly: true,  // false = global, true = guild.
+    guildOnly: true, // false = global, true = guild.
     enabled: true,
-    permLevel: 0
+    permLevel: 0,
 };
 class slashCommand {
     constructor(Bot, commandData = {}) {
@@ -19,7 +19,7 @@ class slashCommand {
         this.guildOnly = this.commandData.guildOnly;
     }
 
-    async getUser(interaction, userID, useAuth=false) {
+    async getUser(interaction, userID, useAuth = false) {
         let id = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
@@ -37,7 +37,7 @@ class slashCommand {
         }
     }
 
-    async error(interaction, errMsg, options={ephemeral: true}) {
+    async error(interaction, errMsg, options = { ephemeral: true }) {
         let msgOut = null;
         if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {
@@ -56,7 +56,7 @@ class slashCommand {
         await this.embed(interaction, msgOut, options);
     }
 
-    async success(interaction, msgOut, options={}) {
+    async success(interaction, msgOut, options = {}) {
         if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
         options.title = options.title || "Success!";
@@ -64,33 +64,35 @@ class slashCommand {
         await this.embed(interaction, msgOut, options);
     }
 
-    async embed(interaction, msgIn, options={}) {
+    async embed(interaction, msgIn, options = {}) {
         let msgOut = null;
         if (!interaction?.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
         if (!msgIn) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
         if (msgIn?.length > 1900) msgOut = `${msgIn.toString().substring(0, 1900)}...`;
 
-        const title     = options.title || "TITLE HERE";
-        const color     = options.color;
+        const title = options.title || "TITLE HERE";
+        const color = options.color;
         const ephemeral = options.ephemeral || false;
 
         // If the footer is just a string, put it in the proper object format.
         let footer = options.footer || "";
         if (typeof footer === "string") {
-            footer = {text: footer};
+            footer = { text: footer };
         }
 
         const embedObj = {
-            embeds: [{
-                author: {
-                    name: title,
-                    icon_url: options.iconURL || null
+            embeds: [
+                {
+                    author: {
+                        name: title,
+                        icon_url: options.iconURL || null,
+                    },
+                    description: msgOut,
+                    color: color,
+                    footer: footer,
                 },
-                description: msgOut,
-                color: color,
-                footer: footer
-            }],
-            ephemeral: ephemeral
+            ],
+            ephemeral: ephemeral,
         };
 
         // If the interaction has been replied to or deferred, edit the reply

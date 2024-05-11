@@ -1,7 +1,7 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType } = require("discord.js");
 
-const {getGuildShardTimes, setGuildShardTimes} = require("../modules/guildConfig/shardTimes.js");
+const { getGuildShardTimes, setGuildShardTimes } = require("../modules/guildConfig/shardTimes.js");
 
 class Shardtimes extends Command {
     constructor(Bot) {
@@ -22,24 +22,24 @@ class Shardtimes extends Command {
                             name: "user",
                             type: ApplicationCommandOptionType.String,
                             description: "A name or mention/ userID",
-                            required: true
+                            required: true,
                         },
                         {
                             name: "timezone",
                             type: ApplicationCommandOptionType.String,
-                            description: "A timezone identifyer (Ex: US/Pacific)"
+                            description: "A timezone identifyer (Ex: US/Pacific)",
                         },
                         {
                             name: "time_until",
                             type: ApplicationCommandOptionType.String,
-                            description: "How long (hh:mm) until the payout"
+                            description: "How long (hh:mm) until the payout",
                         },
                         {
                             name: "flag",
                             type: ApplicationCommandOptionType.String,
-                            description: "An emote to show next to the name"
-                        }
-                    ]
+                            description: "An emote to show next to the name",
+                        },
+                    ],
                 },
                 // Remove
                 //  - UserID, name, etc
@@ -52,9 +52,9 @@ class Shardtimes extends Command {
                             name: "user",
                             type: ApplicationCommandOptionType.String,
                             description: "A name or mention/ userID",
-                            required: true
-                        }
-                    ]
+                            required: true,
+                        },
+                    ],
                 },
                 // Copy (Make sure they have the correct perms for this, to avoid overwriting stuff in other channels?)
                 //  - destinationChannel
@@ -67,9 +67,9 @@ class Shardtimes extends Command {
                             name: "dest_channel",
                             type: ApplicationCommandOptionType.Channel,
                             description: "The channel you want it to be copied to",
-                            required: true
-                        }
-                    ]
+                            required: true,
+                        },
+                    ],
                 },
                 // View
                 //  - Ships
@@ -81,11 +81,11 @@ class Shardtimes extends Command {
                         {
                             name: "ships",
                             type: ApplicationCommandOptionType.Boolean,
-                            description: "Show the ship arena payout times instead"
-                        }
-                    ]
+                            description: "Show the ship arena payout times instead",
+                        },
+                    ],
                 },
-            ]
+            ],
         });
     }
 
@@ -94,19 +94,20 @@ class Shardtimes extends Command {
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
-        const shardArr = await getGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id});
-        const targetIndex = await shardArr.findIndex(sh => sh.channelId === interaction.channel.id);
-        const shardTimes = targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : {channelId: interaction.channel.id, times: {}};
+        const shardArr = await getGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id });
+        const targetIndex = await shardArr.findIndex((sh) => sh.channelId === interaction.channel.id);
+        const shardTimes =
+            targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : { channelId: interaction.channel.id, times: {} };
 
         const action = interaction.options.getSubcommand();
 
         if (action === "add") {
             // If it's an admin, let them register other users, else let em register themselves
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
-            let userID     = interaction.options.getString("user");
-            let flag       = interaction.options.getString("flag");
+            let userID = interaction.options.getString("user");
+            let flag = interaction.options.getString("flag");
             let timezone = interaction.options.getString("timezone");
-            const timeTil  = interaction.options.getString("time_until");
+            const timeTil = interaction.options.getString("time_until");
 
             let type = "id";
             if (userID === "me") {
@@ -123,18 +124,24 @@ class Shardtimes extends Command {
             let tempZone = timezone ? timezone : null;
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < Bot.constants.permMap.GUILD_ADMIN) {
+            if (
+                [interaction.user.id, interaction.user.username, "me"].includes(userID) &&
+                options.level < Bot.constants.permMap.GUILD_ADMIN
+            ) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
             if (timezone && timeTil) {
                 // Warn em if they try using both a timezone and the time_until, since they can only use one
                 return super.error(interaction, "You may not use both **timezone** and **time_until**, please choose one or the other");
-            } else if (!timezone && !timeTil) {
-                // Warn em if they don't give a timezone or time_until
-                return super.error(interaction, "You need to specify when the user's payout will be, using either the **timezone** or **time_until** arguments");
             }
-
+            if (!timezone && !timeTil) {
+                // Warn em if they don't give a timezone or time_until
+                return super.error(
+                    interaction,
+                    "You need to specify when the user's payout will be, using either the **timezone** or **time_until** arguments",
+                );
+            }
 
             if (timezone) {
                 const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
@@ -143,7 +150,7 @@ class Shardtimes extends Command {
                 } else if (match) {
                     // It's a UTC +/- zone  (+8:00 / -4:15)
                     zoneType = "utc";
-                    timezone = parseInt(`${match[1]}${(match[2] * 60) + parseInt(match[3], 10)}`, 10);
+                    timezone = Number.parseInt(`${match[1]}${match[2] * 60 + Number.parseInt(match[3], 10)}`, 10);
                 } else {
                     // Grumble that it's an invalid tz
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
@@ -159,16 +166,16 @@ class Shardtimes extends Command {
 
                 // Then grab the current UTC time, and add the hr & min onto that
                 const nowTime = new Date();
-                const hourMS  = 60*60*1000;
-                const minMS   = 60*1000;
-                const updatedTime = new Date(new Date().setTime(nowTime.getTime() + (hour*hourMS) || 0 + (minute*minMS) || 0));
+                const hourMS = 60 * 60 * 1000;
+                const minMS = 60 * 1000;
+                const updatedTime = new Date(new Date().setTime(nowTime.getTime() + hour * hourMS || 0 + minute * minMS || 0));
                 const tempH = updatedTime.getHours();
                 const tempM = updatedTime.getMinutes();
 
-                const totalMin = (tempH * 60) + tempM;
+                const totalMin = tempH * 60 + tempM;
                 const rounded = Math.round(totalMin / 15) * 15;
                 timezone = `${Math.floor(rounded / 60)}:${(rounded % 60).toString().padEnd(2, "0")}`;
-                tempZone = timezone + " UTC";
+                tempZone = `${timezone} UTC`;
             }
             if (flag?.match(/<:.+:\d+>/)) {
                 flag = flag.replace(/<:.*:/, "").replace(/>$/, "");
@@ -184,10 +191,10 @@ class Shardtimes extends Command {
                         const num = Math.abs(tempUser.timezone);
                         const hour = Math.floor(num / 60);
                         let min = (num % 60).toString();
-                        if (min.length === 1) min = "0" + min;
-                        tempUser.tempZone = sign + hour + ":" + min;
+                        if (min.length === 1) min = `0${min}`;
+                        tempUser.tempZone = `${sign + hour}:${min}`;
                     } else if (tempUser.zoneType === "hhmm") {
-                        tempUser.tempZone = tempUser.timezone + " UTC";
+                        tempUser.tempZone = `${tempUser.timezone} UTC`;
                     } else if (tempUser.zoneType === "zone") {
                         tempUser.tempZone = tempUser.timezone;
                     }
@@ -196,22 +203,24 @@ class Shardtimes extends Command {
                 }
             }
             shardTimes.times[`${userID}`] = {
-                "type": type,
-                "zoneType": zoneType,
-                "timezone": timezone,
-                "flag": flag
+                type: type,
+                zoneType: zoneType,
+                timezone: timezone,
+                flag: flag,
             };
             if (targetIndex > -1) {
                 shardArr[targetIndex] = shardTimes;
             } else {
                 shardArr.push(shardTimes);
             }
-            await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
+            await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
                 .then(() => {
                     if (tempUser) {
-                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone)});
+                        return interaction.reply({
+                            content: interaction.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone),
+                        });
                     }
-                    return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_USER_ADDED")});
+                    return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_USER_ADDED") });
                 })
                 .catch(() => {
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
@@ -228,16 +237,19 @@ class Shardtimes extends Command {
             }
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < Bot.constants.permMap.GUILD_ADMIN) {
+            if (
+                [interaction.user.id, interaction.user.username, "me"].includes(userID) &&
+                options.level < Bot.constants.permMap.GUILD_ADMIN
+            ) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
             if (shardTimes.times[userID]) {
                 delete shardTimes.times[userID];
                 shardArr[targetIndex] = shardTimes;
-                await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
+                await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
-                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS")});
+                        return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS") });
                     })
                     .catch(() => {
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
@@ -245,11 +257,13 @@ class Shardtimes extends Command {
             } else {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING"));
             }
-        } else if (action === "copy") {  // ;shardtimes copy destChannel
+        } else if (action === "copy") {
+            // ;shardtimes copy destChannel
             const destChannel = interaction.options.getChannel("dest_channel");
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
-            if (options.level < Bot.constants.permMap.GUILD_ADMIN) {  // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
+            if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
+                // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
 
@@ -268,15 +282,15 @@ class Shardtimes extends Command {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_SAME_CHAN"));
             }
 
-            const destTarget = shardArr.findIndex(sh => sh.channelId === destChannel.id);
+            const destTarget = shardArr.findIndex((sh) => sh.channelId === destChannel.id);
             const destTimes = shardArr[destTarget];
             if (destTarget < 0) {
                 // If there's no shard info in the destination channel
                 shardTimes.channelId = destChannel.id;
                 shardArr.push(shardTimes);
-                await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
+                await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
-                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
+                        return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })
                     .catch((err) => {
                         return super.error(interaction, err.message);
@@ -288,9 +302,9 @@ class Shardtimes extends Command {
                 // Or if there is shard info there, but no listings
                 destTimes.times = shardTimes.times;
                 shardArr[destTarget] = destTimes;
-                await setGuildShardTimes({cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr})
+                await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
-                        return interaction.reply({content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id)});
+                        return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })
                     .catch(() => {
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
@@ -308,16 +322,20 @@ class Shardtimes extends Command {
                 return super.error(interaction, "Sorry, but it looks like you don't have anyone registered to watch");
             }
 
-            Object.keys(shardTimes.times).forEach(user => {
-                const diff = timeTil(shardTimes.times[user].timezone, timeToAdd, (shardTimes.times[user]?.zoneType ? shardTimes.times[user].zoneType : "zone"));
+            for (const user of Object.keys(shardTimes.times)) {
+                const diff = timeTil(
+                    shardTimes.times[user].timezone,
+                    timeToAdd,
+                    shardTimes.times[user]?.zoneType ? shardTimes.times[user].zoneType : "zone",
+                );
                 if (shardOut[diff]) {
                     shardOut[diff].push(user);
                 } else {
                     shardOut[diff] = [user];
                 }
-            });
+            }
 
-            const sortedShardTimes = Object.keys(shardOut).sort((a, b) => a > b ? 1 : -1);
+            const sortedShardTimes = Object.keys(shardOut).sort((a, b) => (a > b ? 1 : -1));
 
             const fields = [];
             const maxLen = 20;
@@ -331,34 +349,38 @@ class Shardtimes extends Command {
                     if (!shardTimes.times[user].type || shardTimes.times[user].type === "id") {
                         const thisUser = await interaction.guild.members.fetch(user).catch(() => {});
                         const userName = thisUser ? thisUser.displayName : user;
-                        uName = "**" + (userName.length > maxLen ? userName.substring(0, maxLen) : userName) + "**";
+                        uName = `**${userName.length > maxLen ? userName.substring(0, maxLen) : userName}**`;
                     } else {
                         // Type is name, don't try looking it up
                         const userName = user;
                         uName = userName.length > maxLen ? userName.substring(0, maxLen) : userName;
                     }
                     times.push({
-                        flag: shardTimes.times[user].flag != "" ? userFlag : "",
-                        name: uName
+                        flag: shardTimes.times[user].flag !== "" ? userFlag : "",
+                        name: uName,
                     });
                 }
-                const sortedTimes = times.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0).map(t => `${t.flag}${t.name}`);
+                const sortedTimes = times
+                    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0))
+                    .map((t) => `${t.flag}${t.name}`);
                 let joiner = " - ";
                 if (interaction.guildSettings.shardtimeVertical) {
                     joiner = "\n";
                 }
                 fields.push({
                     name: time,
-                    value: sortedTimes.join(joiner)
+                    value: sortedTimes.join(joiner),
                 });
             }
             return interaction.reply({
-                embeds: [{
-                    "author": {
-                        "name": interaction.language.get("COMMAND_SHARDTIMES_SHARD_HEADER")
+                embeds: [
+                    {
+                        author: {
+                            name: interaction.language.get("COMMAND_SHARDTIMES_SHARD_HEADER"),
+                        },
+                        fields: fields,
                     },
-                    "fields": fields
-                }]
+                ],
             });
         }
 
@@ -369,21 +391,20 @@ class Shardtimes extends Command {
 
             let targetTime;
             if (type === "zone") {
-                const target = (Bot.getStartOfDay(zone)).getTime() + (hrMS * timeToAdd);
-                targetTime = (target + nowTime) > target ? target : target + dayMS;
+                const target = Bot.getStartOfDay(zone).getTime() + hrMS * timeToAdd;
+                targetTime = target + nowTime > target ? target : target + dayMS;
             } else {
-                const target = type === "hhmm" ? getUTCAtTime(zone) : Bot.getUTCFromOffset(zone) + (hrMS * timeToAdd);
+                const target = type === "hhmm" ? getUTCAtTime(zone) : Bot.getUTCFromOffset(zone) + hrMS * timeToAdd;
 
                 // If it's already passed, add a day to grab the next one
                 targetTime = target + (target < nowTime ? dayMS : 0);
             }
             const times = Bot.convertMS(targetTime - new Date().getTime());
-            return times.hour.toString().padStart(2, "0") + ":" + times.minute.toString().padStart(2, "0");
+            return `${times.hour.toString().padStart(2, "0")}:${times.minute.toString().padStart(2, "0")}`;
         }
 
-
         function getUTCAtTime(hhmm) {
-            const [hr, min] = hhmm.split(":").map(t => parseInt(t, 10));
+            const [hr, min] = hhmm.split(":").map((t) => Number.parseInt(t, 10));
             const nowDate = new Date();
             return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
         }

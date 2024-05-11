@@ -9,36 +9,36 @@ const options = {
         name: "add",
         description: "Add a value to one of the array settings",
         type: ApplicationCommandOptionType.Subcommand,
-        options: []
+        options: [],
     },
     remove: {
         name: "remove",
         description: "Remove a value from one of the array settings",
         type: ApplicationCommandOptionType.Subcommand,
-        options: []
+        options: [],
     },
     set: {
         name: "set",
         type: ApplicationCommandOptionType.Subcommand,
         description: "Set the value of one of the options",
-        options: []
-    }
+        options: [],
+    },
 };
 
 // Check out each option in the config file, and set it up in each subarg as needed
-Object.keys(typedDefaultSettings).forEach(set => {
+for (const set of Object.keys(typedDefaultSettings)) {
     // Fill out the options based on the default settings in the config file
     const thisSet = typedDefaultSettings[set];
     const optOut = {
-        name: set.replace(/[A-Z]/g, char => "_" + char.toLowerCase()),
+        name: set.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
         type: thisSet.type,
-        description: thisSet.description
+        description: thisSet.description,
     };
     if (thisSet?.choices) {
-        optOut["choices"] = thisSet.choices.map(choice => {
+        optOut.choices = thisSet.choices.map((choice) => {
             return {
                 name: choice,
-                value: choice
+                value: choice,
             };
         });
     }
@@ -48,8 +48,7 @@ Object.keys(typedDefaultSettings).forEach(set => {
     } else {
         options.set.options.push(optOut);
     }
-});
-
+}
 
 class SetConf extends Command {
     constructor(Bot) {
@@ -57,7 +56,7 @@ class SetConf extends Command {
             guildOnly: false,
             name: "setconf",
             permLevel: 3,
-            options: Object.values(options)
+            options: Object.values(options),
         });
     }
 
@@ -66,9 +65,12 @@ class SetConf extends Command {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
 
-        const guildConf = await getGuildSettings({cache: Bot.cache, guildId: interaction.guild.id});
+        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: interaction.guild.id });
         if (!guildConf) {
-            return super.error(interaction, "I cannot find a config for your guild. Please report this to the folks over at this bot's server, check `/info` for the invite code");
+            return super.error(
+                interaction,
+                "I cannot find a config for your guild. Please report this to the folks over at this bot's server, check `/info` for the invite code",
+            );
         }
 
         const subCommand = interaction.options.getSubcommand();
@@ -77,7 +79,7 @@ class SetConf extends Command {
         const errors = [];
         const changeLog = [];
         for (const key of Object.keys(typedDefaultSettings)) {
-            const optionKey = key.replace(/[A-Z]/g, char => "_" + char.toLowerCase());
+            const optionKey = key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
             const keyType = typedDefaultSettings[key]?.type;
             let settingStr = null;
             let nameStr = null;
@@ -102,13 +104,15 @@ class SetConf extends Command {
                 if (["enable_part", "enable_welcome"].includes(key) && settingStr === true) {
                     // If they're trying to enable the welcome or part message, make sure there's an announcement channel set up
                     if (!guildConf.announce_chan?.length) {
-                        await interaction.channel.send("The welcome and parting messages will not work without an announcement channel set.");
+                        await interaction.channel.send(
+                            "The welcome and parting messages will not work without an announcement channel set.",
+                        );
                     }
                 }
             } else if (keyType === ApplicationCommandOptionType.Channel) {
                 const channel = interaction.options.getChannel(optionKey);
                 if (!channel) continue;
-                nameStr = "#" + channel.name;
+                nameStr = `#${channel.name}`;
                 settingStr = channel.id;
             } else if (keyType === ApplicationCommandOptionType.Role) {
                 settingStr = interaction.options.getRole(optionKey);
@@ -132,7 +136,8 @@ class SetConf extends Command {
                 // Just send back the setting
                 changeLog.push(`Set ${key} to ${name ? name : setting}`);
                 return setting;
-            } else if (action === "add") {
+            }
+            if (action === "add") {
                 // Stick it into the old one
                 const newArr = [...guildConf[key]];
                 if (key === "adminRole") {
@@ -144,14 +149,15 @@ class SetConf extends Command {
                 }
 
                 return [...new Set(newArr)];
-            } else if (action === "remove") {
+            }
+            if (action === "remove") {
                 // Take out a setting from an array
                 let newArr = [...guildConf[key]];
                 if (key === "adminRole") {
-                    newArr = newArr.filter(s => s !== setting.id && s !== setting.name);
+                    newArr = newArr.filter((s) => s !== setting.id && s !== setting.name);
                     changeLog.push(`Removed ${setting.id} from ${key}`);
                 } else {
-                    newArr = newArr.filter(s => s !== setting);
+                    newArr = newArr.filter((s) => s !== setting);
                     changeLog.push(`Removed ${setting} from ${key}`);
                 }
 
@@ -161,7 +167,7 @@ class SetConf extends Command {
 
         // If there are any errors, tell em and don't actually change anything
         if (errors.length) {
-            return super.error(interaction, codeBlock(errors.map(e => "* " + e).join("\n")));
+            return super.error(interaction, codeBlock(errors.map((e) => `* ${e}`).join("\n")));
         }
 
         if (Object.keys(settingsIn)?.length) {
@@ -171,11 +177,10 @@ class SetConf extends Command {
             }
 
             // Actually change stuff in the db
-            await setGuildSettings({cache: Bot.cache, guildId: interaction.guild.id, settings: guildConf});
-            return super.success(interaction, codeBlock(changeLog.map(c => `* ${c}`).join("\n")));
-        } else {
-            return super.error(interaction, "It looks like nothing needed to be updated");
+            await setGuildSettings({ cache: Bot.cache, guildId: interaction.guild.id, settings: guildConf });
+            return super.success(interaction, codeBlock(changeLog.map((c) => `* ${c}`).join("\n")));
         }
+        return super.error(interaction, "It looks like nothing needed to be updated");
     }
 }
 

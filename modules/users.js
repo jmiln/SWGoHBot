@@ -8,10 +8,10 @@ module.exports = (Bot) => {
         getUserFromAlly: getUsersFromAlly,
         updateUser: updateUser,
         removeAllyCode: removeAllyCode,
-        removeUser: removeUser
+        removeUser: removeUser,
     };
 
-    async function addUser( userId, allyCode ) {
+    async function addUser(userId, allyCode) {
         try {
             if (!Bot.isUserID(userId)) {
                 throw new Error("Invalid user ID.");
@@ -19,17 +19,19 @@ module.exports = (Bot) => {
             if (!Bot.isAllyCode(allyCode)) {
                 throw new Error("Invalid ally code.");
             }
-            let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
+            let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", { id: userId });
             const defSettings = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
             defSettings.id = userId;
-            defSettings.accounts = [{
-                allyCode: allyCode,
-                primary: true
-            }];
+            defSettings.accounts = [
+                {
+                    allyCode: allyCode,
+                    primary: true,
+                },
+            ];
 
             if (!user || !user[0]) {
                 // If they're not in there, put them in with the default settings
-                user = await cache.put(Bot.config.mongodb.swgohbotdb, "users", {id: userId}, defSettings);
+                user = await cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userId }, defSettings);
             } else {
                 user = user[0];
             }
@@ -41,38 +43,45 @@ module.exports = (Bot) => {
 
     async function getUser(userId) {
         // Get and return the user's info
-        const user = await cache.getOne(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
+        const user = await cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userId });
         return user || null;
     }
 
     async function getUsersFromAlly(allyCode) {
-        const users = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {"accounts.allyCode": allyCode?.toString()});
+        const users = await cache.get(Bot.config.mongodb.swgohbotdb, "users", { "accounts.allyCode": allyCode?.toString() });
         return users?.length ? users : null;
     }
 
     async function updateUser(userId, userObj) {
         // Get and update a user's info
-        let newUser = await cache.put(Bot.config.mongodb.swgohbotdb, "users", {id: userId}, userObj);
+        let newUser = await cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userId }, userObj);
         if (Array.isArray(newUser)) newUser = newUser[0];
         return newUser;
     }
 
     async function removeAllyCode(userId, allyCode) {
         // Remove one of the ally codes from a user
-        let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", {id: userId});
+        let user = await cache.get(Bot.config.mongodb.swgohbotdb, "users", { id: userId });
         if (Array.isArray(user)) user = user[0];
         if (!user) throw new Error("Could not find specified user");
-        const exists = user.accounts.find(a => a.allyCode === allyCode);
+        const exists = user.accounts.find((a) => a.allyCode === allyCode);
         if (!exists) throw new Error("Specified ally code not linked to this user");
-        user.accounts = user.accounts.filter(a => a.allyCode !== allyCode);
-        return await cache.put(Bot.config.mongodb.swgohbotdb, "users", {id: userId}, user);
+        user.accounts = user.accounts.filter((a) => a.allyCode !== allyCode);
+        return await cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userId }, user);
     }
 
     async function removeUser(userId) {
         // Completely wipe a user?
-        const res = await Bot.mongo.db(Bot.config.mongodb.swgohbotdb).collection("users").deleteOne({id: userId})
-            .then(() => { return true; })
-            .catch(() => { return false; });
+        const res = await Bot.mongo
+            .db(Bot.config.mongodb.swgohbotdb)
+            .collection("users")
+            .deleteOne({ id: userId })
+            .then(() => {
+                return true;
+            })
+            .catch(() => {
+                return false;
+            });
         return res;
     }
 };

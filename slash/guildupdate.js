@@ -18,30 +18,31 @@ class GuildUpdate extends Command {
                         {
                             name: "enabled",
                             description: "Turn the updates on or off",
-                            type: ApplicationCommandOptionType.Boolean
+                            type: ApplicationCommandOptionType.Boolean,
                         },
                         {
                             name: "channel",
                             description: "Set which channel to log updates to",
-                            type: ApplicationCommandOptionType.Channel
+                            type: ApplicationCommandOptionType.Channel,
                         },
                         {
                             name: "allycode",
                             description: "Set what ally code to get the guild's info from",
-                            type: ApplicationCommandOptionType.String
-                        }
-                    ]
+                            type: ApplicationCommandOptionType.String,
+                        },
+                    ],
                 },
                 {
                     name: "view",
                     description: "View the settings for your guild updates",
-                    type: ApplicationCommandOptionType.Subcommand
-                }
-            ]
+                    type: ApplicationCommandOptionType.Subcommand,
+                },
+            ],
         });
     }
 
-    async run(Bot, interaction, options) { // eslint-disable-line no-unused-vars
+    async run(Bot, interaction, options) {
+        // eslint-disable-line no-unused-vars
         const cmdOut = null;
         const outLog = [];
 
@@ -55,7 +56,7 @@ class GuildUpdate extends Command {
         const defGU = {
             enabled: false,
             channel: null,
-            allycode: null
+            allycode: null,
         };
         if (!gu) {
             gu = defGU;
@@ -90,7 +91,7 @@ class GuildUpdate extends Command {
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!Bot.isAllyCode(allycode))  return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!Bot.isAllyCode(allycode)) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
                 allycode = Bot.getAllyCode(interaction, allycode);
@@ -101,33 +102,47 @@ class GuildUpdate extends Command {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gu.allycode = parseInt(allycode, 10);
+                gu.allycode = Number.parseInt(allycode, 10);
                 updatedArr.push(`Ally Code: **${allycode}**`);
             }
 
             if (updatedArr.length) {
                 user.guildUpdate = gu;
                 await Bot.userReg.updateUser(userID, user);
-                return interaction.reply({content: null, embeds: [{
-                    title: "Settings updated",
-                    description: updatedArr.join("\n")
-                }]});
+                return interaction.reply({
+                    content: null,
+                    embeds: [
+                        {
+                            title: "Settings updated",
+                            description: updatedArr.join("\n"),
+                        },
+                    ],
+                });
             }
         } else if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-            return interaction.reply({embeds: [{
-                title: `Guild update settings for ${interaction.user.username}`,
-                description: [
-                    `Enabled:  **${gu.enabled ? "ON" : "OFF"}**`,
-                    `Channel:  **${gu.channel ? "<#" + gu.channel + ">" : "N/A"}**`,
-                    `Allycode: **${gu.allycode ? gu.allycode : "N/A"}**`
-                ].join("\n")
-            }]});
+            return interaction.reply({
+                embeds: [
+                    {
+                        title: `Guild update settings for ${interaction.user.username}`,
+                        description: [
+                            `Enabled:  **${gu.enabled ? "ON" : "OFF"}**`,
+                            `Channel:  **${gu.channel ? `<#${gu.channel}>` : "N/A"}**`,
+                            `Allycode: **${gu.allycode ? gu.allycode : "N/A"}**`,
+                        ].join("\n"),
+                    },
+                ],
+            });
         }
 
-        return super.error(interaction, outLog.length ? outLog.join("\n") : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? "\n\n#####################\n\n" + cmdOut : ""), {title: " ", color: Bot.constants.colors.blue});
+        return super.error(
+            interaction,
+            outLog.length
+                ? outLog.join("\n")
+                : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
+            { title: " ", color: Bot.constants.colors.blue },
+        );
     }
 }
-
 
 module.exports = GuildUpdate;
