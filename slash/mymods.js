@@ -222,7 +222,7 @@ class MyMods extends Command {
                 // If the bot has the right perms to use external emotes, go ahead and set it to use them
                 if (
                     !interaction.guild ||
-                    interaction.channel.permissionsFor(interaction.client.user).has([PermissionsBitField.Flags.UseExternalEmojis])
+                    interaction.channel?.permissionsFor(interaction.client.user).has([PermissionsBitField.Flags.UseExternalEmojis])
                 ) {
                     const shapeIconString = `${modSlots[Number.parseInt(mod, 10) - 1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
                     shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
