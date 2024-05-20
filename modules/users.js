@@ -5,7 +5,7 @@ module.exports = (Bot) => {
     return {
         addUser: addUser,
         getUser: getUser,
-        getUserFromAlly: getUsersFromAlly,
+        getUsersFromAlly: getUsersFromAlly,
         updateUser: updateUser,
         removeAllyCode: removeAllyCode,
         removeUser: removeUser,

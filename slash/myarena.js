@@ -41,6 +41,7 @@ class MyArena extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player;
         try {
+            await interaction.reply({ content: "> Please wait while I look up your info" });
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
@@ -116,7 +117,8 @@ class MyArena extends Command {
         }
 
         const footerStr = Bot.updatedFooterStr(player.updated, interaction);
-        return interaction.reply({
+        return interaction.editReply({
+            content: null,
             embeds: [
                 {
                     author: {

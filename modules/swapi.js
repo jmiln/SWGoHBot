@@ -144,7 +144,7 @@ module.exports = (opts = {}) => {
             .filter((ac) => !!ac)
             .map((ac) => ac.toString())
             .filter((ac) => ac.length === 9);
-        if (!allycodes.length) throw new Error("No valid ally code(s) entered");
+        if (!acArr.length) throw new Error("No valid ally code(s) entered");
 
         const playersOut = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
@@ -193,7 +193,7 @@ module.exports = (opts = {}) => {
             }
         });
         const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {
-            allyCode: { $in: allycodes.map((ac) => Number.parseInt(ac, 10)) },
+            allyCode: { $in: acArr.map((ac) => Number.parseInt(ac, 10)) },
         });
         const processMemberChunk = async (updatedBare, chunkIx) => {
             return new Promise((resolve, reject) => {
@@ -302,7 +302,7 @@ module.exports = (opts = {}) => {
         }
         let playerStats = [];
         try {
-            if (!allycodes?.length) {
+            if (!acArr?.length) {
                 throw new Error("No valid ally code(s) entered");
             }
             const filtereredAcArr = acArr.filter((a) => a.toString().length === 9).map((a) => Number.parseInt(a, 10));
@@ -326,7 +326,7 @@ module.exports = (opts = {}) => {
             // This will make it so that all players will be run through the updater
             const updatedList = options.force ? [] : players.filter((p) => !isExpired(p.updated, thisCooldown));
             const updatedAC = updatedList.map((p) => Number.parseInt(p.allyCode, 10));
-            const needUpdating = allycodes.filter((a) => !updatedAC.includes(a));
+            const needUpdating = acArr.filter((a) => !updatedAC.includes(a));
 
             playerStats = playerStats.concat(updatedList);
 

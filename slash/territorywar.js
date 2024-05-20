@@ -72,7 +72,7 @@ class TerritoryWar extends Command {
         try {
             guild2 = await Bot.swgohAPI.guild(user2, cooldown);
         } catch (err) {
-            problemArr.push(`I could not find a guild for "${user2str}"`);
+            problemArr.push(`I could not find a guild for "${user2}"`);
         }
 
         if (problemArr.length) {

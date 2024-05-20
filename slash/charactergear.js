@@ -92,10 +92,6 @@ class Charactergear extends Command {
                     }
                 }
 
-                console.log("After looping");
-                console.log(allGear);
-                console.log(allGearList);
-
                 let gearString = "";
                 if (doExpand) {
                     allGearList = allGearList.filter((g) => g !== "???????");

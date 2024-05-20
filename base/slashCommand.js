@@ -38,7 +38,7 @@ class slashCommand {
     }
 
     async error(interaction, errMsg, options = { ephemeral: true }) {
-        let msgOut = null;
+        let msgOut = errMsg || null;
         if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {
             console.error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
@@ -65,7 +65,7 @@ class slashCommand {
     }
 
     async embed(interaction, msgIn, options = {}) {
-        let msgOut = null;
+        let msgOut = msgIn || null;
         if (!interaction?.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
         if (!msgIn) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
         if (msgIn?.length > 1900) msgOut = `${msgIn.toString().substring(0, 1900)}...`;
@@ -81,6 +81,7 @@ class slashCommand {
         }
 
         const embedObj = {
+            content: null,
             embeds: [
                 {
                     author: {

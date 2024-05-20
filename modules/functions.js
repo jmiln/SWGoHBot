@@ -626,7 +626,7 @@ module.exports = (Bot, client) => {
         if (Array.isArray(user)) userStr = user?.join(" ")?.toString().trim() || "";
 
         let userAcct = null;
-        if (userStr === "me" || userStr.match(otherCodeRegex) || (!userStr && useMessageId)) {
+        if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useMessageId)) {
             // Grab the sender's primary code
             if (message.author) {
                 // Message.author for messages

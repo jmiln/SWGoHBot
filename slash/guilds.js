@@ -233,6 +233,7 @@ class Guilds extends Command {
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
         } catch (e) {
+            console.log(e);
             return super.error(interaction, `Issue getting guild: ${codeBlock(e)}`);
         }
 
@@ -247,7 +248,7 @@ class Guilds extends Command {
                 try {
                     return await guildGear();
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildGear: ${err}`);
+                    return super.error(interaction, `Issue with guildGear: ${err.message}`);
                 }
             }
             case "mods": {
@@ -255,7 +256,7 @@ class Guilds extends Command {
                 try {
                     return await guildMods();
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildMods: ${err}`);
+                    return super.error(interaction, `Issue with guildMods: ${err.message}`);
                 }
             }
             case "relics": {
@@ -263,7 +264,7 @@ class Guilds extends Command {
                 try {
                     return await guildRelics();
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildRelics: ${err}`);
+                    return super.error(interaction, `Issue with guildRelics: ${err.message}`);
                 }
             }
             case "roster": {
@@ -273,13 +274,14 @@ class Guilds extends Command {
                         try {
                             return await guildRoster();
                         } catch (err) {
-                            return super.error(interaction, `Issue with guildRoster: ${err}`);
+                            console.log(err.message);
+                            return super.error(interaction, `Issue with guildRoster: ${err.message}`);
                         }
                     } else {
                         return await guildSidedGP();
                     }
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildRoster 2: ${err}`);
+                    return super.error(interaction, `Issue with guildRoster 2: ${err.message}`);
                 }
             }
             case "tw_summary": {
@@ -287,7 +289,7 @@ class Guilds extends Command {
                 try {
                     return await twSummary();
                 } catch (err) {
-                    return super.error(interaction, `Issue with twSummary: ${err}`);
+                    return super.error(interaction, `Issue with twSummary: ${err.message}`);
                 }
             }
             default: {

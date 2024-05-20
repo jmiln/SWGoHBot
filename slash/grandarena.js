@@ -232,8 +232,8 @@ class GrandArena extends Command {
 
         // Get the overall gear levels for each user
         let gearOverview = [];
-        const [u1GearLvls, u1AvgGear] = Bot.summarizeCharLevels(user1, "gear");
-        const [u2GearLvls, u2AvgGear] = Bot.summarizeCharLevels(user2, "gear");
+        const [u1GearLvls, u1AvgGear] = Bot.summarizeCharLevels([user1], "gear");
+        const [u2GearLvls, u2AvgGear] = Bot.summarizeCharLevels([user2], "gear");
         const maxGear = Math.max(
             Math.max(...Object.keys(u1GearLvls).map((g) => Number.parseInt(g, 10))),
             Math.max(...Object.keys(u2GearLvls).map((g) => Number.parseInt(g, 10))),
@@ -269,8 +269,8 @@ class GrandArena extends Command {
 
         // Get the overall rarity levels for each user
         let rarityOverview = [];
-        const [u1RarityLvls, u1AvgRarity] = Bot.summarizeCharLevels(user1, "rarity");
-        const [u2RarityLvls, u2AvgRarity] = Bot.summarizeCharLevels(user2, "rarity");
+        const [u1RarityLvls, u1AvgRarity] = Bot.summarizeCharLevels([user1], "rarity");
+        const [u2RarityLvls, u2AvgRarity] = Bot.summarizeCharLevels([user2], "rarity");
         const maxRarity = Math.max(
             Math.max(...Object.keys(u1RarityLvls).map((g) => Number.parseInt(g, 10))),
             Math.max(...Object.keys(u2RarityLvls).map((g) => Number.parseInt(g, 10))),
@@ -344,8 +344,8 @@ class GrandArena extends Command {
 
         // Get the overall relic levels for each user
         let relicOverview = [];
-        const [u1RelicLvls, u1AvgRelic] = Bot.summarizeCharLevels(user1, "relic");
-        const [u2RelicLvls, u2AvgRelic] = Bot.summarizeCharLevels(user2, "relic");
+        const [u1RelicLvls, u1AvgRelic] = Bot.summarizeCharLevels([user1], "relic");
+        const [u2RelicLvls, u2AvgRelic] = Bot.summarizeCharLevels([user2], "relic");
         const maxRelic = Math.max(
             Math.max(...Object.keys(u1RelicLvls).map((g) => Number.parseInt(g, 10))),
             Math.max(...Object.keys(u2RelicLvls).map((g) => Number.parseInt(g, 10))),

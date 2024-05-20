@@ -104,7 +104,9 @@ class MyCharacter extends Command {
 
         // The user doesn't have the unit unlocked, so let em know
         if (!thisUnit) {
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_LOCKED_CHAR"), {
+            const outStr = interaction.language.get("BASE_SWGOH_LOCKED_CHAR");
+            console.log("outStr", outStr);
+            return super.error(interaction, outStr || "This character is locked.", {
                 title: `${pName}'s ${unit.name}`,
                 description: footerStr,
             });
@@ -134,31 +136,35 @@ class MyCharacter extends Command {
             gearStr = gearStr.replace(/[0-9]/g, "  ");
             gearStr = Bot.expandSpaces(gearStr);
         }
-        for (const a of thisUnit.abilities) {
-            a.type = Bot.toProperCase(a.id.split("_")[0].replace("skill", ""));
-            if (a.tier === a.tiers) {
-                if (a.isOmicron) {
-                    // Maxed Omicron ability
-                    a.tierStr = "Max O";
-                } else if (a.isZeta) {
-                    // Maxed Zeta ability
-                    a.tierStr = "Max ✦";
-                } else if (isShip) {
-                    a.tierStr = "Max";
+        if (!thisUnit?.unit?.skills) {
+            console.log(thisUnit?.unit);
+        } else {
+            for (const a of thisUnit.unit.skills) {
+                a.type = Bot.toProperCase(a.id.split("skill")[0]);
+                if (a.tier === a.tiers) {
+                    if (a.isOmicron) {
+                        // Maxed Omicron ability
+                        a.tierStr = "Max O";
+                    } else if (a.isZeta) {
+                        // Maxed Zeta ability
+                        a.tierStr = "Max ✦";
+                    } else if (isShip) {
+                        a.tierStr = "Max";
+                    } else {
+                        // Maxed Omega ability
+                        a.tierStr = "Max ⭓";
+                    }
                 } else {
-                    // Maxed Omega ability
-                    a.tierStr = "Max ⭓";
+                    // Unmaxed ability
+                    a.tierStr = `Lvl ${a.tier}`;
                 }
-            } else {
-                // Unmaxed ability
-                a.tierStr = `Lvl ${a.tier}`;
-            }
-            try {
-                abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(
-                    `\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`,
-                );
-            } catch (e) {
-                Bot.logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
+                try {
+                    abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(
+                        `\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`,
+                    );
+                } catch (e) {
+                    Bot.logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
+                }
             }
         }
 
