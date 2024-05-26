@@ -62,8 +62,8 @@ async function init() {
         const forceUpdate = process.argv.includes("--force");
         const dataDir = path.resolve(__dirname, "../data/");
 
+        const metaData = await updateMetaData(dataDir, comlinkStub);
         if (!forceUpdate) {
-            const metaData = await updateMetaData(dataDir, comlinkStub);
             if (metaData.isUpdated) {
                 console.log("Found new metadata, running updaters");
                 await runGameDataUpdaters();
@@ -82,8 +82,8 @@ async function init() {
             setInterval(() => updatePatrons(cache), 15 * 60 * 1000);
         } else {
             // If we're forcing an update, just run the bits we want then exit
-            // await runGameDataUpdaters();
-            await runModUpdaters();
+            await runGameDataUpdaters();
+            // await runModUpdaters();
             process.exit(0);
         }
     } catch (error) {

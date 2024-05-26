@@ -22,7 +22,7 @@
         "@swgoh-utils/comlink": "^1.4.1",
         "async": "^3.2.5",
         "discord.js": "^14.15.2",
-        "mongodb": "^6.6.1",
+        "mongodb": "^6.6.2",
         "socket.io": "^4.7.5",
         "socket.io-client": "^4.7.5"
     },

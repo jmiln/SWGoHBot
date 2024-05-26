@@ -258,7 +258,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
@@ -2174,8 +2174,8 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Damage x4",
-                "Potency x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2771,7 +2771,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -2942,7 +2942,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_gar_saxon"
     },
@@ -4121,7 +4121,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Protection"
         },
         "avatarName": "charui_jawa_scavenger"
     },
@@ -4443,8 +4443,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5081,6 +5081,23 @@
         "avatarName": "charui_marajade"
     },
     {
+        "name": "Master Qui-Gon",
+        "uniqueName": "MASTERQUIGON",
+        "aliases": [
+            "Master Qui-Gon"
+        ],
+        "avatarName": "charui_masterquigon",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_masterquigon.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTICREPUBLIC_DESC",
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Maul",
         "uniqueName": "MAULS7",
         "aliases": [
@@ -5302,7 +5319,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -5550,7 +5567,18 @@
             "CATEGORY_JEDI_DESC",
             "CATEGORY_ROLEATTACKER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Crit. Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -5628,8 +5656,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6026,7 +6053,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
