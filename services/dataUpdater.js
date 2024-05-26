@@ -53,6 +53,7 @@ console.log("Starting data updater");
 // Run the updater when it's started, only if we're not running tests
 if (!process.env.TESTING_ENV) {
     init().then(async () => {
+        const isNew = await updateMetaData();
         if (!FORCE_UPDATE) {
             // Set it to update the patreon data and every 15 minutes if doable
             if (config.patreon) {
@@ -64,7 +65,6 @@ if (!process.env.TESTING_ENV) {
             // Set it to check/ update the game data daily if needed
             // - Also run the mods updater daily
             (async function runUpdatersAsNeeded() {
-                const isNew = await updateMetaData();
                 if (isNew) {
                     console.log("Found new metadata, running updaters");
                     await runGameDataUpdaters();
