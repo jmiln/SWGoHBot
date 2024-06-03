@@ -176,12 +176,13 @@ module.exports = (Bot, client) => {
 
     // Reload the functions (this) file
     client.reloadFunctions = async () => {
-        const modules = ["../modules/functions.js", "../modules/patreonFuncs.js", "../modules/eventFuncs.js", "../modules/Logger.js"];
+        const modules = ["../modules/functions.js", "../modules/patreonFuncs.js", "../modules/eventFuncs.js"]; //, "../modules/Logger.js"];
         try {
             for (const mod of modules) {
                 delete require.cache[require.resolve(mod)];
                 require(mod)(Bot, client);
             }
+            delete require.cache[require.resolve("../modules/Logger.js")];
             Bot.logger = new (require("../modules/Logger.js"))(Bot, client);
         } catch (err) {
             console.error(`Failed to reload functions: ${err.stack}`);
@@ -683,7 +684,7 @@ module.exports = (Bot, client) => {
     Bot.isChannelId = (mention) => /^\d{17,19}/.test(mention);
     Bot.isChannelMention = (mention) => /^<#\d{17,19}>/.test(mention);
     Bot.isRoleMention = (mention) => /^<@&\d{17,19}>/.test(mention);
-    Bot.isUserMention = (mention) => /^<@!\d{17,19}>/.test(mention);
+    Bot.isUserMention = (mention) => /^<@!?\d{17,19}>/.test(mention);
 
     Bot.chunkArray = (inArray, chunkSize) => {
         if (!Array.isArray(inArray)) throw new Error("[chunkArray] inArray must be an array!");
@@ -737,6 +738,7 @@ module.exports = (Bot, client) => {
 
     const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;
     Bot.toProperCase = (strIn) => {
+        if (!strIn) return strIn;
         return strIn.replace(/([^\W_]+[^\s-]*) */g, (txt) => {
             if (ROMAN_REGEX.test(txt)) return txt.toUpperCase();
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();

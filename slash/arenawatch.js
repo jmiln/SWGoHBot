@@ -472,7 +472,7 @@ class ArenaWatch extends Command {
             if (!Bot.isAllyCode(ac)) throw new Error(`Invalid code (${ac})!`);
             ac = ac.replace(/[^\d]/g, "");
 
-            mention = Bot.isUserMention(mention || "") ? mention.replace(/[^\d]/g, "") : null;
+            mention = Bot.isUserMention(mention.trim() || "") ? mention.replace(/[^\d]/g, "") : null;
             return [Number.parseInt(ac, 10), mention];
         }
 
