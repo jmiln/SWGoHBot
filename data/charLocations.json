@@ -36,13 +36,18 @@
         "defId": "AAYLASECURA",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "5-B",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -51,16 +56,21 @@
         "defId": "ADMIRALACKBAR",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -112,12 +122,17 @@
         "defId": "AHSOKATANO",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -131,8 +146,23 @@
         "defId": "FULCRUMAHSOKA",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
+            },
+            {
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
             }
         ]
     },
@@ -140,6 +170,11 @@
         "name": "Amilyn Holdo",
         "defId": "AMILYNHOLDO",
         "locations": [
+            {
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
             {
                 "type": "Hard Modes (D)",
                 "level": "7-C",
@@ -163,8 +198,13 @@
         "defId": "ASAJVENTRESS",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -195,13 +235,18 @@
         "defId": "B2SUPERBATTLEDROID",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "6-D",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -210,8 +255,13 @@
         "defId": "BARRISSOFFEE",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -247,6 +297,11 @@
         "defId": "BAZEMALBUS",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Hard Modes (L)",
                 "level": "9-C",
                 "locId": "HARD_LIGHT"
@@ -259,7 +314,8 @@
         "locations": [
             {
                 "type": "Legendary Event",
-                "name": "Pieces and Plans"
+                "locId": "BB8_GUIDE_DETAILS_TITLE",
+                "name": "Pieces And Plans"
             }
         ]
     },
@@ -279,21 +335,26 @@
         "defId": "BIGGSDARKLIGHTER",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "3-G",
                 "locId": "CANTINA"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -302,16 +363,16 @@
         "defId": "BISTAN",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -341,12 +402,12 @@
         "defId": "BOBAFETT",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -371,8 +432,8 @@
         "defId": "BODHIROOK",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             }
         ]
     },
@@ -380,6 +441,11 @@
         "name": "Boss Nass",
         "defId": "BOSSNASS",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "8-D",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BOSSNASS_NAME",
@@ -436,6 +502,7 @@
         "locations": [
             {
                 "type": "Legendary Event",
+                "locId": "C3POLEGENDARY_GUIDE_DETAILS_TITLE",
                 "name": "Contact Protocol"
             }
         ]
@@ -445,8 +512,8 @@
         "defId": "CADBANE",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             }
         ]
     },
@@ -498,6 +565,11 @@
         "defId": "HOTHHAN",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "7-D",
                 "locId": "CANTINA"
@@ -509,8 +581,8 @@
         "defId": "PHASMA",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             }
         ]
     },
@@ -534,6 +606,11 @@
         "name": "Captain Tarpals",
         "defId": "CAPTAINTARPALS",
         "locations": [
+            {
+                "type": "Cantina",
+                "level": "2-A",
+                "locId": "CANTINA"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINTARPALS_NAME",
@@ -573,12 +650,17 @@
         "defId": "CASSIANANDOR",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -587,12 +669,12 @@
         "defId": "CC2224",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -618,6 +700,7 @@
         "locations": [
             {
                 "type": "Legendary Event",
+                "locId": "CHEWBACCALEGENDARY_GUIDE_DETAILS_TITLE",
                 "name": "One Famous Wookiee"
             }
         ]
@@ -626,6 +709,11 @@
         "name": "Chief Chirpa",
         "defId": "CHIEFCHIRPA",
         "locations": [
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EWOK_NAME",
+                "name": "Assault Battles: Forest Moon"
+            },
             {
                 "type": "Cantina",
                 "level": "5-D",
@@ -638,8 +726,8 @@
         "defId": "CHIEFNEBIT",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -648,8 +736,13 @@
         "defId": "CHIRRUTIMWE",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             }
         ]
     },
@@ -658,12 +751,17 @@
         "defId": "CHOPPERS3",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -677,12 +775,17 @@
         "defId": "CLONESERGEANTPHASEI",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -702,8 +805,8 @@
         "defId": "COLONELSTARCK",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -711,6 +814,10 @@
         "name": "Commander Ahsoka Tano",
         "defId": "COMMANDERAHSOKA",
         "locations": [
+            {
+                "type": "Guild Events Store",
+                "cost": "1750 Mk III Guild Event Tokens/5"
+            },
             {
                 "type": "Proving Grounds",
                 "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
@@ -724,6 +831,7 @@
         "locations": [
             {
                 "type": "Hero's Journey",
+                "locId": "COMMANDERLUKESKYWALKER_GUIDE_DETAILS_TITLE",
                 "name": "Luke Skywalker"
             }
         ]
@@ -733,8 +841,8 @@
         "defId": "CORUSCANTUNDERWORLDPOLICE",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -742,6 +850,11 @@
         "name": "Count Dooku",
         "defId": "COUNTDOOKU",
         "locations": [
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
             {
                 "type": "Cantina",
                 "level": "6-G",
@@ -754,12 +867,12 @@
         "defId": "CT210408",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -768,12 +881,17 @@
         "defId": "CT5555",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -787,12 +905,17 @@
         "defId": "CT7567",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -804,10 +927,6 @@
                 "type": "Hard Modes (L)",
                 "level": "1-C",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "cost": "1-C"
             },
             {
                 "type": "Marquee",
@@ -831,12 +950,17 @@
         "defId": "DARTHMALAK",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "5700/15\n3800/10\n1900/5"
+                "type": "Epic Confrontation",
+                "locId": "MYTHICEVENT_STAR_FORGE_SHOWDOWN_V2",
+                "name": "Star Forge Showdown Epic Confrontation"
             },
             {
-                "type": "Special Event",
-                "name": "Star Forge Showdown"
+                "type": "Guild Activity Store",
+                "cost": "1750 Mk II Raid Tokens/5"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "1900 Mk I Guild Event Tokens/5\n3800 Mk I Guild Event Tokens/10\n5700 Mk I Guild Event Tokens/15"
             }
         ]
     },
@@ -856,12 +980,12 @@
         "defId": "MAUL",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -869,6 +993,11 @@
         "name": "Darth Nihilus",
         "defId": "DARTHNIHILUS",
         "locations": [
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
+                "name": "Secrets And Shadows Assault Battle"
+            },
             {
                 "type": "Hard Modes (D)",
                 "level": "9-A",
@@ -882,7 +1011,8 @@
         "locations": [
             {
                 "type": "Hero's Journey",
-                "name": "Scourge of the Old Republic"
+                "locId": "EVENT_JOURNEY_DARTHREVAN_NAME",
+                "name": "Scourge Of The Old Republic Ancient Journey"
             }
         ]
     },
@@ -891,8 +1021,13 @@
         "defId": "DARTHSIDIOUS",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
+                "name": "Secrets And Shadows Assault Battle"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -928,8 +1063,8 @@
         "defId": "DARTHTRAYA",
         "locations": [
             {
-                "type": "Raids",
-                "name": "The Sith Triumvirate"
+                "type": "Guild Activity Store",
+                "cost": "700 Mk I Raid Tokens/5"
             }
         ]
     },
@@ -938,11 +1073,13 @@
         "defId": "VADER",
         "locations": [
             {
-                "type": "Achievements"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/5"
             }
         ]
     },
@@ -967,8 +1104,8 @@
         "defId": "DATHCHA",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -982,6 +1119,11 @@
         "defId": "DEATHTROOPER",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
                 "type": "Cantina",
                 "level": "8-A",
                 "locId": "CANTINA"
@@ -993,8 +1135,8 @@
         "defId": "DENGAR",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -1003,8 +1145,13 @@
         "defId": "DIRECTORKRENNIC",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1050,8 +1197,8 @@
         "defId": "EETHKOTH",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -1098,6 +1245,11 @@
         "defId": "ENFYSNEST",
         "locations": [
             {
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
+            {
                 "type": "Hard Modes (Fleet)",
                 "level": "5-D",
                 "locId": "HARD_FLEET"
@@ -1109,13 +1261,23 @@
         "defId": "EWOKELDER",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EWOK_NAME",
+                "name": "Assault Battles: Forest Moon"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
                 "level": "2-A",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Heroic Event",
+                "locId": "EVENT_HEROIC_ATST_NAME",
+                "name": "Endor Escalation Heroic Battle"
             }
         ]
     },
@@ -1124,9 +1286,19 @@
         "defId": "EWOKSCOUT",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EWOK_NAME",
+                "name": "Assault Battles: Forest Moon"
+            },
+            {
                 "type": "Hard Modes (L)",
                 "level": "2-A",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Heroic Event",
+                "locId": "EVENT_HEROIC_ATST_NAME",
+                "name": "Endor Escalation Heroic Battle"
             }
         ]
     },
@@ -1135,17 +1307,27 @@
         "defId": "EZRABRIDGERS3",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "2-B",
                 "locId": "CANTINA"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -1191,8 +1373,8 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -1212,8 +1394,8 @@
         "defId": "FIRSTORDEROFFICERMALE",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             }
         ]
     },
@@ -1222,8 +1404,8 @@
         "defId": "FIRSTORDERSPECIALFORCESPILOT",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -1243,8 +1425,8 @@
         "defId": "FIRSTORDERTIEPILOT",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1258,8 +1440,8 @@
         "defId": "GAMORREANGUARD",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -1268,13 +1450,18 @@
         "defId": "GARSAXON",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
                 "type": "Cantina",
                 "level": "2-E",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -1283,17 +1470,22 @@
         "defId": "ZEBS3",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "1-G",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -1302,12 +1494,17 @@
         "defId": "GRIEVOUS",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/5"
             },
             {
                 "type": "Shard Shop",
-                "cost": "13500/30\n4500/10\n2250/5"
+                "cost": "2250 Shard Store Tokens/5\n4500 Shard Store Tokens/10\n13500 Shard Store Tokens/30"
             }
         ]
     },
@@ -1332,8 +1529,13 @@
         "defId": "GENERALKENOBI",
         "locations": [
             {
-                "type": "Raids",
-                "name": "Tank Takedown"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "700 Mk I Raid Tokens/5"
             }
         ]
     },
@@ -1343,11 +1545,16 @@
         "locations": [
             {
                 "type": "Epic Confrontation",
-                "name": "Clash on Kamino"
+                "locId": "EPIC_CONFRONTATION_CLASH_ON_KAMINO_NAME",
+                "name": "Clash On Kamino Epic Confrontation"
             },
             {
-                "type": "Shard Shop",
-                "cost": "5700/15\n3800/10\n1900/5"
+                "type": "Guild Activity Store",
+                "cost": "1750 Mk II Raid Tokens/5"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "1900 Mk I Guild Event Tokens/5\n3800 Mk I Guild Event Tokens/10\n5700 Mk I Guild Event Tokens/15"
             }
         ]
     },
@@ -1356,8 +1563,13 @@
         "defId": "VEERS",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1382,13 +1594,18 @@
         "defId": "GEONOSIANSOLDIER",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "1-A",
                 "locId": "CANTINA"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             }
         ]
     },
@@ -1397,13 +1614,18 @@
         "defId": "GEONOSIANSPY",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "4-D",
                 "locId": "CANTINA"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             }
         ]
     },
@@ -1413,7 +1635,8 @@
         "locations": [
             {
                 "type": "Legendary Event",
-                "name": "Artist of War"
+                "locId": "GRANDADMIRALTHRAWN_GUIDE_DETAILS_TITLE",
+                "name": "Artist Of War"
             }
         ]
     },
@@ -1422,7 +1645,9 @@
         "defId": "GRANDINQUISITOR",
         "locations": [
             {
-                "type": "Assault Battle"
+                "type": "Legendary Event",
+                "locId": "GRANDINQUISITOR_JOURNEY_GUIDE_EVENT_TITLE_V2",
+                "name": "Dark Times"
             }
         ]
     },
@@ -1442,16 +1667,21 @@
         "defId": "GRANDMOFFTARKIN",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -1460,8 +1690,8 @@
         "defId": "GREEDO",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -1491,9 +1721,25 @@
         "defId": "BOOMADIER",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "level": "6-A",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BOOMADIER_NAME",
                 "name": "Battlefield: Naboo Iii Special Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Gungan Phalanx",
+        "defId": "GUNGANPHALANX",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_GUNGANPHALANX_NAME",
+                "name": "Battlefield: Naboo Iv Special Marquee Event"
             }
         ]
     },
@@ -1502,8 +1748,13 @@
         "defId": "HANSOLO",
         "locations": [
             {
-                "type": "Raids",
-                "name": "The Pit"
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "700 Mk I Raid Tokens/5"
             }
         ]
     },
@@ -1512,8 +1763,13 @@
         "defId": "HERASYNDULLAS3",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1527,8 +1783,17 @@
         "defId": "HERMITYODA",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "4050/152\n700/10\n1350/5"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "1250 Mk II Raid Tokens/5"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "1350 Mk I Guild Event Tokens/5\n2700 Mk I Guild Event Tokens/10\n4050 Mk I Guild Event Tokens/15"
             }
         ]
     },
@@ -1537,8 +1802,8 @@
         "defId": "HK47",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -1563,12 +1828,17 @@
         "defId": "HOTHREBELSCOUT",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1582,8 +1852,13 @@
         "defId": "HOTHREBELSOLDIER",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1629,13 +1904,18 @@
         "defId": "MAGNAGUARD",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "3-C",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1676,8 +1956,8 @@
         "defId": "IG86SENTINELDROID",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1691,8 +1971,8 @@
         "defId": "IG88",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -1701,8 +1981,8 @@
         "defId": "IMAGUNDI",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1716,12 +1996,17 @@
         "defId": "IMPERIALPROBEDROID",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "1800/10\n900/5"
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
             },
             {
-                "type": "Territory Battle",
-                "name": "Imperial Retaliation"
+                "type": "Guild Activity Store",
+                "cost": "1250 Mk II Raid Tokens/5"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "900 Mk II Guild Event Tokens/5\n1800 Mk II Guild Event Tokens/10"
             }
         ]
     },
@@ -1730,8 +2015,13 @@
         "defId": "IMPERIALSUPERCOMMANDO",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (Fleet)",
@@ -1763,6 +2053,11 @@
         ]
     },
     {
+        "name": "Jar Jar Binks",
+        "defId": "JARJARBINKS",
+        "locations": []
+    },
+    {
         "name": "Jawa",
         "defId": "JAWA",
         "locations": [
@@ -1778,8 +2073,8 @@
         "defId": "JAWAENGINEER",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -1788,8 +2083,8 @@
         "defId": "JAWASCAVENGER",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             }
         ]
     },
@@ -1798,8 +2093,13 @@
         "defId": "JEDIKNIGHTCONSULAR",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -1822,15 +2122,21 @@
     {
         "name": "Jedi Knight Cal Kestis",
         "defId": "JEDIKNIGHTCAL",
-        "locations": []
+        "locations": [
+            {
+                "type": "Hero's Journey",
+                "locId": "JEDIKNIGHTCAL_GUIDE_DETAILS_TITLE",
+                "name": "Jedi Knight Cal Kestis"
+            }
+        ]
     },
     {
         "name": "Jedi Knight Guardian",
         "defId": "JEDIKNIGHTGUARDIAN",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             }
         ]
     },
@@ -1840,6 +2146,7 @@
         "locations": [
             {
                 "type": "Hero's Journey",
+                "locId": "EVENT_JOURNEY_JEDIKNIGHTLUKE_NAME",
                 "name": "Luke Skywalker The Journey Continues"
             }
         ]
@@ -1850,7 +2157,8 @@
         "locations": [
             {
                 "type": "Hero's Journey",
-                "name": "Legend of the Old Republic"
+                "locId": "JEDIKNIGHTREVAN_GUIDE_DETAILS_TITLE",
+                "name": "Legend Of The Old Republic"
             }
         ]
     },
@@ -1890,21 +2198,20 @@
     {
         "name": "Juhani",
         "defId": "JUHANI",
-        "locations": [
-            {
-                "type": "Hard Modes (L)",
-                "level": "6-A",
-                "locId": "HARD_LIGHT"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Jyn Erso",
         "defId": "JYNERSO",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -1913,12 +2220,17 @@
         "defId": "K2SO",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -1927,8 +2239,14 @@
         "defId": "KANANJARRUSS3",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
                 "type": "Cantina",
@@ -1936,8 +2254,12 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -1962,8 +2284,8 @@
         "defId": "KIADIMUNDI",
         "locations": [
             {
-                "type": "Territory Battle",
-                "name": "Republic Offensive"
+                "type": "Guild Events Store",
+                "cost": "2125 Mk III Guild Event Tokens/5"
             }
         ]
     },
@@ -1972,13 +2294,18 @@
         "defId": "KITFISTO",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "4-F",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -2030,8 +2357,8 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -2067,13 +2394,18 @@
         "defId": "ADMINISTRATORLANDO",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "1-E",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -2093,6 +2425,11 @@
         "defId": "LOBOT",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "1-E",
                 "locId": "CANTINA"
@@ -2104,8 +2441,18 @@
         "defId": "LOGRAY",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EWOK_NAME",
+                "name": "Assault Battles: Forest Moon"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
+            },
+            {
+                "type": "Heroic Event",
+                "locId": "EVENT_HEROIC_ATST_NAME",
+                "name": "Endor Escalation Heroic Battle"
             }
         ]
     },
@@ -2125,17 +2472,22 @@
         "defId": "LUKESKYWALKER",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "1-B",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -2149,8 +2501,13 @@
         "defId": "LUMINARAUNDULI",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             }
         ]
     },
@@ -2159,17 +2516,27 @@
         "defId": "MACEWINDU",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
                 "level": "2-E",
                 "locId": "HARD_LIGHT"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -2178,12 +2545,17 @@
         "defId": "MAGMATROOPER",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
             },
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -2204,9 +2576,24 @@
         ]
     },
     {
+        "name": "Master Qui-Gon",
+        "defId": "MASTERQUIGON",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MASTERQUIGON_NAME",
+                "name": "All The Queen's Men Ii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Maul",
         "defId": "MAULS7",
         "locations": [
+            {
+                "type": "Guild Events Store",
+                "cost": "1750 Mk III Guild Event Tokens/5"
+            },
             {
                 "type": "Proving Grounds",
                 "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
@@ -2246,8 +2633,8 @@
         "defId": "HUMANTHUG",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             }
         ]
     },
@@ -2298,8 +2685,9 @@
                 "locId": "HARD_LIGHT"
             },
             {
-                "type": "Special Event",
-                "name": "Defense of Dathomir"
+                "type": "Heroic Event",
+                "locId": "EVENT_DEFENSE_OF_DATHOMIR_NAME",
+                "name": "Defense Of Dathomir Special Event"
             }
         ]
     },
@@ -2308,13 +2696,8 @@
         "defId": "NIGHTSISTERACOLYTE",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "2-A",
-                "locId": "CANTINA"
-            },
-            {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -2323,8 +2706,8 @@
         "defId": "NIGHTSISTERINITIATE",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             }
         ]
     },
@@ -2333,13 +2716,9 @@
         "defId": "NIGHTSISTERSPIRIT",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "7-F",
-                "locId": "CANTINA"
-            },
-            {
                 "type": "Special Event",
-                "name": "Ghosts of Dathomir"
+                "locId": "EVENT_HOLIDAY_GHOSTS_OF_DATHOMIR_NAME",
+                "name": "Ghosts Of Dathomir Special Event"
             }
         ]
     },
@@ -2348,13 +2727,9 @@
         "defId": "NIGHTSISTERZOMBIE",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "8-D",
-                "locId": "HARD_DARK"
-            },
-            {
                 "type": "Special Event",
-                "name": "Ghosts of Dathomir"
+                "locId": "EVENT_HOLIDAY_GHOSTS_OF_DATHOMIR_NAME",
+                "name": "Ghosts Of Dathomir Special Event"
             }
         ]
     },
@@ -2379,8 +2754,13 @@
         "defId": "NUTEGUNRAY",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -2389,13 +2769,18 @@
         "defId": "OLDBENKENOBI",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "1-C",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -2404,8 +2789,8 @@
         "defId": "DAKA",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -2431,11 +2816,23 @@
         ]
     },
     {
+        "name": "Padawan Obi-Wan",
+        "defId": "PADAWANOBIWAN",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_PADAWANOBIWAN_NAME",
+                "name": "All The Queen's Men I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Padmé Amidala",
         "defId": "PADMEAMIDALA",
         "locations": [
             {
                 "type": "Legendary Event",
+                "locId": "PADMEAMIDALA_GUIDE_DETAILS_TITLE",
                 "name": "Aggressive Negotiations"
             }
         ]
@@ -2445,8 +2842,8 @@
         "defId": "PAO",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             }
         ]
     },
@@ -2455,13 +2852,28 @@
         "defId": "PAPLOO",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EWOK_NAME",
+                "name": "Assault Battles: Forest Moon"
+            },
+            {
                 "type": "Cantina",
                 "level": "3-D",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
+            },
+            {
+                "type": "Heroic Event",
+                "locId": "EVENT_HEROIC_ATST_NAME",
+                "name": "Endor Escalation Heroic Battle"
             }
         ]
     },
@@ -2486,13 +2898,18 @@
         "defId": "PLOKOON",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
+            },
+            {
                 "type": "Cantina",
                 "level": "4-G",
                 "locId": "CANTINA"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             }
         ]
     },
@@ -2501,12 +2918,12 @@
         "defId": "POE",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -2520,8 +2937,13 @@
         "defId": "POGGLETHELESSER",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
+            },
+            {
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -2551,17 +2973,22 @@
         "defId": "PRINCESSLEIA",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "1-C",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -2573,6 +3000,11 @@
                 "type": "Cantina",
                 "level": "3-B",
                 "locId": "CANTINA"
+            },
+            {
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
             }
         ]
     },
@@ -2586,8 +3018,8 @@
         "defId": "QUIGONJINN",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
             }
         ]
     },
@@ -2597,6 +3029,7 @@
         "locations": [
             {
                 "type": "Legendary Event",
+                "locId": "R2D2_LEGENDARY_GUIDE_DETAILS_TITLE",
                 "name": "Daring Droid"
             }
         ]
@@ -2617,12 +3050,22 @@
         "defId": "HOTHLEIA",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "1800/10\n900/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Territory Battle",
-                "name": "Rebel Assault"
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "1250 Mk II Raid Tokens/5"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "900 Mk II Guild Event Tokens/5\n1800 Mk II Guild Event Tokens/10"
             }
         ]
     },
@@ -2663,12 +3106,12 @@
         "defId": "RESISTANCEPILOT",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             }
         ]
     },
@@ -2677,8 +3120,8 @@
         "defId": "RESISTANCETROOPER",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -2704,6 +3147,7 @@
         "locations": [
             {
                 "type": "Hero's Journey",
+                "locId": "EVENT_HERO_SCAVENGERREY_NAME",
                 "name": "Rey Hero's Journey"
             }
         ]
@@ -2713,8 +3157,8 @@
         "defId": "REY",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -2744,8 +3188,13 @@
         "defId": "ROYALGUARD",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -2758,6 +3207,11 @@
         "name": "Sabine Wren",
         "defId": "SABINEWRENS3",
         "locations": [
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
             {
                 "type": "Hard Modes (D)",
                 "level": "1-A",
@@ -2786,8 +3240,8 @@
         "defId": "SAVAGEOPRESS",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -2812,12 +3266,21 @@
         "defId": "SCARIFREBEL",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
+            },
+            {
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -2874,6 +3337,11 @@
         "defId": "SHAAKTI",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
+            },
+            {
                 "type": "Hard Modes (Fleet)",
                 "level": "5-A",
                 "locId": "HARD_FLEET"
@@ -2890,6 +3358,11 @@
         "defId": "SHORETROOPER",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
                 "type": "Hard Modes (L)",
                 "level": "9-B",
                 "locId": "HARD_LIGHT"
@@ -2901,13 +3374,18 @@
         "defId": "SITHASSASSIN",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
+                "name": "Secrets And Shadows Assault Battle"
+            },
+            {
                 "type": "Cantina",
                 "level": "6-C",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -2915,6 +3393,11 @@
         "name": "Sith Empire Trooper",
         "defId": "SITHTROOPER",
         "locations": [
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
+                "name": "Secrets And Shadows Assault Battle"
+            },
             {
                 "type": "Cantina",
                 "level": "8-B",
@@ -2981,17 +3464,22 @@
         "defId": "SNOWTROOPER",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
                 "type": "Cantina",
                 "level": "7-B",
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -3005,6 +3493,11 @@
         "defId": "STAP",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "7-F",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_STAP_NAME",
                 "name": "Repulsorcraft Reconnaissance Marquee Event"
@@ -3016,7 +3509,8 @@
         "defId": "STARKILLER",
         "locations": [
             {
-                "type": "Legacy Event",
+                "type": "Legendary Event",
+                "locId": "STARKILLER_JOURNEY_GUIDE_EVENT_TITLE_V2",
                 "name": "The Force Unleashed"
             }
         ]
@@ -3026,12 +3520,17 @@
         "defId": "STORMTROOPER",
         "locations": [
             {
-                "type": "Cantina Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             },
             {
                 "type": "Hard Modes (L)",
@@ -3045,8 +3544,9 @@
         "defId": "STORMTROOPERHAN",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
                 "type": "Cantina",
@@ -3054,8 +3554,12 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -3064,12 +3568,17 @@
         "defId": "SUNFAC",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
+                "name": "Ground War Assault Battles"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -3105,8 +3614,8 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -3157,13 +3666,23 @@
         "defId": "TEEBO",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EWOK_NAME",
+                "name": "Assault Battles: Forest Moon"
+            },
+            {
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "3-D",
                 "locId": "HARD_DARK"
+            },
+            {
+                "type": "Heroic Event",
+                "locId": "EVENT_HEROIC_ATST_NAME",
+                "name": "Endor Escalation Heroic Battle"
             }
         ]
     },
@@ -3210,7 +3729,8 @@
         "locations": [
             {
                 "type": "Hero's Journey",
-                "name": "The Mandalorian Hero's Journey"
+                "locId": "THEMANDALORIANBESKARARMOR_GUIDE_DETAILS_TITLE",
+                "name": "The Mandalorian (Beskar Armor)"
             }
         ]
     },
@@ -3240,17 +3760,22 @@
         "defId": "TIEFIGHTERPILOT",
         "locations": [
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
+                "name": "Empire Assault"
+            },
+            {
                 "type": "Cantina",
                 "level": "4-B",
                 "locId": "CANTINA"
             },
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Event Shop",
-                "cost": "400/10"
+                "type": "Guild Events Store",
+                "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
     },
@@ -3275,8 +3800,8 @@
         "defId": "TUSKENRAIDER",
         "locations": [
             {
-                "type": "GW Shipments",
-                "cost": "400/10"
+                "type": "Galactic War Store",
+                "cost": "400 Galactic War Tokens/10"
             },
             {
                 "type": "Hard Modes (D)",
@@ -3290,12 +3815,12 @@
         "defId": "TUSKENSHAMAN",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -3320,8 +3845,8 @@
         "defId": "UGNAUGHT",
         "locations": [
             {
-                "type": "Arena Shipments",
-                "cost": "400/10"
+                "type": "Squad Arena Store",
+                "cost": "400 Squad Arena Tokens/10"
             }
         ]
     },
@@ -3374,6 +3899,11 @@
         "defId": "VISASMARR",
         "locations": [
             {
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
+            {
                 "type": "Hard Modes (D)",
                 "level": "7-B",
                 "locId": "HARD_DARK"
@@ -3385,8 +3915,17 @@
         "defId": "WAMPA",
         "locations": [
             {
-                "type": "Guild Event Shop",
-                "cost": "4050/15\n2700/10\n1350/5"
+                "type": "Galactic Bounty Event",
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
+                "name": "Galactic Bounties Special Event"
+            },
+            {
+                "type": "Guild Activity Store",
+                "cost": "1250 Mk II Raid Tokens/5"
+            },
+            {
+                "type": "Guild Events Store",
+                "cost": "1350 Mk I Guild Event Tokens/5\n2700 Mk I Guild Event Tokens/10\n4050 Mk I Guild Event Tokens/15"
             }
         ]
     },
@@ -3395,8 +3934,8 @@
         "defId": "WATTAMBOR",
         "locations": [
             {
-                "type": "Territory Battle",
-                "name": "Separatist Might"
+                "type": "Guild Events Store",
+                "cost": "2125 Mk III Guild Event Tokens/5"
             }
         ]
     },
@@ -3405,8 +3944,13 @@
         "defId": "WEDGEANTILLES",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             }
         ]
     },
@@ -3421,7 +3965,8 @@
             },
             {
                 "type": "Heroic Event",
-                "name": "Endor Escalation"
+                "locId": "EVENT_HEROIC_ATST_NAME",
+                "name": "Endor Escalation Heroic Battle"
             }
         ]
     },
@@ -3446,8 +3991,8 @@
         "defId": "YOUNGHAN",
         "locations": [
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },
@@ -3478,12 +4023,12 @@
         "defId": "ZAMWESELL",
         "locations": [
             {
-                "type": "Fleet Shipments",
-                "cost": "400/10"
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Guild Shop",
-                "cost": "450/10"
+                "type": "Guild Activity Store",
+                "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
     },

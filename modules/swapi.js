@@ -801,12 +801,12 @@ module.exports = (opts = {}) => {
         } else {
             thisCooldown = guildMaxCooldown;
         }
-        const thisAC = allycode?.toString().replace(/[^\d]/g, "");
-        if (!allycode || Number.isNaN(allycode) || allycode.length !== 9) {
+        const thisAc = allycode?.toString().replace(/[^\d]/g, "");
+        if (!thisAc || Number.isNaN(thisAc) || thisAc.length !== 9) {
             throw new Error("Please provide a valid allycode");
         }
 
-        const player = await comlinkStub.getPlayer(allycode);
+        const player = await comlinkStub.getPlayer(thisAc);
         if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
@@ -881,11 +881,11 @@ module.exports = (opts = {}) => {
         }
         let warnings;
         let thisAc = allycode?.toString().replace(/[^\d]/g, "");
-        if (allycode?.length !== 9 || Number.isNaN(allycode)) throw new Error("Please provide a valid allycode");
-        thisAc = Number.parseInt(allycode, 10);
+        if (thisAc?.length !== 9 || Number.isNaN(thisAc)) throw new Error("Please provide a valid allycode");
+        thisAc = Number.parseInt(thisAc, 10);
 
         /** Get player from cache */
-        let player = await unitStats(allycode);
+        let player = await unitStats(thisAc);
         if (Array.isArray(player)) player = player[0];
         if (!player) {
             throw new Error("I don't know this player, make sure they're registered first");

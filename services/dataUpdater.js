@@ -16,14 +16,13 @@ const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
 
 let metadataFile;
 
-// TODO Use this for shop inventories
-// const featureStoreList = JSON.parse(fs.readFileSync(dataDir + "swgoh-json-files/featureStoreList.json", "utf-8"))[0];
-
 const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
 const dataDir = `${__dirname}/../data/`;
 const gameDataDir = `${__dirname}/../data/gameDataFiles/`;
+
+const featureStoreList = JSON.parse(fs.readFileSync(`${dataDir}swgoh-json-files/featureStoreList.json`, "utf-8"));
 
 const campaignMapNames = JSON.parse(fs.readFileSync(`${dataDir}swgoh-json-files/campaignMapNames.json`, "utf-8"))[0];
 const campaignMapNodes = JSON.parse(fs.readFileSync(`${dataDir}swgoh-json-files/campaignMapNodes.json`, "utf-8"))[0];
@@ -69,7 +68,7 @@ async function init() {
                 await runGameDataUpdaters();
             }
             (async function runUpdatersAsNeeded() {
-                const isNew = await updateMetaData();
+                const isNew = await updateMetaData(dataDir, comlinkStub);
                 if (isNew) {
                     await runGameDataUpdaters();
                 }
@@ -156,6 +155,8 @@ async function runGameDataUpdaters() {
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = [];
 
+    const locales = await getLocalizationData(metadataFile.latestLocalizationBundleVersion);
+
     // Load the files of char/ship locations
     const currentCharLocs = JSON.parse(fs.readFileSync(CHAR_LOCATIONS));
     const currentShipLocs = JSON.parse(fs.readFileSync(SHIP_LOCATIONS));
@@ -165,12 +166,12 @@ async function runGameDataUpdaters() {
     debugLog("Finished processing gameData chunks");
 
     // Run unit locations updaters
-    const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS);
+    const newCharLocs = await updateLocs(CHAR_FILE, CHAR_LOCATIONS, locales);
     if (newCharLocs && JSON.stringify(newCharLocs) !== JSON.stringify(currentCharLocs)) {
         log.push("Detected a change in character locations.");
         await saveFile(CHAR_LOCATIONS, newCharLocs);
     }
-    const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS);
+    const newShipLocs = await updateLocs(SHIP_FILE, SHIP_LOCATIONS, locales);
     if (newShipLocs && JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
         log.push("Detected a change in ship locations.");
         await saveFile(SHIP_LOCATIONS, newShipLocs);
@@ -519,7 +520,7 @@ async function updatePatrons(cache) {
 }
 
 async function updateLocs(unitListFile, currentLocFile, locales) {
-    debugLog("Updating unit locations");
+    debugLog(`Updating unit locations for ${unitListFile}`);
     const [currentUnits, currentLocs] = await Promise.all([
         fs.promises.readFile(unitListFile, "utf-8").then(JSON.parse),
         fs.promises.readFile(currentLocFile, "utf-8").then(JSON.parse),
@@ -531,10 +532,10 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
     const matArr = [];
     for (const unit of currentUnits) {
         const res = shardNameRes.find((mat) => mat?.id === `unitshard_${unit.uniqueName}`);
-        if (res?.length) {
+        if (res) {
             matArr.push({
                 defId: unit.uniqueName,
-                mats: res[0],
+                mats: res,
             });
         }
     }
@@ -546,7 +547,8 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
         HARD_DARK: ["FeatureTitle_DarkCampaigns", "DIFF_HARD"],
         HARD_FLEET: ["FeatureTitle_ShipPve", "DIFF_HARD"],
         HARD_LIGHT: ["FeatureTitle_LightCampaigns", "DIFF_HARD"],
-        CANTINA: ["FeatureTitle_DatacronBattles"],
+        CANTINA: ["KEYBINDING_NAME_CANTINA_BATTLES"],
+        // CANTINA: ["FeatureTitle_DatacronBattles"],
     };
     const bulkLocPut = [];
     for (const lang of langList) {
@@ -567,14 +569,17 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
 
     const outArr = [];
     for (const mat of matArr) {
-        const missions = mat?.mats?.lookupMissionList;
-        if (!missions?.length) continue;
+        const missions = mat?.mats?.lookupMissionList || [];
 
         const charArr = [];
         const usedLocId = new Set();
         for (const node of missions) {
             let locId = null;
             let charObj = {};
+
+            // Skip ones that haven't existed for years
+            if (["BASICTRAINING"].includes(node.campaignMapId)) continue;
+            if (["FLASH_LUKE"].includes(node.campaignNodeId)) continue;
 
             if (node.campaignId === "EVENTS") {
                 if (node.campaignMapId === "MARQUEE") {
@@ -585,11 +590,52 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
                     // Process the two progression events (GMY / EP)
                     locId = `PROGRESSIONEVENT_${node.campaignNodeId}_NAME`;
                     charObj = { type: "Legendary Event", locId };
-                } else if (node.campaignMapId === "SCHEDULED" && node.campaignNodeId === "CONQUEST_UNIT_TRIALS") {
-                    // Process the Proving Grounds events
-                    // - Really just localize "Proving Grounds" since the rest is just the unit's name
-                    locId = "EVENT_CONQUEST_UNIT_TRIALS_NAME";
-                    charObj = { type: "Proving Grounds", locId };
+                } else if (node.campaignMapId === "JOURNEY") {
+                    const journeyKeys = ["JOURNEY_JEDIKNIGHTLUKE", "JOURNEY_DARTHREVAN"];
+                    if (journeyKeys.some((key) => node.campaignNodeId.includes(key))) {
+                        locId = `EVENT_JOURNEY_${mat.defId}_NAME`;
+                    } else if (node.campaignNodeId === "HEROJOURNEY_SCAVENGERREY") {
+                        locId = "EVENT_HERO_SCAVENGERREY_NAME";
+                    } else {
+                        locId = check1or2(`${mat.defId}_GUIDE_DETAILS_TITLE`, locales.eng_us);
+                    }
+                    charObj = { type: "Hero's Journey", locId };
+                } else if (node.campaignMapId === "LEGENDARY") {
+                    if (["THE_FORCE_UNLEASHED", "DARK_TIMES"].includes(node.campaignNodeId)) {
+                        locId = `${mat.defId}_JOURNEY_GUIDE_EVENT_TITLE_V2`;
+                    } else {
+                        locId = check1or2(`${mat.defId}_GUIDE_DETAILS_TITLE`, locales.eng_us);
+                    }
+                    charObj = { type: "Legendary Event", locId };
+                } else if (node.campaignMapId === "EPIC") {
+                    if (node.campaignNodeId === "CLASH_ON_KAMINO") {
+                        locId = `EPIC_CONFRONTATION_${node.campaignNodeId}_NAME`;
+                    } else {
+                        locId = `MYTHICEVENT_${node.campaignNodeId}_V2`;
+                    }
+                    charObj = { type: "Epic Confrontation", locId };
+                } else if (node.campaignMapId === "HEROIC") {
+                    locId = `EVENT_${node.campaignNodeId.replace("NODE_EVENT_", "")}_NAME`;
+                    charObj = { type: "Heroic Event", locId };
+                } else if (node.campaignMapId === "FLEETMASTERY") {
+                    locId = `EVENT_FLEET_MASTERY_${mat.defId}_NAME`;
+                    charObj = { type: "Fleet Event", locId };
+                } else if (node.campaignMapId === "SCHEDULED") {
+                    if (node.campaignNodeId === "CONQUEST_UNIT_TRIALS") {
+                        // Process the Proving Grounds events
+                        // - Really just localize "Proving Grounds" since the rest is just the unit's name
+                        locId = "EVENT_CONQUEST_UNIT_TRIALS_NAME";
+                        charObj = { type: "Proving Grounds", locId };
+                    } else if (node.campaignNodeId.includes("GHOSTS_OF_DATHOMIR")) {
+                        locId = "EVENT_HOLIDAY_GHOSTS_OF_DATHOMIR_NAME";
+                        charObj = { type: "Special Event", locId };
+                    } else if (node.campaignNodeId.startsWith("NODE_EVENT_ASSAULT")) {
+                        locId = `EVENT_ASSAULT_${node.campaignNodeId.split("_").pop()}_NAME`;
+                        charObj = { type: "Assault Battle Event", locId };
+                    } else if (node.campaignNodeId.includes("GALACTIC_BOUNTY")) {
+                        locId = "EVENT_GALACTIC_BOUNTY_01_NAME";
+                        charObj = { type: "Galactic Bounty Event", locId };
+                    }
                 } else if (node.campaignMapId === "GALACTIC") {
                     // Process galactic legends events
                     //  - Still not sure how to manage LORDVADER in place of VADER
@@ -608,7 +654,10 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
                         }
                     }
 
-                    charObj = { type: "Galactic Legend", locId };
+                    charObj = { type: "Galactic Ascension", locId };
+                } else {
+                    // console.log(`[updateLocs] Unknown campaign: ${node.campaignId} - ${node.campaignMapId} - ${node.campaignNodeId}`);
+                    continue;
                 }
 
                 if (!locId || usedLocId.has(locId)) continue;
@@ -618,10 +667,11 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
                 let isAvailable = true;
                 for (const lang of langList) {
                     const langKey = locales[lang][locId];
-                    if (!langKey) {
+                    if (!langKey){
                         isAvailable = false;
-                        break;
+                        continue;
                     }
+
                     if (lang === "eng_us") charObj.name = toProperCase(langKey);
                     const out = {
                         id: locId,
@@ -662,6 +712,23 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
                 });
             }
         }
+
+        // Process the shop locations/ costs
+        for (const store of featureStoreList) {
+            if (!store?.rewards?.units?.length) continue;
+
+            const thisUnit = store.rewards.units.find((u) => u.baseId === mat.defId);
+            if (!thisUnit) continue;
+
+            charArr.push({
+                type: store.storeId,
+                cost: thisUnit.purchaseList
+                    .map(({cost, currency, quantity}) => `${cost} ${currency}/${quantity}`)
+                    .join("\n")
+            });
+        }
+
+
         outArr.push({ defId: mat.defId, locations: charArr });
     }
 
@@ -669,12 +736,15 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
     const whitelistTypeLocs = [
         "Achievements",
         "Assault Battle",
-        "Epic Confrontation",
         "Challenges",
+        "Epic Confrontation",
+        "Fleet Event",
         "Hero's Journey",
         "Heroic Event",
         "Legacy Event",
         "Legendary Event",
+        "Mythic Event",
+        "Proving Grounds",
         "Raids",
         "Special Event",
         "Territory Battle",
@@ -697,16 +767,16 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
         const thisUnitLoc = locationMap[unit.uniqueName] || [];
         const unitLoc = outArr.find((loc) => loc.defId === unit.uniqueName) || { defId: unit.uniqueName };
 
-        const locations = [...thisUnitLoc.locations, ...unitLoc.locations];
+        const locations = removeDuplicates([...thisUnitLoc, ...(unitLoc?.locations || [])]);
         const unitName = thisUnitLoc.name || unitLoc.name || unit.name;
 
-        if (unitName || unitLoc.defId) {
-            finalOut.push({
-                name: unitName,
-                defId: unitLoc.defId,
-                locations: locations.sort((a, b) => (a.type?.toLowerCase() > b.type?.toLowerCase() ? 1 : -1)),
-            });
-        }
+        if (!unitName && !unitLoc.defId) continue;
+
+        finalOut.push({
+            name: unitName,
+            defId: unitLoc.defId,
+            locations: locations.sort((a, b) => (a.type?.toLowerCase() > b.type?.toLowerCase() ? 1 : -1)),
+        });
     }
 
     // Sort the final output array then return it
@@ -715,6 +785,26 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
         const nameB = b?.name?.toLowerCase() || "";
         return nameA > nameB ? 1 : -1 || a.defId.toLowerCase() > b.defId.toLowerCase() ? 1 : -1;
     });
+}
+
+function removeDuplicates(locations) {
+    const seen = new Set();
+    return locations.filter((location) => {
+        const key = `${location.type}_${location?.cost || location?.locId}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function check1or2(strIn, locale) {
+    if (locale?.[strIn]) {
+       return strIn;
+    }
+    if (locale?.[`${strIn}_2`]) {
+        return `${strIn}_2`;
+    }
+    return null;
 }
 
 async function getMostRecentGameData(version) {
@@ -826,7 +916,7 @@ async function processGameData(gameData, metadataFile) {
         await saveFile(SHIP_FILE, sortByName(shipsOut));
         debugLog("Finished processing Units");
 
-        // await processJourneyReqs(gameData);
+        await processJourneyReqs(gameData);
         debugLog("Finished processing Journey Reqs");
 
         const raidNamesOut = saveRaidNames(locales);
@@ -1237,7 +1327,7 @@ function unitsForUnitMapFile(unitsIn) {
 }
 
 async function getLocalizationData(bundleVersion) {
-    const IGNORE_KEYS = ["datacron", "anniversary", "promo", "subscription", "marquee"];
+    const IGNORE_KEYS = ["key_mapping", "datacron", "anniversary", "promo", "subscription"];
     let localeData = null;
     const dataFile = `localizationBundle_${bundleVersion}.json`;
     const filePath = gameDataDir + dataFile;
@@ -1254,12 +1344,16 @@ async function getLocalizationData(bundleVersion) {
     try {
         // If we don't have the most recent version locally, grab a new copy of the gameData from CG
         localeData = await comlinkStub.getLocalizationBundle(bundleVersion, true);
-        localeData["Loc_Key_Mapping.txt"] = undefined;
 
         const localeOut = {};
         for (const [lang, content] of Object.entries(localeData)) {
             const out = {};
+            if (lang === "Loc_Key_Mapping.txt") continue;
             const langKey = lang.replace(/^Loc_|\.txt$/gi, "").toLowerCase();
+            if (!content) {
+                console.warn(`[getLocalizationData] No content for ${langKey}`);
+                continue;
+            }
 
             for (const row of content.split("\n")) {
                 if (IGNORE_KEYS.some((ign) => row.toLowerCase().includes(ign))) continue;
