@@ -159,7 +159,7 @@ module.exports = async (Bot, client, interaction) => {
             // Otherwise, print out what I can about it
             if (typeof err !== "string") {
                 logErr(`[${Bot.myTime()}] [interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
-                console.error(interaction);
+                console.error(interaction?.options?._hoistedOptions || interaction?.options);
                 console.error(err);
             } else {
                 logErr(err);

@@ -70,8 +70,7 @@ class Info extends Command {
                 ],
             });
         } catch (e) {
-            console.log("Error in info, caught error:");
-            return Bot.logger.error(e);
+            return Bot.logger.error(`[slash/info] Caught error: ${e.toString()}`);
         }
     }
 }
