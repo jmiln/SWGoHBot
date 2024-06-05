@@ -287,7 +287,7 @@ class GuildSearch extends Command {
                 if (!stats?.final) {
                     continue;
                 }
-                for (const s in Object.keys(stats.final)) {
+                for (const s of Object.keys(stats.final)) {
                     if (stats.final[s] % 1 !== 0) {
                         stats[s] = `${(stats.final[s] * 100).toFixed(2)}%`;
                     } else {
@@ -355,6 +355,7 @@ class GuildSearch extends Command {
 
             const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
             return interaction.editReply({
+                content: null,
                 embeds: [
                     {
                         author: {

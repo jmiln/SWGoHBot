@@ -511,7 +511,7 @@ module.exports = (Bot, client) => {
             // Get the max length needed, then add a bit for padding
             if (options.useHeader) {
                 // console.log(h, rows);
-                max[h] = Math.max(...[headers[h].value.length].concat(rows.map((v) => v[h].toString().length))) + 2;
+                max[h] = Math.max(...[headers[h].value.length].concat(rows.map((v) => v[h]?.toString().length || 0))) + 2;
             } else {
                 max[h] =
                     Math.max(
