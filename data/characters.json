@@ -1761,9 +1761,9 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -2174,8 +2174,8 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Offense x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5330,7 +5330,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -5667,7 +5667,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",

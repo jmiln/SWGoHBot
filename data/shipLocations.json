@@ -9,100 +9,16 @@
                 "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -111,93 +27,9 @@
         "defId": "JEDISTARFIGHTERANAKIN",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-B",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -206,93 +38,9 @@
         "defId": "SITHBOMBER",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-C",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -306,96 +54,12 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
             },
             {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -409,96 +73,12 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
             },
             {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -506,82 +86,6 @@
         "name": "BTL-B Y-wing Starfighter",
         "defId": "YWINGCLONEWARS",
         "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
             {
                 "type": "Hard Modes (L)",
                 "level": "7-C",
@@ -591,14 +95,6 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_YWINGCLONEWARS_NAME",
                 "name": "Republic Stalwart Marquee Event"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -616,92 +112,8 @@
                 "cost": "400 Cantina Tokens/4"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -710,93 +122,9 @@
         "defId": "CAPITALCHIMAERA",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Legendary Event",
                 "locId": "CAPITALCHIMAERA_GUIDE_DETAILS_TITLE",
                 "name": "Imperial Chimaera"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -810,105 +138,21 @@
                 "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-A",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -920,90 +164,6 @@
                 "type": "Cantina",
                 "level": "3-A",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -1015,90 +175,6 @@
                 "type": "Cantina",
                 "level": "8-E",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -1107,455 +183,31 @@
         "defId": "EMPERORSSHUTTLE",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "7-D",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
     {
         "name": "Endurance",
         "defId": "CAPITALJEDICRUISER",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Executor",
         "defId": "CAPITALEXECUTOR",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Executrix",
         "defId": "CAPITALSTARDESTROYER",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Finalizer",
         "defId": "CAPITALFINALIZER",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "First Order SF Tie Fighter",
@@ -1577,100 +229,16 @@
                 "name": "Secrets And Shadows Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -1679,93 +247,9 @@
         "defId": "FURYCLASSINTERCEPTOR",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Proving Grounds",
                 "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
                 "name": "Proving Grounds Conquest Trials"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -1779,101 +263,17 @@
                 "name": "Empire Assault"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
             },
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "4-A",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -1887,105 +287,21 @@
                 "name": "Ground War Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "2-A",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -1999,100 +315,16 @@
                 "name": "Ground War Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2106,101 +338,17 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
             },
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "2-F",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2209,278 +357,25 @@
         "defId": "MILLENNIUMFALCON",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Legendary Event",
                 "locId": "MILLENNIUMFALCON_GUIDE_DETAILS_TITLE",
                 "name": "Flight Of The Falcon"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
     {
         "name": "Home One",
         "defId": "CAPITALMONCALAMARICRUISER",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Hound's Tooth",
         "defId": "HOUNDSTOOTH",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "8-D",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2489,93 +384,9 @@
         "defId": "HYENABOMBER",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "8-B",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2584,93 +395,9 @@
         "defId": "IG2000",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "6-E",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2679,93 +406,9 @@
         "defId": "TIEBOMBERIMPERIAL",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "5-A",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2784,100 +427,16 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -2891,105 +450,21 @@
                 "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "8-B",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3003,93 +478,9 @@
                 "name": "Secrets And Shadows Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "9-A",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3098,185 +489,16 @@
         "defId": "MILLENNIUMFALCONPRISTINE",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-D",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
     {
         "name": "Leviathan",
         "defId": "CAPITALLEVIATHAN",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Malevolence",
@@ -3293,93 +515,9 @@
         "defId": "MARAUDER",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "3-E",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3391,90 +529,6 @@
                 "type": "Cantina",
                 "level": "5-F",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3483,93 +537,9 @@
         "defId": "MG100STARFORTRESSSF17",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "2-D",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3588,93 +558,9 @@
         "defId": "OUTRIDER",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "3-C",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3688,101 +574,17 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
             },
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "1-A",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3801,100 +603,16 @@
                 "locId": "CANTINA"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -3903,376 +621,38 @@
         "defId": "XWINGBLACKONE",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
             },
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "3-A",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
     {
         "name": "Profundity",
         "defId": "CAPITALPROFUNDITY",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Raddus",
         "defId": "CAPITALRADDUS",
-        "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Raven's Claw",
         "defId": "RAVENSCLAW",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "2-E",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4281,101 +661,17 @@
         "defId": "RAZORCREST",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
             },
             {
                 "type": "Guild Events Store",
                 "cost": "1750 Mk III Guild Event Tokens/5"
             },
             {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Proving Grounds",
                 "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
                 "name": "Proving Grounds Conquest Trials"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4384,93 +680,9 @@
         "defId": "YWINGREBEL",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "4-C",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4479,105 +691,21 @@
         "defId": "XWINGRESISTANCE",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "1-E",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4591,96 +719,12 @@
                 "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
             },
             {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4689,93 +733,9 @@
         "defId": "MILLENNIUMFALCONEP7",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "5-D",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4789,101 +749,17 @@
                 "name": "Secrets And Shadows Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
             },
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "3-D",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4892,93 +768,9 @@
         "defId": "SCYTHE",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Proving Grounds",
                 "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
                 "name": "Proving Grounds Conquest Trials"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -4990,90 +782,6 @@
                 "type": "Cantina",
                 "level": "6-C",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5082,97 +790,13 @@
         "defId": "SLAVE1",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "2-B",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5186,105 +810,21 @@
                 "name": "Ground War Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (L)",
                 "level": "9-D",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5303,97 +843,13 @@
                 "name": "Empire Assault"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (Fleet)",
                 "level": "4-B",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5402,93 +858,9 @@
         "defId": "TIEDAGGER",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (D)",
                 "level": "9-D",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5497,93 +869,9 @@
         "defId": "TIEDEFENDER",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "3-B",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5592,93 +880,9 @@
         "defId": "FIRSTORDERTIEECHELON",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (Fleet)",
                 "level": "4-E",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5692,93 +896,9 @@
                 "name": "Empire Assault"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "9-B",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5790,90 +910,6 @@
                 "type": "Cantina",
                 "level": "3-F",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5882,93 +918,9 @@
         "defId": "TIEINTERCEPTOR",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Proving Grounds",
                 "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
                 "name": "Proving Grounds Conquest Trials"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -5982,105 +934,21 @@
                 "name": "Places Of Power Assault Battles"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
             },
             {
                 "type": "Hard Modes (D)",
                 "level": "2-D",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -6088,82 +956,6 @@
         "name": "Vulture Droid",
         "defId": "VULTUREDROID",
         "locations": [
-            {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
             {
                 "type": "Hard Modes (L)",
                 "level": "4-D",
@@ -6173,14 +965,6 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_VULTUREDROID_NAME",
                 "name": "Mindless Destruction Marquee Event"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -6194,100 +978,16 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
             },
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/4"
             },
             {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     },
@@ -6296,93 +996,9 @@
         "defId": "XANADUBLOOD",
         "locations": [
             {
-                "type": "Cantina Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/5"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Galactic War Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/10\n200/10"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "450/4\n440/4"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "700/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Activity Store",
-                "cost": "1250/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/4"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "400/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1350/5\n2700/10\n4050/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1900/5\n3800/10\n5700/15"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "900/5\n1800/10"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "1750/5"
-            },
-            {
-                "type": "Guild Events Store",
-                "cost": "2125/5"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "8-B",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Shard Shop",
-                "cost": "2250/5\n4500/10\n13500/30"
-            },
-            {
-                "type": "Squad Arena Store",
-                "cost": "400/10"
             }
         ]
     }

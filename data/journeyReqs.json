@@ -3566,5 +3566,31 @@
                 "tier": 7
             }
         ]
+    },
+    "JARJARBINKS": {
+        "guideId": "BOMBAD_GENERAL_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "BOSSNASS",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CAPTAINTARPALS",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BOOMADIER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "GUNGANPHALANX",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
     }
 }
