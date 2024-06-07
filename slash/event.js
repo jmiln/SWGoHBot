@@ -568,7 +568,7 @@ class Event extends Command {
                                 let from = "N/A"; // Default if there's nothing to show
                                 let to = "N/A";
                                 let code = true; // Show in inline code blocks
-                                if (field !== "channel") {
+                                if (field === "channel") {
                                     if (event.channel) {
                                         if (Bot.isChannelId(event.channel)) {
                                             from = `<#${event.channel}>`;
@@ -581,8 +581,8 @@ class Event extends Command {
                                     }
                                     code = false;
                                 } else {
-                                    from = event[field].toString().length ? event[field].toString() : "N/A";
-                                    to = validEvent.event[field].toString().length ? validEvent.event[field].toString() : "N/A";
+                                    from = event[field]?.toString().length ? event[field].toString() : "N/A";
+                                    to = validEvent.event[field]?.toString().length ? validEvent.event[field].toString() : "N/A";
                                 }
                                 if (code) {
                                     outLog.push(`Updated **${Bot.toProperCase(field)}** from \`${from}\` to \`${to}\``);
