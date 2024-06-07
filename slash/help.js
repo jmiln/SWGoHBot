@@ -54,22 +54,7 @@ class Help extends Command {
                 const catCmd = Object.keys(thisCat.commands);
 
                 for (const cmd of catCmd) {
-                    const cmdArr = [`**/${cmd}**\n${thisCat.commands[cmd].desc}`];
-                    if (isDetailed) {
-                        const usageLen = thisCat.commands[cmd]?.usage?.length;
-                        if (usageLen) {
-                            for (const [ix, use] of thisCat.commands[cmd].usage.entries()) {
-                                const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
-                                if (!formattedUse.startsWith("*")) {
-                                    cmdArr.push(`** │** ${formattedUse}`);
-                                } else if (ix === usageLen - 1) {
-                                    cmdArr.push(`** └** ${formattedUse}`);
-                                } else {
-                                    cmdArr.push(`** ├** ${formattedUse}`);
-                                }
-                            }
-                        }
-                    }
+                    const cmdArr = formatCmdHelp(thisCat.commands[cmd].usage, cmd, thisCat.commands[cmd].desc, isDetailed);
                     outArr.push(cmdArr.join("\n"));
                 }
 
@@ -110,28 +95,17 @@ class Help extends Command {
             }
         } else {
             // Searching for info on a certain command
-            const commands = Object.keys(Bot.help).reduce((acc, curr) => {
-                const currCat = Bot.help[curr].commands;
-                return acc.concat(currCat);
-            }, {});
+            const commands = {};
+            for (const cat of Object.keys(Bot.help)) {
+                for (const cmd of Object.keys(Bot.help[cat].commands)) {
+                    commands[cmd] = Bot.help[cat].commands[cmd];
+                }
+            }
 
             const thisCom = commands[search.toLowerCase()];
             if (!thisCom) return super.error(interaction, "I couldn't find a match for that command name.");
 
-            const cmdArr = [`**/${search.toLowerCase()}**\n${thisCom.desc}`];
-            const usageLen = thisCom.usage?.length;
-            if (usageLen) {
-                for (const [ix, use] of thisCom.usage.entries()) {
-                    const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
-                    if (!formattedUse.startsWith("*")) {
-                        cmdArr.push(`** │** ${formattedUse}`);
-                    } else if (ix === usageLen - 1) {
-                        cmdArr.push(`** └** ${formattedUse}`);
-                    } else {
-                        cmdArr.push(`** ├** ${formattedUse}`);
-                    }
-                }
-            }
+            const cmdArr = formatCmdHelp(thisCom.usage, search, thisCom.desc);
 
             await interaction.reply({
                 embeds: [
@@ -142,6 +116,24 @@ class Help extends Command {
                     },
                 ],
             });
+        }
+
+        function formatCmdHelp(usage, searchName, desc, isDetailed=true) {
+            const cmdArr = [`**/${searchName.toLowerCase()}**\n${desc}`];
+            if (!isDetailed || !Array.isArray(usage) || !usage?.length) return cmdArr;
+            const usageLen = usage.length;
+
+            for (const [ix, use] of usage.entries()) {
+                const formattedUse = use.replace(/(\[[^\]]*\]|<[^>]*>)/g, "`$1`");
+                if (!formattedUse.startsWith("*")) {
+                    cmdArr.push(`** │** ${formattedUse}`);
+                } else if (ix === usageLen - 1) {
+                    cmdArr.push(`** └** ${formattedUse}`);
+                } else {
+                    cmdArr.push(`** ├** ${formattedUse}`);
+                }
+            }
+            return cmdArr;
         }
     }
 }
