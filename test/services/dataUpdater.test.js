@@ -4402,6 +4402,10 @@ describe("unitsToCharacterDB", () => {
                     update: {
                         $set: {
                             baseId: "GRANDINQUISITOR",
+                            categoryIdList: undefined,
+                            creationRecipeReference: undefined,
+                            crewList: undefined,
+                            nameKey: undefined,
                             skillReferenceList: [
                                 { skillId: "basicskill_GRANDINQUISITOR", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
                                 { skillId: "specialskill_GRANDINQUISITOR01", requiredTier: 2, requiredRarity: 8, requiredRelicTier: 1 },
@@ -4445,6 +4449,10 @@ describe("unitsToCharacterDB", () => {
                     update: {
                         $set: {
                             baseId: "EMPERORSSHUTTLE",
+                            categoryIdList: undefined,
+                            creationRecipeReference: undefined,
+                            crewList: undefined,
+                            nameKey: undefined,
                             skillReferenceList: [
                                 { skillId: "basicskill_emperorsshuttle", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
                                 { skillId: "uniqueskill_emperorsshuttle01", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
@@ -4468,6 +4476,10 @@ describe("unitsToCharacterDB", () => {
                     update: {
                         $set: {
                             baseId: "BADBATCHECHO",
+                            nameKey: undefined,
+                            categoryIdList: undefined,
+                            creationRecipeReference: undefined,
+                            crewList: undefined,
                             skillReferenceList: [
                                 { skillId: "basicskill_BADBATCHECHO", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
                                 { skillId: "specialskill_BADBATCHECHO01", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
@@ -4504,6 +4516,10 @@ describe("unitsToCharacterDB", () => {
                     update: {
                         $set: {
                             baseId: "QUIGONJINN",
+                            nameKey: undefined,
+                            categoryIdList: undefined,
+                            creationRecipeReference: undefined,
+                            crewList: undefined,
                             skillReferenceList: [
                                 { skillId: "specialskill_QUIGONJINN01", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
                                 { skillId: "specialskill_QUIGONJINN02", requiredTier: 2, requiredRarity: 8, requiredRelicTier: 1 },
@@ -4540,6 +4556,10 @@ describe("unitsToCharacterDB", () => {
                     update: {
                         $set: {
                             baseId: "ROSETICO",
+                            nameKey: undefined,
+                            categoryIdList: undefined,
+                            creationRecipeReference: undefined,
+                            crewList: undefined,
                             skillReferenceList: [
                                 { skillId: "basicskill_ROSETICO", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
                                 { skillId: "specialskill_ROSETICO01", requiredTier: 1, requiredRarity: 8, requiredRelicTier: 1 },
