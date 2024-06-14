@@ -472,7 +472,7 @@ class ArenaWatch extends Command {
             if (!Bot.isAllyCode(ac)) throw new Error(`Invalid code (${ac})!`);
             ac = ac.replace(/[^\d]/g, "");
 
-            mention = Bot.isUserMention(mention.trim() || "") ? mention.replace(/[^\d]/g, "") : null;
+            mention = Bot.isUserMention(mention?.trim() || "") ? mention.replace(/[^\d]/g, "") : null;
             return [Number.parseInt(ac, 10), mention];
         }
 
@@ -645,10 +645,11 @@ class ArenaWatch extends Command {
                     const codesIn = interaction.options
                         .getString("allycodes")
                         .split(",") // Split em at the commas if there are more than one
-                        .map((a) => a.trim()); // Trim off any spaces in case
+                        .map((a) => a?.trim()) // Trim off any spaces in case
+                        .filter(Boolean);
 
                     // The mark to put with the ally code (Optional)
-                    const mark = interaction.options.getString("mark");
+                    const mark = interaction.options.getString("mark") || "";
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
                         outLog.push(
@@ -669,11 +670,11 @@ class ArenaWatch extends Command {
                             [ac, mention] = getAcMention(code);
                             if (!Bot.isAllyCode(ac)) {
                                 outLog.push(`${ac} is not a valid allycode.`);
-                                return;
+                                continue;
                             }
                         } catch (e) {
                             outLog.push(e);
-                            return;
+                            continue;
                         }
 
                         codes.push({
@@ -769,7 +770,7 @@ class ArenaWatch extends Command {
                     const codesIn = interaction.options
                         .getString("allycodes")
                         .split(",") // Split em at the commas if there are more than one
-                        .map((a) => a.trim()) // Trim off any spaces in case
+                        .map((a) => a?.trim()) // Trim off any spaces in case
                         .filter((a) => Bot.isAllyCode(a));
 
                     // Some checks before getting to the logic
