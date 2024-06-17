@@ -94,7 +94,7 @@ module.exports = (Bot, client) => {
         };
     };
 
-    Bot.deployCommands = async () => {
+    Bot.deployCommands = async (force=false) => {
         const existingCommands = await fetchCommands();
         const updateRequired = [];
 
@@ -105,7 +105,7 @@ module.exports = (Bot, client) => {
                 updateRequired.push({ command: commandData, reason: `New command${commandData?.guildOnly ? " (guild only)" : ""}` });
             } else {
                 const areOptionsEqual = compareOptions(commandData.options || [], existingCmd.options || []);
-                if (!areOptionsEqual) {
+                if (!areOptionsEqual || force) {
                     updateRequired.push({
                         command: commandData,
                         reason: `Update required${commandData?.guildOnly ? " (guild only)" : ""}`,

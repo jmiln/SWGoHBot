@@ -330,7 +330,6 @@ module.exports = (opts = {}) => {
 
             playerStats = playerStats.concat(updatedList);
 
-            let warning;
             if (needUpdating.length) {
                 const updatedBare = [];
                 try {
@@ -353,11 +352,11 @@ module.exports = (opts = {}) => {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(bareP.roster),
-                            }).then((res) => res.json());
-                            bareP.roster = statRoster;
+                            });
+                            const statRosterRes = await statRoster.json();
+                            bareP.roster = statRosterRes;
                         } catch (error) {
-                            console.log(error);
-                            throw new Error(`Error getting player stats: ${error}`);
+                            continue;
                         }
 
                         for (const char of bareP.roster) {
@@ -378,14 +377,10 @@ module.exports = (opts = {}) => {
                         }
 
                         const charStats = await cache.put(config.mongodb.swapidb, "playerStats", { allyCode: bareP.allyCode }, bareP);
-                        charStats.warnings = warning;
+                        if (options?.defId?.length) {
+                            charStats.roster = charStats.roster.filter((ch) => ch.defId === options.defId);
+                        }
                         playerStats.push(charStats);
-                    }
-                }
-                if (options?.defId) {
-                    for (const p of playerStats) {
-                        if (!p.roster) continue;
-                        p.roster = p.roster.filter((ch) => ch.defId === options.defId);
                     }
                 }
             }

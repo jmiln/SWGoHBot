@@ -1737,6 +1737,11 @@
         "defId": "GUNGANPHALANX",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-D",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_GUNGANPHALANX_NAME",
                 "name": "Battlefield: Naboo Iv Special Marquee Event"
@@ -2512,6 +2517,11 @@
         ]
     },
     {
+        "name": "Luthen Rael",
+        "defId": "LUTHENRAEL",
+        "locations": []
+    },
+    {
         "name": "Mace Windu",
         "defId": "MACEWINDU",
         "locations": [
@@ -2803,11 +2813,6 @@
         "name": "Omega",
         "defId": "BADBATCHOMEGA",
         "locations": [
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "4-D",
-                "locId": "HARD_FLEET"
-            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BADBATCHOMEGA_NAME",
@@ -3643,7 +3648,13 @@
     {
         "name": "Taron Malicos",
         "defId": "TARONMALICOS",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Tech",

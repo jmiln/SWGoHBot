@@ -852,7 +852,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Potency"
         }
     },
     {
@@ -1761,9 +1761,9 @@
         ],
         "mods": {
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -2174,7 +2174,7 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
+                "Crit. Damage x4",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -2771,7 +2771,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -4443,8 +4443,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4994,6 +4994,23 @@
         "avatarName": "charui_luminara"
     },
     {
+        "name": "Luthen Rael",
+        "uniqueName": "LUTHENRAEL",
+        "aliases": [
+            "Luthen Rael"
+        ],
+        "avatarName": "charui_luthenrael",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luthenrael.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_REBELFIGHTER_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Mace Windu",
         "uniqueName": "MACEWINDU",
         "aliases": [
@@ -5330,7 +5347,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -6076,7 +6093,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -7433,8 +7450,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7842,9 +7860,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_zamwesell"
     },
