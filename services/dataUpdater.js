@@ -3,8 +3,12 @@ const config = require(`${__dirname}/../config.js`);
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 const { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } = require("../modules/guildConfig/patreonSettings");
 
+const { inspect } = require("node:util");
+const path = require("node:path");
 const fs = require("node:fs");
+
 const { eachLimit } = require("async");
+const Piscina = require("piscina");
 
 const MongoClient = require("mongodb").MongoClient;
 let cache = null;
@@ -39,7 +43,7 @@ const RAID_NAMES_FILE = `${dataDir}raidNames.json`;
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
 
 // The max players to grab at the same time
-const MAX_CONCURRENT = 20;
+const MAX_CONCURRENT = 100;
 let modMap = JSON.parse(fs.readFileSync(`${dataDir}modMap.json`));
 let unitMap = JSON.parse(fs.readFileSync(`${dataDir}unitMap.json`));
 
@@ -81,8 +85,9 @@ async function init() {
             setInterval(() => updatePatrons(cache), 15 * 60 * 1000);
         } else {
             // If we're forcing an update, just run the bits we want then exit
-            await runGameDataUpdaters();
-            // await runModUpdaters();
+            console.log("Forcing update, running updaters");
+            // await runGameDataUpdaters();
+            await runModUpdaters();
             process.exit(0);
         }
     } catch (error) {
@@ -289,22 +294,26 @@ async function getGuildPlayerIds(guildIds) {
 
 // Stick all of the characters from each player's rosters into an array ot be processed later
 async function getPlayerRosters(playerIds) {
-    debugLog("Getting player rosters");
+    debugLog(`Getting rosters for ${playerIds.length} players`);
+    const workerPath = path.resolve(__dirname, "../modules/workers/getStrippedModsWorker.js");
+    const piscina = new Piscina({ filename: workerPath });
     const rosterArr = [];
 
-    await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
-        const { rosterUnit } = await comlinkStub.getPlayer(null, playerId);
-        const strippedUnits = rosterUnit
-            .filter((unit) => unit?.equippedStatMod && unitMap[unit.definitionId.split(":")[0]]?.combatType === 1)
-            .map((unit) => {
-                return {
-                    defId: unit.definitionId.split(":")[0],
-                    mods: unit.equippedStatMod.map((mod) => formatMod(mod)),
-                };
-            });
-        rosterArr.push(...strippedUnits);
+    let playerCount = 0;
+
+    await eachLimit(playerIds, 500, async (playerId) => {
+        try {
+            playerCount++;
+            const strippedUnits = await piscina.run({playerId, modMap, clientStub: config.fakeSwapiConfig.clientStub}) || [];
+            rosterArr.push(...strippedUnits);
+        } catch (err) {
+            console.error("[dataUpdater/getPlayerRosters] There was an error: ", err);
+        }
     });
 
+    if (playerCount !== playerIds.length) {
+        console.error(`[dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
+    }
     return rosterArr;
 }
 
@@ -1542,8 +1551,6 @@ function toProperCase(strIn) {
     });
 }
 
-const { inspect } = require("node:util");
-const path = require("node:path");
 function debugLog(str) {
     if (!FORCE_UPDATE) return;
     if (typeof str === "string" && str.length) {

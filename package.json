@@ -23,6 +23,7 @@
         "async": "^3.2.5",
         "discord.js": "^14.15.3",
         "mongodb": "^6.7.0",
+        "piscina": "^4.6.0",
         "socket.io": "^4.7.5",
         "socket.io-client": "^4.7.5"
     },
