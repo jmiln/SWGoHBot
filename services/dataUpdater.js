@@ -122,37 +122,36 @@ async function updateMetaData(dataDir, comlinkStub) {
 }
 
 async function runModUpdaters() {
-    console.time("Getting guildIds");
+    // console.time("Getting guildIds");
     const guildIds = await getGuildIds();
-    console.timeEnd("Getting guildIds");
+    // console.timeEnd("Getting guildIds");
 
     // Grab the player IDs for each player in each of those guilds
-    console.time("Getting guildPlayerIds");
+    // console.time("Getting guildPlayerIds");
     const playerIds = await getGuildPlayerIds(guildIds);
-    console.timeEnd("Getting guildPlayerIds");
+    // console.timeEnd("Getting guildPlayerIds");
 
     // Grab the defId and needed mod info for each of those players' units
-    console.time("Getting playerRosters");
+    // console.time("Getting playerRosters");
     const playerUnits = await getPlayerRosters(playerIds);
-    console.timeEnd("Getting playerRosters");
+    // console.timeEnd("Getting playerRosters");
 
-    // Get list which sets of mods each character has
-    // Get list with sets of mods each character has
-    // Also record the primary stats each of them has per slot
-    console.time("Processing unitMods");
+    // Get list which sets of mods each character has and record the
+    // primary stats each of them has per slot
+    // console.time("Processing unitMods");
     const unitsOut = await processUnitMods(playerUnits);
-    console.timeEnd("Processing unitMods");
+    // console.timeEnd("Processing unitMods");
 
     // Go through each character and find the most common versions of
     // set and primaries, and convert them to be readable
-    console.time("Processing modResults");
+    // console.time("Processing modResults");
     const modsOut = await processModResults(unitsOut);
-    console.timeEnd("Processing modResults");
+    // console.timeEnd("Processing modResults");
 
     // Process each batch of mods and put them into the characters
-    console.time("Merging mods to characters");
+    // console.time("Merging mods to characters");
     await mergeModsToCharacters(modsOut);
-    console.timeEnd("Merging mods to characters");
+    // console.timeEnd("Merging mods to characters");
 }
 
 async function runGameDataUpdaters() {
