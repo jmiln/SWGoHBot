@@ -20,13 +20,13 @@ module.exports = async (Bot, client, interaction) => {
     // If it's a bot trying to use it, don't bother
     if (interaction.user.bot) return;
 
+    // Grab the command data from the client.slashcmds Collection
+    const cmd = client.slashcmds.get(interaction.commandName);
+
+    // If that command doesn't exist, silently exit and do nothing
+    if (!cmd) return;
+
     if (interaction.isChatInputCommand()) {
-        // Grab the command data from the client.slashcmds Collection
-        const cmd = client.slashcmds.get(interaction.commandName);
-
-        // If that command doesn't exist, silently exit and do nothing
-        if (!cmd) return;
-
         // Grab the settings for this server, and if there's no guild, just give it the defaults
         // Attach the guildsettings to the interaction to make it easier to grab later
         interaction.guildSettings = await getGuildSettings({ cache: Bot.cache, guildId: interaction?.guild?.id });
@@ -102,67 +102,73 @@ module.exports = async (Bot, client, interaction) => {
         const focusedOption = interaction.options.getFocused(true);
         let filtered = [];
 
-        try {
-            // Grab any aliases that the guild has set
-            const aliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction?.guild?.id });
+        if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
+            // As needed, process autocompletes in each file, or just passes the list of options.
+            await cmd.autocomplete(Bot, interaction, focusedOption);
+        } else if (!filtered?.length) {
+            // Process the general ones here, or others that didn't give a proper response
+            try {
+                // Grab any aliases that the guild has set
+                const aliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction?.guild?.id });
 
-            if (interaction.commandName === "panic") {
-                // Process the autocompletions for the /panic command
-                filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
-                filtered = filtered.map((unit) => ({ name: unit.name, value: unit.defId }));
-            } else if (focusedOption.name === "command") {
-                filtered = Bot.commandList.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
-            } else {
-                const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
+                if (interaction.commandName === "panic") {
+                    // Process the autocompletions for the /panic command
+                    filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
+                    filtered = filtered.map((unit) => ({ name: unit.name, value: unit.defId }));
+                } else if (focusedOption.name === "command") {
+                    filtered = Bot.commandList.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+                } else {
+                    const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
 
-                if (["unit", "character", "ship"].includes(focusedOption.name)) {
-                    let unitList = [];
-                    if (focusedOption.name === "unit") {
-                        unitList = [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
-                    } else if (focusedOption.name === "character") {
-                        unitList = [
-                            ...aliasList.filter((al) => Bot.CharacterNames.find((cn) => cn.defId === al.defId)),
-                            ...Bot.CharacterNames,
-                        ];
-                    } else if (focusedOption.name === "ship") {
-                        unitList = [...aliasList.filter((al) => Bot.ShipNames.find((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
+                    if (["unit", "character", "ship"].includes(focusedOption.name)) {
+                        let unitList = [];
+                        if (focusedOption.name === "unit") {
+                            unitList = [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
+                        } else if (focusedOption.name === "character") {
+                            unitList = [
+                                ...aliasList.filter((al) => Bot.CharacterNames.find((cn) => cn.defId === al.defId)),
+                                ...Bot.CharacterNames,
+                            ];
+                        } else if (focusedOption.name === "ship") {
+                            unitList = [...aliasList.filter((al) => Bot.ShipNames.find((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
+                        }
+                        filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
+                        filtered = filtered
+                            .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
+                            .map((unit) => {
+                                if (unit.isAlias) return { name: `${unit.name} (${unit.alias})`, value: unit.defId };
+                                return { name: unit.name, value: unit.defId };
+                            });
                     }
-                    filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
-                    filtered = filtered
-                        .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
-                        .map((unit) => {
-                            if (unit.isAlias) return { name: `${unit.name} (${unit.alias})`, value: unit.defId };
-                            return { name: unit.name, value: unit.defId };
-                        });
                 }
-            }
-        } catch (err) {
-            logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unit name issue.`);
-            console.error(interaction);
-            console.error(err);
-        }
-        try {
-            await interaction.respond(
-                filtered
-                    .map((choice) => ({
-                        name: choice?.name || choice,
-                        value: choice?.value || choice,
-                    }))
-                    .slice(0, 24),
-            );
-        } catch (err) {
-            // If it's one of the common errors, just move on, nothing that I can do about it
-            const ignoreArr = ["unknown interaction", "bad gateway", "service unavailable"];
-            const errStr = ignoreArr.find((elem) => err.toString().toLowerCase().includes(elem));
-            if (errStr) return;
-
-            // Otherwise, print out what I can about it
-            if (typeof err !== "string") {
-                logErr(`[${Bot.myTime()}] [interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
-                console.error(interaction?.options?._hoistedOptions || interaction?.options);
+            } catch (err) {
+                logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unit name issue.`);
+                console.error(interaction);
                 console.error(err);
-            } else {
-                logErr(err);
+            }
+            try {
+                await interaction.respond(
+                    filtered
+                        .map((choice) => ({
+                            name: choice?.name || choice,
+                            value: choice?.value || choice,
+                        }))
+                        .slice(0, 24),
+                );
+            } catch (err) {
+                // If it's one of the common errors, just move on, nothing that I can do about it
+                const ignoreArr = ["unknown interaction", "bad gateway", "service unavailable"];
+                const errStr = ignoreArr.find((elem) => err.toString().toLowerCase().includes(elem));
+                if (errStr) return;
+
+                // Otherwise, print out what I can about it
+                if (typeof err !== "string") {
+                    logErr(`[${Bot.myTime()}] [interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
+                    console.error(interaction?.options?._hoistedOptions || interaction?.options);
+                    console.error(err);
+                } else {
+                    logErr(err);
+                }
             }
         }
     }
