@@ -1,4 +1,4 @@
-module.exports.charChecklist = {
+module.exports = {
 //     Their ID name                Shortened name to fit nicely
     "Galactic Legends": [
         ["GLREY",                   "Rey"],
@@ -43,10 +43,7 @@ module.exports.charChecklist = {
         ["MOTHERTALZIN",            "Talzin"],
         ["GRANDADMIRALTHRAWN",      "Thrawn"],
         ["WATTAMBOR",               "Wat Tambor"]
-    ]
-};
-
-module.exports.shipChecklist = {
+    ],
     "Capital Ships": [
         ["CAPITALCHIMAERA",           "Chimaera"],
         ["CAPITALJEDICRUISER",        "Endurance"],

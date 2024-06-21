@@ -1,7 +1,7 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+const { getFullTWList } = require("../modules/guildConfig/twlist.js");
 
-const { charChecklist, shipChecklist } = require("../data/unitChecklist");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 
 class Guilds extends Command {
@@ -1034,6 +1034,7 @@ class Guilds extends Command {
         async function twSummary() {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
+            const unitChecklist = await getFullTWList({cache: Bot.cache, guildId: interaction.guild?.id});
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
                 return interaction.editReply({
@@ -1149,7 +1150,7 @@ class Guilds extends Command {
 
             // Get general stats on how many of certain characters the guild has and at what gear
             // Possibly put this in the guildConf so guilds can have custom lists?
-            const charOut = twCategoryFormat(charChecklist, gearLvls, 19, guildMembers, false);
+            const charOut = twCategoryFormat(unitChecklist, gearLvls, 19, guildMembers, false);
             fields.push(
                 ...charOut.map((char) => {
                     return {
@@ -1159,7 +1160,7 @@ class Guilds extends Command {
                 }),
             );
 
-            const shipOut = twCategoryFormat(shipChecklist, gearLvls, 8, guildMembers, true);
+            const shipOut = twCategoryFormat(unitChecklist, gearLvls, 8, guildMembers, true);
             fields.push(
                 ...shipOut.map((ship) => {
                     return {
@@ -1193,81 +1194,88 @@ class Guilds extends Command {
                 ],
             });
         }
-    }
-}
 
-function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships = false) {
-    const fieldsOut = [];
-    const [gear1, gear2] = Object.keys(gearLvls)
-        .map((num) => Number.parseInt(num, 10))
-        .sort((a, b) => b - a);
+        function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships = false) {
+            const catToFormat = ships ? ["Ships", "Capital Ships"] : ["Galactic Legends", "Light Side", "Dark Side"];
+            const fieldsOut = [];
+            const [gear1, gear2] = Object.keys(gearLvls)
+                .map((num) => Number.parseInt(num, 10))
+                .sort((a, b) => b - a);
 
-    for (const category of Object.keys(unitObj)) {
-        const unitOut = [];
-        const unitListArray = unitObj[category];
-        const longest = unitListArray.reduce((acc, curr) => Math.max(acc, curr[1].length), 0);
-        const divider = `**\`${"=".repeat(divLen + longest)}\`**`;
-        if (ships) {
-            unitOut.push(`**\`${`Name${" ".repeat(longest - 4)}`}Total 7*\`**`);
-        } else {
-            if (category === "Galactic Legends") {
-                unitOut.push(`**\`${`Name${" ".repeat(longest - 4)}`}Total G${gear1}  G${gear2}  Ult\`**`);
-            } else {
-                unitOut.push(`**\`${`Name${" ".repeat(longest - 4)}`}Total G${gear1}  G${gear2}   7*\`**`);
-            }
-        }
-        unitOut.push(divider);
-
-        for (const unit of unitListArray) {
-            const defId = unit[0];
-            const roster = guildMembers
-                .filter((p) => p.roster.find((c) => c.defId === defId))
-                .map((p) => p.roster.find((c) => c.defId === defId));
-
-            let total = 0;
-            let g1 = 0;
-            let g2 = 0;
-            let ult = 0;
-            let sevenStar = 0;
-            if (roster?.length) {
-                total = roster.length;
-                if (category === "Galactic Legends") {
-                    ult = roster.filter((c) => c?.purchasedAbilityId.length).length;
+            for (const category of catToFormat) {
+                const unitOut = [];
+                const unitListMap = unitObj?.[category];
+                if (!unitListMap || !Object.keys(unitListMap)?.length) continue;
+                for (const [defId, name] of Object.entries(unitListMap)) {
+                    if (name?.length) continue;
+                    let nameOut = name || Bot.characters.find((c) => c.uniqueName === defId)?.name || Bot.ships.find((c) => c.uniqueName === defId)?.name;
+                    if (!nameOut) nameOut = defId;
+                    unitListMap[defId] = nameOut;
+                }
+                const longest = Object.values(unitListMap).reduce((acc, curr) => Math.max(acc, curr.length), 0);
+                const divider = `**\`${"=".repeat(divLen + longest)}\`**`;
+                if (ships) {
+                    unitOut.push(`**\`${"Name".padEnd(longest - 4)}Total 7*\`**`);
                 } else {
-                    sevenStar = roster.filter((c) => c && c.rarity === 7).length;
+                    if (category === "Galactic Legends") {
+                        unitOut.push(`**\`${"Name".padEnd(longest - 4)}Total G${gear1}  G${gear2}  Ult\`**`);
+                    } else {
+                        unitOut.push(`**\`${"Name".padEnd(longest - 4)}Total G${gear1}  G${gear2}   7*\`**`);
+                    }
                 }
-                if (!ships) {
-                    g1 = roster.filter((c) => c && c.gear === gear1).length;
-                    g2 = roster.filter((c) => c && c.gear === gear2).length;
+                unitOut.push(divider);
+
+                for (const [defId, name] of Object.entries(unitListMap)) {
+                    const roster = guildMembers
+                        .filter((p) => p.roster.find((c) => c.defId === defId))
+                        .map((p) => p.roster.find((c) => c.defId === defId));
+
+                    let total = 0;
+                    let g1 = 0;
+                    let g2 = 0;
+                    let ult = 0;
+                    let sevenStar = 0;
+                    if (roster?.length) {
+                        total = roster.length;
+                        if (category === "Galactic Legends") {
+                            ult = roster.filter((c) => c?.purchasedAbilityId.length).length;
+                        } else {
+                            sevenStar = roster.filter((c) => c && c.rarity === 7).length;
+                        }
+                        if (!ships) {
+                            g1 = roster.filter((c) => c && c.gear === gear1).length;
+                            g2 = roster.filter((c) => c && c.gear === gear2).length;
+                        }
+                    }
+                    if (category === "Galactic Legends") {
+                        unitOut.push(
+                            `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}   ${
+                                " ".repeat(2 - g1.toString().length) + g1
+                            }   ${" ".repeat(2 - g2.toString().length) + g2}   ${" ".repeat(2 - ult.toString().length) + ult}\``,
+                        );
+                    } else if (ships) {
+                        unitOut.push(
+                            `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}  ${
+                                " ".repeat(2 - sevenStar.toString().length) + sevenStar
+                            }\``,
+                        );
+                    } else {
+                        unitOut.push(
+                            `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}   ${
+                                " ".repeat(2 - g1.toString().length) + g1
+                            }   ${" ".repeat(2 - g2.toString().length) + g2}   ${" ".repeat(2 - sevenStar.toString().length) + sevenStar}\``,
+                        );
+                    }
                 }
+                fieldsOut.push({
+                    name: category,
+                    value: unitOut.join("\n"),
+                });
             }
-            const name = unit[1];
-            if (category === "Galactic Legends") {
-                unitOut.push(
-                    `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}   ${
-                        " ".repeat(2 - g1.toString().length) + g1
-                    }   ${" ".repeat(2 - g2.toString().length) + g2}   ${" ".repeat(2 - ult.toString().length) + ult}\``,
-                );
-            } else if (ships) {
-                unitOut.push(
-                    `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}  ${
-                        " ".repeat(2 - sevenStar.toString().length) + sevenStar
-                    }\``,
-                );
-            } else {
-                unitOut.push(
-                    `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}   ${
-                        " ".repeat(2 - g1.toString().length) + g1
-                    }   ${" ".repeat(2 - g2.toString().length) + g2}   ${" ".repeat(2 - sevenStar.toString().length) + sevenStar}\``,
-                );
-            }
+            return fieldsOut;
         }
-        fieldsOut.push({
-            name: category,
-            value: unitOut.join("\n"),
-        });
     }
-    return fieldsOut;
 }
+
 
 module.exports = Guilds;

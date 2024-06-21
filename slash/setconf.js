@@ -128,13 +128,6 @@ class SetConf extends Command {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 
-        const cleanKey = {
-            GLs: "Galactic Legends",
-            characters: "Characters",
-            ships: "Ships",
-            capitalShips: "Capital Ships",
-            blacklist: "Blacklist",
-        }
 
         function getCharName(defId) {
             return Bot.CharacterNames.find((char) => char.defId === defId)?.name ||
@@ -150,7 +143,7 @@ class SetConf extends Command {
                 const outArr = [];
                 for (const key of Object.keys(guildTWList)) {
                     if (!guildTWList[key].length) continue;
-                    outArr.push(`* **${cleanKey[key]}**: \n${guildTWList[key].map((defId) => `  - ${getCharName(defId)}`).join("\n")}`);
+                    outArr.push(`* **${key}**: \n${guildTWList[key].map((defId) => `  - ${getCharName(defId)}`).join("\n")}`);
                 }
                 if (!outArr.length) return super.error(interaction, "You have no units in your list");
                 return super.success(interaction, outArr.join("\n"), {title: "Your current list:"});
@@ -167,7 +160,7 @@ class SetConf extends Command {
             if (addUnitDefId) {
                 if (subCommand === "manage_list") {
                     for (const key of Object.keys(guildTWList)) {
-                        if (key === "blacklist") continue;
+                        if (key === "Blacklist") continue;
                         if (guildTWList[key].includes(removeUnitDefId)) {
                             return super.error(interaction, `Trying to add ${addUnitDefId}. This unit is already in your list`);
                         }
@@ -176,8 +169,10 @@ class SetConf extends Command {
                     if (thisChar) {
                         if (thisChar.factions.includes("Galactic Legend")) {
                             guildTWList.GLs.push(thisChar.uniqueName);
+                        } else if (thisChar.side === "dark") {
+                            guildTWList["Dark Side"].push(thisChar.uniqueName);
                         } else {
-                            guildTWList.characters.push(thisChar.uniqueName);
+                            guildTWList["Light Side"].push(thisChar.uniqueName);
                         }
                     } else {
                         const thisShip = Bot.ships.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
@@ -198,11 +193,11 @@ class SetConf extends Command {
                         return super.error(interaction, `Broke while trying to add ${addUnitDefId}.\n${err.message}`);
                     }
                 } else if (subCommand === "blacklist") {
-                    if (!guildTWList.blacklist) guildTWList.blacklist = [];
-                    if (guildTWList.blacklist?.includes(addUnitDefId)) {
+                    if (!guildTWList.Blacklist) guildTWList.Blacklist = [];
+                    if (guildTWList.Blacklist?.includes(addUnitDefId)) {
                         return super.error(interaction, `Trying to add ${addUnitDefId}. This unit is already in your blacklist`);
                     }
-                    guildTWList.blacklist.push(addUnitDefId);
+                    guildTWList.Blacklist.push(addUnitDefId);
                     try {
                         await setGuildTWList({ cache: Bot.cache, guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Added ${addUnitDefId} to your blacklist`);
@@ -215,7 +210,7 @@ class SetConf extends Command {
             if (removeUnitDefId) {
                 if (subCommand === "manage_list") {
                     for (const key of Object.keys(guildTWList)) {
-                        if (key === "blacklist") continue;
+                        if (key === "Blacklist") continue;
                         if (guildTWList[key].includes(removeUnitDefId)) {
                             guildTWList[key] = guildTWList[key].filter((u) => u !== removeUnitDefId);
                         }
@@ -227,10 +222,10 @@ class SetConf extends Command {
                         return super.error(interaction, `Broke while trying to remove ${removeUnitDefId}.\n${err.message}`);
                     }
                 } else if (subCommand === "blacklist") {
-                    if (!guildTWList.blacklist.includes(removeUnitDefId)) {
+                    if (!guildTWList.Blacklist.includes(removeUnitDefId)) {
                         return super.error(interaction, `Trying to remove ${removeUnitDefId}. This unit is not in your blacklist`);
                     }
-                    guildTWList.blacklist = guildTWList.blacklist.filter((u) => u !== removeUnitDefId);
+                    guildTWList.Blacklist = guildTWList.Blacklist.filter((u) => u !== removeUnitDefId);
                     try {
                         await setGuildTWList({ cache: Bot.cache, guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Removed ${removeUnitDefId} from your blacklist`);
@@ -354,8 +349,8 @@ class SetConf extends Command {
         const subCommand = interaction.options.getSubcommand();
 
         if (subCommandGroup === "twlist") {
+            const searchKey = focusedOption.value?.trim().toLowerCase();
             if (focusedOption.name === "add_unit") {
-                const searchKey = focusedOption.value?.toLowerCase();
                 const aliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction?.guild?.id });
                 const unitList = [
                     ...aliases.map((alias) => ({ name: `${alias.name} (${alias.alias})`, defId: alias.defId })),
@@ -365,12 +360,11 @@ class SetConf extends Command {
                 const outArr = unitList.filter((unit) => unit.name.toLowerCase().includes(searchKey)).map((key) => ({ name: key.name, value: key.defId})).slice(0, 24) || [];
                 await interaction.respond(outArr);
             } else if (focusedOption.name === "remove_unit") {
-                const searchKey = focusedOption.value;
                 const guildTWList = await getGuildTWList({ cache: Bot.cache, guildId: interaction?.guild?.id });
                 if (subCommand === "blacklist") {
-                    const outArr = guildTWList.blacklist
+                    const outArr = guildTWList.Blacklist
                         .filter(defId => {
-                            if (!defId?.length) return true;
+                            if (!searchKey?.length) return true;
                             const thisUnit = Bot.CharacterNames.find((char) => char.defId === defId) || Bot.ShipNames.find((ship) => ship.defId === defId);
                             return thisUnit.name.toLowerCase().includes(searchKey);
                         })
@@ -380,10 +374,14 @@ class SetConf extends Command {
                         }).slice(0, 24) || [];
                     await interaction.respond(outArr);
                 } else if (subCommand === "manage_list") {
-                    const defIdList = [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
+                    const defIdList = Object.keys(guildTWList).reduce((acc, key) => {
+                        if (key === "Blacklist" || !guildTWList[key]?.length) return acc;
+                        return acc.concat(guildTWList[key]);
+                    }, []);
+                        // [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
                     const outArr = defIdList
                         .filter(defId => {
-                            if (!defId?.length) return true;
+                            if (!searchKey?.length) return true;
                             const thisUnit = Bot.CharacterNames.find((char) => char.defId === defId) || Bot.ShipNames.find((ship) => ship.defId === defId);
                             return thisUnit.name.toLowerCase().includes(searchKey);
                         })

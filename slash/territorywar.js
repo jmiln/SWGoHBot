@@ -1,6 +1,6 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const unitChecklist = require("../data/unitChecklist.js");
+const { getFullTWList } = require("../modules/guildConfig/twlist");
 
 class TerritoryWar extends Command {
     constructor(Bot) {
@@ -79,6 +79,8 @@ class TerritoryWar extends Command {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
         interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
+
+        const unitChecklist = await getFullTWList({cache: Bot.cache, guildId: interaction.guild?.id});
 
         // Run each of the players through to get the stats of each players' roster
         let guild1Stats = null;
@@ -331,20 +333,20 @@ class TerritoryWar extends Command {
         });
 
         // Get some general stats for any available galactic legends
-        const legendMap = unitChecklist.charChecklist["Galactic Legends"];
+        const legendMap = unitChecklist["Galactic Legends"];
 
         const guild1GLCount = {};
         const guild1GLUltCount = {};
         const guild2GLCount = {};
         const guild2GLUltCount = {};
-        for (const [glDefId] of legendMap) {
+        for (const glDefId of Object.keys(legendMap)) {
             guild1GLCount[glDefId] = 0;
             guild1GLUltCount[glDefId] = 0;
             guild2GLCount[glDefId] = 0;
             guild2GLUltCount[glDefId] = 0;
         }
         for (const member of guild1Stats) {
-            const glList = member.roster.filter((ch) => legendMap.map((leg) => leg[0]).includes(ch.defId));
+            const glList = member.roster.filter((ch) => Object.keys(legendMap).includes(ch.defId));
             for (const gl of glList) {
                 guild1GLCount[gl.defId] += 1;
                 if (gl.purchasedAbilityId?.length) {
@@ -353,7 +355,7 @@ class TerritoryWar extends Command {
             }
         }
         for (const member of guild2Stats) {
-            const glList = member.roster.filter((ch) => legendMap.map((leg) => leg[0]).includes(ch.defId));
+            const glList = member.roster.filter((ch) => Object.keys(legendMap).includes(ch.defId));
             for (const gl of glList) {
                 guild2GLCount[gl.defId] += 1;
                 if (gl.purchasedAbilityId?.length) {
@@ -363,7 +365,7 @@ class TerritoryWar extends Command {
         }
 
         const glOverview = [];
-        for (const [glDefId, glName] of legendMap) {
+        for (const [glDefId, glName] of Object.entries(legendMap)) {
             glOverview.push({
                 check: glName,
                 user1: `${guild1GLCount[glDefId]}+${guild1GLUltCount[glDefId]}`,
@@ -388,28 +390,28 @@ class TerritoryWar extends Command {
         });
 
         // Get the overall counts for capital ships
-        const capitalMap = unitChecklist.shipChecklist["Capital Ships"];
+        const capitalMap = unitChecklist["Capital Ships"];
         const guild1CapitalCount = {};
         const guild2CapitalCount = {};
-        for (const [capitalDefId] of capitalMap) {
+        for (const capitalDefId of Object.keys(capitalMap)) {
             guild1CapitalCount[capitalDefId] = 0;
             guild2CapitalCount[capitalDefId] = 0;
         }
         for (const member of guild1Stats) {
-            const capitalList = member.roster.filter((ch) => capitalMap.map((leg) => leg[0]).includes(ch.defId));
+            const capitalList = member.roster.filter((ch) => Object.keys(capitalMap).includes(ch.defId));
             for (const capital of capitalList) {
                 guild1CapitalCount[capital.defId] += 1;
             }
         }
         for (const member of guild2Stats) {
-            const capitalList = member.roster.filter((ch) => capitalMap.map((leg) => leg[0]).includes(ch.defId));
+            const capitalList = member.roster.filter((ch) => Object.keys(capitalMap).includes(ch.defId));
             for (const capital of capitalList) {
                 guild2CapitalCount[capital.defId] += 1;
             }
         }
 
         const capitalOverview = [];
-        for (const [capitalDefId, capitalName] of capitalMap) {
+        for (const [capitalDefId, capitalName] of Object.entries(capitalMap)) {
             capitalOverview.push({
                 check: capitalName,
                 user1: guild1CapitalCount[capitalDefId],
