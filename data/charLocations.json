@@ -2304,11 +2304,6 @@
                 "name": "Fanatical Devotion Assault Battles"
             },
             {
-                "type": "Cantina",
-                "level": "4-F",
-                "locId": "CANTINA"
-            },
-            {
                 "type": "Guild Activity Store",
                 "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
@@ -2590,6 +2585,11 @@
         "defId": "MASTERQUIGON",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "4-F",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_MASTERQUIGON_NAME",
                 "name": "All The Queen's Men Ii Special Marquee Event"
@@ -2686,6 +2686,17 @@
         ]
     },
     {
+        "name": "Morgan Elsbeth",
+        "defId": "MORGANELSBETH",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MORGANELSBETH_NAME",
+                "name": "Veil Of Shadows I  Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Mother Talzin",
         "defId": "MOTHERTALZIN",
         "locations": [
@@ -2698,6 +2709,17 @@
                 "type": "Heroic Event",
                 "locId": "EVENT_DEFENSE_OF_DATHOMIR_NAME",
                 "name": "Defense Of Dathomir Special Event"
+            }
+        ]
+    },
+    {
+        "name": "Night Trooper",
+        "defId": "NIGHTTROOPER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_NIGHTTROOPER_NAME",
+                "name": "Undying Legion I Special Marquee Event"
             }
         ]
     },
@@ -2825,6 +2847,11 @@
         "defId": "PADAWANOBIWAN",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "3-D",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PADAWANOBIWAN_NAME",
                 "name": "All The Queen's Men I Special Marquee Event"
@@ -2860,11 +2887,6 @@
                 "type": "Assault Battle Event",
                 "locId": "EVENT_ASSAULT_EWOK_NAME",
                 "name": "Assault Battles: Forest Moon"
-            },
-            {
-                "type": "Cantina",
-                "level": "3-D",
-                "locId": "CANTINA"
             },
             {
                 "type": "Galactic Bounty Event",

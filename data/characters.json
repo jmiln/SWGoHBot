@@ -258,7 +258,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
@@ -287,11 +287,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_holdo"
     },
@@ -821,7 +821,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -843,8 +843,7 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
+                "Speed x4",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -1191,8 +1190,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1313,9 +1312,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -2271,7 +2270,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_trooperdeath"
     },
@@ -2416,7 +2415,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Health",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -2771,7 +2770,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -3408,7 +3407,7 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
+                "Offense x4",
                 "Crit. Chance x2"
             ],
             "square": "Offense",
@@ -4443,8 +4442,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4659,9 +4658,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -5297,6 +5296,34 @@
         "avatarName": "charui_monmothma"
     },
     {
+        "name": "Morgan Elsbeth",
+        "uniqueName": "MORGANELSBETH",
+        "aliases": [
+            "Morgan Elsbeth"
+        ],
+        "avatarName": "charui_morganelsbeth",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_morganelsbeth.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_NIGHTSISTERS_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Health",
+            "cross": "Health"
+        },
+        "crew": []
+    },
+    {
         "name": "Mother Talzin",
         "uniqueName": "MOTHERTALZIN",
         "aliases": [
@@ -5326,6 +5353,34 @@
         "avatarName": "charui_nightsisters_talzin"
     },
     {
+        "name": "Night Trooper",
+        "uniqueName": "NIGHTTROOPER",
+        "aliases": [
+            "Night Trooper"
+        ],
+        "avatarName": "charui_nighttrooper_a",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nighttrooper_a.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_IMPERIALREMNANT_DESC",
+            "CATEGORY_NIGHTSISTERS_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        },
+        "crew": []
+    },
+    {
         "name": "Nightsister Acolyte",
         "uniqueName": "NIGHTSISTERACOLYTE",
         "aliases": [
@@ -5347,7 +5402,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -5598,13 +5653,13 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Crit. Damage x4"
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "crew": []
@@ -5684,7 +5739,8 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6260,8 +6316,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7449,8 +7504,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",

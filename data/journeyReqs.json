@@ -3592,5 +3592,91 @@
                 "tier": 5
             }
         ]
+    },
+    "GLAHSOKA": {
+        "guideId": "GLAHSOKA_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "AHSOKATANO",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "GENERALSKYWALKER",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "ASAJVENTRESS",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "NIGHTTROOPER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            }
+        ]
     }
 }
