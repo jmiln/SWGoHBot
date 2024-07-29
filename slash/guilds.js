@@ -233,8 +233,7 @@ class Guilds extends Command {
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
         } catch (e) {
-            console.log(e);
-            return super.error(interaction, `Issue getting guild: ${codeBlock(e)}`);
+            return super.error(interaction, `Issue getting guild: \`${codeBlock(e.message)}\``);
         }
 
         if (!guild) {
@@ -736,7 +735,8 @@ class Guilds extends Command {
                         .map((r) => r.length),
                 );
                 for (const r in guild.raid) {
-                    const thisRaidName = Bot.expandSpaces(Bot.toProperCase(raidNames[r].padEnd(maxRaidLen + 1, " ")));
+                    if (!raidNames[r]) console.log("Missing raid name", r);
+                    const thisRaidName = Bot.expandSpaces(Bot.toProperCase(raidNames[r]?.padEnd(maxRaidLen + 1, " ") || r));
                     const raidTier = guild.raid[r]?.diffId.includes("HEROIC")
                         ? Bot.toProperCase(raidNames.heroic)
                         : guild.raid[r]?.diffId.replace("DIFF0", "T");
@@ -1182,17 +1182,17 @@ class Guilds extends Command {
                 name: Bot.constants.zws,
                 value: footerStr,
             });
-            return interaction.editReply({
-                content: null,
-                embeds: [
-                    {
-                        author: {
-                            name: interaction.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name),
-                        },
-                        fields: fields,
-                    },
-                ],
-            });
+            const embed = {
+                author: {
+                    name: interaction.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name),
+                },
+                fields: fields,
+            };
+            try {
+                return interaction.editReply({ content: null, embeds: [embed] });
+            } catch (err) {
+                return interaction.channel.send({ content: null, embeds: [embed] });
+            }
         }
 
         function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships = false) {

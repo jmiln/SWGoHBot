@@ -439,18 +439,19 @@ class TerritoryWar extends Command {
             name: Bot.constants.zws,
             value: footerStr,
         });
-        return interaction.editReply({
-            content: null,
-            embeds: [
-                {
-                    author: {
-                        // name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", guild1.name, guild2.name)
-                        name: `Territory War, ${guild1.name} (${guild1.roster.length}) vs ${guild2.name} (${guild2.roster.length})`,
-                    },
-                    fields: fields,
-                },
-            ],
-        });
+        const embed = {
+            author: {
+                // name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", guild1.name, guild2.name)
+                name: `Territory War, ${guild1.name} (${guild1.roster.length}) vs ${guild2.name} (${guild2.roster.length})`,
+            },
+            fields: fields,
+        };
+        try {
+            interaction.editReply({ content: null, embeds: [embed] });
+        } catch (err) {
+            console.error("[slash/territorywar] Couldn't edit the reply to send final results. Sending message instead.", err);
+            interaction.channel.send({ content: null, embeds: [embed] });
+        }
     }
 }
 
