@@ -366,6 +366,9 @@ class GuildSearch extends Command {
                 ],
             });
         }
+
+
+
         // Not looking for stat info
         const sortType = sort ? sort : top ? "gp" : "name";
 
@@ -423,6 +426,8 @@ class GuildSearch extends Command {
             }
         }
 
+        const hasUlt = !!guildChar.find((ch) => ch?.purchasedAbilityId?.length)
+
         let sortedGuild = [];
         if (sortType === "name") {
             // Sort by name
@@ -464,6 +469,10 @@ class GuildSearch extends Command {
 
             const gearStr = Bot.getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
             let unitStr = " | ";
+            const unitStrLen = unitStr.length;
+            if (hasUlt) {
+                unitStr += member.purchasedAbilityId?.length ? "u" : " ";
+            }
             zetas.forEach((zeta, ix) => {
                 const pZeta = member.zetas.find((pz) => pz.id === zeta);
                 if (!pZeta) {
@@ -489,7 +498,7 @@ class GuildSearch extends Command {
                         member.player
                     }`;
                 } else {
-                    uStr = `**\`[${gearStr} | ${gpStr.padStart(maxGP)}${maxZ > 0 ? unitStr : ""}]\`** ${member.player}`;
+                    uStr = `**\`[${gearStr} | ${gpStr.padStart(maxGP)}${unitStr.length > unitStrLen ? unitStr : ""}]\`** ${member.player}`;
                 }
             } else {
                 uStr = member.player;
