@@ -82,12 +82,12 @@ async function init() {
                 setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
             })();
 
-            setInterval(() => updatePatrons(cache), 15 * 60 * 1000);
+            setInterval(async () => await updatePatrons(cache), 15 * 60 * 1000);
         } else {
             // If we're forcing an update, just run the bits we want then exit
             console.log("Forcing update, running updaters");
             // await runGameDataUpdaters();
-            await runModUpdaters();
+            await updatePatrons(cache);
             process.exit(0);
         }
     } catch (error) {
@@ -303,7 +303,7 @@ async function getPlayerRosters(playerIds) {
     await eachLimit(playerIds, 500, async (playerId) => {
         try {
             playerCount++;
-            const strippedUnits = await piscina.run({playerId, modMap, clientStub: config.fakeSwapiConfig.clientStub}) || [];
+            const strippedUnits = (await piscina.run({ playerId, modMap, clientStub: config.fakeSwapiConfig.clientStub })) || [];
             rosterArr.push(...strippedUnits);
         } catch (err) {
             console.error("[dataUpdater/getPlayerRosters] There was an error: ", err);
@@ -450,7 +450,9 @@ async function updatePatrons(cache) {
                     Authorization: `Bearer ${patreon.creatorAccessToken}`,
                 },
             },
-        ).then((res) => res.json());
+        )
+            .then((res) => res.json())
+            .catch((err) => console.error("[dataUpdater/updatePatrons] Error fetching patrons", err));
 
         const members = data.filter((data) => data.type === "member" && data.attributes.patron_status === "active_patron");
         const users = included.filter((inc) => inc.type === "user");
@@ -459,7 +461,17 @@ async function updatePatrons(cache) {
             const user = users.find((user) => user.id === member.relationships.user.data.id);
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
-            if (!user) return console.log(`Patreon user ${user.attributes.full_name} vanished`);
+            if (!user) {
+                console.log(`Patreon user ${user.attributes.full_name} vanished`);
+                continue;
+            }
+
+            // Check if the user is already in the db, and alert that there's a new supporter if not
+            const discordID = user.attributes.social_connections?.discord?.user_id;
+            if (discordID) {
+                const userConf = await cache.getOne(config.mongodb.swgohbotdb, "patrons", { discordID: discordID });
+                if (!userConf) console.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
+            }
 
             // Save this user's info to the db
             const newUser = await cache.put(
@@ -470,28 +482,30 @@ async function updatePatrons(cache) {
                     id: member.relationships.user.data.id,
                     full_name: member.attributes.full_name,
                     email: member.attributes.email,
-                    discordID: user.attributes.social_connections?.discord?.user_id,
+                    discordID: discordID,
                     amount_cents: member.attributes.currently_entitled_amount_cents,
                     patron_status: member.attributes.patron_status,
                 },
             );
 
             // If they don't have a discord id to work with, move on
-            if (!newUser.discordID) return;
+            if (!newUser.discordID) continue;
 
             if (newUser.patron_status !== "active_patron" || !newUser.amount_cents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
                 const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: newUser.discordID });
 
                 // If they don't have bonusServer set (As it should be), move on
-                if (!userConf?.bonusServer?.length) return;
+                if (!userConf?.bonusServer?.length) continue;
 
                 // If it is set, remove it
                 const { user: userRes, guild: guildRes } = await clearSupporterInfo({ cache, userId: newUser.discordID });
 
                 // No issues, move on
-                if (!userRes?.error && !guildRes?.error)
-                    return console.log(`User ${newUser.discordID} has been ended their Patreon support`);
+                if (!userRes?.error && !guildRes?.error) {
+                    console.log(`User ${newUser.discordID} has been ended their Patreon support`);
+                    continue;
+                }
 
                 // If it somehow got here / there are issues, log em
                 console.error(
@@ -509,7 +523,7 @@ async function updatePatrons(cache) {
                 });
 
                 // If there are no issues, move along
-                if (!userRes?.error && !guildRes?.error) return;
+                if (!userRes?.error && !guildRes?.error) continue;
 
                 // If there are issues, log em
                 console.error(
@@ -675,7 +689,7 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
                 let isAvailable = true;
                 for (const lang of langList) {
                     const langKey = locales[lang][locId];
-                    if (!langKey){
+                    if (!langKey) {
                         isAvailable = false;
                         continue;
                     }
@@ -730,12 +744,9 @@ async function updateLocs(unitListFile, currentLocFile, locales) {
 
             charArr.push({
                 type: store.storeId,
-                cost: thisUnit.purchaseList
-                    .map(({cost, currency, quantity}) => `${cost} ${currency}/${quantity}`)
-                    .join("\n")
+                cost: thisUnit.purchaseList.map(({ cost, currency, quantity }) => `${cost} ${currency}/${quantity}`).join("\n"),
             });
         }
-
 
         outArr.push({ defId: mat.defId, locations: charArr });
     }
@@ -807,7 +818,7 @@ function removeDuplicates(locations) {
 
 function check1or2(strIn, locale) {
     if (locale?.[strIn]) {
-       return strIn;
+        return strIn;
     }
     if (locale?.[`${strIn}_2`]) {
         return `${strIn}_2`;
