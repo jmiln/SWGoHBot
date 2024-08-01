@@ -488,17 +488,18 @@ class Guilds extends Command {
                 return { name: "-", value: m };
             });
 
-            return interaction.editReply({
-                content: null,
-                embeds: [
-                    {
-                        author: {
-                            name: interaction.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name),
-                        },
-                        fields: fields,
-                    },
-                ],
-            });
+            const embed = {
+                author: {
+                    name: interaction.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name),
+                },
+                fields: fields,
+            };
+            try {
+                interaction.editReply({ content: null, embeds: [embed] });
+            } catch (err) {
+                Bot.logger.error(`ERROR(Guilds/guildMods) sending embed: ${err}`);
+                return interaction.channel.send({ content: null, embeds: [embed] });
+            }
         }
 
         async function guildRelics() {
@@ -519,7 +520,7 @@ class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(GS) getting guild: ${e}`);
+                Bot.logger.error(`ERROR(Guilds/guildRelics) getting guild: ${e}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
@@ -829,7 +830,7 @@ class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(GS) getting guild: ${e}`);
+                Bot.logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${e}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
@@ -1055,7 +1056,7 @@ class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(GS) getting guild: ${e}`);
+                Bot.logger.error(`ERROR(Guilds/twSummary) getting guild: ${e}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [

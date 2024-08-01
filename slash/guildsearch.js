@@ -354,17 +354,19 @@ class GuildSearch extends Command {
             }
 
             const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
-            return interaction.editReply({
-                content: null,
-                embeds: [
-                    {
-                        author: {
-                            name: guild.name,
-                        },
-                        fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
-                    },
-                ],
-            });
+            const embed = {
+                author: {
+                    name: guild.name,
+                },
+                fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+            };
+            try {
+                await interaction.editReply({ content: null, embeds: [ embed ], });
+            } catch (err) {
+                Bot.logger.error(`ERROR(GuildSearch) ${err}`);
+                await interaction.channel.send({ content: null, embeds: [ embed ], });
+            }
+            return;
         }
 
 
