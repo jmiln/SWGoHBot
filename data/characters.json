@@ -1760,9 +1760,9 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -1974,7 +1974,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_maul"
     },
@@ -2273,6 +2273,23 @@
             "cross": "Offense"
         },
         "avatarName": "charui_trooperdeath"
+    },
+    {
+        "name": "Death Trooper (Peridea)",
+        "uniqueName": "DEATHTROOPERPERIDEA",
+        "aliases": [
+            "Death Trooper (Peridea)"
+        ],
+        "avatarName": "charui_deathtrooperperidea",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_deathtrooperperidea.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_IMPERIALREMNANT_DESC",
+            "CATEGORY_NIGHTSISTERS_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Dengar",
@@ -2770,7 +2787,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -7504,9 +7521,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",

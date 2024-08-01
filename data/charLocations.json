@@ -1131,6 +1131,17 @@
         ]
     },
     {
+        "name": "Death Trooper (Peridea)",
+        "defId": "DEATHTROOPERPERIDEA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DEATHTROOPERPERIDEA_NAME",
+                "name": "Undying Legion Ii  Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Dengar",
         "defId": "DENGAR",
         "locations": [
