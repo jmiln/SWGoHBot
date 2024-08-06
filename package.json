@@ -22,8 +22,8 @@
         "@swgoh-utils/comlink": "^1.4.1",
         "async": "^3.2.5",
         "discord.js": "^14.15.3",
-        "mongodb": "^6.7.0",
-        "piscina": "^4.6.0",
+        "mongodb": "^6.8.0",
+        "piscina": "^4.6.1",
         "socket.io": "^4.7.5",
         "socket.io-client": "^4.7.5"
     },
@@ -31,6 +31,6 @@
         "node": ">=20"
     },
     "devDependencies": {
-        "@biomejs/biome": "^1.8.0"
+        "@biomejs/biome": "^1.8.3"
     }
 }
