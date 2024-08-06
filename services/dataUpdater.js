@@ -68,7 +68,7 @@ async function init() {
         const metaData = await updateMetaData(dataDir, comlinkStub);
         if (!forceUpdate) {
             if (metaData.isUpdated) {
-                console.log("Found new metadata, running updaters");
+                console.log(`Found new metadata, running updaters\n - GameData: ${metaData.latestGamedataVersion}\n - Localization: ${metaData.latestLocalizationBundleVersion}\n - Assets: ${metaData.assetVersion}`);
                 await runGameDataUpdaters();
             }
             (async function runUpdatersAsNeeded() {
