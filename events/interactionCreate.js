@@ -7,6 +7,7 @@ const ignoreArr = [
     "HTTPError [AbortError]: The user aborted a request.",
     "HTTPError: Service Unavailable",
     "Internal Server Error", // Something on Discord's end
+    "Invalid Webhook Token", // ?????
     "The user aborted a request", // Pretty sure this is also on Discord's end
     "Cannot send messages to this user", // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
     "Unknown interaction", // Not sure, but seems to happen when someone deletes an interaction that the bot is trying to reply to?
@@ -63,7 +64,7 @@ module.exports = async (Bot, client, interaction) => {
                 );
             }
 
-            if (ignoreArr.some((str) => err.toString().includes(str))) {
+            if (ignoreArr.some((str) => err.toString().toLowerCase().includes(str.toLowerCase()))) {
                 // Don't bother spitting out the whole mess.
                 // Log which command broke, and the first line of the error
                 logErr(
@@ -120,26 +121,26 @@ module.exports = async (Bot, client, interaction) => {
                 } else {
                     const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
 
-                    if (["unit", "character", "ship"].includes(focusedOption.name)) {
-                        let unitList = [];
-                        if (focusedOption.name === "unit") {
-                            unitList = [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
-                        } else if (focusedOption.name === "character") {
-                            unitList = [
-                                ...aliasList.filter((al) => Bot.CharacterNames.find((cn) => cn.defId === al.defId)),
-                                ...Bot.CharacterNames,
-                            ];
-                        } else if (focusedOption.name === "ship") {
-                            unitList = [...aliasList.filter((al) => Bot.ShipNames.find((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
-                        }
-                        filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
-                        filtered = filtered
-                            .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
-                            .map((unit) => {
-                                if (unit.isAlias) return { name: `${unit.name} (${unit.alias})`, value: unit.defId };
-                                return { name: unit.name, value: unit.defId };
-                            });
+                    if (!["unit", "character", "ship"].includes(focusedOption.name)) return;
+
+                    let unitList = [];
+                    if (focusedOption.name === "unit") {
+                        unitList = [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
+                    } else if (focusedOption.name === "character") {
+                        unitList = [
+                            ...aliasList.filter((al) => Bot.CharacterNames.find((cn) => cn.defId === al.defId)),
+                            ...Bot.CharacterNames,
+                        ];
+                    } else if (focusedOption.name === "ship") {
+                        unitList = [...aliasList.filter((al) => Bot.ShipNames.find((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
                     }
+                    filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
+                    filtered = filtered
+                        .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
+                        .map((unit) => {
+                            if (unit.isAlias) return { name: `${unit.name} (${unit.alias})`, value: unit.defId };
+                            return { name: unit.name, value: unit.defId };
+                        });
                 }
             } catch (err) {
                 logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unit name issue.`);
@@ -157,13 +158,18 @@ module.exports = async (Bot, client, interaction) => {
                 );
             } catch (err) {
                 // If it's one of the common errors, just move on, nothing that I can do about it
-                const ignoreArr = ["unknown interaction", "bad gateway", "service unavailable"];
+                const ignoreArr = ["unknown interaction", "bad gateway", "service unavailable", "connect timeout", "unknown message"];
                 const errStr = ignoreArr.find((elem) => err.toString().toLowerCase().includes(elem));
-                if (errStr) return;
+                if (errStr) {
+                    if (errStr !== "unknown interaction") {
+                        logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Ignoring error: ${errStr}`);
+                    }
+                    return;
+                }
 
                 // Otherwise, print out what I can about it
                 if (typeof err !== "string") {
-                    logErr(`[${Bot.myTime()}] [interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
+                    logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
                     console.error(interaction?.options?._hoistedOptions || interaction?.options);
                     console.error(err);
                 } else {

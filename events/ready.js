@@ -32,8 +32,13 @@ module.exports = async (Bot, client) => {
         Bot.socket.on("connect", () => {
             console.log(`  [${client.shard.id}] Connected to EventMgr socket!`);
         });
-        Bot.socket.on("disconnect", () => {
-            console.log(`  [${client.shard.id}] Disconnected from EventMgr socket!`);
+
+        Bot.socket.on('connect_error', err => console.error("[Socket.io connect_error]", err));
+        Bot.socket.on('reconnect_error', err => console.error("[Socket.io reconnect_error]", err));
+        Bot.socket.on('connect_failed', err => console.error("[Socket.io connect_failed]", err));
+        Bot.socket.on("disconnect", (reason) => {
+            // The reason of the disconnection, for example "Ping Timeout"
+            console.log(`  [${client.shard.id}] Socket.io disconnected from EventMgr socket! (${reason})`);
         });
 
         // Start up the client.ws watcher
@@ -60,7 +65,7 @@ module.exports = async (Bot, client) => {
                                 // Check all the ranks for shards (To send to channels)
                                 await Bot.shardRanks();
 
-                                // Only run these every 5min (on :5, :10, :15, etc)
+                                // Only run these every 5min (on :05, :10, :15, etc)
                                 const min = new Date().getMinutes();
                                 if (min % 5 === 0) {
                                     // Update the shard payout monitors
@@ -80,6 +85,7 @@ module.exports = async (Bot, client) => {
                                 if (client.shard?.count > 0) {
                                     client.shard
                                         .broadcastEval((client) => client.reloadDataFiles())
+                                        // .then(() => Bot.logger.log("[Ready/ReloadData data] Reloading all data files"))
                                         .catch((err) => console.log(`[Ready/ReloadData data]\n${err}`));
                                 } else {
                                     client.reloadDataFiles();
