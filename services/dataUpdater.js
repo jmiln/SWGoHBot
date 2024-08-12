@@ -1000,6 +1000,7 @@ function saveRaidNames(locales) {
         MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon",
         MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic",
         MISSION_GUILDRAIDS_SPEEDERBIKE_NAME: "speederbike",
+        MISSION_GUILDRAIDS_NABOO_NAME: "naboo",
     };
     const raidNamesOut = {};
     for (const lang of langList) {
