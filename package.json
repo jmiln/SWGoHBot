@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "eslint",
         "start": "node swgohBotShard.js",
-        "test": "node --test ./test"
+        "test": "node --test ./test/**/*.test.js"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",
@@ -20,7 +20,7 @@
     },
     "dependencies": {
         "@swgoh-utils/comlink": "^1.4.1",
-        "async": "^3.2.5",
+        "async": "^3.2.6",
         "discord.js": "^14.15.3",
         "mongodb": "^6.8.0",
         "piscina": "^4.6.1",
