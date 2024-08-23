@@ -1089,6 +1089,34 @@
         }
     },
     {
+        "name": "Captain Enoch",
+        "uniqueName": "CAPTAINENOCH",
+        "aliases": [
+            "Captain Enoch"
+        ],
+        "avatarName": "charui_captainenoch",
+        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captainenoch.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_IMPERIALREMNANT_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense"
+        },
+        "crew": []
+    },
+    {
         "name": "Captain Han Solo",
         "uniqueName": "HOTHHAN",
         "aliases": [
@@ -1973,7 +2001,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -4470,8 +4498,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4686,9 +4714,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -5034,7 +5062,18 @@
             "CATEGORY_REBELS_DESC",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency"
+        },
         "crew": []
     },
     {
@@ -5430,7 +5469,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_nightsister_acolyte"
@@ -6176,7 +6215,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -7942,9 +7981,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },

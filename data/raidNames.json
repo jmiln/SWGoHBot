@@ -6,7 +6,8 @@
         "sith_raid": "西斯三巨头",
         "kraytdragon": "克雷特龙猎杀",
         "heroic": "英雄",
-        "speederbike": "飞行摩托追击"
+        "speederbike": "飞行摩托追击",
+        "naboo": "纳布之战"
     },
     "cht_cn": {
         "aat": "肉盾擊倒",
@@ -15,7 +16,8 @@
         "sith_raid": "西斯三巨頭",
         "kraytdragon": "獵殺克雷特龍",
         "heroic": "英雄",
-        "speederbike": "飛行摩托車追逐"
+        "speederbike": "飛行摩托車追逐",
+        "naboo": "那卜戰役"
     },
     "eng_us": {
         "aat": "TANK TAKEDOWN",
@@ -24,7 +26,8 @@
         "sith_raid": "THE SITH TRIUMVIRATE",
         "kraytdragon": "KRAYT DRAGON HUNT",
         "heroic": "HEROIC",
-        "speederbike": "SPEEDER BIKE PURSUIT"
+        "speederbike": "SPEEDER BIKE PURSUIT",
+        "naboo": "BATTLE FOR NABOO"
     },
     "fre_fr": {
         "aat": "ASSAUT DE CHAR",
@@ -33,7 +36,8 @@
         "sith_raid": "LE TRIUMVIRAT SITH",
         "kraytdragon": "CHASSE AU DRAGON KRAYT",
         "heroic": "HÉROÏQUE",
-        "speederbike": "POURSUITE EN MOTOJET"
+        "speederbike": "POURSUITE EN MOTOJET",
+        "naboo": "BATAILLE POUR NABOO"
     },
     "ger_de": {
         "aat": "TANK-TAKEDOWN",
@@ -42,7 +46,8 @@
         "sith_raid": "DAS SITH-TRIUMVIRAT",
         "kraytdragon": "KRAYT-DRACHENJAGD",
         "heroic": "HELDENHAFT",
-        "speederbike": "SPEEDER-VERFOLGUNG"
+        "speederbike": "SPEEDER-VERFOLGUNG",
+        "naboo": "SCHLACHT UM NABOO"
     },
     "ind_id": {
         "aat": "PELUMPUHAN TANK",
@@ -51,7 +56,8 @@
         "sith_raid": "TIGA SERANGKAI SITH",
         "kraytdragon": "PERBURUAN KRAYT DRAGON",
         "heroic": "HEROIK",
-        "speederbike": "PENGEJARAN MOTOR SPEEDER"
+        "speederbike": "PENGEJARAN MOTOR SPEEDER",
+        "naboo": "PERANG UNTUK NABOO"
     },
     "ita_it": {
         "aat": "ALL'ASSALTO DEL CARRO",
@@ -60,7 +66,8 @@
         "sith_raid": "IL TRIUMVIRATO SITH",
         "kraytdragon": "CACCIA AL DRAGO KRAYT",
         "heroic": "EROICO",
-        "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE"
+        "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE",
+        "naboo": "BATTAGLIA PER NABOO"
     },
     "jpn_jp": {
         "aat": "タンク排除",
@@ -69,7 +76,8 @@
         "sith_raid": "シス三頭政治",
         "kraytdragon": "クレイト・ドラゴン・ハント",
         "heroic": "ヒロイック",
-        "speederbike": "スピーダー・バイク・パシュート"
+        "speederbike": "スピーダー・バイク・パシュート",
+        "naboo": "ナブーの戦い"
     },
     "kor_kr": {
         "aat": "탱크 테이크다운",
@@ -78,7 +86,8 @@
         "sith_raid": "시스 삼인방",
         "kraytdragon": "크레이트 드래곤 사냥",
         "heroic": "영웅",
-        "speederbike": "스피더 바이크 추격"
+        "speederbike": "스피더 바이크 추격",
+        "naboo": "나부 전투"
     },
     "por_br": {
         "aat": "ELIMINAÇÃO DE TANQUE",
@@ -87,7 +96,8 @@
         "sith_raid": "O TRIUNVIRATO SITH",
         "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
         "heroic": "HEROICA",
-        "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE"
+        "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE",
+        "naboo": "BATALHA POR NABOO"
     },
     "rus_ru": {
         "aat": "УНИЧТОЖЕНИЕ ТАНКА",
@@ -96,7 +106,8 @@
         "sith_raid": "ТРИУМВИРАТ СИТХОВ",
         "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
         "heroic": "ГЕРОИЧЕСКИЙ",
-        "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ"
+        "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ",
+        "naboo": "БИТВА ЗА НАБУ"
     },
     "spa_xm": {
         "aat": "DERRIBO DE TANQUE",
@@ -105,7 +116,8 @@
         "sith_raid": "EL TRIUNVIRATO SITH",
         "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
         "heroic": "HEROICO",
-        "speederbike": "PERSECUCIÓN EN MOTO SPEEDER"
+        "speederbike": "PERSECUCIÓN EN MOTO SPEEDER",
+        "naboo": "BATALLA POR NABOO"
     },
     "tha_th": {
         "aat": "แทงค์บรรลัยกัลป์",
@@ -114,7 +126,8 @@
         "sith_raid": "ไตรภาคีแห่งซิธ",
         "kraytdragon": "ล่ามังกรไครท์",
         "heroic": "โหมดฮีโร่",
-        "speederbike": "ไล่ล่าสปีดเดอร์ไบค์"
+        "speederbike": "ไล่ล่าสปีดเดอร์ไบค์",
+        "naboo": "สงครามแห่งนาบู"
     },
     "tur_tr": {
         "aat": "TANK PARÇALAMA",
@@ -123,6 +136,7 @@
         "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
         "kraytdragon": "KRAYT DRAGON AVI",
         "heroic": "EPİK",
-        "speederbike": "HIZ MOTOSİKLETİ TAKİBİ"
+        "speederbike": "HIZ MOTOSİKLETİ TAKİBİ",
+        "naboo": "NABOO SAVAŞI"
     }
 }

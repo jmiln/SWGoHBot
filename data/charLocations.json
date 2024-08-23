@@ -561,6 +561,17 @@
         ]
     },
     {
+        "name": "Captain Enoch",
+        "defId": "CAPTAINENOCH",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CAPTAINENOCH_NAME",
+                "name": "Undying Legion Iii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Captain Han Solo",
         "defId": "HOTHHAN",
         "locations": [
