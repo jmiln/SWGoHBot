@@ -81,7 +81,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Chance",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_aaylasecura"
@@ -1340,7 +1340,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -3643,7 +3643,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -4714,9 +4714,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_kuiil"
     },
@@ -7236,7 +7236,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Potency"
         },
         "avatarName": "charui_bb_tech"

@@ -125,7 +125,9 @@ const init = async () => {
         ];
         const errStr = ignoreArr.find((elem) => errorMsg.includes(elem));
         if (errStr) {
-            return console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errStr}`);
+            console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errStr}`);
+            console.error(err.stack);
+            return console.error(err);
         }
 
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
@@ -133,6 +135,8 @@ const init = async () => {
         }
         // console.log(err);
         console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
+        console.error(err.stack);
+        console.error(err);
         try {
             if (Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel)?.send(`\`\`\`${inspect(errorMsg)}\`\`\``, { split: true });
