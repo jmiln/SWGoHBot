@@ -116,6 +116,8 @@ async function updateMetadata(dataDir, comlinkStub) {
             isUpdated = true;
             debugLog(`Updating metadata ${key} from ${oldMetaData[key]} to ${newMetaData[key]}`);
             metadata[key] = newMetaData[key];
+        } else {
+            metadata[key] = oldMetaData[key];
         }
     }
 
@@ -165,7 +167,7 @@ async function runGameDataUpdaters(metadata, cache, comlinkStub) {
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = [];
 
-    const locales = await getLocalizationData(metadata.latestLocalizationBundleVersion);
+    const locales = await getLocalizationData(comlinkStub, metadata.latestLocalizationBundleVersion);
 
     // Load the files of char/ship locations
     const currentCharLocs = JSON.parse(fs.readFileSync(CHAR_LOCATIONS_FILE_PATH));
@@ -181,7 +183,7 @@ async function runGameDataUpdaters(metadata, cache, comlinkStub) {
         log.push("Detected a change in character locations.");
         await saveFile(CHAR_LOCATIONS_FILE_PATH, newCharLocs);
     }
-    const newShipLocs = await updateLocs(SHIP_FILE_PATH, SHIP_LOCATIONS_FILE_PATH, locales);
+    const newShipLocs = await updateLocs(SHIP_FILE_PATH, SHIP_LOCATIONS_FILE_PATH, locales, cache);
     if (newShipLocs && JSON.stringify(newShipLocs) !== JSON.stringify(currentShipLocs)) {
         log.push("Detected a change in ship locations.");
         await saveFile(SHIP_LOCATIONS_FILE_PATH, newShipLocs);
