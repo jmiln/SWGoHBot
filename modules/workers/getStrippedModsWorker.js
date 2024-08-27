@@ -3,7 +3,7 @@ const ComlinkStub = require("@swgoh-utils/comlink");
 module.exports = async ({playerId, modMap, clientStub}) => {
     // console.log(`[getStrippedModsWorker] ${playerId}`);
     const comlinkStub = new ComlinkStub(clientStub);
-    const units = await comlinkStub.getPlayer(null, playerId.toString())
+    return await comlinkStub.getPlayer(null, playerId.toString())
         .then((res) => {
             return res?.rosterUnit
                 .filter((unit) => unit?.equippedStatMod?.length)
@@ -22,5 +22,4 @@ module.exports = async ({playerId, modMap, clientStub}) => {
         .catch((err) => {
             console.error(err.message);
         });
-    return units;
 };

@@ -322,8 +322,7 @@ module.exports = (opts = {}) => {
                 }
             }
 
-            // If options.force is true (Apparently never used?), set the list of unexpired players to be empty
-            // This will make it so that all players will be run through the updater
+            // If options.force is true, set the list of unexpired players to be empty so that all players will be run through the updater
             const updatedList = options.force ? [] : players.filter((p) => !isExpired(p.updated, thisCooldown));
             const updatedAC = updatedList.map((p) => Number.parseInt(p.allyCode, 10));
             const needUpdating = acArr.filter((a) => !updatedAC.includes(a));
@@ -345,6 +344,7 @@ module.exports = (opts = {}) => {
                     return players;
                 }
 
+                const bulkWrites = [];
                 for (const bareP of updatedBare) {
                     if (bareP?.roster?.length) {
                         try {
@@ -376,12 +376,21 @@ module.exports = (opts = {}) => {
                             }
                         }
 
-                        const charStats = await cache.put(config.mongodb.swapidb, "playerStats", { allyCode: bareP.allyCode }, bareP);
+                        bulkWrites.push({
+                            updateOne: {
+                                filter: { allyCode: bareP.allyCode },
+                                update: { $set: bareP },
+                                upsert: true
+                            },
+                        });
                         if (options?.defId?.length) {
-                            charStats.roster = charStats.roster.filter((ch) => ch.defId === options.defId);
+                            bareP.roster = bareP.roster.filter((ch) => ch.defId === options.defId);
                         }
-                        playerStats.push(charStats);
+                        playerStats.push(bareP);
                     }
+                }
+                if (bulkWrites.length) {
+                    await cache.putMany(config.mongodb.swapidb, "playerStats", bulkWrites);
                 }
             }
             return playerStats;
