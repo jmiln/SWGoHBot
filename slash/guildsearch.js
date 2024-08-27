@@ -233,7 +233,7 @@ class GuildSearch extends Command {
         if (!guild?.roster?.length) {
             return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_NO_GUILD") });
         }
-        interaction.editReply({ content: `Found guild \`${guild.name}\`!\n*Processing...*` });
+        await interaction.editReply({ content: `Found guild \`${guild.name}\`!\n*Processing...*` });
 
         const oldLen = guild.roster.length;
         guild.roster = guild.roster.filter((m) => m.allyCode !== null);

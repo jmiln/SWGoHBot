@@ -56,6 +56,8 @@ class Zetas extends Command {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
 
+        await interaction.reply({ content: interaction.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
+
         const subCommand = interaction.options.getSubcommand(true);
 
         let character = null;
@@ -124,8 +126,6 @@ class Zetas extends Command {
                     }
                 }
             };
-
-            await interaction.reply({ content: interaction.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
 
             const desc = [];
             const author = {};
@@ -209,7 +209,7 @@ class Zetas extends Command {
         }
         if (subCommand === "guild") {
             // Display the zetas for the whole guild (Takes a while)
-            await interaction.reply({ content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD") });
+            await interaction.editReply({ content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD") });
 
             let guild = null;
             let guildGG = null;

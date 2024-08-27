@@ -55,7 +55,7 @@ class TerritoryWar extends Command {
         if (problemArr.length) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
-        interaction.editReply({ content: "> Found matching ally codes for both users, getting guilds..." });
+        await interaction.editReply({ content: "> Found matching ally codes for both users, getting guilds..." });
 
         // Get the name & ally code for each player in each of the guilds
         let guild1 = null;
@@ -78,7 +78,7 @@ class TerritoryWar extends Command {
         if (problemArr.length) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
-        interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
+        await interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
 
         const unitChecklist = await getFullTWList({cache: Bot.cache, guildId: interaction.guild?.id});
 
@@ -128,7 +128,7 @@ class TerritoryWar extends Command {
         if (problemArr.length) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
-        interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
+        await interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
 
         // Localized labels for each row
         const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES");
@@ -447,10 +447,10 @@ class TerritoryWar extends Command {
             fields: fields,
         };
         try {
-            interaction.editReply({ content: null, embeds: [embed] });
+            return interaction.editReply({ content: null, embeds: [embed] });
         } catch (err) {
             console.error("[slash/territorywar] Couldn't edit the reply to send final results. Sending message instead.", err);
-            interaction.channel.send({ content: null, embeds: [embed] });
+            return interaction.channel.send({ content: null, embeds: [embed] });
         }
     }
 }
