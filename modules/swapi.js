@@ -383,14 +383,16 @@ module.exports = (opts = {}) => {
                                 upsert: true
                             },
                         });
-                        if (options?.defId?.length) {
-                            bareP.roster = bareP.roster.filter((ch) => ch.defId === options.defId);
-                        }
-                        playerStats.push(bareP);
                     }
                 }
                 if (bulkWrites.length) {
-                    await cache.putMany(config.mongodb.swapidb, "playerStats", bulkWrites);
+                    const manyRes = await cache.putMany(config.mongodb.swapidb, "playerStats", bulkWrites);
+                    for (const player of manyRes) {
+                        if (options?.defId?.length) {
+                            player.roster = player.roster.filter((ch) => ch.defId === options.defId);
+                        }
+                        playerStats.push(player);
+                    }
                 }
             }
             return playerStats;

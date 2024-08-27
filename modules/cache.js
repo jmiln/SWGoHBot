@@ -2,13 +2,14 @@ module.exports = (clientMongo) => {
     const mongo = clientMongo;
 
     return {
-        put: put,
+        checkIndexes: checkIndexes,
+        exists: exists,
         get: get,
         getOne: getOne,
+        put: put,
+        putMany: putMany,
         remove: remove,
         replace: replace,
-        exists: exists,
-        putMany: putMany,
     };
 
     async function put(database, collection, matchCondition, saveObject, autoUpdate = true) {
@@ -31,12 +32,19 @@ module.exports = (clientMongo) => {
     }
 
     // Getting it to work with bulkWrite
-    async function putMany(database, collection, saveObjectArray) {
+    async function putMany(database, collection, saveObjectArray, autoUpdate = true) {
         if (!database) throw new Error("No database specified to putMany");
         if (!collection) throw new Error("No collection specified to putMany");
         if (!saveObjectArray?.length) throw new Error("Object array is empty or missing");
 
         const dbo = await mongo.db(database);
+
+        if (autoUpdate) {
+            for (const obj of saveObjectArray) {
+                obj.updated = Date.now();
+                obj.updatedAt = new Date();
+            }
+        }
 
         await dbo.collection(collection).bulkWrite(saveObjectArray);
         return saveObjectArray;
@@ -99,5 +107,17 @@ module.exports = (clientMongo) => {
 
         const exists = await dbo.collection(collection).findOne(matchCondition);
         return !!exists;
+    }
+
+    async function checkIndexes(database, collection) {
+        const out = [];
+        const dbo = await mongo.db(database);
+
+        const indexes = await dbo.collection(collection).listIndexes().toArray();
+
+        for (const index of indexes) {
+            out.push(index);
+        }
+        return out;
     }
 };
