@@ -988,7 +988,7 @@ module.exports = class extends Language {
                 "links": {
                     "Add me to your server": "- http://swgohbot.com/invite",
                     "Join SWGoHBot HQ": "- https://discord.gg/FfwGvhr",
-                    "Support the Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)\n- [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YY3B9BS298KYW)"
+                    "Support the Bot": "- [Github](https://github.com/jmiln/SWGoHBot)\n- [Patreon](https://www.patreon.com/swgohbot)"
                 }
             }),
             COMMAND_INFO_HELP: {

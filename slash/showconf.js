@@ -46,6 +46,17 @@ class Showconf extends Command {
                     }
                     break;
                 }
+                case "announceChan": {
+                    if (guildConf.announceChan?.length) {
+                        const channel = await interaction.guild.channels.cache.get(guildConf.announceChan);
+                        let channelName = guildConf.announceChan;
+                        if (channel?.name) channelName = `#${channel?.name} (${channel?.id})`;
+                        outArr.push(`* ${key}: ${`${channel?.name} (${channel?.id})` || guildConf.announceChan}`);
+                    } else {
+                        outArr.push(`* ${key}: N/A`);
+                    }
+                    break;
+                }
                 case "eventCountdown": {
                     if (guildConf.eventCountdown?.length) {
                         outArr.push(`* ${key}: ${guildConf.eventCountdown.join(", ")}`);
