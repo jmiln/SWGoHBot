@@ -949,7 +949,13 @@
     {
         "name": "Dark Trooper Moff Gideon",
         "defId": "MOFFGIDEONS3",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Darth Bane",
@@ -1243,13 +1249,7 @@
     {
         "name": "Embo",
         "defId": "EMBO",
-        "locations": [
-            {
-                "type": "Hard Modes (D)",
-                "level": "8-C",
-                "locId": "HARD_DARK"
-            }
-        ]
+        "locations": []
     },
     {
         "name": "Emperor Palpatine",
@@ -1352,6 +1352,11 @@
                 "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
+    },
+    {
+        "name": "Ezra Bridger (Exile)",
+        "defId": "EZRAEXILE",
+        "locations": []
     },
     {
         "name": "Fennec Shand",
@@ -2738,6 +2743,11 @@
         "name": "Night Trooper",
         "defId": "NIGHTTROOPER",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "8-C",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_NIGHTTROOPER_NAME",
