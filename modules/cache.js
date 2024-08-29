@@ -32,19 +32,12 @@ module.exports = (clientMongo) => {
     }
 
     // Getting it to work with bulkWrite
-    async function putMany(database, collection, saveObjectArray, autoUpdate = true) {
+    async function putMany(database, collection, saveObjectArray) {
         if (!database) throw new Error("No database specified to putMany");
         if (!collection) throw new Error("No collection specified to putMany");
         if (!saveObjectArray?.length) throw new Error("Object array is empty or missing");
 
         const dbo = await mongo.db(database);
-
-        if (autoUpdate) {
-            for (const obj of saveObjectArray) {
-                obj.updated = Date.now();
-                obj.updatedAt = new Date();
-            }
-        }
 
         await dbo.collection(collection).bulkWrite(saveObjectArray);
         return saveObjectArray;

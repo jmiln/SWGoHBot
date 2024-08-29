@@ -82,7 +82,7 @@ class Register extends Command {
                 interaction,
                 codeBlock(
                     "asciiDoc",
-                    interaction.language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode.toString().match(/\d{3}/g).join("-")),
+                    interaction.language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g).join("-")),
                 ),
                 {
                     title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
@@ -120,7 +120,7 @@ class Register extends Command {
                             interaction.language.get(
                                 "COMMAND_REGISTER_SUCCESS_DESC",
                                 player,
-                                player.allyCode.toString().match(/\d{3}/g).join("-"),
+                                player.allyCode?.toString().match(/\d{3}/g).join("-"),
                                 player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString(),
                             ),
                         ),
@@ -130,15 +130,15 @@ class Register extends Command {
                     );
                 })
                 .catch((e) => {
-                    Bot.logger.error("REGISTER", `Broke while trying to link new user: ${e}`);
+                    Bot.logger.error(`[REGISTER] Broke while trying to link new user: ${e}`);
                     return super.error(interaction, codeBlock(e.message), {
-                        title: interaction.lanugage.get("BASE_SOMETHING_BROKE"),
+                        title: interaction.language.get("BASE_SOMETHING_BROKE"),
                         footer: "Please try again in a bit.",
                         edit: true,
                     });
                 });
         } catch (e) {
-            Bot.logger.error(`ERROR[REG]: Incorrect Ally Code: ${e}`);
+            Bot.logger.error(`[REGISTER] Incorrect Ally Code: ${e}`);
             return super.error(interaction, `Something broke. Make sure you've got the correct ally code${codeBlock(e.message)}`);
         }
     }
