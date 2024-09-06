@@ -1713,6 +1713,17 @@
         ]
     },
     {
+        "name": "Great Mothers",
+        "defId": "GREATMOTHERS",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_GREATMOTHERS_NAME",
+                "name": "Veil Of Shadows Ii  Special Elite Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Greedo",
         "defId": "GREEDO",
         "locations": [
