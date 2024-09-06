@@ -6,7 +6,7 @@
             "0-0-0"
         ],
         "url": "http://swgoh.gg/characters/0-0-0/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_triplezero.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_triplezero.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -34,7 +34,7 @@
             "50R-T"
         ],
         "url": "http://swgoh.gg/characters/50r-t/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_50rt.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_50rt.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -63,7 +63,7 @@
             "Aayla Secura"
         ],
         "url": "http://swgoh.gg/characters/aayla-secura/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_aaylasecura.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_aaylasecura.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -94,7 +94,7 @@
             "AA"
         ],
         "url": "http://swgoh.gg/characters/admiral-ackbar/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ackbaradmiral.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ackbaradmiral.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -123,7 +123,7 @@
             "Admiral Piett"
         ],
         "url": "http://swgoh.gg/characters/admiral-piett/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_piett.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_piett.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -153,7 +153,7 @@
             "Admiral Raddus"
         ],
         "url": "http://swgoh.gg/characters/admiral-raddus/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_admiralraddus.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_admiralraddus.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -182,7 +182,7 @@
             "Admiral Trench"
         ],
         "url": "http://swgoh.gg/characters/admiral-trench/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_admiraltrench.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_admiraltrench.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -212,7 +212,7 @@
             "AT"
         ],
         "url": "http://swgoh.gg/characters/ahsoka-tano/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ahsoka.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsoka.png",
         "side": "light",
         "factions": [
             "501st",
@@ -245,7 +245,7 @@
             "FAT"
         ],
         "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ahsokaadult.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokaadult.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -273,7 +273,7 @@
             "Amilyn Holdo"
         ],
         "url": "http://swgoh.gg/characters/amilyn-holdo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_holdo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_holdo.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -302,7 +302,7 @@
             "ARC Trooper"
         ],
         "url": "http://swgoh.gg/characters/arc-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_arc.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperclone_arc.png",
         "side": "light",
         "factions": [
             "501st",
@@ -334,7 +334,7 @@
             "AV"
         ],
         "url": "http://swgoh.gg/characters/asajj-ventress/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ventress.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ventress.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -364,7 +364,7 @@
             "Aurra Sing"
         ],
         "url": "http://swgoh.gg/characters/aurra-sing/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_aurrasing.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_aurrasing.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -393,7 +393,7 @@
             "B1 Battle Droid"
         ],
         "url": "http://swgoh.gg/characters/b1-battle-droid/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_b1.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_b1.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -421,7 +421,7 @@
             "B2 Super Battle Droid"
         ],
         "url": "http://swgoh.gg/characters/b2-super-battle-droid/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_b2.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_b2.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -453,7 +453,7 @@
             "Bariss"
         ],
         "url": "http://swgoh.gg/characters/barriss-offee/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_barriss_light.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_barriss_light.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -484,7 +484,7 @@
             "Bastilla"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bastilashan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bastilashan.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -517,7 +517,7 @@
             "Fallen"
         ],
         "url": "http://swgoh.gg/characters/bastila-shan-fallen/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bastilashan_dark.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bastilashan_dark.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -545,7 +545,7 @@
             "Baze Malbus"
         ],
         "url": "http://swgoh.gg/characters/baze-malbus/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bazemalbus.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bazemalbus.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -576,7 +576,7 @@
             "BB8"
         ],
         "url": "http://swgoh.gg/characters/bb-8/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb8.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bb8.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -604,7 +604,7 @@
             "Ben Solo"
         ],
         "url": "http://swgoh.gg/characters/ben-solo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bensolo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bensolo.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -631,7 +631,7 @@
             "Biggs Darklighter"
         ],
         "url": "http://swgoh.gg/characters/biggs-darklighter/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelpilot_biggs.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rebelpilot_biggs.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -659,7 +659,7 @@
             "Bistan"
         ],
         "url": "http://swgoh.gg/characters/bistan/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bistan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bistan.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -689,7 +689,7 @@
             "Bo-Katan (Mand'alor)"
         ],
         "avatarName": "charui_mandalorbokatan",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandalorbokatan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mandalorbokatan.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -718,7 +718,7 @@
             "Bo Katan Kryze"
         ],
         "url": "http://swgoh.gg/characters/bo-katan-kryze/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bokatan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bokatan.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -747,7 +747,7 @@
             "Boba Fett"
         ],
         "url": "http://swgoh.gg/characters/boba-fett/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bobafett.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bobafett.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -776,7 +776,7 @@
             "Boba Fett, Scion of Jango"
         ],
         "url": "http://swgoh.gg/characters/boba-fett-scion-of-jango/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bobafettold.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bobafettold.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -805,7 +805,7 @@
             "Bodhi Rook"
         ],
         "url": "http://swgoh.gg/characters/bodhi-rook/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bodhi.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bodhi.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -834,7 +834,7 @@
             "Boss Nass"
         ],
         "avatarName": "charui_bossnass",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bossnass.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bossnass.png",
         "side": "light",
         "factions": [
             "Gungan",
@@ -862,7 +862,7 @@
             "Bosk"
         ],
         "url": "http://swgoh.gg/characters/bossk/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bossk.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bossk.png",
         "side": "dark",
         "factions": [
             "Bounty Hunter",
@@ -891,7 +891,7 @@
             "Boushh (Leia Organa)"
         ],
         "url": "http://swgoh.gg/characters/boushh-leia-organa/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_boushh.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_boushh.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -921,7 +921,7 @@
             "BT-1"
         ],
         "url": "http://swgoh.gg/characters/bt-1/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bt1.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bt1.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -952,7 +952,7 @@
             "3PO"
         ],
         "url": "http://swgoh.gg/characters/c-3po/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_c3p0.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_c3p0.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -982,7 +982,7 @@
             "Cad Bane"
         ],
         "url": "http://swgoh.gg/characters/cad-bane/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_cadbane.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cadbane.png",
         "side": "dark",
         "factions": [
             "Bounty Hunter",
@@ -1011,7 +1011,7 @@
             "Cal Kestis"
         ],
         "url": "http://swgoh.gg/characters/cal-kestis/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_calkestis.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_calkestis.png",
         "side": "light",
         "factions": [
             "Support",
@@ -1039,7 +1039,7 @@
             "Canderous Ordo"
         ],
         "url": "http://swgoh.gg/characters/canderous-ordo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_canderous.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_canderous.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1068,7 +1068,7 @@
             "Captain Drogan"
         ],
         "avatarName": "charui_captaindrogan",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captaindrogan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_captaindrogan.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1095,7 +1095,7 @@
             "Captain Enoch"
         ],
         "avatarName": "charui_captainenoch",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captainenoch.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_captainenoch.png",
         "side": "dark",
         "factions": [
             "CATEGORY_IMPERIALREMNANT_DESC",
@@ -1125,7 +1125,7 @@
             "CHS"
         ],
         "url": "http://swgoh.gg/characters/captain-han-solo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hoth_han.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hoth_han.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -1153,7 +1153,7 @@
             "Captain Phasma"
         ],
         "url": "http://swgoh.gg/characters/captain-phasma/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_phasma.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_phasma.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -1181,7 +1181,7 @@
             "Captain Rex"
         ],
         "avatarName": "charui_captainrex",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captainrex.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_captainrex.png",
         "side": "light",
         "factions": [
             "Clone Trooper",
@@ -1210,7 +1210,7 @@
             "Captain Tarpals"
         ],
         "avatarName": "charui_captaintarpals",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_captaintarpals.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_captaintarpals.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1236,7 +1236,7 @@
             "Cara Dune"
         ],
         "url": "http://swgoh.gg/characters/cara-dune/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_caradune.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_caradune.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -1266,7 +1266,7 @@
             "Carth Onasi"
         ],
         "url": "http://swgoh.gg/characters/carth-onasi/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_carth.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_carth.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1294,7 +1294,7 @@
             "Cassian Andor"
         ],
         "url": "http://swgoh.gg/characters/cassian-andor/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_cassian.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cassian.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -1324,7 +1324,7 @@
             "CC-2224 Cody"
         ],
         "url": "http://swgoh.gg/characters/cc-2224-cody/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_cody.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperclone_cody.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1353,7 +1353,7 @@
             "Cere Junda"
         ],
         "url": "http://swgoh.gg/characters/cere-junda/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_cerejunda.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cerejunda.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -1383,7 +1383,7 @@
             "Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/chewbacca/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_ot.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_chewbacca_ot.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1413,7 +1413,7 @@
             "Chief Chirpa"
         ],
         "url": "http://swgoh.gg/characters/chief-chirpa/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_chirpa.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_chirpa.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -1442,7 +1442,7 @@
             "Nebit"
         ],
         "url": "http://swgoh.gg/characters/chief-nebit/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_nebit.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jawa_nebit.png",
         "side": "light",
         "factions": [
             "Jawa",
@@ -1472,7 +1472,7 @@
             "Chirrut"
         ],
         "url": "http://swgoh.gg/characters/chirrut-imwe/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chirrut.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_chirrut.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1501,7 +1501,7 @@
             "Chopper"
         ],
         "url": "http://swgoh.gg/characters/chopper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chopper.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_chopper.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -1532,7 +1532,7 @@
             "CS1"
         ],
         "url": "http://swgoh.gg/characters/clone-sergeant-phase-i/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclonegreen.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperclonegreen.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1562,7 +1562,7 @@
             "Chewy"
         ],
         "url": "http://swgoh.gg/characters/clone-wars-chewbacca/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_clonewarschewbacca.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_clonewarschewbacca.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -1594,7 +1594,7 @@
             "Starck"
         ],
         "url": "http://swgoh.gg/characters/colonel-starck/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_colonel_stark.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_colonel_stark.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -1623,7 +1623,7 @@
             "CAT"
         ],
         "url": "http://swgoh.gg/characters/commander-ahsoka-tano/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_commanderahsokatano.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_commanderahsokatano.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1656,7 +1656,7 @@
             "CLS"
         ],
         "url": "http://swgoh.gg/characters/commander-luke-skywalker/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lukebespin.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_lukebespin.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -1686,7 +1686,7 @@
             "CUP"
         ],
         "url": "http://swgoh.gg/characters/coruscant-underworld-police/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_coruscantpolice.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_coruscantpolice.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -1714,7 +1714,7 @@
             "Dooku"
         ],
         "url": "http://swgoh.gg/characters/count-dooku/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dooku.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_dooku.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1746,7 +1746,7 @@
             "CTEcho"
         ],
         "url": "http://swgoh.gg/characters/ct-21-0408-echo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_echo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperclone_echo.png",
         "side": "light",
         "factions": [
             "501st",
@@ -1777,7 +1777,7 @@
             "5s"
         ],
         "url": "http://swgoh.gg/characters/ct-5555-fives/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_fives.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperclone_fives.png",
         "side": "light",
         "factions": [
             "501st",
@@ -1809,7 +1809,7 @@
             "Rex"
         ],
         "url": "http://swgoh.gg/characters/ct-7567-rex/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperclone_rex.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperclone_rex.png",
         "side": "light",
         "factions": [
             "501st",
@@ -1839,7 +1839,7 @@
             "Dark Trooper"
         ],
         "url": "http://swgoh.gg/characters/dark-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darktrooper.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darktrooper.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1869,7 +1869,7 @@
             "Dark Trooper Moff Gideon"
         ],
         "avatarName": "charui_moffgideons3",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_moffgideons3.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_moffgideons3.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -1898,7 +1898,7 @@
             "Darth Bane"
         ],
         "avatarName": "charui_darthbane",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthbane.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darthbane.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -1926,7 +1926,7 @@
             "Darth Malak"
         ],
         "url": "http://swgoh.gg/characters/darth-malak/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthmalak.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darthmalak.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -1955,7 +1955,7 @@
             "Darth Malgus"
         ],
         "url": "http://swgoh.gg/characters/darth-malgus/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthmalgus.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darthmalgus.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -1985,7 +1985,7 @@
             "Darth Maul"
         ],
         "url": "http://swgoh.gg/characters/darth-maul/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_maul.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_maul.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2001,7 +2001,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -2015,7 +2015,7 @@
             "DN"
         ],
         "url": "http://swgoh.gg/characters/darth-nihilus/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nihilus.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nihilus.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -2044,7 +2044,7 @@
             "DR"
         ],
         "url": "http://swgoh.gg/characters/darth-revan/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithrevan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sithrevan.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2075,7 +2075,7 @@
             "Sid"
         ],
         "url": "http://swgoh.gg/characters/darth-sidious/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sidious.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sidious.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2105,7 +2105,7 @@
             "Sion"
         ],
         "url": "http://swgoh.gg/characters/darth-sion/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sion.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sion.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -2132,7 +2132,7 @@
             "Darth Talon"
         ],
         "url": "http://swgoh.gg/characters/darth-talon/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_darthtalon.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darthtalon.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2161,7 +2161,7 @@
             "Treya"
         ],
         "url": "http://swgoh.gg/characters/darth-traya/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_traya.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_traya.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -2191,7 +2191,7 @@
             "DV"
         ],
         "url": "http://swgoh.gg/characters/darth-vader/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_vader.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vader.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2220,7 +2220,7 @@
             "Dash Rendar"
         ],
         "url": "http://swgoh.gg/characters/dash-rendar/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dashrendar.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_dashrendar.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -2250,7 +2250,7 @@
             "Datcha"
         ],
         "url": "http://swgoh.gg/characters/dathcha/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_dathcha.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jawa_dathcha.png",
         "side": "light",
         "factions": [
             "Jawa",
@@ -2280,7 +2280,7 @@
             "DT"
         ],
         "url": "http://swgoh.gg/characters/death-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperdeath.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperdeath.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2309,7 +2309,7 @@
             "Death Trooper (Peridea)"
         ],
         "avatarName": "charui_deathtrooperperidea",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_deathtrooperperidea.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_deathtrooperperidea.png",
         "side": "dark",
         "factions": [
             "CATEGORY_IMPERIALREMNANT_DESC",
@@ -2337,7 +2337,7 @@
             "Dengar"
         ],
         "url": "http://swgoh.gg/characters/dengar/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_dengar.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_dengar.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2368,7 +2368,7 @@
             "DK"
         ],
         "url": "http://swgoh.gg/characters/director-krennic/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_krennic.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_krennic.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -2396,7 +2396,7 @@
             "Doctor Aphra"
         ],
         "url": "http://swgoh.gg/characters/doctor-aphra/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_doctoraphra.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_doctoraphra.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -2425,7 +2425,7 @@
             "Droideka"
         ],
         "url": "http://swgoh.gg/characters/droideka/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_droideka.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_droideka.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2455,7 +2455,7 @@
             "BBEcho"
         ],
         "url": "http://swgoh.gg/characters/echo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_echo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bb_echo.png",
         "side": "light",
         "factions": [
             "Bad Batch",
@@ -2484,7 +2484,7 @@
             "Eeth Koth"
         ],
         "url": "http://swgoh.gg/characters/eeth-koth/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_eethkoth.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_eethkoth.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -2515,7 +2515,7 @@
             "8th Brother"
         ],
         "url": "http://swgoh.gg/characters/eighth-brother/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_eighthbrother.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_eighthbrother.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2545,7 +2545,7 @@
             "Embo"
         ],
         "url": "http://swgoh.gg/characters/embo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_embo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_embo.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2577,7 +2577,7 @@
             "EP"
         ],
         "url": "http://swgoh.gg/characters/emperor-palpatine/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_palpatineemperor.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_palpatineemperor.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -2606,7 +2606,7 @@
             "Enfys Nest"
         ],
         "url": "http://swgoh.gg/characters/enfys-nest/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_enfys.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_enfys.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -2635,7 +2635,7 @@
             "Ewok Elder"
         ],
         "url": "http://swgoh.gg/characters/ewok-elder/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_chief.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_chief.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -2662,7 +2662,7 @@
             "Ewok Scout"
         ],
         "url": "http://swgoh.gg/characters/ewok-scout/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_scout.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_scout.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -2689,7 +2689,7 @@
             "Ezra Bridger"
         ],
         "url": "http://swgoh.gg/characters/ezra-bridger/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ezra_s3.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ezra_s3.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -2718,7 +2718,7 @@
             "Ezra Bridger (Exile)"
         ],
         "avatarName": "charui_ezraexile",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ezraexile.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ezraexile.png",
         "side": "light",
         "factions": [
             "CATEGORY_JEDI_DESC",
@@ -2736,7 +2736,7 @@
             "FS"
         ],
         "url": "http://swgoh.gg/characters/fennec-shand/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_fennec.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_fennec.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2766,7 +2766,7 @@
             "5th Brother"
         ],
         "url": "http://swgoh.gg/characters/fifth-brother/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_fifthbrother.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_fifthbrother.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -2796,7 +2796,7 @@
             "Finn"
         ],
         "url": "http://swgoh.gg/characters/finn/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_finnjakku.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_finnjakku.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -2827,7 +2827,7 @@
             "Death Panda"
         ],
         "url": "http://swgoh.gg/characters/first-order-executioner/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_executioner.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstorder_executioner.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2855,7 +2855,7 @@
             "FOO"
         ],
         "url": "http://swgoh.gg/characters/first-order-officer/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorderofficer.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstorderofficer.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -2884,7 +2884,7 @@
             "Special Forces Tie Pilot"
         ],
         "url": "http://swgoh.gg/characters/first-order-sf-tie-pilot/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_pilot.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstorder_pilot.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2912,7 +2912,7 @@
             "FOST"
         ],
         "url": "http://swgoh.gg/characters/first-order-stormtrooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertrooper.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstordertrooper.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -2941,7 +2941,7 @@
             "FOTP"
         ],
         "url": "http://swgoh.gg/characters/first-order-tie-pilot/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstordertiepilot.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstordertiepilot.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -2968,7 +2968,7 @@
             "Gamorrean Guard"
         ],
         "url": "http://swgoh.gg/characters/gamorrean-guard/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gamorreanguard.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gamorreanguard.png",
         "side": "dark",
         "factions": [
             "Scoundrel",
@@ -2996,7 +2996,7 @@
             "Gar Saxon"
         ],
         "url": "http://swgoh.gg/characters/gar-saxon/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gar_saxon.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gar_saxon.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3026,7 +3026,7 @@
             "Zeb"
         ],
         "url": "http://swgoh.gg/characters/garazeb-zeb-orrelios/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zeb_s3.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zeb_s3.png",
         "side": "light",
         "factions": [
             "Phoenix",
@@ -3055,7 +3055,7 @@
             "GG"
         ],
         "url": "http://swgoh.gg/characters/general-grievous/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_grievous.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_grievous.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3086,7 +3086,7 @@
             "General Hux"
         ],
         "url": "http://swgoh.gg/characters/general-hux/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_generalhux.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_generalhux.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -3116,7 +3116,7 @@
             "GK"
         ],
         "url": "http://swgoh.gg/characters/general-kenobi/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_obiwangeneral.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_obiwangeneral.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -3148,7 +3148,7 @@
             "GAS"
         ],
         "url": "http://swgoh.gg/characters/general-skywalker/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_generalanakin.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_generalanakin.png",
         "side": "light",
         "factions": [
             "501st",
@@ -3178,7 +3178,7 @@
             "General Veers"
         ],
         "url": "http://swgoh.gg/characters/general-veers/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_veers.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_veers.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3208,7 +3208,7 @@
             "GBA"
         ],
         "url": "http://swgoh.gg/characters/geonosian-brood-alpha/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_broodalpha.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosian_broodalpha.png",
         "side": "dark",
         "factions": [
             "Geonosian",
@@ -3237,7 +3237,7 @@
             "Geonosian Soldier"
         ],
         "url": "http://swgoh.gg/characters/geonosian-soldier/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_soldier.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosian_soldier.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3265,7 +3265,7 @@
             "Geonosian Spy"
         ],
         "url": "http://swgoh.gg/characters/geonosian-spy/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_spy.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosian_spy.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3294,7 +3294,7 @@
             "GAT"
         ],
         "url": "http://swgoh.gg/characters/grand-admiral-thrawn/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_thrawn.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_thrawn.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3323,7 +3323,7 @@
             "Grand Inquisitor"
         ],
         "url": "http://swgoh.gg/characters/grand-inquisitor/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_grandinquisitor.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_grandinquisitor.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3355,7 +3355,7 @@
             "GMY"
         ],
         "url": "http://swgoh.gg/characters/grand-master-yoda/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_yodagrandmaster.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_yodagrandmaster.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -3385,7 +3385,7 @@
             "GMT"
         ],
         "url": "http://swgoh.gg/characters/grand-moff-tarkin/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tarkinadmiral.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tarkinadmiral.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -3408,13 +3408,41 @@
         "avatarName": "charui_tarkinadmiral"
     },
     {
+        "name": "Great Mothers",
+        "uniqueName": "GREATMOTHERS",
+        "aliases": [
+            "Great Mothers"
+        ],
+        "avatarName": "charui_greatmothers",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_greatmothers.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_NIGHTSISTERS_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
+        "crew": []
+    },
+    {
         "name": "Greedo",
         "uniqueName": "GREEDO",
         "aliases": [
             "Greedo"
         ],
         "url": "http://swgoh.gg/characters/greedo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_greedo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_greedo.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3443,7 +3471,7 @@
             "Greef Karga"
         ],
         "url": "http://swgoh.gg/characters/greef-karga/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_greefkarga.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_greefkarga.png",
         "side": "light",
         "factions": [
             "Bounty Hunter",
@@ -3472,7 +3500,7 @@
             "Gungan Boomadier"
         ],
         "avatarName": "charui_gunganboomadier",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gunganboomadier.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gunganboomadier.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3498,7 +3526,7 @@
             "Gungan Phalanx"
         ],
         "avatarName": "charui_gunganphalanx",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_gunganphalanx.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gunganphalanx.png",
         "side": "light",
         "factions": [
             "CATEGORY_GUNGAN_DESC",
@@ -3526,7 +3554,7 @@
             "Han Solo"
         ],
         "url": "http://swgoh.gg/characters/han-solo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_han.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_han.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3555,7 +3583,7 @@
             "Hera Syndulla"
         ],
         "url": "http://swgoh.gg/characters/hera-syndulla/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hera_s3.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hera_s3.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -3587,7 +3615,7 @@
             "HY"
         ],
         "url": "http://swgoh.gg/characters/hermit-yoda/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_yodahermit.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_yodahermit.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -3616,7 +3644,7 @@
             "HK47"
         ],
         "url": "http://swgoh.gg/characters/hk-47/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hk47.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hk47.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3645,7 +3673,7 @@
             "Hondo Ohnaka"
         ],
         "url": "http://swgoh.gg/characters/hondo-ohnaka/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_hondoohnaka.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hondoohnaka.png",
         "side": "dark",
         "factions": [
             "Scoundrel",
@@ -3660,7 +3688,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -3675,7 +3703,7 @@
             "HRS"
         ],
         "url": "http://swgoh.gg/characters/hoth-rebel-scout/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelhothscout.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rebelhothscout.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3705,7 +3733,7 @@
             "HRS"
         ],
         "url": "http://swgoh.gg/characters/hoth-rebel-soldier/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelhoth.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rebelhoth.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -3734,7 +3762,7 @@
             "Hunter"
         ],
         "url": "http://swgoh.gg/characters/hunter/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_hunter.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bb_hunter.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -3764,7 +3792,7 @@
             "Iden Versio"
         ],
         "url": "http://swgoh.gg/characters/iden-versio/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_idenversioempire.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_idenversioempire.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3795,7 +3823,7 @@
             "IG100"
         ],
         "url": "http://swgoh.gg/characters/ig-100-magnaguard/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_magnaguard.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_magnaguard.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -3825,7 +3853,7 @@
             "IG11"
         ],
         "url": "http://swgoh.gg/characters/ig-11/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig11_nurse.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ig11_nurse.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -3854,7 +3882,7 @@
             "IG-12 & Grogu"
         ],
         "avatarName": "charui_ig12",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig12.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ig12.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -3882,7 +3910,7 @@
             "Sentinel"
         ],
         "url": "http://swgoh.gg/characters/ig-86-sentinel-droid/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig86.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ig86.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3910,7 +3938,7 @@
             "IG88"
         ],
         "url": "http://swgoh.gg/characters/ig-88/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ig88.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ig88.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -3942,7 +3970,7 @@
             "IGD"
         ],
         "url": "http://swgoh.gg/characters/ima-gun-di/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_imagundi.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_imagundi.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -3974,7 +4002,7 @@
             "Probe Droid"
         ],
         "url": "http://swgoh.gg/characters/imperial-probe-droid/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_probedroid.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_probedroid.png",
         "side": "dark",
         "factions": [
             "Droid",
@@ -4003,7 +4031,7 @@
             "ISC"
         ],
         "url": "http://swgoh.gg/characters/imperial-super-commando/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_imperial_super_commando.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_imperial_super_commando.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -4031,7 +4059,7 @@
             "Jabba the Hutt"
         ],
         "url": "http://swgoh.gg/characters/jabba-the-hutt/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jabbathehutt.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jabbathehutt.png",
         "side": "dark",
         "factions": [
             "Bounty Hunter",
@@ -4063,7 +4091,7 @@
             "JF"
         ],
         "url": "http://swgoh.gg/characters/jango-fett/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jangofett.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jangofett.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -4094,7 +4122,7 @@
             "Jar Jar Binks"
         ],
         "avatarName": "charui_jarjarbinks",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jarjarbinks.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jarjarbinks.png",
         "side": "light",
         "factions": [
             "CATEGORY_GUNGAN_DESC",
@@ -4121,7 +4149,7 @@
             "Jawa"
         ],
         "url": "http://swgoh.gg/characters/jawa/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_jawa.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jawa_jawa.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4149,7 +4177,7 @@
             "Jawa Engineer"
         ],
         "url": "http://swgoh.gg/characters/jawa-engineer/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_engineer.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jawa_engineer.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -4176,7 +4204,7 @@
             "Jawa Scavenger"
         ],
         "url": "http://swgoh.gg/characters/jawa-scavenger/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jawa_scavenger.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jawa_scavenger.png",
         "side": "light",
         "factions": [
             "Jawa",
@@ -4204,7 +4232,7 @@
             "Jedi Consular"
         ],
         "url": "http://swgoh.gg/characters/jedi-consular/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedi_consular_03.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jedi_consular_03.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -4236,7 +4264,7 @@
             "JKA"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-anakin/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_anakinknight.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_anakinknight.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4265,7 +4293,7 @@
             "Jedi Knight Cal Kestis"
         ],
         "avatarName": "charui_jediknightcal",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jediknightcal.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jediknightcal.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4293,7 +4321,7 @@
             "JKG"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-guardian/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedi_guardian_01.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jedi_guardian_01.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -4324,7 +4352,7 @@
             "JKLS"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-luke-skywalker/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_jediknight.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luke_jediknight.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4354,7 +4382,7 @@
             "JKR"
         ],
         "url": "http://swgoh.gg/characters/jedi-knight-revan/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jedirevan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jedirevan.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4384,7 +4412,7 @@
             "JMK"
         ],
         "url": "http://swgoh.gg/characters/jedi-master-kenobi/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_globiwan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_globiwan.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4416,7 +4444,7 @@
             "JML"
         ],
         "url": "http://swgoh.gg/characters/jedi-master-luke-skywalker/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_jml.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luke_jml.png",
         "side": "light",
         "factions": [
             "Galactic Legend",
@@ -4446,7 +4474,7 @@
             "Jolee Bido"
         ],
         "url": "http://swgoh.gg/characters/jolee-bindo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_joleebindo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_joleebindo.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -4475,7 +4503,7 @@
             "Juhani"
         ],
         "url": "http://swgoh.gg/characters/juhani/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_juhani.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_juhani.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -4504,7 +4532,7 @@
             "Jyn Erso"
         ],
         "url": "http://swgoh.gg/characters/jyn-erso/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_jyn.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jyn.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4515,8 +4543,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4537,7 +4565,7 @@
             "K2"
         ],
         "url": "http://swgoh.gg/characters/k-2so/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_k2so.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_k2so.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -4568,7 +4596,7 @@
             "Kanan Jarrus"
         ],
         "url": "http://swgoh.gg/characters/kanan-jarrus/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kanan_s3.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kanan_s3.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -4598,7 +4626,7 @@
             "Kelleran Beq"
         ],
         "avatarName": "charui_kelleranbeq",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kelleranbeq.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kelleranbeq.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4629,7 +4657,7 @@
             "KAM"
         ],
         "url": "http://swgoh.gg/characters/ki-adi-mundi/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kiadimundi.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kiadimundi.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4657,7 +4685,7 @@
             "Kit Fisto"
         ],
         "url": "http://swgoh.gg/characters/kit-fisto/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kitfisto.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kitfisto.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4686,7 +4714,7 @@
             "Krrsantan"
         ],
         "url": "http://swgoh.gg/characters/krrsantan/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_krrsantan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_krrsantan.png",
         "side": "dark",
         "factions": [
             "Bounty Hunter",
@@ -4717,7 +4745,7 @@
             "Kuiil"
         ],
         "url": "http://swgoh.gg/characters/kuiil/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kuiil.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kuiil.png",
         "side": "light",
         "factions": [
             "Scoundrel",
@@ -4744,7 +4772,7 @@
             "Kyle Katarn"
         ],
         "url": "http://swgoh.gg/characters/kyle-katarn/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kylekatarn.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kylekatarn.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4774,7 +4802,7 @@
             "Zylo"
         ],
         "url": "http://swgoh.gg/characters/kylo-ren/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kyloren.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kyloren.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -4805,7 +4833,7 @@
             "Matt"
         ],
         "url": "http://swgoh.gg/characters/kylo-ren-unmasked/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kylo_unmasked.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kylo_unmasked.png",
         "side": "dark",
         "factions": [
             "First Order",
@@ -4836,7 +4864,7 @@
             "L337"
         ],
         "url": "http://swgoh.gg/characters/l3-37/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_l337.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_l337.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -4866,7 +4894,7 @@
             "Lando Calrissian"
         ],
         "url": "http://swgoh.gg/characters/lando-calrissian/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_landobespin.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_landobespin.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -4896,7 +4924,7 @@
             "Leia Organa"
         ],
         "avatarName": "charui_leiaendor",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leiaendor.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_leiaendor.png",
         "side": "light",
         "factions": [
             "Galactic Legend",
@@ -4924,7 +4952,7 @@
             "Lobot"
         ],
         "url": "http://swgoh.gg/characters/lobot/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lobot.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_lobot.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -4952,7 +4980,7 @@
             "Logray"
         ],
         "url": "http://swgoh.gg/characters/logray/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_logray.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_logray.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -4980,7 +5008,7 @@
             "LV"
         ],
         "url": "http://swgoh.gg/characters/lord-vader/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_lordvader.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_lordvader.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5013,7 +5041,7 @@
             "FBL"
         ],
         "url": "http://swgoh.gg/characters/luke-skywalker-farmboy/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luke_ep4.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luke_ep4.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5042,7 +5070,7 @@
             "Luminara Unduli"
         ],
         "url": "http://swgoh.gg/characters/luminara-unduli/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luminara.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luminara.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -5072,7 +5100,7 @@
             "Luthen Rael"
         ],
         "avatarName": "charui_luthenrael",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_luthenrael.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luthenrael.png",
         "side": "light",
         "factions": [
             "CATEGORY_REBELFIGHTER_DESC",
@@ -5087,7 +5115,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Chance",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -5100,7 +5128,7 @@
             "Mace Windu"
         ],
         "url": "http://swgoh.gg/characters/mace-windu/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_macewindu.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_macewindu.png",
         "side": "light",
         "factions": [
             "Fleet Commander",
@@ -5131,7 +5159,7 @@
             "Magmatrooper"
         ],
         "url": "http://swgoh.gg/characters/magmatrooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_magma.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperstorm_magma.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5159,7 +5187,7 @@
             "Mara Jade, The Emperor's Hand"
         ],
         "url": "http://swgoh.gg/characters/mara-jade-the-emperors-hand/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_marajade.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_marajade.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5187,7 +5215,7 @@
             "Master Qui-Gon"
         ],
         "avatarName": "charui_masterquigon",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_masterquigon.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_masterquigon.png",
         "side": "light",
         "factions": [
             "CATEGORY_GALACTICREPUBLIC_DESC",
@@ -5215,7 +5243,7 @@
             "Maul"
         ],
         "url": "http://swgoh.gg/characters/maul/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_maul_cyborg.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_maul_cyborg.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5244,7 +5272,7 @@
             "Merrin"
         ],
         "url": "http://swgoh.gg/characters/merrin/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_merrin.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_merrin.png",
         "side": "dark",
         "factions": [
             "Nightsister",
@@ -5272,7 +5300,7 @@
             "Mission Vao"
         ],
         "url": "http://swgoh.gg/characters/mission-vao/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mission.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mission.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5300,7 +5328,7 @@
             "Mob Enforcer"
         ],
         "url": "http://swgoh.gg/characters/mob-enforcer/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mob_enforcer.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mob_enforcer.png",
         "side": "dark",
         "factions": [
             "Hutt Cartel",
@@ -5328,7 +5356,7 @@
             "Moff Gideon"
         ],
         "url": "http://swgoh.gg/characters/moff-gideon/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_moffgideon.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_moffgideon.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -5358,7 +5386,7 @@
             "Mon Mothma"
         ],
         "url": "http://swgoh.gg/characters/mon-mothma/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_monmothma.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_monmothma.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -5386,7 +5414,7 @@
             "Morgan Elsbeth"
         ],
         "avatarName": "charui_morganelsbeth",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_morganelsbeth.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_morganelsbeth.png",
         "side": "dark",
         "factions": [
             "CATEGORY_NIGHTSISTERS_DESC",
@@ -5415,7 +5443,7 @@
             "MT"
         ],
         "url": "http://swgoh.gg/characters/mother-talzin/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_talzin.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nightsisters_talzin.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -5443,7 +5471,7 @@
             "Night Trooper"
         ],
         "avatarName": "charui_nighttrooper_a",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nighttrooper_a.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nighttrooper_a.png",
         "side": "dark",
         "factions": [
             "CATEGORY_IMPERIALREMNANT_DESC",
@@ -5471,7 +5499,7 @@
             "Nightsister Acolyte"
         ],
         "url": "http://swgoh.gg/characters/nightsister-acolyte/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsister_acolyte.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nightsister_acolyte.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5498,7 +5526,7 @@
             "Nightsister Initiate"
         ],
         "url": "http://swgoh.gg/characters/nightsister-initiate/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsister_initiate.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nightsister_initiate.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5525,7 +5553,7 @@
             "Nightsister Spirit"
         ],
         "url": "http://swgoh.gg/characters/nightsister-spirit/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_wraith.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nightsisters_wraith.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -5552,7 +5580,7 @@
             "Nightsister Zombie"
         ],
         "url": "http://swgoh.gg/characters/nightsister-zombie/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsisters_zombie.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nightsisters_zombie.png",
         "side": "dark",
         "factions": [
             "Nightsister",
@@ -5580,7 +5608,7 @@
             "9th Sister"
         ],
         "url": "http://swgoh.gg/characters/ninth-sister/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ninthsister.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ninthsister.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -5611,7 +5639,7 @@
             "Nute Gunray"
         ],
         "url": "http://swgoh.gg/characters/nute-gunray/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nutegunray.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nutegunray.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -5641,7 +5669,7 @@
             "Old Ben"
         ],
         "url": "http://swgoh.gg/characters/obi-wan-kenobi-old-ben/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_obiwanep4.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_obiwanep4.png",
         "side": "light",
         "factions": [
             "Jedi",
@@ -5670,7 +5698,7 @@
             "Old Daka"
         ],
         "url": "http://swgoh.gg/characters/old-daka/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_daka.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_daka.png",
         "side": "dark",
         "factions": [
             "Healer",
@@ -5699,7 +5727,7 @@
             "Omega"
         ],
         "url": "http://swgoh.gg/characters/omega/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_badbatchomega.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_badbatchomega.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5727,7 +5755,7 @@
             "Padawan Obi-Wan"
         ],
         "avatarName": "charui_padawanobiwan",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_padawanobiwan.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padawanobiwan.png",
         "side": "light",
         "factions": [
             "CATEGORY_GALACTICREPUBLIC_DESC",
@@ -5756,7 +5784,7 @@
             "Padme Amidala"
         ],
         "url": "http://swgoh.gg/characters/padme-amidala/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_padme_geonosis.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padme_geonosis.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -5785,7 +5813,7 @@
             "Pao"
         ],
         "url": "http://swgoh.gg/characters/pao/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_pao.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_pao.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5814,7 +5842,7 @@
             "Paploo"
         ],
         "url": "http://swgoh.gg/characters/paploo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_paploo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_paploo.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -5842,7 +5870,7 @@
             "Paz Vizsla"
         ],
         "avatarName": "charui_pazvizsla",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_pazvizsla.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_pazvizsla.png",
         "side": "light",
         "factions": [
             "Mandalorian",
@@ -5869,7 +5897,7 @@
             "Plo Koon"
         ],
         "url": "http://swgoh.gg/characters/plo-koon/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_plokoon.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_plokoon.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -5899,7 +5927,7 @@
             "Poe Dameron"
         ],
         "url": "http://swgoh.gg/characters/poe-dameron/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_poe.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_poe.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -5927,7 +5955,7 @@
             "Poggle the Lesser"
         ],
         "url": "http://swgoh.gg/characters/poggle-the-lesser/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_poggle.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosian_poggle.png",
         "side": "dark",
         "factions": [
             "Geonosian",
@@ -5956,7 +5984,7 @@
             "Princess Kneesaa"
         ],
         "avatarName": "charui_princesskneesaa",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_princesskneesaa.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_princesskneesaa.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -5982,7 +6010,7 @@
             "Princess Leia"
         ],
         "url": "http://swgoh.gg/characters/princess-leia/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leia_princess.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_leia_princess.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6012,7 +6040,7 @@
             "Qira"
         ],
         "url": "http://swgoh.gg/characters/qira/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_qira.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_qira.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -6041,7 +6069,7 @@
             "Queen Amidala"
         ],
         "avatarName": "charui_queenamidala",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_queenamidala.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_queenamidala.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -6070,7 +6098,7 @@
             "QGJ"
         ],
         "url": "http://swgoh.gg/characters/qui-gon-jinn/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_quigon.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_quigon.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -6101,7 +6129,7 @@
             "R2"
         ],
         "url": "http://swgoh.gg/characters/r2-d2/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_astromech_r2d2.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_astromech_r2d2.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -6131,7 +6159,7 @@
             "Range Trooper"
         ],
         "url": "http://swgoh.gg/characters/range-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperranger.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperranger.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6160,7 +6188,7 @@
             "ROLO"
         ],
         "url": "http://swgoh.gg/characters/rebel-officer-leia-organa/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_leiahoth.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_leiahoth.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6190,7 +6218,7 @@
             "RHF"
         ],
         "url": "http://swgoh.gg/characters/resistance-hero-finn/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_finn.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_finn.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6217,7 +6245,7 @@
             "Resistance Hero Poe"
         ],
         "url": "http://swgoh.gg/characters/resistance-hero-poe/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_poe_tros.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_poe_tros.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6244,7 +6272,7 @@
             "Resistance Pilot"
         ],
         "url": "http://swgoh.gg/characters/resistance-pilot/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_resistancepilot.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_resistancepilot.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6271,7 +6299,7 @@
             "Resistance Trooper"
         ],
         "url": "http://swgoh.gg/characters/resistance-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_resistancetrooper.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_resistancetrooper.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6298,7 +6326,7 @@
             "Rey"
         ],
         "url": "http://swgoh.gg/characters/rey/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rey_tros.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rey_tros.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6331,7 +6359,7 @@
             "RJT"
         ],
         "url": "http://swgoh.gg/characters/rey-jedi-training/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rey_tlj.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rey_tlj.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -6363,7 +6391,7 @@
             "Scav"
         ],
         "url": "http://swgoh.gg/characters/rey-scavenger/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_reyjakku.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_reyjakku.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6391,7 +6419,7 @@
             "Rose Tico"
         ],
         "url": "http://swgoh.gg/characters/rose-tico/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rose.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rose.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6418,7 +6446,7 @@
             "Royal Guard"
         ],
         "url": "http://swgoh.gg/characters/royal-guard/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_royalguard.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_royalguard.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6446,7 +6474,7 @@
             "Sabine Wren"
         ],
         "url": "http://swgoh.gg/characters/sabine-wren/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sabine_s3.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sabine_s3.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6475,7 +6503,7 @@
             "Sana Starros"
         ],
         "url": "http://swgoh.gg/characters/sana-starros/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sanastarros.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sanastarros.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6504,7 +6532,7 @@
             "Savage Opress"
         ],
         "url": "http://swgoh.gg/characters/savage-opress/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_savageopress.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_savageopress.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6533,7 +6561,7 @@
             "Saw Gerrera"
         ],
         "url": "http://swgoh.gg/characters/saw-gerrera/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sawgerrera.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sawgerrera.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -6563,7 +6591,7 @@
             "SRP"
         ],
         "url": "http://swgoh.gg/characters/scarif-rebel-pathfinder/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebel_scarif.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rebel_scarif.png",
         "side": "light",
         "factions": [
             "Rebel",
@@ -6593,7 +6621,7 @@
             "Scout Trooper"
         ],
         "avatarName": "charui_trooperscout",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperscout.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperscout.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6622,7 +6650,7 @@
             "2nd Sister"
         ],
         "url": "http://swgoh.gg/characters/second-sister/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_secondsister.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_secondsister.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6653,7 +6681,7 @@
             "7th Sister"
         ],
         "url": "http://swgoh.gg/characters/seventh-sister/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_seventhsister.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_seventhsister.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6683,7 +6711,7 @@
             "Shaak Ti"
         ],
         "url": "http://swgoh.gg/characters/shaak-ti/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_shaakti.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_shaakti.png",
         "side": "light",
         "factions": [
             "Galactic Republic",
@@ -6712,7 +6740,7 @@
             "Shoretrooper"
         ],
         "url": "http://swgoh.gg/characters/shoretrooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_troopershore.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_troopershore.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -6742,7 +6770,7 @@
             "SA"
         ],
         "url": "http://swgoh.gg/characters/sith-assassin/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithassassin.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sithassassin.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6771,7 +6799,7 @@
             "SET"
         ],
         "url": "http://swgoh.gg/characters/sith-empire-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithtrooper.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sithtrooper.png",
         "side": "dark",
         "factions": [
             "Sith",
@@ -6801,7 +6829,7 @@
             "SEE"
         ],
         "url": "http://swgoh.gg/characters/sith-eternal-emperor/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_espalpatine_pre.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_espalpatine_pre.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6831,7 +6859,7 @@
             "Sith Marauder"
         ],
         "url": "http://swgoh.gg/characters/sith-marauder/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_sithmarauder.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sithmarauder.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6862,7 +6890,7 @@
             "ST"
         ],
         "url": "http://swgoh.gg/characters/sith-trooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_firstorder_sithtrooper.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstorder_sithtrooper.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6875,7 +6903,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -6890,7 +6918,7 @@
             "Skiff Guard (Lando Calrissian)"
         ],
         "url": "http://swgoh.gg/characters/skiff-guard-lando-calrissian/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_undercoverlando.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_undercoverlando.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -6919,7 +6947,7 @@
             "Snowtrooper"
         ],
         "url": "http://swgoh.gg/characters/snowtrooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_troopersnow.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_troopersnow.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6947,7 +6975,7 @@
             "STAP"
         ],
         "avatarName": "charui_stap",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_stap.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_stap.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -6974,7 +7002,7 @@
             "Starkiller"
         ],
         "url": "http://swgoh.gg/characters/starkiller/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_starkiller.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_starkiller.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7001,7 +7029,7 @@
             "Stormtrooper"
         ],
         "url": "http://swgoh.gg/characters/stormtrooper/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperstorm.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -7032,7 +7060,7 @@
             "STHan"
         ],
         "url": "http://swgoh.gg/characters/stormtrooper-han/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_trooperstorm_han.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_trooperstorm_han.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -7062,7 +7090,7 @@
             "Sun Fac"
         ],
         "url": "http://swgoh.gg/characters/sun-fac/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_geonosian_sunfac.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosian_sunfac.png",
         "side": "dark",
         "factions": [
             "Geonosian",
@@ -7094,7 +7122,7 @@
             "SLK"
         ],
         "url": "http://swgoh.gg/characters/supreme-leader-kylo-ren/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_kyloren_tros.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kyloren_tros.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7125,7 +7153,7 @@
             "T3M4"
         ],
         "url": "http://swgoh.gg/characters/t3-m4/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_t3m4.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_t3m4.png",
         "side": "light",
         "factions": [
             "Droid",
@@ -7153,7 +7181,7 @@
             "Talia"
         ],
         "url": "http://swgoh.gg/characters/talia/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_nightsister_talia.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nightsister_talia.png",
         "side": "dark",
         "factions": [
             "Healer",
@@ -7181,7 +7209,7 @@
             "Tarfful"
         ],
         "url": "http://swgoh.gg/characters/tarfful/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tarfful.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tarfful.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -7210,7 +7238,7 @@
             "Taron Malicos"
         ],
         "avatarName": "charui_taronmalicos",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_taronmalicos.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_taronmalicos.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7236,7 +7264,7 @@
             "Tech"
         ],
         "url": "http://swgoh.gg/characters/tech/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_tech.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bb_tech.png",
         "side": "light",
         "factions": [
             "Bad Batch",
@@ -7265,7 +7293,7 @@
             "Teebo"
         ],
         "url": "http://swgoh.gg/characters/teebo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_teebo.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_teebo.png",
         "side": "light",
         "factions": [
             "Ewok",
@@ -7294,7 +7322,7 @@
             "The Armorer"
         ],
         "url": "http://swgoh.gg/characters/the-armorer/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_armorer.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_armorer.png",
         "side": "light",
         "factions": [
             "Leader",
@@ -7323,7 +7351,7 @@
             "Mando"
         ],
         "url": "http://swgoh.gg/characters/the-mandalorian/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandalorian.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mandalorian.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7354,7 +7382,7 @@
             "BAM"
         ],
         "url": "http://swgoh.gg/characters/the-mandalorian-beskar-armor/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_mandobeskar.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mandobeskar.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7383,7 +7411,7 @@
             "Third Sister"
         ],
         "url": "http://swgoh.gg/characters/third-sister/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_thirdsister.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_thirdsister.png",
         "side": "dark",
         "factions": [
             "Empire",
@@ -7416,7 +7444,7 @@
             "3Bacca"
         ],
         "url": "http://swgoh.gg/characters/threepio-chewie/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_c3po.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_chewbacca_c3po.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7445,7 +7473,7 @@
             "TFP"
         ],
         "url": "http://swgoh.gg/characters/tie-fighter-pilot/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tiepilot.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tiepilot.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7472,7 +7500,7 @@
             "Tusken Chieftain"
         ],
         "url": "http://swgoh.gg/characters/tusken-chieftain/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenchieftain.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tuskenchieftain.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -7500,7 +7528,7 @@
             "Tusken Raider"
         ],
         "url": "http://swgoh.gg/characters/tusken-raider/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenraider.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tuskenraider.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7527,7 +7555,7 @@
             "Tusken Shaman"
         ],
         "url": "http://swgoh.gg/characters/tusken-shaman/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenshaman.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tuskenshaman.png",
         "side": "dark",
         "factions": [
             "Healer",
@@ -7554,7 +7582,7 @@
             "Tusken Warrior"
         ],
         "url": "http://swgoh.gg/characters/tusken-warrior/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tuskenhuntress.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tuskenhuntress.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -7581,15 +7609,16 @@
             "Ugnaught"
         ],
         "url": "http://swgoh.gg/characters/ugnaught/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ugnaught.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ugnaught.png",
         "side": "light",
         "factions": [
             "Support"
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7610,7 +7639,7 @@
             "Ur"
         ],
         "url": "http://swgoh.gg/characters/urorrurrr/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_urorrurrr.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_urorrurrr.png",
         "side": "dark",
         "factions": [
             "Leader",
@@ -7638,7 +7667,7 @@
             "Vandor Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/vandor-chewbacca/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_chewbacca_vandor.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_chewbacca_vandor.png",
         "side": "light",
         "factions": [
             "Scoundrel",
@@ -7667,7 +7696,7 @@
             "Veteran Smuggler Chewbacca"
         ],
         "url": "http://swgoh.gg/characters/veteran-smuggler-chewbacca/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tfa_chewbacca.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tfa_chewbacca.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7698,7 +7727,7 @@
             "Han Solo"
         ],
         "url": "http://swgoh.gg/characters/veteran-smuggler-han-solo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_tfa_han.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tfa_han.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7727,7 +7756,7 @@
             "Visas Marr"
         ],
         "url": "http://swgoh.gg/characters/visas-marr/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_visas.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_visas.png",
         "side": "light",
         "factions": [
             "Healer",
@@ -7755,7 +7784,7 @@
             "Wampa"
         ],
         "url": "http://swgoh.gg/characters/wampa/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_wampa.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_wampa.png",
         "side": "dark",
         "factions": [
             "Attacker"
@@ -7782,7 +7811,7 @@
             "Wat Tambor"
         ],
         "url": "http://swgoh.gg/characters/wat-tambor/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_wattambor.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_wattambor.png",
         "side": "dark",
         "factions": [
             "Separatist",
@@ -7809,7 +7838,7 @@
             "Wedge Antilles"
         ],
         "url": "http://swgoh.gg/characters/wedge-antilles/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_rebelpilot_wedge.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rebelpilot_wedge.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7838,7 +7867,7 @@
             "Wicket"
         ],
         "url": "http://swgoh.gg/characters/wicket/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_ewok_wicket.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ewok_wicket.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7865,7 +7894,7 @@
             "Wrecker"
         ],
         "url": "http://swgoh.gg/characters/wrecker/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_bb_wrecker.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bb_wrecker.png",
         "side": "light",
         "factions": [
             "Bad Batch",
@@ -7896,7 +7925,7 @@
             "YOLO"
         ],
         "url": "http://swgoh.gg/characters/young-han-solo/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_han_young.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_han_young.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7924,7 +7953,7 @@
             "Young Lando Calrissian"
         ],
         "url": "http://swgoh.gg/characters/young-lando-calrissian/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_younglando.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_younglando.png",
         "side": "light",
         "factions": [
             "Attacker",
@@ -7952,7 +7981,7 @@
             "Zaalbar"
         ],
         "url": "http://swgoh.gg/characters/zaalbar/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zaalbar.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zaalbar.png",
         "side": "light",
         "factions": [
             "Old Republic",
@@ -7981,7 +8010,7 @@
             "Zam Wesell"
         ],
         "url": "http://swgoh.gg/characters/zam-wesell/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zamwesell.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zamwesell.png",
         "side": "dark",
         "factions": [
             "Attacker",
@@ -8010,7 +8039,7 @@
             "Zorii Bliss"
         ],
         "url": "http://swgoh.gg/characters/zorii-bliss/",
-        "avatarURL": "https://game-assets.swgoh.gg/tex.charui_zoriibliss.png",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zoriibliss.png",
         "side": "light",
         "factions": [
             "Resistance",

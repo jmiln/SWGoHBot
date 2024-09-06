@@ -20,6 +20,7 @@ class Mods extends Command {
     }
 
     async run(Bot, interaction) {
+        await interaction.deferReply();
         const charList = Bot.characters;
 
         const getLocalizedModString = (key) => {
@@ -121,20 +122,15 @@ class Mods extends Command {
 
             description = interaction.language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString);
         }
-        return interaction.reply({
+        return interaction.editReply({
             embeds: [
                 {
                     color: Bot.getSideColor(character.side),
                     author: {
                         name: character.name,
-                        url: character.mods.url,
                         icon_url: character.avatarURL,
                     },
                     description: description,
-                    footer: {
-                        icon_url: "https://swgoh.gg/static/img/swgohgg-nav-orange.png",
-                        text: "Mods via https://www.swgoh.gg",
-                    },
                 },
             ],
         });

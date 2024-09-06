@@ -43,13 +43,13 @@ module.exports = async (Bot, client) => {
 
         // Start up the client.ws watcher
         if (client.shard.id === 0) {
-            // Deploy all commands in case anything's been updated
-            setTimeout(
-                async () => {
-                    await Bot.deployCommands();
-                },
-                1 * 60 * 1000,
-            );
+            // Deploy all commands in case anything's been updated (Should just do this manually as needed)
+            // setTimeout(
+            //     async () => {
+            //         await Bot.deployCommands();
+            //     },
+            //     1 * 60 * 1000,
+            // );
 
             // Reload the patrons' goh data, and check for arena rank changes every minute
             if (Bot.config.premium) {

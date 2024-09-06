@@ -1177,7 +1177,7 @@ function unitsToUnitFiles(filteredList, locales, catMap, unitDefIdMap, unitRecip
             unitObj = oldUnit;
             unitObj.nameVariant = undefined;
             unitObj.avatarName = charUIName;
-            unitObj.avatarURL = `https://game-assets.swgoh.gg/tex.${charUIName}.png`;
+            unitObj.avatarURL = `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`;
         } else {
             const unitFactionsObj = catMap.filter((cat) => unit.categoryIdList.includes(cat.id));
             const { factions, side } = getSide(unitFactionsObj);
@@ -1186,7 +1186,7 @@ function unitsToUnitFiles(filteredList, locales, catMap, unitDefIdMap, unitRecip
                 uniqueName: unit.baseId,
                 aliases: [name],
                 avatarName: charUIName,
-                avatarURL: `https://game-assets.swgoh.gg/tex.${charUIName}.png`,
+                avatarURL: `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`,
                 side,
                 factions: factions.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1)),
                 mods: unit.combatType === CHAR_COMBAT_TYPE ? {} : null,
