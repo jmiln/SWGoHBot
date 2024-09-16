@@ -428,7 +428,7 @@ class GuildSearch extends Command {
             }
         }
 
-        const hasUlt = !!guildChar.find((ch) => ch?.purchasedAbilityId?.length)
+        const hasUlt = !!guildChar.find((ch) => ch?.purchasedAbilityId?.length);
 
         let sortedGuild = [];
         if (sortType === "name") {

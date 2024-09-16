@@ -466,7 +466,7 @@ class Event extends Command {
                     const event = Array.isArray(eventIn) ? eventIn[0] : eventIn;
                     let channel = null;
                     const announceMessage = `**${event?.name || eventName}**\n${event?.message || ""}`;
-                    if (event.channel && event.channel !== "") {
+                    if (event?.channel && event.channel !== "") {
                         // If they"ve set a channel, try using it
                         channel = interaction.guild.channels.cache.get(event.channel);
                         if (!channel) {

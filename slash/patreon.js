@@ -108,12 +108,12 @@ class Patreon extends Command {
                     tier: Math.floor(pat.amount_cents / 100),
                 };
                 const res = await addServerSupporter({ cache: Bot.cache, guildId: interaction.guild.id, userInfo });
-                if (res.user.error || res.guild.error) {
+                if (res.user?.error || res.guild?.error) {
                     return super.error(
                         interaction,
                         `Something went wrong when I tried to update your settings.\n\nUser error: ${
-                            res.user.error || "N/A"
-                        }\nGuild Error: ${res.guild.error || "N/A"}`,
+                            res.user?.error || "N/A"
+                        }\nGuild Error: ${res.guild?.error || "N/A"}`,
                     );
                 }
                 // TODO Better wording?

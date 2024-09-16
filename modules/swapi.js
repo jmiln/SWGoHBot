@@ -30,7 +30,7 @@ const flatStats = [
     42, // defense
 ];
 
-const MAX_CONCURRENT = 15;
+const MAX_CONCURRENT = 20;
 
 let specialAbilityList = null;
 let cache = null;
@@ -330,7 +330,7 @@ module.exports = (opts = {}) => {
             playerStats = playerStats.concat(updatedList);
 
             if (needUpdating.length) {
-                const updatedBare = [];
+                let updatedBare = [];
                 try {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
                         const tempBare = await comlinkStub.getPlayer(ac?.toString()).catch(() => {});
@@ -339,6 +339,19 @@ module.exports = (opts = {}) => {
                             updatedBare.push(formattedComlinkPlayer);
                         }
                     });
+
+                    // Check if any players are missing rosters, and re-run them through to try and get full player objects
+                    const missingRosters = updatedBare.filter((p) => !p?.roster?.length);
+                    if (missingRosters.length) {
+                        updatedBare = updatedBare.filter((p) => p?.roster?.length);
+                        for (const missing of missingRosters) {
+                            const tempBare = await comlinkStub.getPlayer(missing?.allyCode?.toString()).catch(() => {});
+                            if (tempBare) {
+                                const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                                updatedBare.push(formattedComlinkPlayer);
+                            }
+                        }
+                    }
                 } catch (error) {
                     // Couldn't get the data from the api, so send old stuff
                     return players;
@@ -386,9 +399,14 @@ module.exports = (opts = {}) => {
                             },
                         });
                         if (options?.defId?.length) {
-                            bareP.roster = bareP.roster.filter((ch) => ch.defId === options.defId);
+                            // bareP.roster = bareP.roster.filter((ch) => ch.defId === options.defId);
+                            playerStats.push({
+                                ...bareP,
+                                roster: bareP.roster.filter((ch) => ch.defId === options.defId),
+                            });
+                        } else {
+                            playerStats.push(bareP);
                         }
-                        playerStats.push(bareP);
                     }
                 }
                 if (bulkWrites.length) {
