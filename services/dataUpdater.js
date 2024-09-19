@@ -35,7 +35,7 @@ const SHIP_LOCATIONS_FILE_PATH = `${DATA_DIR_PATH}shipLocations.json`;
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
 
 // The max players to grab at the same time
-const MAX_CONCURRENT = 100;
+const MAX_CONCURRENT = 80;
 
 console.log("Starting data updater");
 

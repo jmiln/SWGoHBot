@@ -3678,5 +3678,36 @@
                 "tier": null
             }
         ]
+    },
+    "BAYLANSKOLL": {
+        "guideId": "ONE_MUST_DESTROY_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "SHINHATI",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "MORGANELSBETH",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GREATMOTHERS",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GRANDADMIRALTHRAWN",
+                "type": "RELIC",
+                "tier": 7
+            }
+        ]
     }
 }

@@ -2001,7 +2001,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -2471,7 +2471,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -4759,9 +4759,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -6734,6 +6734,23 @@
         "avatarName": "charui_shaakti"
     },
     {
+        "name": "Shin Hati",
+        "uniqueName": "SHINHATI",
+        "aliases": [
+            "Shin Hati"
+        ],
+        "avatarName": "charui_shinhati",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_shinhati.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_MERCENARY_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Shoretrooper",
         "uniqueName": "SHORETROOPER",
         "aliases": [
@@ -6903,7 +6920,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -7281,7 +7298,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_bb_tech"
@@ -7616,8 +7633,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -8025,9 +8043,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_zamwesell"
     },

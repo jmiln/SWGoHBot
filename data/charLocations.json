@@ -2728,6 +2728,11 @@
         "defId": "MORGANELSBETH",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "7-B",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_MORGANELSBETH_NAME",
                 "name": "Veil Of Shadows I  Special Marquee Event"
@@ -3424,6 +3429,17 @@
         ]
     },
     {
+        "name": "Shin Hati",
+        "defId": "SHINHATI",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SHINHATI_NAME",
+                "name": "Lightsaber For Hire I  Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Shoretrooper",
         "defId": "SHORETROOPER",
         "locations": [
@@ -3537,11 +3553,6 @@
                 "type": "Assault Battle Event",
                 "locId": "EVENT_ASSAULT_EMPIRE_NAME",
                 "name": "Empire Assault"
-            },
-            {
-                "type": "Cantina",
-                "level": "7-B",
-                "locId": "CANTINA"
             },
             {
                 "type": "Guild Activity Store",
