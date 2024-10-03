@@ -2001,7 +2001,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -2471,7 +2471,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Health",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -3102,8 +3102,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
+            "triangle": "Health",
+            "circle": "Health",
             "cross": "Tenacity"
         },
         "avatarName": "charui_generalhux"
@@ -4543,8 +4543,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5207,6 +5207,24 @@
             "cross": "Potency"
         },
         "avatarName": "charui_marajade"
+    },
+    {
+        "name": "Marrok",
+        "uniqueName": "MARROK",
+        "aliases": [
+            "Marrok"
+        ],
+        "avatarName": "charui_marrok",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_marrok.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_INQUISITORIUS_DESC",
+            "CATEGORY_MERCENARY_DESC",
+            "CATEGORY_ROLESUPPORT_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Master Qui-Gon",
@@ -6260,7 +6278,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -6747,7 +6765,18 @@
             "CATEGORY_ROLEATTACKER_DESC",
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Crit. Chance x2",
+                "Crit. Damage x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -6920,7 +6949,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -7185,7 +7214,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -7633,9 +7662,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -8043,9 +8071,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },

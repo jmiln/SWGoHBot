@@ -3689,9 +3689,9 @@
                 "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "MARROK",
+                "type": "RELIC",
+                "tier": 7
             },
             {
                 "defId": "MORGANELSBETH",

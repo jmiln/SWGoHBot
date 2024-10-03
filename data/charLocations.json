@@ -1152,6 +1152,11 @@
         "defId": "DEATHTROOPERPERIDEA",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "8-A",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_DEATHTROOPERPERIDEA_NAME",
                 "name": "Undying Legion Ii  Special Marquee Event"
@@ -2615,6 +2620,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_MARAJADE_NAME",
                 "name": "By The Emperor's Hand Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Marrok",
+        "defId": "MARROK",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MARROK_NAME",
+                "name": "Lightsaber For Hire Ii  Special Marquee Event"
             }
         ]
     },
