@@ -26,10 +26,12 @@ class MyArena extends Command {
 
     async run(Bot, interaction) {
         // eslint-disable-line no-unused-vars
-        let allycode = interaction.options.getString("allycode");
+        const ac = interaction.options.getString("allycode");
         const showStats = interaction.options.getBoolean("stats");
 
-        allycode = await Bot.getAllyCode(interaction, allycode);
+        await interaction.reply({ content: "> Please wait while I look up your info" });
+
+        const allycode = await Bot.getAllyCode(interaction, ac);
 
         if (!allycode) {
             return super.error(
@@ -41,7 +43,6 @@ class MyArena extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player;
         try {
-            await interaction.reply({ content: "> Please wait while I look up your info" });
             player = await Bot.swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(player)) player = player[0];
         } catch (e) {
