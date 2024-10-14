@@ -162,6 +162,11 @@ class Guilds extends Command {
                                 },
                             ],
                         },
+                        {
+                            name: "show_all",
+                            description: "Show all members, or just the ones that need more tickets",
+                            type: ApplicationCommandOptionType.Boolean,
+                        }
                     ],
                 },
                 {
@@ -221,8 +226,9 @@ class Guilds extends Command {
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
             const user = await Bot.userReg.getUser(interaction.user.id);
+            const showAll = interaction.options.getBoolean("show_all") || false;
             const maxTickets = user?.guildTickets?.tickets || 600;
-            return await guildTickets(userAC, maxTickets);
+            return await guildTickets(userAC, maxTickets, showAll);
         }
 
         let guild = null;
@@ -657,7 +663,7 @@ class Guilds extends Command {
             });
         }
 
-        async function guildTickets(userAC, maxTickets) {
+        async function guildTickets(userAC, maxTickets, showAll = false) {
             const sortBy = interaction.options.getString("sort");
 
             let rawGuild;
@@ -701,6 +707,7 @@ class Guilds extends Command {
                     out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else {
                     maxed += 1;
+                    if (showAll) out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 }
             }
             const footerStr = Bot.updatedFooterStr(rawGuild.updated, interaction);
