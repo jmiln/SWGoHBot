@@ -676,6 +676,7 @@ class Guilds extends Command {
             if (!rawGuild) return interaction.editReply({ content: `Sorry, but I could not find a guild to match with ${userAC}` });
 
             const out = [];
+            const fullOut = [];
             let roster = null;
             if (sortBy === "tickets") {
                 roster = rawGuild.roster.sort((a, b) =>
@@ -707,8 +708,13 @@ class Guilds extends Command {
                     out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else {
                     maxed += 1;
-                    if (showAll) out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
+                    if (showAll) fullOut.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 }
+            }
+
+            if (fullOut?.length && showAll) {
+                out.push("\n**__Members with full tickets:__**");
+                out.push(...fullOut);
             }
             const footerStr = Bot.updatedFooterStr(rawGuild.updated, interaction);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
