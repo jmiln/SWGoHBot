@@ -96,7 +96,7 @@ async function init() {
             process.exit(0);
         }
     } catch (error) {
-        console.error("Failed to start the data updater:", error);
+        console.error(`[${myTime()}] Failed to start the data updater:`, error);
     }
 }
 
@@ -308,18 +308,18 @@ async function getPlayerRosters(playerIds, modMap) {
 
     let playerCount = 0;
 
-    await eachLimit(playerIds, 500, async (playerId) => {
+    await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
         try {
             playerCount++;
             const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.fakeSwapiConfig.clientStub });
             rosterArr.push(...strippedUnits || []);
         } catch (err) {
-            console.error("[dataUpdater/getPlayerRosters] There was an error: ", err);
+            console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] There was an error: `, err);
         }
     });
 
     if (playerCount !== playerIds.length) {
-        console.error(`[dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
+        console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
     }
     return rosterArr;
 }
@@ -450,7 +450,7 @@ async function updatePatrons(cache) {
             },
         )
             .then((res) => res.json())
-            .catch((err) => console.error("[dataUpdater/updatePatrons] Error fetching patrons", err));
+            .catch((err) => console.error(`[${myTime()}] [dataUpdater/updatePatrons] ${myTime()}Error fetching patrons`, err));
 
         const members = data.filter((data) => data.type === "member" && data.attributes.patron_status === "active_patron");
         const users = included.filter((inc) => inc.type === "user");
@@ -507,7 +507,7 @@ async function updatePatrons(cache) {
 
                 // If it somehow got here / there are issues, log em
                 console.error(
-                    `[dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${
+                    `[${myTime()}] [dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${
                         guildRes?.error || "N/A"
                     }`,
                 );
@@ -525,7 +525,7 @@ async function updatePatrons(cache) {
 
                 // If there are issues, log em
                 console.error(
-                    `[dataUpdater addServerSupporter] Issue adding info for user\n${userRes?.error || "N/A"} \nOr guild:\n${
+                    `[${myTime()}] [dataUpdater addServerSupporter] Issue adding info for user\n${userRes?.error || "N/A"} \nOr guild:\n${
                         guildRes?.error || "N/A"
                     }`,
                 );
@@ -870,7 +870,7 @@ async function updateGameData(locales, metadata, cache, comlinkStub) {
 
         await processGameData(gameData, locales, cache);
     } catch (error) {
-        console.error("[updateGameData] Error:", error);
+        console.error(`[${myTime()}] [updateGameData] Error:`, error);
         throw error;
     }
 }
@@ -943,7 +943,7 @@ async function processGameData(gameData, locales, cache) {
         await saveFile(RAID_NAMES_FILE_PATH, raidNamesOut);
         debugLog("Finished processing Raid Names");
     } catch (error) {
-        console.error("[processGameData] Error:", error);
+        console.error(`[${myTime()}] [processGameData] Error:`, error);
         throw error;
     }
 }
@@ -1199,7 +1199,7 @@ function unitsToUnitFiles(filteredList, locales, catMap, unitDefIdMap, unitRecip
         } else if (unit.combatType === SHIP_COMBAT_TYPE) {
             shipsOut.push(unitObj);
         } else {
-            console.error("Bad combatType for:", unitObj);
+            console.error(`[${myTime()}] Bad combatType for:`, unitObj);
         }
     }
 
@@ -1292,7 +1292,7 @@ function unitsToCharacterDB(unitsIn) {
         unit.creationRecipeReference = undefined;
 
         if (!unit.categoryIdList) {
-            console.error(`Missing baseCharacter abilities for ${unit.baseId}`);
+            console.error(`[${myTime()}] Missing baseCharacter abilities for ${unit.baseId}`);
             continue;
         }
         for (const category of unit.categoryIdList) {
@@ -1402,7 +1402,7 @@ async function getLocalizationData(comlinkStub, bundleVersion) {
         // Then finally, return it
         return localeOut;
     } catch (error) {
-        console.error("[getLocalizationData] Error fetching or processing localization data:", error);
+        console.error(`[${myTime()}] [getLocalizationData] Error fetching or processing localization data:`, error);
         throw error; // Rethrow the error for further handling
     }
 }
@@ -1583,6 +1583,17 @@ function debugLog(str) {
     } else {
         console.log(inspect(...str, { depth: 5 }));
     }
+}
+
+function myTime() {
+    return Intl.DateTimeFormat("en", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        timeZone: "America/Los_Angeles",
+    }).format(new Date());
 }
 
 module.exports = {

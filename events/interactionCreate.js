@@ -161,7 +161,7 @@ module.exports = async (Bot, client, interaction) => {
                 const ignoreArr = ["unknown interaction", "bad gateway", "service unavailable", "connect timeout", "unknown message"];
                 const errStr = ignoreArr.find((elem) => err.toString().toLowerCase().includes(elem));
                 if (errStr) {
-                    if (errStr !== "unknown interaction") {
+                    if (!["unknown interaction", "service unavailable"].includes(errStr)) {
                         logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Ignoring error: ${errStr}`);
                     }
                     return;

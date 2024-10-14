@@ -20,6 +20,18 @@ module.exports = async ({playerId, modMap, clientStub}) => {
                 }));
         })
         .catch((err) => {
-            console.error(err.message);
+            console.error(`[${myTime()}] [getStrippedModsWorker] Error: ${err}`);
         });
 };
+
+
+function myTime() {
+    return Intl.DateTimeFormat("en", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        timeZone: "America/Los_Angeles",
+    }).format(new Date());
+}
