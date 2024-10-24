@@ -565,6 +565,11 @@
         "defId": "CAPTAINENOCH",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "level": "8-C",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINENOCH_NAME",
                 "name": "Undying Legion Iii Special Marquee Event"
@@ -1170,6 +1175,11 @@
             {
                 "type": "Guild Activity Store",
                 "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_PUNISHINGONE_NAME",
+                "name": "Punishing Pursuit Special Marquee Event"
             }
         ]
     },
@@ -3577,11 +3587,6 @@
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "8-C",
-                "locId": "HARD_LIGHT"
             }
         ]
     },

@@ -1388,6 +1388,25 @@
         "avatarName": "charui_profundity"
     },
     {
+        "name": "Punishing One",
+        "uniqueName": "PUNISHINGONE",
+        "aliases": [
+            "Punishing One"
+        ],
+        "avatarName": "charui_punishingone",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_punishingone.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_BOUNTYHUNTER_DESC_V2",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_SCOUNDREL_DESC"
+        ],
+        "mods": null,
+        "crew": [
+            "Dengar"
+        ]
+    },
+    {
         "name": "Raddus",
         "uniqueName": "CAPITALRADDUS",
         "aliases": [

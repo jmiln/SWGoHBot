@@ -641,6 +641,17 @@
         "locations": []
     },
     {
+        "name": "Punishing One",
+        "defId": "PUNISHINGONE",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_PUNISHINGONE_NAME",
+                "name": "Punishing Pursuit Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Raddus",
         "defId": "CAPITALRADDUS",
         "locations": []
