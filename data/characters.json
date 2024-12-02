@@ -539,6 +539,35 @@
         "avatarName": "charui_bastilashan_dark"
     },
     {
+        "name": "Baylan Skoll",
+        "uniqueName": "BAYLANSKOLL",
+        "aliases": [
+            "Baylan Skoll"
+        ],
+        "avatarName": "charui_baylanskoll",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_baylanskoll.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_MERCENARY_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLETANK_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        },
+        "crew": []
+    },
+    {
         "name": "Baze Malbus",
         "uniqueName": "BAZEMALBUS",
         "aliases": [
@@ -1110,9 +1139,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "crew": []
     },
@@ -2001,7 +2030,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -2091,7 +2120,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -2201,7 +2230,7 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
+                "Crit. Damage x4",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -2725,7 +2754,18 @@
             "CATEGORY_ROLESUPPORT_DESC",
             "CATEGORY_SPECTRE_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health"
+        },
         "crew": []
     },
     {
@@ -3688,7 +3728,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -3784,6 +3824,34 @@
             "cross": "Offense"
         },
         "avatarName": "charui_bb_hunter"
+    },
+    {
+        "name": "Huyang",
+        "uniqueName": "HUYANG",
+        "aliases": [
+            "Huyang"
+        ],
+        "avatarName": "charui_huyang",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_huyang.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_SPECIESDROID_DESC",
+            "CATEGORY_SPECTRE_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        },
+        "crew": []
     },
     {
         "name": "Iden Versio",
@@ -4048,7 +4116,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -4543,8 +4611,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4727,7 +4795,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -5572,7 +5640,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -5796,6 +5864,35 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        },
+        "crew": []
+    },
+    {
+        "name": "Padawan Sabine Wren",
+        "uniqueName": "PADAWANSABINE",
+        "aliases": [
+            "Padawan Sabine Wren"
+        ],
+        "avatarName": "charui_padawansabine",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padawansabine.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_MANDALORIAN_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_SPECTRE_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6290,7 +6387,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -6378,6 +6475,23 @@
             "cross": "Offense"
         },
         "avatarName": "charui_rey_tros"
+    },
+    {
+        "name": "Rey (Dark Side Vision)",
+        "uniqueName": "DARKREY",
+        "aliases": [
+            "Rey (Dark Side Vision)"
+        ],
+        "avatarName": "charui_darkrey",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darkrey.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_FIRSTORDER_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_SITH_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Rey (Jedi Training)",
@@ -7629,7 +7743,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Potency"
         },
         "avatarName": "charui_tuskenshaman"
     },
@@ -7681,7 +7795,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -8084,9 +8198,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_zamwesell"
     },

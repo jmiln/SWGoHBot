@@ -293,6 +293,11 @@
         ]
     },
     {
+        "name": "Baylan Skoll",
+        "defId": "BAYLANSKOLL",
+        "locations": []
+    },
+    {
         "name": "Baze Malbus",
         "defId": "BAZEMALBUS",
         "locations": [
@@ -656,7 +661,7 @@
         "locations": [
             {
                 "type": "Cantina",
-                "level": "8-E",
+                "level": "4-G",
                 "locId": "CANTINA"
             }
         ]
@@ -965,7 +970,13 @@
     {
         "name": "Darth Bane",
         "defId": "DARTHBANE",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Darth Malak",
@@ -1732,6 +1743,11 @@
         "defId": "GREATMOTHERS",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "8-E",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_GREATMOTHERS_NAME",
                 "name": "Veil Of Shadows Ii  Special Elite Marquee Event"
@@ -1938,6 +1954,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BADBATCHHUNTER_NAME",
                 "name": "Clone Force 99 I Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Huyang",
+        "defId": "HUYANG",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_HUYANG_NAME",
+                "name": "Lost And Found Ii  Special Marquee Event"
             }
         ]
     },
@@ -2933,6 +2960,17 @@
         ]
     },
     {
+        "name": "Padawan Sabine Wren",
+        "defId": "PADAWANSABINE",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_PADAWANSABINE_NAME",
+                "name": "Lost And Found I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Padmé Amidala",
         "defId": "PADMEAMIDALA",
         "locations": [
@@ -3002,11 +3040,6 @@
                 "type": "Assault Battle Event",
                 "locId": "EVENT_ASSAULT_JEDI_NAME",
                 "name": "Places Of Power Assault Battles"
-            },
-            {
-                "type": "Cantina",
-                "level": "4-G",
-                "locId": "CANTINA"
             },
             {
                 "type": "Fleet Arena Store",
@@ -3243,6 +3276,11 @@
         ]
     },
     {
+        "name": "Rey (Dark Side Vision)",
+        "defId": "DARKREY",
+        "locations": []
+    },
+    {
         "name": "Rey (Jedi Training)",
         "defId": "REYJEDITRAINING",
         "locations": [
@@ -3458,6 +3496,11 @@
         "name": "Shin Hati",
         "defId": "SHINHATI",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-C",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_SHINHATI_NAME",
@@ -3718,11 +3761,6 @@
             {
                 "type": "Guild Activity Store",
                 "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "9-C",
-                "locId": "HARD_DARK"
             }
         ]
     },
