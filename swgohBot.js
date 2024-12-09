@@ -1,4 +1,4 @@
-const { Client, Collection } = require("discord.js");
+const { Client, Collection, DiscordAPIError } = require("discord.js");
 const { readFileSync } = require("node:fs");
 const { inspect } = require("node:util");
 
@@ -111,23 +111,22 @@ const init = async () => {
         process.exit(1);
     });
 
+    const IGNORED_ERRORS = [
+        DiscordAPIError.UnknownMessage,
+        DiscordAPIError.UnknownChannel,
+        DiscordAPIError.UnknownGuild,
+        DiscordAPIError.UnknownMember,
+        DiscordAPIError.UnknownUser,
+        DiscordAPIError.UnknownInteraction,
+        DiscordAPIError.MissingAccess,
+    ];
+
     process.on("unhandledRejection", (err) => {
         const errorMsg = err?.stack.replace(new RegExp(process.cwd(), "g"), ".");
 
         // If it's something I can't do anything about, ignore it
-        const ignoreArr = [
-            "Internal Server Error", // Something on Discord's end
-            "The user aborted a request", // Pretty sure this is also on Discord's end
-            "Cannot send messages to this user", // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
-            "Unknown Message", // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
-            "HTTPError: Service Unavailable", // Issue connecting to Discord?
-            "HTTPError: Insufficient Storage", // Not really sure, but it's not a storage issue here
-        ];
-        const errStr = ignoreArr.find((elem) => errorMsg.includes(elem));
-        if (errStr) {
-            console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errStr}`);
-            console.error(err.stack);
-            return console.error(err);
+        if (err instanceof DiscordAPIError && typeof err.code === "number" && IGNORED_ERRORS.includes(err.code)) {
+            return;
         }
 
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
@@ -142,7 +141,7 @@ const init = async () => {
                 client.channels.cache.get(Bot.config.logs.channel)?.send(`\`\`\`${inspect(errorMsg)}\`\`\``, { split: true });
             }
         } catch (e) {
-            // Don't bother doing anything
+            console.error("[swgohBot.js unhandledRejection] Error while logging error:", e);
         }
     });
 };

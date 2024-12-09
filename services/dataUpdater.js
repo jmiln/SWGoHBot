@@ -312,7 +312,7 @@ async function getPlayerRosters(playerIds, modMap) {
         try {
             playerCount++;
             const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.fakeSwapiConfig.clientStub });
-            rosterArr.push(...strippedUnits || []);
+            rosterArr.push(...(strippedUnits || []));
         } catch (err) {
             console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] There was an error: `, err);
         }
@@ -1412,7 +1412,7 @@ function processLocalizationLine(line) {
     let [key, val] = line.split(/\|/g).map((s) => s.trim());
     if (!key || !val) return;
     val = val
-        .replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (m, p1) => p1)
+        .replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (_, p1) => p1)
         .replace(/\\n/g, " ")
         .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g, "");
     return [key, val];
