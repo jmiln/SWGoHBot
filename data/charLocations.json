@@ -1612,6 +1612,17 @@
         ]
     },
     {
+        "name": "General Syndulla",
+        "defId": "GENERALSYNDULLA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_GENERALSYNDULLA_NAME",
+                "name": "Lost And Found Iii  Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "General Veers",
         "defId": "VEERS",
         "locations": [
@@ -2664,6 +2675,11 @@
         "name": "Marrok",
         "defId": "MARROK",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "8-A",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_MARROK_NAME",

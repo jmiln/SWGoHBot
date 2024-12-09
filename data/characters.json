@@ -1084,7 +1084,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -1312,7 +1312,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_carth"
     },
@@ -3212,6 +3212,34 @@
         "avatarName": "charui_generalanakin"
     },
     {
+        "name": "General Syndulla",
+        "uniqueName": "GENERALSYNDULLA",
+        "aliases": [
+            "General Syndulla"
+        ],
+        "avatarName": "charui_generalsyndulla",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_generalsyndulla.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC",
+            "CATEGORY_SPECTRE_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
+        "crew": []
+    },
+    {
         "name": "General Veers",
         "uniqueName": "VEERS",
         "aliases": [
@@ -3411,9 +3439,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         },
         "avatarName": "charui_yodagrandmaster"
     },
@@ -3787,7 +3815,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -4116,7 +4144,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Offense"
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -4289,7 +4317,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Potency"
         },
         "avatarName": "charui_jawa_scavenger"
     },
@@ -4829,7 +4857,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Potency"
         },
         "avatarName": "charui_kuiil"
     },
@@ -6387,7 +6415,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -7247,7 +7275,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -7340,7 +7368,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
