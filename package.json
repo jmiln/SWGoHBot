@@ -22,15 +22,15 @@
         "@swgoh-utils/comlink": "^1.4.1",
         "async": "^3.2.6",
         "discord.js": "^14.16.3",
-        "mongodb": "^6.9.0",
-        "piscina": "^4.7.0",
-        "socket.io": "^4.8.0",
-        "socket.io-client": "^4.8.0"
+        "mongodb": "^6.11.0",
+        "piscina": "^4.8.0",
+        "socket.io": "^4.8.1",
+        "socket.io-client": "^4.8.1"
     },
     "engines": {
         "node": ">=20"
     },
     "devDependencies": {
-        "@biomejs/biome": "^1.9.3"
+        "@biomejs/biome": "^1.9.4"
     }
 }
