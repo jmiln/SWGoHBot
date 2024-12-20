@@ -119,6 +119,11 @@
     },
     {
         "name": "Ahsoka Tano",
+        "defId": "GLAHSOKATANO",
+        "locations": []
+    },
+    {
+        "name": "Ahsoka Tano",
         "defId": "AHSOKATANO",
         "locations": [
             {

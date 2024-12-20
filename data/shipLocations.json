@@ -645,6 +645,11 @@
         "defId": "PUNISHINGONE",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "5-F",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PUNISHINGONE_NAME",
                 "name": "Punishing Pursuit Special Marquee Event"

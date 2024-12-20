@@ -205,6 +205,36 @@
     },
     {
         "name": "Ahsoka Tano",
+        "uniqueName": "GLAHSOKATANO",
+        "aliases": [
+            "Ahsoka Tano"
+        ],
+        "avatarName": "charui_ahsokatanogray",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokatanogray.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTIC_LEGEND_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLETANK_DESC",
+            "CATEGORY_SPECTRE_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        },
+        "crew": []
+    },
+    {
+        "name": "Ahsoka Tano",
         "uniqueName": "AHSOKATANO",
         "aliases": [
             "Ahsoka Tano",
@@ -258,7 +288,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
@@ -1084,7 +1114,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Offense"
         },
@@ -1312,7 +1342,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "avatarName": "charui_carth"
     },
@@ -3439,9 +3469,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_yodagrandmaster"
     },
@@ -4823,7 +4853,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Defense x2"
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -5328,9 +5358,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
         },
         "crew": []
     },
@@ -6415,7 +6445,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -7368,7 +7398,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -7823,7 +7853,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },

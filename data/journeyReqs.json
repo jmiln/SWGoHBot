@@ -3710,5 +3710,92 @@
                 "tier": 7
             }
         ]
+    },
+    "GLAHSOKATANO": {
+        "guideId": "GLAHSOKA_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "AHSOKATANO",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "GENERALSKYWALKER",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "ASAJVENTRESS",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "NIGHTTROOPER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "COMMANDERAHSOKA",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "CAPTAINENOCH",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "DEATHTROOPERPERIDEA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "EZRABRIDGERS3",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FULCRUMAHSOKA",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "CT7567",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BARRISSOFFEE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "PADAWANSABINE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GENERALSYNDULLA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "PLOKOON",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "HUYANG",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "JEDISTARFIGHTERAHSOKATANO",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            }
+        ]
     }
 }
