@@ -230,7 +230,11 @@ module.exports = (Bot, client) => {
             Bot.shipLocs = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
 
             Bot.CharacterNames = Bot.characters.map((ch) => {
-                return { name: ch.name, defId: ch.uniqueName };
+                let suffix = "";
+                if (ch.factions.includes("Galactic Legend")) {
+                    suffix = "(GL)";
+                }
+                return { name: `${ch.name} ${suffix}`, defId: ch.uniqueName, aliases: ch.aliases || [] };
             });
             Bot.ShipNames = Bot.ships.map((sh) => {
                 return { name: sh.name, defId: sh.uniqueName };

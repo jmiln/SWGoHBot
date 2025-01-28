@@ -65,7 +65,11 @@ client.reloadLanguages();
 
 // List of all the unit names to use for autocomplete
 Bot.CharacterNames = Bot.characters.map((ch) => {
-    return { name: ch.name, defId: ch.uniqueName, aliases: ch.aliases || [] };
+    let suffix = "";
+    if (ch.factions.includes("Galactic Legend")) {
+        suffix = "(GL)";
+    }
+    return { name: `${ch.name} ${suffix}`, defId: ch.uniqueName, aliases: ch.aliases || [] };
 });
 Bot.ShipNames = Bot.ships.map((sh) => {
     return { name: sh.name, defId: sh.uniqueName, aliases: sh.aliases || [] };
