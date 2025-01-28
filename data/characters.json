@@ -207,17 +207,19 @@
         "name": "Ahsoka Tano",
         "uniqueName": "GLAHSOKATANO",
         "aliases": [
-            "Ahsoka Tano"
+            "Ahsoka Tano (GL)",
+            "Ahsoka Tano Gray",
+            "Galactic Legend Ahsoka Tano"
         ],
         "avatarName": "charui_ahsokatanogray",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokatanogray.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTIC_LEGEND_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLETANK_DESC",
-            "CATEGORY_SPECTRE_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Galactic Legend",
+            "Leader",
+            "Tank",
+            "Spectre",
+            "Unaligned Force User"
         ],
         "mods": {
             "sets": [
@@ -569,6 +571,22 @@
         "avatarName": "charui_bastilashan_dark"
     },
     {
+        "name": "Batcher",
+        "uniqueName": "BATCHERS3",
+        "aliases": [
+            "Batcher"
+        ],
+        "avatarName": "charui_batcher",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_batcher.png",
+        "side": "light",
+        "factions": [
+            "Bad Batch",
+            "Attacker"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Baylan Skoll",
         "uniqueName": "BAYLANSKOLL",
         "aliases": [
@@ -578,10 +596,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_baylanskoll.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_MERCENARY_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLETANK_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Mercenary",
+            "Leader",
+            "Tank",
+            "Unaligned Force User"
         ],
         "mods": {
             "sets": [
@@ -1157,9 +1175,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_captainenoch.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_IMPERIALREMNANT_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Imperial Remnant",
+            "Leader",
+            "Support"
         ],
         "mods": {
             "sets": [
@@ -1342,7 +1360,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_carth"
     },
@@ -2371,9 +2389,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_deathtrooperperidea.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_IMPERIALREMNANT_DESC",
-            "CATEGORY_NIGHTSISTERS_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Imperial Remnant",
+            "Nightsister",
+            "Attacker"
         ],
         "mods": {
             "sets": [
@@ -2530,7 +2548,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -2780,9 +2798,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ezraexile.png",
         "side": "light",
         "factions": [
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SPECTRE_DESC"
+            "Jedi",
+            "Support",
+            "Spectre"
         ],
         "mods": {
             "sets": [
@@ -2913,7 +2931,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -3251,9 +3269,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_generalsyndulla.png",
         "side": "light",
         "factions": [
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SPECTRE_DESC"
+            "Leader",
+            "Support",
+            "Spectre"
         ],
         "mods": {
             "sets": [
@@ -3469,9 +3487,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         },
         "avatarName": "charui_yodagrandmaster"
     },
@@ -3515,9 +3533,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_greatmothers.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_NIGHTSISTERS_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Nightsister",
+            "Leader",
+            "Support"
         ],
         "mods": {
             "sets": [
@@ -3627,8 +3645,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gunganphalanx.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GUNGAN_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Gungan",
+            "Tank"
         ],
         "mods": {
             "sets": [
@@ -3893,9 +3911,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_huyang.png",
         "side": "light",
         "factions": [
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_SPECIESDROID_DESC",
-            "CATEGORY_SPECTRE_DESC"
+            "Attacker",
+            "Droid",
+            "Spectre"
         ],
         "mods": {
             "sets": [
@@ -4251,8 +4269,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jarjarbinks.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GUNGAN_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Gungan",
+            "Support"
         ],
         "mods": {
             "sets": [
@@ -4853,7 +4871,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -5229,9 +5247,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luthenrael.png",
         "side": "light",
         "factions": [
-            "CATEGORY_REBELFIGHTER_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Rebel Fighter",
+            "Rebels",
+            "Support"
         ],
         "mods": {
             "sets": [
@@ -5344,10 +5362,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_marrok.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_INQUISITORIUS_DESC",
-            "CATEGORY_MERCENARY_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Inquisitorius",
+            "Mercenary",
+            "Support",
+            "Unaligned Force User"
         ],
         "mods": {
             "sets": [
@@ -5374,9 +5392,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_masterquigon.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Galactic Republic",
+            "Jedi",
+            "Support"
         ],
         "mods": {
             "sets": [
@@ -5573,8 +5591,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_morganelsbeth.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_NIGHTSISTERS_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Nightsister",
+            "Tank"
         ],
         "mods": {
             "sets": [
@@ -5630,9 +5648,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nighttrooper_a.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_IMPERIALREMNANT_DESC",
-            "CATEGORY_NIGHTSISTERS_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Imperial Remnant",
+            "Nightsister",
+            "Attacker"
         ],
         "mods": {
             "sets": [
@@ -5905,6 +5923,23 @@
         "avatarName": "charui_badbatchomega"
     },
     {
+        "name": "Omega (Fugitive)",
+        "uniqueName": "OMEGAS3",
+        "aliases": [
+            "Omega (Fugitive)"
+        ],
+        "avatarName": "charui_omegas3",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_omegas3.png",
+        "side": "light",
+        "factions": [
+            "Bad Batch",
+            "Leader",
+            "Support"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Padawan Obi-Wan",
         "uniqueName": "PADAWANOBIWAN",
         "aliases": [
@@ -5914,9 +5949,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padawanobiwan.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Galactic Republic",
+            "Jedi",
+            "Attacker"
         ],
         "mods": {
             "sets": [
@@ -5942,10 +5977,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padawansabine.png",
         "side": "light",
         "factions": [
-            "CATEGORY_MANDALORIAN_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_SPECTRE_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Mandalorian",
+            "Attacker",
+            "Spectre",
+            "Unaligned Force User"
         ],
         "mods": {
             "sets": [
@@ -6544,9 +6579,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darkrey.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_FIRSTORDER_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_SITH_DESC"
+            "First Order",
+            "Attacker",
+            "Sith"
         ],
         "mods": {},
         "crew": []
@@ -6945,9 +6980,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_shinhati.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_MERCENARY_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Mercenary",
+            "Attacker",
+            "Unaligned Force User"
         ],
         "mods": {
             "sets": [
@@ -7846,9 +7881,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",

@@ -298,6 +298,17 @@
         ]
     },
     {
+        "name": "Batcher",
+        "defId": "BATCHERS3",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BATCHERS3_NAME",
+                "name": "The Cavalry Has Arrived Ii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Baylan Skoll",
         "defId": "BAYLANSKOLL",
         "locations": []
@@ -1144,11 +1155,6 @@
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "3-F",
-                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -1978,6 +1984,11 @@
         "defId": "HUYANG",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "level": "3-F",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_HUYANG_NAME",
                 "name": "Lost And Found Ii  Special Marquee Event"
@@ -2017,11 +2028,6 @@
             {
                 "type": "Guild Activity Store",
                 "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "6-E",
-                "locId": "HARD_DARK"
             }
         ]
     },
@@ -2965,6 +2971,17 @@
         ]
     },
     {
+        "name": "Omega (Fugitive)",
+        "defId": "OMEGAS3",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_OMEGAS3_NAME",
+                "name": "The Cavalry Has Arrived I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Padawan Obi-Wan",
         "defId": "PADAWANOBIWAN",
         "locations": [
@@ -2984,6 +3001,11 @@
         "name": "Padawan Sabine Wren",
         "defId": "PADAWANSABINE",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "6-E",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PADAWANSABINE_NAME",
