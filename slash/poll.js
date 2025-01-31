@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, MessageFlags } = require("discord.js");
 
 const { getGuildPolls, setGuildPolls } = require("../modules/guildConfig/polls.js");
 
@@ -206,7 +206,7 @@ class Poll extends Command {
                 if (oldPoll.votes[interaction.user.id] === opt) {
                     // Warn em that they're voting for the same thing they already voted for, so it won't be registered
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_SAME_OPT", oldPoll.options[opt]), {
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
                 }
                 if (!Number.isNaN(oldPoll.votes[interaction.user.id])) {
@@ -221,12 +221,12 @@ class Poll extends Command {
                     if (voted !== null && voted !== undefined) {
                         return interaction.reply({
                             content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),
-                            ephemeral: true,
+                            flags: MessageFlags.Ephemeral,
                         });
                     }
                     return interaction.reply({
                         content: interaction.language.get("COMMAND_POLL_REGISTERED", oldPoll.options[opt]),
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
                 } catch (err) {
                     return console.error(`[/poll vote] Error voting: ${err}`);
@@ -237,7 +237,7 @@ class Poll extends Command {
         function pollCheck(poll, showRes = false) {
             const voteCount = {};
             const totalVotes = Object.keys(poll.votes).length || 1;
-            poll.options.forEach((opt, ix) => {
+            poll.options.forEach((_, ix) => {
                 voteCount[ix] = 0;
             });
             for (const voter of Object.keys(poll.votes)) {

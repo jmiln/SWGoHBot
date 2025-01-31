@@ -1,5 +1,5 @@
 const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock, MessageFlags } = require("discord.js");
 
 class ReloadData extends Command {
     constructor(Bot) {
@@ -63,7 +63,7 @@ class ReloadData extends Command {
                             fields: outLog?.length ? outLog : null,
                         },
                     ],
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                 });
             }
             case "ev":

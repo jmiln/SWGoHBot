@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, MessageFlags } = require("discord.js");
 const Command = require("../base/slashCommand");
 const patreonInfo = require("../data/patreon.js");
 const { addServerSupporter, clearSupporterInfo } = require("../modules/guildConfig/patreonSettings");
@@ -210,7 +210,7 @@ class Patreon extends Command {
                     fields: fields,
                 },
             ],
-            ephemeral: ephemeral,
+            flags: ephemeral ? MessageFlags.Ephemeral : null,
         });
     }
 }

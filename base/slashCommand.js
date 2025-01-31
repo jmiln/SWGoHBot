@@ -1,4 +1,4 @@
-const { codeBlock } = require("discord.js");
+const { codeBlock, MessageFlags } = require("discord.js");
 
 const defCmdData = {
     name: "",
@@ -93,7 +93,7 @@ class slashCommand {
                     footer: footer,
                 },
             ],
-            ephemeral: ephemeral,
+            flags: ephemeral ? MessageFlags.Ephemeral : null,
         };
 
         // If the interaction has been replied to or deferred, edit the reply

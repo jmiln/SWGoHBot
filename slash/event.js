@@ -1,4 +1,4 @@
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+const { ApplicationCommandOptionType, codeBlock, MessageFlags } = require("discord.js");
 
 const Command = require("../base/slashCommand");
 const { getGuildEvents, updateGuildEvent } = require("../modules/guildConfig/events.js");
@@ -481,12 +481,15 @@ class Event extends Command {
                     if (channel && Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
                         try {
                             channel.send({ content: announceMessage });
-                            return interaction.reply({ content: `Successfully triggered ${event.name}`, ephemeral: true });
+                            return interaction.reply({
+                                content: `Successfully triggered ${event.name}`,
+                                flags: MessageFlags.Ephemeral,
+                            });
                         } catch (e) {
                             Bot.logger.error(`Event trigger Broke! ${announceMessage}`);
                             return interaction.reply({
                                 content: `Broke when trying to trigger *${event.name}*.\nIf this continues, please report it.`,
-                                ephemeral: true,
+                                flags: MessageFlags.Ephemeral,
                             });
                         }
                     }

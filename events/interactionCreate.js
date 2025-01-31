@@ -1,7 +1,8 @@
 const { inspect } = require("node:util");
 const { getGuildSettings } = require("../modules/guildConfig/settings.js");
 const { getGuildAliases } = require("../modules/guildConfig/aliases.js");
-const { send } = require("node:process");
+const { MessageFlags } = require("discord.js");
+
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
     "HTTPError [AbortError]: The user aborted a request.",
@@ -37,7 +38,10 @@ module.exports = async (Bot, client, interaction) => {
 
         // Make sure the user has the correct perms to run the command
         if (level < cmd.commandData.permLevel) {
-            return interaction.reply({ content: "Sorry, but you don't have permission to run that command.", ephemeral: true });
+            return interaction.reply({
+                content: "Sorry, but you don't have permission to run that command.",
+                flags: MessageFlags.Ephemeral,
+            });
         }
 
         // Load the language file for whatever language they have set
@@ -82,7 +86,7 @@ module.exports = async (Bot, client, interaction) => {
 
             const replyObj = {
                 content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             };
             if (interaction.replied) {
                 return interaction

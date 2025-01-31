@@ -89,10 +89,10 @@ async function init() {
         } else {
             // If we're forcing an update, just run the bits we want then exit
             console.log("Forcing update, running updaters");
-            // const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-            // const metadata = await updateMetadata(dataDir, comlinkStub);
-            // await runGameDataUpdaters(metadata.metadata, cache, comlinkStub);
-            await updatePatrons(cache);
+            const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
+            const metadata = await updateMetadata(dataDir, comlinkStub);
+            await runGameDataUpdaters(metadata.metadata, cache, comlinkStub);
+            // await updatePatrons(cache);
             process.exit(0);
         }
     } catch (error) {

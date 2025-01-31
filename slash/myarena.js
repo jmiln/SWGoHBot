@@ -1,6 +1,5 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const { inspect } = require("node:util"); // eslint-disable-line no-unused-vars
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 class MyArena extends Command {
@@ -148,6 +147,10 @@ class MyArena extends Command {
 
         async function getUnitName(player, defId) {
             const thisChar = player.roster.find((c) => c.defId === defId);
+            if (!thisChar) {
+                console.error(`[ERROR MyArena] Missing ID for ${defId}`);
+                return `Missing ID for ${defId}`;
+            }
             const thisLangChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
             const thisZ = thisLangChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
             if (thisLangChar.name && !thisLangChar.nameKey) thisLangChar.nameKey = thisLangChar.name;
