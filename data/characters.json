@@ -3902,6 +3902,23 @@
         "avatarName": "charui_bb_hunter"
     },
     {
+        "name": "Hunter (Mercenary)",
+        "uniqueName": "HUNTERS3",
+        "aliases": [
+            "Hunter (Mercenary)"
+        ],
+        "avatarName": "charui_hunters3",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hunters3.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_BADBATCH_DESC",
+            "CATEGORY_MERCENARY_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Huyang",
         "uniqueName": "HUYANG",
         "aliases": [
@@ -4609,6 +4626,24 @@
             "cross": "Protection"
         },
         "avatarName": "charui_luke_jml"
+    },
+    {
+        "name": "Jocasta Nu",
+        "uniqueName": "JOCASTANU",
+        "aliases": [
+            "Jocasta Nu"
+        ],
+        "avatarName": "charui_jocastanu_blaster",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jocastanu_blaster.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTICREPUBLIC_DESC",
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_JEDIVANGUARD_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Jolee Bindo",

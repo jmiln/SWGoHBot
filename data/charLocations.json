@@ -361,11 +361,6 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
-                "type": "Cantina",
-                "level": "3-G",
-                "locId": "CANTINA"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/10"
             },
@@ -1627,6 +1622,11 @@
         "defId": "GENERALSYNDULLA",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "3-G",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_GENERALSYNDULLA_NAME",
                 "name": "Lost And Found Iii  Special Marquee Event"
@@ -1980,6 +1980,17 @@
         ]
     },
     {
+        "name": "Hunter (Mercenary)",
+        "defId": "HUNTERS3",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_HUNTERS3_NAME",
+                "name": "The Cavalry Has Arrived Iii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Huyang",
         "defId": "HUYANG",
         "locations": [
@@ -2290,6 +2301,11 @@
                 "name": "The Journey's End"
             }
         ]
+    },
+    {
+        "name": "Jocasta Nu",
+        "defId": "JOCASTANU",
+        "locations": []
     },
     {
         "name": "Jolee Bindo",
@@ -3188,7 +3204,13 @@
     {
         "name": "Queen Amidala",
         "defId": "QUEENAMIDALA",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Qui-Gon Jinn",

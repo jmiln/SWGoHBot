@@ -1206,6 +1206,11 @@
                 "tier": 7
             },
             {
+                "defId": "DARKREY",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "FOSITHTROOPER",
                 "type": "STAR",
                 "tier": 7
@@ -1521,6 +1526,11 @@
                 "tier": 7
             },
             {
+                "defId": "EZRAEXILE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "GENERALKENOBI",
                 "type": "STAR",
                 "tier": 7
@@ -1631,7 +1641,17 @@
                 "tier": 7
             },
             {
+                "defId": "MASTERQUIGON",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "OLDBENKENOBI",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "PADAWANOBIWAN",
                 "type": "STAR",
                 "tier": 7
             },
@@ -3194,6 +3214,11 @@
             },
             {
                 "defId": "FIFTHBROTHER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "MARROK",
                 "type": "RELIC",
                 "tier": 7
             },
