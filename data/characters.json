@@ -8217,6 +8217,23 @@
         "avatarName": "charui_bb_wrecker"
     },
     {
+        "name": "Wrecker (Mercenary)",
+        "uniqueName": "WRECKERS3",
+        "aliases": [
+            "Wrecker (Mercenary)"
+        ],
+        "avatarName": "charui_wreckers3",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_wreckers3.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_BADBATCH_DESC",
+            "CATEGORY_MERCENARY_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Young Han Solo",
         "uniqueName": "YOUNGHAN",
         "aliases": [

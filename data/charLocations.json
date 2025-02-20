@@ -4198,6 +4198,17 @@
         ]
     },
     {
+        "name": "Wrecker (Mercenary)",
+        "defId": "WRECKERS3",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_WRECKERS3_NAME",
+                "name": "The Cavalry Has Arrived Iv Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Young Han Solo",
         "defId": "YOUNGHAN",
         "locations": [
