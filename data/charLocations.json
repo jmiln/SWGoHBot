@@ -895,6 +895,17 @@
         ]
     },
     {
+        "name": "Crosshair (Scarred)",
+        "defId": "CROSSHAIRS3",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CROSSHAIRS3_NAME",
+                "name": "The Cavalry Has Arrived V Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "CT-21-0408 \"Echo\"",
         "defId": "CT210408",
         "locations": [

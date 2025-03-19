@@ -583,7 +583,18 @@
             "Bad Batch",
             "Attacker"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -1814,6 +1825,22 @@
         "avatarName": "charui_dooku"
     },
     {
+        "name": "Crosshair (Scarred)",
+        "uniqueName": "CROSSHAIRS3",
+        "aliases": [
+            "Crosshair (Scarred)"
+        ],
+        "avatarName": "charui_crosshair_scarred",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_crosshair_scarred.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_BADBATCH_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "CT-21-0408 \"Echo\"",
         "uniqueName": "CT210408",
         "aliases": [
@@ -1833,8 +1860,8 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -2278,7 +2305,7 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Damage x4",
+                "Offense x4",
                 "Potency x2"
             ],
             "square": "Offense",
@@ -2548,7 +2575,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Health",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -3190,8 +3217,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
+            "triangle": "Health",
+            "circle": "Health",
             "cross": "Tenacity"
         },
         "avatarName": "charui_generalhux"
@@ -3283,7 +3310,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         },
         "crew": []
     },
@@ -3304,8 +3331,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -3487,9 +3514,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_yodagrandmaster"
     },
@@ -3915,7 +3942,18 @@
             "CATEGORY_MERCENARY_DESC",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Potency"
+        },
         "crew": []
     },
     {
@@ -4209,7 +4247,7 @@
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -4904,16 +4942,16 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Defense x2"
+                "Tenacity x2",
+                "Tenacity x2",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_krrsantan"
     },
@@ -5404,9 +5442,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Potency x2"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5489,16 +5526,16 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Potency x2",
+                "Tenacity x2",
+                "Tenacity x2",
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Protection",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity"
         },
         "avatarName": "charui_merrin"
     },
@@ -5971,7 +6008,18 @@
             "Leader",
             "Support"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Tenacity"
+        },
         "crew": []
     },
     {
@@ -6618,7 +6666,18 @@
             "Attacker",
             "Sith"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health"
+        },
         "crew": []
     },
     {
@@ -7021,8 +7080,8 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7203,7 +7262,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Offense",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -7916,8 +7975,9 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -8230,7 +8290,19 @@
             "CATEGORY_MERCENARY_DESC",
             "CATEGORY_ROLETANK_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Protection"
+        },
         "crew": []
     },
     {
@@ -8342,9 +8414,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Offense"
         },
         "avatarName": "charui_zamwesell"
     },
