@@ -3002,6 +3002,11 @@
         "defId": "OMEGAS3",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "3-D",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_OMEGAS3_NAME",
                 "name": "The Cavalry Has Arrived I Special Marquee Event"
@@ -3895,11 +3900,6 @@
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "3-D",
-                "locId": "HARD_DARK"
             },
             {
                 "type": "Heroic Event",
