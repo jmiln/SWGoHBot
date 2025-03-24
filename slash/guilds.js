@@ -166,7 +166,7 @@ class Guilds extends Command {
                             name: "show_all",
                             description: "Show all members, or just the ones that need more tickets",
                             type: ApplicationCommandOptionType.Boolean,
-                        }
+                        },
                     ],
                 },
                 {
@@ -375,22 +375,6 @@ class Guilds extends Command {
             };
 
             const tableOut = Bot.makeTable(tableFormat, tableIn);
-
-            const outMsgArr = Bot.msgArray(tableOut, "\n", 700);
-            const fields = [];
-            for (const m of outMsgArr) {
-                if (!m?.length) continue;
-                fields.push({
-                    name: "-",
-                    value: m,
-                });
-            }
-
-            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
-            fields.push({
-                name: Bot.constants.zws,
-                value: footerStr,
-            });
             return interaction.editReply({
                 content: null,
                 embeds: [
@@ -398,7 +382,13 @@ class Guilds extends Command {
                         author: {
                             name: `${guild.name} ${interaction.language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`,
                         },
-                        fields: fields,
+                        description: tableOut.length ? tableOut.join("\n") : "No users found in guild",
+                        fields: [
+                            {
+                                name: Bot.constants.zws,
+                                value: Bot.updatedFooterStr(guild.updated, interaction),
+                            },
+                        ],
                     },
                 ],
             });
@@ -487,7 +477,7 @@ class Guilds extends Command {
                 },
                 output,
             );
-            const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off ​`")];
+            const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off �`")];
 
             const fields = Bot.msgArray(header.concat(table), "\n", 700).map((m) => {
                 if (!m?.length) return;
@@ -1000,13 +990,6 @@ class Guilds extends Command {
             }
 
             const fields = [];
-            const msgArr = Bot.msgArray(users, "\n", 1000);
-            msgArr.forEach((m, ix) => {
-                fields.push({
-                    name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix + 1, msgArr.length),
-                    value: m,
-                });
-            });
             fields.push({
                 name: interaction.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: codeBlock(
@@ -1039,6 +1022,7 @@ class Guilds extends Command {
                         author: {
                             name: interaction.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name),
                         },
+                        description: users?.length ? users.join("\n") : interaction.language.get("BASE_SWGOH_NO_GUILD"),
                         fields: fields,
                     },
                 ],
@@ -1048,7 +1032,7 @@ class Guilds extends Command {
         async function twSummary() {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
-            const unitChecklist = await getFullTWList({cache: Bot.cache, guildId: interaction.guild?.id});
+            const unitChecklist = await getFullTWList({ cache: Bot.cache, guildId: interaction.guild?.id });
             let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
                 return interaction.editReply({
@@ -1222,7 +1206,10 @@ class Guilds extends Command {
                 if (!unitListMap || !Object.keys(unitListMap)?.length) continue;
                 for (const [defId, name] of Object.entries(unitListMap)) {
                     if (name?.length) continue;
-                    let nameOut = name || Bot.characters.find((c) => c.uniqueName === defId)?.name || Bot.ships.find((c) => c.uniqueName === defId)?.name;
+                    let nameOut =
+                        name ||
+                        Bot.characters.find((c) => c.uniqueName === defId)?.name ||
+                        Bot.ships.find((c) => c.uniqueName === defId)?.name;
                     if (!nameOut) nameOut = defId;
                     unitListMap[defId] = nameOut;
                 }
@@ -1290,6 +1277,5 @@ class Guilds extends Command {
         }
     }
 }
-
 
 module.exports = Guilds;
