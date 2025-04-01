@@ -1789,7 +1789,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "avatarName": "charui_coruscantpolice"
@@ -1837,7 +1837,18 @@
             "CATEGORY_BADBATCH_DESC",
             "CATEGORY_ROLEATTACKER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -2837,7 +2848,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Health"
         },
@@ -2958,7 +2969,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -3096,7 +3107,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -3950,7 +3961,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -4976,9 +4987,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -5365,7 +5376,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Potency"
+            "cross": "Health"
         },
         "avatarName": "charui_macewindu"
     },
@@ -5449,7 +5460,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "crew": []
@@ -6563,7 +6574,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
