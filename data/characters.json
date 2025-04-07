@@ -1405,6 +1405,23 @@
         "avatarName": "charui_cassian"
     },
     {
+        "name": "CC-1119 \"Appo\"",
+        "uniqueName": "APPO",
+        "aliases": [
+            "CC-1119 \"Appo\""
+        ],
+        "avatarName": "charui_appo",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_appo.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_CLONETROOPER_DESC",
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "CC-2224 \"Cody\"",
         "uniqueName": "CC2224",
         "aliases": [
@@ -1871,8 +1888,8 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
-                "Crit. Chance x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4987,9 +5004,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency"
         },
         "avatarName": "charui_kuiil"
     },
@@ -6226,7 +6243,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -7941,7 +7958,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Protection"
         },
         "avatarName": "charui_tuskenshaman"
     },
@@ -8310,8 +8327,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
             "cross": "Protection"
         },
         "crew": []

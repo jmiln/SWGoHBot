@@ -302,6 +302,11 @@
         "defId": "BATCHERS3",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-C",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BATCHERS3_NAME",
                 "name": "The Cavalry Has Arrived Ii Special Marquee Event"
@@ -693,6 +698,17 @@
             {
                 "type": "Squad Arena Store",
                 "cost": "400 Squad Arena Tokens/10"
+            }
+        ]
+    },
+    {
+        "name": "CC-1119 \"Appo\"",
+        "defId": "APPO",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_APPO_NAME",
+                "name": "Executing Orders I Special Marquee Event"
             }
         ]
     },
@@ -1801,11 +1817,6 @@
         "name": "Greef Karga",
         "defId": "GREEFKARGA",
         "locations": [
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "4-C",
-                "locId": "HARD_FLEET"
-            },
             {
                 "type": "Hard Modes (L)",
                 "level": "3-E",
