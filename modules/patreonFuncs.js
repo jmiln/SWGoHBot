@@ -18,7 +18,7 @@ module.exports = (Bot, client) => {
         const patron = await Bot.cache.getOne("swgohbot", "patrons", { discordID: userId });
 
         // If they aren't in the db, see if we have em in there manually
-        if (!patron && Bot.config.patrons && Bot.config.patrons?.[userId]) {
+        if (!patron && Bot.config.patrons?.[userId]) {
             const currentAmountCents = Bot.config.patrons[userId];
             const currentTierNum = getPatreonTier({ amount_cents: currentAmountCents });
             const currentTier = patronTiers[currentTierNum];
