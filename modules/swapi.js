@@ -255,7 +255,7 @@ module.exports = (opts = {}) => {
                     for (const [changeType, strArr] of Object.entries(changeObj)) {
                         // Update the strings with namekeys for anything inside `{}` braces
                         const updatedArr = strArr.map((str) =>
-                            str.replace(/\{([^}]*)\}/g, (match, p1) => {
+                            str.replace(/\{([^}]*)\}/g, (_, p1) => {
                                 return langKeys[p1] || p1;
                             }),
                         );
@@ -395,7 +395,7 @@ module.exports = (opts = {}) => {
                             updateOne: {
                                 filter: { allyCode: bareP.allyCode },
                                 update: { $set: bareP },
-                                upsert: true
+                                upsert: true,
                             },
                         });
                         if (options?.defId?.length) {
@@ -807,12 +807,7 @@ module.exports = (opts = {}) => {
         const recArr = Array.isArray(recArray) ? recArray : [recArray];
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(
-            config.mongodb.swapidb,
-            "recipes",
-            { id: { $in: recArr }, language: lang.toLowerCase() },
-            { _id: 0, updated: 0 },
-        );
+        return await cache.get(config.mongodb.swapidb, "recipes", { id: { $in: recArr }, language: thisLang }, { _id: 0, updated: 0 });
     }
 
     async function getRawGuild(allycode, cooldown = {}, { forceUpdate } = { forceUpdate: false }) {
@@ -1074,8 +1069,13 @@ module.exports = (opts = {}) => {
 
     function isExpired(lastUpdated, cooldown, guild = false) {
         if (!lastUpdated) return true;
+        let thisCooldown = guildMaxCooldown;
+        if (guild) {
+            thisCooldown = cooldown.guild || guildMaxCooldown;
+        } else {
+            thisCooldown = cooldown.player || playerMaxCooldown;
+        }
         const diff = convertMS(new Date().getTime() - new Date(lastUpdated).getTime());
-        const thisCooldown = guild ? guildMaxCooldown : playerMaxCooldown;
         return diff.totalMin >= thisCooldown;
     }
 };
