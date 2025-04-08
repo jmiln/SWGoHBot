@@ -1098,6 +1098,23 @@ class Guilds extends Command {
                 ),
             });
 
+            // Get and format the guild's previous match history
+            const preMatches = guild.recentTerritoryWarResult?.sort((a, b) =>
+                Number.parseInt(a.endTimeSeconds, 10) < Number.parseInt(b.endTimeSeconds, 10) ? 1 : -1,
+            );
+            if (preMatches?.length) {
+                const formattedMatches = preMatches.map((match, ix) => {
+                    const ourScore = Number.parseInt(match.score, 10);
+                    const opponentScore = Number.parseInt(match.opponentScore, 10);
+                    const matchPower  = (Number.parseInt(match.power, 10) / 1_000_000).toFixed(1);
+                    return `Match ${ix +1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${ourScore}-${opponentScore}, ${matchPower}M`;
+                });
+                fields.push({
+                    name: "Previous Matches",
+                    value: codeBlock("asciidoc", formattedMatches.join("\n")),
+                });
+            }
+
             // Get the overall gear levels for the guild as a whole
             const [gearLvls, avgGear] = Bot.summarizeCharLevels(guildMembers, "gear");
             const formattedGearLvls = Object.keys(gearLvls)

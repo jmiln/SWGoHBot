@@ -12,6 +12,16 @@ module.exports = {
     // Zero width space
     zws: "\u200B",
 
+    emotes: {
+        check: "✅",
+        error: "❗",
+        info: "ℹ️",
+        loading: "🕑",
+        question: "❓",
+        warning: "⚠️",
+        x: "❌",
+    },
+
     // Some normal color codes
     colors: {
         black:     0,
