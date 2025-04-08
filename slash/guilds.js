@@ -1099,21 +1099,74 @@ class Guilds extends Command {
             });
 
             // Get and format the guild's previous match history
-            const preMatches = guild.recentTerritoryWarResult?.sort((a, b) =>
+            const previousMatches = guild.recentTerritoryWarResult?.sort((a, b) =>
                 Number.parseInt(a.endTimeSeconds, 10) < Number.parseInt(b.endTimeSeconds, 10) ? 1 : -1,
             );
-            if (preMatches?.length) {
-                const formattedMatches = preMatches.map((match, ix) => {
+            if (previousMatches?.length) {
+                const maxLenCompare = Math.max(...previousMatches.map((m) => `${m.score}-${m.opponentScore}`.length));
+                const formattedMatches = previousMatches.map((match, ix) => {
                     const ourScore = Number.parseInt(match.score, 10);
                     const opponentScore = Number.parseInt(match.opponentScore, 10);
-                    const matchPower  = (Number.parseInt(match.power, 10) / 1_000_000).toFixed(1);
-                    return `Match ${ix +1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${ourScore}-${opponentScore}, ${matchPower}M`;
+                    const matchPower = (Number.parseInt(match.power, 10) / 1_000_000).toFixed(1);
+                    return `Match ${ix + 1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${(`${ourScore}-${opponentScore},`).padEnd(maxLenCompare+1, " ")} ${matchPower}M`;
                 });
                 fields.push({
                     name: "Previous Matches",
                     value: codeBlock("asciidoc", formattedMatches.join("\n")),
                 });
             }
+
+            // Get the streak of wins for the most recent Matches
+            let winStreak = 0;
+            for (const match of previousMatches) {
+                if (Number.parseInt(match.score, 10) > Number.parseInt(match.opponentScore, 10)) {
+                    winStreak++;
+                } else {
+                    break;
+                }
+            }
+            const wld = previousMatches.reduce((acc, curr) => {
+                const ourScore = Number.parseInt(curr.score, 10);
+                const opponentScore = Number.parseInt(curr.opponentScore, 10);
+                acc.wins += ourScore > opponentScore ? 1 : 0;
+                acc.losses += ourScore < opponentScore ? 1 : 0;
+                acc.draws += ourScore === opponentScore ? 1 : 0;
+                return acc;
+            }, { wins: 0, losses: 0, draws: 0 });
+
+            // Get the range (min to max) for score
+            const scoreArr = previousMatches.map((m) => Number.parseInt(m.score, 10));
+            const offRangeStr = `${Math.min(...scoreArr)}-${Math.max(...scoreArr)}`;
+            const offMean = scoreArr.reduce((acc, curr) => acc + curr, 0) / scoreArr.length;
+            const sortedScoreArr = scoreArr.sort((a, b) => a - b);
+            const offMedian = scoreArr.length % 2 === 0
+                ? (sortedScoreArr[scoreArr.length / 2] + sortedScoreArr[scoreArr.length / 2 - 1]) / 2
+                : sortedScoreArr[Math.floor(scoreArr.length / 2)];
+
+            // Get the range (min to max) for opponent score
+            const opponentScoreArr = previousMatches.map((m) => Number.parseInt(m.opponentScore, 10));
+            const defRangeStr = `${Math.min(...opponentScoreArr)}-${Math.max(...opponentScoreArr)}`;
+            const defMean = opponentScoreArr.reduce((acc, curr) => acc + curr, 0) / opponentScoreArr.length;
+            const sortedOpponentScoreArr = opponentScoreArr.sort((a, b) => a - b);
+            const defMedian = opponentScoreArr.length % 2 === 0
+                ? (sortedOpponentScoreArr[opponentScoreArr.length / 2] + sortedOpponentScoreArr[opponentScoreArr.length / 2 - 1]) / 2
+                : sortedOpponentScoreArr[Math.floor(opponentScoreArr.length / 2)];
+
+            fields.push({
+                name: "Previous Matches Stats",
+                value: codeBlock(
+                    [
+                        `Streak     :: ${winStreak} ${Bot.constants.emotes.check}`,
+                        `W-L-D      :: ${wld.wins}-${wld.losses}-${wld.draws}, (${((wld.wins / (previousMatches.length)) * 100).toFixed(1)}%)`,
+                        `Off range  :: ${offRangeStr}`,
+                        `Off mean   :: ${offMean.toFixed(0)}`,
+                        `Off median :: ${offMedian.toFixed(0)}`,
+                        `Def range  :: ${defRangeStr}`,
+                        `Def mean   :: ${defMean.toFixed(0)}`,
+                        `Def median :: ${defMedian.toFixed(0)}`,
+                    ].join("\n"),
+                ),
+            });
 
             // Get the overall gear levels for the guild as a whole
             const [gearLvls, avgGear] = Bot.summarizeCharLevels(guildMembers, "gear");
