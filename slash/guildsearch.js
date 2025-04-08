@@ -142,14 +142,13 @@ class GuildSearch extends Command {
         });
     }
 
-    async run(Bot, interaction, args, options) {
-        // eslint-disable-line no-unused-vars
+    async run(Bot, interaction) {
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options
         const sort = interaction.options.getString("sort");
         const stat = interaction.options.getString("stat");
-        let allycode = interaction.options.getString("allycode");
+        const allycode = interaction.options.getString("allycode");
 
         const rarityMap = {
             ONESTAR: 1,
@@ -163,9 +162,9 @@ class GuildSearch extends Command {
 
         // If an ally code is supplied, try using it
         // If not, it'll try grabbing the primary registered code of the author
-        allycode = await Bot.getAllyCode(interaction, allycode, true);
+        const userAC = await Bot.getAllyCode(interaction, allycode, true);
 
-        if (!allycode) {
+        if (!userAC) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }
 
@@ -220,7 +219,7 @@ class GuildSearch extends Command {
 
         let guild = null;
         try {
-            guild = await Bot.swgohAPI.guild(allycode, cooldown);
+            guild = await Bot.swgohAPI.guild(userAC, cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, "Sorry, but it looks like that player is not in a guild");
@@ -527,16 +526,16 @@ class GuildSearch extends Command {
         for (const star of outArr) {
             if (star >= starLvl) {
                 const msgArr = Bot.msgArray(charOut[star], "\n", 700);
-                msgArr.forEach((msg, ix) => {
+                for (const[ix, msg] of msgArr.entries()) {
                     const name =
                         Number.parseInt(star, 10) === 0
                             ? interaction.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length)
                             : interaction.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                     fields.push({
                         name: msgArr.length > 1 ? `${name} (${ix + 1}/${msgArr.length})` : name,
-                        value: msgArr[ix],
+                        value: msg,
                     });
-                });
+                }
             }
         }
         if (guild.warnings) {
@@ -566,7 +565,8 @@ class GuildSearch extends Command {
             }
         }
 
-        const footerStr = Bot.updatedFooterStr(Math.max(...guildChar.map((ch) => ch.updated)), interaction);
+        const maxUpdated = Math.max(...guildChar.map((ch) => ch.updated));
+        const footerStr = Bot.updatedFooterStr(maxUpdated, interaction);
         let description = null;
         if (doZeta || doOmicron) {
             if (doZeta && doOmicron) {

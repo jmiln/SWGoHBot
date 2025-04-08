@@ -99,7 +99,9 @@ class GuildQuality extends Command {
             });
         }
 
-        const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+        // Grab the most recently updated player's timestamp
+        const maxUpdated = Math.max(...guild.roster.map((pl) => pl.updated));
+        const footerStr = Bot.updatedFooterStr(maxUpdated, interaction);
         fields.push({
             name: Bot.constants.zws,
             value: footerStr,

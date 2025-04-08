@@ -282,24 +282,6 @@ module.exports = (opts = {}) => {
 
         const specialAbilities = await getSpecialAbilities();
 
-        let thisCooldown = null;
-
-        // Check the cooldown to see if it should update stuff or not
-        if (!options.force) {
-            if (acArr?.length > 5) {
-                // If there's more than 5 ally codes, apply the guild cooldown
-                thisCooldown = cooldown?.guild || guildMaxCooldown;
-                if (thisCooldown > guildMaxCooldown) thisCooldown = guildMaxCooldown;
-                if (thisCooldown < guildMinCooldown) thisCooldown = guildMinCooldown;
-            } else if (cooldown?.player) {
-                // Otherwise, apply the player cooldown
-                thisCooldown = cooldown.player;
-                if (thisCooldown > playerMaxCooldown) thisCooldown = playerMaxCooldown;
-                if (thisCooldown < playerMinCooldown) thisCooldown = playerMinCooldown;
-            } else {
-                thisCooldown = playerMaxCooldown;
-            }
-        }
         let playerStats = [];
         try {
             if (!acArr?.length) {
@@ -323,7 +305,7 @@ module.exports = (opts = {}) => {
             }
 
             // If options.force is true, set the list of unexpired players to be empty so that all players will be run through the updater
-            const updatedList = options.force ? [] : players.filter((p) => !isExpired(p.updated, thisCooldown));
+            const updatedList = options.force ? [] : players.filter((p) => !isExpired(p.updated, cooldown, players.length > 5));
             const updatedAC = updatedList.map((p) => Number.parseInt(p.allyCode, 10));
             const needUpdating = acArr.filter((a) => !updatedAC.includes(a));
 
@@ -812,14 +794,6 @@ module.exports = (opts = {}) => {
 
     async function getRawGuild(allycode, cooldown = {}, { forceUpdate } = { forceUpdate: false }) {
         const tempGuild = {};
-        let thisCooldown = null;
-        if (cooldown) {
-            thisCooldown = cooldown.guild;
-            if (thisCooldown > guildMaxCooldown) thisCooldown = guildMaxCooldown;
-            if (thisCooldown < guildMinCooldown) thisCooldown = guildMinCooldown;
-        } else {
-            thisCooldown = guildMaxCooldown;
-        }
         const thisAc = allycode?.toString().replace(/[^\d]/g, "");
         if (!thisAc || Number.isNaN(thisAc) || thisAc.length !== 9) {
             throw new Error("Please provide a valid allycode");
@@ -831,7 +805,7 @@ module.exports = (opts = {}) => {
         if (!player.guildId) throw new Error("This player is not in a guild");
 
         let rawGuild = await cache.get(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
-        if (forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, thisCooldown, true)) {
+        if (forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true)) {
             try {
                 rawGuild = await comlinkStub.getGuild(player.guildId, true);
             } catch (err) {
@@ -890,14 +864,6 @@ module.exports = (opts = {}) => {
     }
 
     async function guild(allycode, cooldown) {
-        let thisCooldown = null;
-        if (cooldown) {
-            thisCooldown = cooldown.guild;
-            if (thisCooldown > guildMaxCooldown) thisCooldown = guildMaxCooldown;
-            if (thisCooldown < guildMinCooldown) thisCooldown = guildMinCooldown;
-        } else {
-            thisCooldown = guildMaxCooldown;
-        }
         let warnings;
         let thisAc = allycode?.toString().replace(/[^\d]/g, "");
         if (thisAc?.length !== 9 || Number.isNaN(thisAc)) throw new Error("Please provide a valid allycode");
@@ -914,7 +880,7 @@ module.exports = (opts = {}) => {
         let guild = await cache.get(config.mongodb.swapidb, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
-        if (!guild || !guild[0] || isExpired(guild[0].updated, thisCooldown, true)) {
+        if (!guild || !guild[0] || isExpired(guild[0].updated, cooldown, true)) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild;
             try {
@@ -931,7 +897,7 @@ module.exports = (opts = {}) => {
                 if (tempGuild?._id) tempGuild._id = undefined; // Delete this since it's always whining about it being different
             }
 
-            if (!tempGuild || !tempGuild.roster || !tempGuild.name) {
+            if (!tempGuild?.roster || !tempGuild.name) {
                 if (guild[0]?.roster) {
                     return guild[0];
                 }
@@ -1070,11 +1036,19 @@ module.exports = (opts = {}) => {
     function isExpired(lastUpdated, cooldown, guild = false) {
         if (!lastUpdated) return true;
         let thisCooldown = guildMaxCooldown;
+
         if (guild) {
-            thisCooldown = cooldown.guild || guildMaxCooldown;
+            // If it's for a guild, apply the guild cooldown
+            thisCooldown = cooldown?.guild || guildMaxCooldown;
+            if (thisCooldown > guildMaxCooldown) thisCooldown = guildMaxCooldown;
+            if (thisCooldown < guildMinCooldown) thisCooldown = guildMinCooldown;
         } else {
-            thisCooldown = cooldown.player || playerMaxCooldown;
+            // Otherwise, apply the player cooldown
+            thisCooldown = cooldown?.player || playerMaxCooldown;
+            if (thisCooldown > playerMaxCooldown) thisCooldown = playerMaxCooldown;
+            if (thisCooldown < playerMinCooldown) thisCooldown = playerMinCooldown;
         }
+
         const diff = convertMS(new Date().getTime() - new Date(lastUpdated).getTime());
         return diff.totalMin >= thisCooldown;
     }
