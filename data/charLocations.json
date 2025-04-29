@@ -979,6 +979,17 @@
         ]
     },
     {
+        "name": "CX-2",
+        "defId": "OPERATIVE",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_OPERATIVE_NAME",
+                "name": "Executing Orders Ii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Dark Trooper",
         "defId": "DARKTROOPER",
         "locations": [
@@ -1721,11 +1732,6 @@
                 "name": "Ground War Assault Battles"
             },
             {
-                "type": "Cantina",
-                "level": "4-D",
-                "locId": "CANTINA"
-            },
-            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/10"
             }
@@ -2005,6 +2011,11 @@
         "name": "Hunter (Mercenary)",
         "defId": "HUNTERS3",
         "locations": [
+            {
+                "type": "Cantina",
+                "level": "4-D",
+                "locId": "CANTINA"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_HUNTERS3_NAME",

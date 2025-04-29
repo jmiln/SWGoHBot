@@ -3833,9 +3833,9 @@
                 "tier": 5
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "OPERATIVE",
+                "type": "RELIC",
+                "tier": 5
             },
             {
                 "defId": "INVENTORY_CHARACTERS",

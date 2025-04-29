@@ -223,7 +223,7 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
+                "Defense x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -1228,9 +1228,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1418,7 +1418,18 @@
             "CATEGORY_EMPIRE_DESC",
             "CATEGORY_ROLEATTACKER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -1888,8 +1899,8 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1963,6 +1974,34 @@
             "cross": "Health"
         },
         "avatarName": "charui_trooperclone_rex"
+    },
+    {
+        "name": "CX-2",
+        "uniqueName": "OPERATIVE",
+        "aliases": [
+            "CX-2"
+        ],
+        "avatarName": "charui_operative",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_operative.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_CLONETROOPER_DESC",
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        },
+        "crew": []
     },
     {
         "name": "Dark Trooper",
@@ -2133,7 +2172,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -2223,7 +2262,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -3245,8 +3284,8 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
             "cross": "Tenacity"
         },
         "avatarName": "charui_generalhux"
@@ -4708,7 +4747,18 @@
             "CATEGORY_JEDIVANGUARD_DESC",
             "CATEGORY_ROLEATTACKER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        },
         "crew": []
     },
     {
@@ -5239,7 +5289,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -6044,7 +6094,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Tenacity"
         },
@@ -6564,7 +6614,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_finn"
@@ -6591,7 +6641,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -6998,7 +7048,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Potency"
         }
     },
     {
