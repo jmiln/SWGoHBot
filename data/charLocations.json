@@ -1259,6 +1259,17 @@
         ]
     },
     {
+        "name": "Disguised Clone Trooper",
+        "defId": "DISGUISEDCLONETROOPER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DISGUISEDCLONETROOPER_NAME",
+                "name": "Executing Orders Iii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Doctor Aphra",
         "defId": "DOCTORAPHRA",
         "locations": []
@@ -1609,11 +1620,6 @@
         "name": "General Hux",
         "defId": "GENERALHUX",
         "locations": [
-            {
-                "type": "Hard Modes (D)",
-                "level": "6-A",
-                "locId": "HARD_DARK"
-            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_GENERALHUX_NAME",
@@ -2665,7 +2671,13 @@
     {
         "name": "Luthen Rael",
         "defId": "LUTHENRAEL",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Mace Windu",
@@ -3718,6 +3730,11 @@
         ]
     },
     {
+        "name": "SM-33",
+        "defId": "SM33",
+        "locations": []
+    },
+    {
         "name": "Snowtrooper",
         "defId": "SNOWTROOPER",
         "locations": [
@@ -4234,6 +4251,11 @@
         "name": "Wrecker (Mercenary)",
         "defId": "WRECKERS3",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "6-A",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_WRECKERS3_NAME",

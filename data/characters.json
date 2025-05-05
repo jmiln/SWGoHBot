@@ -223,7 +223,7 @@
         ],
         "mods": {
             "sets": [
-                "Defense x2",
+                "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -2561,6 +2561,34 @@
         "avatarName": "charui_krennic"
     },
     {
+        "name": "Disguised Clone Trooper",
+        "uniqueName": "DISGUISEDCLONETROOPER",
+        "aliases": [
+            "Disguised Clone Trooper"
+        ],
+        "avatarName": "charui_disguisedclonetrooper",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_disguisedclonetrooper.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_CLONETROOPER_DESC",
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Potency"
+        },
+        "crew": []
+    },
+    {
         "name": "Doctor Aphra",
         "uniqueName": "DOCTORAPHRA",
         "aliases": [
@@ -2987,8 +3015,9 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4251,9 +4280,9 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -4603,9 +4632,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Defense",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Defense"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -5289,7 +5318,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -6641,7 +6670,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
@@ -7376,6 +7405,24 @@
             "cross": "Offense"
         },
         "avatarName": "charui_undercoverlando"
+    },
+    {
+        "name": "SM-33",
+        "uniqueName": "SM33",
+        "aliases": [
+            "SM-33"
+        ],
+        "avatarName": "charui_sm33",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sm33.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_SCOUNDREL_DESC",
+            "CATEGORY_SPECIESDROID_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Snowtrooper",
