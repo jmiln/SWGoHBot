@@ -321,6 +321,7 @@ async function getPlayerRosters(playerIds, modMap) {
     if (playerCount !== playerIds.length) {
         console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
     }
+    await piscina.close();
     return rosterArr;
 }
 
