@@ -4,7 +4,6 @@
     "description": "Discord bot for the Star Wars Galaxy of Heroes game.",
     "main": "swgohBot.js",
     "scripts": {
-        "lint": "eslint",
         "start": "node swgohBotShard.js",
         "test": "node --test ./test/**/*.test.js"
     },

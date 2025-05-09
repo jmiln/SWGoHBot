@@ -2172,7 +2172,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_maul"
@@ -3054,7 +3054,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -3427,8 +3427,8 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Speed x4"
+                "Speed x4",
+                "Crit. Chance x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4632,9 +4632,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Defense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Defense"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -6670,7 +6670,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"

@@ -546,11 +546,6 @@
                 "type": "Cantina",
                 "level": "1-F",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CALKESTIS_NAME",
-                "name": "Stories Of Survival I Marquee Event"
             }
         ]
     },
@@ -631,11 +626,6 @@
                 "type": "Hard Modes (D)",
                 "level": "3-F",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CAPTAINREX_NAME",
-                "name": "The Lost Commander Marquee Event"
             }
         ]
     },
@@ -734,11 +724,6 @@
                 "type": "Hard Modes (L)",
                 "level": "3-A",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CEREJUNDA_NAME",
-                "name": "Stories Of Survival Ii Marquee Event"
             }
         ]
     },
@@ -2798,11 +2783,6 @@
                 "type": "Hard Modes (Fleet)",
                 "level": "1-C",
                 "locId": "HARD_FLEET"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_MERRIN_NAME",
-                "name": "Stories Of Survival Iii Marquee Event"
             }
         ]
     },
@@ -3507,11 +3487,6 @@
                 "type": "Hard Modes (L)",
                 "level": "4-B",
                 "locId": "HARD_LIGHT"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_SAWGERRERA_NAME",
-                "name": "Stories Of Survival V Marquee Event"
             }
         ]
     },
@@ -3892,11 +3867,6 @@
                 "type": "Hard Modes (D)",
                 "level": "4-D",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_TARFFUL_NAME",
-                "name": "Stories Of Survival Iv Marquee Event"
             }
         ]
     },
@@ -4048,11 +4018,6 @@
                 "type": "Hard Modes (D)",
                 "level": "6-C",
                 "locId": "HARD_DARK"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_TUSKENCHIEFTAIN_NAME",
-                "name": "Warriors Of The Dune Sea Marquee Event"
             }
         ]
     },
@@ -4093,11 +4058,6 @@
                 "type": "Cantina",
                 "level": "2-D",
                 "locId": "CANTINA"
-            },
-            {
-                "type": "Marquee",
-                "locId": "EVENT_MARQUEE_TUSKENHUNTRESS_NAME",
-                "name": "Warriors Of The Dune Sea Ii Marquee Event"
             }
         ]
     },

@@ -4,8 +4,6 @@
         "rancor": "挑战坑",
         "rancor_challenge": "深坑（挑战）",
         "sith_raid": "西斯三巨头",
-        "kraytdragon": "克雷特龙猎杀",
-        "heroic": "英雄",
         "speederbike": "飞行摩托追击",
         "naboo": "纳布之战"
     },
@@ -14,8 +12,6 @@
         "rancor": "地窖",
         "rancor_challenge": "地窖（挑戰）",
         "sith_raid": "西斯三巨頭",
-        "kraytdragon": "獵殺克雷特龍",
-        "heroic": "英雄",
         "speederbike": "飛行摩托車追逐",
         "naboo": "那卜戰役"
     },
@@ -34,8 +30,6 @@
         "rancor": "LA FOSSE",
         "rancor_challenge": "LA FOSSE (DÉFI)",
         "sith_raid": "LE TRIUMVIRAT SITH",
-        "kraytdragon": "CHASSE AU DRAGON KRAYT",
-        "heroic": "HÉROÏQUE",
         "speederbike": "POURSUITE EN MOTOJET",
         "naboo": "BATAILLE POUR NABOO"
     },
@@ -44,8 +38,6 @@
         "rancor": "DIE GRUBE",
         "rancor_challenge": "DIE GRUBE (HERAUSFOR.)",
         "sith_raid": "DAS SITH-TRIUMVIRAT",
-        "kraytdragon": "KRAYT-DRACHENJAGD",
-        "heroic": "HELDENHAFT",
         "speederbike": "SPEEDER-VERFOLGUNG",
         "naboo": "SCHLACHT UM NABOO"
     },
@@ -54,8 +46,6 @@
         "rancor": "GUA",
         "rancor_challenge": "GUA (TANTANGAN)",
         "sith_raid": "TIGA SERANGKAI SITH",
-        "kraytdragon": "PERBURUAN KRAYT DRAGON",
-        "heroic": "HEROIK",
         "speederbike": "PENGEJARAN MOTOR SPEEDER",
         "naboo": "PERANG UNTUK NABOO"
     },
@@ -64,8 +54,6 @@
         "rancor": "LA FOSSA",
         "rancor_challenge": "LA FOSSA (SFIDA)",
         "sith_raid": "IL TRIUMVIRATO SITH",
-        "kraytdragon": "CACCIA AL DRAGO KRAYT",
-        "heroic": "EROICO",
         "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE",
         "naboo": "BATTAGLIA PER NABOO"
     },
@@ -74,8 +62,6 @@
         "rancor": "ピット",
         "rancor_challenge": "ピット(チャレンジ)",
         "sith_raid": "シス三頭政治",
-        "kraytdragon": "クレイト・ドラゴン・ハント",
-        "heroic": "ヒロイック",
         "speederbike": "スピーダー・バイク・パシュート",
         "naboo": "ナブーの戦い"
     },
@@ -84,8 +70,6 @@
         "rancor": "구덩이",
         "rancor_challenge": "핏 (챌린지)",
         "sith_raid": "시스 삼인방",
-        "kraytdragon": "크레이트 드래곤 사냥",
-        "heroic": "영웅",
         "speederbike": "스피더 바이크 추격",
         "naboo": "나부 전투"
     },
@@ -94,8 +78,6 @@
         "rancor": "O FOSSO",
         "rancor_challenge": "O FOSSO (DESAFIO)",
         "sith_raid": "O TRIUNVIRATO SITH",
-        "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
-        "heroic": "HEROICA",
         "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE",
         "naboo": "BATALHA POR NABOO"
     },
@@ -104,8 +86,6 @@
         "rancor": "ЯМА",
         "rancor_challenge": "ЯМА (ИСПЫТАНИЕ)",
         "sith_raid": "ТРИУМВИРАТ СИТХОВ",
-        "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
-        "heroic": "ГЕРОИЧЕСКИЙ",
         "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ",
         "naboo": "БИТВА ЗА НАБУ"
     },
@@ -114,8 +94,6 @@
         "rancor": "EL FOSO",
         "rancor_challenge": "EL FOSO (DESAFÍO)",
         "sith_raid": "EL TRIUNVIRATO SITH",
-        "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
-        "heroic": "HEROICO",
         "speederbike": "PERSECUCIÓN EN MOTO SPEEDER",
         "naboo": "BATALLA POR NABOO"
     },
@@ -124,8 +102,6 @@
         "rancor": "หลุมลึก",
         "rancor_challenge": "อุโมงค์มรณะ (ภารกิจท้าทาย)",
         "sith_raid": "ไตรภาคีแห่งซิธ",
-        "kraytdragon": "ล่ามังกรไครท์",
-        "heroic": "โหมดฮีโร่",
         "speederbike": "ไล่ล่าสปีดเดอร์ไบค์",
         "naboo": "สงครามแห่งนาบู"
     },
@@ -134,8 +110,6 @@
         "rancor": "ÇUKUR",
         "rancor_challenge": "ÇUKUR (GÖREV)",
         "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
-        "kraytdragon": "KRAYT DRAGON AVI",
-        "heroic": "EPİK",
         "speederbike": "HIZ MOTOSİKLETİ TAKİBİ",
         "naboo": "NABOO SAVAŞI"
     }
