@@ -20,9 +20,9 @@
     "dependencies": {
         "@swgoh-utils/comlink": "^1.4.1",
         "async": "^3.2.6",
-        "discord.js": "^14.18.0",
-        "mongodb": "^6.15.0",
-        "piscina": "^4.9.2",
+        "discord.js": "^14.19.3",
+        "mongodb": "^6.16.0",
+        "piscina": "^5.0.0",
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1"
     },
