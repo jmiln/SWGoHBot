@@ -915,6 +915,11 @@
         "defId": "CROSSHAIRS3",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "level": "7-D",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CROSSHAIRS3_NAME",
                 "name": "The Cavalry Has Arrived V Special Marquee Event"
@@ -2645,11 +2650,6 @@
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "7-D",
-                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -3291,6 +3291,17 @@
                 "type": "Hard Modes (D)",
                 "level": "3-A",
                 "locId": "HARD_DARK"
+            }
+        ]
+    },
+    {
+        "name": "RC-1262 \"Scorch\"",
+        "defId": "SCORCH",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_SCORCH_NAME",
+                "name": "Executing Orders Iv Special Marquee Event"
             }
         ]
     },

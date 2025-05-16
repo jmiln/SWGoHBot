@@ -1228,9 +1228,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -5317,7 +5317,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5471,7 +5471,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Potency"
         },
         "avatarName": "charui_macewindu"
     },
@@ -6590,6 +6590,23 @@
         "avatarName": "charui_trooperranger"
     },
     {
+        "name": "RC-1262 \"Scorch\"",
+        "uniqueName": "SCORCH",
+        "aliases": [
+            "RC-1262 \"Scorch\""
+        ],
+        "avatarName": "charui_scorch",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_scorch.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_CLONETROOPER_DESC",
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Rebel Officer Leia Organa",
         "uniqueName": "HOTHLEIA",
         "aliases": [
@@ -6642,7 +6659,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_finn"
