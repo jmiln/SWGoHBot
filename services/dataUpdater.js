@@ -85,6 +85,7 @@ async function init() {
                 setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
             })();
 
+            // Run the Patreon updater every 15 minutes
             setInterval(async () => await updatePatrons(cache), 15 * 60 * 1000);
         } else {
             // If we're forcing an update, just run the bits we want then exit

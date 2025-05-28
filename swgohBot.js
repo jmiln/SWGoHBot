@@ -112,6 +112,9 @@ const init = async () => {
         } catch (e) {
             // Don't bother doing anything
         }
+        if (Bot.mongo) {
+            Bot.mongo.close();
+        }
         process.exit(1);
     });
 
