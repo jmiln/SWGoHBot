@@ -223,7 +223,7 @@
         ],
         "mods": {
             "sets": [
-                "Defense x2",
+                "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -2576,15 +2576,15 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Potency x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
-            "circle": "Health",
-            "cross": "Potency"
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "crew": []
     },
@@ -3015,8 +3015,9 @@
         ],
         "mods": {
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -5261,7 +5262,7 @@
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -5471,7 +5472,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Potency"
+            "cross": "Health"
         },
         "avatarName": "charui_macewindu"
     },
@@ -6603,7 +6604,19 @@
             "CATEGORY_EMPIRE_DESC",
             "CATEGORY_ROLETANK_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ],
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        },
         "crew": []
     },
     {
@@ -6686,7 +6699,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "avatarName": "charui_poe_tros"
