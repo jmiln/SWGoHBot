@@ -4632,9 +4632,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Defense",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Defense"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -7827,6 +7827,24 @@
             "cross": "Potency"
         },
         "avatarName": "charui_ewok_teebo"
+    },
+    {
+        "name": "Temple Guard",
+        "uniqueName": "VANGUARDTEMPLEGUARD",
+        "aliases": [
+            "Temple Guard"
+        ],
+        "avatarName": "charui_vanguardtempleguard",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vanguardtempleguard.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTICREPUBLIC_DESC",
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_JEDIVANGUARD_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "The Armorer",

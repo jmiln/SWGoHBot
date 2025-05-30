@@ -3959,6 +3959,17 @@
         ]
     },
     {
+        "name": "Temple Guard",
+        "defId": "VANGUARDTEMPLEGUARD",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_VANGUARDTEMPLEGUARD_NAME",
+                "name": "Twilight Of The Jedi I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "The Armorer",
         "defId": "ARMORER",
         "locations": [
