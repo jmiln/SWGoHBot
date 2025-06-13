@@ -37,7 +37,7 @@ class slashCommand {
         }
     }
 
-    async error(interaction, errMsg, options = { ephemeral: true }) {
+    async error(interaction, errMsg, options = { ephemeral: true, title: "Error", color: this.Bot.constants.colors.red }) {
         let msgOut = errMsg || null;
         if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {
@@ -48,19 +48,15 @@ class slashCommand {
             return;
         }
 
-        options.title = options.title || "Error";
-        options.color = options.color || this.Bot.constants.colors.red;
         if (options.example) {
             msgOut += `\n\n**Example:**${codeBlock(options.example)}`;
         }
         await this.embed(interaction, msgOut, options);
     }
 
-    async success(interaction, msgOut, options = {}) {
+    async success(interaction, msgOut, options = {title: "Success", color: this.Bot.constants.colors.green, ephemeral: false}) {
         if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
-        options.title = options.title || "Success!";
-        options.color = options.color || this.Bot.constants.colors.green;
         await this.embed(interaction, msgOut, options);
     }
 

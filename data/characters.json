@@ -223,7 +223,7 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
+                "Defense x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -1228,9 +1228,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -2531,6 +2531,24 @@
         "avatarName": "charui_dengar"
     },
     {
+        "name": "Depa Billaba",
+        "uniqueName": "DEPABILLABA",
+        "aliases": [
+            "Depa Billaba"
+        ],
+        "avatarName": "charui_depabillaba",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_depabillaba.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTICREPUBLIC_DESC",
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_JEDIVANGUARD_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Director Krennic",
         "uniqueName": "DIRECTORKRENNIC",
         "aliases": [
@@ -3217,8 +3235,9 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Tenacity x2",
+                "Tenacity x2",
+                "Tenacity x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -4632,9 +4651,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Defense",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Defense"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -4760,6 +4779,25 @@
             "cross": "Protection"
         },
         "avatarName": "charui_luke_jml"
+    },
+    {
+        "name": "Jedi Master Mace Windu",
+        "uniqueName": "JEDIMASTERMACEWINDU",
+        "aliases": [
+            "Jedi Master Mace Windu"
+        ],
+        "avatarName": "charui_jedimastermacewindu",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jedimastermacewindu.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_GALACTICREPUBLIC_DESC",
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_JEDIVANGUARD_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_ROLELEADER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Jocasta Nu",
@@ -5262,7 +5300,7 @@
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -7843,7 +7881,19 @@
             "CATEGORY_JEDIVANGUARD_DESC",
             "CATEGORY_ROLETANK_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Protection"
+        },
         "crew": []
     },
     {

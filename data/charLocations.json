@@ -706,6 +706,11 @@
         "defId": "APPO",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "level": "2-E",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_APPO_NAME",
                 "name": "Executing Orders I Special Marquee Event"
@@ -1240,6 +1245,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PUNISHINGONE_NAME",
                 "name": "Punishing Pursuit Special Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Depa Billaba",
+        "defId": "DEPABILLABA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DEPABILLABA_NAME",
+                "name": "Twilight Of The Jedi Ii Special Marquee Event"
             }
         ]
     },
@@ -2345,6 +2361,11 @@
                 "name": "The Journey's End"
             }
         ]
+    },
+    {
+        "name": "Jedi Master Mace Windu",
+        "defId": "JEDIMASTERMACEWINDU",
+        "locations": []
     },
     {
         "name": "Jocasta Nu",
