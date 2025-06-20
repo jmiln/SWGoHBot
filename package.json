@@ -20,9 +20,9 @@
     "dependencies": {
         "@swgoh-utils/comlink": "^1.4.1",
         "async": "^3.2.6",
-        "discord.js": "^14.19.3",
-        "mongodb": "^6.16.0",
-        "piscina": "^5.0.0",
+        "discord.js": "^14.20.0",
+        "mongodb": "^6.17.0",
+        "piscina": "^5.1.1",
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1"
     },
@@ -30,6 +30,6 @@
         "node": ">=20"
     },
     "devDependencies": {
-        "@biomejs/biome": "^1.9.4"
+        "@biomejs/biome": "^2.0.2"
     }
 }
