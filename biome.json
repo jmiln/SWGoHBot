@@ -1,15 +1,13 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-    "organizeImports": {
-        "enabled": true
-    },
+    "assist": { "actions": { "source": { "organizeImports": "on" } } },
     "formatter": {
         "enabled": true,
         "formatWithErrors": false,
         "indentStyle": "space",
         "indentWidth": 4,
         "lineWidth": 140,
-        "ignore": ["node_modules", "./scripts/**", "./languages/**", "./data/**", "./wipCommands/**", "./test/**"]
+        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"]
     },
     "javascript": {
         "formatter": {
@@ -17,11 +15,28 @@
             "semicolons": "always"
         }
     },
+    "json": {
+        "formatter": {
+            "expand": "auto"
+        }
+    },
     "linter": {
         "enabled": true,
-        "ignore": ["node_modules", "./scripts/**", "./languages/**", "./data/**", "./wipCommands/**", "./test/**"],
+        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"],
         "rules": {
-            "recommended": true
+            "recommended": true,
+            "style": {
+                "noParameterAssign": "error",
+                "useAsConstAssertion": "error",
+                "useDefaultParameterLast": "error",
+                "useEnumInitializers": "error",
+                "useSelfClosingElements": "error",
+                "useSingleVarDeclarator": "error",
+                "noUnusedTemplateLiteral": "error",
+                "useNumberNamespace": "error",
+                "noInferrableTypes": "error",
+                "noUselessElse": "error"
+            }
         }
     }
 }
