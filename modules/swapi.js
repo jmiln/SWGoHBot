@@ -334,7 +334,7 @@ module.exports = (opts = {}) => {
                             }
                         }
                     }
-                } catch (error) {
+                } catch (_) {
                     // Couldn't get the data from the api, so send old stuff
                     return players;
                 }
@@ -348,9 +348,14 @@ module.exports = (opts = {}) => {
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(bareP.roster),
                             });
+
+                            if (!statRoster.ok) {
+                                continue;
+                            }
+
                             const statRosterRes = await statRoster.json();
                             bareP.roster = statRosterRes;
-                        } catch (error) {
+                        } catch (_) {
                             continue;
                         }
 
@@ -986,7 +991,7 @@ module.exports = (opts = {}) => {
                 gp,
                 gpChar,
                 gpShip,
-                updated: new Date().getTime(),
+                updated: Date.now(),
             });
         });
 
@@ -1006,7 +1011,7 @@ module.exports = (opts = {}) => {
             gp: Number(guildGalacticPower),
             raid: raids,
             roster: members,
-            updated: new Date().getTime(),
+            updated: Date.now(),
             recentTerritoryWarResult,
             nextChallengesRefresh,
             guildEventTracker,
@@ -1049,7 +1054,7 @@ module.exports = (opts = {}) => {
             if (thisCooldown < playerMinCooldown) thisCooldown = playerMinCooldown;
         }
 
-        const diff = convertMS(new Date().getTime() - new Date(lastUpdated).getTime());
+        const diff = convertMS(Date.now() - new Date(lastUpdated).getTime());
         return diff.totalMin >= thisCooldown;
     }
 };

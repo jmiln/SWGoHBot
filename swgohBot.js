@@ -109,7 +109,7 @@ const init = async () => {
             if (!errorMsg?.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
                 client.channels.cache.get(Bot.config.logs.channel)?.send("```inspect(errorMsg)```", { split: true });
             }
-        } catch (e) {
+        } catch (_) {
             // Don't bother doing anything
         }
         if (Bot.mongo) {

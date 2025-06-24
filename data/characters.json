@@ -223,7 +223,7 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
+                "Defense x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -1288,7 +1288,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Potency"
+            "cross": "Health"
         }
     },
     {
@@ -3457,8 +3457,8 @@
         ],
         "mods": {
             "sets": [
-                "Speed x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7899,7 +7899,7 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",

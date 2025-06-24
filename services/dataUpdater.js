@@ -57,21 +57,21 @@ async function init() {
     try {
         const mongo = await MongoClient.connect(config.mongodb.url);
         const cache = require(CACHE_FILE_PATH)(mongo);
+        const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
+        const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(dataDir, comlinkStub);
 
         if (!FORCE_UPDATE) {
             (async function runUpdatersAsNeeded() {
-                const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-                const { isUpdated, metadata: newMetadata, oldMetaData } = await updateMetadata(dataDir, comlinkStub);
-                if (isUpdated) {
+                if (isMetadataUpdated) {
                     const log = [];
-                    if (oldMetaData.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
-                        log.push(` - GameData: ${oldMetaData.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
+                    if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
+                        log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
                     }
-                    if (oldMetaData.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
-                        log.push(` - Localization: ${oldMetaData.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`);
+                    if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
+                        log.push(` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`);
                     }
-                    if (oldMetaData.assetVersion !== newMetadata.assetVersion) {
-                        log.push(` - Assets: ${oldMetaData.assetVersion} -> ${newMetadata.assetVersion}`);
+                    if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
+                        log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
                     }
                     if (log.length) console.log([ "Found new metadata, running updaters", ...log ].join("\n"));
 
@@ -90,9 +90,7 @@ async function init() {
         } else {
             // If we're forcing an update, just run the bits we want then exit
             console.log("Forcing update, running updaters");
-            const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-            const metadata = await updateMetadata(dataDir, comlinkStub);
-            await runGameDataUpdaters(metadata.metadata, cache, comlinkStub);
+            await runGameDataUpdaters(newMetadata, cache, comlinkStub);
             // await updatePatrons(cache);
             process.exit(0);
         }
@@ -106,27 +104,27 @@ async function updateMetadata(dataDir, comlinkStub) {
     const META_FILE = path.join(dataDir, "metadata.json");
     debugLog("Checking metadata");
     const newMetaData = await comlinkStub.getMetaData();
-    let oldMetaData = {};
-    const metadata = {};
+    let oldMetadata = {};
+    const newMetadata = {};
     if (fs.existsSync(META_FILE)) {
-        oldMetaData = JSON.parse(await fs.promises.readFile(META_FILE, "utf-8"));
+        oldMetadata = JSON.parse(await fs.promises.readFile(META_FILE, "utf-8"));
     }
-    let isUpdated = false;
+    let isMetadataUpdated = false;
     for (const key of META_KEYS) {
-        if (newMetaData[key] !== oldMetaData[key]) {
-            isUpdated = true;
-            debugLog(`Updating metadata ${key} from ${oldMetaData[key]} to ${newMetaData[key]}`);
-            metadata[key] = newMetaData[key];
+        if (newMetaData[key] !== oldMetadata[key]) {
+            isMetadataUpdated = true;
+            debugLog(`Updating metadata ${key} from ${oldMetadata[key]} to ${newMetaData[key]}`);
+            newMetadata[key] = newMetaData[key];
         } else {
-            metadata[key] = oldMetaData[key];
+            newMetadata[key] = oldMetadata[key];
         }
     }
 
-    if (isUpdated) {
-        await saveFile(META_FILE, metadata);
+    if (isMetadataUpdated) {
+        await saveFile(META_FILE, newMetadata);
     }
 
-    return { isUpdated, metadata, oldMetaData };
+    return { isMetadataUpdated, newMetadata, oldMetadata };
 }
 
 async function runModUpdaters(comlinkStub) {
