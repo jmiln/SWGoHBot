@@ -1228,11 +1228,30 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
+    },
+    {
+        "name": "Captain Ithano",
+        "uniqueName": "ITHANO",
+        "aliases": [
+            "Captain Ithano"
+        ],
+        "avatarName": "charui_ithano",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ithano.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_SCOUNDREL_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Captain Phasma",
@@ -4807,7 +4826,18 @@
             "CATEGORY_ROLEATTACKER_DESC",
             "CATEGORY_ROLELEADER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -5311,7 +5341,7 @@
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -8215,7 +8245,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },

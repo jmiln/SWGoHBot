@@ -614,6 +614,17 @@
         ]
     },
     {
+        "name": "Captain Ithano",
+        "defId": "ITHANO",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ITHANO_NAME",
+                "name": "Trouble On The Horizon I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Captain Phasma",
         "defId": "PHASMA",
         "locations": [
@@ -992,6 +1003,11 @@
         "name": "CX-2",
         "defId": "OPERATIVE",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "3-C",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_OPERATIVE_NAME",
@@ -3828,11 +3844,6 @@
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "3-C",
-                "locId": "HARD_LIGHT"
             }
         ]
     },

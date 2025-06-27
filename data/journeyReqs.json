@@ -3858,5 +3858,91 @@
                 "tier": 5
             }
         ]
+    },
+    "PIRATEHONDO": {
+        "guideId": "GLHONDO_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "ITHANO",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "HONDO",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "SMUGGLERCHEWBACCA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "EZRABRIDGERS3",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            }
+        ]
     }
 }
