@@ -1228,9 +1228,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1250,7 +1250,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_SCOUNDREL_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -2016,9 +2027,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "crew": []
     },
@@ -5341,7 +5352,7 @@
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -6884,7 +6895,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",

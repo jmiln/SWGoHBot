@@ -535,7 +535,7 @@ async function updatePatrons(cache) {
         // Go through each of the guilds that have a supporter and make sure all of the lsited users are supposed to be there
         await ensureGuildSupporter({ cache });
     } catch (e) {
-        console.log("[UpdatePatrons] Error getting patrons");
+        console.error("[UpdatePatrons] Error getting patrons: ", e);
     }
 }
 
@@ -1004,6 +1004,7 @@ function saveRaidNames(locales) {
         MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic",
         MISSION_GUILDRAIDS_SPEEDERBIKE_NAME: "speederbike",
         MISSION_GUILDRAIDS_NABOO_NAME: "naboo",
+        MISSION_GUILDRAIDS_ORDER66_NAME: "order66",
     };
     const raidNamesOut = {};
     for (const lang of langList) {

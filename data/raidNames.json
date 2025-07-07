@@ -7,7 +7,8 @@
         "kraytdragon": "克雷特龙猎杀",
         "heroic": "英雄",
         "speederbike": "飞行摩托追击",
-        "naboo": "纳布之战"
+        "naboo": "纳布之战",
+        "order66": "66 号令"
     },
     "cht_cn": {
         "aat": "肉盾擊倒",
@@ -17,7 +18,8 @@
         "kraytdragon": "獵殺克雷特龍",
         "heroic": "英雄",
         "speederbike": "飛行摩托車追逐",
-        "naboo": "那卜戰役"
+        "naboo": "那卜戰役",
+        "order66": "66號密令"
     },
     "eng_us": {
         "aat": "TANK TAKEDOWN",
@@ -27,7 +29,8 @@
         "kraytdragon": "KRAYT DRAGON HUNT",
         "heroic": "HEROIC",
         "speederbike": "SPEEDER BIKE PURSUIT",
-        "naboo": "BATTLE FOR NABOO"
+        "naboo": "BATTLE FOR NABOO",
+        "order66": "ORDER 66"
     },
     "fre_fr": {
         "aat": "ASSAUT DE CHAR",
@@ -37,7 +40,8 @@
         "kraytdragon": "CHASSE AU DRAGON KRAYT",
         "heroic": "HÉROÏQUE",
         "speederbike": "POURSUITE EN MOTOJET",
-        "naboo": "BATAILLE POUR NABOO"
+        "naboo": "BATAILLE POUR NABOO",
+        "order66": "ORDRE 66"
     },
     "ger_de": {
         "aat": "TANK-TAKEDOWN",
@@ -47,7 +51,8 @@
         "kraytdragon": "KRAYT-DRACHENJAGD",
         "heroic": "HELDENHAFT",
         "speederbike": "SPEEDER-VERFOLGUNG",
-        "naboo": "SCHLACHT UM NABOO"
+        "naboo": "SCHLACHT UM NABOO",
+        "order66": "ORDER 66"
     },
     "ind_id": {
         "aat": "PELUMPUHAN TANK",
@@ -57,7 +62,8 @@
         "kraytdragon": "PERBURUAN KRAYT DRAGON",
         "heroic": "HEROIK",
         "speederbike": "PENGEJARAN MOTOR SPEEDER",
-        "naboo": "PERANG UNTUK NABOO"
+        "naboo": "PERANG UNTUK NABOO",
+        "order66": "PERINTAH 66"
     },
     "ita_it": {
         "aat": "ALL'ASSALTO DEL CARRO",
@@ -67,7 +73,8 @@
         "kraytdragon": "CACCIA AL DRAGO KRAYT",
         "heroic": "EROICO",
         "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE",
-        "naboo": "BATTAGLIA PER NABOO"
+        "naboo": "BATTAGLIA PER NABOO",
+        "order66": "ORDINE 66"
     },
     "jpn_jp": {
         "aat": "タンク排除",
@@ -77,7 +84,8 @@
         "kraytdragon": "クレイト・ドラゴン・ハント",
         "heroic": "ヒロイック",
         "speederbike": "スピーダー・バイク・パシュート",
-        "naboo": "ナブーの戦い"
+        "naboo": "ナブーの戦い",
+        "order66": "オーダー66"
     },
     "kor_kr": {
         "aat": "탱크 테이크다운",
@@ -87,7 +95,8 @@
         "kraytdragon": "크레이트 드래곤 사냥",
         "heroic": "영웅",
         "speederbike": "스피더 바이크 추격",
-        "naboo": "나부 전투"
+        "naboo": "나부 전투",
+        "order66": "오더 66"
     },
     "por_br": {
         "aat": "ELIMINAÇÃO DE TANQUE",
@@ -97,7 +106,8 @@
         "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
         "heroic": "HEROICA",
         "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE",
-        "naboo": "BATALHA POR NABOO"
+        "naboo": "BATALHA POR NABOO",
+        "order66": "ORDEM 66"
     },
     "rus_ru": {
         "aat": "УНИЧТОЖЕНИЕ ТАНКА",
@@ -107,7 +117,8 @@
         "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
         "heroic": "ГЕРОИЧЕСКИЙ",
         "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ",
-        "naboo": "БИТВА ЗА НАБУ"
+        "naboo": "БИТВА ЗА НАБУ",
+        "order66": "ПРИКАЗ 66"
     },
     "spa_xm": {
         "aat": "DERRIBO DE TANQUE",
@@ -117,7 +128,8 @@
         "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
         "heroic": "HEROICO",
         "speederbike": "PERSECUCIÓN EN MOTO SPEEDER",
-        "naboo": "BATALLA POR NABOO"
+        "naboo": "BATALLA POR NABOO",
+        "order66": "ORDEN 66"
     },
     "tha_th": {
         "aat": "แทงค์บรรลัยกัลป์",
@@ -127,7 +139,8 @@
         "kraytdragon": "ล่ามังกรไครท์",
         "heroic": "โหมดฮีโร่",
         "speederbike": "ไล่ล่าสปีดเดอร์ไบค์",
-        "naboo": "สงครามแห่งนาบู"
+        "naboo": "สงครามแห่งนาบู",
+        "order66": "คำสั่งที่ 66"
     },
     "tur_tr": {
         "aat": "TANK PARÇALAMA",
@@ -137,6 +150,7 @@
         "kraytdragon": "KRAYT DRAGON AVI",
         "heroic": "EPİK",
         "speederbike": "HIZ MOTOSİKLETİ TAKİBİ",
-        "naboo": "NABOO SAVAŞI"
+        "naboo": "NABOO SAVAŞI",
+        "order66": "EMİR 66"
     }
 }
