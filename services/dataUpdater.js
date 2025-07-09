@@ -104,27 +104,30 @@ async function updateMetadata(dataDir, comlinkStub) {
     const META_FILE = path.join(dataDir, "metadata.json");
     debugLog("Checking metadata");
     const newMetaData = await comlinkStub.getMetaData();
+    const metadataOut = {};
     let oldMetadata = {};
-    const newMetadata = {};
-    if (fs.existsSync(META_FILE)) {
-        oldMetadata = JSON.parse(await fs.promises.readFile(META_FILE, "utf-8"));
+    try {
+        const fileData = await fs.promises.readFile(META_FILE, "utf-8");
+        oldMetadata = JSON.parse(fileData);
+    } catch (_) {
+        debugLog("No existing metadata or failed to parse. Creating new metadata.");
     }
     let isMetadataUpdated = false;
     for (const key of META_KEYS) {
         if (newMetaData[key] !== oldMetadata[key]) {
             isMetadataUpdated = true;
             debugLog(`Updating metadata ${key} from ${oldMetadata[key]} to ${newMetaData[key]}`);
-            newMetadata[key] = newMetaData[key];
+            metadataOut[key] = newMetaData[key];
         } else {
-            newMetadata[key] = oldMetadata[key];
+            metadataOut[key] = oldMetadata[key];
         }
     }
 
     if (isMetadataUpdated) {
-        await saveFile(META_FILE, newMetadata);
+        await saveFile(META_FILE, metadataOut);
     }
 
-    return { isMetadataUpdated, newMetadata, oldMetadata };
+    return { isMetadataUpdated, newMetadata: metadataOut, oldMetadata };
 }
 
 async function runModUpdaters(comlinkStub) {
@@ -329,29 +332,27 @@ async function processUnitMods(unitsIn) {
     const unitsOut = {};
 
     for (const unit of unitsIn) {
-        if (!unit.mods?.length) continue;
-        if (!unitsOut[unit.defId]) {
-            unitsOut[unit.defId] = {
-                primaries: {},
-                sets: {},
-            };
+        const { mods, defId } = unit;
+        if (!mods?.length) continue;
+        if (!unitsOut[defId]) {
+            unitsOut[defId] = { primaries: {}, sets: {} };
         }
 
         // log the unit's primaries as 1_48,2_45,...
-        const primaryStr = unit.mods.map((m, ix) => `${ix + 1}-${m.primaryStat}`).join("_");
-        if (!primaryStr?.length) continue;
-        incrementInObj(unitsOut[unit.defId].primaries, primaryStr);
+        const primaryStr = mods.map((m, ix) => `${ix + 1}-${m.primaryStat}`).join("_");
+        if (!primaryStr.length) continue;
+        incrementInObj(unitsOut[defId].primaries, primaryStr);
 
         const unitSets = {};
-        for (const mod of unit.mods) {
+        for (const mod of mods) {
             incrementInObj(unitSets, mod.set);
         }
         // Log the unit's sets as `COUNTxSTAT`
-        const setStr = Object.keys(unitSets)
-            .map((k) => `${unitSets[k]}x${k}`)
+        const setStr = Object.entries(unitSets)
+            .map(([set, count]) => `${count}x${set}`)
             .join("_");
-        if (!setStr?.length) continue;
-        incrementInObj(unitsOut[unit.defId].sets, setStr);
+        if (!setStr.length) continue;
+        incrementInObj(unitsOut[defId].sets, setStr);
     }
 
     return unitsOut;
@@ -377,47 +378,47 @@ const multiSets = {
 
 // For each character, get rid of all but the most common results (If more than one tie, return both)
 function processModResults(unitsIn) {
-    for (const unit of Object.keys(unitsIn)) {
-        const thisUnit = unitsIn[unit];
+    for (const defId of Object.keys(unitsIn)) {
+        const thisUnit = unitsIn[defId];
+        const { primaries, sets } = thisUnit;
 
-        const maxPrimaryCount = Math.max(...Object.values(thisUnit.primaries));
-        const maxSetCount = Math.max(...Object.values(thisUnit.sets));
+        const maxPrimaryCount = Math.max(...Object.values(primaries));
+        const maxSetCount = Math.max(...Object.values(sets));
 
-        for (const [prim, count] of Object.entries(thisUnit.primaries)) {
-            if (count !== maxPrimaryCount) delete thisUnit.primaries[prim];
+        const filteredPrimaries = Object.entries(primaries)
+            .filter(([_, count]) => count === maxPrimaryCount)
+            .map(([prim]) => prim.split("_"));
+        const primariesOut = {};
+        const primarySlots = filteredPrimaries[0] || [];
+        for (const [ix, slot] of primarySlots.entries()) {
+            const stat = slot.split("-")[1];
+            primariesOut[slotNames[ix]] = statLang[stat];
         }
-        const primaries = {};
-        Object.keys(thisUnit.primaries)[0]
-            .split("_")
-            .map((slot) => slot.split("-")[1])
-            .forEach((stat, ix) => {
-                primaries[slotNames[ix]] = statLang[stat];
-            });
 
-        thisUnit.mods = {
-            sets: [],
-            ...primaries,
-        };
+        thisUnit.mods = { sets: [], ...primariesOut,};
 
-        for (const [set, count] of Object.entries(thisUnit.sets)) {
-            if (count !== maxSetCount) delete thisUnit.sets[set];
-        }
-        const totalSets = Object.keys(thisUnit.sets)[0]
-            .split("_")
-            .map((set) => {
-                const [count, stat] = set.split("x");
-                return `${setLang[stat]} x${count}`;
-            });
+        const filteredSets = Object.entries(sets)
+            .filter(([_, count]) => count === maxSetCount)
+            .map(([set]) => set.split("_"));
+        const totalSets = filteredSets[0] || [];
+        const setStrings = totalSets.map((set) => {
+            const [count, stat] = set.split("x");
+            return `${setLang[stat]} x${count}`;
+        });
 
-        for (const set of totalSets) {
+        const setsOut = [];
+        for (const set of setStrings) {
             if (multiSets[set]) {
-                thisUnit.mods.sets.push(...multiSets[set]);
+                setsOut.push(...multiSets[set]);
             } else {
-                thisUnit.mods.sets.push(set);
+                setsOut.push(set);
             }
         }
-        thisUnit.sets = undefined;
-        thisUnit.primaries = undefined;
+
+        thisUnit.mods.sets = setsOut;
+
+        delete thisUnit.sets;
+        delete thisUnit.primaries;
     }
     return unitsIn;
 }
@@ -1415,7 +1416,7 @@ function processLocalizationLine(line) {
     val = val
         .replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (_, p1) => p1)
         .replace(/\\n/g, " ")
-        .replace(/(\[\/*c*-*\]|\[[\w\d]{6}\])/g, "");
+        .replace(/(\[\/?c*-*\]|\[[\w\d]{6}\])/g, "");
     return [key, val];
 }
 
@@ -1608,6 +1609,8 @@ module.exports = {
     unitsToCharacterDB,
     unitsForUnitMapFile,
     unitsToUnitFiles,
+
+    processModResults,
 
     processJourneyReqs,
     saveRaidNames,

@@ -3992,6 +3992,58 @@ const formattedUnits = [
     },
 ];
 
+// Input for the processModResults function
+const unitsOut = {
+    MAGMATROOPER: {
+        primaries: {
+            '1-48_2-56_3-49_4-55_5-56_6-18': 1,
+            '1-48_2-5_3-49_4-48_5-56_6-18': 8,
+            '1-48_2-5_3-49_4-48_5-55_6-17': 1,
+            '1-48_2-5_3-49_4-48_5-55_6-18': 2,
+            '1-48_2-48_3-49_4-16_5-56_6-17': 3,
+            '1-48_2-5_3-49_4-16_5-56_6-17': 5,
+            '1-48_2-56_3-49_4-16_5-56_6-48': 1,
+            '1-48_2-48_3-49_4-48_5-56_6-17': 1,
+            '1-48_2-5_3-49_4-48_5-56_6-17': 3,
+            '1-48_2-5_3-49_4-16_5-56_6-18': 5,
+            '1-48_2-5_3-49_4-56_5-55_6-48': 1,
+            '1-48_2-5_3-49_4-16_5-56_6-56': 1,
+            '1-5_2-49_3-16_4-56_5-18': 1,
+            '1-48_2-5_3-49_4-56_5-56_6-48': 1,
+            '1-48_2-5_3-49_4-48_5-56_6-56': 1,
+            '1-48_2-5_3-49_4-48_5-56_6-48': 2,
+            '1-48_2-5_3-49_4-48_5-55_6-48': 1,
+            '1-48_2-5_3-49_4-16_5-55_6-18': 2,
+            '1-48_2-55_3-49_4-53_5-56_6-17': 1,
+            '1-48_2-48_3-49_4-16_5-55_6-18': 1,
+            '1-48_2-48_3-49_4-16_5-56_6-18': 2,
+            '1-48_2-48_3-49_4-48_5-56_6-48': 1,
+            '1-48_2-5_3-49_4-56_5-56_6-17': 1,
+            '1-48_2-48_3-49_4-48_5-55_6-48': 1,
+            '1-48_2-5_3-49_4-16_5-55_6-17': 1,
+            '1-48_2-52_3-49_4-16_5-56_6-17': 1,
+            '1-48_2-48_3-49_4-48_5-56_6-18': 1
+        },
+        sets: {
+            '4x2_2x8': 18,
+            '2x1_4x7': 2,
+            '6x7': 4,
+            '4x6_2x7': 3,
+            '2x1_4x6': 3,
+            '1x6_1x7_4x8': 1,
+            '6x8': 4,
+            '4x2_2x7': 5,
+            '2x7_4x8': 3,
+            '2x5_4x6': 1,
+            '3x2_2x7': 1,
+            '2x1_1x2_1x6_2x7': 1,
+            '4x1_2x7': 1,
+            '4x7_2x8': 2,
+            '1x1_3x2_2x8': 1
+        }
+    }
+}
+
 describe("processAbilities", () => {
     const { abilitiesOut, skillMap } = dataUpdater.processAbilities(gameData.ability, gameData.skill);
     it("should return both abilitiesOut and the skillMap", () => {
@@ -4625,6 +4677,28 @@ describe("unitsForUnitMapFile", () => {
         });
     });
 });
+
+// Process mods to create the data/characters mod recommendations
+// - Incoming: {defID: {primaries: {}, sets: {}}}
+// - Outgoing: {defID: {sets: [...], square: "", arrow: "", ...}}
+describe("processModResults", () => {
+    const mods = dataUpdater.processModResults(JSON.parse(JSON.stringify(unitsOut)));
+    it('should return the mods mapped as such: {defId:{sets: [...], square: "", arrow: "", ...}}', () => {
+        assert.deepStrictEqual(mods, {
+            MAGMATROOPER: {
+                mods: {
+                    sets: [ 'Offense x4', 'Tenacity x2' ],
+                    square: 'Offense',
+                    arrow: 'Speed',
+                    diamond: 'Defense',
+                    triangle: 'Offense',
+                    circle: 'Protection',
+                    cross: 'Tenacity'
+                }
+            }
+        });
+    });
+})
 
 // This one combines stuff from so many bits before
 // describe("unitsForUnitMapFile", () => {
