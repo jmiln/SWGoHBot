@@ -20,12 +20,12 @@ const ComlinkStub = require("@swgoh-utils/comlink");
 const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
-const DATA_DIR_PATH            = path.resolve(__dirname, "../data");
+const DATA_DIR_PATH            = path.resolve(__dirname, "../data/");
+const GAMEDATA_DIR_PATH        = path.resolve(__dirname, "../data/gameDataFiles/");
 const CACHE_FILE_PATH          = path.resolve(__dirname, "../modules/cache.js");
 
 const CHAR_FILE_PATH           = path.join(DATA_DIR_PATH, "characters.json");
 const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
-const GAMEDATA_DIR_PATH        = path.join(DATA_DIR_PATH, "gameDataFiles");
 const JOURNEY_FILE_PATH        = path.join(DATA_DIR_PATH, "journeyReqs.json");
 const RAID_NAMES_FILE_PATH     = path.join(DATA_DIR_PATH, "raidNames.json");
 const SHIP_FILE_PATH           = path.join(DATA_DIR_PATH, "ships.json");
@@ -140,7 +140,7 @@ async function runModUpdaters(comlinkStub) {
 
     // Grab the defId and needed mod info for each of those players' units
     debugTime("Getting playerRosters");
-    const modMap = JSON.parse(fs.readFileSync(`${DATA_DIR_PATH}modMap.json`));
+    const modMap = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "modMap.json"), "utf-8"));
     const playerUnits = await getPlayerRosters(playerIds, modMap);
     debugTimeEnd("Getting playerRosters");
 
@@ -586,9 +586,9 @@ async function updateLocs(unitListFile, currentLocFile, locales, cache) {
     }
     await cache.putMany(config.mongodb.swapidb, "locations", bulkLocPut);
 
-    const campaignMapNames = JSON.parse(fs.readFileSync(`${DATA_DIR_PATH}swgoh-json-files/campaignMapNames.json`, "utf-8"))[0];
-    const campaignMapNodes = JSON.parse(fs.readFileSync(`${DATA_DIR_PATH}swgoh-json-files/campaignMapNodes.json`, "utf-8"))[0];
-    const featureStoreList = JSON.parse(fs.readFileSync(`${DATA_DIR_PATH}swgoh-json-files/featureStoreList.json`, "utf-8"));
+    const campaignMapNames = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNames.json"), "utf-8"))[0];
+    const campaignMapNodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNodes.json"), "utf-8"))[0];
+    const featureStoreList = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "swgoh-json-files/featureStoreList.json"), "utf-8"));
 
     const outArr = [];
     for (const mat of matArr) {
@@ -830,7 +830,7 @@ function check1or2(strIn, locale) {
 async function getMostRecentGameData(comlinkStub, version) {
     let gameData = null;
     const dataFile = `gameData_${version}.json`;
-    const filePath = GAMEDATA_DIR_PATH + dataFile;
+    const filePath = path.join(GAMEDATA_DIR_PATH, dataFile);
 
     // Check if the file exists
     if (fs.existsSync(filePath)) {
@@ -847,7 +847,7 @@ async function getMostRecentGameData(comlinkStub, version) {
     // This is going to be a new version, so we can just delete the old files
     const oldFiles = fs.readdirSync(GAMEDATA_DIR_PATH).filter((fileName) => fileName.startsWith("gameData_") && fileName !== dataFile);
     for (const f of oldFiles) {
-        fs.unlinkSync(GAMEDATA_DIR_PATH + f);
+        fs.unlinkSync(path.join(GAMEDATA_DIR_PATH, f));
     }
 
     // Then save it
@@ -877,7 +877,7 @@ async function updateGameData(locales, metadata, cache, comlinkStub) {
 async function processGameData(gameData, locales, cache) {
     try {
         const { abilitiesOut, skillMap } = processAbilities(gameData.ability, gameData.skill);
-        await saveFile(`${DATA_DIR_PATH}skillMap.json`, skillMap, false);
+        await saveFile(path.join(DATA_DIR_PATH, "skillMap.json"), skillMap, false);
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales, cache);
         debugLog("Finished processing Abilities");
 
@@ -899,7 +899,7 @@ async function processGameData(gameData, locales, cache) {
 
         debugTime("Finished processing Mod data");
         const modsOut = processModData(gameData.statMod);
-        await saveFile(`${DATA_DIR_PATH}modMap.json`, modsOut, false);
+        await saveFile(path.join(DATA_DIR_PATH, "modMap.json"), modsOut, false);
         debugTimeEnd("Finished processing Mod data");
 
         debugTime("Finished processing Recipes");
@@ -920,7 +920,7 @@ async function processGameData(gameData, locales, cache) {
         await processLocalization(JSON.parse(JSON.stringify(processedUnitList)), "units", ["nameKey"], "baseId", locales, cache);
 
         const unitsOut = unitsForUnitMapFile(JSON.parse(JSON.stringify(processedUnitList)));
-        await saveFile(`${DATA_DIR_PATH}unitMap.json`, unitsOut, false);
+        await saveFile(path.join(DATA_DIR_PATH, "unitMap.json"), unitsOut, false);
 
         // Update & save the character/ship.json files (Not being tested, because it mashes so many bits together to make it work)
         const { charactersOut, shipsOut } = unitsToUnitFiles(
@@ -1352,7 +1352,7 @@ async function getLocalizationData(comlinkStub, bundleVersion) {
     const IGNORE_KEYS = ["key_mapping", "datacron", "anniversary", "promo", "subscription"];
     let localeData = null;
     const dataFile = `localizationBundle_${bundleVersion}.json`;
-    const filePath = GAMEDATA_DIR_PATH + dataFile;
+    const filePath = path.join(GAMEDATA_DIR_PATH, dataFile);
 
     // Check if the file exists
     if (fs.existsSync(filePath)) {
@@ -1392,7 +1392,7 @@ async function getLocalizationData(comlinkStub, bundleVersion) {
             .readdirSync(GAMEDATA_DIR_PATH)
             .filter((fileName) => fileName.startsWith("localizationBundle_") && fileName !== dataFile);
         for (const f of dataFiles) {
-            fs.unlinkSync(GAMEDATA_DIR_PATH + f);
+            fs.unlinkSync(path.join(GAMEDATA_DIR_PATH, f));
         }
 
         // Then save it
