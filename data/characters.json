@@ -3113,7 +3113,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -4340,9 +4340,9 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -4840,7 +4840,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6619,6 +6619,24 @@
             "cross": "Offense"
         },
         "avatarName": "charui_quigon"
+    },
+    {
+        "name": "Quiggold",
+        "uniqueName": "QUIGGOLD",
+        "aliases": [
+            "Quiggold"
+        ],
+        "avatarName": "charui_quiggold",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_quiggold.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLETANK_DESC",
+            "CATEGORY_SCOUNDREL_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "R2-D2",

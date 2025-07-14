@@ -20,16 +20,16 @@ const ComlinkStub = require("@swgoh-utils/comlink");
 const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
-const DATA_DIR_PATH            = `${__dirname}/../data/`;
-const CACHE_FILE_PATH          = `${__dirname}/../modules/cache.js`;
+const DATA_DIR_PATH            = path.resolve(__dirname, "../data");
+const CACHE_FILE_PATH          = path.resolve(__dirname, "../modules/cache.js");
 
-const CHAR_FILE_PATH           = `${DATA_DIR_PATH}characters.json`;
-const CHAR_LOCATIONS_FILE_PATH = `${DATA_DIR_PATH}charLocations.json`;
-const GAMEDATA_DIR_PATH        = `${DATA_DIR_PATH}gameDataFiles/`;
-const JOURNEY_FILE_PATH        = `${DATA_DIR_PATH}journeyReqs.json`;
-const RAID_NAMES_FILE_PATH     = `${DATA_DIR_PATH}raidNames.json`;
-const SHIP_FILE_PATH           = `${DATA_DIR_PATH}ships.json`;
-const SHIP_LOCATIONS_FILE_PATH = `${DATA_DIR_PATH}shipLocations.json`;
+const CHAR_FILE_PATH           = path.join(DATA_DIR_PATH, "characters.json");
+const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
+const GAMEDATA_DIR_PATH        = path.join(DATA_DIR_PATH, "gameDataFiles");
+const JOURNEY_FILE_PATH        = path.join(DATA_DIR_PATH, "journeyReqs.json");
+const RAID_NAMES_FILE_PATH     = path.join(DATA_DIR_PATH, "raidNames.json");
+const SHIP_FILE_PATH           = path.join(DATA_DIR_PATH, "ships.json");
+const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
 
 // The metadata keys we actually care about
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
@@ -52,13 +52,11 @@ if (!process.env.TESTING_ENV) {
 }
 
 async function init() {
-    const dataDir = path.resolve(__dirname, "../data/");
-
     try {
         const mongo = await MongoClient.connect(config.mongodb.url);
         const cache = require(CACHE_FILE_PATH)(mongo);
         const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-        const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(dataDir, comlinkStub);
+        const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
 
         if (!FORCE_UPDATE) {
             (async function runUpdatersAsNeeded() {

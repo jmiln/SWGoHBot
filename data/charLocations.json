@@ -1300,6 +1300,11 @@
         "defId": "DISGUISEDCLONETROOPER",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "4-E",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_DISGUISEDCLONETROOPER_NAME",
                 "name": "Executing Orders Iii Special Marquee Event"
@@ -2869,11 +2874,6 @@
         "defId": "MOFFGIDEONS1",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "4-E",
-                "locId": "CANTINA"
-            },
-            {
                 "type": "Hard Modes (L)",
                 "level": "2-D",
                 "locId": "HARD_LIGHT"
@@ -3306,6 +3306,17 @@
             {
                 "type": "Cantina Store",
                 "cost": "400 Cantina Tokens/10"
+            }
+        ]
+    },
+    {
+        "name": "Quiggold",
+        "defId": "QUIGGOLD",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_QUIGGOLD_NAME",
+                "name": "Trouble On The Horizon Ii Special Marquee Event"
             }
         ]
     },
