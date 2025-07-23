@@ -1318,7 +1318,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Potency"
         }
     },
     {
@@ -5352,7 +5352,7 @@
                 "Speed x4"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -6635,7 +6635,19 @@
             "CATEGORY_ROLETANK_DESC",
             "CATEGORY_SCOUNDREL_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Health",
+            "cross": "Protection"
+        },
         "crew": []
     },
     {
@@ -7558,7 +7570,18 @@
             "CATEGORY_SCOUNDREL_DESC",
             "CATEGORY_SPECIESDROID_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ],
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {

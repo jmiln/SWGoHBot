@@ -485,7 +485,7 @@ class Event extends Command {
                                 content: `Successfully triggered ${event.name}`,
                                 flags: MessageFlags.Ephemeral,
                             });
-                        } catch (e) {
+                        } catch (_) {
                             Bot.logger.error(`Event trigger Broke! ${announceMessage}`);
                             return interaction.reply({
                                 content: `Broke when trying to trigger *${event.name}*.\nIf this continues, please report it.`,
@@ -637,7 +637,7 @@ class Event extends Command {
                     let roleName;
                     try {
                         roleName = interaction.guild.roles.cache.get(roleID).name;
-                    } catch (e) {
+                    } catch (_) {
                         roleName = roleID;
                     }
                     messStr = messStr.replace(role, `@${roleName}`);
@@ -655,7 +655,7 @@ class Event extends Command {
 
         // TODO When running validateEvents, check against the guild's other events as well as the ones being entered now
         function validateEvents(eventArr, guildEvArray) {
-            const now = new Date().getTime();
+            const now = Date.now();
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
             const nameArr = [];
@@ -768,7 +768,7 @@ class Event extends Command {
                         let jsonRepDay = null;
                         try {
                             jsonRepDay = JSON.parse(event.repeatDay);
-                        } catch (e) {
+                        } catch (_) {
                             // Don't bother since it's just gonna be a parse error, and it's already null
                         }
                         if (Array.isArray(jsonRepDay)) {
@@ -920,7 +920,7 @@ class Event extends Command {
                     // After the first one, just send to the channel instead of replying
                     return interaction.channel.send({ content: evMsg });
                 });
-            } catch (err) {
+            } catch (_) {
                 Bot.logger.error(`Event View Broke! ${evArray}`);
             }
         }

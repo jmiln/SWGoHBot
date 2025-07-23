@@ -20,7 +20,7 @@ module.exports = (Bot, client) => {
     Bot.permLevel = async (interaction) => {
         // Depending on message or interaction, grab the ID of the user
         const permMap = Bot.constants.permMap;
-        const authId = interaction.author?.id || interaction.user.id;
+        const authId = interaction.user.id;
 
         // If bot owner, return max perm level
         if (authId === Bot.config.ownerid) {
@@ -31,7 +31,6 @@ module.exports = (Bot, client) => {
         if (!interaction.guild || !interaction.member) {
             return permMap.BASE_USER;
         }
-        const guildConf = interaction.guildSettings;
 
         // Guild Owner gets an extra level, wooh!
         const gOwner = await interaction.guild.fetchOwner();
@@ -50,12 +49,14 @@ module.exports = (Bot, client) => {
 
         // The rest of the perms rely on roles. If those roles are not found
         // in the settings, or the user does not have it, their level will be 0
-        return guildConf?.adminRoles?.some((roleId) => {
-            const adminRole = interaction.guild.roles.cache.find((r) => [r.name.toLowerCase(), r.id].includes(roleId.toLowerCase()));
+        const guildConf = interaction.guildSettings;
+        const hasAdminRole = guildConf?.adminRole?.some((roleId) => {
+            const adminRole = interaction.guild.roles.cache.find((r) =>
+                r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase()
+            );
             return adminRole && interaction.member.roles.cache.has(adminRole.id);
-        })
-            ? permMap.GUILD_ADMIN
-            : permMap.BASE_USER;
+        });
+        return hasAdminRole ? permMap.GUILD_ADMIN : permMap.BASE_USER;
     };
 
     // Check if the bot's account is the main (real) bot
@@ -304,7 +305,7 @@ module.exports = (Bot, client) => {
         const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
 
         if (!time) console.error(`Missing time value in Bot.duration.\n${inspect(interaction?.options)}`);
-        const timeDiff = Math.abs(new Date().getTime() - time);
+        const timeDiff = Math.abs(Date.now() - time);
         return Bot.formatDuration(timeDiff, lang);
     };
 
@@ -350,7 +351,7 @@ module.exports = (Bot, client) => {
         try {
             Intl.DateTimeFormat(undefined, { timeZone: zone });
             return true;
-        } catch (e) {
+        } catch (_) {
             return false;
         }
     };
