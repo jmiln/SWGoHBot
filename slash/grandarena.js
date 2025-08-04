@@ -1,5 +1,6 @@
 const Command = require("../base/slashCommand");
 const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+const unitChecklist = require("../data/unitChecklist.js");
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -306,15 +307,7 @@ class GrandArena extends Command {
         });
 
         // Get some general stats for any available galactic legends
-        const legendMap = [
-            ["GLREY", "Rey"],
-            ["JABBATHEHUTT", "Jabba"],
-            ["JEDIMASTERKENOBI", "JM Kenobi"],
-            ["GRANDMASTERLUKE", "JM Luke"],
-            ["LORDVADER", "Lord Vader"],
-            ["SITHPALPATINE", "SE Emperor"],
-            ["SUPREMELEADERKYLOREN", "SL Kylo Ren"],
-        ];
+        const legendMap = unitChecklist["Galactic Legends"]
         let glOverview = [];
         for (const gl of legendMap) {
             const u1Char = user1.roster.find((c) => c.defId === gl[0]);
