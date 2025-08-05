@@ -5,6 +5,7 @@ module.exports = {
         ["JABBATHEHUTT",            "Jabba"],
         ["JEDIMASTERKENOBI",        "JM Kenobi"],
         ["GRANDMASTERLUKE",         "JM Luke"],
+        ["GLAHSOKATANO",            "Ahsoka Tano"],
         ["GLLEIA",                  "Leia Organa"],
         ["LORDVADER",               "Lord Vader"],
         ["SITHPALPATINE",           "SE Emperor"],
