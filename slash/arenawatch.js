@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
-// const {inspect} = require("util");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
+// import {inspect} from "node:util";
 
-class ArenaWatch extends Command {
+export default class ArenaWatch extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "arenawatch",
@@ -987,5 +987,3 @@ class ArenaWatch extends Command {
         }
     }
 }
-
-module.exports = ArenaWatch;

@@ -1,9 +1,9 @@
-const { ApplicationCommandOptionType, MessageFlags } = require("discord.js");
-const Command = require("../base/slashCommand");
-const patreonInfo = require("../data/patreon.js");
-const { addServerSupporter, clearSupporterInfo } = require("../modules/guildConfig/patreonSettings");
+import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
+import Command from "../base/slashCommand.js";
+import patreonInfo from "../data/patreon.js";
+import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.js";
 
-class Patreon extends Command {
+export default class Patreon extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "patreon",
@@ -243,5 +243,3 @@ function patCmdinfo() {
         value: `>>> ${patreonValue.join("\n")}`,
     };
 }
-
-module.exports = Patreon;

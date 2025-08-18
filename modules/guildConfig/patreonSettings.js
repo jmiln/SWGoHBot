@@ -1,15 +1,15 @@
-const config = require("../../config.js");
+import config from "../../config.js";
 
 // Grab the tiers data file for use later
-const patreonTiers = require("../../data/patreon.js");
+import patreonTiers from "../../data/patreon.js";
 
-exports.getPatreonSettings = async ({ cache, guildId }) => {
+export async function getPatreonSettings({ cache, guildId }) {
     if (!guildId) return {};
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings || {};
-};
+}
 
-exports.setPatreonSettings = async ({ cache, guildId, patreonSettingsOut }) => {
+export async function setPatreonSettings({ cache, guildId, patreonSettingsOut }) {
     // Filter out any settings that are the same as the defaults
     const res = await cache
         .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: patreonSettingsOut }, false)
@@ -26,7 +26,7 @@ exports.setPatreonSettings = async ({ cache, guildId, patreonSettingsOut }) => {
 //  - Add/update/remove a user & tier to the supporters list
 //  - Supports consist of userID (Discord user ID), and tier (amount_cents/100)
 // Returns success/ error for both the user setting & the guild one
-exports.addServerSupporter = async ({ cache, guildId, userInfo }) => {
+export async function addServerSupporter({ cache, guildId, userInfo }) {
     if (!guildId) return { success: false, error: "Missing guild ID." };
     if (!userInfo?.userId || !userInfo?.tier) return { success: false, error: "Missing userId or tier." };
 
@@ -73,14 +73,14 @@ exports.addServerSupporter = async ({ cache, guildId, userInfo }) => {
 };
 
 //  - Get the users from the given guilds' supporters list if available
-exports.getServerSupporters = async ({ cache, guildId }) => {
+export async function getServerSupporters({ cache, guildId }) {
     if (!guildId) return [];
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings?.supporters || [];
 };
 
 // Remove a user from the given guilds' supporters
-exports.removeServerSupporter = async ({ cache, guildId, userId }) => {
+export async function removeServerSupporter({ cache, guildId, userId }) {
     if (!guildId) return [];
     const guildPatSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 1;
@@ -102,7 +102,7 @@ exports.removeServerSupporter = async ({ cache, guildId, userId }) => {
 
 // Remove all the server & user settings for a given user
 // Returns success/ error for both the user setting & the guild one
-exports.clearSupporterInfo = async ({ cache, userId }) => {
+export async function clearSupporterInfo({ cache, userId }) {
     const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userId });
     const resOut = {
         user: { success: true, error: null },
@@ -129,7 +129,7 @@ exports.clearSupporterInfo = async ({ cache, userId }) => {
 };
 
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
-exports.ensureGuildSupporter = async ({ cache }) => {
+export async function ensureGuildSupporter({ cache }) {
     // Grab all guilds' patreonSettings that have someone listed
     const supporterGuilds = await cache.get(
         config.mongodb.swgohbotdb,
@@ -176,7 +176,7 @@ exports.ensureGuildSupporter = async ({ cache }) => {
 };
 
 // Make sure the user's info is logged correctly in the guild they have set
-exports.ensureBonusServerSet = async ({ cache, userId, amount_cents }) => {
+export async function ensureBonusServerSet({ cache, userId, amount_cents }) {
     // If the user is active, and has a server linked, make sure it shows up in that guild's settings
     const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userId });
 
@@ -204,7 +204,7 @@ exports.ensureBonusServerSet = async ({ cache, userId, amount_cents }) => {
 
 //  - Get the combined / highest available tier from the supporters of a given server
 const tierNums = Object.keys(patreonTiers.tiers);
-exports.getGuildSupporterTier = async ({ cache, guildId }) => {
+export async function getGuildSupporterTier({ cache, guildId }) {
     // If no guildId supplied, return the lowest tier available (0)
     if (!guildId) return 0;
 

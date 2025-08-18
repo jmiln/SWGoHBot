@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class ArenaAlert extends Command {
+export default class ArenaAlert extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "arenaalert",
@@ -153,5 +153,3 @@ class ArenaAlert extends Command {
         return super.success(interaction, changelog.join("\n"));
     }
 }
-
-module.exports = ArenaAlert;

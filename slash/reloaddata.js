@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock, MessageFlags } = require("discord.js");
+import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class ReloadData extends Command {
+export default class ReloadData extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "reloaddata",
@@ -189,7 +189,7 @@ class ReloadData extends Command {
         }
     }
 
-    thenRes(Bot, interaction, res, reloadType) {
+    thenRes(_Bot, interaction, res, reloadType) {
         const errors = [];
         for (const r of res) {
             if (r?.err) errors.push(r.err);
@@ -200,7 +200,7 @@ class ReloadData extends Command {
         });
     }
 
-    thenResFiles(Bot, interaction, res) {
+    thenResFiles(_Bot, interaction, res) {
         let errors = [];
         for (const r of res) {
             if (r.errArr?.length) errors.push(...r.errArr);
@@ -212,5 +212,3 @@ class ReloadData extends Command {
         });
     }
 }
-
-module.exports = ReloadData;

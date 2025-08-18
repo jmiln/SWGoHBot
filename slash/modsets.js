@@ -1,7 +1,7 @@
-const { codeBlock } = require("discord.js");
-const Command = require("../base/slashCommand");
+import { codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Modsets extends Command {
+export default class Modsets extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "modsets",
@@ -10,9 +10,7 @@ class Modsets extends Command {
         });
     }
 
-    run(Bot, interaction) {
+    run(_Bot, interaction) {
         return interaction.reply({ content: codeBlock("md", interaction.language.get("COMMAND_MODSETS_OUTPUT")) });
     }
 }
-
-module.exports = Modsets;

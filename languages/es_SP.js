@@ -1,4 +1,5 @@
-const Language = require("../base/Language");
+import Language from "../base/Language.js";
+
 const DAYSOFWEEK = {
     SUNDAY: {
         SHORT: "Do",
@@ -64,7 +65,7 @@ function getTime(unit, type) {
     return TIMES[`${unit}`][`${type}`];
 }
 
-module.exports = class extends Language {
+export default class extends Language {
     constructor(...args) {
         super(...args);
 

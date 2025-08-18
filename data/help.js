@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // Administrative commands
     Admin: {
         description: "Commands with limited access",

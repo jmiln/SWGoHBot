@@ -1,8 +1,9 @@
-const { REST, Routes } = require("discord.js");
-const { readdirSync } = require("node:fs");
-const slashDir = `${__dirname}/../slash/`;
+import { readdirSync } from "node:fs";
+import { REST, Routes } from "discord.js";
 
-module.exports = (Bot, client) => {
+const slashDir = `${import.meta.dirname}/../slash/`;
+
+export default async (Bot, client) => {
     const slashFiles = readdirSync(slashDir);
     const slashError = [];
     for (const file of slashFiles) {
@@ -10,9 +11,12 @@ module.exports = (Bot, client) => {
             if (!file.endsWith(".js")) return;
             const commandName = file.split(".")[0];
             try {
-                const cmd = new (require(`${slashDir}${commandName}`))(Bot);
+                const path = `${slashDir}${commandName}.js`;
+                const { default: command } = await import(path);
+                const cmd = new command(Bot);
                 if (!cmd.commandData.enabled) {
-                    return console.error(`${commandName} is not enabled`);
+                    console.error(`${commandName} is not enabled`);
+                    continue;
                 }
                 client.slashcmds.set(cmd.commandData.name, cmd);
             } catch (err) {
@@ -31,13 +35,14 @@ module.exports = (Bot, client) => {
         if (client.slashcmds.has(commandName)) {
             const command = client.slashcmds.get(commandName);
             client.slashcmds.delete(command);
-            delete require.cache[require.resolve(`${slashDir}${command.commandData.name}.js`)];
         }
         return;
     };
-    client.loadSlash = (commandName) => {
+    client.loadSlash = async (commandName) => {
         try {
-            const cmd = new (require(`${slashDir}${commandName}`))(Bot);
+            const path = `${slashDir}${commandName}.js?t=${Date.now()}`;
+            const { default: command } = await import(path);
+            const cmd = new command(Bot);
             if (!cmd.commandData.enabled) {
                 return `${commandName} is not enabled`;
             }

@@ -1,6 +1,7 @@
-const { ApplicationCommandOptionType } = require("discord.js");
-const Command = require("../base/slashCommand");
-const factionMap = require("../data/factionMap");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
+import factionMap from "../data/factionMap.js";
+
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },
     { name: "Cantina Shop", value: "Cantina Shipments" },
@@ -22,7 +23,7 @@ const battleMap = [
     { name: "Light Side Battles", value: "Hard Modes (L)" },
 ];
 
-class Need extends Command {
+export default class Need extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "need",
@@ -315,5 +316,3 @@ class Need extends Command {
         }
     }
 }
-
-module.exports = Need;

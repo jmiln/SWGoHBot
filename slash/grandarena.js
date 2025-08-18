@@ -1,6 +1,6 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const unitChecklist = require("../data/unitChecklist.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
+import unitChecklist from "../data/unitChecklist.js";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -18,7 +18,7 @@ const gpMap = {
     0: { div: 11, fleets: 1, teams5: 3, topX5: 30, kyber5: 24000, teams3: 3, topX3: 18, kyber3: 21500 },
 };
 
-class GrandArena extends Command {
+export default class GrandArena extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "grandarena",
@@ -633,5 +633,3 @@ function getGearStr(charIn) {
     }
     return charGearOut;
 }
-
-module.exports = GrandArena;

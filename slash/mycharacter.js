@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const { inspect } = require("node:util"); // eslint-disable-line no-unused-vars
+import { inspect } from "node:util";
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class MyCharacter extends Command {
+export default class MyCharacter extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "mycharacter",
@@ -105,7 +105,6 @@ class MyCharacter extends Command {
         // The user doesn't have the unit unlocked, so let em know
         if (!thisUnit) {
             const outStr = interaction.language.get("BASE_SWGOH_LOCKED_CHAR");
-            console.log("outStr", outStr);
             return super.error(interaction, outStr || "This character is locked.", {
                 title: `${pName}'s ${unit.name}`,
                 description: footerStr,
@@ -162,7 +161,7 @@ class MyCharacter extends Command {
                     abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(
                         `\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`,
                     );
-                } catch (e) {
+                } catch (_) {
                     Bot.logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
                 }
             }
@@ -350,5 +349,3 @@ class MyCharacter extends Command {
         });
     }
 }
-
-module.exports = MyCharacter;

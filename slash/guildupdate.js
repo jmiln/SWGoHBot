@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class GuildUpdate extends Command {
+export default class GuildUpdate extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guildupdate",
@@ -144,5 +144,3 @@ class GuildUpdate extends Command {
         );
     }
 }
-
-module.exports = GuildUpdate;

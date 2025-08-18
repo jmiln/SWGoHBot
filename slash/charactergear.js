@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Charactergear extends Command {
+export default class Charactergear extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "charactergear",
@@ -283,8 +283,6 @@ class Charactergear extends Command {
         }
     }
 }
-
-module.exports = Charactergear;
 
 async function expandPieces(Bot, list) {
     let end = [];

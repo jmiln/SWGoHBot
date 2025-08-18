@@ -1,4 +1,4 @@
-module.exports = [
+export default [
     { name: "Galactic Legend",      value: "galactic_legend" },
     { name: "Leader",               value: "role_leader" },
     //Ignoring Activated/ Not Activated

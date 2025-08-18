@@ -1,8 +1,10 @@
-const { PermissionsBitField } = require("discord.js");
-const { tiers: patronTiers } = require("../data/patreon.js");
-const { getGuildSupporterTier } = require("./guildConfig/patreonSettings.js");
+import { PermissionsBitField } from "discord.js";
+import patreonModule from "../data/patreon.js";
+import { getGuildSupporterTier } from "./guildConfig/patreonSettings.js";
 
-module.exports = (Bot, client) => {
+const tiers = patreonModule.tiers;
+
+export default (Bot, client) => {
     // Time chunks, in milliseconds
     //             ms    sec  min  hr
     const dayMS = 1000 * 60 * 60 * 24;
@@ -21,7 +23,7 @@ module.exports = (Bot, client) => {
         if (!patron && Bot.config.patrons?.[userId]) {
             const currentAmountCents = Bot.config.patrons[userId];
             const currentTierNum = getPatreonTier({ amount_cents: currentAmountCents });
-            const currentTier = patronTiers[currentTierNum];
+            const currentTier = tiers[currentTierNum];
             return {
                 playerTime: currentTier.playerTime,
                 guildTime: currentTier.guildTime,
@@ -36,7 +38,7 @@ module.exports = (Bot, client) => {
 
         const currentTierNum = getPatreonTier(patron);
         if (!currentTierNum) return null;
-        const currentTier = patronTiers[currentTierNum];
+        const currentTier = tiers[currentTierNum];
 
         if (patron && !patron.declined_since) {
             return {
@@ -49,13 +51,13 @@ module.exports = (Bot, client) => {
     };
 
     function getPatreonTier(user) {
-        const tiers = Object.keys(patronTiers).map((t) => Number.parseInt(t, 10));
+        const patreonTiers = Object.keys(tiers).map((t) => Number.parseInt(t, 10));
         const amount_dollars = (user?.amount_cents || 0) / 100;
-        const minTier = Math.min(...tiers);
+        const minTier = Math.min(...patreonTiers);
         if (amount_dollars && amount_dollars < minTier) return 0;
 
         let tierNum = minTier;
-        for (const tier of tiers) {
+        for (const tier of patreonTiers) {
             if (amount_dollars >= tier) {
                 tierNum = tier;
             } else {
@@ -96,16 +98,16 @@ module.exports = (Bot, client) => {
         const supporterTier = await getGuildSupporterTier({ cache: Bot.cache, guildId });
 
         // Grab the best times available based on the supporterTier
-        const supporterTimes = !patronTiers?.[supporterTier]?.sharePlayer
-            ? patronTiers[0]
+        const supporterTimes = !tiers?.[supporterTier]?.sharePlayer
+            ? tiers[0]
             : {
-                  playerTime: patronTiers[supporterTier].sharePlayer,
-                  guildTime: patronTiers[supporterTier].shareGuild,
+                  playerTime: tiers[supporterTier].sharePlayer,
+                  guildTime: tiers[supporterTier].shareGuild,
               };
 
         // Grab the best times for the user themselves, patreon sub or not
         const playerTier = getPatreonTier(patron);
-        const playerTimes = patronTiers?.[playerTier] || patronTiers[0];
+        const playerTimes = tiers?.[playerTier] || tiers[0];
 
         // Return the best times available between the supporter and the user
         return {
@@ -305,8 +307,7 @@ module.exports = (Bot, client) => {
                                     // .catch(err => console.log("[patFunc getRanks]", err));
                                 }
                             } catch (e) {
-                                // biome-ignore lint/style/useTemplate: <explanation>
-                                Bot.logger.error("Broke getting ranks: " + e);
+                                Bot.logger.error(`Broke getting ranks: ${e}`);
                             }
                         }
                     }
@@ -861,7 +862,7 @@ module.exports = (Bot, client) => {
                     } else {
                         try {
                             msg = await channel.messages.fetch(msgIdIn);
-                        } catch (e) {
+                        } catch (_) {
                             msg = null;
                         }
                         if (msg) {
@@ -892,7 +893,7 @@ module.exports = (Bot, client) => {
     // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
     Bot.guildTickets = async () => {
         const patrons = await getActivePatrons();
-        const nowTime = new Date().getTime();
+        const nowTime = Date.now();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < 100) continue;
@@ -1049,7 +1050,7 @@ module.exports = (Bot, client) => {
     }
 
     function getTimeLeft(offset, hrDiff) {
-        const now = new Date().getTime();
+        const now = Date.now();
         let then = dayMS - 1 + Bot.getUTCFromOffset(offset) - hrDiff * hrMS;
         if (then < now) {
             then = then + dayMS;

@@ -1,7 +1,7 @@
-const { getGuildEvents, setEvents, deleteGuildEvent } = require("./guildConfig/events.js");
-const { getGuildSettings } = require("../modules/guildConfig/settings.js");
+import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.js";
 
-module.exports = (Bot, client) => {
+export default (Bot, client) => {
     // Some base time conversions to milliseconds
     const dayMS = 86400000;
     const hourMS = 3600000;
@@ -55,7 +55,7 @@ module.exports = (Bot, client) => {
 
     // Re-caclulate a viable eventDT, and return the updated event
     async function reCalc(ev) {
-        const nowTime = new Date().getTime();
+        const nowTime = Date.now();
         if (ev.repeatDays.length > 0) {
             // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
@@ -84,7 +84,7 @@ module.exports = (Bot, client) => {
     // Send out an alert based on the guild's countdown settings
     Bot.countdownAnnounce = async (event) => {
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: event.guildId });
-        const diffNum = Math.abs(new Date().getTime() - event.eventDT);
+        const diffNum = Math.abs(Date.now() - event.eventDT);
         const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
 
         const announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
@@ -99,7 +99,7 @@ module.exports = (Bot, client) => {
         let outMsg = event?.message || "";
 
         // If it's running late, tack a notice onto the end of the message
-        const diffTime = Math.abs(event.eventDT - new Date().getTime());
+        const diffTime = Math.abs(event.eventDT - Date.now());
         if (diffTime > 2 * minMS) {
             const minPast = Math.floor(diffTime / minMS);
             outMsg += `\n> This event is ${minPast} minutes past time.`;

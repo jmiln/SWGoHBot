@@ -1,9 +1,8 @@
-// const util = require("util");
-const Command = require("../base/slashCommand");
-const { getServerSupporters, getGuildSupporterTier } = require("../modules/guildConfig/patreonSettings");
-const { getGuildSettings } = require("../modules/guildConfig/settings.js");
+import Command from "../base/slashCommand.js";
+import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.js";
 
-class Showconf extends Command {
+export default class Showconf extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "showconf",
@@ -51,7 +50,7 @@ class Showconf extends Command {
                         const channel = await interaction.guild.channels.cache.get(guildConf.announceChan);
                         let channelName = guildConf.announceChan;
                         if (channel?.name) channelName = `#${channel?.name} (${channel?.id})`;
-                        outArr.push(`* ${key}: ${`${channel?.name} (${channel?.id})` || guildConf.announceChan}`);
+                        outArr.push(`* ${key}: ${`${channelName} (${channel?.id})` || guildConf.announceChan}`);
                     } else {
                         outArr.push(`* ${key}: N/A`);
                     }
@@ -91,5 +90,3 @@ class Showconf extends Command {
         });
     }
 }
-
-module.exports = Showconf;

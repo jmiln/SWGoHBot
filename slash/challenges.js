@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Challenges extends Command {
+export default class Challenges extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "challenges",
@@ -106,5 +106,3 @@ class Challenges extends Command {
         }
     }
 }
-
-module.exports = Challenges;

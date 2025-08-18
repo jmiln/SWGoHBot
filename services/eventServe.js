@@ -1,17 +1,20 @@
-const config = require("../config");
-const { addGuildEvent, deleteGuildEvent, getAllEvents, getGuildEvents, guildEventExists } = require("../modules/guildConfig/events.js");
-const { getGuildSettings } = require("../modules/guildConfig/settings.js");
-const { Server } = require("socket.io");
+import { MongoClient } from "mongodb";
+import { Server } from "socket.io";
+import config from "../config.js";
+import cache from "../modules/cache.js";
+import { addGuildEvent, deleteGuildEvent, getAllEvents, getGuildEvents, guildEventExists } from "../modules/guildConfig/events.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.js";
+
 const io = new Server(config.eventServe.port);
+let botCache = null;
 
 async function init() {
-    const { MongoClient } = require("mongodb");
     const mongo = await MongoClient.connect(config.mongodb.url);
-    const cache = require("../modules/cache.js")(mongo);
+    botCache = cache(mongo);
 
     io.on("connection", (socket) => {
         console.log("Socket connected");
-        setupEventHandlers(socket, cache);
+        setupEventHandlers(socket, botCache);
     });
 }
 

@@ -1,4 +1,4 @@
-class Language {
+export default class Language {
     constructor(bot) {
         this.Bot = bot;
     }
@@ -13,7 +13,7 @@ class Language {
                 } else {
                     res = defLang.get(str, ...args);
                 }
-            } catch (e) {
+            } catch (_) {
                 res = `MISSING STRING: ${str}`;
             }
             return res;
@@ -27,11 +27,11 @@ class Language {
             } else {
                 res = this.language[str](...args);
             }
-        } catch (err) {
+        } catch (_) {
             res = `ERROR: Broken string for: ${str}`;
         }
         return res;
     }
 }
 
-module.exports = Language;
+// module.exports = Language;

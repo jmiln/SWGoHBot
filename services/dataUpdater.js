@@ -1,4 +1,4 @@
-const config = require(`${__dirname}/../config.js`);
+const config = require(`${import.meta.dirname}/../config.js`);
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 const { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } = require("../modules/guildConfig/patreonSettings");
@@ -20,9 +20,9 @@ const ComlinkStub = require("@swgoh-utils/comlink");
 const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
-const DATA_DIR_PATH            = path.resolve(__dirname, "../data/");
-const GAMEDATA_DIR_PATH        = path.resolve(__dirname, "../data/gameDataFiles/");
-const CACHE_FILE_PATH          = path.resolve(__dirname, "../modules/cache.js");
+const DATA_DIR_PATH            = path.resolve(import.meta.dirname, "../data/");
+const GAMEDATA_DIR_PATH        = path.resolve(import.meta.dirname, "../data/gameDataFiles/");
+const CACHE_FILE_PATH          = path.resolve(import.meta.dirname, "../modules/cache.js");
 
 const CHAR_FILE_PATH           = path.join(DATA_DIR_PATH, "characters.json");
 const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
@@ -299,7 +299,7 @@ async function getGuildPlayerIds(comlinkStub, guildIds) {
 
 // Stick all of the characters from each player's rosters into an array ot be processed later
 const piscina = new Piscina({
-    filename: path.resolve(__dirname, "../modules/workers/getStrippedModsWorker.js"),
+    filename: path.resolve(import.meta.dirname, "../modules/workers/getStrippedModsWorker.js"),
     taskQueue: new FixedQueue()
 });
 async function getPlayerRosters(playerIds, modMap) {

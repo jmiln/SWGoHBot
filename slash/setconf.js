@@ -1,9 +1,9 @@
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const Command = require("../base/slashCommand");
-const { typedDefaultSettings } = require("../config.js");
-const { getGuildSettings, setGuildSettings } = require("../modules/guildConfig/settings.js");
-const { getGuildAliases } = require("../modules/guildConfig/aliases");
-const { getGuildTWList, setGuildTWList } = require("../modules/guildConfig/twlist");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
+import typedDefaultSettings from "../config.js";
+import { getGuildAliases } from "../modules/guildConfig/aliases.js";
+import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.js";
 
 // Set the base subargs up
 const options = {
@@ -102,7 +102,7 @@ for (const set of Object.keys(typedDefaultSettings)) {
     }
 }
 
-class SetConf extends Command {
+export default class SetConf extends Command {
     constructor(Bot) {
         super(Bot, {
             guildOnly: false,
@@ -395,5 +395,3 @@ class SetConf extends Command {
         }
     }
 }
-
-module.exports = SetConf;

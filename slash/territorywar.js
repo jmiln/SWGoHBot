@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const { getFullTWList } = require("../modules/guildConfig/twlist");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
+import { getFullTWList } from "../modules/guildConfig/twlist.js";
 
-class TerritoryWar extends Command {
+export default class TerritoryWar extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "territorywar",
@@ -64,14 +64,14 @@ class TerritoryWar extends Command {
             if (!guild1?.roster?.length) {
                 problemArr.push(`The guild for ${user1} did not come back with anyone in it`);
             }
-        } catch (err) {
+        } catch (_) {
             problemArr.push(`I could not find a guild for "${user1}"`);
         }
 
         let guild2 = null;
         try {
             guild2 = await Bot.swgohAPI.guild(user2, cooldown);
-        } catch (err) {
+        } catch (_) {
             problemArr.push(`I could not find a guild for "${user2}"`);
         }
 
@@ -100,7 +100,7 @@ class TerritoryWar extends Command {
                     ).length;
                 }
             }
-        } catch (err) {
+        } catch (_) {
             problemArr.push(`I could not get stats for ${user1str}'s guild`);
         }
 
@@ -121,7 +121,7 @@ class TerritoryWar extends Command {
                     ).length;
                 }
             }
-        } catch (err) {
+        } catch (_) {
             problemArr.push(`I could not get stats for ${user2str}'s guild`);
         }
 
@@ -454,5 +454,3 @@ class TerritoryWar extends Command {
         }
     }
 }
-
-module.exports = TerritoryWar;

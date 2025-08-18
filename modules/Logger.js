@@ -94,5 +94,5 @@ class Logger {
         return this.log(content, "cmd", webhook);
     }
 }
-
-module.exports = Logger;
+export default Logger;
+// module.exports = Logger;

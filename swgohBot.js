@@ -1,11 +1,17 @@
-const { Client, Collection, DiscordAPIError } = require("discord.js");
-const { readFileSync } = require("node:fs");
-const { inspect } = require("node:util");
+import { readFileSync } from "node:fs";
+import { inspect } from "node:util";
+import { Client, Collection, DiscordAPIError } from "discord.js";
+import { MongoClient } from "mongodb";
+import config from "./config.js";
+import eventHandler from "./handlers/eventHandler.js";
+import slashHandler from "./handlers/slashHandler.js";
+import cache from "./modules/cache.js";
+import Logger from "./modules/Logger.js";
+import swgohAPI from "./modules/swapi.js";
+import userReg from "./modules/users.js";
 
 const Bot = {};
-
-// Attach the config to the Bot so we can use it anywhere
-Bot.config = require("./config.js");
+Bot.config = config;
 
 const client = new Client({
     intents: Bot.config.botIntents,
@@ -27,21 +33,30 @@ Bot.shipLocs = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8"));
 Bot.ships = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
 Bot.timezones = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 
-Bot.constants = require("./data/constants.js");
-Bot.help = require("./data/help.js");
+import constants from "./data/constants.js";
+import help from "./data/help.js";
+
+Bot.constants = constants;
+Bot.help = help;
 
 // Load the journeyReqs and process the names for autocomplete
 Bot.journeyReqs = JSON.parse(readFileSync("./data/journeyReqs.json", "utf-8"));
 processJourneyNames();
 
 // Load in various general functions for the bot
-require("./modules/functions.js")(Bot, client);
+import funct from "./modules/functions.js";
+
+funct(Bot, client);
 
 // Load in stuff for the events command
-require("./modules/eventFuncs.js")(Bot, client);
+import eventFuncs from "./modules/eventFuncs.js";
+
+eventFuncs(Bot, client);
 
 // Load in stuff for patrons and such
-require("./modules/patreonFuncs.js")(Bot, client);
+import patreonFuncs from "./modules/patreonFuncs.js";
+
+patreonFuncs(Bot, client);
 
 // Languages
 Bot.languages = {};
@@ -78,15 +93,15 @@ Bot.ShipNames = Bot.ships.map((sh) => {
 client.slashcmds = new Collection();
 
 const init = async () => {
-    const { MongoClient } = require("mongodb");
     Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url);
+
     // Set up the caching
-    Bot.cache = require("./modules/cache.js")(Bot.mongo);
-    Bot.userReg = require("./modules/users.js")(Bot);
+    Bot.cache = cache(Bot.mongo);
+    Bot.userReg = userReg(Bot);
 
     if (Bot.config.swapiConfig || Bot.config.fakeSwapiConfig) {
         // Load up the api connector/ helpers
-        Bot.swgohAPI = require("./modules/swapi.js")(null);
+        Bot.swgohAPI = await swgohAPI(null);
     } else {
         console.log("Couldn't load swapi");
     }
@@ -94,11 +109,10 @@ const init = async () => {
     // Store the list of omicrons to be used later
     Bot.omicrons = await Bot.sortOmicrons();
 
-    const Logger = require("./modules/Logger.js");
     Bot.logger = new Logger(Bot, client);
 
-    require("./handlers/slashHandler.js")(Bot, client);
-    require("./handlers/eventHandler.js")(Bot, client);
+    slashHandler(Bot, client);
+    eventHandler(Bot, client);
 
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack?.replace(new RegExp(`${process.cwd()}`, "g"), ".");

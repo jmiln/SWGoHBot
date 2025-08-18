@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const patreonInfo = require("../data/patreon.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
+import patreonInfo from "../data/patreon.js";
 
-class UserConf extends Command {
+export default class UserConf extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "userconf",
@@ -472,5 +472,3 @@ class UserConf extends Command {
         }
     }
 }
-
-module.exports = UserConf;

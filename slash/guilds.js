@@ -1,10 +1,9 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
-const { getFullTWList } = require("../modules/guildConfig/twlist.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getFullTWList } from "../modules/guildConfig/twlist.js";
 
-const { getGuildSettings } = require("../modules/guildConfig/settings.js");
-
-class Guilds extends Command {
+export default class Guilds extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guilds",
@@ -1347,5 +1346,3 @@ class Guilds extends Command {
         }
     }
 }
-
-module.exports = Guilds;

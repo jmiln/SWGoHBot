@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
-const factionMap = require("../data/factionMap");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
+import factionMap from "../data/factionMap.js";
 
-class Faction extends Command {
+export default class Faction extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "faction",
@@ -205,5 +205,3 @@ class Faction extends Command {
         });
     }
 }
-
-module.exports = Faction;

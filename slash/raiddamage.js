@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
-const raids = require("../data/raiddmg");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
+import raids from "../data/raiddmg.js";
 
-class RaidDamage extends Command {
+export default class RaidDamage extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "raiddamage",
@@ -112,5 +112,3 @@ class RaidDamage extends Command {
         });
     }
 }
-
-module.exports = RaidDamage;

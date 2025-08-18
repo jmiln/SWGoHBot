@@ -1,8 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
-// const {inspect} = require("util");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Reload extends Command {
+export default class Reload extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "reload",
@@ -54,5 +53,3 @@ class Reload extends Command {
         }
     }
 }
-
-module.exports = Reload;

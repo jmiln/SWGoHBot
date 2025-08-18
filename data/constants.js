@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // The main invite for the support server
     invite: "https://discord.com/invite/FfwGvhr",
 

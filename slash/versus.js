@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Versus extends Command {
+export default class Versus extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "versus",
@@ -97,13 +97,13 @@ class Versus extends Command {
         try {
             user1 = await Bot.swgohAPI.unitStats(user1, cooldown);
             if (Array.isArray(user1)) user1 = user1[0];
-        } catch (e) {
+        } catch (_) {
             return super.error(interaction, "Something broke when getting user 1");
         }
         try {
             user2 = await Bot.swgohAPI.unitStats(user2, cooldown);
             if (Array.isArray(user2)) user2 = user2[0];
-        } catch (e) {
+        } catch (_) {
             return super.error(interaction, "Something broke when getting user 2");
         }
         const errArr = [];
@@ -242,5 +242,3 @@ class Versus extends Command {
         });
     }
 }
-
-module.exports = Versus;

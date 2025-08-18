@@ -1,12 +1,12 @@
-const config = require("../../config.js");
+import config from "../../config.js";
 
-exports.getGuildAliases = async function getGuildAliases({ cache, guildId }) {
+export async function getGuildAliases({ cache, guildId }) {
     if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
     return resArr[0]?.aliases || [];
 };
 
-exports.setGuildAliases = async function setGuildAliases({ cache, guildId, aliasesOut }) {
+export async function setGuildAliases({ cache, guildId, aliasesOut }) {
     // Filter out any settings that are the same as the defaults
     if (!Array.isArray(aliasesOut)) throw new Error("[guildConfigs/aliases] Somehow have a non-array aliasesOut");
     aliasesOut = aliasesOut.sort((a, b) => (a.alias > b.alias ? 1 : -1));

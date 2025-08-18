@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 //     Their ID name                Shortened name to fit nicely
     "Galactic Legends": [
         ["GLREY",                   "Rey"],

@@ -1,13 +1,13 @@
-const { ApplicationCommandOptionType, codeBlock, MessageFlags } = require("discord.js");
+import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 
-const Command = require("../base/slashCommand");
-const { getGuildEvents, updateGuildEvent } = require("../modules/guildConfig/events.js");
-const { getGuildSettings } = require("../modules/guildConfig/settings.js");
+import Command from "../base/slashCommand.js";
+import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.js";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
 
-class Event extends Command {
+export default class Event extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "event",
@@ -926,5 +926,3 @@ class Event extends Command {
         }
     }
 }
-
-module.exports = Event;

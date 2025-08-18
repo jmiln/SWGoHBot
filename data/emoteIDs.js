@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     // Ability materials
     abilityMatMK3: "351808811213783040",
     omegaMat:      "351808811356520452",

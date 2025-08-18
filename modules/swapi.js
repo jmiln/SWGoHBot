@@ -1,24 +1,29 @@
-const { inspect } = require("node:util"); // eslint-disable-line no-unused-vars
-const statEnums = require("../data/statEnum.js");
-const { eachLimit } = require("async");
-const { readFileSync } = require("node:fs");
-const { Worker } = require("node:worker_threads");
+import { readFileSync } from "node:fs";
+import os from "node:os";
+import { inspect } from "node:util"; // eslint-disable-line no-unused-vars
+import { Worker } from "node:worker_threads";
+import { eachLimit } from "async";
+import { MongoClient } from "mongodb";
+import statEnums from "../data/statEnum.js";
 
-const os = require("node:os");
+import mongoCache from "../modules/cache.js";
+
 const THREAD_COUNT = os.cpus().length;
 
-const config = require(`${__dirname}/../config.js`);
-const abilityCosts = JSON.parse(readFileSync(`${__dirname}/../data/abilityCosts.json`, "utf-8"));
+import config from "../config.js";
 
-const ComlinkStub = require("@swgoh-utils/comlink");
+const abilityCosts = JSON.parse(readFileSync(`${import.meta.dirname}/../data/abilityCosts.json`, "utf-8"));
+
+import ComlinkStub from "@swgoh-utils/comlink";
+
 if (!config.fakeSwapiConfig?.clientStub) {
     throw new Error("Missing clientStub config info!");
 }
 const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
 
-let modMap = JSON.parse(readFileSync(`${__dirname}/../data/modMap.json`, "utf-8"));
-let unitMap = JSON.parse(readFileSync(`${__dirname}/../data/unitMap.json`, "utf-8"));
-let skillMap = JSON.parse(readFileSync(`${__dirname}/../data/skillMap.json`, "utf-8"));
+let modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
+let unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
+let skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
 
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
@@ -31,23 +36,22 @@ const flatStats = [
 ];
 
 const MAX_CONCURRENT = 20;
+let cache = null;
 
 let specialAbilityList = null;
-let cache = null;
 async function init() {
-    const MongoClient = require("mongodb").MongoClient;
     const mongo = await MongoClient.connect(config.mongodb.url);
-    cache = require("../modules/cache.js")(mongo);
+    cache = mongoCache(mongo);
 
     // Set it to reload the api map files every hour
     setInterval(() => {
-        modMap = JSON.parse(readFileSync(`${__dirname}/../data/modMap.json`, "utf-8"));
-        unitMap = JSON.parse(readFileSync(`${__dirname}/../data/unitMap.json`, "utf-8"));
-        skillMap = JSON.parse(readFileSync(`${__dirname}/../data/skillMap.json`, "utf-8"));
+        modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
+        unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
+        skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
     }, 360_000);
 }
 
-module.exports = (opts = {}) => {
+export default (opts = {}) => {
     // This is just here so it'll actually accept it properly when I require() this file... Doesn't work with just `module.exports = () => ` for some reason
     if (opts?.noop) return null;
     init();
@@ -108,7 +112,7 @@ module.exports = (opts = {}) => {
         return specialAbilityList;
     }
 
-    async function playerByName(name) {
+    async function playerByName(name, limit=0) {
         try {
             if (!name?.length || typeof name !== "string") return null;
 
@@ -118,6 +122,7 @@ module.exports = (opts = {}) => {
                 "playerStats",
                 { name: new RegExp(name, "i") },
                 { name: 1, allyCode: 1, _id: 0 },
+                limit
             );
 
             return player;
@@ -197,7 +202,7 @@ module.exports = (opts = {}) => {
         });
         const processMemberChunk = async (updatedBare, chunkIx) => {
             return new Promise((resolve, reject) => {
-                const worker = new Worker(`${__dirname}/workers/getPlayerUpdates.js`, {
+                const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.js`, {
                     workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
                 });
                 worker.on("message", resolve);

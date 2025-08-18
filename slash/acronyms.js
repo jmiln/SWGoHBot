@@ -1,5 +1,5 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
 const usageExample = "/acronyms acronym:CLS";
 
@@ -7,7 +7,7 @@ const usageExample = "/acronyms acronym:CLS";
  * The list of acronyms defined in data/acronym.json was transposed from the SWGoH forum. Any update there will need to make it's way into here.
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
-class Acronyms extends Command {
+export default class Acronyms extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "acronyms",
@@ -75,5 +75,3 @@ class Acronyms extends Command {
         });
     }
 }
-
-module.exports = Acronyms;

@@ -1,8 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
-const emoteStrings = require("../data/emoteStrings.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
+import emoteStrings from "../data/emoteStrings.js";
 
-class Character extends Command {
+export default class Character extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "character",
@@ -181,5 +181,3 @@ class Character extends Command {
         return;
     }
 }
-
-module.exports = Character;

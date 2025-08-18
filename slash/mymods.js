@@ -1,11 +1,11 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, PermissionsBitField, codeBlock } = require("discord.js");
-const statEnums = require("../data/statEnum.js");
-const emoteStrings = require("../data/emoteStrings.js");
+import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "discord.js";
+import Command from "../base/slashCommand.js";
+import emoteStrings from "../data/emoteStrings.js";
+import statEnums from "../data/statEnum.js";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
-class MyMods extends Command {
+export default class MyMods extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "mymods",
@@ -435,5 +435,3 @@ class MyMods extends Command {
         }
     }
 }
-
-module.exports = MyMods;

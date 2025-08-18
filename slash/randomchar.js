@@ -1,7 +1,7 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, codeBlock } = require("discord.js");
+import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Randomchar extends Command {
+export default class Randomchar extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "randomchar",
@@ -104,4 +104,3 @@ class Randomchar extends Command {
         return interaction.reply({ content: codeBlock(charString) });
     }
 }
-module.exports = Randomchar;

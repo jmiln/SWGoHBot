@@ -1,9 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
+import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.js";
 
-const { getGuildShardTimes, setGuildShardTimes } = require("../modules/guildConfig/shardTimes.js");
-
-class Shardtimes extends Command {
+export default class Shardtimes extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "shardtimes",
@@ -385,7 +384,7 @@ class Shardtimes extends Command {
         }
 
         function timeTil(zone, timeToAdd, type) {
-            const nowTime = new Date().getTime();
+            const nowTime = Date.now();
             const hrMS = 1000 * 60 * 60;
             const dayMS = 1000 * 60 * 60 * 24;
 
@@ -399,7 +398,7 @@ class Shardtimes extends Command {
                 // If it's already passed, add a day to grab the next one
                 targetTime = target + (target < nowTime ? dayMS : 0);
             }
-            const times = Bot.convertMS(targetTime - new Date().getTime());
+            const times = Bot.convertMS(targetTime - nowTime);
             return `${times.hour.toString().padStart(2, "0")}:${times.minute.toString().padStart(2, "0")}`;
         }
 
@@ -410,5 +409,3 @@ class Shardtimes extends Command {
         }
     }
 }
-
-module.exports = Shardtimes;

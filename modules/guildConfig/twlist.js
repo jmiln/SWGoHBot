@@ -1,5 +1,6 @@
-const config = require("../../config.js");
-const unitChecklist = require("../../data/unitChecklist.js");
+import config from "../../config.js";
+import unitChecklist from "../../data/unitChecklist.js";
+
 const defaultTWList = {
     "Light Side":       [],
     "Dark Side":        [],
@@ -9,7 +10,7 @@ const defaultTWList = {
     Blacklist: []        // List of units to not show in the list output (Can't have units both here and one of the others)
 };
 
-exports.getGuildTWList = async function getGuildTWList({ cache, guildId }) {
+export async function getGuildTWList({ cache, guildId }) {
     if (!guildId) return defaultTWList;
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
     const outObj = {};
@@ -19,7 +20,7 @@ exports.getGuildTWList = async function getGuildTWList({ cache, guildId }) {
     return outObj || defaultTWList;
 };
 
-exports.getFullTWList = async function getFullTWList({ cache, guildId }) {
+export async function getFullTWList({ cache, guildId }) {
     if (!guildId) return unitChecklist;
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
     const twList = resArr[0]?.twList || defaultTWList;
@@ -39,7 +40,7 @@ exports.getFullTWList = async function getFullTWList({ cache, guildId }) {
     return twListOut;
 };
 
-exports.setGuildTWList = async function setGuildTWList({ cache, guildId, twListOut }) {
+export async function setGuildTWList({ cache, guildId, twListOut }) {
     const res = await cache
         .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { twList: twListOut }, false)
         .then(() => { return { success: true, error: null }; })

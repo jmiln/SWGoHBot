@@ -1,4 +1,4 @@
-module.exports = [
+export default [
     {
         name: "Rancor",
         aliases: ["pit"],

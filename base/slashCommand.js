@@ -1,4 +1,4 @@
-const { codeBlock, MessageFlags } = require("discord.js");
+import { codeBlock, MessageFlags } from "discord.js";
 
 const defCmdData = {
     name: "",
@@ -9,7 +9,7 @@ const defCmdData = {
     enabled: true,
     permLevel: 0,
 };
-class slashCommand {
+export default class slashCommand {
     constructor(Bot, commandData = {}) {
         this.Bot = Bot;
         this.commandData = {
@@ -109,4 +109,4 @@ class slashCommand {
     }
 }
 
-module.exports = slashCommand;
+// module.exports = slashCommand;

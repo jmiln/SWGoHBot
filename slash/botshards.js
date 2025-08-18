@@ -1,7 +1,7 @@
-const { Status, codeBlock } = require("discord.js");
-const Command = require("../base/slashCommand");
+import { codeBlock, Status } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class BotShards extends Command {
+export default class BotShards extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "botshards",
@@ -10,7 +10,7 @@ class BotShards extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(_Bot, interaction) {
         const shardInfoArr = ["Shard | Status | Guilds | Ping", "______________________________"];
 
         const shardCount = interaction.client.shard.count;
@@ -36,5 +36,3 @@ class BotShards extends Command {
             });
     }
 }
-
-module.exports = BotShards;

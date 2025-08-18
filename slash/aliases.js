@@ -1,9 +1,9 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-const { getGuildAliases, setGuildAliases } = require("../modules/guildConfig/aliases");
+import { getGuildAliases, setGuildAliases } from "../modules/guildConfig/aliases.js";
 
-class Aliases extends Command {
+export default class Aliases extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "aliases",
@@ -103,5 +103,3 @@ class Aliases extends Command {
         }
     }
 }
-
-module.exports = Aliases;

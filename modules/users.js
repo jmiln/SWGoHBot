@@ -1,5 +1,5 @@
 // const {inspect} = require("util");
-module.exports = (Bot) => {
+export default (Bot) => {
     const cache = Bot.cache;
 
     return {

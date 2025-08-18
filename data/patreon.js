@@ -1,6 +1,6 @@
 const DEFAULT_PLAYER_TIME = 2*60;
 const DEFAULT_GUILD_TIME  = 6*60;
-module.exports = {
+export default {
     tiers: {
         0: {    // The default non-subscriber times
             name: "default",

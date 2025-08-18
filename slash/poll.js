@@ -1,9 +1,8 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType, MessageFlags } = require("discord.js");
+import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
+import Command from "../base/slashCommand.js";
+import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.js";
 
-const { getGuildPolls, setGuildPolls } = require("../modules/guildConfig/polls.js");
-
-class Poll extends Command {
+export default class Poll extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "poll",
@@ -266,5 +265,3 @@ class Poll extends Command {
         }
     }
 }
-
-module.exports = Poll;

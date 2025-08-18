@@ -1,12 +1,12 @@
-const Command = require("../base/slashCommand");
-const { ApplicationCommandOptionType } = require("discord.js");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
 const updateTypeStrings = {
     update: "Update every 5min",
     msg: "Send a message near reset",
 };
 
-class GuildTickets extends Command {
+export default class GuildTickets extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "guildtickets",
@@ -218,5 +218,3 @@ class GuildTickets extends Command {
         );
     }
 }
-
-module.exports = GuildTickets;

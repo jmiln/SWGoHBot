@@ -1,9 +1,9 @@
-const { WebhookClient, PermissionsBitField, time } = require("discord.js");
-const { promisify, inspect } = require("node:util"); // eslint-disable-line no-unused-vars
-const fs = require("node:fs");
-const readdir = promisify(require("node:fs").readdir);
+import fs from "node:fs";
+import { readdir } from "node:fs/promises";
+import { inspect, promisify } from "node:util";
+import { PermissionsBitField, time, WebhookClient } from "discord.js";
 
-module.exports = (Bot, client) => {
+export default (Bot, client) => {
     // Get a color for embed edges
     Bot.getSideColor = (side) => {
         if (!side) return Error("[func/getSideColor] Missing side.");
@@ -175,16 +175,23 @@ module.exports = (Bot, client) => {
         });
     };
 
+    async function importAndReload(modulePath) {
+        const timestamp = Date.now();
+        const moduleUrl = `${modulePath}?t=${timestamp}`;
+        const { default: module } = await import(moduleUrl);
+        return module;
+    }
+
     // Reload the functions (this) file
     client.reloadFunctions = async () => {
         const modules = ["../modules/functions.js", "../modules/patreonFuncs.js", "../modules/eventFuncs.js"]; //, "../modules/Logger.js"];
         try {
             for (const mod of modules) {
-                delete require.cache[require.resolve(mod)];
-                require(mod)(Bot, client);
+                const module = await importAndReload(mod);
+                module(Bot, client);
             }
-            delete require.cache[require.resolve("../modules/Logger.js")];
-            Bot.logger = new (require("../modules/Logger.js"))(Bot, client);
+            const loggerModule = await importAndReload("../modules/Logger.js");
+            Bot.logger = new loggerModule(Bot, client);
         } catch (err) {
             console.error(`Failed to reload functions: ${err.stack}`);
             return { err: err.stack };
@@ -195,8 +202,8 @@ module.exports = (Bot, client) => {
     client.reloadSwapi = async () => {
         let err = null;
         try {
-            delete require.cache[require.resolve("../modules/swapi.js")];
-            Bot.swgohAPI = require("../modules/swapi.js")(Bot);
+            const {default: swapi} = await import("../modules/swapi.js");
+            Bot.swgohAPI = swapi(Bot);
         } catch (e) {
             err = e;
         }
@@ -207,8 +214,8 @@ module.exports = (Bot, client) => {
     client.reloadUserReg = async () => {
         let err = null;
         try {
-            delete require.cache[require.resolve("../modules/users.js")];
-            Bot.userReg = require("../modules/users.js")(Bot);
+            const {default: userReg} = await import("../modules/users.js");
+            Bot.userReg = userReg(Bot);
         } catch (e) {
             err = e;
         }
@@ -218,17 +225,17 @@ module.exports = (Bot, client) => {
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async () => {
         try {
-            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json", "utf-8"));
-            Bot.acronyms = await JSON.parse(fs.readFileSync("data/acronyms.json", "utf-8"));
-            Bot.arenaJumps = await JSON.parse(fs.readFileSync("data/arenaJumps.json", "utf-8"));
-            Bot.characters = await JSON.parse(fs.readFileSync("data/characters.json", "utf-8"));
-            Bot.charLocs = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
-            Bot.journeyReqs = await JSON.parse(fs.readFileSync("data/journeyReqs.json", "utf-8"));
-            Bot.missions = await JSON.parse(fs.readFileSync("data/missions.json", "utf-8"));
-            Bot.resources = await JSON.parse(fs.readFileSync("data/resources.json", "utf-8"));
-            Bot.raidNames = await JSON.parse(fs.readFileSync("data/raidNames.json", "utf-8"));
-            Bot.ships = await JSON.parse(fs.readFileSync("data/ships.json", "utf-8"));
-            Bot.shipLocs = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json",  "utf-8"));
+            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json",      "utf-8"));
+            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json",    "utf-8"));
+            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json",    "utf-8"));
+            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
+            Bot.journeyReqs  = await JSON.parse(fs.readFileSync("data/journeyReqs.json",   "utf-8"));
+            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json",      "utf-8"));
+            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json",     "utf-8"));
+            Bot.raidNames    = await JSON.parse(fs.readFileSync("data/raidNames.json",     "utf-8"));
+            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json",         "utf-8"));
+            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
 
             Bot.CharacterNames = Bot.characters.map((ch) => {
                 let suffix = "";
@@ -241,8 +248,8 @@ module.exports = (Bot, client) => {
                 return { name: sh.name, defId: sh.uniqueName };
             });
 
-            delete require.cache[require.resolve("../data/help.js")];
-            Bot.help = require("../data/help.js");
+            const {default: help} = await import("../data/help.js");
+            Bot.help = help;
         } catch (err) {
             return { err: err.stack };
         }
@@ -258,9 +265,8 @@ module.exports = (Bot, client) => {
             const langFiles = await readdir(`${process.cwd()}/languages/`);
             for (const file of langFiles) {
                 const langName = file.split(".")[0];
-                const lang = require(`${process.cwd()}/languages/${file}`);
+                const { default: lang } = await import(`${process.cwd()}/languages/${file}`);
                 Bot.languages[langName] = new lang(Bot);
-                delete require.cache[require.resolve(`${process.cwd()}/languages/${file}`)];
             }
         } catch (e) {
             err = e;

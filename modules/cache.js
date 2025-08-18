@@ -1,4 +1,4 @@
-module.exports = (clientMongo) => {
+export default (clientMongo) => {
     const mongo = clientMongo;
 
     return {
@@ -43,7 +43,7 @@ module.exports = (clientMongo) => {
         return saveObjectArray;
     }
 
-    async function get(database, collection, matchCondition, projection) {
+    async function get(database, collection, matchCondition, projection, limit=0) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
@@ -51,6 +51,7 @@ module.exports = (clientMongo) => {
         return await dbo
             .collection(collection)
             .find(matchCondition || {})
+            .limit(limit)
             .project(projection || {})
             .toArray();
     }

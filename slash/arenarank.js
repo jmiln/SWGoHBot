@@ -2,10 +2,10 @@
 // And from community feedback on changes
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0sr
 
-const { ApplicationCommandOptionType } = require("discord.js");
-const Command = require("../base/slashCommand");
+import { ApplicationCommandOptionType } from "discord.js";
+import Command from "../base/slashCommand.js";
 
-class Arenarank extends Command {
+export default class Arenarank extends Command {
     constructor(Bot) {
         super(Bot, {
             name: "arenarank",
@@ -72,5 +72,3 @@ class Arenarank extends Command {
         }
     }
 }
-
-module.exports = Arenarank;
