@@ -1003,6 +1003,24 @@
         "avatarName": "charui_boushh"
     },
     {
+        "name": "Brutus",
+        "uniqueName": "BRUTUS",
+        "aliases": [
+            "Brutus"
+        ],
+        "avatarName": "charui_brutus",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_brutus.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_SCOUNDREL_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "BT-1",
         "uniqueName": "BT1",
         "aliases": [
@@ -5122,6 +5140,25 @@
         "avatarName": "charui_kitfisto"
     },
     {
+        "name": "Kix",
+        "uniqueName": "KIX",
+        "aliases": [
+            "Kix"
+        ],
+        "avatarName": "charui_kix",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kix.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_CLONETROOPER_DESC",
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLEHEALER_DESC",
+            "CATEGORY_SCOUNDREL_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Krrsantan",
         "uniqueName": "KRRSANTAN",
         "aliases": [
@@ -5707,6 +5744,27 @@
             "cross": "Offense"
         },
         "avatarName": "charui_maul_cyborg"
+    },
+    {
+        "name": "Maz Kanata",
+        "uniqueName": "MAZKANATA",
+        "aliases": [
+            "Maz Kanata"
+        ],
+        "avatarName": "charui_mazkanata",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mazkanata.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC",
+            "CATEGORY_SCOUNDREL_DESC",
+            "CATEGORY_SMUGGLER_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Merrin",

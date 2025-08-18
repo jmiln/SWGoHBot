@@ -1,28 +1,27 @@
-const config = require(`${import.meta.dirname}/../config.js`);
+import fs from "node:fs";
+import path from "node:path";
+
+import { inspect } from "node:util";
+import { eachLimit } from "async";
+import { MongoClient } from "mongodb"
+import { FixedQueue, Piscina } from "piscina";
+import config from "../config.js";
+import botCache from "../modules/cache.js";
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
-const { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } = require("../modules/guildConfig/patreonSettings");
-
-const { inspect } = require("node:util");
-const path = require("node:path");
-const fs = require("node:fs");
-
-const { eachLimit } = require("async");
-const { FixedQueue, Piscina } = require("piscina");
-
-const MongoClient = require("mongodb").MongoClient;
+import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.js";
 
 const FORCE_UPDATE = process.argv.includes("--force") || false;
 const DEBUG_LOGS = process.argv.includes("--debug") || false;
 
-const ComlinkStub = require("@swgoh-utils/comlink");
+import ComlinkStub from "@swgoh-utils/comlink";
 
 const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
 const DATA_DIR_PATH            = path.resolve(import.meta.dirname, "../data/");
 const GAMEDATA_DIR_PATH        = path.resolve(import.meta.dirname, "../data/gameDataFiles/");
-const CACHE_FILE_PATH          = path.resolve(import.meta.dirname, "../modules/cache.js");
+// const CACHE_FILE_PATH          = path.resolve(import.meta.dirname, "../modules/cache.js");
 
 const CHAR_FILE_PATH           = path.join(DATA_DIR_PATH, "characters.json");
 const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
@@ -51,10 +50,11 @@ if (!process.env.TESTING_ENV) {
     });
 }
 
+
 async function init() {
     try {
         const mongo = await MongoClient.connect(config.mongodb.url);
-        const cache = require(CACHE_FILE_PATH)(mongo);
+        const cache = botCache(mongo);
         const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
         const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
 
@@ -1596,7 +1596,7 @@ function myTime() {
     }).format(new Date());
 }
 
-module.exports = {
+export default {
     processAbilities,
     processCategories,
     processEquipment,

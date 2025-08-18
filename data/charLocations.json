@@ -502,6 +502,17 @@
         ]
     },
     {
+        "name": "Brutus",
+        "defId": "BRUTUS",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BRUTUS_NAME",
+                "name": "Fortune Favors The Bold I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "BT-1",
         "defId": "BT1",
         "locations": [
@@ -1479,7 +1490,13 @@
     {
         "name": "Ezra Bridger (Exile)",
         "defId": "EZRAEXILE",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Fennec Shand",
@@ -2514,6 +2531,17 @@
         ]
     },
     {
+        "name": "Kix",
+        "defId": "KIX",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_KIX_NAME",
+                "name": "Trouble On The Horizon Iii Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Krrsantan",
         "defId": "KRRSANTAN",
         "locations": [
@@ -2831,6 +2859,11 @@
                 "name": "Proving Grounds Conquest Trials"
             }
         ]
+    },
+    {
+        "name": "Maz Kanata",
+        "defId": "MAZKANATA",
+        "locations": []
     },
     {
         "name": "Merrin",
@@ -3346,6 +3379,11 @@
         "name": "RC-1262 \"Scorch\"",
         "defId": "SCORCH",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "level": "9-D",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_SCORCH_NAME",
@@ -4005,6 +4043,11 @@
         "name": "Temple Guard",
         "defId": "VANGUARDTEMPLEGUARD",
         "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-B",
+                "locId": "HARD_FLEET"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_VANGUARDTEMPLEGUARD_NAME",
