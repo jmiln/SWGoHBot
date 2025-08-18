@@ -122,7 +122,7 @@ export async function clearSupporterInfo({ cache, userId }) {
     }
 
     // Then remove the user info from the previously bonusServer guild
-    const gRemRes = this.removeServerSupporter({ cache, guildId: thisBonusServer, userId });
+    const gRemRes = removeServerSupporter({ cache, guildId: thisBonusServer, userId });
     if (gRemRes.error) resOut.guild = { success: false, error: gRemRes.error };
 
     return resOut;
@@ -184,13 +184,13 @@ export async function ensureBonusServerSet({ cache, userId, amount_cents }) {
     if (!userConf?.bonusServer?.length) return {};
 
     // If they do have one set, try and get that guild's supporter list and make sure they're in there
-    const guildSupArr = await this.getServerSupporters({ cache, guildId: userConf.bonusServer });
+    const guildSupArr = await getServerSupporters({ cache, guildId: userConf.bonusServer });
 
     // The user is already in the guild's supporter array, move on
     if (guildSupArr.filter((sup) => sup.userId === userId)?.length > 0) return {};
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
-    const addServerRes = await this.addServerSupporter({
+    const addServerRes = await addServerSupporter({
         cache,
         guildId: userConf.bonusServer,
         userInfo: {

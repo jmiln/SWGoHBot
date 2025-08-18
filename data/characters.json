@@ -1017,7 +1017,18 @@
             "CATEGORY_ROLEATTACKER_DESC",
             "CATEGORY_SCOUNDREL_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense"
+        },
         "crew": []
     },
     {
@@ -1246,9 +1257,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1468,8 +1479,8 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -1979,9 +1990,9 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -2595,14 +2606,14 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
-                "Crit. Chance x2"
+                "Health x2",
+                "Offense x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense"
         },
         "crew": []
@@ -3513,7 +3524,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Protection"
         },
         "avatarName": "charui_veers"
     },
@@ -4358,9 +4369,9 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -5155,7 +5166,18 @@
             "CATEGORY_ROLEHEALER_DESC",
             "CATEGORY_SCOUNDREL_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        },
         "crew": []
     },
     {
@@ -6703,7 +6725,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Protection"
         },
         "crew": []
@@ -7634,9 +7656,9 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Offense"
         },
