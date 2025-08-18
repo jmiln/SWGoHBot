@@ -1,6 +1,6 @@
-const ComlinkStub = require("@swgoh-utils/comlink");
+import ComlinkStub from "@swgoh-utils/comlink";
 
-module.exports = async ({playerId, modMap, clientStub}) => {
+export default async function ({playerId, modMap, clientStub}) {
     // console.log(`[getStrippedModsWorker] ${playerId}`);
     const comlinkStub = new ComlinkStub(clientStub);
     return await comlinkStub.getPlayer(null, playerId.toString())

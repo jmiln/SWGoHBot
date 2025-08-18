@@ -1,5 +1,5 @@
-const { workerData, parentPort } = require("node:worker_threads");
-// const {langChar} = require("../../modules/swapi.js")(null);
+import { workerData, parentPort } from "node:worker_threads";
+// import {langChar} from "../../modules/swapi.js"(null);
 
 const guildLogOut = [];
 const cacheUpdatesOut = [];

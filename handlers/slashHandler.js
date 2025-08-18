@@ -15,7 +15,7 @@ export default async (Bot, client) => {
                 const { default: command } = await import(path);
                 const cmd = new command(Bot);
                 if (!cmd.commandData.enabled) {
-                    console.error(`${commandName} is not enabled`);
+                    // console.error(`${commandName} is not enabled`);
                     continue;
                 }
                 client.slashcmds.set(cmd.commandData.name, cmd);
@@ -44,7 +44,7 @@ export default async (Bot, client) => {
             const { default: command } = await import(path);
             const cmd = new command(Bot);
             if (!cmd.commandData.enabled) {
-                return `${commandName} is not enabled`;
+                // return `${commandName} is not enabled`;
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
             return false;
