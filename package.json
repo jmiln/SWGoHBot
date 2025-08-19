@@ -32,6 +32,7 @@
     },
     "devDependencies": {
         "@biomejs/biome": "^2.2.0",
+        "@types/async": "^3.2.25",
         "@types/node": "^24.3.0"
     }
 }
