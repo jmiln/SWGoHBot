@@ -1,8 +1,9 @@
 process.env.TESTING_ENV = true;
-const dataUpdater = require("../../services/dataUpdater.js");
 
-const { describe, it } = require("node:test");
-const assert = require("node:assert");
+import assert from "node:assert";
+
+import { describe, it } from "node:test";
+import dataUpdater from "../../services/dataUpdater.js";
 
 const gameData = {
     ability: [

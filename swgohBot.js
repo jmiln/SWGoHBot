@@ -7,7 +7,7 @@ import eventHandler from "./handlers/eventHandler.js";
 import slashHandler from "./handlers/slashHandler.js";
 import cache from "./modules/cache.js";
 import Logger from "./modules/Logger.js";
-import swgohAPI from "./modules/swapi.js";
+import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.js";
 
 const Bot = {};

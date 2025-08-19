@@ -202,7 +202,7 @@ export default (Bot, client) => {
     client.reloadSwapi = async () => {
         let err = null;
         try {
-            const {default: swapi} = await import("../modules/swapi.js");
+            const {default: swapi} = await import("../modules/swapi.ts");
             Bot.swgohAPI = swapi(Bot);
         } catch (e) {
             err = e;

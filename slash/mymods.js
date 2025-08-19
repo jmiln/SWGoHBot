@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "discord.js";
 import Command from "../base/slashCommand.js";
 import emoteStrings from "../data/emoteStrings.js";
-import statEnums from "../data/statEnum.js";
+import statEnums from "../data/statEnum.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 

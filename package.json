@@ -5,7 +5,7 @@
     "main": "swgohBot.js",
     "type": "module",
     "scripts": {
-        "start": "node swgohBotShard.js",
+        "start": "node --experimental-strip-types swgohBotShard.js",
         "test": "node --test ./test/**/*.test.js"
     },
     "author": "Jeffrey Milner",

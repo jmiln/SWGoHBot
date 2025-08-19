@@ -1,15 +1,19 @@
-import { workerData, parentPort } from "node:worker_threads";
+import { parentPort, workerData } from "node:worker_threads";
+
 // import {langChar} from "../../modules/swapi.js"(null);
 
-const guildLogOut = [];
+import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerGuildLog, SWAPIWorkerPlayerLog } from "../../types/swapi_types.ts";
+
+const guildLogOut: SWAPIWorkerGuildLog = {};
 const cacheUpdatesOut = [];
 const defIdList = new Set();
 const skillIdList = new Set();
 
-async function init(workerData) {
+// WorkerData: { oldMembers, updatedBare, specialAbilities, chunkIx }
+async function init(workerData: { oldMembers: SWAPIPlayer[]; updatedBare: SWAPIPlayer[]; specialAbilities: SWAPIUnitAbility[]; chunkIx: number }) {
     if (!workerData?.updatedBare) return null;
     for (const newPlayer of workerData.updatedBare) {
-        const oldPlayer = workerData.oldMembers.find((p) => p.allyCode === newPlayer.allyCode);
+        const oldPlayer = workerData.oldMembers.find((p: SWAPIPlayer) => p.allyCode === newPlayer.allyCode);
         if (!oldPlayer?.roster) {
             // If they've not been in there before, stick em into the db
             cacheUpdatesOut.push({
@@ -25,7 +29,15 @@ async function init(workerData) {
         }
         if (JSON.stringify(oldPlayer.roster) === JSON.stringify(newPlayer.roster)) continue;
 
-        const playerLog = { abilities: [], geared: [], leveled: [], reliced: [], starred: [], unlocked: [], ultimate: [] };
+        const playerLog = {
+            abilities: [],
+            geared: [],
+            leveled: [],
+            reliced: [],
+            starred: [],
+            unlocked: [],
+            ultimate: [],
+        };
 
         // Check through each of the 250ish? units in their roster for differences
         const oldRoster = {};
@@ -34,7 +46,7 @@ async function init(workerData) {
         }
         for (const newUnit of newPlayer.roster) {
             // const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
-            const oldUnit = oldRoster?.[newUnit.defId];
+            const oldUnit: SWAPIUnit = oldRoster?.[newUnit.defId];
             if (!oldUnit) continue;
             if (JSON.stringify(oldUnit) === JSON.stringify(newUnit)) continue;
             if (!oldUnit) {
@@ -124,7 +136,7 @@ async function init(workerData) {
     }
 }
 
-function isPlayerUpdated(playerLog) {
+function isPlayerUpdated(playerLog: SWAPIWorkerPlayerLog) {
     for (const key of Object.keys(playerLog).filter((p) => p !== "name")) {
         if (playerLog[key]?.length) return true;
     }
