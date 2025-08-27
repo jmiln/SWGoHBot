@@ -80,7 +80,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Potency"
         },
@@ -1257,9 +1257,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1930,10 +1930,10 @@
                 "Crit. Chance x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Accuracy",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "crew": []
@@ -3494,7 +3494,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Potency"
         },
         "crew": []
@@ -5232,9 +5232,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_kuiil"
     },
@@ -5467,7 +5467,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -6004,7 +6004,7 @@
         "mods": {
             "sets": [
                 "Offense x4",
-                "Crit. Chance x2"
+                "Potency x2"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -6754,7 +6754,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -6980,11 +6980,11 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_rey_tros"
     },
@@ -8442,6 +8442,36 @@
             "cross": "Health"
         },
         "avatarName": "charui_chewbacca_vandor"
+    },
+    {
+        "name": "Vane",
+        "uniqueName": "VANE",
+        "aliases": [
+            "Vane"
+        ],
+        "avatarName": "charui_vane",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vane.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLETANK_DESC",
+            "CATEGORY_SCOUNDREL_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Critical Avoidance",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Tenacity"
+        },
+        "crew": []
     },
     {
         "name": "Veteran Smuggler Chewbacca",
