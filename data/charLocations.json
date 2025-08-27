@@ -1280,6 +1280,11 @@
         "defId": "DEPABILLABA",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "3-E",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_DEPABILLABA_NAME",
                 "name": "Twilight Of The Jedi Ii Special Marquee Event"
@@ -1534,11 +1539,6 @@
         "name": "Finn",
         "defId": "FINN",
         "locations": [
-            {
-                "type": "Cantina",
-                "level": "3-E",
-                "locId": "CANTINA"
-            },
             {
                 "type": "Guild Activity Store",
                 "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
@@ -4238,6 +4238,17 @@
                 "type": "Hard Modes (D)",
                 "level": "4-D",
                 "locId": "HARD_DARK"
+            }
+        ]
+    },
+    {
+        "name": "Vane",
+        "defId": "VANE",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_VANE_NAME",
+                "name": "Fortune Favors The Bold Ii Special Marquee Event"
             }
         ]
     },
