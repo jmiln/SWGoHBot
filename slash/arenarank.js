@@ -3,7 +3,7 @@
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0sr
 
 import { ApplicationCommandOptionType } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class Arenarank extends Command {
     constructor(Bot) {

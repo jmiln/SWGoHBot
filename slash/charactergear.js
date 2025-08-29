@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class Charactergear extends Command {
     constructor(Bot) {

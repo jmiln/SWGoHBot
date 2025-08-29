@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import factionMap from "../data/factionMap.js";
 
 export default class Faction extends Command {

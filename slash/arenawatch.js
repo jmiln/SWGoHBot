@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 // import {inspect} from "node:util";
 
 export default class ArenaWatch extends Command {

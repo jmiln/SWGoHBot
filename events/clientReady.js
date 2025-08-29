@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 // const checkWSHealth = require("../modules/wsWatcher.js");
 
 export default  {
-    name: "ready",
+    name: "clientReady",
     execute: async (Bot, client) => {
         // Logs that it's up, and some extra info
         client.shard.id = client.shard.ids[0];

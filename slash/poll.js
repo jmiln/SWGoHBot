@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.js";
 
 export default class Poll extends Command {

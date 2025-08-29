@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class Activites extends Command {
     constructor(Bot) {

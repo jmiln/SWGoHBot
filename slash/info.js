@@ -1,5 +1,5 @@
 import { codeBlock, version } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class Info extends Command {
     constructor(Bot) {

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.js";
 
 export default class Shardtimes extends Command {

@@ -1,6 +1,6 @@
 import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class MyCharacter extends Command {
     constructor(Bot) {

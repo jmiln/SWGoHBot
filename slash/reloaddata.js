@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class ReloadData extends Command {
     constructor(Bot) {

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.js";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.js";
 

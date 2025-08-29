@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.js";
 
 export default class UserConf extends Command {

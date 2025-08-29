@@ -1,4 +1,4 @@
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.js";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
 

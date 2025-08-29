@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import unitChecklist from "../data/unitChecklist.js";
 
 // Quick mapping of gp to how many teams are needed

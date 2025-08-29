@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import emoteStrings from "../data/emoteStrings.js";
 
 export default class Character extends Command {

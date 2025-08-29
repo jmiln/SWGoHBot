@@ -1,5 +1,5 @@
 import { codeBlock } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 export default class Modsets extends Command {
     constructor(Bot) {

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import emoteStrings from "../data/emoteStrings.js";
 import statEnums from "../data/statEnum.ts";
 

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class WhoIs extends Command {

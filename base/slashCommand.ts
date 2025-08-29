@@ -1,4 +1,10 @@
-import { codeBlock, MessageFlags } from "discord.js";
+import {
+    type ChatInputCommandInteraction,
+    codeBlock,
+    MessageFlags,
+} from "discord.js";
+import type { SlashEmbedOptions } from "../types/base_types.ts";
+import type { BotType } from "../types/types.ts";
 
 const defCmdData = {
     name: "",
@@ -10,7 +16,11 @@ const defCmdData = {
     permLevel: 0,
 };
 export default class slashCommand {
-    constructor(Bot, commandData = {}) {
+    Bot: BotType;
+    commandData: typeof defCmdData;
+    guildOnly: boolean;
+
+    constructor(Bot: BotType, commandData = {}) {
         this.Bot = Bot;
         this.commandData = {
             ...defCmdData,
@@ -19,11 +29,11 @@ export default class slashCommand {
         this.guildOnly = this.commandData.guildOnly;
     }
 
-    async getUser(interaction, userID, useAuth = false) {
+    async getUser(interaction: ChatInputCommandInteraction, userID: string, useAuth = false) {
         let id = null;
         if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
             // No valid user, so use the message's author as the user
-            id = interaction.author.id;
+            id = interaction.user.id;
         }
 
         // If it still somehow doesn't have a valid userID, return null
@@ -37,7 +47,7 @@ export default class slashCommand {
         }
     }
 
-    async error(interaction, errMsg, options = { ephemeral: true, title: "Error", color: this.Bot.constants.colors.red }) {
+    async error(interaction: ChatInputCommandInteraction, errMsg: string, options = { ephemeral: true, title: "Error", color: this.Bot.constants.colors.red, example: "" }): Promise<void> {
         let msgOut = errMsg || null;
         if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {
@@ -48,48 +58,41 @@ export default class slashCommand {
             return;
         }
 
-        if (options.example) {
+        if (options.example?.length) {
             msgOut += `\n\n**Example:**${codeBlock(options.example)}`;
         }
         await this.embed(interaction, msgOut, options);
     }
 
-    async success(interaction, msgOut, options = {title: "Success", color: this.Bot.constants.colors.green, ephemeral: false}) {
+    async success(interaction: ChatInputCommandInteraction, msgOut: string, options = {title: "Success", color: this.Bot.constants.colors.green, ephemeral: false}) {
         if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
         await this.embed(interaction, msgOut, options);
     }
 
-    async embed(interaction, msgIn, options = {}) {
+    async embed(
+        interaction: ChatInputCommandInteraction,
+        msgIn: string,
+        options: SlashEmbedOptions = {title: "TITLE HERE", color: this.Bot.constants.colors.green, ephemeral: false, footer: "", iconURL: ""}
+    ) {
         let msgOut = msgIn || null;
         if (!interaction?.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
         if (!msgIn) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing outgoing message`);
         if (msgIn?.length > 1900) msgOut = `${msgIn.toString().substring(0, 1900)}...`;
-
-        const title = options.title || "TITLE HERE";
-        const color = options.color;
-        const ephemeral = options.ephemeral || false;
-
-        // If the footer is just a string, put it in the proper object format.
-        let footer = options.footer || "";
-        if (typeof footer === "string") {
-            footer = { text: footer };
-        }
 
         const embedObj = {
             content: null,
             embeds: [
                 {
                     author: {
-                        name: title,
+                        name: options.title,
                         icon_url: options.iconURL || null,
                     },
                     description: msgOut,
-                    color: color,
-                    footer: footer,
+                    color: options.color,
+                    footer: options?.footer ? {text: options.footer} : null,
                 },
             ],
-            flags: ephemeral ? MessageFlags.Ephemeral : null,
         };
 
         // If the interaction has been replied to or deferred, edit the reply
@@ -99,14 +102,16 @@ export default class slashCommand {
             } catch (e) {
                 // If something breaks with the editReply, log it, then just send a message to that channel
                 console.log(`[base/slashCommand Error: ${this.commandData.name}] ${e.message}`);
-                console.log(`[base/slashCommand Message: ${this.commandData.name}] ${interaction?.content}`);
                 return interaction.channel.send(embedObj);
             }
         }
 
         // Otherwise, just reply
-        return interaction.reply(embedObj);
+        return interaction.reply({
+            ...embedObj,
+
+            // Can only set it to be ephemeral if it hasn't been deferred or replied to already
+            flags: options?.ephemeral ? MessageFlags.Ephemeral : null,
+        });
     }
 }
-
-// module.exports = slashCommand;

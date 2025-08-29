@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 
-import Command from "../base/slashCommand.js";
+import Command from "../base/slashCommand.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.js";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
 
