@@ -1,6 +1,6 @@
 import { readdirSync } from "node:fs";
 
-const needsClient = ["error", "ready", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
+const needsClient = ["error", "clientReady", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${import.meta.dirname}/../events/`;
 
 export default async (Bot, client) => {
