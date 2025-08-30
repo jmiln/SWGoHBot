@@ -1,9 +1,13 @@
+import type { BotLanguage, BotType } from "../types/types.ts";
+
 export default class Language {
-    constructor(bot) {
+    Bot: BotType;
+    language: BotLanguage;
+    constructor(bot: BotType) {
         this.Bot = bot;
     }
 
-    get(str, ...args) {
+    get(str: string, ...args: null | (string | number)[]) {
         if (!this.language[str]) {
             const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
             let res = "";
@@ -19,7 +23,6 @@ export default class Language {
             return res;
         }
 
-        // return (args.length > 0 && typeof this.language[str] === "function") ? this.language[str](...args) : this.language[str];
         let res = "";
         try {
             if (!args?.length) {
@@ -33,5 +36,3 @@ export default class Language {
         return res;
     }
 }
-
-// module.exports = Language;

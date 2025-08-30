@@ -1,4 +1,5 @@
 import type { Interaction } from "discord.js";
+import type Language from "../base/Language.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -14,7 +15,21 @@ export interface BotType {
     isAllyCode: (allyCode: string) => boolean;
     isUserID: (userID: string) => boolean;
     constants: BotConstants;
+    languages: {
+        [key: string]: Language;
+    };
+    config: BotConfig;
 }
+
+export interface BotConfig {
+    [key: string]: string | number | boolean | object;
+    defaultSettings: BotDefaultSettings;
+}
+interface BotDefaultSettings {
+    [key: string]: string | number | boolean | object;
+    language: BotLanguage;
+}
+
 
 interface BotConstants {
     // Bot invite
@@ -38,6 +53,3 @@ interface BotConstants {
     OmicronMode: string[]
 }
 
-export interface BotSlashCmd {
-    Bot: BotType
-}

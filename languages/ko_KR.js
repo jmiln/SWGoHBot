@@ -1,4 +1,4 @@
-import Language from "../base/Language.js";
+import Language from "../base/Language.ts";
 
 const DAYSOFWEEK = {
     SUNDAY: {
