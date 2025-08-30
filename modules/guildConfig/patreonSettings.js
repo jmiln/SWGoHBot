@@ -1,7 +1,7 @@
 import config from "../../config.js";
 
 // Grab the tiers data file for use later
-import patreonTiers from "../../data/patreon.js";
+import patreonTiers from "../../data/patreon.ts";
 
 export async function getPatreonSettings({ cache, guildId }) {
     if (!guildId) return {};

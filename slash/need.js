@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import factionMap from "../data/factionMap.js";
+import factionMap from "../data/factionMap.ts";
 
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },

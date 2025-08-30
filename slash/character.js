@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import emoteStrings from "../data/emoteStrings.js";
+import emoteStrings from "../data/emoteStrings.ts";
 
 export default class Character extends Command {
     constructor(Bot) {

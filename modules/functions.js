@@ -248,7 +248,7 @@ export default (Bot, client) => {
                 return { name: sh.name, defId: sh.uniqueName };
             });
 
-            const {default: help} = await import("../data/help.js");
+            const {default: help} = await import("../data/help.ts");
             Bot.help = help;
         } catch (err) {
             return { err: err.stack };

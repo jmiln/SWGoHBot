@@ -1,5 +1,5 @@
 import config from "../../config.js";
-import unitChecklist from "../../data/unitChecklist.js";
+import unitChecklist from "../../data/unitChecklist.ts";
 
 const defaultTWList = {
     "Light Side":       [],

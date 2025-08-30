@@ -33,8 +33,8 @@ Bot.shipLocs = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8"));
 Bot.ships = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
 Bot.timezones = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
 
-import constants from "./data/constants.js";
-import help from "./data/help.js";
+import constants from "./data/constants.ts";
+import help from "./data/help.ts";
 
 Bot.constants = constants;
 Bot.help = help;

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import raids from "../data/raiddmg.js";
+import raids from "../data/raiddmg.ts";
 
 export default class RaidDamage extends Command {
     constructor(Bot) {
