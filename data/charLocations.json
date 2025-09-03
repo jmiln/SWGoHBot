@@ -629,6 +629,11 @@
         "defId": "ITHANO",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "1-A",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_ITHANO_NAME",
                 "name": "Trouble On The Horizon I Special Marquee Event"
@@ -658,6 +663,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINREX_NAME",
                 "name": "The Lost Commander Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Captain Silvo",
+        "defId": "CAPTAINSILVO",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CAPTAINSILVO_NAME",
+                "name": "Fortune Favors The Bold Iii Special Marquee Event"
             }
         ]
     },
