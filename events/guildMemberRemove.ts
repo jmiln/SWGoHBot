@@ -1,10 +1,12 @@
 import { inspect } from "node:util";
+import type { GuildMember } from "discord.js";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.js";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import type { BotClient, BotType } from "../types/types.ts";
 
 export default {
     name: "guildMemberRemove",
-    async execute(Bot, client, member) {
+    async execute(Bot: BotType, client: BotClient, member: GuildMember) {
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: member.guild.id });
 
         if (guildConf.enablePart && guildConf.partMessage?.length && guildConf.announceChan?.length) {

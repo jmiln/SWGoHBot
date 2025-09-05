@@ -1,13 +1,12 @@
-/* eslint no-undef: 0 */
-// const {inspect} = require("util");
 import { io } from "socket.io-client";
+import type { BotClient, BotType, GuildEvent } from "../types/types.ts";
 // const checkWSHealth = require("../modules/wsWatcher.js");
 
 export default  {
     name: "clientReady",
-    execute: async (Bot, client) => {
+    execute: async (Bot: BotType, client: BotClient) => {
         // Logs that it's up, and some extra info
-        client.shard.id = client.shard.ids[0];
+        client.shardId = client.shard.ids[0];
 
         const application = client.application;
         if (!Bot.isMain() && application.botPublic && application.owner.id !== "124579977474736129") {
@@ -27,12 +26,12 @@ export default  {
 
         let readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers.`;
         if (client.shard) {
-            readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers. Shard #${client.shard.id}`;
+            readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers. Shard #${client.shardId}`;
 
             // Connect the sockets and such
             Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`);
             Bot.socket.on("connect", () => {
-                console.log(`  [${client.shard.id}] Connected to EventMgr socket!`);
+                console.log(`  [${client.shardId}] Connected to EventMgr socket!`);
             });
 
             Bot.socket.on('connect_error', err => console.error("[Socket.io connect_error]", err));
@@ -40,11 +39,11 @@ export default  {
             Bot.socket.on('connect_failed', err => console.error("[Socket.io connect_failed]", err));
             Bot.socket.on("disconnect", (reason) => {
                 // The reason of the disconnection, for example "Ping Timeout"
-                console.log(`  [${client.shard.id}] Socket.io disconnected from EventMgr socket! (${reason})`);
+                console.log(`  [${client.shardId}] Socket.io disconnected from EventMgr socket! (${reason})`);
             });
 
             // Start up the client.ws watcher
-            if (client.shard.id === 0) {
+            if (client.shardId === 0) {
                 // Deploy all commands in case anything's been updated (Should just do this manually as needed)
                 // setTimeout(
                 //     async () => {
@@ -86,7 +85,7 @@ export default  {
                                     // Reload all the data files on a timer so it'll catch new changes
                                     if (client.shard?.count > 0) {
                                         client.shard
-                                            .broadcastEval((client) => client.reloadDataFiles())
+                                            .broadcastEval((client: BotClient) => client.reloadDataFiles())
                                             // .then(() => Bot.logger.log("[Ready/ReloadData data] Reloading all data files"))
                                             .catch((err) => console.log(`[Ready/ReloadData data]\n${err}`));
                                     } else {
@@ -102,10 +101,10 @@ export default  {
             }
 
             // If it's the last shard being started, load all the events in
-            if (client.shard.id + 1 === client.shard.count) {
+            if (client.shardId + 1 === client.shard.count) {
                 setInterval(
                     () => {
-                        Bot.socket.emit("checkEvents", (eventsList) => {
+                        Bot.socket.emit("checkEvents", (eventsList: GuildEvent[]) => {
                             if (eventsList.length) {
                                 Bot.manageEvents(eventsList);
                             }
@@ -118,13 +117,15 @@ export default  {
 
         Bot.logger.log(readyString, "ready", true);
 
-        // console.log(`  [${client.shard.id}] Starting wsWatcher`);
+        // console.log(`  [${shardId}] Starting wsWatcher`);
         // await checkWSHealth(client);
 
         // Sets the status as the current server count and help command
         const playingString = "swgohbot.com";
         try {
-            client.user.setPresence({ activity: { name: playingString, type: 0 } });
+            client.user.setPresence({ activities: [
+                { name: playingString, type: 0 },
+            ]});
         } catch (err) {
             console.log(`[READY] Error when setting presence.\n${err}`);
         }

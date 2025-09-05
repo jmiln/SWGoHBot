@@ -1,9 +1,11 @@
 import { inspect } from "node:util";
+import type { GuildMember } from "discord.js";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import type { BotClient, BotType } from "../types/types.ts";
 
 export default {
     name: "guildMemberAdd",
-    execute: async (Bot, client, member) => {
+    execute: async (Bot: BotType, client: BotClient, member: GuildMember) => {
         // This executes when a member joins, so let's welcome them!
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: member.guild.id });
 

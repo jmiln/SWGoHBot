@@ -1,7 +1,8 @@
 import { inspect } from "node:util";
 import { MessageFlags } from "discord.js";
-import { getGuildAliases } from "../modules/guildConfig/aliases.js";
+import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
 
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
@@ -17,7 +18,7 @@ const ignoreArr = [
 
 export default {
     name: "interactionCreate",
-    execute: async (Bot, client, interaction) => {
+    execute: async (Bot: BotType, client: BotClient, interaction: BotInteraction) => {
         // If it's not a command, don't bother trying to do anything
         if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
 
@@ -48,11 +49,10 @@ export default {
 
             // Load the language file for whatever language they have set
             const user = await Bot.userReg.getUser(interaction.user.id);
-            interaction.guildSettings.selectedLanguage = user?.lang?.language || Bot.config.defaultSettings.language;
+            const selectedLanguage = user?.lang?.language || Bot.config.defaultSettings.language;
             interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
-            interaction.language =
-                Bot.languages[interaction.guildSettings.selectedLanguage] || Bot.languages[Bot.config.defaultSettings.language];
+            interaction.language = Bot.languages[selectedLanguage] || Bot.languages[Bot.config.defaultSettings.language];
             interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
 
             // Run the command
@@ -86,22 +86,22 @@ export default {
                     );
                 }
 
-                const replyObj = {
-                    content: `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`,
-                    flags: MessageFlags.Ephemeral,
-                };
+                const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`;
                 if (interaction.replied) {
                     return interaction
-                        .followUp(replyObj)
+                        .followUp({content: replyContent})
                         .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
                 }
                 if (interaction.deferred) {
                     return interaction
-                        .editReply(replyObj)
+                        .editReply({content: replyContent})
                         .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
                 }
                 return interaction
-                    .reply(replyObj)
+                    .reply({
+                        content: replyContent,
+                        flags: MessageFlags.Ephemeral,
+                    })
                     .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
             }
         } else if (interaction.isAutocomplete()) {
@@ -176,7 +176,7 @@ export default {
                     // Otherwise, print out what I can about it
                     if (typeof err !== "string") {
                         logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
-                        console.error(interaction?.options?._hoistedOptions || interaction?.options);
+                        console.error(interaction?.options);
                         console.error(err);
                     } else {
                         logErr(err);
@@ -185,7 +185,7 @@ export default {
             }
         }
 
-        function filterAutocomplete(arrIn, search) {
+        function filterAutocomplete(arrIn: {isAlias?: boolean, defId?: string, alias?: string, name: string, aliases: string[]}[], search: string) {
             const searchTerm = search?.toLowerCase() || "";
             let filtered = arrIn.filter((unit) => {
                 if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(searchTerm);
@@ -203,7 +203,7 @@ export default {
             return filtered;
         }
 
-        function logErr(errStr, useWebhook = false) {
+        function logErr(errStr: string, useWebhook = false) {
             if (ignoreArr.some((str) => errStr.toString().includes(str))) return;
             Bot.logger.error(errStr, useWebhook);
         }
