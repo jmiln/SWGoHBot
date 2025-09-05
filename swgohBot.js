@@ -6,7 +6,7 @@ import config from "./config.js";
 import eventHandler from "./handlers/eventHandler.js";
 import slashHandler from "./handlers/slashHandler.js";
 import cache from "./modules/cache.js";
-import Logger from "./modules/Logger.js";
+import Logger from "./modules/Logger.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.js";
 

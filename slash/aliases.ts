@@ -1,10 +1,14 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type ChatInputCommandInteraction,
+} from "discord.js";
 import Command from "../base/slashCommand.ts";
 
-import { getGuildAliases, setGuildAliases } from "../modules/guildConfig/aliases.js";
+import { getGuildAliases, setGuildAliases } from "../modules/guildConfig/aliases.ts";
+import type { BotType } from "../types/types.ts";
 
 export default class Aliases extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "aliases",
             description: "Set custom aliases for your guild to use",
@@ -53,7 +57,7 @@ export default class Aliases extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: ChatInputCommandInteraction) {
         const action = interaction.options.getSubcommand();
         const searchUnit = interaction.options.getString("unit");
         const alias = interaction.options.getString("alias");

@@ -8,14 +8,14 @@ export default async (Bot, client) => {
     const slashError = [];
     for (const file of slashFiles) {
         try {
-            if (!file.endsWith(".js")) return;
-            const commandName = file.split(".")[0];
+            if (!file.endsWith(".js") && !file.endsWith(".ts")) return;
+            const [commandName, ext, ..._]  = file.split(".");
             try {
-                const path = `${slashDir}${commandName}.js`;
+                const path = `${slashDir}${commandName}.${ext}`;
                 const { default: command } = await import(path);
                 const cmd = new command(Bot);
                 if (!cmd.commandData.enabled) {
-                    // console.error(`${commandName} is not enabled`);
+                    console.error(`${commandName} is not enabled`);
                     continue;
                 }
                 client.slashcmds.set(cmd.commandData.name, cmd);
@@ -44,7 +44,7 @@ export default async (Bot, client) => {
             const { default: command } = await import(path);
             const cmd = new command(Bot);
             if (!cmd.commandData.enabled) {
-                // return `${commandName} is not enabled`;
+                return `${commandName} is not enabled`;
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
             return false;

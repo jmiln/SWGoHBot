@@ -1,10 +1,11 @@
 import {
+    type AutocompleteFocusedOption,
     type ChatInputCommandInteraction,
     codeBlock,
     MessageFlags,
 } from "discord.js";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
-import type { BotType } from "../types/types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 const defCmdData = {
     name: "",
@@ -19,6 +20,9 @@ export default class slashCommand {
     Bot: BotType;
     commandData: typeof defCmdData;
     guildOnly: boolean;
+
+    // Only really in setconf
+    autocomplete?: (Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) => Promise<void>;
 
     constructor(Bot: BotType, commandData = {}) {
         this.Bot = Bot;

@@ -1,14 +1,19 @@
+import type { BotClient, BotType } from "../types/types.ts";
+
 /*
     Logger class for easy and aesthetically pleasing console logging
     Based off of https://github.com/AnIdiotsGuide/guidebot-class/blob/master/modules/Logger.js
 */
 class Logger {
-    constructor(Bot, client) {
+    Bot: BotType;
+    client: BotClient;
+
+    constructor(Bot: BotType, client: BotClient) {
         this.Bot = Bot;
         this.client = client;
     }
-    log(content, type = "log", webhook = false) {
-        const shard = this.client?.shard?.id > -1 ? ` (${this.client.shard.id})` : "";
+    log(content: string, type = "log", webhook = false) {
+        const shard = this.client?.shardId > -1 ? ` (${this.client.shardId})` : "";
         const time = Intl.DateTimeFormat("en", {
             day: "numeric",
             month: "numeric",

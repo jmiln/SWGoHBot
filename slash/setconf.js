@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import typedDefaultSettings from "../config.js";
-import { getGuildAliases } from "../modules/guildConfig/aliases.js";
+import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.js";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.js";
 
