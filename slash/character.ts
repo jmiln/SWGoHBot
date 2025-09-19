@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import emoteStrings from "../data/emoteStrings.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Character extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "character",
             guildOnly: false,
@@ -20,7 +21,7 @@ export default class Character extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const charList = Bot.characters;
 
         const searchName = interaction.options.getString("character");

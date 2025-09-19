@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Activites extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "activities",
             description: "Shows daily guild activities",
@@ -13,41 +14,20 @@ export default class Activites extends Command {
                     type: ApplicationCommandOptionType.String,
                     description: "Day of the week",
                     choices: [
-                        {
-                            name: "Sunday",
-                            value: "day_Sunday",
-                        },
-                        {
-                            name: "Monday",
-                            value: "day_Monday",
-                        },
-                        {
-                            name: "Tuesday",
-                            value: "day_Tuesday",
-                        },
-                        {
-                            name: "Wednesday",
-                            value: "day_Wednesday",
-                        },
-                        {
-                            name: "Thursday",
-                            value: "day_Thursday",
-                        },
-                        {
-                            name: "Friday",
-                            value: "day_Friday",
-                        },
-                        {
-                            name: "Saturday",
-                            value: "day_Saturday",
-                        },
+                        { name: "Sunday", value: "day_Sunday" },
+                        { name: "Monday", value: "day_Monday" },
+                        { name: "Tuesday", value: "day_Tuesday" },
+                        { name: "Wednesday", value: "day_Wednesday" },
+                        { name: "Thursday", value: "day_Thursday" },
+                        { name: "Friday", value: "day_Friday" },
+                        { name: "Saturday", value: "day_Saturday" },
                     ],
                 },
             ],
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
 
         let day = interaction.options.getString("day");

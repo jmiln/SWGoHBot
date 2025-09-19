@@ -35,4 +35,11 @@ export default class Language {
         }
         return res;
     }
+
+    getDay(day: string, type: string) {
+        return this.getDay(day, type);
+    }
+    getTime(time: string, type: string) {
+        return this.getTime(time, type);
+    }
 }

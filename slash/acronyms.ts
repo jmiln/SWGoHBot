@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 const usageExample = "/acronyms acronym:CLS";
 
@@ -8,7 +9,7 @@ const usageExample = "/acronyms acronym:CLS";
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
 export default class Acronyms extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "acronyms",
             description: "Show what common acronyms mean",
@@ -24,7 +25,7 @@ export default class Acronyms extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const acronymsLookup = Bot.acronyms;
         const acronyms = Object.keys(acronymsLookup);
 

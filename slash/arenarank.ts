@@ -4,9 +4,10 @@
 
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Arenarank extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "arenarank",
             guildOnly: false,
@@ -26,7 +27,7 @@ export default class Arenarank extends Command {
         });
     }
 
-    run(Bot, interaction) {
+    run(Bot: BotType, interaction: BotInteraction) {
         const currentRank = interaction.options.getInteger("rank");
         const rankHops = interaction.options.getInteger("hops") || 5;
         if (Number.isNaN(currentRank) || !currentRank) {
@@ -63,12 +64,10 @@ export default class Arenarank extends Command {
             ),
         });
 
-        function findNextRank(currentRank) {
+        function findNextRank(currentRank: number) {
             const rankStr = currentRank.toString();
-            if (Bot.arenaJumps[rankStr]) {
-                return Bot.arenaJumps[rankStr];
-            }
-            return Math.floor(rankStr * 0.85);
+            const jump = Bot.arenaJumps?.[rankStr] || null;
+            return jump || Math.floor(Number.parseInt(rankStr, 10) * 0.85);
         }
     }
 }

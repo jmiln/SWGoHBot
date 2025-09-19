@@ -1,10 +1,11 @@
-import type { BaseInteraction, Client, Collection, Guild, Interaction } from "discord.js";
+import type { ChatInputCommandInteraction, Client, Collection, Guild, Interaction } from "discord.js";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
+import type { SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -12,15 +13,15 @@ export interface PlayerCooldown {
 }
 
 export type BotLanguage = "en_US" | "de_DE" | "es_SP" | "ko_KR" | "pt_BR";
-export type swgohLanguage = "ENG_US" | "GER_DE" | "SPA_XM" | "FRE_FR" | "RUS_RU" | "POR_BR" | "KOR_KR" | "ITA_IT" | "TUR_TR" | "CHS_CN" | "CHT_CN" | "IND_ID" | "JPN_JP" | "THA_TH";
 export type UnitSide = "light" | "dark";
 
 // All the mess we cram into the Bot object
 // - Should probably just make em get imported as needed instead
 export interface BotType {
     // Basic utility functions
-    getAllyCode: (message: Interaction, userId: string, useMessageId?: boolean) => Promise<string[]>
-    isAllyCode: (allyCode: string) => boolean;
+    getAllyCode: (message: Interaction, userId: string, useMessageId?: boolean) => Promise<string>
+    isAllyCode: (allyCode: string | number) => boolean;
+    isUserMention: (userMention: string) => boolean;
     isUserID: (userID: string) => boolean;
     isMain: () => boolean;
     toProperCase(strIn: string): string;
@@ -31,49 +32,16 @@ export interface BotType {
     shardTimes: () => number;
     guildTickets: () => string[];
     guildsUpdate: () => void;
+    getPatronUser: (userId: string) => PatronUser;
+    getPlayerCooldown: (userId: string, guildId: string) => PlayerCooldown;
 
     // Scheduled events
     manageEvents: (eventsList: object[]) => void;
     sendWebhook: (webhookURL: string, data: object) => void;
 
     // Game strings
-    characters: {
-        uniqueName: string;
-        name: string;
-        aliases: string[];
-        url: string;
-        avatarURL: string;
-        side: UnitSide;
-        factions: string[];
-        mods: {
-            sets: string[];
-            square: string;
-            arrow: string;
-            diamond: string;
-            triangle: string;
-            circle: string;
-            cross: string;
-        },
-        avatarName: string;
-    }[];
-    ships: {
-        uniqueName: string;
-        name: string;
-        aliases: string[];
-        crew: string[];
-        url: string;
-        avatarURL: string;
-        side: UnitSide;
-        factions: string[];
-        abilities: {
-            [key: string]: {
-                type: string;
-                abilityCooldown: string;
-                abilityDesc: string;
-            }
-        },
-        avatarName: string;
-    }[]
+    characters: Character[];
+    ships: Ship[]
     journeyNames: {
         defId: string;
         name: string;
@@ -89,7 +57,33 @@ export interface BotType {
         defId: string;
         aliases: GuildAlias[]
     }[];
+    acronyms: {
+        [key: string]: string;
+    };
+    arenaJumps: {
+        [key: string]: number;
+    };
 
+    // swapi functs
+    swgohAPI: {
+        unitStats: (
+            allyCodes: string | string[] | number | number[],
+            cooldown?: PlayerCooldown,
+            options?: {force?: boolean, defId?: string}
+        ) => SWAPIPlayer[];
+        getCharacter: (defId: string, lang?: SWAPILang) => SWAPIUnit;
+    };
+    findChar: (searchName: string, charList: Unit | Unit[]) => Unit[];
+
+    getSideColor: (side: UnitSide) => number;
+
+    // util functions
+    msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
+    expandSpaces: (strIn: string) => string;
+    updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
+
+    getCurrentWeekday: (timezone?: string) => string;
+    toProperCase: (strIn: string) => string;
     logger: Logger;
     cache: Cache;
     userReg: UserReg;
@@ -103,6 +97,39 @@ export interface BotType {
     socket: Socket;
 }
 
+// Local units from the json files
+export interface Unit {
+    uniqueName: string;
+    name: string;
+    aliases: string[];
+    url: string;
+    avatarURL: string;
+    side: UnitSide;
+    factions: string[];
+    avatarName: string;
+
+    // For Characters only
+    mods?: {
+        sets: string[];
+        square: string;
+        arrow: string;
+        diamond: string;
+        triangle: string;
+        circle: string;
+        cross: string;
+    };
+
+    // For Ships only
+    crew?: string[];
+    abilities?: {
+        [key: string]: {
+            type: string;
+            abilityCooldown: string;
+            abilityDesc: string;
+        }
+    };
+}
+
 export interface BotClient extends Client {
     shardId: number;
     slashcmds: Collection<string, slashCommand>;
@@ -110,10 +137,10 @@ export interface BotClient extends Client {
     announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
 }
 
-export interface BotInteraction extends BaseInteraction {
+export interface BotInteraction extends ChatInputCommandInteraction {
     guildSettings: BotDefaultSettings;
     language: Language;
-    swgohLanguage: swgohLanguage;
+    swgohLanguage: SWAPILang;
 }
 
 export interface BotConfig {
@@ -122,6 +149,9 @@ export interface BotConfig {
     eventServe: {
         port: number;
     };
+    mongodb: {
+        swapidb: string;
+    }
     logs: {
         logToChannel: boolean;
     }
@@ -138,7 +168,7 @@ interface BotDefaultSettings {
     announceChan: string;
     eventCountdown: number[];
     language: BotLanguage;
-    swgohLanguage: swgohLanguage;
+    swgohLanguage: SWAPILang;
     shardtimeVertical: boolean;
 }
 
@@ -190,4 +220,94 @@ export interface GuildAlias {
     alias: string;
     defId: string;
     name: string;
+}
+
+interface PatronUser {
+    guild: string;
+    userId: string;
+    playerTime: number;
+    guildTime: number;
+    awAccounts: number;
+    discordID: string;
+    amount_cents: number;
+}
+interface PatreonTier {
+    playerTime: number;
+    guildTime: number;
+    awAccounts: number;
+}
+
+export interface UserConfig {
+    id: string;
+    accounts: UserAcct[];
+    defaults: object;
+    arenaAlert: {
+        enableRankDMs: string;
+        arena: string;
+        payoutWarning: number;
+        enablePayoutResult: boolean;
+    };
+    updated: number;
+    lang: {
+        language: BotLanguage;
+        swgohLanguage: SWAPILang;
+    };
+    arenaWatch: {
+        enabled: boolean;
+        allycodes: ArenaWatchAcct[];
+        channel?: string;
+        arena: {
+            fleet?: {channel: string, enabled: boolean}
+            char?: {channel: string, enabled: boolean}
+        };
+        payout: {
+            char: {enabled: boolean, channel: string, msgID: string};
+            fleet: {enabled: boolean, channel: string, msgID: string};
+        }
+        useEmotesInLog?: boolean;
+        useMarksInLog?: boolean;
+        report: string;
+        showvs: boolean
+    };
+    guildUpdate: {
+        enabled: boolean;
+        channel: string;
+        allycode: number;
+        sortBy: string;
+    };
+    username: string;
+    guildTickets: {
+        enabled: boolean;
+        channel: string;
+        allycode: number;
+        sortBy: string;
+        msgId: string;
+        tickets: number;
+        updateType: string;
+        nextChallengesRefresh: string;
+        showMax: boolean;
+    };
+    bonusServer: string;
+}
+interface UserAcct {
+    allyCode: string;
+    name: string;
+    primary: boolean;
+    lastCharRank: number;
+    lastCharClimb: number;
+    lastShipRank: number;
+    lastShipClimb: number
+}
+interface ArenaWatchAcct {
+    allyCode: number;
+    name: string;
+    mention: string;
+    lastChar: number;
+    lastShip: number;
+    poOffset: number;
+    mark?: string;
+    warn?: {min?: number, arena?: string}
+    result?: string;
+    lastCharChange?: number;
+    lastShipChange?: number;
 }

@@ -51,7 +51,12 @@ export default class slashCommand {
         }
     }
 
-    async error(interaction: ChatInputCommandInteraction, errMsg: string, options = { ephemeral: true, title: "Error", color: this.Bot.constants.colors.red, example: "" }): Promise<void> {
+    async error(interaction: ChatInputCommandInteraction, errMsg: string, options: {ephemeral?: boolean; title?: string; color?: number; example?: string} = {
+        ephemeral: true,
+        title: "Error",
+        color: this.Bot.constants.colors.red,
+        example: "",
+    }): Promise<void> {
         let msgOut = errMsg || null;
         if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {

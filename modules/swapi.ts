@@ -174,6 +174,7 @@ export default (opts = {noop: false}) => {
                         poUTCOffsetMinutes: p.localTimeZoneOffsetMinutes,
                     };
                 }
+                return null;
             })
             .filter((p) => !!p);
     }
@@ -450,7 +451,7 @@ export default (opts = {noop: false}) => {
                 .map((unit) => {
                     const thisDefId = unit.definitionId.split(":")[0];
                     const thisUnit = unitMap[thisDefId];
-                    if (!thisUnit?.nameKey) return;
+                    if (!thisUnit?.nameKey) return null;
                     return {
                         id: unit.id,
                         defId: thisDefId,
@@ -695,8 +696,10 @@ export default (opts = {noop: false}) => {
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
-    async function getCharacter(defId: string, lang: SWAPILang) {
+    async function getCharacter(defId: string, lang: SWAPILang = "eng_us") {
+        // Make sure it's lowercase
         const thisLang: SWAPILang = (lang ? lang.toLowerCase() : "eng_us") as SWAPILang;
+
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
 
         const char = await character(defId);

@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType, Unit } from "../types/types.ts";
 
 export default class Charactergear extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "charactergear",
             description: "Show the gear required for a specified character",
@@ -36,7 +38,7 @@ export default class Charactergear extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         // Grab the various options
         const doExpand = interaction.options.getBoolean("expand");
         const gearLvl = interaction.options.getInteger("gearlevel") || 0;
@@ -56,7 +58,7 @@ export default class Charactergear extends Command {
 
         const chars = Bot.findChar(searchChar, Bot.characters);
 
-        let character;
+        let character: Unit;
         if (!chars.length) {
             return interaction.channel.send({ content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
         }
@@ -103,7 +105,7 @@ export default class Charactergear extends Command {
                 } else {
                     const sortedGear = Object.keys(allGear).sort((a, b) => {
                         let aNum = Number.parseInt(a.split(" ")[1], 10);
-                        let bNum = Number.parseInt(b.split(" ")[1]);
+                        let bNum = Number.parseInt(b.split(" ")[1], 10);
                         if (Number.isNaN(aNum)) aNum = 0;
                         if (Number.isNaN(bNum)) bNum = 0;
 
@@ -130,7 +132,7 @@ export default class Charactergear extends Command {
                 const gearList = char.unitTierList.filter((t) => t.tier >= gearLvl);
                 const fields = [];
                 for (const g of gearList) {
-                    let f;
+                    let f: { name: string; value: string };
                     if (doExpand) {
                         const out = await expandPieces(Bot, g.equipmentSetList);
                         const outK = Object.keys(out).sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10));
@@ -152,6 +154,7 @@ export default class Charactergear extends Command {
                     }
                 }
                 return interaction.reply({
+                    content: null,
                     embeds: [
                         {
                             color: Bot.getSideColor(character.side),
@@ -168,8 +171,9 @@ export default class Charactergear extends Command {
         } else {
             // Looking for a player's remaining needed gear
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-            let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            let player: SWAPIPlayer;
+            const playerArr = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            if (Array.isArray(player)) player = playerArr[0];
 
             if (!player?.roster) {
                 return super.error(
@@ -233,7 +237,7 @@ export default class Charactergear extends Command {
                     }
                 }
             }
-            if (player.warnings) {
+            if (player.warnings?.length) {
                 fields.push({
                     name: "Warnings",
                     value: player.warnings.join("\n"),
@@ -258,7 +262,7 @@ export default class Charactergear extends Command {
                     ],
                 });
             }
-            const half = Number.parseInt(fields.length / 2, 10);
+            const half = Math.floor(fields.length / 2);
             await interaction.reply({
                 embeds: [
                     {
@@ -284,7 +288,7 @@ export default class Charactergear extends Command {
     }
 }
 
-async function expandPieces(Bot, list) {
+async function expandPieces(Bot: BotType, list: string[]) {
     let end = [];
     for (const piece of list) {
         const gr = await Bot.cache.get(
@@ -319,11 +323,12 @@ async function expandPieces(Bot, list) {
     return out;
 }
 
-async function getParts(Bot, gr, partList = [], amt = 1) {
+// gr is gear recipe?
+async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: {name: string, count: number, mark: string}[] = [], amt = 1) {
     if (!gr) return [];
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {
-        let rec = await Bot.cache.get(
+        const recArr: SWAPIRecipe = await Bot.cache.get(
             Bot.config.mongodb.swapidb,
             "recipes",
             {
@@ -331,15 +336,15 @@ async function getParts(Bot, gr, partList = [], amt = 1) {
                 language: "eng_us",
             },
             {
-                ingredientsList: 1,
+                ingredients: 1,
                 _id: 0,
             },
         );
-        if (Array.isArray(rec)) rec = rec[0];
+        const rec = recArr[0];
         if (!rec) return [];
-        if (!Array.isArray(rec) && !rec?.ingredientsList) return [];
-        if (rec?.ingredientsList) rec = rec.ingredientsList.filter((r) => r.id !== "GRIND");
-        for (const r of rec) {
+        if (!Array.isArray(rec) && !rec?.ingredients) return [];
+        const thisRec = rec.ingredients.filter((r: SWAPIIngredient) => r.id !== "GRIND");
+        for (const r of thisRec) {
             const gear = await Bot.cache.get(
                 Bot.config.mongodb.swapidb,
                 "gear",

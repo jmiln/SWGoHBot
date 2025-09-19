@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "arenaalert",
             description: "Change settings for your arena alerts",
@@ -72,8 +73,7 @@ export default class ArenaAlert extends Command {
         });
     }
 
-    async run(Bot, interaction) {
-        // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction) {
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");

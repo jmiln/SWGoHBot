@@ -15,6 +15,9 @@ export interface SWAPIPlayer {
     arena?: SWAPIPlayerArena;
     lastActivity: number;
 
+    // Extra that's added occasionally before sending out
+    warnings?: string[];
+
     // DB Updated timestamps
     updated?: number;
     updatedAt?: Date;
@@ -121,6 +124,10 @@ export interface SWAPIUnit {
     player?: string;  // Player name
     allyCode?: number;
     updated?: number;
+    unitTierList?: {
+        tier: number,
+        equipmentSetList: string[]
+    }[];
 }
 
 export interface ComlinkUnit {
@@ -337,6 +344,10 @@ export interface SWAPIGear {
     id: string;
     language: SWAPILang;
     mark: string;
+    nameKey: string;
+    recipeId: string;
+}
+export interface SWAPIGearRecipe {
     nameKey: string;
     recipeId: string;
 }

@@ -1,9 +1,11 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 // import {inspect} from "node:util";
 
 export default class ArenaWatch extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "arenawatch",
             guildOnly: false,
@@ -399,14 +401,14 @@ export default class ArenaWatch extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: BotType, interaction: BotInteraction, options: {level: number}) {
         let target = interaction.options.getSubcommandGroup(false);
         if (!target) target = interaction.options.getSubcommand();
 
         let cmdOut = null;
         const outLog = [];
 
-        const user = await Bot.userReg.getUser(interaction.user.id);
+        const user: UserConfig = await Bot.userReg.getUser(interaction.user.id);
         if (!user) return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
 
         const pat = await Bot.getPatronUser(interaction.user.id);
@@ -454,8 +456,8 @@ export default class ArenaWatch extends Command {
         if (!aw.report) aw.report = "both";
         if (aw.showvs !== true && aw.showvs !== false) aw.showvs = true;
         if (aw.channel && (!aw.arena.fleet || !aw.arena.char)) {
-            const flEnabled = !!["fleet", "both"].includes(aw.arena);
-            const chEnabled = !!["char", "both"].includes(aw.arena);
+            const flEnabled = !!["fleet", "both"].includes(aw.report);
+            const chEnabled = !!["char", "both"].includes(aw.report);
             aw.arena = {};
             aw.arena.fleet = {
                 channel: aw.channel,
@@ -467,7 +469,7 @@ export default class ArenaWatch extends Command {
             };
         }
 
-        function getAcMention(code) {
+        function getAcMention(code: string): [number, string] {
             let [ac, mention] = code.split(":");
             if (!Bot.isAllyCode(ac)) throw new Error(`Invalid code (${ac})!`);
             ac = ac.replace(/[^\d]/g, "");
@@ -476,13 +478,13 @@ export default class ArenaWatch extends Command {
             return [Number.parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players, code, isEdit = false) {
+        function checkPlayer(players: SWAPIPlayer[], code: {code: number, mention?: string}, isEdit = false) {
             if (!players) throw new Error("Missing players in checkPlayer");
-            const player = players.find((p) => Number.parseInt(p.allyCode, 10) === Number.parseInt(code.code, 10));
+            const player = players.find((p) => p.allyCode === code.code);
             if (!player) {
                 throw new Error(`Could not find ${code.code}, invalid code`);
             }
-            if (aw.allycodes.find((usercode) => Number.parseInt(usercode.allyCode, 10) === Number.parseInt(code.code, 10))) {
+            if (aw.allycodes.find((usercode) => usercode.allyCode === code.code)) {
                 throw new Error(
                     `${code.code} was already in the list. If you're trying to change something, try using the \`/arenawatch allycode edit\` command`,
                 );
@@ -664,8 +666,8 @@ export default class ArenaWatch extends Command {
                     const codes = [];
 
                     for (const code of codesIn) {
-                        let ac;
-                        let mention;
+                        let ac: number;
+                        let mention: string;
                         try {
                             [ac, mention] = getAcMention(code);
                             if (!Bot.isAllyCode(ac)) {
@@ -678,7 +680,7 @@ export default class ArenaWatch extends Command {
                         }
 
                         codes.push({
-                            code: Number.parseInt(ac, 10),
+                            code: ac,
                             mention: mention,
                         });
                     }
@@ -698,7 +700,7 @@ export default class ArenaWatch extends Command {
                         );
                     }
                     for (const c of codes) {
-                        let player;
+                        let player: SWAPIPlayer;
                         try {
                             player = checkPlayer(players, c);
                         } catch (e) {
@@ -726,13 +728,13 @@ export default class ArenaWatch extends Command {
                         return super.error(interaction, `${oldCode} is not a valid ally code.`);
                     }
                     // Clean it up, make sure it's correctly formatted
-                    oldCode = Bot.getAllyCode(interaction, oldCode);
+                    oldCode = await Bot.getAllyCode(interaction, oldCode);
                     if (!oldCode) {
                         return super.error(interaction, "Sorry, but that was not a valid ally code");
                     }
 
-                    let ac;
-                    let mention;
+                    let ac: number;
+                    let mention: string;
                     try {
                         [ac, mention] = getAcMention(newCode);
                     } catch (e) {
@@ -742,9 +744,9 @@ export default class ArenaWatch extends Command {
                     // Check if the specified code is available to edit
                     // If not, just add it in fresh
                     // If so, delte it then add it back
-                    const exists = aw.allycodes.find((p) => p.allyCode === oldCode);
+                    const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(oldCode, 10));
                     if (exists) {
-                        aw.allycodes = aw.allycodes.filter((p) => Number.parseInt(p.allyCode, 10) !== Number.parseInt(oldCode, 10));
+                        aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== Number.parseInt(oldCode, 10));
                     }
                     let player = null;
                     try {
@@ -776,10 +778,9 @@ export default class ArenaWatch extends Command {
                     // Some checks before getting to the logic
                     if (!codesIn.length) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
 
-                    for (let code of codesIn) {
-                        code = code.replace(/[^\d]/g, "");
-                        code = Number.parseInt(code, 10);
-                        const codes = aw.allycodes.filter((ac) => ac.allyCode !== code);
+                    for (const code of codesIn) {
+                        const thisCode = Number.parseInt(code.replace(/[^\d]/g, ""), 10);
+                        const codes = aw.allycodes.filter((ac) => ac.allyCode !== thisCode);
                         if (!codes?.length) return super.error(interaction, "That ally code was not available to be removed");
 
                         aw.allycodes = codes;
@@ -810,24 +811,23 @@ export default class ArenaWatch extends Command {
             case "warn": {
                 // ;aw warn 123123123 <# of min> <none|both|char|fleet>
                 const code = interaction.options.getString("allycode");
-                let mins = interaction.options.getInteger("mins");
+                const mins = interaction.options.getInteger("mins");
                 const arena = interaction.options.getString("arena");
 
                 if (!Bot.isAllyCode(code)) {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
 
-                mins = Number.parseInt(mins, 10);
                 if (!mins || mins <= 0) {
                     return super.error(interaction, "Invalid minute count. Only values of 1 and above are valid.", {
                         example: "aw warn 123123123 30 both",
                     });
                 }
 
-                const exists = aw.allycodes.find((p) => Number.parseInt(p.allyCode, 10) === Number.parseInt(code, 10));
+                const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(code, 10));
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter((p) => Number.parseInt(p.allyCode, 10) !== Number.parseInt(code, 10));
+                aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
 
                 if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
                 exists.warn = {
@@ -846,10 +846,10 @@ export default class ArenaWatch extends Command {
                     return super.error(interaction, `Invalid ally code (${code})`);
                 }
 
-                const exists = aw.allycodes.find((p) => p.allyCode === code);
+                const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(code, 10));
                 if (!exists) return super.error(interaction, "That ally code is not in your list.");
 
-                aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== code);
+                aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
                 exists.result = arena === "none" ? null : arena;
                 aw.allycodes.push(exists);
                 break;
@@ -869,8 +869,8 @@ export default class ArenaWatch extends Command {
 
                 if (!allycode) {
                     // If there's any ally codes in the array, go ahead and format them
-                    let ac = aw.allycodes.length ? aw.allycodes : [];
-                    ac = ac
+                    const ac = aw.allycodes.length ? aw.allycodes : [];
+                    const acOut = ac
                         // Sort by name
                         .sort((a, b) => {
                             if (!view_by) {
@@ -882,6 +882,7 @@ export default class ArenaWatch extends Command {
                             if (view_by === "fleet_rank") {
                                 return a.lastShip > b.lastShip ? 1 : -1;
                             }
+                            return 0;
                         })
                         // Then format the output strings
                         .map((a) => {
@@ -898,7 +899,7 @@ export default class ArenaWatch extends Command {
 
                     const fields = [];
                     // Chunk the codes down so they'll fit within the 1024 character limit of a field value
-                    const acChunks = Bot.msgArray(ac, "\n", 1000);
+                    const acChunks = Bot.msgArray(acOut, "\n", 1000);
                     for (const [ix, chunk] of acChunks.entries()) {
                         fields.push({
                             name: ix > 0 ? "-" : `Members (${aw.allycodes.length}/${codeCap}):`,
@@ -935,11 +936,11 @@ export default class ArenaWatch extends Command {
                 if (!Bot.isAllyCode(allycode)) {
                     return super.error(interaction, `${allycode} is not a valid ally code.`);
                 }
-                if (!aw.allycodes.filter((a) => Number.parseInt(a.allyCode, 10) === Number.parseInt(allycode, 10)).length) {
+                if (!aw.allycodes.filter((a) => a.allyCode === Number.parseInt(allycode, 10)).length) {
                     return super.error(interaction, `${allycode} is not listed in your registered ally codes.`);
                 }
 
-                const player = aw.allycodes.find((p) => Number.parseInt(p.allyCode, 10) === Number.parseInt(allycode, 10));
+                const player = aw.allycodes.find((p) => p.allyCode === Number.parseInt(allycode, 10));
                 return interaction.reply({
                     embeds: [
                         {
@@ -970,7 +971,7 @@ export default class ArenaWatch extends Command {
             { title: " ", color: Bot.constants.colors.blue },
         );
 
-        async function getChannelStr(alertType, arenaType) {
+        async function getChannelStr(alertType: string, arenaType: string) {
             if (!["arena", "payout"].includes(alertType)) {
                 console.error("Invalid alertType");
                 return null;

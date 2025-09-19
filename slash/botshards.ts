@@ -1,8 +1,9 @@
 import { codeBlock, Status } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class BotShards extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "botshards",
             guildOnly: false,
@@ -10,7 +11,7 @@ export default class BotShards extends Command {
         });
     }
 
-    async run(_Bot, interaction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const shardInfoArr = ["Shard | Status | Guilds | Ping", "______________________________"];
 
         const shardCount = interaction.client.shard.count;
