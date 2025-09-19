@@ -1,5 +1,5 @@
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
-import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.js";
+import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 
 export default (Bot, client) => {
     // Some base time conversions to milliseconds

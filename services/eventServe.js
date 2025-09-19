@@ -52,7 +52,7 @@ function setupEventHandlers(socket, cache) {
     socket.on("getEventByName", async ({ guildId, evName }, callback) => {
         try {
             const events = await getGuildEvents({ cache, guildId });
-            callback(events.filter((ev) => ev.name === evName));
+            callback(events.find((ev) => ev.name === evName));
         } catch (error) {
             console.error("Failed to get event by name:", error);
             callback([]);

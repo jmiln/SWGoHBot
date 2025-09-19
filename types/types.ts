@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, Client, Collection, Guild, Interaction } from "discord.js";
+import type { ChatInputCommandInteraction, Client, Collection, Guild, GuildChannel, GuildMember, Interaction } from "discord.js";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
@@ -23,6 +23,7 @@ export interface BotType {
     isAllyCode: (allyCode: string | number) => boolean;
     isUserMention: (userMention: string) => boolean;
     isUserID: (userID: string) => boolean;
+    isChannelId: (channelId: string) => boolean;
     isMain: () => boolean;
     toProperCase(strIn: string): string;
 
@@ -40,8 +41,8 @@ export interface BotType {
     sendWebhook: (webhookURL: string, data: object) => void;
 
     // Game strings
-    characters: Character[];
-    ships: Ship[]
+    characters: Unit[];
+    ships: Unit[]
     journeyNames: {
         defId: string;
         name: string;
@@ -81,6 +82,8 @@ export interface BotType {
     msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
     expandSpaces: (strIn: string) => string;
     updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
+    getSetTimeForTimezone: (dtString: string, timezone?: string) => number;
+    isValidZone: (timezone: string) => boolean;
 
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
@@ -88,6 +91,7 @@ export interface BotType {
     cache: Cache;
     userReg: UserReg;
     permLevel: (interaction: Interaction) => number;
+    hasViewAndSend: (channel: GuildChannel, user: GuildMember) => boolean;
     commandList: string[];
     constants: BotConstants;
     languages: {
@@ -99,7 +103,7 @@ export interface BotType {
 
 // Local units from the json files
 export interface Unit {
-    uniqueName: string;
+    uniqueUnit: string;
     name: string;
     aliases: string[];
     url: string;
@@ -157,7 +161,7 @@ export interface BotConfig {
     }
     webhookURL: string;
 }
-interface BotDefaultSettings {
+export interface BotDefaultSettings {
     adminRole: string[];
     enableWelcome: boolean;
     welcomeMessage: string;
@@ -231,11 +235,11 @@ interface PatronUser {
     discordID: string;
     amount_cents: number;
 }
-interface PatreonTier {
-    playerTime: number;
-    guildTime: number;
-    awAccounts: number;
-}
+// interface PatreonTier {
+//     playerTime: number;
+//     guildTime: number;
+//     awAccounts: number;
+// }
 
 export interface UserConfig {
     id: string;

@@ -1,14 +1,16 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 
 import Command from "../base/slashCommand.ts";
-import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.js";
+import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
 
 export default class Event extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "event",
             guildOnly: false,
@@ -190,7 +192,7 @@ export default class Event extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         if (!interaction?.guild) {
             return super.error(interaction, "Sorry, but this command is not available in DMs.");
         }
@@ -222,18 +224,19 @@ export default class Event extends Command {
             return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
         }
 
+        const guildEvents: GuildConfigEvent[] = await getGuildEvents({ cache: Bot.cache, guildId: interaction.guild.id });
+
         switch (action) {
             case "create": {
                 const evName = interaction.options.getString("name");
                 const evDate = interaction.options.getString("day");
                 const evTime = interaction.options.getString("time");
                 const evMsg = interaction.options.getString("message");
-                const repeat = interaction.options.getString("repeat");
+                const repeatStr = interaction.options.getString("repeat");
                 const repeatDay = interaction.options.getString("repeatday");
                 const channel = interaction.options.getChannel("channel");
                 const countdown = interaction.options.getBoolean("countdown");
 
-                const guildEvents = await getGuildEvents({ cache: Bot.cache, guildId: interaction.guild.id });
                 const evCount = guildEvents.length;
                 // If they have too many events, stop here
                 if (evCount >= 50) {
@@ -254,18 +257,19 @@ export default class Event extends Command {
                     message: evMsg?.length ? evMsg : "",
                     channel: channel?.id ? channel.id : null,
                     countdown: countdown,
-                    repeat: repeat,
+                    repeatStr: repeatStr,
                     repeatDay: repeatDay,
+                    eventDT: null,
                 };
 
-                const validEV = validateEvents([newEv])[0];
+                const validEV = validateEvents([newEv], guildEvents)[0];
                 if (!validEV) {
                     return super.error(interaction, "Something broke while trying to validate your event.");
                 }
                 if (!validEV?.valid) {
                     return super.error(interaction, validEV.str);
                 }
-                await Bot.socket.emit("addEvents", { guildId: interaction.guild.id, events: [validEV.event] }, (res) => {
+                await Bot.socket.emit("addEvents", { guildId: interaction.guild.id, events: [validEV.event] }, (res: {success: boolean, error: string}[]) => {
                     const ev = res[0];
                     if (!ev.success) {
                         return interaction.reply({
@@ -308,14 +312,20 @@ export default class Event extends Command {
                     );
                 }
 
-                let jsonWhole;
+                let jsonWhole: GuildConfigEvent[];
                 try {
-                    jsonWhole = JSON.parse(match[0]);
+                    const parsedJSON = JSON.parse(match[0]);
+                    if (Array.isArray(parsedJSON)) {
+                        jsonWhole = parsedJSON;
+                    } else {
+                        jsonWhole = [parsedJSON];
+                    }
                 } catch (e) {
                     return super.error(interaction, `**ERROR Parsing the json**${codeBlock(e.message)}`);
                 }
 
-                // ```[{
+                // ```json
+                // [{
                 //     "name":      "Example",               // No spaces ?
                 //     "time":      "12:36",                 // hh:mm    (24hr format)
                 //     "day":       "28/09/18",              // dd/mm/yy
@@ -324,10 +334,10 @@ export default class Event extends Command {
                 //     "repeat":    "0d0h0m",                // you have both, it won't work
                 //     "countdown": false,                   // true if you want a countdown, false if not
                 //     "channel":   "327974285563920387"     // Channel ID, not name anymore
-                // }]```
+                // }]
+                // ```
 
                 // TODO Maybe add in a special help for -json  ";ev -jsonHelp" since it'll need more of a description
-                const guildEvents = await getGuildEvents({ cache: Bot.cache, guildId: interaction.guild.id });
                 const result = validateEvents(jsonWhole, guildEvents);
                 if (result.filter((e) => !e.valid).length) {
                     return interaction.reply({
@@ -339,7 +349,7 @@ export default class Event extends Command {
                 }
 
                 // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
-                await Bot.socket.emit("addEvents", { guildId: interaction.guild.id, events: result.map((e) => e.event) }, (res) => {
+                await Bot.socket.emit("addEvents", { guildId: interaction.guild.id, events: result.map((e) => e.event) }, (res: {success: boolean, error: string, event: GuildConfigEvent}[]) => {
                     const evAddLog = [];
                     const evFailLog = [];
 
@@ -392,56 +402,52 @@ export default class Event extends Command {
 
                 if (eventName) {
                     // If they are looking to show a specific event
-                    await Bot.socket.emit("getEventByName", { guildId: interaction.guild.id, evName: eventName }, async (eventIn) => {
+                    await Bot.socket.emit("getEventByName", { guildId: interaction.guild.id, evName: eventName }, async (eventIn: GuildConfigEvent) => {
                         // If it doesn't find the event, say so
-                        if (Array.isArray(eventIn) && !eventIn.length)
-                            return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
-
-                        // From here on, it should have the event found, so process for viewing
-                        const event = Array.isArray(eventIn) ? eventIn[0] : eventIn;
+                        if (!eventIn) return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
 
                         let eventString = interaction.language.get(
                             "COMMAND_EVENT_TIME",
-                            event.name,
-                            `<t:${Math.floor(event.eventDT / 1000)}:f>`,
+                            eventIn.name,
+                            `<t:${Math.floor(eventIn.eventDT / 1000)}:f>`,
                         );
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(event.eventDT / 1000)}:R>`);
-                        if (event.channel?.length) {
+                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(eventIn.eventDT / 1000)}:R>`);
+                        if (eventIn.channel?.length) {
                             let chanName = null;
-                            if (interaction.guild.channels.cache.has(event.channel)) {
-                                chanName = `<#${interaction.guild.channels.cache.get(event.channel).id}>`;
+                            if (interaction.guild.channels.cache.has(eventIn.channel)) {
+                                chanName = `<#${interaction.guild.channels.cache.get(eventIn.channel).id}>`;
                             } else {
-                                chanName = event.channel;
+                                chanName = eventIn.channel;
                             }
                             eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
                         }
-                        if (event.repeatDays.length > 0) {
-                            eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
+                        if (eventIn.repeatDays.length > 0) {
+                            eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", eventIn.repeatDays.join(", "));
                         } else if (
-                            event.repeat &&
-                            (event.repeat.repeatDay !== 0 || event.repeat.repeatHour !== 0 || event.repeat.repeatMin !== 0)
+                            eventIn.repeat &&
+                            (eventIn.repeat.repeatDay !== 0 || eventIn.repeat.repeatHour !== 0 || eventIn.repeat.repeatMin !== 0)
                         ) {
                             // At least one of em is more than 0
                             eventString += interaction.language.get(
                                 "COMMAND_EVENT_REPEAT",
-                                event.repeat.repeatDay,
-                                event.repeat.repeatHour,
-                                event.repeat.repeatMin,
+                                eventIn.repeat.repeatDay,
+                                eventIn.repeat.repeatHour,
+                                eventIn.repeat.repeatMin,
                             );
                         }
-                        if (!minimal && event.message?.length) {
+                        if (!minimal && eventIn.message?.length) {
                             // If they want to show all available events without the message showing
-                            eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, event.message));
+                            eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, eventIn.message));
                         }
                         return interaction.reply({ content: eventString });
                     });
                 } else if (evFilter?.length) {
                     const filterArr = evFilter.split(" ");
-                    return await Bot.socket.emit("getEventsByFilter", interaction.guild.id, filterArr, async (eventList) => {
+                    return await Bot.socket.emit("getEventsByFilter", interaction.guild.id, filterArr, async (eventList: GuildConfigEvent[]) => {
                         await sendPaged({ eventList, minimal, page });
                     });
                 } else {
-                    return await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async (eventList) => {
+                    return await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async (eventList: GuildConfigEvent[]) => {
                         // If it doesn't find any events, say so
                         await sendPaged({ eventList, minimal, page });
                     });
@@ -450,7 +456,7 @@ export default class Event extends Command {
             }
             case "delete": {
                 const eventName = interaction.options.getString("name");
-                await Bot.socket.emit("delEvent", { guildId: interaction.guild.id, eventName: eventName }, async (result) => {
+                await Bot.socket.emit("delEvent", { guildId: interaction.guild.id, eventName: eventName }, async (result: { success: boolean; error: string }) => {
                     if (result.success) {
                         return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
                     }
@@ -462,15 +468,14 @@ export default class Event extends Command {
                 const eventName = interaction.options.getString("name");
 
                 // As long as it does exist, go ahead and try triggering it
-                await Bot.socket.emit("getEventByName", { guildId: interaction.guild.id, evName: eventName }, async (eventIn) => {
-                    const event = Array.isArray(eventIn) ? eventIn[0] : eventIn;
+                await Bot.socket.emit("getEventByName", { guildId: interaction.guild.id, evName: eventName }, async (eventIn: GuildConfigEvent) => {
                     let channel = null;
-                    const announceMessage = `**${event?.name || eventName}**\n${event?.message || ""}`;
-                    if (event?.channel && event.channel !== "") {
+                    const announceMessage = `**${eventIn?.name || eventName}**\n${eventIn?.message || ""}`;
+                    if (eventIn?.channel && eventIn.channel !== "") {
                         // If they"ve set a channel, try using it
-                        channel = interaction.guild.channels.cache.get(event.channel);
+                        channel = interaction.guild.channels.cache.get(eventIn.channel);
                         if (!channel) {
-                            channel = interaction.guild.channels.cache.find((c) => c.name === event.channel || c.id === event.channel);
+                            channel = interaction.guild.channels.cache.find((c) => c.name === eventIn.channel || c.id === eventIn.channel);
                         }
                     } else {
                         // Else, use the default one from their settings
@@ -482,13 +487,13 @@ export default class Event extends Command {
                         try {
                             channel.send({ content: announceMessage });
                             return interaction.reply({
-                                content: `Successfully triggered ${event.name}`,
+                                content: `Successfully triggered ${eventIn.name}`,
                                 flags: MessageFlags.Ephemeral,
                             });
                         } catch (_) {
                             Bot.logger.error(`Event trigger Broke! ${announceMessage}`);
                             return interaction.reply({
-                                content: `Broke when trying to trigger *${event.name}*.\nIf this continues, please report it.`,
+                                content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
                                 flags: MessageFlags.Ephemeral,
                             });
                         }
@@ -510,7 +515,7 @@ export default class Event extends Command {
                 const newChannel = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const eventRes = await getGuildEvents({ cache: Bot.cache, guildId: interaction.guild.id });
+                const eventRes: GuildConfigEvent[] = await getGuildEvents({ cache: Bot.cache, guildId: interaction.guild.id });
                 const event = eventRes?.find((ev) => ev.name === eventName);
 
                 // Check if that name/ event already exists
@@ -530,25 +535,27 @@ export default class Event extends Command {
                     .split(", ");
 
                 // Put any new bits into an event skeleton
-                const newEvent = {
+                const newEvent: GuildConfigEvent = {
                     name: newEventName ? newEventName : event.name,
                     day: newEvDate ? newEvDate : oldDate,
                     time: newEvTime ? newEvTime : oldTime,
                     message: newEvMsg ? newEvMsg : event.message,
-                    channelID: newChannel?.id ? newChannel.id : event.channel,
+                    channel: newChannel?.id ? newChannel.id : event.channel,
                     countdown: newCountdown ? newCountdown : event.countdown,
+                    eventDT: null,
+                    repeatDay: null,
                 };
                 if (newRepeat) {
-                    newEvent.repeat = newRepeat;
+                    newEvent.repeatStr = newRepeat;
                 } else if (newRepeatDay) {
                     newEvent.repeatDay = newRepeatDay;
                 } else if (event.repeat?.repeatDay || event.repeat?.repeatHour || event.repeat?.repeatMin) {
-                    newEvent.repeat = `${event.repeat.repeatDay}d${event.repeat.repeatHour}h${event.repeat.repeatMin}m`;
+                    newEvent.repeatStr = `${event.repeat.repeatDay}d${event.repeat.repeatHour}h${event.repeat.repeatMin}m`;
                 } else if (event.repeatDays?.length) {
                     newEvent.repeatDay = event.repeatDays.join(",");
                 }
 
-                const validEvent = validateEvents(newEvent)[0];
+                const validEvent = validateEvents([newEvent], guildEvents)[0];
                 if (!validEvent.valid) {
                     // console.log("Issue validating an event:");
                     // console.log(validEvent);
@@ -608,13 +615,13 @@ export default class Event extends Command {
             }
         }
 
-        function removeTags(interaction, mess) {
-            if (!mess) return mess;
+        function removeTags(interaction: BotInteraction, message: string) {
+            if (!message) return message;
             const userReg = /<@!?(1|\d{17,19})>/g;
             const roleReg = /<@&(1|\d{17,19})>/g;
             const chanReg = /<#(1|\d{17,19})>/g;
 
-            let messStr = mess?.toString();
+            let messStr = message?.toString();
 
             const userResult = messStr.match(userReg);
             const roleResult = messStr.match(roleReg);
@@ -634,7 +641,7 @@ export default class Event extends Command {
             if (roleResult !== null) {
                 for (const role of roleResult) {
                     const roleID = role.replace(/\D/g, "");
-                    let roleName;
+                    let roleName: string;
                     try {
                         roleName = interaction.guild.roles.cache.get(roleID).name;
                     } catch (_) {
@@ -654,14 +661,14 @@ export default class Event extends Command {
         }
 
         // TODO When running validateEvents, check against the guild's other events as well as the ones being entered now
-        function validateEvents(eventArr, guildEvArray) {
+        function validateEvents(eventArr: GuildConfigEvent[], guildEvArray: GuildConfigEvent[]) {
             const now = Date.now();
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
             const nameArr = [];
             const eventArray = Array.isArray(eventArr) ? eventArr : [eventArr];
 
-            eventArray.forEach((event, ix) => {
+            for (const [ix, thisEvent] of eventArray.entries()) {
                 const err = [];
                 const newEvent = {
                     name: "",
@@ -677,31 +684,31 @@ export default class Event extends Command {
                     repeatDays: [],
                 };
 
-                if (!event?.name?.length) {
+                if (!thisEvent?.name?.length) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
                 } else {
-                    if (nameArr.includes(event.name) || guildEvArray?.map((ev) => ev.name).includes(event.name)) {
+                    if (nameArr.includes(thisEvent.name) || guildEvArray?.map((ev) => ev.name).includes(thisEvent.name)) {
                         err.push(interaction.language.get("COMMAND_EVENT_JSON_DUPLICATE"));
                     } else {
-                        nameArr.push(event.name);
+                        nameArr.push(thisEvent.name);
                     }
-                    newEvent.name = event.name;
+                    newEvent.name = thisEvent.name;
                 }
-                const dateSplit = event.day?.split("/");
+                const dateSplit = thisEvent.day?.split("/");
                 const mmddyyyDate = `${dateSplit?.[1]}/${dateSplit?.[0]}/${dateSplit?.[2]}`;
-                if (!event.day) {
+                if (!thisEvent.day) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
-                } else if (!event.day?.match(/\d{1,2}\/\d{1,2}\/\d{4}/) || !Date.parse(mmddyyyDate)) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_DAY", event.day));
+                } else if (!thisEvent.day?.match(/\d{1,2}\/\d{1,2}\/\d{4}/) || !Date.parse(mmddyyyDate)) {
+                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_DAY", thisEvent.day));
                 }
-                if (!event.time) {
+                if (!thisEvent.time) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_TIME"));
-                } else if (!event.time.match(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", event.time));
+                } else if (!thisEvent.time.match(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)) {
+                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", thisEvent.time));
                 }
 
-                if (event.day && event.time) {
-                    newEvent.eventDT = Bot.getSetTimeForTimezone(`${mmddyyyDate} ${event.time}`, guildConf.timezone);
+                if (thisEvent.day && thisEvent.time) {
+                    newEvent.eventDT = Bot.getSetTimeForTimezone(`${mmddyyyDate} ${thisEvent.time}`, guildConf.timezone);
                     if (newEvent.eventDT < now) {
                         const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {
                             timeZone: guildConf.timezone,
@@ -726,19 +733,19 @@ export default class Event extends Command {
                     }
                 }
 
-                if (event.message?.length) {
-                    if (event.message.length > MAX_MSG_SIZE) {
+                if (thisEvent.message?.length) {
+                    if (thisEvent.message.length > MAX_MSG_SIZE) {
                         err.push(
-                            `Events have a maximum message length of ${MAX_MSG_SIZE} characters, this one is ${event.message.length} characters long`,
+                            `Events have a maximum message length of ${MAX_MSG_SIZE} characters, this one is ${thisEvent.message.length} characters long`,
                         );
                     } else {
-                        newEvent.message = event.message;
+                        newEvent.message = thisEvent.message;
                     }
                 }
-                if (event.channel && !event.channelID) {
-                    newEvent.channel = event.channel;
-                } else if (event.channelID?.length) {
-                    newEvent.channel = event.channelID;
+                if (thisEvent.channel && !thisEvent.channelID) {
+                    newEvent.channel = thisEvent.channel;
+                } else if (thisEvent.channelID?.length) {
+                    newEvent.channel = thisEvent.channelID;
                 } else {
                     const announceChannel = interaction.guild.channels.cache.find(
                         (c) => c.name === guildConf.announceChan || c.id === guildConf.announceChan,
@@ -747,27 +754,29 @@ export default class Event extends Command {
                         err.push(interaction.language.get("COMMAND_EVENT_NEED_CHAN"));
                     }
                 }
-                if (event.repeat && event.repeatDay) {
+                if (thisEvent.repeat && thisEvent.repeatDay) {
                     err.push(interaction.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
                 } else {
                     // If the repeat is set, try to parse it
                     const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
-                    if (event.repeat?.length) {
-                        let repeat = event.repeat;
-                        if (repeat.match(timeReg)) {
-                            newEvent.repeat.repeatDay = Number.parseInt(repeat.substring(0, repeat.indexOf("d")), 10);
-                            repeat = repeat.replace(/^\d{1,2}d/, "");
-                            newEvent.repeat.repeatHour = Number.parseInt(repeat.substring(0, repeat.indexOf("h")), 10);
-                            repeat = repeat.replace(/^\d{1,2}h/, "");
-                            newEvent.repeat.repeatMin = Number.parseInt(repeat.substring(0, repeat.indexOf("m")), 10);
+                    if (thisEvent.repeatStr?.length) {
+                        const repeatStr = thisEvent.repeatStr;
+                        if (repeatStr.match(timeReg)) {
+                            const dayMatch  = repeatStr.match(/(\d{1,2})d/);
+                            const hourMatch = repeatStr.match(/(\d{1,2})h/);
+                            const minMatch  = repeatStr.match(/(\d{1,2})m/);
+
+                            newEvent.repeat.repeatDay  = Number.parseInt(dayMatch?.[1]  || "0", 10);
+                            newEvent.repeat.repeatHour = Number.parseInt(hourMatch?.[1] || "0", 10);
+                            newEvent.repeat.repeatMin  = Number.parseInt(minMatch?.[1]  || "0", 10);
                         } else {
                             err.push(interaction.language.get("COMMAND_EVENT_INVALID_REPEAT"));
                         }
-                    } else if (event.repeatDay?.length) {
+                    } else if (thisEvent.repeatDay?.length) {
                         const dayReg = /^[0-9,]*$/gi;
                         let jsonRepDay = null;
                         try {
-                            jsonRepDay = JSON.parse(event.repeatDay);
+                            jsonRepDay = JSON.parse(thisEvent.repeatDay);
                         } catch (_) {
                             // Don't bother since it's just gonna be a parse error, and it's already null
                         }
@@ -775,35 +784,28 @@ export default class Event extends Command {
                             for (const r of jsonRepDay) {
                                 if (r <= 0) {
                                     err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
-                                    return false;
                                 }
                             }
                             if (!err?.length) {
                                 newEvent.repeatDays = jsonRepDay;
                             }
-                        } else if (event.repeatDay.toString().match(dayReg)) {
-                            const dayList = event.repeatDay.toString().split(",");
-                            if (dayList.find((d) => d <= 0)) {
+                        } else if (thisEvent.repeatDay.toString().match(dayReg)) {
+                            const dayList = thisEvent.repeatDay.toString().split(",");
+                            if (dayList.find((d: string) => Number.parseInt(d, 10) <= 0)) {
                                 err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                             }
-                            newEvent.repeatDays = dayList.map((d) => Number.parseInt(d, 10));
+                            newEvent.repeatDays = dayList.map((d: string) => Number.parseInt(d, 10));
                         } else {
                             err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
                         }
                     }
-                    if (!event.countdown || event.countdown === "false" || event.countdown === "no") {
-                        newEvent.countdown = false;
-                    } else if (event.countdown === true || event.countdown === "true" || event.countdown === "yes") {
-                        newEvent.countdown = true;
-                    } else {
-                        err.push(interaction.language.get("COMMAND_EVENT_JSON_COUNTDOWN_BOOL"));
-                    }
+                    newEvent.countdown = thisEvent.countdown;
                 }
-                let outStr;
+                let outStr: string;
                 if (err.length) {
                     outStr = interaction.language.get("COMMAND_EVENT_JSON_ERROR_LIST", ix + 1, err.map((e) => `* ${e}`).join("\n"));
                 } else {
-                    outStr = interaction.language.get("COMMAND_EVENT_JSON_EVENT_VALID", ix + 1, newEvent.name, event.time, event.day);
+                    outStr = interaction.language.get("COMMAND_EVENT_JSON_EVENT_VALID", ix + 1, newEvent.name, thisEvent.time, thisEvent.day);
                 }
                 const result = {
                     event: newEvent,
@@ -811,11 +813,11 @@ export default class Event extends Command {
                     valid: !err.length,
                 };
                 outEvents.push(result);
-            });
+            }
             return outEvents;
         }
 
-        function getDateTimeStr(timeNum, zone) {
+        function getDateTimeStr(timeNum: number, zone: string) {
             if (!Bot.isValidZone(zone)) return "Invalid Zone";
             const outStr = new Date(timeNum).toLocaleString("en-US", {
                 timeZone: zone,
@@ -829,7 +831,7 @@ export default class Event extends Command {
             return outStr;
         }
 
-        function sendPaged({ eventList, minimal, page }) {
+        function sendPaged({ eventList, minimal, page }: {eventList: GuildConfigEvent[], minimal: boolean, page: number}) {
             if (Array.isArray(eventList) && eventList.length === 0)
                 return interaction.reply({ content: "I could not find any events for this server" });
             const evOutArr = [];
@@ -906,8 +908,7 @@ export default class Event extends Command {
                     }
                     return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0]) });
                 }
-                // TODO Figure out splitting these up to multiple message as needed
-                evArray.forEach((evMsg, ix) => {
+                for (const [ix, evMsg] of evArray.entries()) {
                     if (guildConf.useEventPages) {
                         return interaction.reply({
                             content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg),
@@ -915,11 +916,12 @@ export default class Event extends Command {
                     }
                     if (ix === 0) {
                         // If it's the first one, reply to the interaction
-                        return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
+                        interaction.reply({ content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
+                    } else {
+                        // After the first one, just send to the channel instead of replying
+                        interaction.channel.send({ content: evMsg });
                     }
-                    // After the first one, just send to the channel instead of replying
-                    return interaction.channel.send({ content: evMsg });
-                });
+                }
             } catch (_) {
                 Bot.logger.error(`Event View Broke! ${evArray}`);
             }

@@ -1,11 +1,13 @@
 import config from "../../config.js";
+import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
+import type BotCache from "../cache.js";
 
-export async function setEvents({ cache, guildId, evArrOut }) {
+export async function setEvents({ cache, guildId, evArrOut }: { cache: BotCache; guildId: string; evArrOut: GuildConfigEvent[] }) {
     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
 export async function updateGuildEvent({ cache, guildId, evName, event }) {
-    const evList = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { events: 1, _id: 0 });
+    const evList: GuildConfig = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { events: 1, _id: 0 });
     const evIx = evList.events.findIndex((ev) => ev.name === evName);
 
     if (evIx < 0) return null; // Just to be doubly sure that it exists
@@ -17,37 +19,37 @@ export async function updateGuildEvent({ cache, guildId, evName, event }) {
         .then(() => {
             return { success: true, error: null };
         })
-        .catch((error) => {
+        .catch((error: string) => {
             // Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
             return { success: false, error: error };
         });
     return out;
 }
 
-export async function getGuildEvents({ cache, guildId }) {
+export async function getGuildEvents({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: 1 });
     return resArr[0]?.events || [];
 }
-export async function addGuildEvent({ cache, guildId, newEvent }) {
+export async function addGuildEvent({ cache, guildId, newEvent }: { cache: BotCache; guildId: string; newEvent: GuildConfigEvent }) {
     const events = await getGuildEvents({ cache, guildId });
     events.push(newEvent);
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events }, false);
 }
-export async function guildEventExists({ cache, guildId, evName }) {
-    const resArr = await getGuildEvents({ cache, guildId });
+export async function guildEventExists({ cache, guildId, evName }: { cache: BotCache; guildId: string; evName: string }) {
+    const resArr: GuildConfigEvent[] = await getGuildEvents({ cache, guildId });
     const resIx = resArr?.findIndex((ev) => ev.name === evName);
     return resIx > -1;
 }
-export async function deleteGuildEvent({ cache, guildId, evName }) {
-    const res = await getGuildEvents({ cache, guildId });
+export async function deleteGuildEvent({ cache, guildId, evName }: { cache: BotCache; guildId: string; evName: string }) {
+    const res: GuildConfigEvent[] = await getGuildEvents({ cache, guildId });
 
     // Filter out the specific one that we want gone, then re-save em
     const evArrOut = res.filter((ev) => ev.name !== evName);
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
-export async function getAllEvents({ cache }) {
-    const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 });
+export async function getAllEvents({ cache }: { cache: BotCache }) {
+    const resArr: GuildConfig[] = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 });
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         return acc.concat(
