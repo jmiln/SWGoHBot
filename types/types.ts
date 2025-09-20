@@ -5,7 +5,7 @@ import type slashCommand from "../base/slashCommand.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { RawCharacter, RawUnit, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -41,8 +41,8 @@ export interface BotType {
     sendWebhook: (webhookURL: string, data: object) => void;
 
     // Game strings
-    characters: Unit[];
-    ships: Unit[]
+    characters: BotUnit[];
+    ships: BotUnit[]
     journeyNames: {
         defId: string;
         name: string;
@@ -72,9 +72,10 @@ export interface BotType {
             cooldown?: PlayerCooldown,
             options?: {force?: boolean, defId?: string}
         ) => SWAPIPlayer[];
-        getCharacter: (defId: string, lang?: SWAPILang) => SWAPIUnit;
+        getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
+        langChar: (char: SWAPIUnit, lang: SWAPILang) => SWAPIUnit;
     };
-    findChar: (searchName: string, charList: Unit | Unit[]) => Unit[];
+    findChar: (searchName: string, charList: BotUnit | BotUnit[]) => BotUnit[];
 
     getSideColor: (side: UnitSide) => number;
 
@@ -102,8 +103,8 @@ export interface BotType {
 }
 
 // Local units from the json files
-export interface Unit {
-    uniqueUnit: string;
+export interface BotUnit {
+    uniqueName: string;
     name: string;
     aliases: string[];
     url: string;

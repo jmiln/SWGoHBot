@@ -1,9 +1,11 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import factionMap from "../data/factionMap.ts";
+import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Faction extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "faction",
             guildOnly: false,
@@ -39,7 +41,7 @@ export default class Faction extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const charList = Bot.characters;
 
         const faction1 = interaction.options.getString("faction_group_1");
@@ -55,23 +57,23 @@ export default class Faction extends Command {
             return super.error(interaction, "You need to select a faction to search for");
         }
 
-        const isLeader = interaction.options.getBoolean("leader");
-        const isZeta = interaction.options.getBoolean("zeta");
+        const wantsLeader = interaction.options.getBoolean("leader");
+        const wantsZeta = interaction.options.getBoolean("zeta");
         let allycode = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode, false);
 
         let extra = "";
-        if (isLeader && isZeta) {
+        if (wantsLeader && wantsZeta) {
             extra = " with the Leader tag & Zeta abilities";
-        } else if (isLeader) {
+        } else if (wantsLeader) {
             extra = " with the Leader tag";
-        } else if (isZeta) {
+        } else if (wantsZeta) {
             extra = " with zeta abilities";
         }
 
         const factionChars = [];
         const query = faction1 ? faction1 : faction2;
-        let chars = await Bot.cache.get(
+        let chars: RawCharacter[] = await Bot.cache.get(
             Bot.config.mongodb.swapidb,
             "units",
             { categoryIdList: query, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
@@ -94,28 +96,30 @@ export default class Faction extends Command {
         chars = chars.sort((a, b) => (a.nameKey.toLowerCase() > b.nameKey.toLowerCase() ? 1 : -1));
 
         // If they want just characters with leader abilities or zetas, filter em out
-        if (isLeader || isZeta) {
+        if (wantsLeader || wantsZeta) {
             const units = [];
 
             for (const c of chars) {
-                const char = await Bot.swgohAPI.getCharacter(c.baseId, interaction.guildSettings.swgohLanguage);
-                units.push(char);
-            }
-
-            if (isLeader) {
-                chars = chars.filter((c) => {
-                    const char = units.find((u) => u.baseId === c.baseId);
-                    const leader = char.skillReferenceList.filter((s) => s.skillId.startsWith("leader"));
-                    if (leader.length) return true;
-                    return false;
+                const char: RawCharacter = await Bot.swgohAPI.getCharacter(c.baseId, interaction.guildSettings.swgohLanguage);
+                const isLeader = char.skillReferenceList.filter((s) => s.skillId.startsWith("leader"));
+                const hasZeta = char.skillReferenceList.filter((s) => s.cost.AbilityMatZeta > 0);
+                units.push({
+                    char,
+                    isLeader,
+                    hasZeta
                 });
             }
-            if (isZeta) {
+
+            if (wantsLeader) {
                 chars = chars.filter((c) => {
-                    const char = units.find((u) => u.baseId === c.baseId);
-                    const zetas = char.skillReferenceList.filter((s) => s.cost.AbilityMatZeta > 0);
-                    if (zetas.length > 0) return true;
-                    return false;
+                    const char = units.find((u) => u.char.baseId === c.baseId);
+                    return char.isLeader;
+                });
+            }
+            if (wantsZeta) {
+                chars = chars.filter((c) => {
+                    const char = units.find((u) => u.char.baseId === c.baseId);
+                    return char.hasZeta;
                 });
             }
         }
@@ -131,30 +135,30 @@ export default class Faction extends Command {
                 ],
             });
         }
+        await interaction.deferReply();
         if (chars.length) {
-            chars = chars.map((c) => c.baseId);
+            const charDefIds = chars.map((c) => c.baseId);
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-            let player;
+            let player: SWAPIPlayer;
             try {
-                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                if (Array.isArray(player)) player = player[0];
+                const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                if (Array.isArray(playerRes)) player = playerRes[0];
             } catch (e) {
                 return super.error(interaction, e.message);
             }
             if (!player?.roster?.length) {
                 return super.error(interaction, "I couldn't get that player's roster. Please try again later.");
             }
-            const playerChars = [];
-            for (const c of chars) {
-                let found = player.roster.find((char) => char.defId === c);
-                if (found) {
-                    found = await Bot.swgohAPI.langChar(found, interaction.guildSettings.swgohLanguage);
-                    found.gp = found.gp.toLocaleString();
+            const playerChars: SWAPIUnit[] = [];
+            for (const c of charDefIds) {
+                const thisChar = player.roster.find((char) => char.defId === c);
+                if (thisChar) {
+                    const found = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
                     playerChars.push(found);
                 }
             }
 
-            const gpMax = Math.max(...playerChars.map((c) => c.gp.length));
+            const gpMax = Math.max(...playerChars.map((c) => c.gp.toLocaleString().length));
             const gearMax = Math.max(...playerChars.map((c) => c.gear.toString().length));
             const lvlMax = Math.max(...playerChars.map((c) => c.level.toString().length));
 
@@ -165,7 +169,7 @@ export default class Faction extends Command {
 
             for (const ch of playerChars) {
                 const lvlStr = ch.level.toString().padStart(lvlMax - ch.level.toString().length);
-                const gpStr = ch.gp.toString().padStart(gpMax - ch.gp.length);
+                const gpStr = ch.gp.toLocaleString().padStart(gpMax - ch.gp.toLocaleString().length);
                 const gearStr = ch.gear.toString().padStart(gearMax - ch.gear.toString().length);
                 const zetas = "z".repeat(
                     ch.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1)).length,
@@ -174,7 +178,7 @@ export default class Faction extends Command {
             }
             const msgArr = Bot.msgArray(factionChars, "\n", 1000);
             const fields = [];
-            let desc;
+            let desc: string;
             if (msgArr.length > 1) {
                 msgArr.forEach((m, ix) => {
                     fields.push({
@@ -187,7 +191,8 @@ export default class Faction extends Command {
             }
 
             const footerStr = Bot.updatedFooterStr(player.updated, interaction);
-            return interaction.reply({
+            return interaction.editReply({
+                content: null,
                 embeds: [
                     {
                         author: {

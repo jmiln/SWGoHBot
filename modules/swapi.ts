@@ -9,7 +9,7 @@ import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import mongoCache from "../modules/cache.js";
 
-import type { ComlinkMod, ComlinkPlayer, SWAPIGear, SWAPIGuild, SWAPIGuildMember, SWAPILang, SWAPIPlayer, SWAPIPlayerArenaProfile, SWAPIPlayerArenaProfilePVP, SWAPIRecipe, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerOutput } from "../types/swapi_types.ts";
+import type { ComlinkMod, ComlinkPlayer, RawCharacter, SWAPIGear, SWAPIGuild, SWAPIGuildMember, SWAPILang, SWAPIPlayer, SWAPIPlayerArenaProfile, SWAPIPlayerArenaProfilePVP, SWAPIRecipe, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerOutput } from "../types/swapi_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
 
 
@@ -423,8 +423,6 @@ export default (opts = {noop: false}) => {
         const comlinkPlayerArena = {};
         const emptyArena = { rank: null, squad: null };
 
-        console.log(inspect(comlinkPlayer.pvpProfile, {depth: 5}));
-
         for (const { tab, rank, squad } of comlinkPlayer.pvpProfile) {
             comlinkPlayerArena[tab] = {
                 rank: rank,
@@ -522,7 +520,6 @@ export default (opts = {noop: false}) => {
     }
 
     function formatMod({ definitionId, primaryStat, id, level, tier, secondaryStat, ...rest }: ComlinkMod) {
-        console.log(definitionId, primaryStat, id, level, tier, secondaryStat, rest);
         const modSchema = modMap[definitionId] || {};
         const primaryStatId = primaryStat.stat.unitStatId;
         const primaryStatScaler = flatStats.includes(primaryStatId) ? 1e8 : 1e6;
@@ -702,7 +699,7 @@ export default (opts = {noop: false}) => {
 
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
 
-        const char = await character(defId);
+        const char: RawCharacter = await character(defId);
 
         if (!char) throw new Error("[SWGoH-API getCharacter] Missing Character");
         if (!char.skillReferenceList) throw new Error("[SWGoH-API getCharacter] Missing character abilities");
@@ -743,7 +740,7 @@ export default (opts = {noop: false}) => {
             for (const [ix, e] of tier.equipmentSetList.entries()) {
                 const eq = eqList.find((equipment) => equipment.id === e);
                 if (!eq) {
-                    console.error(`Missing equipment for char ${char.name}, make sure to update the gear lang stuff${inspect(e)}`);
+                    console.error(`Missing equipment for char ${char.baseId}, make sure to update the gear lang stuff${inspect(e)}`);
                     continue;
                 }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
@@ -754,13 +751,13 @@ export default (opts = {noop: false}) => {
     }
 
     // Function for updating all the stored character data from the game
-    async function character(defId: string) {
+    async function character(defId: string): Promise<RawCharacter> {
         const outChar = await cache.get(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 });
         return outChar?.[0] || outChar;
     }
 
     // Get the gear for a given character
-    async function gear(gearArray: number | number[], lang: SWAPILang): Promise<SWAPIGear[]> {
+    async function gear(gearArray: string | string[], lang: SWAPILang): Promise<SWAPIGear[]> {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!gearArray) {
             throw new Error("You need to have a list of gear here");

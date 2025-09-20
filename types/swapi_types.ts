@@ -119,8 +119,8 @@ export interface SWAPIUnit {
     rarity: number;
 
     // Bits that get added in
-    zetas?: SWAPIUnitSkill[];  // List of scills with zetas
-    omicrons?: SWAPIUnitSkill[];  // List of scills with omicrons
+    zetas?: SWAPIUnitSkill[];  // List of skills with zetas
+    omicrons?: SWAPIUnitSkill[];  // List of skills with omicrons
     player?: string;  // Player name
     allyCode?: number;
     updated?: number;
@@ -128,6 +128,63 @@ export interface SWAPIUnit {
         tier: number,
         equipmentSetList: string[]
     }[];
+}
+
+// Kept in the characters table of swapi mongo
+export interface RawCharacter {
+    baseId: string;
+    combatType: number;
+    crew?: [],
+    factions?: string[]
+    legend: boolean;
+    skillReferenceList: {
+        skillId: string;
+        requiredTier: number;
+        requiredRarity: number;
+        requiredRelicTier: number
+
+        // custom bits
+        isZeta?: boolean;
+        isOmicron?: boolean;
+        name?: string;
+        cooldown?: number;
+        desc?: string;
+        zetaDesc?: string;
+        cost?: {
+            [key: string]: number;
+            // AbilityMatZeta: number;
+            // AbilityMatOmicron: number;
+        }
+    }[];
+    unitTierList: {
+        tier: number;
+        equipmentSetList: string[];
+    }[];
+    categoryIdList: null;
+    creationRecipeReference: string | null;
+    crewList: null;
+    nameKey: string | null;
+}
+
+export interface RawUnit {
+    language: SWAPILang;
+    baseId: string;
+    categoryIdList: string[];
+    combatType: number;
+    creationRecipeReference: string;
+    crewList: [];
+    legend: boolean;
+    nameKey: string;
+    skillReferenceList: {
+        skillId: string;
+        requiredTier: number;
+        requiredRarity: number;
+        requiredRelicTier: number
+    }[];
+    unitTierList: {
+        tier: number;
+        equipmentSetList: string[];
+    }
 }
 
 export interface ComlinkUnit {
