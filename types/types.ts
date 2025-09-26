@@ -64,6 +64,27 @@ export interface BotType {
     arenaJumps: {
         [key: string]: number;
     };
+    charLocs: {
+        name: string;
+        defId: string;
+        locations: {
+            type: string;
+            locId: string;
+            name?: string;
+            level?: string;
+            cost?: string;
+        }[];
+    }[];
+    shipLocs: {
+        name: string;
+        defId: string;
+        locations: {
+            type: string;
+            locId: string;
+            name?: string;
+            level?: string;
+        }[];
+    }[];
 
     // swapi functs
     swgohAPI: {
@@ -74,8 +95,9 @@ export interface BotType {
         ) => SWAPIPlayer[];
         getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
         langChar: (char: SWAPIUnit, lang: SWAPILang) => SWAPIUnit;
+        units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
     };
-    findChar: (searchName: string, charList: BotUnit | BotUnit[]) => BotUnit[];
+    findChar: (searchName: string, charList: BotUnit | BotUnit[], isShip?: boolean) => BotUnit[];
 
     getSideColor: (side: UnitSide) => number;
 

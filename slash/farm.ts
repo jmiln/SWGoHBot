@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Farm extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "farm",
             guildOnly: false,
@@ -18,7 +19,7 @@ export default class Farm extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
         let isChar = true;
@@ -65,7 +66,7 @@ export default class Farm extends Command {
                 outList.push(
                     `${loc.type} \n * ${loc.cost
                         .split("\n")
-                        .map((cost) => cost.replace("/", " per "))
+                        .map((cost: string) => cost.replace("/", " per "))
                         .join(" shards\n * ")} shards`,
                 );
             } else if (loc.level) {

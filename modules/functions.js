@@ -75,7 +75,7 @@ export default (Bot, client) => {
     };
 
     // This finds any character that matches the search, and returns them in an array
-    Bot.findChar = (searchName, charList, ship = false) => {
+    Bot.findChar = (searchName, charList, isShip = false) => {
         if (!searchName?.length || typeof searchName !== "string") {
             return [];
         }
@@ -97,7 +97,7 @@ export default (Bot, client) => {
         if (!foundChar.length) {
             foundChar = charList.filter((char) => char.aliases.some((alias) => alias.toLowerCase() === cleanSearchName));
         }
-        if (ship && !foundChar.length) {
+        if (isShip && !foundChar.length) {
             foundChar = charList.filter((ship) => ship.crew?.some((crew) => crew.toLowerCase() === cleanSearchName));
         }
         if (foundChar?.length) {
@@ -109,7 +109,7 @@ export default (Bot, client) => {
         if (!foundChar.length) {
             foundChar = charList.filter((char) => char.aliases.some((alias) => alias.toLowerCase().split(" ").includes(cleanSearchName)));
         }
-        if (ship && !foundChar.length) {
+        if (isShip && !foundChar.length) {
             foundChar = charList.filter((ship) => ship.crew?.some((crew) => crew.toLowerCase().split(" ").includes(cleanSearchName)));
         }
         if (foundChar?.length) {
