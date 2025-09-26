@@ -403,13 +403,7 @@ export default class extends Language {
             COMMAND_GUILDS_DESC: "Descripción del Gremio",
             COMMAND_GUILDS_MSG: "Chat Announcement",
             COMMAND_GUILDS_REG_NEEDED: "No he podido encontrar información del gremio para este usuario. Por favor comprueba que el código de aliado sea correcto.",
-            COMMAND_GUILDS_RAID_STRINGS: {
-                header:    "Raids",
-                rancor:    "Rancor: ",
-                aat:       "AAT:    ",
-                sith_raid: "Sith:   ",
-                heroic:    "Heroico"
-            },
+            COMMAND_GUILDS_RAID_HEADER: "Raids",
             COMMAND_GUILDS_STAT_HEADER: "Estadísticas",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp) => [
                 `Members:      ${members}/50`,

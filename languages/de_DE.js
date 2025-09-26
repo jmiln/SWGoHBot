@@ -648,13 +648,7 @@ export default class extends Language {
             COMMAND_GUILDS_MSG: "Chat Ankuendigung",
             COMMAND_GUILDS_REG_NEEDED: "Ich kann keine Gilde fuer diesen User finden. Bitte sicherstellen dass der Buendniscode korrekt ist.",
             COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
-            COMMAND_GUILDS_RAID_STRINGS: {
-                header:    "Raids",
-                rancor:    "Rancor: ",
-                aat:       "AAT:    ",
-                sith_raid: "Sith:   ",
-                heroic:    "Heroisch"
-            },
+            COMMAND_GUILDS_RAID_HEADER: "Raids",
             COMMAND_GUILDS_STAT_HEADER: "Statistiken",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
                 `Mitglieder:      ${members}/50`,

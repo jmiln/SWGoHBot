@@ -8,7 +8,8 @@ export default class Language {
         this.Bot = bot;
     }
 
-    get(str: string, ...args: null | (string | number)[]): string | {[key: string]: string} | LangHelpStrs {
+    // also | {[key: string]: string} | LangHelpStrs
+    get(str: string, ...args: null | (string | number)[]): string {
         if (!this.language[str]) {
             const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
             let res = null;

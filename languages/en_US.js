@@ -800,16 +800,7 @@ export default class extends Language {
             COMMAND_GUILDS_MSG: "Chat Announcement",
             COMMAND_GUILDS_REG_NEEDED: "I can't find a guild for that user. Please make sure the ally code is correct.",
             COMMAND_GUILDS_ROSTER_HEADER: (ix, len) => `Roster (${ix}/${len})`,
-            COMMAND_GUILDS_RAID_STRINGS: {
-                header:              "Raids",
-                rancor:              "Rancor:      ",
-                rancor_challenge:    "Chall Rancor:",
-                aat:                 "AAT:         ",
-                sith_raid:           "Sith:        ",
-                heroic:              "Heroic",
-                kraytdragon:         "Krayt Dragon:"
-
-            },
+            COMMAND_GUILDS_RAID_HEADER: "Raids",
             COMMAND_GUILDS_STAT_HEADER: "Stats",
             COMMAND_GUILDS_STAT_STRINGS: (members, lvl, gp, charGP, shipGP) => [
                 `Members:      ${members}/50`,

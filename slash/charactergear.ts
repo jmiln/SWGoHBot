@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import type { SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, Unit } from "../types/types.ts";
+import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 export default class Charactergear extends Command {
     constructor(Bot: BotType) {
@@ -58,7 +58,7 @@ export default class Charactergear extends Command {
 
         const chars = Bot.findChar(searchChar, Bot.characters);
 
-        let character: Unit;
+        let character: BotUnit;
         if (!chars.length) {
             return interaction.channel.send({ content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
         }

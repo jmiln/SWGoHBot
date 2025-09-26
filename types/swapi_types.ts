@@ -18,6 +18,10 @@ export interface SWAPIPlayer {
     // Extra that's added occasionally before sending out
     warnings?: string[];
 
+    // Used in some commands
+    inGuild?: boolean;  // Used to highlight the member if they're in the Discord server
+    dID?: string;       // Discord ID, similar to above
+
     // DB Updated timestamps
     updated?: number;
     updatedAt?: Date;
@@ -185,6 +189,87 @@ export interface RawUnit {
         tier: number;
         equipmentSetList: string[];
     }
+}
+
+  // {
+  //   profile: {
+  //   },
+
+
+export interface RawGuild {
+    id: string;
+    inventory: null;
+    lastRaidPointsSummary: {
+        identifier: {
+            campaignId: string;
+            campaignMapId: string;
+            campaignNodeId: string;
+            campaignNodeDifficulty: number;
+            campaignMissionId: string;
+        };
+        totalPoints: string;
+    }[];
+    nextChallengesRefresh: string;
+    profile: {
+        messageCriteriaKey: [],
+        raidLaunchConfig: [],
+        guildEventTracker: {
+            definitionId: string;
+            completedStars: string;
+            endTime: string;
+        }[];
+        id: string;
+        name: string;
+        externalMessageKey: string;
+        logoBackground: string;
+        enrollmentStatus: number;
+        trophy: number;
+        memberCount: number;
+        memberMax: number;
+        level: number;
+        rank: number;
+        levelRequirement: number;
+        raidWin: number;
+        leaderboardScore: string;
+        bannerColorId: string;
+        bannerLogoId: string;
+        guildGalacticPower: string;
+        chatChannelId: string;
+        guildType: string;
+        guildGalacticPowerForRequirement: string;
+        singleLaunchConfig: null;
+        autoLaunchConfig: {
+            raidId: string;
+            campaignMissionIdentifier: {
+                campaignId: string;
+                campaignMapId: string;
+                campaignNodeId: string;
+                campaignNodeDifficulty: number;
+                campaignMissionId: string;
+            },
+            autoLaunch: boolean;
+            autoLaunchImmediately: boolean;
+            autoLaunchTime: string;
+            joinPeriodDuration: string;
+            autoSimEnabled: boolean;
+            immediate: boolean;
+            scheduledUtcOffsetSeconds: string;
+        }
+    };
+    progress: null;
+    roster: RawGuildMember[];
+    updated: number;
+    updatedAt: Date;
+}
+export interface RawGuildMember {
+    memberContribution: {
+        '1': { currentValue: string, lifetimeValue: string },
+        '2': { currentValue: string, lifetimeValue: string },
+        '3': { currentValue: string, lifetimeValue: string }
+    },
+    playerName: string,
+    lastActivityTime: string,
+    playerId: string
 }
 
 export interface ComlinkUnit {
@@ -449,7 +534,7 @@ export interface SWAPIGuild {
     logoBackground: string;
     memberMax: number;
     members: number;
-    message: null;
+    message: string;
     messageCriteriaKey: null;
     name: string;
     nextChallengesRefresh: string;
@@ -478,6 +563,9 @@ export interface SWAPIGuild {
     trophy: number;
     updated: number;
     updatedAt: Date;
+
+    // Used in some commands
+    warnings?: string[];
 }
 
 interface SWAPIGuildTWResult {
@@ -519,7 +607,6 @@ export interface SWAPIGuildMember {
 	seasonStatus: SWAPIGuildMemberSeasonStatus[];
     playerName: string;
     playerLevel: number;
-    playerId: string;
     guildXp: number;
     lastActivityTime: string;
     squadPower: number;
@@ -535,6 +622,21 @@ export interface SWAPIGuildMember {
     id: string;
     guildMemberLevel: number;
     memberContribution: SWAPIGuildMemberContribution[] | SWAPIGuildAlteredMemberContribution;
+
+    // Added after getting it from the api?
+    name?: string;
+    level?: number;
+    allyCode?: number;
+    gp?: number;
+    gpChar?: number;
+    gpShip?: number;
+    updated?: number;
+
+    // Used in some commands
+    inGuild?: boolean;  // Used to highlight the member if they're in the Discord server
+    dID?: string;       // Discord ID, similar to above
+    memberLvl?: string;
+    warnings?: string[];
 }
 interface SWAPIGuildMemberContribution {
     type: number;

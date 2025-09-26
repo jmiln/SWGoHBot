@@ -5,7 +5,7 @@ import type slashCommand from "../base/slashCommand.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { RawCharacter, RawUnit, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -95,6 +95,20 @@ export interface BotType {
             level?: string;
         }[];
     }[];
+    raidNames: {
+        [key: string]: {
+            [key: string]: string
+            aat: string;
+            rancor: string;
+            rancor_challenge: string;
+            sith_raid: string;
+            kraytdragon: string;
+            heroic: string;
+            speederbike: string;
+            naboo: string;
+            order66: string;
+        };
+    }
 
     // swapi functs
     swgohAPI: {
@@ -106,12 +120,14 @@ export interface BotType {
         getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
         langChar: (char: SWAPIUnit, lang: SWAPILang) => SWAPIUnit;
         units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
+        guild: (allycode: number, cooldown: PlayerCooldown) => SWAPIGuild;
+        getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: {forceUpdate?: boolean}) => RawGuild;
     };
     findChar: (searchName: string, charList: BotUnit | BotUnit[], isShip?: boolean) => BotUnit[];
 
     findFaction: (fact: string) => string | string[] | null;
     getSideColor: (side: UnitSide) => number;
-    summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) => number[];
+    summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) =>[{[key: string]: number}, number];
 
     // util functions
     msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
@@ -121,11 +137,11 @@ export interface BotType {
                 value: string;
                 startWith?: string;
                 endWith?: string ;
-                align?: "left" | "center" | "right";
+                align?: string; // "left" | "center" | "right";
             }
         },
-        rows: {[key: string]: object}[],
-        options: {
+        rows: {[key: string]: string | number}[],
+        options?: {
             boldHeader?: boolean;
             useHeader?: boolean;
         }
@@ -134,7 +150,8 @@ export interface BotType {
     updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
     getSetTimeForTimezone: (dtString: string, timezone?: string) => number;
     isValidZone: (timezone: string) => boolean;
-    shortenNum: (number: number, trimTo: number) => string;
+    shortenNum: (number: number, trimTo?: number) => string;
+    formatDuration: (duration: number, lang?: BotLanguage) => string;
 
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
@@ -365,4 +382,9 @@ interface ArenaWatchAcct {
     result?: string;
     lastCharChange?: number;
     lastShipChange?: number;
+}
+export interface TWList {
+    [key: string]: {
+        [key: string]: string
+    }
 }

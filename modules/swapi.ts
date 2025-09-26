@@ -9,7 +9,7 @@ import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import mongoCache from "../modules/cache.js";
 
-import type { ComlinkMod, ComlinkPlayer, RawCharacter, SWAPIGear, SWAPIGuild, SWAPIGuildMember, SWAPILang, SWAPIPlayer, SWAPIPlayerArenaProfile, SWAPIPlayerArenaProfilePVP, SWAPIRecipe, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerOutput } from "../types/swapi_types.ts";
+import type { ComlinkMod, ComlinkPlayer, RawCharacter, RawGuild, RawGuildMember, SWAPIGear, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIPlayerArenaProfile, SWAPIPlayerArenaProfilePVP, SWAPIRecipe, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerOutput } from "../types/swapi_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
 
 
@@ -801,7 +801,7 @@ export default (opts = {noop: false}) => {
     }
 
     async function getRawGuild(allycode: number, cooldown: PlayerCooldown = { player: playerMaxCooldown, guild: guildMaxCooldown }, { forceUpdate } = { forceUpdate: false }) {
-        const tempGuild: SWAPIGuild = {} as SWAPIGuild;
+        const tempGuild: RawGuild = {} as RawGuild;
         const thisAc = allycode?.toString().replace(/[^\d]/g, "");
         if (!thisAc || Number.isNaN(thisAc) || thisAc.length !== 9) {
             throw new Error("Please provide a valid allycode");
@@ -841,7 +841,7 @@ export default (opts = {noop: false}) => {
                 if (key === "member") {
                     tempGuild.roster = [];
                     for (const member of rawGuild.member) {
-                        const tempMember: SWAPIGuildMember = {} as SWAPIGuildMember;
+                        const tempMember: RawGuildMember = {} as RawGuildMember;
                         const contribution = {};
                         for (const contType of member.memberContribution) {
                             contribution[contType.type] = {
@@ -917,7 +917,6 @@ export default (opts = {noop: false}) => {
                 console.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
             guild = await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
-            // @ts-expect-error
             if (warnings) guild.warnings = warnings;
         } else {
             /** If found and valid, serve from cache */

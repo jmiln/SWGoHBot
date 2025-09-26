@@ -2,9 +2,11 @@ import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.js";
 import { getFullTWList } from "../modules/guildConfig/twlist.js";
+import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType, TWList } from "../types/types.ts";
 
 export default class Guilds extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guilds",
             guildOnly: false,
@@ -201,8 +203,8 @@ export default class Guilds extends Command {
         });
     }
 
-    async run(Bot, interaction) {
-        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") });
+    async run(Bot: BotType, interaction: BotInteraction) {
+        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const subCommand = interaction.options.getSubcommand();
         if (!subCommand) return console.error("[slash/guilds] Somehow missing subCommand");
@@ -227,16 +229,16 @@ export default class Guilds extends Command {
             const user = await Bot.userReg.getUser(interaction.user.id);
             const showAll = interaction.options.getBoolean("show_all") || false;
             const maxTickets = user?.guildTickets?.tickets || 600;
-            return await guildTickets(userAC, maxTickets, showAll);
+            return await guildTickets(Number.parseInt(userAC, 10), maxTickets, showAll);
         }
 
-        let guild = null;
+        let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await Bot.swgohAPI.guild(userAC, cooldown);
+            guild = await Bot.swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
 
             // Filter out any members that aren't in the guild
-            guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
+            guild.roster = guild.roster.filter((mem: SWAPIGuildMember) => mem.guildMemberLevel > 1);
         } catch (e) {
             return super.error(interaction, `Issue getting guild: \`${codeBlock(e.message)}\``);
         }
@@ -307,14 +309,14 @@ export default class Guilds extends Command {
             const gears = [10, 11, 12, 13];
             const sortBy = interaction.options.getInteger("sort");
             if (sortBy && (sortBy > 13 || sortBy < 1)) {
-                return interaction.editReply({ content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) });
+                return interaction.editReply({ content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string });
             }
             const gRoster = guild.roster.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)).map((m) => m.allyCode);
 
             if (!gRoster.length) {
                 return interaction.editReply({ content: "I can't find any players in the requested guild." });
             }
-            let guildGG;
+            let guildGG: SWAPIPlayer[];
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
@@ -327,7 +329,7 @@ export default class Guilds extends Command {
                         {
                             description: codeBlock(e),
                             title: "Something Broke while getting your guild's characters",
-                            footer: "Please try again in a bit",
+                            footer: {text: "Please try again in a bit"},
                             color: Bot.constants.colors.red,
                         },
                     ],
@@ -395,7 +397,7 @@ export default class Guilds extends Command {
 
         async function guildMods() {
             // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
-            let guildGG;
+            let guildGG: SWAPIPlayer[];
             try {
                 guildGG = await Bot.swgohAPI.unitStats(
                     guild.roster.map((m) => m.allyCode),
@@ -408,7 +410,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: ` ${codeBlock(err)}`,
-                            footer: "Please try again in a bit",
+                            footer: {text: "Please try again in a bit"},
                         },
                     ],
                 });
@@ -479,13 +481,13 @@ export default class Guilds extends Command {
             const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off �`")];
 
             const fields = Bot.msgArray(header.concat(table), "\n", 700).map((m) => {
-                if (!m?.length) return;
+                if (!m?.length) return null;
                 return { name: "-", value: m };
             });
 
             const embed = {
                 author: {
-                    name: interaction.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name),
+                    name: interaction.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name) as string,
                 },
                 fields: fields,
             };
@@ -501,19 +503,18 @@ export default class Guilds extends Command {
             const members = [];
 
             // Make sure the guild roster exists, and grab all the ally codes
-            let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(
                     "I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.",
                 );
             }
             interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
-            gRoster = guild.roster.map((m) => m.allyCode);
+            const gRosterCodes = guild.roster.map((m) => m.allyCode);
 
             // Use the ally codes to get all the other info for the guild
-            let guildMembers;
+            let guildMembers: SWAPIPlayer[];
             try {
-                guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
+                guildMembers = await Bot.swgohAPI.unitStats(gRosterCodes, cooldown);
             } catch (e) {
                 Bot.logger.error(`ERROR(Guilds/guildRelics) getting guild: ${e}`);
                 return interaction.editReply({
@@ -522,7 +523,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: codeBlock(e),
-                            footer: "Please try again in a bit.",
+                            footer: {text: "Please try again in a bit."},
                         },
                     ],
                 });
@@ -652,10 +653,10 @@ export default class Guilds extends Command {
             });
         }
 
-        async function guildTickets(userAC, maxTickets, showAll = false) {
+        async function guildTickets(userAC: number, maxTickets: number, showAll = false) {
             const sortBy = interaction.options.getString("sort");
 
-            let rawGuild;
+            let rawGuild: RawGuild;
             try {
                 rawGuild = await Bot.swgohAPI.getRawGuild(userAC);
             } catch (err) {
@@ -679,14 +680,14 @@ export default class Guilds extends Command {
 
             const dayMS = 86400000;
             let timeUntilReset = null;
-            const chaTime = rawGuild.nextChallengesRefresh * 1000;
-            const nowTime = new Date().getTime();
+            const chaTime = Number.parseInt(rawGuild.nextChallengesRefresh, 10) * 1000;
+            const nowTime = Date.now();
             if (chaTime > nowTime) {
                 // It's in the future
                 timeUntilReset = Bot.formatDuration(chaTime - nowTime);
             } else {
                 // It's in the past, so calculate the next time
-                const dur = Number.parseInt(chaTime, 10) + dayMS - nowTime;
+                const dur = chaTime + dayMS - nowTime;
                 timeUntilReset = Bot.formatDuration(dur);
             }
 
@@ -726,7 +727,7 @@ export default class Guilds extends Command {
             let desc = guild.desc ? `**${interaction.language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
             desc += guild.message?.length ? `**${interaction.language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
 
-            const raidStr = interaction.language.get("COMMAND_GUILDS_RAID_STRINGS");
+            const raidHeaderStr = interaction.language.get("COMMAND_GUILDS_RAID_STRINGS");
             const raidArr = [];
             let raids = "";
 
@@ -752,7 +753,7 @@ export default class Guilds extends Command {
 
             if (raids) {
                 fields.push({
-                    name: raidStr.header || "Raids",
+                    name: raidHeaderStr || "Raids",
                     value: codeBlock(raids) || "N/A",
                     inline: true,
                 });
@@ -818,19 +819,18 @@ export default class Guilds extends Command {
             }
 
             // Make sure the guild roster exists, and grab all the ally codes
-            let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
                 throw new Error(
                     "I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.",
                 );
             }
             interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
-            gRoster = guild.roster.map((m) => m.allyCode);
+            const gRosterACs = guild.roster.map((m) => m.allyCode);
 
             // Use the ally codes to get all the other info for the guild
-            let guildMembers;
+            let guildMembers: SWAPIPlayer[];
             try {
-                guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
+                guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
                 Bot.logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${e}`);
                 return interaction.editReply({
@@ -839,7 +839,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: codeBlock(e),
-                            footer: "Please try again in a bit.",
+                            footer: {text: "Please try again in a bit."},
                         },
                     ],
                 });
@@ -928,7 +928,7 @@ export default class Guilds extends Command {
                 throw new Error("I cannot find that guild. \nPlease make sure the name or ally code is correct.");
             }
 
-            let sortedGuild;
+            let sortedGuild: SWAPIGuildMember[];
             if (showAC || (sortBy && ["name", "rank"].includes(sortBy))) {
                 // Sort em by name
                 sortedGuild = guild.roster.sort((p, c) => (p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1));
@@ -1032,7 +1032,6 @@ export default class Guilds extends Command {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
             const unitChecklist = await getFullTWList({ cache: Bot.cache, guildId: interaction.guild?.id });
-            let gRoster;
             if (!guild || !guild.roster || !guild.roster.length) {
                 return interaction.editReply({
                     content: null,
@@ -1046,11 +1045,11 @@ export default class Guilds extends Command {
                 });
             }
             await interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
-            gRoster = guild.roster.map((m) => m.allyCode);
+            const gRosterACs = guild.roster.map((m) => m.allyCode);
 
-            let guildMembers;
+            let guildMembers: SWAPIPlayer[];
             try {
-                guildMembers = await Bot.swgohAPI.unitStats(gRoster, cooldown);
+                guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
                 Bot.logger.error(`ERROR(Guilds/twSummary) getting guild: ${e}`);
                 return interaction.editReply({
@@ -1060,7 +1059,7 @@ export default class Guilds extends Command {
                             description: codeBlock(e),
                             title: "Something Broke while getting your guild's characters",
                             color: Bot.constants.colors.brightred,
-                            footer: "Please try again in a bit.",
+                            footer: {text: "Please try again in a bit."},
                         },
                     ],
                 });
@@ -1106,7 +1105,7 @@ export default class Guilds extends Command {
                 const formattedMatches = previousMatches.map((match, ix) => {
                     const ourScore = Number.parseInt(match.score, 10);
                     const opponentScore = Number.parseInt(match.opponentScore, 10);
-                    const matchPower = (Number.parseInt(match.power, 10) / 1_000_000).toFixed(1);
+                    const matchPower = (match.power / 1_000_000).toFixed(1);
                     return `Match ${ix + 1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${(`${ourScore}-${opponentScore},`).padEnd(maxLenCompare+1, " ")} ${matchPower}M`;
                 });
                 fields.push({
@@ -1185,7 +1184,7 @@ export default class Guilds extends Command {
             const formattedRarityLvls = `${Object.keys(rarityLvls)
                 .splice(doExpand ? 0 : -4)
                 .map((g) => `${g}*           :: ${rarityLvls[g].toLocaleString().padStart(7, " ")}`)
-                .join("\n")}\nAVG Star Lvl :: ${avgRarity.padStart(7, " ")}`;
+                .join("\n")}\nAVG Star Lvl :: ${avgRarity.toString().padStart(7, " ")}`;
             fields.push({
                 name: "Character Rarity Counts",
                 value: `*How many characters at each star level*${codeBlock(`${formattedRarityLvls}`)}`,
@@ -1237,13 +1236,6 @@ export default class Guilds extends Command {
                 }),
             );
 
-            if (guildMembers.warnings) {
-                fields.push({
-                    name: "Warnings",
-                    value: guildMembers.warnings.join("\n"),
-                });
-            }
-
             const footerStr = Bot.updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated)), interaction);
             fields.push({
                 name: Bot.constants.zws,
@@ -1257,12 +1249,12 @@ export default class Guilds extends Command {
             };
             try {
                 return interaction.editReply({ content: null, embeds: [embed] });
-            } catch (err) {
+            } catch (_) {
                 return interaction.channel.send({ content: null, embeds: [embed] });
             }
         }
 
-        function twCategoryFormat(unitObj, gearLvls, divLen, guildMembers, ships = false) {
+        function twCategoryFormat(unitObj: TWList, gearLvls: {[key: string]: number}, divLen: number, guildMembers: SWAPIPlayer[], ships = false) {
             const catToFormat = ships ? ["Ships", "Capital Ships"] : ["Galactic Legends", "Light Side", "Dark Side"];
             const fieldsOut = [];
             const [gear1, gear2] = Object.keys(gearLvls)

@@ -1,8 +1,20 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
+
+interface PlayerQuality {
+    name: string;
+    allyCode: number;
+    modQuality: number;
+    gearQuality: number;
+    totalQuality: number;
+    charGP: number;
+    totalGP: number;
+}
 
 export default class GuildQuality extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guildquality",
             guildOnly: false,
@@ -16,8 +28,8 @@ export default class GuildQuality extends Command {
         });
     }
 
-    async run(Bot, interaction) {
-        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") });
+    async run(Bot: BotType, interaction: BotInteraction) {
+        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const allycode = interaction.options.getString("allycode");
         const userAC = await Bot.getAllyCode(interaction, allycode, true);
@@ -33,10 +45,10 @@ export default class GuildQuality extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
-        let guild = null;
+        let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await Bot.swgohAPI.guild(userAC, cooldown);
+            guild = await Bot.swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
 
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
@@ -128,25 +140,26 @@ export default class GuildQuality extends Command {
 
         // Output: ModQ | GearQ | TotalQ | CharGP | TotalGP | Name
 
-        async function getGuildRosterQualities(guild) {
+        async function getGuildRosterQualities(guild: SWAPIGuild): Promise<PlayerQuality[]> {
             const playerQualities = [];
-            let guildGG;
+            let guildGG: SWAPIPlayer[];
             try {
                 guildGG = await Bot.swgohAPI.unitStats(
                     guild.roster.map((m) => m.allyCode),
                     cooldown,
                 );
             } catch (err) {
-                return interaction.editReply({
+                 interaction.editReply({
                     content: null,
                     embeds: [
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: ` ${codeBlock(err)}`,
-                            footer: "Please try again in a bit",
+                            footer: {text: "Please try again in a bit"},
                         },
                     ],
                 });
+                return null;
             }
             guildGG = guildGG.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
             for (const player of guildGG) {
@@ -157,7 +170,7 @@ export default class GuildQuality extends Command {
             return playerQualities;
         }
 
-        async function processPlayerQuality(player) {
+        async function processPlayerQuality(player: SWAPIPlayer): Promise<PlayerQuality> {
             const charGP = player?.stats?.find((s) => s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME")?.value || 0;
             const totalGP = player?.stats?.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME")?.value || 0;
 
