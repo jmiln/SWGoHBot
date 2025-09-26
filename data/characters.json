@@ -223,7 +223,7 @@
         ],
         "mods": {
             "sets": [
-                "Defense x2",
+                "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -1257,9 +1257,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1367,7 +1367,18 @@
             "CATEGORY_SCOUNDREL_DESC",
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Protection"
+        },
         "crew": []
     },
     {
@@ -2010,9 +2021,9 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -3162,7 +3173,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -4330,7 +4341,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense"
+            "cross": "Protection"
         },
         "avatarName": "charui_ig86"
     },
@@ -6167,11 +6178,11 @@
                 "Health x2"
             ],
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Health",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_ninthsister"
     },
@@ -6491,6 +6502,38 @@
         }
     },
     {
+        "name": "Pirate King Hondo Ohnaka",
+        "uniqueName": "GLHONDO",
+        "aliases": [
+            "Pirate King Hondo Ohnaka"
+        ],
+        "avatarName": "charui_glhondo",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_glhondo.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_GALACTIC_LEGEND_DESC",
+            "CATEGORY_PIRATE_DESC",
+            "CATEGORY_RAID_ORDER66_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC",
+            "CATEGORY_SCOUNDREL_DESC",
+            "CATEGORY_SMUGGLER_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        },
+        "crew": []
+    },
+    {
         "name": "Plo Koon",
         "uniqueName": "PLOKOON",
         "aliases": [
@@ -6774,7 +6817,7 @@
                 "Offense x4"
             ],
             "square": "Offense",
-            "arrow": "Health",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
@@ -8485,11 +8528,11 @@
                 "Tenacity x2"
             ],
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            "circle": "Health",
+            "cross": "Health"
         },
         "crew": []
     },

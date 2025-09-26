@@ -3945,5 +3945,92 @@
                 "ship": true
             }
         ]
+    },
+    "GLHONDO": {
+        "guideId": "GLHONDO_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "ITHANO",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "HONDO",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "SMUGGLERCHEWBACCA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "EZRABRIDGERS3",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "QUIGGOLD",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "KIX",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "GENERALSKYWALKER",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "REY",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "BRUTUS",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "VANE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GENERALKENOBI",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "CHIRRUTIMWE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CAPTAINSILVO",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "COUNTDOOKU",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "BOSSK",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "MILLENNIUMFALCONEP7",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            }
+        ]
     }
 }
