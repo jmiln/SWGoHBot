@@ -1598,6 +1598,27 @@
         "avatarName": "charui_mfalcon_ep7"
     },
     {
+        "name": "Rogue One",
+        "uniqueName": "ROGUEONESHIP",
+        "aliases": [
+            "Rogue One"
+        ],
+        "avatarName": "charui_rogueoneship",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rogueoneship.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_CARGOSHIP_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROGUE_ONE_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": null,
+        "crew": [
+            "Bodhi Rook",
+            "Pao"
+        ]
+    },
+    {
         "name": "Scimitar",
         "uniqueName": "SITHINFILTRATOR",
         "aliases": [

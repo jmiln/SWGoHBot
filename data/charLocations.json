@@ -455,6 +455,11 @@
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/10"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ROGUEONESHIP_NAME",
+                "name": "The Spark Of Scarif Special Marquee Event"
             }
         ]
     },
@@ -3183,6 +3188,11 @@
             {
                 "type": "Cantina Store",
                 "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ROGUEONESHIP_NAME",
+                "name": "The Spark Of Scarif Special Marquee Event"
             }
         ]
     },
@@ -3224,6 +3234,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_PAZVIZSLA_NAME",
                 "name": "Defender Of The Creed Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Pirate King Hondo Ohnaka",
+        "defId": "GLHONDO",
+        "locations": [
+            {
+                "type": "Galactic Ascension",
+                "locId": "EVENT_GLHONDO_GALACTICLEGEND_NAME",
+                "name": "Tales Of The Pirate King Galactic Ascension"
             }
         ]
     },
@@ -3362,6 +3383,11 @@
         "name": "Quiggold",
         "defId": "QUIGGOLD",
         "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-D",
+                "locId": "HARD_FLEET"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_QUIGGOLD_NAME",

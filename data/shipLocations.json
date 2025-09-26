@@ -756,6 +756,17 @@
         ]
     },
     {
+        "name": "Rogue One",
+        "defId": "ROGUEONESHIP",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ROGUEONESHIP_NAME",
+                "name": "The Spark Of Scarif Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Scimitar",
         "defId": "SITHINFILTRATOR",
         "locations": [
