@@ -614,7 +614,7 @@ export default (Bot, client) => {
             return close.map((f) => f.toLowerCase());
         }
 
-        return false;
+        return null;
     };
 
     // Expand multiple spaces to have zero width spaces between them so

@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import unitChecklist from "../data/unitChecklist.ts";
+import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -19,7 +21,7 @@ const gpMap = {
 };
 
 export default class GrandArena extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "grandarena",
             guildOnly: false,
@@ -50,16 +52,16 @@ export default class GrandArena extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
 
         // Get the first user's ally code if possible
-        const user1str = interaction.options.getString("allycode_1");
-        let user1 = await Bot.getAllyCode(interaction, user1str);
-        if (!user1) {
-            if (user1str === "me") {
+        const user1Str = interaction.options.getString("allycode_1");
+        const user1AC = await Bot.getAllyCode(interaction, user1Str);
+        if (!user1AC) {
+            if (user1Str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
@@ -67,10 +69,10 @@ export default class GrandArena extends Command {
         }
 
         // Get the second user's ally code if possible
-        const user2str = interaction.options.getString("allycode_2");
-        let user2 = await Bot.getAllyCode(interaction, user2str);
-        if (!user2) {
-            if (user2str === "me") {
+        const user2Str = interaction.options.getString("allycode_2");
+        const user2AC = await Bot.getAllyCode(interaction, user2Str);
+        if (!user2AC) {
+            if (user2Str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
@@ -78,10 +80,10 @@ export default class GrandArena extends Command {
         }
 
         // If they're looking for specific characters, do what we can to get matches for them
-        let characters = interaction.options.getString("characters");
+        const characterStr = interaction.options.getString("characters");
         let charOut = [];
-        if (characters?.length) {
-            characters = characters.split(",").map((c) => c.trim());
+        if (characterStr?.length) {
+            const characters = characterStr.split(",").map((c) => c.trim());
             for (const char of characters) {
                 let chars = Bot.findChar(char, Bot.characters);
                 if (!chars.length) {
@@ -101,10 +103,12 @@ export default class GrandArena extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        let user1: SWAPIPlayer;
+        let user2: SWAPIPlayer;
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
             try {
-                const users = await Bot.swgohAPI.unitStats([user1, user2], cooldown);
+                const users = await Bot.swgohAPI.unitStats([user1AC, user2AC], cooldown);
                 if (Array.isArray(users)) {
                     user1 = users[0];
                     user2 = users[1];
@@ -128,7 +132,7 @@ export default class GrandArena extends Command {
         const checkArr = {};
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES");
+        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as {[key: string]: string};
 
         // An array to stick all the fields in as we go.
         const fields = [];
@@ -173,7 +177,7 @@ export default class GrandArena extends Command {
         });
 
         // The GP stats
-        let gpStats = [];
+        const gpStats = [];
 
         // Overall basic gp stats
         gpStats.push({
@@ -213,7 +217,7 @@ export default class GrandArena extends Command {
             user2: Bot.shortenNum(sumGP(user2TopX5), 2),
         });
 
-        gpStats = codeBlock(
+        const gpStatsOut = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -228,11 +232,11 @@ export default class GrandArena extends Command {
 
         fields.push({
             name: "GP Stats Overview",
-            value: gpStats,
+            value: gpStatsOut,
         });
 
         // Get the overall gear levels for each user
-        let gearOverview = [];
+        const gearOverview = [];
         const [u1GearLvls, u1AvgGear] = Bot.summarizeCharLevels([user1], "gear");
         const [u2GearLvls, u2AvgGear] = Bot.summarizeCharLevels([user2], "gear");
         const maxGear = Math.max(
@@ -251,7 +255,7 @@ export default class GrandArena extends Command {
             user1: u1AvgGear,
             user2: u2AvgGear,
         });
-        gearOverview = codeBlock(
+        const gearOverviewOut = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -265,11 +269,11 @@ export default class GrandArena extends Command {
         );
         fields.push({
             name: "Character Gear Counts",
-            value: `*How many characters at each gear level*${gearOverview}`,
+            value: `*How many characters at each gear level*${gearOverviewOut}`,
         });
 
         // Get the overall rarity levels for each user
-        let rarityOverview = [];
+        const rarityOverview = [];
         const [u1RarityLvls, u1AvgRarity] = Bot.summarizeCharLevels([user1], "rarity");
         const [u2RarityLvls, u2AvgRarity] = Bot.summarizeCharLevels([user2], "rarity");
         const maxRarity = Math.max(
@@ -288,7 +292,7 @@ export default class GrandArena extends Command {
             user1: u1AvgRarity,
             user2: u2AvgRarity,
         });
-        rarityOverview = codeBlock(
+        const rarityOverviewOut = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -303,12 +307,12 @@ export default class GrandArena extends Command {
 
         fields.push({
             name: "Character Rarity Counts",
-            value: `*How many characters at each rarity level*${rarityOverview}`,
+            value: `*How many characters at each rarity level*${rarityOverviewOut}`,
         });
 
         // Get some general stats for any available galactic legends
         const legendMap = unitChecklist["Galactic Legends"]
-        let glOverview = [];
+        const glOverview = [];
         for (const gl of legendMap) {
             const u1Char = user1.roster.find((c) => c.defId === gl[0]);
             const u2Char = user2.roster.find((c) => c.defId === gl[0]);
@@ -318,7 +322,7 @@ export default class GrandArena extends Command {
                 user2: `${getGearStr(u2Char)}${u2Char?.purchasedAbilityId?.length > 0 ? "U" : ""}`,
             });
         }
-        glOverview = codeBlock(
+        const glOverviewOut = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -332,11 +336,11 @@ export default class GrandArena extends Command {
         );
         fields.push({
             name: "Galactic Legend Overview",
-            value: glOverview,
+            value: glOverviewOut,
         });
 
         // Get the overall relic levels for each user
-        let relicOverview = [];
+        const relicOverview = [];
         const [u1RelicLvls, u1AvgRelic] = Bot.summarizeCharLevels([user1], "relic");
         const [u2RelicLvls, u2AvgRelic] = Bot.summarizeCharLevels([user2], "relic");
         const maxRelic = Math.max(
@@ -355,7 +359,7 @@ export default class GrandArena extends Command {
             user1: u1AvgRelic,
             user2: u2AvgRelic,
         });
-        relicOverview = codeBlock(
+        const relicOverviewOut = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -369,7 +373,7 @@ export default class GrandArena extends Command {
         );
         fields.push({
             name: "Character Relic Counts",
-            value: `*How many characters at each relic level*${relicOverview}`,
+            value: `*How many characters at each relic level*${relicOverviewOut}`,
         });
 
         // Get some general mod stats for each user
@@ -411,43 +415,44 @@ export default class GrandArena extends Command {
         for (const char of charArr) {
             const user1Char = user1.roster.find((c) => c.defId === char);
             const user2Char = user2.roster.find((c) => c.defId === char);
-            let cName = Bot.characters.find((c) => c.uniqueName === char);
+            const cName = Bot.characters.find((c) => c.uniqueName === char);
             let ship = false;
 
+            let thisCharName: string;
             if (!cName) {
                 // See if you can get it from the ships
                 if (Bot.ships.find((s) => s.uniqueName === char)) {
-                    cName = Bot.ships.find((s) => s.uniqueName === char).name;
+                    thisCharName = Bot.ships.find((s) => s.uniqueName === char).name;
                     ship = true;
                 } else {
                     continue;
                 }
             } else {
-                cName = cName.name;
+                thisCharName = cName.name;
             }
 
-            checkArr[cName] = [];
+            checkArr[thisCharName] = [];
 
             // Put in the header/ name
-            checkArr[cName].push({
+            checkArr[thisCharName].push({
                 check: labels.level,
                 user1: user1Char ? user1Char.level : "N/A",
                 user2: user2Char ? user2Char.level : "N/A",
             });
-            checkArr[cName].push({
+            checkArr[thisCharName].push({
                 check: labels.starLvl,
                 user1: user1Char ? user1Char.rarity : "N/A",
                 user2: user2Char ? user2Char.rarity : "N/A",
             });
 
             if (!ship) {
-                checkArr[cName].push({
+                checkArr[thisCharName].push({
                     check: labels.gearLvl,
                     user1: getGearStr(user1Char),
                     user2: getGearStr(user2Char),
                 });
 
-                checkArr[cName].push({
+                checkArr[thisCharName].push({
                     check: labels.zetas,
                     user1: user1Char
                         ? user1Char.skills
@@ -460,12 +465,12 @@ export default class GrandArena extends Command {
                               .length.toString()
                         : "N/A",
                 });
-                checkArr[cName].push({
+                checkArr[thisCharName].push({
                     check: "Omicrons",
                     user1: user1Char ? user1Char.skills.filter((s) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
                     user2: user2Char ? user2Char.skills.filter((s) => s.isOmicron && s.tier >= s.tiers).length.toString() : "N/A",
                 });
-                checkArr[cName].push({
+                checkArr[thisCharName].push({
                     check: labels.speed,
                     user1: user1Char?.stats.final.Speed ? user1Char.stats.final.Speed : "N/A",
                     user2: user2Char?.stats.final.Speed ? user2Char.stats.final.Speed : "N/A",
@@ -513,7 +518,7 @@ export default class GrandArena extends Command {
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name),
+                        name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name) as string,
                     },
                     fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
                 },
@@ -522,7 +527,7 @@ export default class GrandArena extends Command {
     }
 }
 
-function getModStats(user) {
+function getModStats(user: SWAPIPlayer) {
     const userMods = {
         spd15: 0,
         spd20: 0,
@@ -550,7 +555,7 @@ function getModStats(user) {
     return userMods;
 }
 
-function getOverview(Bot, user1, user2, labels) {
+function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, labels: {[key: string]: string}) {
     const overview = [];
 
     // Arena stats
@@ -601,19 +606,19 @@ function getOverview(Bot, user1, user2, labels) {
 }
 
 // Quick little function to add up all the gp frm a given chunk of roster
-const sumGP = (rosterIn) => {
+const sumGP = (rosterIn: SWAPIUnit[]) => {
     return rosterIn.reduce((a, b) => a + b.gp, 0);
 };
 
 // Get the top X characters from the roster (Sort then slice)
-const getTopX = (rosterIn, x) => {
+const getTopX = (rosterIn: SWAPIUnit[], x: number) => {
     // Sort it so the ones with a higher gp are first
     const sortedIn = rosterIn.sort((a, b) => (a.gp < b.gp ? 1 : -1));
     return sortedIn.slice(0, x);
 };
 
 // Get which division info these users will work with
-const getDiv = (gpIn) => {
+const getDiv = (gpIn: number) => {
     const divKeys = Object.keys(gpMap);
     for (const key of divKeys.reverse()) {
         if (gpIn < Number.parseInt(key, 10)) continue;
@@ -621,7 +626,7 @@ const getDiv = (gpIn) => {
     }
 };
 
-function getGearStr(charIn) {
+function getGearStr(charIn: SWAPIUnit) {
     // If the character is not unlocked
     if (!charIn?.gear) return "N/A";
 

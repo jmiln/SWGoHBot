@@ -1,16 +1,17 @@
-import type { BotLanguage, BotType } from "../types/types.ts";
+import type { BotLanguage, BotType, LangHelpStrs } from "../types/types.ts";
 
 export default class Language {
     Bot: BotType;
     language: BotLanguage;
+
     constructor(bot: BotType) {
         this.Bot = bot;
     }
 
-    get(str: string, ...args: null | (string | number)[]) {
+    get(str: string, ...args: null | (string | number)[]): string | {[key: string]: string} | LangHelpStrs {
         if (!this.language[str]) {
             const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
-            let res = "";
+            let res = null;
             try {
                 if (!args.length) {
                     res = defLang.get(str);

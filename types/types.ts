@@ -15,6 +15,16 @@ export interface PlayerCooldown {
 export type BotLanguage = "en_US" | "de_DE" | "es_SP" | "ko_KR" | "pt_BR";
 export type UnitSide = "light" | "dark";
 
+export interface LangHelpStrs {
+    description: string;
+    actions: {
+        action: string;
+        actionDesc: string;
+        usage: string;
+        args: {[key: string]: string}
+    }[]
+}
+
 // All the mess we cram into the Bot object
 // - Should probably just make em get imported as needed instead
 export interface BotType {
@@ -99,14 +109,32 @@ export interface BotType {
     };
     findChar: (searchName: string, charList: BotUnit | BotUnit[], isShip?: boolean) => BotUnit[];
 
+    findFaction: (fact: string) => string | string[] | null;
     getSideColor: (side: UnitSide) => number;
+    summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) => number[];
 
     // util functions
     msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
+    makeTable: (
+        headers: {
+            [key: string]: {
+                value: string;
+                startWith?: string;
+                endWith?: string ;
+                align?: "left" | "center" | "right";
+            }
+        },
+        rows: {[key: string]: object}[],
+        options: {
+            boldHeader?: boolean;
+            useHeader?: boolean;
+        }
+    ) => string[];
     expandSpaces: (strIn: string) => string;
     updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
     getSetTimeForTimezone: (dtString: string, timezone?: string) => number;
     isValidZone: (timezone: string) => boolean;
+    shortenNum: (number: number, trimTo: number) => string;
 
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
