@@ -4341,7 +4341,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection"
+            "cross": "Offense"
         },
         "avatarName": "charui_ig86"
     },
@@ -4402,7 +4402,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -4723,9 +4723,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense"
+            "cross": "Health"
         }
     },
     {
@@ -8442,7 +8442,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Potency"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_ugnaught"
     },

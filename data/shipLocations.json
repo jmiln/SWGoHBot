@@ -692,6 +692,17 @@
         ]
     },
     {
+        "name": "Rebel B-wing",
+        "defId": "BWINGREBEL",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
+                "name": "Sky Saber Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Rebel Y-wing",
         "defId": "YWINGREBEL",
         "locations": [
