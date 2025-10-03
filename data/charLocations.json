@@ -594,6 +594,11 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
                 "name": "Rebel Rouser Marquee Event"
+            },
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
+                "name": "Sky Saber Special Marquee Event"
             }
         ]
     },
@@ -2555,6 +2560,11 @@
         "name": "Kix",
         "defId": "KIX",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "1-D",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_KIX_NAME",

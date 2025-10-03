@@ -1463,6 +1463,24 @@
         "avatarName": "charui_razorcrest"
     },
     {
+        "name": "Rebel B-wing",
+        "uniqueName": "BWINGREBEL",
+        "aliases": [
+            "Rebel B-wing"
+        ],
+        "avatarName": "charui_bwingrebel",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_bwingrebel.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": null,
+        "crew": [
+            "Captain Drogan"
+        ]
+    },
+    {
         "name": "Rebel Y-wing",
         "uniqueName": "YWINGREBEL",
         "aliases": [
