@@ -5,7 +5,7 @@ import type slashCommand from "../base/slashCommand.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { RawCharacter, RawGuild, RawUnit, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -117,6 +117,7 @@ export interface BotType {
             cooldown?: PlayerCooldown,
             options?: {force?: boolean, defId?: string}
         ) => SWAPIPlayer[];
+        guildUnitStats: (allyCodes: number[], defId: string, cooldown?: PlayerCooldown) => SWAPIUnit[];
         getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
         langChar: (char: SWAPIUnit, lang: SWAPILang) => SWAPIUnit;
         units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
@@ -128,6 +129,7 @@ export interface BotType {
     findFaction: (fact: string) => string | string[] | null;
     getSideColor: (side: UnitSide) => number;
     summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) =>[{[key: string]: number}, number];
+    getGearStr(charIn: SWAPIUnit, preStr: string): string;
 
     // util functions
     msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];

@@ -51,9 +51,11 @@ export default class slashCommand {
         }
     }
 
-    async error(interaction: ChatInputCommandInteraction, errMsg: string, options: {ephemeral?: boolean; title?: string; color?: number; example?: string} = {
+    async error(interaction: ChatInputCommandInteraction, errMsg: string, options: {ephemeral?: boolean; title?: string; footer?: string; color?: number; example?: string, description?: string} = {
         ephemeral: true,
         title: "Error",
+        description: "",
+        footer: "",
         color: this.Bot.constants.colors.red,
         example: "",
     }): Promise<void> {

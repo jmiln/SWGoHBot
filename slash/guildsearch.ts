@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 export default class GuildSearch extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guildsearch",
             guildOnly: false,
@@ -141,7 +143,7 @@ export default class GuildSearch extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options
@@ -186,7 +188,7 @@ export default class GuildSearch extends Command {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT") });
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
-        let unitList = null;
+        let unitList: BotUnit[] = null;
         let foundUnit = null;
         let isShip = false;
         let searchStr = null;
@@ -216,9 +218,9 @@ export default class GuildSearch extends Command {
         // If there's just one match, use it
         foundUnit = unitList[0];
 
-        let guild = null;
+        let guild: SWAPIGuild = null;
         try {
-            guild = await Bot.swgohAPI.guild(userAC, cooldown);
+            guild = await Bot.swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, "Sorry, but it looks like that player is not in a guild");
@@ -246,14 +248,13 @@ export default class GuildSearch extends Command {
         }
         const guildAllycodes = guild.roster.map((p) => p.allyCode);
 
-        let guildChar;
+        let guildChar: SWAPIUnit[];
         try {
             guildChar = await Bot.swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
             return super.error(interaction, codeBlock(e), {
                 title: "Something Broke while getting your guild's characters",
                 footer: "Please try again in a bit",
-                edit: true,
             });
         }
 
@@ -281,22 +282,25 @@ export default class GuildSearch extends Command {
             }
 
             for (const member of sortedMembers) {
-                const stats = member.stats;
-                if (!stats?.final) {
+                const stats = {
+                    Protection: null,
+                };
+                if (!member.stats?.final) {
                     continue;
                 }
-                for (const s of Object.keys(stats.final)) {
-                    if (stats.final[s] % 1 !== 0) {
-                        stats[s] = `${(stats.final[s] * 100).toFixed(2)}%`;
+                for (const s of Object.keys(member.stats.final)) {
+                    if (member.stats.final[s] % 1 !== 0) {
+                        member.stats[s] = `${(member.stats.final[s] * 100).toFixed(2)}%`;
                     } else {
-                        stats[s] = stats.final[s] ? stats.final[s].toLocaleString() : "N/A";
+                        member.stats[s] = member.stats.final[s] ? member.stats.final[s].toLocaleString() : "N/A";
                     }
                 }
-                stats.player = member.player;
-                stats.gp = member.gp ? member.gp.toLocaleString() : 0;
-                stats.gear = member.gear;
-                if (!stats.Protection) stats.Protection = 0;
-                outArr.push(stats);
+                outArr.push({
+                    ...stats,
+                    player: member.player,
+                    gp: member.gp ? member.gp.toLocaleString() : 0,
+                    gear: member.gear,
+                });
             }
 
             const checkableStats = {
@@ -327,9 +331,9 @@ export default class GuildSearch extends Command {
                     gp: { value: "GP", endWith: "|", align: "right" },
                 };
                 header[stat] = { value: checkableStats[stat].short, endWith: "]`", align: "right" };
-                header.player = { value: "", align: "left" };
+                const outHeader = {...header, player: { value: "", align: "left" }}
 
-                const outTable = Bot.makeTable(header, outArr);
+                const outTable = Bot.makeTable(outHeader, outArr);
 
                 if (outTable.length) {
                     const outMsgArr = Bot.msgArray(outTable, "\n", 700);
@@ -398,7 +402,6 @@ export default class GuildSearch extends Command {
             return super.error(interaction, desc, {
                 title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
                 description: footerStr,
-                edit: true,
             });
         }
 
@@ -409,7 +412,7 @@ export default class GuildSearch extends Command {
         let maxO = 0;
         const zetas = [];
         const omicrons = [];
-        let apiChar;
+        let apiChar: RawCharacter;
         try {
             apiChar = await Bot.swgohAPI.getCharacter(foundUnit.uniqueName);
         } catch (e) {
@@ -428,7 +431,7 @@ export default class GuildSearch extends Command {
 
         const hasUlt = !!guildChar.find((ch) => ch?.purchasedAbilityId?.length);
 
-        let sortedGuild = [];
+        let sortedGuild: SWAPIUnit[] = [];
         if (sortType === "name") {
             // Sort by name
             sortedGuild = guildChar.sort((p, c) => (p.player.toLowerCase() > c.player.toLowerCase() ? 1 : -1));
@@ -465,7 +468,7 @@ export default class GuildSearch extends Command {
             if (doZeta && !doOmicron && !member.zetas?.length) continue;
             if (doOmicron && !doZeta && !member.omicrons?.length) continue;
 
-            if (Number.isNaN(Number.parseInt(member.rarity, 10))) member.rarity = rarityMap[member.rarity];
+            if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity];
 
             const gearStr = Bot.getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
             let unitStr = " | ";
@@ -489,9 +492,9 @@ export default class GuildSearch extends Command {
                     unitStr += (ix + 1).toString();
                 }
             });
-            const gpStr = Number.parseInt(member.gp, 10).toLocaleString();
+            const gpStr = member.gp.toLocaleString();
 
-            let uStr;
+            let uStr = "";
             if (member.rarity > 0) {
                 if (isShip) {
                     uStr = `**\`[Lvl ${member.level.toString().padStart(2)} | ${gpStr.padStart(maxGP)}${maxZ > 0 ? unitStr : ""}]\`** ${
@@ -514,7 +517,7 @@ export default class GuildSearch extends Command {
         }
 
         const fields = [];
-        let outArr;
+        let outArr = [];
 
         if (doReverse) {
             outArr = Object.keys(charOut).reverse();
@@ -544,16 +547,6 @@ export default class GuildSearch extends Command {
             }
             fields.push({
                 name: "Guild Roster Warnings",
-                value: warn,
-            });
-        }
-        if (guildChar.warnings) {
-            let warn = guildChar.warnings.join("\n");
-            if (warn.length < 1024) {
-                warn = `${warn.slice(0, 1000)}...`;
-            }
-            fields.push({
-                name: "Guild Character Warnings",
                 value: warn,
             });
         }
@@ -590,7 +583,7 @@ export default class GuildSearch extends Command {
                 ],
             });
         } catch (e) {
-            Bot.logger.error("ERROR", `Error sending message in guildsearch - ${e}`);
+            Bot.logger.error(`Error sending message in guildsearch - ${e}`);
             Bot.logger.error(fields);
         }
     }

@@ -632,6 +632,7 @@ export default (opts = {noop: false}) => {
     async function guildUnitStats(allyCodes: number[], defId: string, cooldown: PlayerCooldown) {
         if (!cooldown?.guild || cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
         if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
+        if (!defId) throw new Error("[swapi guildUnitStats] You need to specify a defId");
 
         const outStats = [];
         const blankUnit = {

@@ -9,7 +9,7 @@ export default class Language {
     }
 
     // also | {[key: string]: string} | LangHelpStrs
-    get(str: string, ...args: null | (string | number)[]): string {
+    get(str: string, ...args: null | (string | number | boolean)[]): string {
         if (!this.language[str]) {
             const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
             let res = null;
