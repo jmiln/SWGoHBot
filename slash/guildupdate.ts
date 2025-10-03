@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class GuildUpdate extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guildupdate",
             // category: "Patreon",
@@ -41,8 +42,7 @@ export default class GuildUpdate extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
-        // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const cmdOut = null;
         const outLog = [];
 
@@ -94,7 +94,7 @@ export default class GuildUpdate extends Command {
                 if (!Bot.isAllyCode(allycode)) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
-                allycode = Bot.getAllyCode(interaction, allycode);
+                allycode = await Bot.getAllyCode(interaction, allycode);
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
                 const player = await Bot.swgohAPI.unitStats(allycode);

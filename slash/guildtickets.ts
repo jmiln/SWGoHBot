@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 const updateTypeStrings = {
     update: "Update every 5min",
@@ -7,7 +8,7 @@ const updateTypeStrings = {
 };
 
 export default class GuildTickets extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "guildtickets",
             guildOnly: false,
@@ -86,8 +87,7 @@ export default class GuildTickets extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
-        // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const cmdOut = null;
         const outLog = [];
 

@@ -5,7 +5,7 @@ import type slashCommand from "../base/slashCommand.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { RawCharacter, RawGuild, RawUnit, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
