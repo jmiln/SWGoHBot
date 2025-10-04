@@ -1,7 +1,9 @@
 import type { ChatInputCommandInteraction, Client, Collection, Guild, GuildChannel, GuildMember, Interaction } from "discord.js";
+import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
+import type Help from "../data/help.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
@@ -49,6 +51,12 @@ export interface BotType {
     // Scheduled events
     manageEvents: (eventsList: object[]) => void;
     sendWebhook: (webhookURL: string, data: object) => void;
+
+    mongo: MongoClient;
+    guildCount: () => number;
+    userCount: () => number;
+    shardId: number;
+    swgohLangList: SWAPILang[];
 
     // Game strings
     characters: BotUnit[];
@@ -158,6 +166,7 @@ export interface BotType {
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
     logger: Logger;
+    help: Help;
     cache: Cache;
     userReg: UserReg;
     permLevel: (interaction: Interaction) => number;
@@ -183,15 +192,7 @@ export interface BotUnit {
     avatarName: string;
 
     // For Characters only
-    mods?: {
-        sets: string[];
-        square: string;
-        arrow: string;
-        diamond: string;
-        triangle: string;
-        circle: string;
-        cross: string;
-    };
+    mods?: BotUnitMods;
 
     // For Ships only
     crew?: string[];
@@ -202,6 +203,16 @@ export interface BotUnit {
             abilityDesc: string;
         }
     };
+}
+export interface BotUnitMods {
+    sets: string[];
+    square: string;
+    arrow: string;
+    diamond: string;
+    triangle: string;
+    circle: string;
+    cross: string;
+    source?: string;
 }
 
 export interface BotClient extends Client {

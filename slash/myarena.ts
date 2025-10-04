@@ -1,9 +1,11 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class MyArena extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "myarena",
             guildOnly: false,
@@ -23,7 +25,7 @@ export default class MyArena extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         // eslint-disable-line no-unused-vars
         const ac = interaction.options.getString("allycode");
         const showStats = interaction.options.getBoolean("stats");
@@ -40,10 +42,10 @@ export default class MyArena extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player;
+        let player: SWAPIPlayer;
         try {
-            player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            player = playerRes?.[0] || null;
         } catch (e) {
             Bot.logger.error(`Broke getting player in myarena: ${e}`);
             return super.error(interaction, "Something broke, please try again in a bit");
@@ -67,10 +69,10 @@ export default class MyArena extends Command {
             if (charArena) fields.push(charArena);
         } else {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
-            let playerStats = null;
+            let playerStats: SWAPIPlayer = null;
             try {
-                playerStats = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                if (Array.isArray(playerStats)) playerStats = playerStats[0];
+                const playerStatsRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                playerStats = playerStatsRes?.[0] || null;
             } catch (e) {
                 console.log("[ERROR MyArena]");
                 console.error(e);
@@ -130,7 +132,7 @@ export default class MyArena extends Command {
             ],
         });
 
-        async function getArenaStrings(player, type = "char") {
+        async function getArenaStrings(player: SWAPIPlayer, type = "char") {
             if (!player.arena?.[type]?.squad?.length) return null;
             const arenaArr = [];
             for (let ix = 0; ix < player.arena[type].squad.length; ix++) {
@@ -145,7 +147,7 @@ export default class MyArena extends Command {
             };
         }
 
-        async function getUnitName(player, defId) {
+        async function getUnitName(player: SWAPIPlayer, defId: string) {
             const thisChar = player.roster.find((c) => c.defId === defId);
             if (!thisChar) {
                 console.error(`[ERROR MyArena] Missing ID for ${defId}`);

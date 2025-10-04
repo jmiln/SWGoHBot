@@ -6,7 +6,7 @@ export default  {
     name: "clientReady",
     execute: async (Bot: BotType, client: BotClient) => {
         // Logs that it's up, and some extra info
-        client.shardId = client.shard.ids[0];
+        Bot.shardId = client.shard.ids[0];
 
         const application = client.application;
         if (!Bot.isMain() && application.botPublic && application.owner.id !== "124579977474736129") {
@@ -26,12 +26,12 @@ export default  {
 
         let readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers.`;
         if (client.shard) {
-            readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers. Shard #${client.shardId}`;
+            readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers. Shard #${Bot.shardId}`;
 
             // Connect the sockets and such
             Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`);
             Bot.socket.on("connect", () => {
-                console.log(`  [${client.shardId}] Connected to EventMgr socket!`);
+                console.log(`  [${Bot.shardId}] Connected to EventMgr socket!`);
             });
 
             Bot.socket.on('connect_error', err => console.error("[Socket.io connect_error]", err));
@@ -39,11 +39,11 @@ export default  {
             Bot.socket.on('connect_failed', err => console.error("[Socket.io connect_failed]", err));
             Bot.socket.on("disconnect", (reason) => {
                 // The reason of the disconnection, for example "Ping Timeout"
-                console.log(`  [${client.shardId}] Socket.io disconnected from EventMgr socket! (${reason})`);
+                console.log(`  [${Bot.shardId}] Socket.io disconnected from EventMgr socket! (${reason})`);
             });
 
             // Start up the client.ws watcher
-            if (client.shardId === 0) {
+            if (Bot.shardId === 0) {
                 // Deploy all commands in case anything's been updated (Should just do this manually as needed)
                 // setTimeout(
                 //     async () => {
@@ -101,7 +101,7 @@ export default  {
             }
 
             // If it's the last shard being started, load all the events in
-            if (client.shardId + 1 === client.shard.count) {
+            if (Bot.shardId + 1 === client.shard.count) {
                 setInterval(
                     () => {
                         Bot.socket.emit("checkEvents", (eventsList: GuildEvent[]) => {

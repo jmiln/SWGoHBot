@@ -13,7 +13,7 @@ class Logger {
         this.client = client;
     }
     log(content: string, type = "log", webhook = false) {
-        const shard = this.client?.shardId > -1 ? ` (${this.client.shardId})` : "";
+        const shard = this.Bot?.shardId > -1 ? ` (${this.Bot.shardId})` : "";
         const time = Intl.DateTimeFormat("en", {
             day: "numeric",
             month: "numeric",

@@ -1,8 +1,24 @@
 import { codeBlock, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
+
+interface InfoContent {
+    statHeader: string;
+    users: string;
+    servers: string;
+    nodeVer: string;
+    discordVer: string;
+    swgohHeader: string;
+    players: string;
+    guilds: string;
+    lang: string;
+    links: {[key: string]: string};
+    shardHeader: string;
+    header: string;
+}
 
 export default class Info extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "info",
             guildOnly: false,
@@ -10,14 +26,14 @@ export default class Info extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const dbo = await Bot.mongo.db(Bot.config.mongodb.swapidb);
         const swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
         const swgohGuildCount = await dbo.collection("guilds").estimatedDocumentCount();
         try {
             const guilds = await Bot.guildCount();
             const users = await Bot.userCount();
-            const content = interaction.language.get("COMMAND_INFO_OUTPUT", interaction.client.shard.id);
+            const content = interaction.language.get("COMMAND_INFO_OUTPUT", Bot.shardId) as unknown as InfoContent;
             const fields = [];
             let desc = `${content.statHeader}\n`;
             const statTable = [

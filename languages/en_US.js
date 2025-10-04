@@ -967,7 +967,7 @@ export default class extends Language {
             // Info Command
             COMMAND_INFO_OUTPUT: (shardID) => ({
                 "header"      : "== Bot Information ==",
-                "shardHeader"      : `== Bot Information [${shardID}] ==`,
+                "shardHeader" : `== Bot Information [${shardID}] ==`,
                 "statHeader"  : "== Bot Stats ==",
                 "users"       : "Users",
                 "servers"     : "Servers",

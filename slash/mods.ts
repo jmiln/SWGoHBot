@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType, BotUnitMods } from "../types/types.ts";
 
 export default class Mods extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "mods",
             guildOnly: false,
@@ -19,11 +20,11 @@ export default class Mods extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         await interaction.deferReply();
         const charList = Bot.characters;
 
-        const getLocalizedModString = (key) => {
+        const getLocalizedModString = (key: string) => {
             const localizationKeyMap = {
                 "Critical Chance x2": "COMMAND_MODS_CRIT_CHANCE_SET",
                 "Critical Damage x4": "COMMAND_MODS_CRIT_DAMAGE_SET",
@@ -66,7 +67,7 @@ export default class Mods extends Command {
             return valueArray.join("/ ");
         };
 
-        const getLocalizedModAdvice = (modAdvice) => {
+        const getLocalizedModAdvice = (modAdvice: BotUnitMods) => {
             const sets = [];
 
             for (const i in modAdvice.sets) {
@@ -82,7 +83,7 @@ export default class Mods extends Command {
                 triangle: getLocalizedModString(modAdvice.triangle),
                 circle: getLocalizedModString(modAdvice.circle),
                 cross: getLocalizedModString(modAdvice.cross),
-                source: modAdvice.source,
+                source: modAdvice?.source || "",
             };
             return modOut;
         };

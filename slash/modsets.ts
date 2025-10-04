@@ -1,8 +1,9 @@
 import { codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Modsets extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "modsets",
             guildOnly: false,
@@ -10,7 +11,7 @@ export default class Modsets extends Command {
         });
     }
 
-    run(_Bot, interaction) {
+    run(_Bot: BotType, interaction: BotInteraction) {
         return interaction.reply({ content: codeBlock("md", interaction.language.get("COMMAND_MODSETS_OUTPUT")) });
     }
 }

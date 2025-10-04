@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Help extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "help",
             guildOnly: false,
@@ -34,7 +35,7 @@ export default class Help extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const search = interaction.options.getString("command");
         const category = interaction.options.getString("category");
         const isDetailed = interaction.options.getBoolean("details");
@@ -118,7 +119,7 @@ export default class Help extends Command {
             });
         }
 
-        function formatCmdHelp(usage, searchName, desc, isDetailed=true) {
+        function formatCmdHelp(usage: string | string[], searchName: string, desc: string, isDetailed=true) {
             const cmdArr = [`**/${searchName.toLowerCase()}**\n${desc}`];
             if (!isDetailed || !Array.isArray(usage) || !usage?.length) return cmdArr;
             const usageLen = usage.length;
