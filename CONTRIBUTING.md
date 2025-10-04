@@ -101,12 +101,16 @@ If you want character images, you'll want to check out my image server to run al
 - https://github.com/swgoh-utils/swgoh-ae2
 
 ## Starting the bot
+Before starting the bot itself, you currently need to run the event service 
+- This is used to schedule and tell the bot to send any events created by the ./slash/events.js command
+- Run with: `node services/eventServe.js`
+
 To start the bot, in the command prompt, run the following command:
 `node swgohbotShard.js`
 > If at any point it says "cannot find module X" just run `npm install X` and try again.
 
-If you are using PM2 to keep the bot running, run it like this:
-`pm2 start swgohBotShard.js`
+If you are using PM2 to keep the bot running, you can run it like this:
+`pm2 start services/eventServe.js swgohBotShard.js`
 
 
 # Contributing to the website (swgohbot.com)
