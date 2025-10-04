@@ -73,7 +73,7 @@ While I'd recommend just using the one that I host, you can run a copy yourself,
 ## Requirements
 - `git` command line ([Windows](https://git-scm.com/download/win)|[Linux](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)|[MacOS](https://git-scm.com/download/mac)) installed
 - `Node` [Version 18.x or higher](https://nodejs.org)
-- `MongoDB` [I use version 6.0.6 currently](https://www.mongodb.com/download-center/community)
+- `MongoDB` [I use version 7.0.23 currently](https://www.mongodb.com/download-center/community)
 - `A machine` to host it on. Want it to be online 24/7? Get a VPS.
   * My copy of the bot is hosted on a machine from [Hyperexpert](p.hyper.expert/aff.php?aff=127). (Affiliate link)
 - `Some knowledge of Node/ JavaScript` if you want to modify it.
