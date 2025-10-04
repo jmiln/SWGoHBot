@@ -94,11 +94,15 @@ Once finished:
 In order to get game data, you'll need to set up and use Comlink and SWGoH-Stats.
 These can be run as docker instances, with the setup described in each repo
 - https://github.com/swgoh-utils/swgoh-comlink
+  * Get data from the game itself
 - https://github.com/swgoh-utils/swgoh-stats
+  * Calculate the stats of units when fed into this
 
 If you want character images, you'll want to check out my image server to run alongside it, as well as swgoh-ae2
 - https://github.com/jmiln/swgohImageServe
+  * This is to create the images for the panic and mycharacter commands
 - https://github.com/swgoh-utils/swgoh-ae2
+  * This is a container that gets the various unit images from the game
 
 ## Starting the bot
 Before starting the bot itself, you currently need to run the event service 
