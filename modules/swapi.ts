@@ -540,7 +540,7 @@ export default (opts = {noop: false}) => {
                       const statId = stat.stat.unitStatId;
                       const statScaler = flatStats.includes(statId) ? 1e8 : 1e6;
                       return {
-                          unitStat: stat.stat.unitStatId,
+                          unitStat: statId,
                           value: Number.parseInt(stat.stat.unscaledDecimalValue, 10) / statScaler,
                           roll: stat.statRolls,
                       };
@@ -562,13 +562,14 @@ export default (opts = {noop: false}) => {
             for (const mod of char.mods) {
                 // If they've got the numbers instead of enums, enum em
                 // if (mod.primaryStat.unitStatId) mod.primaryStat.unitStat = mod.primaryStat.unitStatId;
-                if (!Number.isNaN(mod.primaryStat.unitStatId)) {
-                    mod.primaryStat.unitStat = statEnums.enums[mod.primaryStat.unitStatId];
+                const primaryUnitStatId = mod.primaryStat.unitStatId || mod.primaryStat.unitStat;
+                if (!Number.isNaN(primaryUnitStatId)) {
+                    mod.primaryStat.unitStat = statEnums.enums[primaryUnitStatId];
                 }
                 for (const stat of mod.secondaryStat) {
-                    if (stat.unitStatId) stat.unitStat = stat.unitStatId;
-                    if (!Number.isNaN(stat.unitStat)) {
-                        stat.unitStat = statEnums.enums[stat.unitStat];
+                    const unitStatId = stat.unitStatId || stat.unitStat;
+                    if (!Number.isNaN(unitStatId)) {
+                        stat.unitStat = statEnums.enums[unitStatId];
                     }
                 }
             }

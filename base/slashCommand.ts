@@ -75,7 +75,11 @@ export default class slashCommand {
         await this.embed(interaction, msgOut, options);
     }
 
-    async success(interaction: ChatInputCommandInteraction, msgOut: string, options = {title: "Success", color: this.Bot.constants.colors.green, ephemeral: false}) {
+    async success(
+        interaction: ChatInputCommandInteraction,
+        msgOut: string,
+        options: SlashEmbedOptions = {title: "Success", color: this.Bot.constants.colors.green, ephemeral: false, footer: ""}
+    ) {
         if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
         await this.embed(interaction, msgOut, options);

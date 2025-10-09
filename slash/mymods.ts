@@ -2,11 +2,13 @@ import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "di
 import Command from "../base/slashCommand.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
+import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
 export default class MyMods extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "mymods",
             guildOnly: false,
@@ -109,7 +111,7 @@ export default class MyMods extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         const subCommand = interaction.options.getSubcommand();
@@ -121,10 +123,10 @@ export default class MyMods extends Command {
         }
         await interaction.reply({ content: interaction.language.get("COMMAND_MYMODS_WAIT") });
 
-        let player;
+        let player: SWAPIPlayer;
         try {
-            player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            const resPlayer = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            player = resPlayer[0];
         } catch (e) {
             return super.error(interaction, codeBlock(e.message), {
                 title: interaction.language.get("BASE_SOMETHING_BROKE"),
@@ -143,7 +145,7 @@ export default class MyMods extends Command {
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");
 
-            let character;
+            let character: BotUnit;
             if (!searchChar) {
                 return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_MISSING_CHAR") });
             }
@@ -154,7 +156,7 @@ export default class MyMods extends Command {
             }
             if (chars.length > 1) {
                 const charList = chars.sort((p, c) => (p.name > c.name ? 1 : -1)).map((c) => c.name);
-                return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n")), { edit: true });
+                return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n")));
             }
             character = chars[0];
 
@@ -200,12 +202,12 @@ export default class MyMods extends Command {
                 // Then all the secondaries
                 for (const s of mod.secondaryStat) {
                     let t = stats[s.unitStat];
+                    let statStr = "" + s.value;
                     if (t.indexOf("%") > -1) {
                         t = t.replace(/%/g, "").trim();
-                        s.value = `${s.value.toFixed(2)}%`;
+                        statStr = `${s.value.toFixed(2)}%`;
                     }
 
-                    let statStr = s.value;
                     if (s.roll > 0) statStr = `(${s.roll}) ${statStr}`;
                     statStr += ` ${t}`;
                     slots[mod.slot].stats.push(statStr);
@@ -258,15 +260,15 @@ export default class MyMods extends Command {
 
             // Filter the player's roster so it's just characters
             const charList = player.roster.filter((unit) => unit.combatType !== 2);
-            for (const c of charList) {
-                if (!c?.stats) c.stats = { final: {}, mods: {} };
-                if (!c.stats?.final?.[statToCheck]) {
-                    c.stats.final[statToCheck] = 0;
-                }
-                if (!c.stats?.mods?.[statToCheck]) {
-                    c.stats.mods[statToCheck] = 0;
-                }
-            }
+            // for (const c of charList) {
+            //     if (!c?.stats) c.stats = { final: {}, mods: {} };
+            //     if (!c.stats?.final?.[statToCheck]) {
+            //         c.stats.final[statToCheck] = 0;
+            //     }
+            //     if (!c.stats?.mods?.[statToCheck]) {
+            //         c.stats.mods[statToCheck] = 0;
+            //     }
+            // }
 
             // Sort it all by the totoal
             let sortedCharList = charList.sort((p, c) => {
@@ -301,19 +303,13 @@ export default class MyMods extends Command {
             const out = sortedCharList.map((c) => {
                 let finalStat = "0";
                 let modStat = null;
-                if (c.stats?.final[statToCheck] % 1 === 0) {
+                if (c.stats?.final?.[statToCheck] % 1 === 0) {
                     // If it's a full number, give that
-                    finalStat = c.stats.final[statToCheck].toLocaleString();
-                    if (c.stats?.mods[statToCheck]) {
-                        modStat = c.stats.mods[statToCheck].toLocaleString();
-                    }
+                    finalStat = (c.stats?.final?.[statToCheck] || 0).toLocaleString();
+                    modStat = (c.stats?.mods?.[statToCheck] || 0).toLocaleString();
                 } else {
-                    if (c.stats?.final[statToCheck]) {
-                        finalStat = `${(c.stats.final[statToCheck] * 100).toFixed(2)}%`.toLocaleString();
-                    }
-                    if (c.stats?.mods[statToCheck]) {
-                        modStat = `${(c.stats.mods[statToCheck] * 100).toFixed(2)}%`.toLocaleString();
-                    }
+                    finalStat = `${((c.stats?.final?.[statToCheck] || 0) * 100).toFixed(2)}%`.toLocaleString();
+                    modStat = `${((c.stats?.mods?.[statToCheck] || 0) * 100).toFixed(2)}%`.toLocaleString();
                 }
 
                 return {
@@ -330,12 +326,6 @@ export default class MyMods extends Command {
             }
 
             const fields = [];
-            if (charList.warnings) {
-                fields.push({
-                    name: "Warnings",
-                    value: charList.warnings.join("\n"),
-                });
-            }
 
             return interaction.editReply({
                 content: null,
@@ -429,8 +419,8 @@ export default class MyMods extends Command {
 
             const topDesc = "`[x]: Number of mods missing     `\n`[▼]: Number of mods below lvl 15`";
             return super.success(interaction, `${topDesc}\n\n__**\`[x][▼]\` Name**__\n${outArr.join("\n")}`, {
-                title: `${player.name || interaction.user.name}'s mod issues for gear 10+`,
-                description: footerStr,
+                title: `${player.name || interaction.user.username}'s mod issues for gear 10+`,
+                footer: footerStr,
             });
         }
     }
