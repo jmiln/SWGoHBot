@@ -119,7 +119,7 @@ export default class Help extends Command {
             });
         }
 
-        function formatCmdHelp(usage: string | string[], searchName: string, desc: string, isDetailed=true) {
+        function formatCmdHelp(usage: string | string[], searchName: string, desc: string, isDetailed = true) {
             const cmdArr = [`**/${searchName.toLowerCase()}**\n${desc}`];
             if (!isDetailed || !Array.isArray(usage) || !usage?.length) return cmdArr;
             const usageLen = usage.length;

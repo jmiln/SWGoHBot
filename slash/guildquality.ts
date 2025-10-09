@@ -70,7 +70,7 @@ export default class GuildQuality extends Command {
         for (const playerQ of rosterQualities.sort((a, b) => b.totalQuality - a.totalQuality)) {
             const gearQStr = playerQ.gearQuality.toFixed(2);
             const totalQStr = playerQ.totalQuality.toFixed(2).toString().padStart(6);
-            const charGPStr = (playerQ.charGP/1_000_000).toFixed(1);
+            const charGPStr = (playerQ.charGP / 1_000_000).toFixed(1);
 
             outArr.push(`\`${playerQ.modQuality.toFixed(2)} |  ${gearQStr} | ${totalQStr} |  ${charGPStr}M  |\` ${playerQ.name}`);
         }
@@ -83,26 +83,25 @@ export default class GuildQuality extends Command {
             totalQuality: rosterQualities.reduce((a, b) => a + b.totalQuality, 0) / rosterQualities.length,
         };
         const averageStr = [
-                `Mod Quality: ${averages.modQuality.toFixed(2)}`,
-                `Gear Quality: ${averages.gearQuality.toFixed(2)}`,
-                `Total Quality: ${averages.totalQuality.toFixed(2)}`,
-            ].join("\n");
+            `Mod Quality: ${averages.modQuality.toFixed(2)}`,
+            `Gear Quality: ${averages.gearQuality.toFixed(2)}`,
+            `Total Quality: ${averages.totalQuality.toFixed(2)}`,
+        ].join("\n");
         fields.push({
             name: "Averages",
             value: codeBlock(averageStr),
         });
 
         const infoStr = [
-                " Mod Quality: Number of +15 Speeds / (squad GP / 100000)",
-                " Gear Quality: (Number of G12+ + G13 Bonus Score) / (Total GP / 100000)",
-                " G13 Bonus score: 1 + (0.2 bonus per relic tier) (ex: r0 = 1, r1 = 1.2, ..., r7 = 2.4)",
-                " Total Quality: Mod Quality + Gear Quality"
-            ].join("\n");
+            " Mod Quality: Number of +15 Speeds / (squad GP / 100000)",
+            " Gear Quality: (Number of G12+ + G13 Bonus Score) / (Total GP / 100000)",
+            " G13 Bonus score: 1 + (0.2 bonus per relic tier) (ex: r0 = 1, r1 = 1.2, ..., r7 = 2.4)",
+            " Total Quality: Mod Quality + Gear Quality",
+        ].join("\n");
         fields.push({
             name: "Extra Info",
             value: `Formulas based on DSR bot's command\n${codeBlock(infoStr)}`,
         });
-
 
         if (guild.warnings?.length) {
             fields.push({
@@ -132,7 +131,6 @@ export default class GuildQuality extends Command {
             ],
         });
 
-
         // Mod quality: 15+ speed mods / (charGP / 100_000)
         // Gear Quality: (Number of G12+ + G13 Bonus Score) / (Total GP / 100000)
         // G13 Bonus score: 1 + (0.2 bonus per relic tier) (ex: r0 = 1, r1 = 1.2, ..., r7 = 2.4)
@@ -149,13 +147,13 @@ export default class GuildQuality extends Command {
                     cooldown,
                 );
             } catch (err) {
-                 interaction.editReply({
+                interaction.editReply({
                     content: null,
                     embeds: [
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: ` ${codeBlock(err)}`,
-                            footer: {text: "Please try again in a bit"},
+                            footer: { text: "Please try again in a bit" },
                         },
                     ],
                 });
@@ -192,7 +190,7 @@ export default class GuildQuality extends Command {
                 }
                 if (ch.gear >= 13) {
                     const relicTier = ch?.relic?.currentTier || 0;
-                    accumulatedCharScore += 1 + (0.2 * relicTier);
+                    accumulatedCharScore += 1 + 0.2 * relicTier;
                 }
             }
 

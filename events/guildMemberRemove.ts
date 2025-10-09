@@ -30,5 +30,5 @@ export default {
 
         // If they're leaving the server they have set as their bonus, remove the setting from them and the server
         await clearSupporterInfo({ cache: Bot.cache, userId: member.id });
-    }
+    },
 };

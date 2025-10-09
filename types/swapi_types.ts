@@ -1,4 +1,18 @@
-export type SWAPILang = "eng_us" | "ger_de" | "spa_xm" | "fre_fr" | "rus_ru" | "por_br" | "kor_kr" | "ita_it" | "tur_tr" | "chs_cn" | "cht_cn" | "ind_id" | "jpn_jp" | "tha_th";
+export type SWAPILang =
+    | "eng_us"
+    | "ger_de"
+    | "spa_xm"
+    | "fre_fr"
+    | "rus_ru"
+    | "por_br"
+    | "kor_kr"
+    | "ita_it"
+    | "tur_tr"
+    | "chs_cn"
+    | "cht_cn"
+    | "ind_id"
+    | "jpn_jp"
+    | "tha_th";
 
 export interface SWAPIPlayer {
     id: string;
@@ -11,7 +25,7 @@ export interface SWAPIPlayer {
     level: number;
     poUTCOffsetMinutes: number;
     roster: SWAPIUnit[];
-    stats: { nameKey: string, value: number }[];
+    stats: { nameKey: string; value: number }[];
     arena?: SWAPIPlayerArena;
     lastActivity: number;
 
@@ -19,8 +33,8 @@ export interface SWAPIPlayer {
     warnings?: string[];
 
     // Used in some commands
-    inGuild?: boolean;  // Used to highlight the member if they're in the Discord server
-    dID?: string;       // Discord ID, similar to above
+    inGuild?: boolean; // Used to highlight the member if they're in the Discord server
+    dID?: string; // Discord ID, similar to above
 
     // DB Updated timestamps
     updated?: number;
@@ -40,7 +54,7 @@ export interface ComlinkPlayer {
     pvpProfile?: ComlinkPvpProfile[];
     localTimeZoneOffsetMinutes?: number;
     lastActivityTime?: number;
-    profileStat?: { nameKey: string, value: number }[];
+    profileStat?: { nameKey: string; value: number }[];
     rosterUnit: ComlinkUnit[];
 
     // Generally unused for me
@@ -50,13 +64,13 @@ export interface ComlinkPlayer {
     lifetimeSeasonScore: null;
     titles: {
         selected: null;
-        unlocked: null
+        unlocked: null;
     };
     portraits: {
         selected: null;
-        unlocked: null
+        unlocked: null;
     };
-    guildTypeId: null
+    guildTypeId: null;
 }
 
 export interface ComlinkPvpProfile {
@@ -97,12 +111,12 @@ export interface SWAPIPlayerArena {
 
 interface arenaSquad {
     rank: number;
-    squad: { id: string, defId: string }[]
+    squad: { id: string; defId: string }[];
 }
 
 export interface SWAPIUnit {
     id: string;
-    name?: string;  // Only there at the end, when we get the specified lang
+    name?: string; // Only there at the end, when we get the specified lang
     defId: string;
     nameKey: string;
     gear: number;
@@ -110,27 +124,27 @@ export interface SWAPIUnit {
         equipmentId: number;
         slot: number;
     }[];
-    factions?: string[];    // Only there after processing
+    factions?: string[]; // Only there after processing
     skills: SWAPIUnitSkill[];
-    mods?: SWAPIMod[];   // Only there if the unit has mods equipped
-    stats?: SWAPIUnitStats;     // Not there til processed
+    mods?: SWAPIMod[]; // Only there if the unit has mods equipped
+    stats?: SWAPIUnitStats; // Not there til processed
     relic: { currentTier: number } | null;
     purchasedAbilityId: string[]; // Ultimate ability if available
     crew: SWAPIPlayerCrew[];
     combatType: 1 | 2;
-    gp?: number;    // This won't be there til we process the stats
+    gp?: number; // This won't be there til we process the stats
     level: number;
     rarity: number;
 
     // Bits that get added in
-    zetas?: SWAPIUnitSkill[];  // List of skills with zetas
-    omicrons?: SWAPIUnitSkill[];  // List of skills with omicrons
-    player?: string;  // Player name
+    zetas?: SWAPIUnitSkill[]; // List of skills with zetas
+    omicrons?: SWAPIUnitSkill[]; // List of skills with omicrons
+    player?: string; // Player name
     allyCode?: number;
     updated?: number;
     unitTierList?: {
-        tier: number,
-        equipmentSetList: string[]
+        tier: number;
+        equipmentSetList: string[];
     }[];
 }
 
@@ -138,14 +152,14 @@ export interface SWAPIUnit {
 export interface RawCharacter {
     baseId: string;
     combatType: number;
-    crew?: [],
-    factions?: string[]
+    crew?: [];
+    factions?: string[];
     legend: boolean;
     skillReferenceList: {
         skillId: string;
         requiredTier: number;
         requiredRarity: number;
-        requiredRelicTier: number
+        requiredRelicTier: number;
 
         // custom bits
         isZeta?: boolean;
@@ -158,7 +172,7 @@ export interface RawCharacter {
             [key: string]: number;
             // AbilityMatZeta: number;
             // AbilityMatOmicron: number;
-        }
+        };
     }[];
     unitTierList: {
         tier: number;
@@ -183,18 +197,17 @@ export interface RawUnit {
         skillId: string;
         requiredTier: number;
         requiredRarity: number;
-        requiredRelicTier: number
+        requiredRelicTier: number;
     }[];
     unitTierList: {
         tier: number;
         equipmentSetList: string[];
-    }
+    };
 }
 
-  // {
-  //   profile: {
-  //   },
-
+// {
+//   profile: {
+//   },
 
 export interface RawGuild {
     id: string;
@@ -211,8 +224,8 @@ export interface RawGuild {
     }[];
     nextChallengesRefresh: string;
     profile: {
-        messageCriteriaKey: [],
-        raidLaunchConfig: [],
+        messageCriteriaKey: [];
+        raidLaunchConfig: [];
         guildEventTracker: {
             definitionId: string;
             completedStars: string;
@@ -246,7 +259,7 @@ export interface RawGuild {
                 campaignNodeId: string;
                 campaignNodeDifficulty: number;
                 campaignMissionId: string;
-            },
+            };
             autoLaunch: boolean;
             autoLaunchImmediately: boolean;
             autoLaunchTime: string;
@@ -254,7 +267,7 @@ export interface RawGuild {
             autoSimEnabled: boolean;
             immediate: boolean;
             scheduledUtcOffsetSeconds: string;
-        }
+        };
     };
     progress: null;
     roster: RawGuildMember[];
@@ -263,18 +276,18 @@ export interface RawGuild {
 }
 export interface RawGuildMember {
     memberContribution: {
-        '1': { currentValue: string, lifetimeValue: string },
-        '2': { currentValue: string, lifetimeValue: string },
-        '3': { currentValue: string, lifetimeValue: string }
-    },
-    playerName: string,
-    lastActivityTime: string,
-    playerId: string
+        "1": { currentValue: string; lifetimeValue: string };
+        "2": { currentValue: string; lifetimeValue: string };
+        "3": { currentValue: string; lifetimeValue: string };
+    };
+    playerName: string;
+    lastActivityTime: string;
+    playerId: string;
 }
 
 export interface ComlinkUnit {
     id: string;
-    name?: string;  // Once it's run through the lang getter
+    name?: string; // Once it's run through the lang getter
     definitionId: string;
     nameKey: string;
     currentTier: number;
@@ -292,14 +305,14 @@ export interface ComlinkUnit {
     purchasedAbilityId: string[]; // Ultimate ability if available
     crew: SWAPIPlayerCrew[];
     combatType: 1 | 2;
-    gp?: number;    // This won't be there til we process the stats
+    gp?: number; // This won't be there til we process the stats
     currentLevel: number;
     currentRarity: number;
 
     // Bits that get added in
-    zetas?: SWAPIUnitSkill[];  // List of scills with zetas
-    omicrons?: SWAPIUnitSkill[];  // List of scills with omicrons
-    player?: string;  // Player name
+    zetas?: SWAPIUnitSkill[]; // List of scills with zetas
+    omicrons?: SWAPIUnitSkill[]; // List of scills with omicrons
+    player?: string; // Player name
     allyCode?: number;
     updated?: number;
 }
@@ -320,7 +333,7 @@ interface ComlinkModStat {
         unscaledDecimalValue: string;
         uiDisplayOverrideValue: string;
         scalar: string;
-    }
+    };
     statRolls: number;
     statRollerBoundsMin: string;
     statRollerBoundsMax: string;
@@ -331,7 +344,7 @@ export interface SWAPIPlayerCrew {
         skillId: string;
         requiredTier: number;
         requiredRarity: number;
-        requiredRelicTier: number
+        requiredRelicTier: number;
     }[];
     unitId: string;
     slot: number;
@@ -339,8 +352,8 @@ export interface SWAPIPlayerCrew {
 
 export interface SWAPIUnitSkill {
     id: string;
-    tier: number;   // Current Tier
-    tiers: number;  // Total tiers
+    tier: number; // Current Tier
+    tiers: number; // Total tiers
     nameKey?: string; // Only after processing with langChar
 
     // These bits are only there after it's processed
@@ -348,7 +361,7 @@ export interface SWAPIUnitSkill {
     zetaTier?: number;
     isOmicron?: boolean;
     omicronTier?: number;
-    omicronMode?: null;  // Not sure, they all seem to be null
+    omicronMode?: null; // Not sure, they all seem to be null
 }
 
 export interface SWAPIUnitAbility {
@@ -366,16 +379,16 @@ export interface SWAPIMod {
     set: number;
     pips: number;
     primaryStat: {
-        unitStat?: number | string;     // Gets changed to the string when we lang it
+        unitStat?: number | string; // Gets changed to the string when we lang it
         unitStatId?: number;
         value: number;
     };
     secondaryStat: {
-        unitStat?: number | string;     // Gets changed to the string when we lang it
+        unitStat?: number | string; // Gets changed to the string when we lang it
         unitStatId?: number;
         value: number;
         roll: number;
-    }[]
+    }[];
 }
 
 export interface SWAPIUnitStats {
@@ -407,7 +420,7 @@ export interface SWAPIUnitStatTypes {
     "Physical Accuracy": number;
     "Special Accuracy": number;
     "Physical Critical Avoidance": number;
-    "Special Critical Avoidance": number
+    "Special Critical Avoidance": number;
 }
 
 export interface SWAPIPlayerArenaProfile {
@@ -429,20 +442,20 @@ export interface SWAPIPlayerArenaProfilePVP {
     tab: number;
     rank: number;
     squad: {
-        cell: SWAPIPlayerArenaProfileCell
+        cell: SWAPIPlayerArenaProfileCell;
         targetingTactic: number;
         squadType: number;
         targetingSetId: string;
         expireTime: string;
         lastSaveTime: string;
         supportInheritFromDefinitionId: string;
-        datacron: null;     // Not sure, I don't really use em?
+        datacron: null; // Not sure, I don't really use em?
     };
     eventId: string;
 }
 
 export interface SWAPIPlayerArenaProfileCell {
-    crewBattleStat: [];  // Not sure / they all seemed to be empty
+    crewBattleStat: []; // Not sure / they all seemed to be empty
     unitId: string;
     unitDefId: string;
     cellIndex: number;
@@ -457,7 +470,7 @@ export interface SWAPIPlayerArenaProfileCell {
 }
 
 export interface SWAPIWorkerGuildLog {
-    [playerName: string]: SWAPIWorkerPlayerLog
+    [playerName: string]: SWAPIWorkerPlayerLog;
 }
 export interface SWAPIWorkerPlayerLog {
     abilities: string[];
@@ -473,11 +486,11 @@ export interface SWAPIWorkerOutput {
     guildLogOut: SWAPIWorkerGuildLog;
     cacheUpdatesOut: {
         updateOne: {
-            filter: { allyCode: number; } ,
-            update: { $set: SWAPIPlayer; } ,
+            filter: { allyCode: number };
+            update: { $set: SWAPIPlayer };
             upsert: boolean;
         };
-    }[];    // Bunch of updateOne querys for the db cache
+    }[]; // Bunch of updateOne querys for the db cache
     skills: string[];
     defIds: string[];
 }
@@ -544,13 +557,13 @@ export interface SWAPIGuild {
             diffId: string;
             progress: string;
         };
-    }
-    raidLaunchConfig: null
+    };
+    raidLaunchConfig: null;
     raidResult: null;
     raidStatus: null;
     raidWin: number;
     rank: number;
-    recentTerritoryWarResult: SWAPIGuildTWResult[]
+    recentTerritoryWarResult: SWAPIGuildTWResult[];
     required: number;
     roomAvailable: null;
     roster: SWAPIGuildMember[];
@@ -583,7 +596,7 @@ interface SWAPIGuildRaidLaunchConfig {
         campaignNodeId: string;
         campaignNodeDifficulty: number;
         campaignMissionId: string;
-    }
+    };
     autoLaunch: boolean;
     autoLaunchImmediately: boolean;
     autoLaunchTime: string;
@@ -599,12 +612,12 @@ interface SWAPIGuildRaidSummary {
         campaignNodeId: string;
         campaignNodeDifficulty: number;
         campaignMissionId: string;
-    }
+    };
     totalPoints: string;
 }
 
 export interface SWAPIGuildMember {
-	seasonStatus: SWAPIGuildMemberSeasonStatus[];
+    seasonStatus: SWAPIGuildMemberSeasonStatus[];
     playerName: string;
     playerLevel: number;
     guildXp: number;
@@ -633,8 +646,8 @@ export interface SWAPIGuildMember {
     updated?: number;
 
     // Used in some commands
-    inGuild?: boolean;  // Used to highlight the member if they're in the Discord server
-    dID?: string;       // Discord ID, similar to above
+    inGuild?: boolean; // Used to highlight the member if they're in the Discord server
+    dID?: string; // Discord ID, similar to above
     memberLvl?: string;
     warnings?: string[];
 }
@@ -647,7 +660,7 @@ interface SWAPIGuildAlteredMemberContribution {
     [key: number]: {
         currentValue: string;
         lifetimeValue: string;
-    }
+    };
 }
 interface SWAPIGuildMemberSeasonStatus {
     seasonId: string;

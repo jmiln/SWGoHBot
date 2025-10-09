@@ -80,7 +80,7 @@ export default class TerritoryWar extends Command {
         }
         await interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
 
-        const unitChecklist = await getFullTWList({cache: Bot.cache, guildId: interaction.guild?.id});
+        const unitChecklist = await getFullTWList({ cache: Bot.cache, guildId: interaction.guild?.id });
 
         // Run each of the players through to get the stats of each players' roster
         let guild1Stats = null;

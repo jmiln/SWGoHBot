@@ -2,8 +2,8 @@ import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "di
 import Command from "../base/slashCommand.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
-import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 

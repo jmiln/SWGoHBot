@@ -36,7 +36,10 @@ export default class WhoIs extends Command {
         return interaction.editReply({
             content: `>>> **Results for search: \`${name}\`** ${
                 playerLen > PLAYER_LIMIT ? `\n**Showing (${PLAYER_LIMIT}/${playerLen})**` : ""
-            }\n${players.slice(0, PLAYER_LIMIT).map((p) => `\`${p.allyCode}\` - ${p.name}`).join("\n")}`,
+            }\n${players
+                .slice(0, PLAYER_LIMIT)
+                .map((p) => `\`${p.allyCode}\` - ${p.name}`)
+                .join("\n")}`,
         }); //TODO , {split: {char: "\n"}});
     }
 }

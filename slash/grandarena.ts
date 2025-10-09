@@ -132,7 +132,7 @@ export default class GrandArena extends Command {
         const checkArr = {};
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as {[key: string]: string};
+        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as { [key: string]: string };
 
         // An array to stick all the fields in as we go.
         const fields = [];
@@ -311,7 +311,7 @@ export default class GrandArena extends Command {
         });
 
         // Get some general stats for any available galactic legends
-        const legendMap = unitChecklist["Galactic Legends"]
+        const legendMap = unitChecklist["Galactic Legends"];
         const glOverview = [];
         for (const gl of legendMap) {
             const u1Char = user1.roster.find((c) => c.defId === gl[0]);
@@ -555,7 +555,7 @@ function getModStats(user: SWAPIPlayer) {
     return userMods;
 }
 
-function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, labels: {[key: string]: string}) {
+function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: string]: string }) {
     const overview = [];
 
     // Arena stats

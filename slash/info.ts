@@ -12,7 +12,7 @@ interface InfoContent {
     players: string;
     guilds: string;
     lang: string;
-    links: {[key: string]: string};
+    links: { [key: string]: string };
     shardHeader: string;
     header: string;
 }
@@ -90,4 +90,3 @@ export default class Info extends Command {
         }
     }
 }
-

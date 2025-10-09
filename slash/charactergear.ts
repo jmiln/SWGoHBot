@@ -324,7 +324,7 @@ async function expandPieces(Bot: BotType, list: string[]) {
 }
 
 // gr is gear recipe?
-async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: {name: string, count: number, mark: string}[] = [], amt = 1) {
+async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: string; count: number; mark: string }[] = [], amt = 1) {
     if (!gr) return [];
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {

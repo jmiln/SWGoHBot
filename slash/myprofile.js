@@ -24,7 +24,7 @@ export default class MyProfile extends Command {
         if (!allycode) {
             return super.error(interaction, `Sorry, but ${allycodeIn} is not a valid allycode`);
         }
-        await interaction.reply({content: `> Please wait while I look up the profile for ${allycode}`});
+        await interaction.reply({ content: `> Please wait while I look up the profile for ${allycode}` });
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player;

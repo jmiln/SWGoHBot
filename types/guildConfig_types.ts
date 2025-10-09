@@ -11,7 +11,7 @@ export interface GuildConfig {
                 type: string;
                 timezone: string;
                 zoneType: string;
-            }
+            };
         };
         channelId: string;
     }[];
@@ -43,17 +43,17 @@ export interface GuildConfigEvent {
     // eventDT inputs that get processed
     day?: string;
     time?: string;
-    repeatStr?: string;  // The string that gets parsed into repeat{day/hr/min}
-    repeatDay: string;   // The comma separated list of days that gets parsed into repeatDays
-    channelID?: string;  // Deprecated field
-    guildId?: string;    // Used in the getAllEvents function to specify which is from where
+    repeatStr?: string; // The string that gets parsed into repeat{day/hr/min}
+    repeatDay: string; // The comma separated list of days that gets parsed into repeatDays
+    channelID?: string; // Deprecated field
+    guildId?: string; // Used in the getAllEvents function to specify which is from where
 }
 export interface GuildConfigPoll {
     question: string;
     options: string[];
     votes: {
         // userId: choiceIndex
-        [key: string]: number
+        [key: string]: number;
     };
     anon: boolean | null;
     channelId: string;

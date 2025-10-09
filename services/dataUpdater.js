@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { inspect } from "node:util";
 import { eachLimit } from "async";
-import { MongoClient } from "mongodb"
+import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
 import config from "../config.js";
 import botCache from "../modules/cache.js";
@@ -19,15 +19,15 @@ import ComlinkStub from "@swgoh-utils/comlink";
 const CHAR_COMBAT_TYPE = 1;
 const SHIP_COMBAT_TYPE = 2;
 
-const DATA_DIR_PATH            = path.resolve(import.meta.dirname, "../data/");
-const GAMEDATA_DIR_PATH        = path.resolve(import.meta.dirname, "../data/gameDataFiles/");
+const DATA_DIR_PATH = path.resolve(import.meta.dirname, "../data/");
+const GAMEDATA_DIR_PATH = path.resolve(import.meta.dirname, "../data/gameDataFiles/");
 // const CACHE_FILE_PATH          = path.resolve(import.meta.dirname, "../modules/cache.js");
 
-const CHAR_FILE_PATH           = path.join(DATA_DIR_PATH, "characters.json");
+const CHAR_FILE_PATH = path.join(DATA_DIR_PATH, "characters.json");
 const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
-const JOURNEY_FILE_PATH        = path.join(DATA_DIR_PATH, "journeyReqs.json");
-const RAID_NAMES_FILE_PATH     = path.join(DATA_DIR_PATH, "raidNames.json");
-const SHIP_FILE_PATH           = path.join(DATA_DIR_PATH, "ships.json");
+const JOURNEY_FILE_PATH = path.join(DATA_DIR_PATH, "journeyReqs.json");
+const RAID_NAMES_FILE_PATH = path.join(DATA_DIR_PATH, "raidNames.json");
+const SHIP_FILE_PATH = path.join(DATA_DIR_PATH, "ships.json");
 const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
 
 // The metadata keys we actually care about
@@ -43,13 +43,12 @@ if (!process.env.TESTING_ENV) {
     init();
 
     // catch ctrl+c event and exit normally
-    process.on('SIGINT', () => {
+    process.on("SIGINT", () => {
         if (piscina) piscina.close();
         console.log("Forcefully exiting.");
         process.exit(2);
     });
 }
-
 
 async function init() {
     try {
@@ -66,12 +65,14 @@ async function init() {
                         log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
                     }
                     if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
-                        log.push(` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`);
+                        log.push(
+                            ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
+                        );
                     }
                     if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
                         log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
                     }
-                    if (log.length) console.log([ "Found new metadata, running updaters", ...log ].join("\n"));
+                    if (log.length) console.log(["Found new metadata, running updaters", ...log].join("\n"));
 
                     await runGameDataUpdaters(newMetadata, cache, comlinkStub);
                     debugLog("Finished running game data updater for new metadata");
@@ -300,7 +301,7 @@ async function getGuildPlayerIds(comlinkStub, guildIds) {
 // Stick all of the characters from each player's rosters into an array ot be processed later
 const piscina = new Piscina({
     filename: path.resolve(import.meta.dirname, "../modules/workers/getStrippedModsWorker.js"),
-    taskQueue: new FixedQueue()
+    taskQueue: new FixedQueue(),
 });
 async function getPlayerRosters(playerIds, modMap) {
     debugLog(`Getting rosters for ${playerIds.length} players`);
@@ -393,7 +394,7 @@ function processModResults(unitsIn) {
             primariesOut[slotNames[ix]] = statLang[stat];
         }
 
-        thisUnit.mods = { sets: [], ...primariesOut,};
+        thisUnit.mods = { sets: [], ...primariesOut };
 
         const filteredSets = Object.entries(sets)
             .filter(([_, count]) => count === maxSetCount)
@@ -467,7 +468,8 @@ async function updatePatrons(cache) {
             const discordID = user.attributes.social_connections?.discord?.user_id;
             if (discordID) {
                 const userConf = await cache.getOne(config.mongodb.swgohbotdb, "patrons", { discordID: discordID });
-                if (!userConf) console.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
+                if (!userConf)
+                    console.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
             }
 
             // Save this user's info to the db
@@ -1563,7 +1565,6 @@ function toProperCase(strIn) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
-
 
 function debugTime(name) {
     if (!FORCE_UPDATE && !DEBUG_LOGS) return;

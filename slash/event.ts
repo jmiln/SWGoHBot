@@ -269,21 +269,25 @@ export default class Event extends Command {
                 if (!validEV?.valid) {
                     return super.error(interaction, validEV.str);
                 }
-                await Bot.socket.emit("addEvents", { guildId: interaction.guild.id, events: [validEV.event] }, (res: {success: boolean, error: string}[]) => {
-                    const ev = res[0];
-                    if (!ev.success) {
+                await Bot.socket.emit(
+                    "addEvents",
+                    { guildId: interaction.guild.id, events: [validEV.event] },
+                    (res: { success: boolean; error: string }[]) => {
+                        const ev = res[0];
+                        if (!ev.success) {
+                            return interaction.reply({
+                                content: `${interaction.language.get("COMMAND_EVENT_NO_CREATE")}\n\n**${evName}**\n${ev.error}`,
+                            });
+                        }
                         return interaction.reply({
-                            content: `${interaction.language.get("COMMAND_EVENT_NO_CREATE")}\n\n**${evName}**\n${ev.error}`,
+                            content: interaction.language.get(
+                                "COMMAND_EVENT_CREATED",
+                                evName,
+                                getDateTimeStr(validEV.event.eventDT, guildConf.timezone),
+                            ),
                         });
-                    }
-                    return interaction.reply({
-                        content: interaction.language.get(
-                            "COMMAND_EVENT_CREATED",
-                            evName,
-                            getDateTimeStr(validEV.event.eventDT, guildConf.timezone),
-                        ),
-                    });
-                });
+                    },
+                );
                 break;
             }
             case "createjson": {
@@ -349,42 +353,46 @@ export default class Event extends Command {
                 }
 
                 // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
-                await Bot.socket.emit("addEvents", { guildId: interaction.guild.id, events: result.map((e) => e.event) }, (res: {success: boolean, error: string, event: GuildConfigEvent}[]) => {
-                    const evAddLog = [];
-                    const evFailLog = [];
+                await Bot.socket.emit(
+                    "addEvents",
+                    { guildId: interaction.guild.id, events: result.map((e) => e.event) },
+                    (res: { success: boolean; error: string; event: GuildConfigEvent }[]) => {
+                        const evAddLog = [];
+                        const evFailLog = [];
 
-                    for (const ev of res) {
-                        const thisEvent = ev.event;
-                        if (ev.success) {
-                            evAddLog.push(
-                                interaction.language.get(
-                                    "COMMAND_EVENT_CREATED",
-                                    thisEvent.name,
-                                    getDateTimeStr(thisEvent.eventDT, guildConf.timezone),
-                                ),
-                            );
-                        } else {
-                            evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", thisEvent.name, ev.error));
+                        for (const ev of res) {
+                            const thisEvent = ev.event;
+                            if (ev.success) {
+                                evAddLog.push(
+                                    interaction.language.get(
+                                        "COMMAND_EVENT_CREATED",
+                                        thisEvent.name,
+                                        getDateTimeStr(thisEvent.eventDT, guildConf.timezone),
+                                    ),
+                                );
+                            } else {
+                                evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", thisEvent.name, ev.error));
+                            }
                         }
-                    }
-                    return interaction.reply({
-                        embeds: [
-                            {
-                                title: "Event(s) add log",
-                                fields: [
-                                    {
-                                        name: "Success",
-                                        value: evAddLog.join("\n") || "N/A",
-                                    },
-                                    {
-                                        name: "Failures",
-                                        value: evFailLog.join("\n") || "N/A",
-                                    },
-                                ],
-                            },
-                        ],
-                    });
-                });
+                        return interaction.reply({
+                            embeds: [
+                                {
+                                    title: "Event(s) add log",
+                                    fields: [
+                                        {
+                                            name: "Success",
+                                            value: evAddLog.join("\n") || "N/A",
+                                        },
+                                        {
+                                            name: "Failures",
+                                            value: evFailLog.join("\n") || "N/A",
+                                        },
+                                    ],
+                                },
+                            ],
+                        });
+                    },
+                );
                 break;
             }
             case "view": {
@@ -402,50 +410,63 @@ export default class Event extends Command {
 
                 if (eventName) {
                     // If they are looking to show a specific event
-                    await Bot.socket.emit("getEventByName", { guildId: interaction.guild.id, evName: eventName }, async (eventIn: GuildConfigEvent) => {
-                        // If it doesn't find the event, say so
-                        if (!eventIn) return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
+                    await Bot.socket.emit(
+                        "getEventByName",
+                        { guildId: interaction.guild.id, evName: eventName },
+                        async (eventIn: GuildConfigEvent) => {
+                            // If it doesn't find the event, say so
+                            if (!eventIn)
+                                return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
 
-                        let eventString = interaction.language.get(
-                            "COMMAND_EVENT_TIME",
-                            eventIn.name,
-                            `<t:${Math.floor(eventIn.eventDT / 1000)}:f>`,
-                        );
-                        eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(eventIn.eventDT / 1000)}:R>`);
-                        if (eventIn.channel?.length) {
-                            let chanName = null;
-                            if (interaction.guild.channels.cache.has(eventIn.channel)) {
-                                chanName = `<#${interaction.guild.channels.cache.get(eventIn.channel).id}>`;
-                            } else {
-                                chanName = eventIn.channel;
-                            }
-                            eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
-                        }
-                        if (eventIn.repeatDays.length > 0) {
-                            eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", eventIn.repeatDays.join(", "));
-                        } else if (
-                            eventIn.repeat &&
-                            (eventIn.repeat.repeatDay !== 0 || eventIn.repeat.repeatHour !== 0 || eventIn.repeat.repeatMin !== 0)
-                        ) {
-                            // At least one of em is more than 0
-                            eventString += interaction.language.get(
-                                "COMMAND_EVENT_REPEAT",
-                                eventIn.repeat.repeatDay,
-                                eventIn.repeat.repeatHour,
-                                eventIn.repeat.repeatMin,
+                            let eventString = interaction.language.get(
+                                "COMMAND_EVENT_TIME",
+                                eventIn.name,
+                                `<t:${Math.floor(eventIn.eventDT / 1000)}:f>`,
                             );
-                        }
-                        if (!minimal && eventIn.message?.length) {
-                            // If they want to show all available events without the message showing
-                            eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, eventIn.message));
-                        }
-                        return interaction.reply({ content: eventString });
-                    });
+                            eventString += interaction.language.get(
+                                "COMMAND_EVENT_TIME_LEFT",
+                                `<t:${Math.floor(eventIn.eventDT / 1000)}:R>`,
+                            );
+                            if (eventIn.channel?.length) {
+                                let chanName = null;
+                                if (interaction.guild.channels.cache.has(eventIn.channel)) {
+                                    chanName = `<#${interaction.guild.channels.cache.get(eventIn.channel).id}>`;
+                                } else {
+                                    chanName = eventIn.channel;
+                                }
+                                eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
+                            }
+                            if (eventIn.repeatDays.length > 0) {
+                                eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", eventIn.repeatDays.join(", "));
+                            } else if (
+                                eventIn.repeat &&
+                                (eventIn.repeat.repeatDay !== 0 || eventIn.repeat.repeatHour !== 0 || eventIn.repeat.repeatMin !== 0)
+                            ) {
+                                // At least one of em is more than 0
+                                eventString += interaction.language.get(
+                                    "COMMAND_EVENT_REPEAT",
+                                    eventIn.repeat.repeatDay,
+                                    eventIn.repeat.repeatHour,
+                                    eventIn.repeat.repeatMin,
+                                );
+                            }
+                            if (!minimal && eventIn.message?.length) {
+                                // If they want to show all available events without the message showing
+                                eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, eventIn.message));
+                            }
+                            return interaction.reply({ content: eventString });
+                        },
+                    );
                 } else if (evFilter?.length) {
                     const filterArr = evFilter.split(" ");
-                    return await Bot.socket.emit("getEventsByFilter", interaction.guild.id, filterArr, async (eventList: GuildConfigEvent[]) => {
-                        await sendPaged({ eventList, minimal, page });
-                    });
+                    return await Bot.socket.emit(
+                        "getEventsByFilter",
+                        interaction.guild.id,
+                        filterArr,
+                        async (eventList: GuildConfigEvent[]) => {
+                            await sendPaged({ eventList, minimal, page });
+                        },
+                    );
                 } else {
                     return await Bot.socket.emit("getEventsByGuild", interaction.guild.id, async (eventList: GuildConfigEvent[]) => {
                         // If it doesn't find any events, say so
@@ -456,49 +477,59 @@ export default class Event extends Command {
             }
             case "delete": {
                 const eventName = interaction.options.getString("name");
-                await Bot.socket.emit("delEvent", { guildId: interaction.guild.id, eventName: eventName }, async (result: { success: boolean; error: string }) => {
-                    if (result.success) {
-                        return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
-                    }
-                    return super.error(interaction, result.error);
-                });
+                await Bot.socket.emit(
+                    "delEvent",
+                    { guildId: interaction.guild.id, eventName: eventName },
+                    async (result: { success: boolean; error: string }) => {
+                        if (result.success) {
+                            return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
+                        }
+                        return super.error(interaction, result.error);
+                    },
+                );
                 break;
             }
             case "trigger": {
                 const eventName = interaction.options.getString("name");
 
                 // As long as it does exist, go ahead and try triggering it
-                await Bot.socket.emit("getEventByName", { guildId: interaction.guild.id, evName: eventName }, async (eventIn: GuildConfigEvent) => {
-                    let channel = null;
-                    const announceMessage = `**${eventIn?.name || eventName}**\n${eventIn?.message || ""}`;
-                    if (eventIn?.channel && eventIn.channel !== "") {
-                        // If they"ve set a channel, try using it
-                        channel = interaction.guild.channels.cache.get(eventIn.channel);
-                        if (!channel) {
-                            channel = interaction.guild.channels.cache.find((c) => c.name === eventIn.channel || c.id === eventIn.channel);
+                await Bot.socket.emit(
+                    "getEventByName",
+                    { guildId: interaction.guild.id, evName: eventName },
+                    async (eventIn: GuildConfigEvent) => {
+                        let channel = null;
+                        const announceMessage = `**${eventIn?.name || eventName}**\n${eventIn?.message || ""}`;
+                        if (eventIn?.channel && eventIn.channel !== "") {
+                            // If they"ve set a channel, try using it
+                            channel = interaction.guild.channels.cache.get(eventIn.channel);
+                            if (!channel) {
+                                channel = interaction.guild.channels.cache.find(
+                                    (c) => c.name === eventIn.channel || c.id === eventIn.channel,
+                                );
+                            }
+                        } else {
+                            // Else, use the default one from their settings
+                            channel = interaction.guild.channels.cache.find(
+                                (c) => c.name === guildConf.announceChan || c.id === guildConf.announceChan,
+                            );
                         }
-                    } else {
-                        // Else, use the default one from their settings
-                        channel = interaction.guild.channels.cache.find(
-                            (c) => c.name === guildConf.announceChan || c.id === guildConf.announceChan,
-                        );
-                    }
-                    if (channel && Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
-                        try {
-                            channel.send({ content: announceMessage });
-                            return interaction.reply({
-                                content: `Successfully triggered ${eventIn.name}`,
-                                flags: MessageFlags.Ephemeral,
-                            });
-                        } catch (_) {
-                            Bot.logger.error(`Event trigger Broke! ${announceMessage}`);
-                            return interaction.reply({
-                                content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
-                                flags: MessageFlags.Ephemeral,
-                            });
+                        if (channel && Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
+                            try {
+                                channel.send({ content: announceMessage });
+                                return interaction.reply({
+                                    content: `Successfully triggered ${eventIn.name}`,
+                                    flags: MessageFlags.Ephemeral,
+                                });
+                            } catch (_) {
+                                Bot.logger.error(`Event trigger Broke! ${announceMessage}`);
+                                return interaction.reply({
+                                    content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
+                                    flags: MessageFlags.Ephemeral,
+                                });
+                            }
                         }
-                    }
-                });
+                    },
+                );
                 break;
             }
             case "edit": {
@@ -762,13 +793,13 @@ export default class Event extends Command {
                     if (thisEvent.repeatStr?.length) {
                         const repeatStr = thisEvent.repeatStr;
                         if (repeatStr.match(timeReg)) {
-                            const dayMatch  = repeatStr.match(/(\d{1,2})d/);
+                            const dayMatch = repeatStr.match(/(\d{1,2})d/);
                             const hourMatch = repeatStr.match(/(\d{1,2})h/);
-                            const minMatch  = repeatStr.match(/(\d{1,2})m/);
+                            const minMatch = repeatStr.match(/(\d{1,2})m/);
 
-                            newEvent.repeat.repeatDay  = Number.parseInt(dayMatch?.[1]  || "0", 10);
+                            newEvent.repeat.repeatDay = Number.parseInt(dayMatch?.[1] || "0", 10);
                             newEvent.repeat.repeatHour = Number.parseInt(hourMatch?.[1] || "0", 10);
-                            newEvent.repeat.repeatMin  = Number.parseInt(minMatch?.[1]  || "0", 10);
+                            newEvent.repeat.repeatMin = Number.parseInt(minMatch?.[1] || "0", 10);
                         } else {
                             err.push(interaction.language.get("COMMAND_EVENT_INVALID_REPEAT"));
                         }
@@ -805,7 +836,13 @@ export default class Event extends Command {
                 if (err.length) {
                     outStr = interaction.language.get("COMMAND_EVENT_JSON_ERROR_LIST", ix + 1, err.map((e) => `* ${e}`).join("\n"));
                 } else {
-                    outStr = interaction.language.get("COMMAND_EVENT_JSON_EVENT_VALID", ix + 1, newEvent.name, thisEvent.time, thisEvent.day);
+                    outStr = interaction.language.get(
+                        "COMMAND_EVENT_JSON_EVENT_VALID",
+                        ix + 1,
+                        newEvent.name,
+                        thisEvent.time,
+                        thisEvent.day,
+                    );
                 }
                 const result = {
                     event: newEvent,
@@ -831,7 +868,7 @@ export default class Event extends Command {
             return outStr;
         }
 
-        function sendPaged({ eventList, minimal, page }: {eventList: GuildConfigEvent[], minimal: boolean, page: number}) {
+        function sendPaged({ eventList, minimal, page }: { eventList: GuildConfigEvent[]; minimal: boolean; page: number }) {
             if (Array.isArray(eventList) && eventList.length === 0)
                 return interaction.reply({ content: "I could not find any events for this server" });
             const evOutArr = [];

@@ -401,7 +401,7 @@ export default class ArenaWatch extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: {level: number}) {
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         let target = interaction.options.getSubcommandGroup(false);
         if (!target) target = interaction.options.getSubcommand();
 
@@ -478,7 +478,7 @@ export default class ArenaWatch extends Command {
             return [Number.parseInt(ac, 10), mention];
         }
 
-        function checkPlayer(players: SWAPIPlayer[], code: {code: number, mention?: string}, isEdit = false) {
+        function checkPlayer(players: SWAPIPlayer[], code: { code: number; mention?: string }, isEdit = false) {
             if (!players) throw new Error("Missing players in checkPlayer");
             const player = players.find((p) => p.allyCode === code.code);
             if (!player) {

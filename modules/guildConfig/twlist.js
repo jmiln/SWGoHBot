@@ -2,12 +2,12 @@ import config from "../../config.js";
 import unitChecklist from "../../data/unitChecklist.ts";
 
 const defaultTWList = {
-    "Light Side":       [],
-    "Dark Side":        [],
+    "Light Side": [],
+    "Dark Side": [],
     "Galactic Legends": [],
-    Ships:              [],
-    "Capital Ships":    [],
-    Blacklist: []        // List of units to not show in the list output (Can't have units both here and one of the others)
+    Ships: [],
+    "Capital Ships": [],
+    Blacklist: [], // List of units to not show in the list output (Can't have units both here and one of the others)
 };
 
 export async function getGuildTWList({ cache, guildId }) {
@@ -18,7 +18,7 @@ export async function getGuildTWList({ cache, guildId }) {
         outObj[key] = resArr[0]?.twList?.[key] || [];
     }
     return outObj || defaultTWList;
-};
+}
 
 export async function getFullTWList({ cache, guildId }) {
     if (!guildId) return unitChecklist;
@@ -38,12 +38,16 @@ export async function getFullTWList({ cache, guildId }) {
         }
     }
     return twListOut;
-};
+}
 
 export async function setGuildTWList({ cache, guildId, twListOut }) {
     const res = await cache
         .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { twList: twListOut }, false)
-        .then(() => { return { success: true, error: null }; })
-        .catch((error) => { return { success: false, error: error }; });
+        .then(() => {
+            return { success: true, error: null };
+        })
+        .catch((error) => {
+            return { success: false, error: error };
+        });
     return res;
-};
+}

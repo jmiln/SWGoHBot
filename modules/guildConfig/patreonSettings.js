@@ -20,7 +20,7 @@ export async function setPatreonSettings({ cache, guildId, patreonSettingsOut })
             return { success: false, error: error };
         });
     return res;
-};
+}
 
 // Function to:
 //  - Add/update/remove a user & tier to the supporters list
@@ -70,14 +70,14 @@ export async function addServerSupporter({ cache, guildId, userInfo }) {
     }
 
     return resOut;
-};
+}
 
 //  - Get the users from the given guilds' supporters list if available
 export async function getServerSupporters({ cache, guildId }) {
     if (!guildId) return [];
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings?.supporters || [];
-};
+}
 
 // Remove a user from the given guilds' supporters
 export async function removeServerSupporter({ cache, guildId, userId }) {
@@ -98,7 +98,7 @@ export async function removeServerSupporter({ cache, guildId, userId }) {
         .catch((error) => {
             return { success: false, error: error };
         });
-};
+}
 
 // Remove all the server & user settings for a given user
 // Returns success/ error for both the user setting & the guild one
@@ -126,7 +126,7 @@ export async function clearSupporterInfo({ cache, userId }) {
     if (gRemRes.error) resOut.guild = { success: false, error: gRemRes.error };
 
     return resOut;
-};
+}
 
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
 export async function ensureGuildSupporter({ cache }) {
@@ -173,7 +173,7 @@ export async function ensureGuildSupporter({ cache }) {
                 return { success: false, error: error };
             });
     }
-};
+}
 
 // Make sure the user's info is logged correctly in the guild they have set
 export async function ensureBonusServerSet({ cache, userId, amount_cents }) {
@@ -200,7 +200,7 @@ export async function ensureBonusServerSet({ cache, userId, amount_cents }) {
     });
 
     return addServerRes;
-};
+}
 
 //  - Get the combined / highest available tier from the supporters of a given server
 const tierNums = Object.keys(patreonTiers.tiers);
@@ -221,7 +221,7 @@ export async function getGuildSupporterTier({ cache, guildId }) {
 
     // If it gets to here (It shouldn't), return 0
     return 0;
-};
+}
 
 //  - Figure out the settings for various sub-chunks, like auto-commands or guildtickets, etc
 //      * Getter/ setter/ changer

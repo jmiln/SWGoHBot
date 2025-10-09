@@ -106,7 +106,7 @@ export default class Faction extends Command {
                 units.push({
                     char,
                     isLeader,
-                    hasZeta
+                    hasZeta,
                 });
             }
 

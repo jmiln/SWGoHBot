@@ -309,7 +309,9 @@ export default class Guilds extends Command {
             const gears = [10, 11, 12, 13];
             const sortBy = interaction.options.getInteger("sort");
             if (sortBy && (sortBy > 13 || sortBy < 1)) {
-                return interaction.editReply({ content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string });
+                return interaction.editReply({
+                    content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string,
+                });
             }
             const gRoster = guild.roster.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)).map((m) => m.allyCode);
 
@@ -329,7 +331,7 @@ export default class Guilds extends Command {
                         {
                             description: codeBlock(e),
                             title: "Something Broke while getting your guild's characters",
-                            footer: {text: "Please try again in a bit"},
+                            footer: { text: "Please try again in a bit" },
                             color: Bot.constants.colors.red,
                         },
                     ],
@@ -410,7 +412,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: ` ${codeBlock(err)}`,
-                            footer: {text: "Please try again in a bit"},
+                            footer: { text: "Please try again in a bit" },
                         },
                     ],
                 });
@@ -523,7 +525,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: codeBlock(e),
-                            footer: {text: "Please try again in a bit."},
+                            footer: { text: "Please try again in a bit." },
                         },
                     ],
                 });
@@ -839,7 +841,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: codeBlock(e),
-                            footer: {text: "Please try again in a bit."},
+                            footer: { text: "Please try again in a bit." },
                         },
                     ],
                 });
@@ -1059,7 +1061,7 @@ export default class Guilds extends Command {
                             description: codeBlock(e),
                             title: "Something Broke while getting your guild's characters",
                             color: Bot.constants.colors.brightred,
-                            footer: {text: "Please try again in a bit."},
+                            footer: { text: "Please try again in a bit." },
                         },
                     ],
                 });
@@ -1106,7 +1108,7 @@ export default class Guilds extends Command {
                     const ourScore = Number.parseInt(match.score, 10);
                     const opponentScore = Number.parseInt(match.opponentScore, 10);
                     const matchPower = (match.power / 1_000_000).toFixed(1);
-                    return `Match ${ix + 1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${(`${ourScore}-${opponentScore},`).padEnd(maxLenCompare+1, " ")} ${matchPower}M`;
+                    return `Match ${ix + 1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${(`${ourScore}-${opponentScore},`).padEnd(maxLenCompare + 1, " ")} ${matchPower}M`;
                 });
                 fields.push({
                     name: "Previous Matches",
@@ -1123,39 +1125,44 @@ export default class Guilds extends Command {
                     break;
                 }
             }
-            const wld = previousMatches.reduce((acc, curr) => {
-                const ourScore = Number.parseInt(curr.score, 10);
-                const opponentScore = Number.parseInt(curr.opponentScore, 10);
-                acc.wins += ourScore > opponentScore ? 1 : 0;
-                acc.losses += ourScore < opponentScore ? 1 : 0;
-                acc.draws += ourScore === opponentScore ? 1 : 0;
-                return acc;
-            }, { wins: 0, losses: 0, draws: 0 });
+            const wld = previousMatches.reduce(
+                (acc, curr) => {
+                    const ourScore = Number.parseInt(curr.score, 10);
+                    const opponentScore = Number.parseInt(curr.opponentScore, 10);
+                    acc.wins += ourScore > opponentScore ? 1 : 0;
+                    acc.losses += ourScore < opponentScore ? 1 : 0;
+                    acc.draws += ourScore === opponentScore ? 1 : 0;
+                    return acc;
+                },
+                { wins: 0, losses: 0, draws: 0 },
+            );
 
             // Get the range (min to max) for score
             const scoreArr = previousMatches.map((m) => Number.parseInt(m.score, 10));
             const offRangeStr = `${Math.min(...scoreArr)}-${Math.max(...scoreArr)}`;
             const offMean = scoreArr.reduce((acc, curr) => acc + curr, 0) / scoreArr.length;
             const sortedScoreArr = scoreArr.sort((a, b) => a - b);
-            const offMedian = scoreArr.length % 2 === 0
-                ? (sortedScoreArr[scoreArr.length / 2] + sortedScoreArr[scoreArr.length / 2 - 1]) / 2
-                : sortedScoreArr[Math.floor(scoreArr.length / 2)];
+            const offMedian =
+                scoreArr.length % 2 === 0
+                    ? (sortedScoreArr[scoreArr.length / 2] + sortedScoreArr[scoreArr.length / 2 - 1]) / 2
+                    : sortedScoreArr[Math.floor(scoreArr.length / 2)];
 
             // Get the range (min to max) for opponent score
             const opponentScoreArr = previousMatches.map((m) => Number.parseInt(m.opponentScore, 10));
             const defRangeStr = `${Math.min(...opponentScoreArr)}-${Math.max(...opponentScoreArr)}`;
             const defMean = opponentScoreArr.reduce((acc, curr) => acc + curr, 0) / opponentScoreArr.length;
             const sortedOpponentScoreArr = opponentScoreArr.sort((a, b) => a - b);
-            const defMedian = opponentScoreArr.length % 2 === 0
-                ? (sortedOpponentScoreArr[opponentScoreArr.length / 2] + sortedOpponentScoreArr[opponentScoreArr.length / 2 - 1]) / 2
-                : sortedOpponentScoreArr[Math.floor(opponentScoreArr.length / 2)];
+            const defMedian =
+                opponentScoreArr.length % 2 === 0
+                    ? (sortedOpponentScoreArr[opponentScoreArr.length / 2] + sortedOpponentScoreArr[opponentScoreArr.length / 2 - 1]) / 2
+                    : sortedOpponentScoreArr[Math.floor(opponentScoreArr.length / 2)];
 
             fields.push({
                 name: "Previous Matches Stats",
                 value: codeBlock(
                     [
                         `Streak     :: ${winStreak} ${Bot.constants.emotes.check}`,
-                        `W-L-D      :: ${wld.wins}-${wld.losses}-${wld.draws}, (${((wld.wins / (previousMatches.length)) * 100).toFixed(1)}%)`,
+                        `W-L-D      :: ${wld.wins}-${wld.losses}-${wld.draws}, (${((wld.wins / previousMatches.length) * 100).toFixed(1)}%)`,
                         `Off range  :: ${offRangeStr}`,
                         `Off mean   :: ${offMean.toFixed(0)}`,
                         `Off median :: ${offMedian.toFixed(0)}`,
@@ -1254,7 +1261,13 @@ export default class Guilds extends Command {
             }
         }
 
-        function twCategoryFormat(unitObj: TWList, gearLvls: {[key: string]: number}, divLen: number, guildMembers: SWAPIPlayer[], ships = false) {
+        function twCategoryFormat(
+            unitObj: TWList,
+            gearLvls: { [key: string]: number },
+            divLen: number,
+            guildMembers: SWAPIPlayer[],
+            ships = false,
+        ) {
             const catToFormat = ships ? ["Ships", "Capital Ships"] : ["Galactic Legends", "Light Side", "Dark Side"];
             const fieldsOut = [];
             const [gear1, gear2] = Object.keys(gearLvls)

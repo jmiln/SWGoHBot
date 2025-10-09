@@ -9,9 +9,24 @@ import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import mongoCache from "../modules/cache.js";
 
-import type { ComlinkMod, ComlinkPlayer, RawCharacter, RawGuild, RawGuildMember, SWAPIGear, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIPlayerArenaProfile, SWAPIPlayerArenaProfilePVP, SWAPIRecipe, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerOutput } from "../types/swapi_types.ts";
+import type {
+    ComlinkMod,
+    ComlinkPlayer,
+    RawCharacter,
+    RawGuild,
+    RawGuildMember,
+    SWAPIGear,
+    SWAPIGuild,
+    SWAPILang,
+    SWAPIPlayer,
+    SWAPIPlayerArenaProfile,
+    SWAPIPlayerArenaProfilePVP,
+    SWAPIRecipe,
+    SWAPIUnit,
+    SWAPIUnitAbility,
+    SWAPIWorkerOutput,
+} from "../types/swapi_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
-
 
 const THREAD_COUNT = os.cpus().length;
 const abilityCosts = JSON.parse(readFileSync(`${import.meta.dirname}/../data/abilityCosts.json`, "utf-8"));
@@ -51,7 +66,7 @@ async function init() {
     }, 360_000);
 }
 
-export default (opts = {noop: false}) => {
+export default (opts = { noop: false }) => {
     // This is just here so it'll actually accept it properly when I require() this file... Doesn't work with just `module.exports = () => ` for some reason
     if (opts?.noop) return null;
     init();
@@ -112,7 +127,7 @@ export default (opts = {noop: false}) => {
         return specialAbilityList;
     }
 
-    async function playerByName(name: string, limit=0) {
+    async function playerByName(name: string, limit = 0) {
         try {
             if (!name?.length || typeof name !== "string") return null;
 
@@ -122,7 +137,7 @@ export default (opts = {noop: false}) => {
                 "playerStats",
                 { name: new RegExp(name, "i") },
                 { name: 1, allyCode: 1, _id: 0 },
-                limit
+                limit,
             );
 
             return player;
@@ -279,9 +294,9 @@ export default (opts = {noop: false}) => {
         allycodes: number | number[],
         cooldown: PlayerCooldown = {
             player: playerMaxCooldown,
-            guild: guildMaxCooldown
+            guild: guildMaxCooldown,
         },
-        options: {force?: boolean, defId?: string} = {force: false, defId: null}
+        options: { force?: boolean; defId?: string } = { force: false, defId: null },
     ): Promise<SWAPIPlayer[]> {
         // Make sure the allycode(s) are in an array
         if (!allycodes) return null;
@@ -671,7 +686,7 @@ export default (opts = {noop: false}) => {
         return outStats;
     }
 
-    async function abilities(skillArray: string | string[], lang = "eng_us", opts = {min: false}) {
+    async function abilities(skillArray: string | string[], lang = "eng_us", opts = { min: false }) {
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
         }
@@ -802,7 +817,11 @@ export default (opts = {noop: false}) => {
         return await cache.get(config.mongodb.swapidb, "recipes", { id: { $in: recArr }, language: thisLang }, { _id: 0, updated: 0 });
     }
 
-    async function getRawGuild(allycode: number, cooldown: PlayerCooldown = { player: playerMaxCooldown, guild: guildMaxCooldown }, { forceUpdate } = { forceUpdate: false }) {
+    async function getRawGuild(
+        allycode: number,
+        cooldown: PlayerCooldown = { player: playerMaxCooldown, guild: guildMaxCooldown },
+        { forceUpdate } = { forceUpdate: false },
+    ) {
         const tempGuild: RawGuild = {} as RawGuild;
         const thisAc = allycode?.toString().replace(/[^\d]/g, "");
         if (!thisAc || Number.isNaN(thisAc) || thisAc.length !== 9) {
@@ -967,47 +986,51 @@ export default (opts = {noop: false}) => {
         }
 
         const members = [];
-        await eachLimit(member, MAX_CONCURRENT, async ({
-            playerId,
-            memberLevel,
-            memberContribution,
-            ...rest
-        }: {
-            playerId: string;
-            memberLevel: number;
-            memberContribution: number;
-        }) => {
-            // Grab each player and process their info
-            const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
-
-            let gp: number;
-            let gpChar: number;
-            let gpShip: number;
-            for (const stat of profileStat) {
-                if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
-                    gpShip = Number(stat.value);
-                } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
-                    gp = Number(stat.value);
-                } else if (stat.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
-                    gpChar = Number(stat.value);
-                }
-                if (gp && gpChar && gpShip) break;
-            }
-
-            members.push({
-                ...rest,
-                id: playerId,
-                guildMemberLevel: memberLevel,
+        await eachLimit(
+            member,
+            MAX_CONCURRENT,
+            async ({
+                playerId,
+                memberLevel,
                 memberContribution,
-                name,
-                level,
-                allyCode: Number(allyCode),
-                gp,
-                gpChar,
-                gpShip,
-                updated: Date.now(),
-            });
-        });
+                ...rest
+            }: {
+                playerId: string;
+                memberLevel: number;
+                memberContribution: number;
+            }) => {
+                // Grab each player and process their info
+                const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
+
+                let gp: number;
+                let gpChar: number;
+                let gpShip: number;
+                for (const stat of profileStat) {
+                    if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
+                        gpShip = Number(stat.value);
+                    } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
+                        gp = Number(stat.value);
+                    } else if (stat.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
+                        gpChar = Number(stat.value);
+                    }
+                    if (gp && gpChar && gpShip) break;
+                }
+
+                members.push({
+                    ...rest,
+                    id: playerId,
+                    guildMemberLevel: memberLevel,
+                    memberContribution,
+                    name,
+                    level,
+                    allyCode: Number(allyCode),
+                    gp,
+                    gpChar,
+                    gpShip,
+                    updated: Date.now(),
+                });
+            },
+        );
 
         return {
             ...profileRest,

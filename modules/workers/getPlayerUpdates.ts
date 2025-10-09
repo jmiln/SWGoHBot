@@ -10,7 +10,12 @@ const defIdList = new Set();
 const skillIdList = new Set();
 
 // WorkerData: { oldMembers, updatedBare, specialAbilities, chunkIx }
-async function init(workerData: { oldMembers: SWAPIPlayer[]; updatedBare: SWAPIPlayer[]; specialAbilities: SWAPIUnitAbility[]; chunkIx: number }) {
+async function init(workerData: {
+    oldMembers: SWAPIPlayer[];
+    updatedBare: SWAPIPlayer[];
+    specialAbilities: SWAPIUnitAbility[];
+    chunkIx: number;
+}) {
     if (!workerData?.updatedBare) return null;
     for (const newPlayer of workerData.updatedBare) {
         const oldPlayer = workerData.oldMembers.find((p: SWAPIPlayer) => p.allyCode === newPlayer.allyCode);

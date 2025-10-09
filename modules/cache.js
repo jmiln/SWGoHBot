@@ -43,7 +43,7 @@ export default (clientMongo) => {
         return saveObjectArray;
     }
 
-    async function get(database, collection, matchCondition, projection, limit=0) {
+    async function get(database, collection, matchCondition, projection, limit = 0) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 

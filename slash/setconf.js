@@ -23,7 +23,7 @@ const options = {
         name: "set",
         type: ApplicationCommandOptionType.Subcommand,
         description: "Set the value of one of the options",
-        options: []
+        options: [],
     },
     twlist: {
         name: "twlist",
@@ -73,8 +73,8 @@ const options = {
                 type: ApplicationCommandOptionType.Subcommand,
                 description: "View the current list",
             },
-        ]
-    }
+        ],
+    },
 };
 
 // Check out each option in the config file, and set it up in each subarg as needed
@@ -128,11 +128,12 @@ export default class SetConf extends Command {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 
-
         function getCharName(defId) {
-            return Bot.CharacterNames.find((char) => char.defId === defId)?.name ||
+            return (
+                Bot.CharacterNames.find((char) => char.defId === defId)?.name ||
                 Bot.ShipNames.find((ship) => ship.defId === defId)?.name ||
-                "N/A";
+                "N/A"
+            );
         }
 
         if (subCommandGroup === "twlist") {
@@ -146,7 +147,7 @@ export default class SetConf extends Command {
                     outArr.push(`* **${key}**: \n${guildTWList[key].map((defId) => `  - ${getCharName(defId)}`).join("\n")}`);
                 }
                 if (!outArr.length) return super.error(interaction, "You have no units in your list");
-                return super.success(interaction, outArr.join("\n"), {title: "Your current list:"});
+                return super.success(interaction, outArr.join("\n"), { title: "Your current list:" });
             }
 
             // Otherwise we're gonna be managing the lists
@@ -184,7 +185,6 @@ export default class SetConf extends Command {
                             }
                         }
                     }
-
 
                     try {
                         await setGuildTWList({ cache: Bot.cache, guildId: interaction.guild.id, twListOut: guildTWList });
@@ -230,7 +230,10 @@ export default class SetConf extends Command {
                         await setGuildTWList({ cache: Bot.cache, guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Removed ${removeUnitDefId} from your blacklist`);
                     } catch (err) {
-                        return super.error(interaction, `Broke while trying to remove ${removeUnitDefId} from the blacklist.\n${err.message}`);
+                        return super.error(
+                            interaction,
+                            `Broke while trying to remove ${removeUnitDefId} from the blacklist.\n${err.message}`,
+                        );
                     }
                 }
             }
@@ -357,38 +360,53 @@ export default class SetConf extends Command {
                     ...Bot.CharacterNames,
                     ...Bot.ShipNames,
                 ];
-                const outArr = unitList.filter((unit) => unit.name.toLowerCase().includes(searchKey)).map((key) => ({ name: key.name, value: key.defId})).slice(0, 24) || [];
+                const outArr =
+                    unitList
+                        .filter((unit) => unit.name.toLowerCase().includes(searchKey))
+                        .map((key) => ({ name: key.name, value: key.defId }))
+                        .slice(0, 24) || [];
                 await interaction.respond(outArr);
             } else if (focusedOption.name === "remove_unit") {
                 const guildTWList = await getGuildTWList({ cache: Bot.cache, guildId: interaction?.guild?.id });
                 if (subCommand === "blacklist") {
-                    const outArr = guildTWList.Blacklist
-                        .filter(defId => {
+                    const outArr =
+                        guildTWList.Blacklist.filter((defId) => {
                             if (!searchKey?.length) return true;
-                            const thisUnit = Bot.CharacterNames.find((char) => char.defId === defId) || Bot.ShipNames.find((ship) => ship.defId === defId);
+                            const thisUnit =
+                                Bot.CharacterNames.find((char) => char.defId === defId) ||
+                                Bot.ShipNames.find((ship) => ship.defId === defId);
                             return thisUnit.name.toLowerCase().includes(searchKey);
                         })
-                        .map((defId) => {
-                            const thisUnit = Bot.CharacterNames.find((char) => char.defId === defId) || Bot.ShipNames.find((ship) => ship.defId === defId);
-                            return { name: thisUnit.name, value: thisUnit.defId}
-                        }).slice(0, 24) || [];
+                            .map((defId) => {
+                                const thisUnit =
+                                    Bot.CharacterNames.find((char) => char.defId === defId) ||
+                                    Bot.ShipNames.find((ship) => ship.defId === defId);
+                                return { name: thisUnit.name, value: thisUnit.defId };
+                            })
+                            .slice(0, 24) || [];
                     await interaction.respond(outArr);
                 } else if (subCommand === "manage_list") {
                     const defIdList = Object.keys(guildTWList).reduce((acc, key) => {
                         if (key === "Blacklist" || !guildTWList[key]?.length) return acc;
                         return acc.concat(guildTWList[key]);
                     }, []);
-                        // [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
-                    const outArr = defIdList
-                        .filter(defId => {
-                            if (!searchKey?.length) return true;
-                            const thisUnit = Bot.CharacterNames.find((char) => char.defId === defId) || Bot.ShipNames.find((ship) => ship.defId === defId);
-                            return thisUnit.name.toLowerCase().includes(searchKey);
-                        })
-                        .map((key) => {
-                            const thisUnit = Bot.CharacterNames.find((char) => char.defId === key) || Bot.ShipNames.find((ship) => ship.defId === key);
-                            return { name: thisUnit.name, value: thisUnit.defId}
-                        }).slice(0, 24) || [];
+                    // [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
+                    const outArr =
+                        defIdList
+                            .filter((defId) => {
+                                if (!searchKey?.length) return true;
+                                const thisUnit =
+                                    Bot.CharacterNames.find((char) => char.defId === defId) ||
+                                    Bot.ShipNames.find((ship) => ship.defId === defId);
+                                return thisUnit.name.toLowerCase().includes(searchKey);
+                            })
+                            .map((key) => {
+                                const thisUnit =
+                                    Bot.CharacterNames.find((char) => char.defId === key) ||
+                                    Bot.ShipNames.find((ship) => ship.defId === key);
+                                return { name: thisUnit.name, value: thisUnit.defId };
+                            })
+                            .slice(0, 24) || [];
                     await interaction.respond(outArr);
                 }
             }

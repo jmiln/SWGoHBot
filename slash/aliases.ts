@@ -1,7 +1,4 @@
-import {
-    ApplicationCommandOptionType,
-    type ChatInputCommandInteraction,
-} from "discord.js";
+import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 import Command from "../base/slashCommand.ts";
 
 import { getGuildAliases, setGuildAliases } from "../modules/guildConfig/aliases.ts";

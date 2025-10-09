@@ -89,12 +89,12 @@ export default {
                 const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`;
                 if (interaction.replied) {
                     return interaction
-                        .followUp({content: replyContent})
+                        .followUp({ content: replyContent })
                         .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
                 }
                 if (interaction.deferred) {
                     return interaction
-                        .editReply({content: replyContent})
+                        .editReply({ content: replyContent })
                         .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
                 }
                 return interaction
@@ -123,7 +123,9 @@ export default {
                         filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
                         filtered = filtered.map((unit) => ({ name: unit.name, value: unit.defId }));
                     } else if (focusedOption.name === "command") {
-                        filtered = Bot.commandList.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+                        filtered = Bot.commandList.filter((cmdName) =>
+                            cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()),
+                        );
                     } else {
                         const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
 
@@ -185,7 +187,10 @@ export default {
             }
         }
 
-        function filterAutocomplete(arrIn: {isAlias?: boolean, defId?: string, alias?: string, name: string, aliases: string[]}[], search: string) {
+        function filterAutocomplete(
+            arrIn: { isAlias?: boolean; defId?: string; alias?: string; name: string; aliases: string[] }[],
+            search: string,
+        ) {
             const searchTerm = search?.toLowerCase() || "";
             let filtered = arrIn.filter((unit) => {
                 if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(searchTerm);
@@ -207,5 +212,5 @@ export default {
             if (ignoreArr.some((str) => errStr.toString().includes(str))) return;
             Bot.logger.error(errStr, useWebhook);
         }
-    }
+    },
 };

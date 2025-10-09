@@ -331,7 +331,7 @@ export default class GuildSearch extends Command {
                     gp: { value: "GP", endWith: "|", align: "right" },
                 };
                 header[stat] = { value: checkableStats[stat].short, endWith: "]`", align: "right" };
-                const outHeader = {...header, player: { value: "", align: "left" }}
+                const outHeader = { ...header, player: { value: "", align: "left" } };
 
                 const outTable = Bot.makeTable(outHeader, outArr);
 
@@ -363,15 +363,13 @@ export default class GuildSearch extends Command {
                 fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
             };
             try {
-                await interaction.editReply({ content: null, embeds: [ embed ], });
+                await interaction.editReply({ content: null, embeds: [embed] });
             } catch (err) {
                 Bot.logger.error(`ERROR(GuildSearch) ${err}`);
-                await interaction.channel.send({ content: null, embeds: [ embed ], });
+                await interaction.channel.send({ content: null, embeds: [embed] });
             }
             return;
         }
-
-
 
         // Not looking for stat info
         const sortType = sort ? sort : top ? "gp" : "name";
@@ -528,7 +526,7 @@ export default class GuildSearch extends Command {
         for (const star of outArr) {
             if (star >= starLvl) {
                 const msgArr = Bot.msgArray(charOut[star], "\n", 700);
-                for (const[ix, msg] of msgArr.entries()) {
+                for (const [ix, msg] of msgArr.entries()) {
                     const name =
                         Number.parseInt(star, 10) === 0
                             ? interaction.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length)

@@ -13,5 +13,5 @@ export default {
 
         // Log that the bot left
         Bot.logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);
-    }
+    },
 };

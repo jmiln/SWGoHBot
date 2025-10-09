@@ -8,8 +8,5 @@
         "strictNullChecks": true,
         "strictFunctionTypes": true
     },
-    "exclude": [
-        "node_modules",
-        "wipCommands"
-    ]
+    "exclude": ["node_modules", "wipCommands"]
 }

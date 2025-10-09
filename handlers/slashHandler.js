@@ -9,7 +9,7 @@ export default async (Bot, client) => {
     for (const file of slashFiles) {
         try {
             if (!file.endsWith(".js") && !file.endsWith(".ts")) return;
-            const [commandName, ext, ..._]  = file.split(".");
+            const [commandName, ext, ..._] = file.split(".");
             try {
                 const path = `${slashDir}${commandName}.${ext}`;
                 const { default: command } = await import(path);
@@ -99,7 +99,7 @@ export default async (Bot, client) => {
         };
     };
 
-    Bot.deployCommands = async (force=false) => {
+    Bot.deployCommands = async (force = false) => {
         const existingCommands = await fetchCommands();
         const updateRequired = [];
 

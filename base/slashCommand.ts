@@ -1,9 +1,4 @@
-import {
-    type AutocompleteFocusedOption,
-    type ChatInputCommandInteraction,
-    codeBlock,
-    MessageFlags,
-} from "discord.js";
+import { type AutocompleteFocusedOption, type ChatInputCommandInteraction, codeBlock, MessageFlags } from "discord.js";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -51,14 +46,18 @@ export default class slashCommand {
         }
     }
 
-    async error(interaction: ChatInputCommandInteraction, errMsg: string, options: {ephemeral?: boolean; title?: string; footer?: string; color?: number; example?: string, description?: string} = {
-        ephemeral: true,
-        title: "Error",
-        description: "",
-        footer: "",
-        color: this.Bot.constants.colors.red,
-        example: "",
-    }): Promise<void> {
+    async error(
+        interaction: ChatInputCommandInteraction,
+        errMsg: string,
+        options: { ephemeral?: boolean; title?: string; footer?: string; color?: number; example?: string; description?: string } = {
+            ephemeral: true,
+            title: "Error",
+            description: "",
+            footer: "",
+            color: this.Bot.constants.colors.red,
+            example: "",
+        },
+    ): Promise<void> {
         let msgOut = errMsg || null;
         if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
         if (!errMsg?.length) {
@@ -78,7 +77,7 @@ export default class slashCommand {
     async success(
         interaction: ChatInputCommandInteraction,
         msgOut: string,
-        options: SlashEmbedOptions = {title: "Success", color: this.Bot.constants.colors.green, ephemeral: false, footer: ""}
+        options: SlashEmbedOptions = { title: "Success", color: this.Bot.constants.colors.green, ephemeral: false, footer: "" },
     ) {
         if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
@@ -88,7 +87,13 @@ export default class slashCommand {
     async embed(
         interaction: ChatInputCommandInteraction,
         msgIn: string,
-        options: SlashEmbedOptions = {title: "TITLE HERE", color: this.Bot.constants.colors.green, ephemeral: false, footer: "", iconURL: ""}
+        options: SlashEmbedOptions = {
+            title: "TITLE HERE",
+            color: this.Bot.constants.colors.green,
+            ephemeral: false,
+            footer: "",
+            iconURL: "",
+        },
     ) {
         let msgOut = msgIn || null;
         if (!interaction?.channel) throw new Error(`[baseSlash/embed:${this.commandData.name}] Missing interaction`);
@@ -105,7 +110,7 @@ export default class slashCommand {
                     },
                     description: msgOut,
                     color: options.color,
-                    footer: options?.footer ? {text: options.footer} : null,
+                    footer: options?.footer ? { text: options.footer } : null,
                 },
             ],
         };

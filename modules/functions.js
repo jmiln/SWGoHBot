@@ -51,9 +51,7 @@ export default (Bot, client) => {
         // in the settings, or the user does not have it, their level will be 0
         const guildConf = interaction.guildSettings;
         const hasAdminRole = guildConf?.adminRole?.some((roleId) => {
-            const adminRole = interaction.guild.roles.cache.find((r) =>
-                r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase()
-            );
+            const adminRole = interaction.guild.roles.cache.find((r) => r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase());
             return adminRole && interaction.member.roles.cache.has(adminRole.id);
         });
         return hasAdminRole ? permMap.GUILD_ADMIN : permMap.BASE_USER;
@@ -202,7 +200,7 @@ export default (Bot, client) => {
     client.reloadSwapi = async () => {
         let err = null;
         try {
-            const {default: swapi} = await import("../modules/swapi.ts");
+            const { default: swapi } = await import("../modules/swapi.ts");
             Bot.swgohAPI = swapi(Bot);
         } catch (e) {
             err = e;
@@ -214,7 +212,7 @@ export default (Bot, client) => {
     client.reloadUserReg = async () => {
         let err = null;
         try {
-            const {default: userReg} = await import("../modules/users.js");
+            const { default: userReg } = await import("../modules/users.js");
             Bot.userReg = userReg(Bot);
         } catch (e) {
             err = e;
@@ -225,17 +223,17 @@ export default (Bot, client) => {
     // Reload the data files (ships, teams, characters)
     client.reloadDataFiles = async () => {
         try {
-            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json",  "utf-8"));
-            Bot.acronyms     = await JSON.parse(fs.readFileSync("data/acronyms.json",      "utf-8"));
-            Bot.arenaJumps   = await JSON.parse(fs.readFileSync("data/arenaJumps.json",    "utf-8"));
-            Bot.characters   = await JSON.parse(fs.readFileSync("data/characters.json",    "utf-8"));
-            Bot.charLocs     = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
-            Bot.journeyReqs  = await JSON.parse(fs.readFileSync("data/journeyReqs.json",   "utf-8"));
-            Bot.missions     = await JSON.parse(fs.readFileSync("data/missions.json",      "utf-8"));
-            Bot.resources    = await JSON.parse(fs.readFileSync("data/resources.json",     "utf-8"));
-            Bot.raidNames    = await JSON.parse(fs.readFileSync("data/raidNames.json",     "utf-8"));
-            Bot.ships        = await JSON.parse(fs.readFileSync("data/ships.json",         "utf-8"));
-            Bot.shipLocs     = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
+            Bot.abilityCosts = await JSON.parse(fs.readFileSync("data/abilityCosts.json", "utf-8"));
+            Bot.acronyms = await JSON.parse(fs.readFileSync("data/acronyms.json", "utf-8"));
+            Bot.arenaJumps = await JSON.parse(fs.readFileSync("data/arenaJumps.json", "utf-8"));
+            Bot.characters = await JSON.parse(fs.readFileSync("data/characters.json", "utf-8"));
+            Bot.charLocs = await JSON.parse(fs.readFileSync("data/charLocations.json", "utf-8"));
+            Bot.journeyReqs = await JSON.parse(fs.readFileSync("data/journeyReqs.json", "utf-8"));
+            Bot.missions = await JSON.parse(fs.readFileSync("data/missions.json", "utf-8"));
+            Bot.resources = await JSON.parse(fs.readFileSync("data/resources.json", "utf-8"));
+            Bot.raidNames = await JSON.parse(fs.readFileSync("data/raidNames.json", "utf-8"));
+            Bot.ships = await JSON.parse(fs.readFileSync("data/ships.json", "utf-8"));
+            Bot.shipLocs = await JSON.parse(fs.readFileSync("data/shipLocations.json", "utf-8"));
 
             Bot.CharacterNames = Bot.characters.map((ch) => {
                 let suffix = "";
@@ -248,7 +246,7 @@ export default (Bot, client) => {
                 return { name: sh.name, defId: sh.uniqueName };
             });
 
-            const {default: help} = await import("../data/help.ts");
+            const { default: help } = await import("../data/help.ts");
             Bot.help = help;
         } catch (err) {
             return { err: err.stack };
