@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import factionMap from "../data/factionMap.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
+import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },
@@ -24,7 +26,7 @@ const battleMap = [
 ];
 
 export default class Need extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "need",
             description: "Shows your progress towards 7* characters from a faction or shop.",
@@ -74,7 +76,7 @@ export default class Need extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");
@@ -95,8 +97,16 @@ export default class Need extends Command {
         await interaction.reply({ content: "Please wait while I look up your data." });
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-        if (Array.isArray(player)) player = player[0];
+
+        let player: SWAPIPlayer;
+        try {
+            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            player = playerRes?.[0] || null;
+        } catch (e) {
+            Bot.logger.error(`Broke getting player in myprofile: ${e}`);
+            return super.error(interaction, "Please make sure you are registered with a valid ally code");
+        }
+
         if (!player) {
             return super.error(interaction, "I couldn't find that player, please make sure you've got the corect ally code.");
         }
@@ -158,7 +168,7 @@ export default class Need extends Command {
                 u = {
                     rarity: 0,
                     nameKey: unit.nameKey || unit.name,
-                };
+                } as SWAPIUnit;
             }
             if (u.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[u.rarity];
@@ -252,7 +262,7 @@ export default class Need extends Command {
             ],
         });
 
-        function getHeaderNames(namesIn) {
+        function getHeaderNames(namesIn: string[]) {
             const namesOut = [];
             for (const name of namesIn) {
                 let n = kwMap.find((k) => k.value === name)?.name;
@@ -272,7 +282,7 @@ export default class Need extends Command {
             return namesOut;
         }
 
-        async function getUnitsExact(searchArr) {
+        async function getUnitsExact(searchArr: string | string[]) {
             // Get unit matches based on the exact name of their locations
             const searchNames = Array.isArray(searchArr) ? searchArr : [searchArr];
             let unitsOut = [];
@@ -304,7 +314,7 @@ export default class Need extends Command {
             return unitsOut;
         }
 
-        async function getFactionUnits(searchName) {
+        async function getFactionUnits(searchName: string) {
             // Get units based on their faction
             const units = await Bot.cache.get(
                 Bot.config.mongodb.swapidb,

@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class MyProfile extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "myprofile",
             guildOnly: false,
@@ -17,8 +19,7 @@ export default class MyProfile extends Command {
         });
     }
 
-    async run(Bot, interaction) {
-        // eslint-disable-line no-unused-vars
+    async run(Bot: BotType, interaction: BotInteraction) {
         const allycodeIn = interaction.options.getString("allycode");
         const allycode = await Bot.getAllyCode(interaction, allycodeIn);
         if (!allycode) {
@@ -27,10 +28,10 @@ export default class MyProfile extends Command {
         await interaction.reply({ content: `> Please wait while I look up the profile for ${allycode}` });
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player;
+        let player: SWAPIPlayer;
         try {
-            player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            player = playerRes?.[0] || null;
         } catch (e) {
             Bot.logger.error(`Broke getting player in myprofile: ${e}`);
             return super.error(interaction, "Please make sure you are registered with a valid ally code");
@@ -68,7 +69,7 @@ export default class MyProfile extends Command {
             off100: 0,
         };
         for (const c of player.roster) {
-            if (!Number.parseInt(c.rarity, 10)) {
+            if (!c.rarity) {
                 c.rarity = rarityMap[c.rarity];
             }
             if (c.mods) {
@@ -95,7 +96,7 @@ export default class MyProfile extends Command {
             if (mods[k] === 0) mods[k] = "0";
         }
 
-        const modOut = interaction.language.get("COMMAND_MYPROFILE_MODS", mods);
+        const modOut = interaction.language.get("COMMAND_MYPROFILE_MODS", mods) as unknown as { header: string; modStrs: string[] };
         fields.push({
             name: ` ${modOut.header}`,
             value: ["```asciidoc", modOut.modStrs, "```"].join("\n"),
@@ -116,7 +117,7 @@ export default class MyProfile extends Command {
         // Get the Character stats
         let zetaCount = 0;
         let omicronCount = 0;
-        const charList = player.roster.filter((u) => u.combatType === "CHARACTER" || u.combatType === 1);
+        const charList = player.roster.filter((u) => u.combatType === 1);
 
         for (const char of charList) {
             rarityCount[char.rarity].c += 1;
@@ -152,19 +153,19 @@ export default class MyProfile extends Command {
             zetaCount,
             relicCount,
             omicronCount,
-        );
+        ) as unknown as { header: string; stats: string[] };
         fields.push({
             name: charOut.header,
             value: ["```asciidoc", charOut.stats, "```"].join("\n"),
         });
 
         // Get the ship stats
-        const shipList = player.roster.filter((u) => u.combatType === "SHIP" || u.combatType === 2);
+        const shipList = player.roster.filter((u) => u.combatType === 2);
         for (const ship of shipList) {
             rarityCount[ship.rarity].s += 1;
         }
 
-        const shipOut = interaction.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList);
+        const shipOut = interaction.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList) as unknown as {header: string; stats: string[]};
         fields.push({
             name: shipOut.header,
             value: ["```asciidoc", shipOut.stats, "```"].join("\n"),

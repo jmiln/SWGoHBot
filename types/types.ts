@@ -203,6 +203,9 @@ export interface BotUnit {
             abilityDesc: string;
         };
     };
+
+    // Added in by some commands teporarily
+    isShip?: boolean;
 }
 export interface BotUnitMods {
     sets: string[];
