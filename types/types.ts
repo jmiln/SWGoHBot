@@ -66,6 +66,20 @@ export interface BotType {
         name: string;
         aliases: string[];
     }[];
+    journeyReqs: {
+        [key: string]: {
+            guideId: string;
+            type: string;
+            reqs: {
+                defId: string;
+                type: string;
+                tier: number;
+                ship?: boolean;
+                required?: boolean;
+                manual?: boolean;
+            }[];
+        };
+    };
     CharacterNames: {
         name: string;
         defId: string;

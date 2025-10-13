@@ -1,10 +1,11 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
-import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.js";
+import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Patreon extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "patreon",
             enabled: true,
@@ -44,7 +45,7 @@ export default class Patreon extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const subCom = interaction.options.getSubcommand() || "none";
         const fields = [];
         let description = null;
@@ -215,14 +216,14 @@ export default class Patreon extends Command {
     }
 }
 
-function getCooldowns(mins) {
+function getCooldowns(mins: number) {
     if (mins < 60) {
         return `${mins} minute${mins > 1 ? "s" : ""}`;
     }
     return `${mins / 60} hour${mins / 60 > 1 ? "s" : ""}`;
 }
 
-function getTier(amount_cents) {
+function getTier(amount_cents: number) {
     const tier100Cent = amount_cents / 100;
     if (tier100Cent >= 10) {
         return 10;

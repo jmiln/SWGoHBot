@@ -1,9 +1,11 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.js";
+import type { BotInteraction, BotType } from "../types/types.ts";
+import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
 
 export default class Poll extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "poll",
             guildOnly: false,
@@ -70,7 +72,7 @@ export default class Poll extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const action = interaction.options.getSubcommand();
 
         const poll = {
@@ -149,7 +151,7 @@ export default class Poll extends Command {
             case "cancel": {
                 // Cancel the current poll in a channel, should ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
-                const targetIndex = pollsArr.find((p) => p.channelId === interaction.channel.id);
+                const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
                 try {
                     pollsArr.splice(targetIndex, 1);
                     await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
@@ -161,7 +163,7 @@ export default class Poll extends Command {
             case "end": {
                 // End the current poll in a channel, should probably ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
-                const targetIndex = pollsArr.find((p) => p.channelId === interaction.channel.id);
+                const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
                 try {
                     pollsArr.splice(targetIndex, 1);
                     await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
@@ -200,12 +202,12 @@ export default class Poll extends Command {
                 if (oldPoll.options.length <= opt || opt < 0) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_INVALID_OPTION"), { ephemeral: true });
                 }
-                const targetIndex = pollsArr.find((p) => p.channelId === interaction.channel.id);
+                const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
                 let voted = null;
                 if (oldPoll.votes[interaction.user.id] === opt) {
                     // Warn em that they're voting for the same thing they already voted for, so it won't be registered
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_SAME_OPT", oldPoll.options[opt]), {
-                        flags: MessageFlags.Ephemeral,
+                        ephemeral: true,
                     });
                 }
                 if (!Number.isNaN(oldPoll.votes[interaction.user.id])) {
@@ -233,7 +235,7 @@ export default class Poll extends Command {
             }
         }
 
-        function pollCheck(poll, showRes = false) {
+        function pollCheck(poll: GuildConfigPoll, showRes = false) {
             const voteCount = {};
             const totalVotes = Object.keys(poll.votes).length || 1;
             poll.options.forEach((_, ix) => {
@@ -255,7 +257,7 @@ export default class Poll extends Command {
         }
 
         function getFooter() {
-            const footer = {};
+            const footer = {text: ""};
             if (interaction.guild) {
                 footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER"));
             } else {

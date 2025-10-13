@@ -1,6 +1,6 @@
 import { PermissionsBitField } from "discord.js";
 import patreonModule from "../data/patreon.ts";
-import { getGuildSupporterTier } from "./guildConfig/patreonSettings.js";
+import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 
 const tiers = patreonModule.tiers;
 

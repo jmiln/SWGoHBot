@@ -17,15 +17,16 @@ export interface GuildConfig {
     }[];
     settings: BotDefaultSettings;
     aliases: GuildAlias[];
-    patreonSettings: {
-        supporters: {
-            userId: string;
-            tier: number;
-        }[];
-    };
+    patreonSettings: GuildConfigPatreonSettings;
     twList: {
         [key: string]: string[];
     };
+}
+export interface GuildConfigPatreonSettings {
+    supporters: {
+        userId: string;
+        tier: number;
+    }[];
 }
 export interface GuildConfigEvent {
     name: string;

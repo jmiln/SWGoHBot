@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Panic extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "panic",
             description: "Show how close you are to being ready for character events",
@@ -24,7 +25,7 @@ export default class Panic extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
         const allycode = await Bot.getAllyCode(interaction, ac);
@@ -33,12 +34,11 @@ export default class Panic extends Command {
             return super.error(interaction, "I could not find a valid allycode. Please make sure you've type it in correctly.");
         }
 
-        if (!Bot.journeyReqs[searchUnit]) {
+        const thisReq = Bot.journeyReqs?.[searchUnit] || null;
+        if (!thisReq) {
             return super.error(interaction, `Please select one of the autocompleted options, I couldn't find a match for ${searchUnit}`);
         }
-        const thisReq = Bot.journeyReqs[searchUnit];
-        const targetUnit =
-            Bot.characters.find((unit) => unit.uniqueName === searchUnit) || Bot.ships.find((unit) => unit.uniqueName === searchUnit);
+        const targetUnit = Bot.characters.find((unit) => unit.uniqueName === searchUnit) || Bot.ships.find((unit) => unit.uniqueName === searchUnit);
 
         await interaction.reply({ content: "Please wait while I process your request." });
 
@@ -143,9 +143,6 @@ export default class Panic extends Command {
 
         return interaction.editReply({
             content: null,
-            image: {
-                url: "attachment://image.png",
-            },
             files: [
                 {
                     attachment: imageOut,

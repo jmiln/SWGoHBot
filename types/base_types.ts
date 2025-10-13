@@ -4,4 +4,5 @@ export interface SlashEmbedOptions {
     ephemeral?: boolean;
     footer?: string;
     iconURL?: string;
+    example?: string;
 }

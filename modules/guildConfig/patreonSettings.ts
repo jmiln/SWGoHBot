@@ -2,6 +2,7 @@ import config from "../../config.js";
 
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
+import type { GuildConfig } from "../../types/guildConfig_types.ts";
 
 export async function getPatreonSettings({ cache, guildId }) {
     if (!guildId) return {};
@@ -16,7 +17,7 @@ export async function setPatreonSettings({ cache, guildId, patreonSettingsOut })
         .then(() => {
             return { success: true, error: null };
         })
-        .catch((error) => {
+        .catch((error: Error) => {
             return { success: false, error: error };
         });
     return res;
@@ -26,19 +27,24 @@ export async function setPatreonSettings({ cache, guildId, patreonSettingsOut })
 //  - Add/update/remove a user & tier to the supporters list
 //  - Supports consist of userID (Discord user ID), and tier (amount_cents/100)
 // Returns success/ error for both the user setting & the guild one
-export async function addServerSupporter({ cache, guildId, userInfo }) {
-    if (!guildId) return { success: false, error: "Missing guild ID." };
-    if (!userInfo?.userId || !userInfo?.tier) return { success: false, error: "Missing userId or tier." };
+export async function addServerSupporter({ cache, guildId, userInfo }): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string }}> {
+    const resOut = { user: { success: false, error: null }, guild: { success: false, error: null } };
+    if (!guildId) resOut.guild = { success: false, error: "Missing guild ID." };
+    if (!userInfo?.userId || !userInfo?.tier) resOut.user = { success: false, error: "Missing userId or tier." };
 
-    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
-    const patSettings = res?.patreonSettings || {};
-    const resOut = { user: null, guild: null };
+    if (resOut.guild.error || resOut.user.error) return resOut;
+
+    const res: GuildConfig = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
+    const patSettings = res?.patreonSettings || { supporters: [] };
 
     // If this guild doesn't have the supporters array, create it
     if (!patSettings?.supporters) patSettings.supporters = [];
 
     // Check if the user is already set in there
-    if (patSettings.supporters?.filter((supp) => supp.id === userInfo.id)?.length) return { success: false, error: "User already set." };
+    if (patSettings.supporters?.filter((supp) => supp.userId === userInfo.id)?.length) {
+        resOut.user = { success: false, error: "User already set." };
+        return resOut;
+    }
 
     // If the user isn't there yet, put them in
     patSettings.supporters.push(userInfo);
@@ -48,7 +54,7 @@ export async function addServerSupporter({ cache, guildId, userInfo }) {
         .then(() => {
             return { success: true, error: null };
         })
-        .catch((error) => {
+        .catch((error: Error) => {
             return { success: false, error: error };
         });
 
@@ -73,16 +79,18 @@ export async function addServerSupporter({ cache, guildId, userInfo }) {
 }
 
 //  - Get the users from the given guilds' supporters list if available
-export async function getServerSupporters({ cache, guildId }) {
+export async function getServerSupporters({ cache, guildId }): Promise<{ userId: string; tier: number; }[]> {
     if (!guildId) return [];
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings?.supporters || [];
 }
 
 // Remove a user from the given guilds' supporters
-export async function removeServerSupporter({ cache, guildId, userId }) {
-    if (!guildId) return [];
-    const guildPatSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
+export async function removeServerSupporter({ cache, guildId, userId }): Promise<{ success: boolean; error: string }> {
+    if (!guildId) return { success: false, error: "Missing guild ID." };
+    if (!userId) return { success: false, error: "Missing userId." };
+
+    const guildPatSettings: GuildConfig = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 1;
 
     // If the user isn't in the supporters arr, say so
@@ -95,14 +103,14 @@ export async function removeServerSupporter({ cache, guildId, userId }) {
         .then(() => {
             return { success: true, error: null };
         })
-        .catch((error) => {
+        .catch((error: Error) => {
             return { success: false, error: error };
         });
 }
 
 // Remove all the server & user settings for a given user
 // Returns success/ error for both the user setting & the guild one
-export async function clearSupporterInfo({ cache, userId }) {
+export async function clearSupporterInfo({ cache, userId }): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string }}> {
     const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userId });
     const resOut = {
         user: { success: true, error: null },
@@ -110,7 +118,7 @@ export async function clearSupporterInfo({ cache, userId }) {
     };
 
     // If there's no bonus server set, then don't bother
-    if (!userConf?.bonusServer) return { success: true, error: null };
+    if (!userConf?.bonusServer) return resOut;
 
     // Otherwise, remove the set bonusServer from the user
     const thisBonusServer = userConf.bonusServer;
@@ -122,7 +130,7 @@ export async function clearSupporterInfo({ cache, userId }) {
     }
 
     // Then remove the user info from the previously bonusServer guild
-    const gRemRes = removeServerSupporter({ cache, guildId: thisBonusServer, userId });
+    const gRemRes = await removeServerSupporter({ cache, guildId: thisBonusServer, userId });
     if (gRemRes.error) resOut.guild = { success: false, error: gRemRes.error };
 
     return resOut;
@@ -131,11 +139,10 @@ export async function clearSupporterInfo({ cache, userId }) {
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
 export async function ensureGuildSupporter({ cache }) {
     // Grab all guilds' patreonSettings that have someone listed
-    const supporterGuilds = await cache.get(
+    const supporterGuilds: {guildId: string, supporters: {userId: string, tier: number}[]}[] = await cache.get(
         config.mongodb.swgohbotdb,
         "guildConfigs",
-        { "patreonSettings.supporters": { $exists: true, $ne: [] } },
-        { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 },
+        { "patreonSettings.supporters": { $exists: true, $ne: [] } }, { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 },
     );
 
     // Go through each of those, and check that each person listed in each of those has the given server selected, and if not, remove them from that guilds' list
@@ -169,7 +176,7 @@ export async function ensureGuildSupporter({ cache }) {
             .then(() => {
                 return { success: true, error: null };
             })
-            .catch((error) => {
+            .catch((error: Error) => {
                 return { success: false, error: error };
             });
     }
@@ -209,14 +216,15 @@ export async function getGuildSupporterTier({ cache, guildId }) {
     if (!guildId) return 0;
 
     // Get the guild's patreon settings
-    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
+    const res: GuildConfig = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
 
     // Add up tiers from here, and return a higher tier if they add up to one
     const totalRes = res?.patreonSettings?.supporters?.reduce((curr, acc) => {
         return curr + acc.tier;
     }, 0);
     for (const tier of tierNums.reverse()) {
-        if (totalRes >= tier) return Number.parseInt(tier, 10);
+        const tierNum = Number.parseInt(tier, 10);
+        if (totalRes >= tierNum) return tierNum;
     }
 
     // If it gets to here (It shouldn't), return 0

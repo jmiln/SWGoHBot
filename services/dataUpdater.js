@@ -9,7 +9,7 @@ import config from "../config.js";
 import botCache from "../modules/cache.js";
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
-import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.js";
+import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
 
 const FORCE_UPDATE = process.argv.includes("--force") || false;
 const DEBUG_LOGS = process.argv.includes("--debug") || false;
