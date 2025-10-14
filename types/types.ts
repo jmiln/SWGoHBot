@@ -38,6 +38,7 @@ export interface BotType {
     isChannelId: (channelId: string) => boolean;
     isMain: () => boolean;
     toProperCase(strIn: string): string;
+    deployCommands(force?: boolean): Promise<string>;
 
     // Patreon / auto-updater functions
     getRanks: () => string[];
@@ -161,7 +162,6 @@ export interface BotType {
                 value: string;
                 startWith?: string;
                 endWith?: string;
-                align?: string; // "left" | "center" | "right";
             };
         },
         rows: { [key: string]: string | number }[],
@@ -233,7 +233,6 @@ export interface BotUnitMods {
 }
 
 export interface BotClient extends Client {
-    shardId: number;
     slashcmds: Collection<string, slashCommand>;
     reloadDataFiles: () => Promise<void>;
     announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
@@ -394,10 +393,10 @@ interface UserAcct {
     allyCode: string;
     name: string;
     primary: boolean;
-    lastCharRank: number;
-    lastCharClimb: number;
-    lastShipRank: number;
-    lastShipClimb: number;
+    lastCharRank?: number;
+    lastCharClimb?: number;
+    lastShipRank?: number;
+    lastShipClimb?: number;
 }
 interface ArenaWatchAcct {
     allyCode: number;

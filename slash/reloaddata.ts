@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class ReloadData extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "reloaddata",
             enabled: true,
@@ -31,7 +32,7 @@ export default class ReloadData extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         // eslint-disable-line no-unused-vars
         const channelId = interaction.channel.id;
         const action = interaction.options.getString("target").toLowerCase();
@@ -60,7 +61,6 @@ export default class ReloadData extends Command {
                         {
                             title: "Deployed Commands",
                             description: outLog?.length ? null : "Nothing deployed",
-                            fields: outLog?.length ? outLog : null,
                         },
                     ],
                     flags: MessageFlags.Ephemeral,
@@ -189,7 +189,7 @@ export default class ReloadData extends Command {
         }
     }
 
-    thenRes(_Bot, interaction, res, reloadType) {
+    thenRes(_Bot: BotType, interaction: BotInteraction, res: { err?: string; }[], reloadType: string) {
         const errors = [];
         for (const r of res) {
             if (r?.err) errors.push(r.err);
@@ -200,7 +200,7 @@ export default class ReloadData extends Command {
         });
     }
 
-    thenResFiles(_Bot, interaction, res) {
+    thenResFiles(_Bot: BotType, interaction: BotInteraction, res: { succArr: string[]; errArr: string[] }[]) {
         let errors = [];
         for (const r of res) {
             if (r.errArr?.length) errors.push(...r.errArr);

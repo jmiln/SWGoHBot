@@ -120,15 +120,16 @@ export default async (Bot, client) => {
         }
 
         if (updateRequired?.length) {
-            console.log(
-                `Updates required for the following commands: \n - ${updateRequired
+            const outStr = `Updates required for the following commands: \n - ${updateRequired
                     .map((r) => `${r.command.name} - ${r.reason}`)
-                    .join("\n - ")}`,
-            );
+                    .join("\n - ")}`;
+            console.log(outStr);
 
             // If any of em need to be updated, send it all
             await sendCommandData(client.slashcmds.map((r) => r.commandData));
+            return outStr;
         }
+        return "No commands needed updating";
     };
     function compareOptions(localOptions, existingOptions) {
         if (localOptions.length !== existingOptions.length) return false;

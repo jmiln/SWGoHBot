@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
 export default class Register extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "register",
             guildOnly: false,
@@ -22,7 +24,7 @@ export default class Register extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         // eslint-disable-line no-unused-vars
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
@@ -45,7 +47,7 @@ export default class Register extends Command {
         }
 
         // First off, make sure they're not trying to do something they shouldn't do...
-        if (user.id !== interaction.user.id && options.level < Bot.constants.GUILD_ADMIN) {
+        if (user.id !== interaction.user.id && options.level < Bot.constants.permMap.GUILD_ADMIN) {
             // If they are trying to change someone else and they don't have the right permissions
             return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
         }
@@ -56,7 +58,7 @@ export default class Register extends Command {
 
         // Then, if not, move along
         // See if they have an entry in the DB already
-        let userReg = await Bot.userReg.getUser(user.id);
+        let userReg: UserConfig = await Bot.userReg.getUser(user.id);
         if (userReg?.accounts?.length && userReg?.id !== user.id) {
             // If someone else is trying to change the code already registered, error out
             return super.error(interaction, "This account already has an ally code linked to it.");
@@ -100,8 +102,8 @@ export default class Register extends Command {
         await interaction.reply({ content: interaction.language.get("COMMAND_REGISTER_PLEASE_WAIT") });
 
         try {
-            let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            const playerRes: SWAPIPlayer[] = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const player = playerRes?.[0] || null;
             if (!player) {
                 return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode);
             }
@@ -129,12 +131,11 @@ export default class Register extends Command {
                         },
                     );
                 })
-                .catch((e) => {
+                .catch((e: Error) => {
                     Bot.logger.error(`[REGISTER] Broke while trying to link new user: ${e}`);
                     return super.error(interaction, codeBlock(e.message), {
                         title: interaction.language.get("BASE_SOMETHING_BROKE"),
                         footer: "Please try again in a bit.",
-                        edit: true,
                     });
                 });
         } catch (e) {

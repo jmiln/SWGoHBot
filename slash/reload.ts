@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
+import type slashCommand from "../base/slashCommand.ts";
 
 export default class Reload extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "reload",
             guildOnly: true,
@@ -19,10 +21,10 @@ export default class Reload extends Command {
         });
     }
 
-    async run(Bot, interaction) {
-        let command;
+    async run(Bot: BotType, interaction: BotInteraction) {
+        let command: slashCommand;
         const commandName = interaction.options.getString("command");
-        const client = interaction.client;
+        const client: BotClient = interaction.client;
         if (client.slashcmds.has(commandName)) {
             command = client.slashcmds.get(commandName);
         }
@@ -30,25 +32,24 @@ export default class Reload extends Command {
             return super.error(interaction, interaction.language.get("COMMAND_RELOAD_INVALID_CMD", commandName));
         }
 
-        command = command.commandData.name;
-        await interaction.reply(`Reloading ${command}...`);
+        await interaction.reply(`Reloading ${commandName}...`);
         if (interaction.client.shard && interaction.client.shard.count > 0) {
             await interaction.client.shard
-                .broadcastEval((client, command) => client.reloadSlash(command), { context: command })
+                .broadcastEval((client, cmd) => client.reloadSlash(cmd), { context: commandName })
                 .then(() => {
-                    interaction.editReply({ content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command) });
+                    interaction.editReply({ content: interaction.language.get("COMMAND_RELOAD_SUCCESS", commandName) });
                 })
-                .catch((e) => {
-                    super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack));
+                .catch((e: Error) => {
+                    super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", commandName, e.stack));
                 });
         } else {
             Bot.logger.log("Trying to reload out of shards");
-            Bot.reloadSlash(command)
+            client.reloadSlash(commandName)
                 .then(() => {
-                    interaction.editReply({ content: interaction.language.get("COMMAND_RELOAD_SUCCESS", command) });
+                    interaction.editReply({ content: interaction.language.get("COMMAND_RELOAD_SUCCESS", commandName) });
                 })
-                .catch((e) => {
-                    super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", command, e.stack));
+                .catch((e: Error) => {
+                    super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", commandName, e.stack));
                 });
         }
     }
