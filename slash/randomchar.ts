@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Randomchar extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "randomchar",
             guildOnly: false,
@@ -42,10 +44,9 @@ export default class Randomchar extends Command {
         });
     }
 
-    async run(Bot, interaction) {
-        let chars = Bot.characters;
+    async run(Bot: BotType, interaction: BotInteraction) {
+        let chars: SWAPIUnit[] = [];
         const MAX_CHARACTERS = 5;
-        const charOut = [];
 
         let star = interaction.options.getInteger("rarity");
         if (!star) star = 1;
@@ -59,10 +60,10 @@ export default class Randomchar extends Command {
         if (allycode) {
             // If there is a valid allycode provided, grab the user's roster
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-            let player = null;
+            let player: SWAPIPlayer = null;
             try {
-                player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                if (Array.isArray(player)) player = player[0];
+                const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                player = playerRes?.[0] || null;
             } catch (e) {
                 console.error(e);
                 return super.error(interaction, codeBlock(e.message), {
@@ -84,23 +85,24 @@ export default class Randomchar extends Command {
             if (chars.length < MAX_CHARACTERS) count = chars.length;
         }
 
-        while (charOut.length < count) {
-            const newIndex = Math.floor(Math.random() * chars.length);
-            const newChar = chars[newIndex];
-            let name;
-            if (newChar.name) {
-                name = newChar.name;
-            } else if (newChar.defId) {
+        const charOut: string[] = [];
+        if (chars?.length) {
+            while (charOut.length < count) {
+                const newIndex = Math.floor(Math.random() * chars.length);
+                const newChar = chars[newIndex];
                 const playerChar = await Bot.swgohAPI.units(newChar.defId);
-                name = playerChar.nameKey;
+                const name = playerChar.nameKey;
+                if (!charOut.includes(name)) charOut.push(name);
             }
-            if (!charOut.includes(name)) {
-                // If it's already picked a character, don't let it pick them again
-                charOut.push(name);
+        } else {
+            while (charOut.length < count) {
+                const newIndex = Math.floor(Math.random() * chars.length);
+                const newChar = chars[newIndex];
+                const name = newChar.name;
+                if (!charOut.includes(name)) charOut.push(name);
             }
         }
         const charString = charOut.join("\n");
-
         return interaction.reply({ content: codeBlock(charString) });
     }
 }

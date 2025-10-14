@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import raids from "../data/raiddmg.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class RaidDamage extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "raiddamage",
             enabled: true,
@@ -67,7 +68,7 @@ export default class RaidDamage extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const raid = interaction.options.getString("raid");
         const phase = interaction.options.getString("phase");
         let amount = interaction.options.getString("amount");
