@@ -564,7 +564,7 @@ export default (opts = { noop: false }) => {
         };
     }
 
-    async function langChar(char: SWAPIUnit, lang: SWAPILang) {
+    async function langChar(char: Partial<SWAPIUnit>, lang: SWAPILang) {
         const thisLang = lang ? lang.toLowerCase() : "eng_us";
         if (!char) throw new Error("Missing Character");
 

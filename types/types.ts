@@ -152,7 +152,7 @@ export interface BotType {
         ) => SWAPIPlayer[];
         guildUnitStats: (allyCodes: number[], defId: string, cooldown?: PlayerCooldown) => SWAPIUnit[];
         getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
-        langChar: (char: SWAPIUnit, lang: SWAPILang) => SWAPIUnit;
+        langChar: (char: Partial<SWAPIUnit>, lang?: SWAPILang) => SWAPIUnit;
         units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
         guild: (allycode: number | string, cooldown: PlayerCooldown) => SWAPIGuild;
         getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => RawGuild;
@@ -371,8 +371,8 @@ export interface UserConfig {
     };
     updated: number;
     lang: {
-        language: BotLanguage;
-        swgohLanguage: SWAPILang;
+        language?: BotLanguage;
+        swgohLanguage?: SWAPILang;
     };
     arenaWatch: {
         enabled: boolean;

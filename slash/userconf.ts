@@ -1,9 +1,11 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
+import type { SWAPILang } from "../types/swapi_types.ts";
+import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
 
 export default class UserConf extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "userconf",
             guildOnly: false,
@@ -135,14 +137,14 @@ export default class UserConf extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 
         const userID = interaction.user.id;
         const cooldown = await Bot.getPlayerCooldown(userID, interaction?.guild?.id);
 
-        let user = await Bot.userReg.getUser(userID);
+        let user: UserConfig = await Bot.userReg.getUser(userID);
         if (!user) {
             // If the user doesn't have a config available, set the default one for embeds
             // This has id, accounts, arenaAlert, and lang
@@ -163,7 +165,7 @@ export default class UserConf extends Command {
                 case "add": {
                     // Add an ally code to the user's list
                     // Make sure it's not in there already, then stick it in.
-                    if (user.accounts.includes(allycode)) {
+                    if (user.accounts.map((a) => a.allyCode).includes(allycode)) {
                         // Make sure the specified code is not already registered
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
@@ -172,8 +174,8 @@ export default class UserConf extends Command {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
                     try {
-                        let player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                        if (Array.isArray(player)) player = player[0];
+                        const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                        const  player = playerRes?.[0] || null;
                         if (!player) {
                             super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE"));
                         } else {
@@ -261,7 +263,7 @@ export default class UserConf extends Command {
                     // isEnabled: all, primary, off
                     const enableDMs = interaction.options.getString("enable_dms");
                     if (enableDMs) {
-                        user.arenaAlert.enabledms = enableDMs;
+                        user.arenaAlert.enableRankDMs = enableDMs;
                         updateLog.push(`Changed EnableDMS to ${enableDMs}`);
                     }
 
@@ -275,7 +277,7 @@ export default class UserConf extends Command {
                     // payoutResult: true/ false
                     const payoutResult = interaction.options.getBoolean("payout_result");
                     if (payoutResult !== null) {
-                        user.arenaAlert.payoutResult = payoutResult;
+                        user.arenaAlert.enablePayoutResult = payoutResult;
                         updateLog.push(`Changed PayoutResult to ${payoutResult}`);
                     }
 
@@ -300,8 +302,8 @@ export default class UserConf extends Command {
                 }
                 case "lang": {
                     // Work through bot_language & swgoh_language
-                    const botLanguage = interaction.options.getString("bot_language");
-                    const swgohLanguage = interaction.options.getString("swgoh_language");
+                    const botLanguage = interaction.options.getString("bot_language") as BotLanguage;
+                    const swgohLanguage = interaction.options.getString("swgoh_language") as SWAPILang;
 
                     // Make sure it exists before trying to set stuff to it
                     if (!user.lang) user.lang = {};
@@ -438,7 +440,7 @@ export default class UserConf extends Command {
                                 value: [
                                     `>>> Enabled:  **${user.guildUpdate.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildUpdate.channel ? `<#${user.guildUpdate.channel}>` : "N/A"}`,
-                                    `Allycode: **${user.guildUpdate.allyCode || "N/A"}**`,
+                                    `Allycode: **${user.guildUpdate.allycode || "N/A"}**`,
                                     `SortBy:   **${user.guildUpdate.sortBy || "N/A"}**`,
                                 ].join("\n"),
                             });
@@ -451,7 +453,7 @@ export default class UserConf extends Command {
                                 value: [
                                     `>>> Enabled:  **${user.guildTickets.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildTickets.channel ? `<#${user.guildTickets.channel}>` : "N/A"}`,
-                                    `Allycode: **${user.guildTickets.allyCode || "N/A"}**`,
+                                    `Allycode: **${user.guildTickets.allycode || "N/A"}**`,
                                     `SortBy:   **${user.guildTickets.sortBy || "N/A"}**`,
                                 ].join("\n"),
                             });

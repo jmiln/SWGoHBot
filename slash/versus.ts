@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
 
 export default class Versus extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "versus",
             guildOnly: false,
@@ -31,7 +33,7 @@ export default class Versus extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const statList = [
             { stat: "Health", short: "Health" },
             { stat: "Protection", short: "Prot" },
@@ -63,46 +65,49 @@ export default class Versus extends Command {
 
         await interaction.reply({ content: "Please wait while I process your data." });
 
-        let user1 = await Bot.getAllyCode(interaction, user1str, false);
-        let user2 = await Bot.getAllyCode(interaction, user2str, false);
+        let user1AC = await Bot.getAllyCode(interaction, user1str, false);
+        let user2AC = await Bot.getAllyCode(interaction, user2str, false);
 
-        if (!user1 && !user2) {
+        if (!user1AC && !user2AC) {
             return super.error(interaction, "Both ally codes were invalid");
         }
-        if (!user1) {
+        if (!user1AC) {
             // Spit out an error because the interaction author is not registered
             return super.error(interaction, "Ally code #1 was invalid");
         }
-        if (!user2) {
+        if (!user2AC) {
             // Something went wrong with user2, let's spit out an error
             return super.error(interaction, "Ally code #2 was invalid");
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
-        let char = Bot.findChar(character, Bot.characters);
-        if (!char.length) {
-            char = Bot.findChar(character, Bot.ships, true);
+        let charRes = Bot.findChar(character, Bot.characters);
+        if (!charRes.length) {
+            charRes = Bot.findChar(character, Bot.ships, true);
         }
-        if (!char.length) {
+        if (!charRes.length) {
+            // Didn't find any matches
             return super.error(interaction, interaction.language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
         }
-        if (char.length > 1) {
+        if (charRes.length > 1) {
             // If found more than 1 match
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", char.map((c) => c.name).join("\n")));
+            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charRes.map((c) => c.name).join("\n")));
         }
         // It only found one match
-        if (Array.isArray(char)) char = char[0];
+        const char = charRes?.[0] || null;
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        let user1: SWAPIPlayer = null;
         try {
-            user1 = await Bot.swgohAPI.unitStats(user1, cooldown);
-            if (Array.isArray(user1)) user1 = user1[0];
+            const playerRes = await Bot.swgohAPI.unitStats(user1AC, cooldown);
+            user1 = playerRes?.[0] || null;
         } catch (_) {
             return super.error(interaction, "Something broke when getting user 1");
         }
+        let user2: SWAPIPlayer = null;
         try {
-            user2 = await Bot.swgohAPI.unitStats(user2, cooldown);
-            if (Array.isArray(user2)) user2 = user2[0];
+            const playerRes = await Bot.swgohAPI.unitStats(user2AC, cooldown);
+            user2 = playerRes?.[0] || null;
         } catch (_) {
             return super.error(interaction, "Something broke when getting user 2");
         }
