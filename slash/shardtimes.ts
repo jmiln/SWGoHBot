@@ -168,7 +168,11 @@ export default class Shardtimes extends Command {
                 const nowTime = new Date();
                 const hourMS = 60 * 60 * 1000;
                 const minMS = 60 * 1000;
-                const updatedTime = new Date(new Date().setTime(nowTime.getTime() + Number.parseInt(hour, 10) * hourMS || 0 + Number.parseInt(minute, 10) * minMS || 0));
+                const updatedTime = new Date(
+                    new Date().setTime(
+                        nowTime.getTime() + Number.parseInt(hour, 10) * hourMS || 0 + Number.parseInt(minute, 10) * minMS || 0,
+                    ),
+                );
                 const tempH = updatedTime.getHours();
                 const tempM = updatedTime.getMinutes();
 

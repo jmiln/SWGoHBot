@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Versus extends Command {
     constructor(Bot: BotType) {
@@ -65,8 +65,8 @@ export default class Versus extends Command {
 
         await interaction.reply({ content: "Please wait while I process your data." });
 
-        let user1AC = await Bot.getAllyCode(interaction, user1str, false);
-        let user2AC = await Bot.getAllyCode(interaction, user2str, false);
+        const user1AC = await Bot.getAllyCode(interaction, user1str, false);
+        const user2AC = await Bot.getAllyCode(interaction, user2str, false);
 
         if (!user1AC && !user2AC) {
             return super.error(interaction, "Both ally codes were invalid");
@@ -91,7 +91,10 @@ export default class Versus extends Command {
         }
         if (charRes.length > 1) {
             // If found more than 1 match
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charRes.map((c) => c.name).join("\n")));
+            return super.error(
+                interaction,
+                interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charRes.map((c) => c.name).join("\n")),
+            );
         }
         // It only found one match
         const char = charRes?.[0] || null;

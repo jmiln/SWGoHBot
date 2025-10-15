@@ -175,7 +175,7 @@ export default class UserConf extends Command {
                     }
                     try {
                         const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
-                        const  player = playerRes?.[0] || null;
+                        const player = playerRes?.[0] || null;
                         if (!player) {
                             super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE"));
                         } else {

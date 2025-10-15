@@ -165,7 +165,10 @@ export default class MyProfile extends Command {
             rarityCount[ship.rarity].s += 1;
         }
 
-        const shipOut = interaction.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList) as unknown as {header: string; stats: string[]};
+        const shipOut = interaction.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList) as unknown as {
+            header: string;
+            stats: string[];
+        };
         fields.push({
             name: shipOut.header,
             value: ["```asciidoc", shipOut.stats, "```"].join("\n"),

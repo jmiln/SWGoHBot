@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import emoteStrings from "../data/emoteStrings.ts";
+import type { RawCharacter } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Character extends Command {
@@ -51,7 +52,7 @@ export default class Character extends Command {
         }
 
         const character = chars[0];
-        let char;
+        let char: RawCharacter;
         try {
             char = await Bot.swgohAPI.getCharacter(character.uniqueName, interaction.guildSettings.swgohLanguage);
         } catch (err) {
@@ -91,7 +92,7 @@ export default class Character extends Command {
                     costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
                 }
             } else {
-                Bot.logger.log(ability);
+                Bot.logger.log(ability.toString());
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 
@@ -157,6 +158,7 @@ export default class Character extends Command {
                             url: null,
                         },
                         fields: [],
+                        thumbnail: null,
                     });
                 }
                 embeds[1].fields.push(thisField);

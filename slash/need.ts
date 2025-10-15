@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import factionMap from "../data/factionMap.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },

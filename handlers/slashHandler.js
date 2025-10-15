@@ -121,8 +121,8 @@ export default async (Bot, client) => {
 
         if (updateRequired?.length) {
             const outStr = `Updates required for the following commands: \n - ${updateRequired
-                    .map((r) => `${r.command.name} - ${r.reason}`)
-                    .join("\n - ")}`;
+                .map((r) => `${r.command.name} - ${r.reason}`)
+                .join("\n - ")}`;
             console.log(outStr);
 
             // If any of em need to be updated, send it all

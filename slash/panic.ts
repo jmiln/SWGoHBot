@@ -38,7 +38,8 @@ export default class Panic extends Command {
         if (!thisReq) {
             return super.error(interaction, `Please select one of the autocompleted options, I couldn't find a match for ${searchUnit}`);
         }
-        const targetUnit = Bot.characters.find((unit) => unit.uniqueName === searchUnit) || Bot.ships.find((unit) => unit.uniqueName === searchUnit);
+        const targetUnit =
+            Bot.characters.find((unit) => unit.uniqueName === searchUnit) || Bot.ships.find((unit) => unit.uniqueName === searchUnit);
 
         await interaction.reply({ content: "Please wait while I process your request." });
 

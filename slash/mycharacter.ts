@@ -1,9 +1,11 @@
 import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "mycharacter",
             description: "Display overall stats & mod info for the selected character",
@@ -52,7 +54,7 @@ export default class MyCharacter extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const searchType = interaction.options.getSubcommand();
         const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
         let allycode = interaction.options.getString("allycode");
@@ -81,10 +83,10 @@ export default class MyCharacter extends Command {
         await interaction.reply({ content: "Please wait while I look up your profile." });
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player = null;
+        let player: SWAPIPlayer = null;
         try {
-            player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            player = playerRes?.[0] || null;
         } catch (e) {
             console.error(e);
             return super.error(interaction, codeBlock(e.message), {
@@ -107,11 +109,11 @@ export default class MyCharacter extends Command {
             const outStr = interaction.language.get("BASE_SWGOH_LOCKED_CHAR");
             return super.error(interaction, outStr || "This character is locked.", {
                 title: `${pName}'s ${unit.name}`,
-                description: footerStr,
+                footer: footerStr,
             });
         }
 
-        thisUnit.unit = await Bot.swgohAPI.langChar(thisUnit, interaction.guildSettings.swgohLanguage);
+        const thisLangChar = await Bot.swgohAPI.langChar(thisUnit, interaction.guildSettings.swgohLanguage);
 
         const stats = thisUnit.stats;
         const isShip = thisUnit.combatType === 2;
@@ -126,7 +128,7 @@ export default class MyCharacter extends Command {
             hardware: [],
         };
 
-        let gearStr;
+        let gearStr: string;
         if (searchType === "character") {
             gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
             for (const e of thisUnit.equipped) {
@@ -135,10 +137,10 @@ export default class MyCharacter extends Command {
             gearStr = gearStr.replace(/[0-9]/g, "  ");
             gearStr = Bot.expandSpaces(gearStr);
         }
-        if (!thisUnit?.unit?.skills) {
-            console.log(thisUnit?.unit);
+        if (!thisLangChar.skills) {
+            console.log(thisLangChar);
         } else {
-            for (const a of thisUnit.unit.skills) {
+            for (const a of thisLangChar.skills) {
                 a.type = Bot.toProperCase(a.id.split("skill")[0]);
                 if (a.tier === a.tiers) {
                     if (a.isOmicron) {
@@ -268,7 +270,7 @@ export default class MyCharacter extends Command {
         }
 
         const fields = [];
-        Bot.msgArray(statArr, "\n", 1000).forEach((m, ix) => {
+        Bot.msgArray(statArr, "\n", 1000).forEach((m: string, ix: number) => {
             fields.push({
                 name: ix === 0 ? "Stats" : "-",
                 value: codeBlock("asciidoc", m),
@@ -307,7 +309,7 @@ export default class MyCharacter extends Command {
                         },
                         description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
                             thisUnit.rarity
-                        }* | ${Number.parseInt(thisUnit.gp, 10)} gp\`${gearOut}`,
+                        }* | ${thisUnit.gp} gp\`${gearOut}`,
                         fields: [
                             {
                                 name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
@@ -331,7 +333,7 @@ export default class MyCharacter extends Command {
                     thumbnail: { url: "attachment://image.png" },
                     description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
                         thisUnit.rarity
-                    }* | ${Number.parseInt(thisUnit.gp, 10)} gp\`${gearOut}`,
+                    }* | ${thisUnit.gp} gp\`${gearOut}`,
                     fields: [
                         {
                             name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),

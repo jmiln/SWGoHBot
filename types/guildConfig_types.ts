@@ -62,7 +62,7 @@ export interface GuildConfigTWList {
     "Light Side"?: string[];
     "Dark Side"?: string[];
     "Galactic Legends"?: string[];
-    "Ships"?: string[];
+    Ships?: string[];
     "Capital Ships"?: string[];
-    "Blacklist"?: string[];
+    Blacklist?: string[];
 }

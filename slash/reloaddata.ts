@@ -189,7 +189,7 @@ export default class ReloadData extends Command {
         }
     }
 
-    thenRes(_Bot: BotType, interaction: BotInteraction, res: { err?: string; }[], reloadType: string) {
+    thenRes(_Bot: BotType, interaction: BotInteraction, res: { err?: string }[], reloadType: string) {
         const errors = [];
         for (const r of res) {
             if (r?.err) errors.push(r.err);

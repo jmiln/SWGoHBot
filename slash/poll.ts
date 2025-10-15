@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
 import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Poll extends Command {
     constructor(Bot: BotType) {
@@ -257,7 +257,7 @@ export default class Poll extends Command {
         }
 
         function getFooter() {
-            const footer = {text: ""};
+            const footer = { text: "" };
             if (interaction.guild) {
                 footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER"));
             } else {

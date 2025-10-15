@@ -130,7 +130,7 @@ export default class Zetas extends Command {
             };
 
             const desc = [];
-            const author = {name: ""};
+            const author = { name: "" };
             const fields = [];
             if (character) {
                 // Grab just the one character from the roster

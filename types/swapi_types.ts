@@ -122,7 +122,7 @@ export interface SWAPIUnit {
     gear: number;
     equipped: {
         equipmentId: number;
-        slot: number;
+        slot: string;
     }[];
     factions?: string[]; // Only there after processing
     skills: SWAPIUnitSkill[];
@@ -377,6 +377,11 @@ export interface SWAPIUnitSkill {
     isOmicron?: boolean;
     omicronTier?: number;
     omicronMode?: null; // Not sure, they all seem to be null
+
+    // And these just sometimes mid-command usage
+    type: string;
+    tierStr: string;
+    defId: string;
 }
 
 export interface SWAPIUnitAbility {
@@ -435,6 +440,7 @@ export interface SWAPIUnitStatTypes {
     Protection: number;
     "Physical Accuracy": number;
     "Special Accuracy": number;
+    Accuracy: number; // Added later since the two accuracy stats are always the same
     "Physical Critical Avoidance": number;
     "Special Critical Avoidance": number;
 }

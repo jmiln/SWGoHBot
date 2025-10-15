@@ -7,7 +7,15 @@ import type Help from "../data/help.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility } from "./swapi_types.ts";
+import type {
+    ComlinkAbility,
+    RawCharacter,
+    RawGuild,
+    SWAPIGuild,
+    SWAPILang,
+    SWAPIPlayer,
+    SWAPIUnit,
+} from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -134,13 +142,13 @@ export interface BotType {
     };
 
     omicrons: {
-        tw: string[],
-        ga3: string[],
-        ga: string[],
-        tb: string[],
-        raid: string[],
-        conquest: string[],
-        other: string[],
+        tw: string[];
+        ga3: string[];
+        ga: string[];
+        tb: string[];
+        raid: string[];
+        conquest: string[];
+        other: string[];
     };
 
     // swapi functs
@@ -157,7 +165,7 @@ export interface BotType {
         guild: (allycode: number | string, cooldown: PlayerCooldown) => SWAPIGuild;
         getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => RawGuild;
         playerByName: (name: string, limit?: number) => SWAPIPlayer[];
-        abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => ComlinkAbility[] | {nameKey: string}[];
+        abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => ComlinkAbility[] | { nameKey: string }[];
     };
     findChar: (searchName: string, charList: BotUnit | BotUnit[], isShip?: boolean) => BotUnit[];
 
@@ -189,7 +197,7 @@ export interface BotType {
     getSetTimeForTimezone: (dtString: string, timezone?: string) => number;
     getStartOfDay: (timezone: string) => Date;
     getUTCFromOffset: (timezone: string) => number;
-    convertMS: (ms: number) =>  {
+    convertMS: (ms: number) => {
         hour: number;
         minute: number;
         totalMin: number;
@@ -200,6 +208,7 @@ export interface BotType {
     shortenNum: (number: number, trimTo?: number) => string;
     formatDuration: (duration: number, lang?: BotLanguage) => string;
     getBlankUnitImage: (defId: string) => Buffer;
+    getUnitImage: (defId: string, unit?: Partial<SWAPIUnit>) => Buffer;
 
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
@@ -266,7 +275,7 @@ export interface BotInteraction extends ChatInputCommandInteraction {
     guildSettings: BotDefaultSettings;
     language: Language;
     swgohLanguage: SWAPILang;
-    respond?: (args: {name: string, value: string}[]) => Promise<void>;
+    respond?: (args: { name: string; value: string }[]) => Promise<void>;
 }
 
 export interface BotConfig {

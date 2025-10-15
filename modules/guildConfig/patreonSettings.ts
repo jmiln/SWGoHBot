@@ -27,7 +27,11 @@ export async function setPatreonSettings({ cache, guildId, patreonSettingsOut })
 //  - Add/update/remove a user & tier to the supporters list
 //  - Supports consist of userID (Discord user ID), and tier (amount_cents/100)
 // Returns success/ error for both the user setting & the guild one
-export async function addServerSupporter({ cache, guildId, userInfo }): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string }}> {
+export async function addServerSupporter({
+    cache,
+    guildId,
+    userInfo,
+}): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string } }> {
     const resOut = { user: { success: false, error: null }, guild: { success: false, error: null } };
     if (!guildId) resOut.guild = { success: false, error: "Missing guild ID." };
     if (!userInfo?.userId || !userInfo?.tier) resOut.user = { success: false, error: "Missing userId or tier." };
@@ -79,7 +83,7 @@ export async function addServerSupporter({ cache, guildId, userInfo }): Promise<
 }
 
 //  - Get the users from the given guilds' supporters list if available
-export async function getServerSupporters({ cache, guildId }): Promise<{ userId: string; tier: number; }[]> {
+export async function getServerSupporters({ cache, guildId }): Promise<{ userId: string; tier: number }[]> {
     if (!guildId) return [];
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings?.supporters || [];
@@ -90,7 +94,12 @@ export async function removeServerSupporter({ cache, guildId, userId }): Promise
     if (!guildId) return { success: false, error: "Missing guild ID." };
     if (!userId) return { success: false, error: "Missing userId." };
 
-    const guildPatSettings: GuildConfig = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
+    const guildPatSettings: GuildConfig = await cache.getOne(
+        config.mongodb.swgohbotdb,
+        "guildConfigs",
+        { guildId },
+        { patreonSettings: 1, _id: 0 },
+    );
     const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 1;
 
     // If the user isn't in the supporters arr, say so
@@ -110,7 +119,10 @@ export async function removeServerSupporter({ cache, guildId, userId }): Promise
 
 // Remove all the server & user settings for a given user
 // Returns success/ error for both the user setting & the guild one
-export async function clearSupporterInfo({ cache, userId }): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string }}> {
+export async function clearSupporterInfo({
+    cache,
+    userId,
+}): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string } }> {
     const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userId });
     const resOut = {
         user: { success: true, error: null },
@@ -139,10 +151,11 @@ export async function clearSupporterInfo({ cache, userId }): Promise<{ user: { s
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
 export async function ensureGuildSupporter({ cache }) {
     // Grab all guilds' patreonSettings that have someone listed
-    const supporterGuilds: {guildId: string, supporters: {userId: string, tier: number}[]}[] = await cache.get(
+    const supporterGuilds: { guildId: string; supporters: { userId: string; tier: number }[] }[] = await cache.get(
         config.mongodb.swgohbotdb,
         "guildConfigs",
-        { "patreonSettings.supporters": { $exists: true, $ne: [] } }, { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 },
+        { "patreonSettings.supporters": { $exists: true, $ne: [] } },
+        { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 },
     );
 
     // Go through each of those, and check that each person listed in each of those has the given server selected, and if not, remove them from that guilds' list
