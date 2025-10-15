@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.js";
+import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
 

@@ -1,9 +1,10 @@
 import Command from "../base/slashCommand.ts";
-import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.js";
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Showconf extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "showconf",
             guildOnly: false,
@@ -11,7 +12,7 @@ export default class Showconf extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: interaction.guild.id });
 
         const outArr = [];

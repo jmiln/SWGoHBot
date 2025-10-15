@@ -1,7 +1,7 @@
 import { inspect } from "node:util";
 import { MessageFlags } from "discord.js";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
 
 const ignoreArr = [

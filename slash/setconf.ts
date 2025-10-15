@@ -1,9 +1,10 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import typedDefaultSettings from "../config.js";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
-import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.js";
-import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.js";
+import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
+import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 // Set the base subargs up
 const options = {
@@ -85,9 +86,10 @@ for (const set of Object.keys(typedDefaultSettings)) {
         name: set.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
         type: thisSet.type,
         description: thisSet.description,
+        choices: null,
     };
     if (thisSet?.choices) {
-        optOut.choices = thisSet.choices.map((choice) => {
+        optOut.choices = thisSet.choices.map((choice: string) => {
             return {
                 name: choice,
                 value: choice,
@@ -103,7 +105,7 @@ for (const set of Object.keys(typedDefaultSettings)) {
 }
 
 export default class SetConf extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             guildOnly: false,
             name: "setconf",
@@ -112,7 +114,7 @@ export default class SetConf extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
@@ -128,7 +130,7 @@ export default class SetConf extends Command {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 
-        function getCharName(defId) {
+        function getCharName(defId: string) {
             return (
                 Bot.CharacterNames.find((char) => char.defId === defId)?.name ||
                 Bot.ShipNames.find((ship) => ship.defId === defId)?.name ||
@@ -144,7 +146,7 @@ export default class SetConf extends Command {
                 const outArr = [];
                 for (const key of Object.keys(guildTWList)) {
                     if (!guildTWList[key].length) continue;
-                    outArr.push(`* **${key}**: \n${guildTWList[key].map((defId) => `  - ${getCharName(defId)}`).join("\n")}`);
+                    outArr.push(`* **${key}**: \n${guildTWList[key].map((defId: string) => `  - ${getCharName(defId)}`).join("\n")}`);
                 }
                 if (!outArr.length) return super.error(interaction, "You have no units in your list");
                 return super.success(interaction, outArr.join("\n"), { title: "Your current list:" });
@@ -169,7 +171,7 @@ export default class SetConf extends Command {
                     const thisChar = Bot.characters.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
                     if (thisChar) {
                         if (thisChar.factions.includes("Galactic Legend")) {
-                            guildTWList.GLs.push(thisChar.uniqueName);
+                            guildTWList["Galactic Legends"].push(thisChar.uniqueName);
                         } else if (thisChar.side === "dark") {
                             guildTWList["Dark Side"].push(thisChar.uniqueName);
                         } else {
@@ -179,9 +181,9 @@ export default class SetConf extends Command {
                         const thisShip = Bot.ships.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
                         if (thisShip) {
                             if (thisShip.factions.includes("Capital Ship")) {
-                                guildTWList.capitalShips.push(thisShip.uniqueName);
+                                guildTWList["Capital Ships"].push(thisShip.uniqueName);
                             } else {
-                                guildTWList.ships.push(thisShip.uniqueName);
+                                guildTWList.Ships.push(thisShip.uniqueName);
                             }
                         }
                     }
@@ -212,7 +214,7 @@ export default class SetConf extends Command {
                     for (const key of Object.keys(guildTWList)) {
                         if (key === "Blacklist") continue;
                         if (guildTWList[key].includes(removeUnitDefId)) {
-                            guildTWList[key] = guildTWList[key].filter((u) => u !== removeUnitDefId);
+                            guildTWList[key] = guildTWList[key].filter((u: string) => u !== removeUnitDefId);
                         }
                     }
                     try {
@@ -279,7 +281,9 @@ export default class SetConf extends Command {
                 nameStr = `#${channel.name}`;
                 settingStr = channel.id;
             } else if (keyType === ApplicationCommandOptionType.Role) {
-                settingStr = interaction.options.getRole(optionKey);
+                const role = interaction.options.getRole(optionKey);
+                nameStr = role.name;
+                settingStr = role.id;
                 if (!settingStr) continue;
             } else {
                 errors.push(`[Setconf] Invalid keyType: ${keyType}`);
@@ -294,7 +298,7 @@ export default class SetConf extends Command {
             }
         }
 
-        function changeSetting(action, key, setting, name) {
+        function changeSetting(action: string, key: string, setting: string, name: string) {
             if (setting === null) return null;
             if (action === "set") {
                 // Just send back the setting
@@ -304,26 +308,16 @@ export default class SetConf extends Command {
             if (action === "add") {
                 // Stick it into the old one
                 const newArr = [...guildConf[key]];
-                if (key === "adminRole") {
-                    newArr.push(setting.id);
-                    changeLog.push(`Added ${setting?.name} to AdminRole`);
-                } else {
-                    newArr.push(setting);
-                    changeLog.push(`Added ${setting} to ${key}`);
-                }
+                newArr.push(setting);
+                changeLog.push(`Added ${setting} to ${key}`);
 
                 return [...new Set(newArr)];
             }
             if (action === "remove") {
                 // Take out a setting from an array
                 let newArr = [...guildConf[key]];
-                if (key === "adminRole") {
-                    newArr = newArr.filter((s) => s !== setting.id && s !== setting.name);
-                    changeLog.push(`Removed ${setting.id} from ${key}`);
-                } else {
-                    newArr = newArr.filter((s) => s !== setting);
-                    changeLog.push(`Removed ${setting} from ${key}`);
-                }
+                newArr = newArr.filter((s) => s !== setting && s !== name);
+                changeLog.push(`Removed ${setting} from ${key}`);
 
                 return [...new Set(newArr)];
             }
@@ -347,7 +341,7 @@ export default class SetConf extends Command {
         return super.error(interaction, "It looks like nothing needed to be updated");
     }
 
-    async autocomplete(Bot, interaction, focusedOption) {
+    async autocomplete(Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 

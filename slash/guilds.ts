@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
-import { getFullTWList } from "../modules/guildConfig/twlist.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, TWList } from "../types/types.ts";
 

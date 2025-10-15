@@ -242,6 +242,7 @@ export interface BotInteraction extends ChatInputCommandInteraction {
     guildSettings: BotDefaultSettings;
     language: Language;
     swgohLanguage: SWAPILang;
+    respond?: (args: {name: string, value: string}[]) => Promise<void>;
 }
 
 export interface BotConfig {

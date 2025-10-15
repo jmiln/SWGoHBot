@@ -1,7 +1,7 @@
 import { inspect } from "node:util";
 import type { GuildMember } from "discord.js";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
 export default {

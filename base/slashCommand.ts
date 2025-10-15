@@ -11,13 +11,13 @@ const defCmdData = {
     enabled: true,
     permLevel: 0,
 };
-export default class slashCommand {
+export default abstract class slashCommand {
     Bot: BotType;
     commandData: typeof defCmdData;
     guildOnly: boolean;
 
     // Only really in setconf
-    autocomplete?: (Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) => Promise<void>;
+    autocomplete?(Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
 
     constructor(Bot: BotType, commandData = {}) {
         this.Bot = Bot;

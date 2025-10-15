@@ -1,4 +1,4 @@
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 
 export default (Bot, client) => {

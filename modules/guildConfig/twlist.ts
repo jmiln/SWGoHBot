@@ -1,5 +1,6 @@
 import config from "../../config.js";
 import unitChecklist from "../../data/unitChecklist.ts";
+import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
 
 const defaultTWList = {
     "Light Side": [],
@@ -10,7 +11,7 @@ const defaultTWList = {
     Blacklist: [], // List of units to not show in the list output (Can't have units both here and one of the others)
 };
 
-export async function getGuildTWList({ cache, guildId }) {
+export async function getGuildTWList({ cache, guildId }): Promise<GuildConfigTWList> {
     if (!guildId) return defaultTWList;
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
     const outObj = {};

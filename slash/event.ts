@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.j
 
 import Command from "../base/slashCommand.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 

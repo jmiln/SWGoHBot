@@ -18,9 +18,7 @@ export interface GuildConfig {
     settings: BotDefaultSettings;
     aliases: GuildAlias[];
     patreonSettings: GuildConfigPatreonSettings;
-    twList: {
-        [key: string]: string[];
-    };
+    twList: GuildConfigTWList;
 }
 export interface GuildConfigPatreonSettings {
     supporters: {
@@ -58,4 +56,12 @@ export interface GuildConfigPoll {
     };
     anon: boolean | null;
     channelId: string;
+}
+export interface GuildConfigTWList {
+    "Light Side"?: string[];
+    "Dark Side"?: string[];
+    "Galactic Legends"?: string[];
+    "Ships"?: string[];
+    "Capital Ships"?: string[];
+    "Blacklist"?: string[];
 }

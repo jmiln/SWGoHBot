@@ -1,5 +1,5 @@
 import type { Guild } from "discord.js";
-import { deleteGuildConfig } from "../modules/guildConfig/settings.js";
+import { deleteGuildConfig } from "../modules/guildConfig/settings.ts";
 import type { BotType } from "../types/types.ts";
 
 export default {

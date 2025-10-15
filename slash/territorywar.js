@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getFullTWList } from "../modules/guildConfig/twlist.js";
+import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 
 export default class TerritoryWar extends Command {
     constructor(Bot) {
