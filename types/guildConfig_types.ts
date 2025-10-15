@@ -4,21 +4,22 @@ export interface GuildConfig {
     guildId: string;
     events: GuildConfigEvent[];
     polls: GuildConfigPoll[];
-    shardTimes: {
-        times: {
-            [key: string]: {
-                flag: string;
-                type: string;
-                timezone: string;
-                zoneType: string;
-            };
-        };
-        channelId: string;
-    }[];
+    shardTimes: GuildConfigShardTimes[];
     settings: BotDefaultSettings;
     aliases: GuildAlias[];
     patreonSettings: GuildConfigPatreonSettings;
     twList: GuildConfigTWList;
+}
+export interface GuildConfigShardTimes {
+    times: {
+        [key: string]: {
+            flag: string;
+            type: string;
+            timezone: number | string;
+            zoneType: string;
+        };
+    };
+    channelId: string;
 }
 export interface GuildConfigPatreonSettings {
     supporters: {

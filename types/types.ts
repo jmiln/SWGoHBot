@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, Client, Collection, Guild, GuildChannel, GuildMember, Interaction } from "discord.js";
+import type { ChatInputCommandInteraction, Client, Collection, Guild, GuildMember, Interaction, TextChannel } from "discord.js";
 import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
@@ -173,9 +173,18 @@ export interface BotType {
     expandSpaces: (strIn: string) => string;
     updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
     getSetTimeForTimezone: (dtString: string, timezone?: string) => number;
+    getStartOfDay: (timezone: string) => Date;
+    getUTCFromOffset: (timezone: string) => number;
+    convertMS: (ms: number) =>  {
+        hour: number;
+        minute: number;
+        totalMin: number;
+        seconds: number;
+    };
     isValidZone: (timezone: string) => boolean;
     shortenNum: (number: number, trimTo?: number) => string;
     formatDuration: (duration: number, lang?: BotLanguage) => string;
+    getBlankUnitImage: (defId: string) => Buffer;
 
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
@@ -184,7 +193,7 @@ export interface BotType {
     cache: Cache;
     userReg: UserReg;
     permLevel: (interaction: Interaction) => number;
-    hasViewAndSend: (channel: GuildChannel, user: GuildMember) => boolean;
+    hasViewAndSend: (channel: TextChannel, user: GuildMember) => boolean;
     commandList: string[];
     constants: BotConstants;
     languages: {

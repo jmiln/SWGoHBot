@@ -1,9 +1,10 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, type TextChannel } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.js";
+import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Shardtimes extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "shardtimes",
             guildOnly: false,
@@ -88,7 +89,7 @@ export default class Shardtimes extends Command {
         });
     }
 
-    async run(Bot, interaction, options) {
+    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         // Shard ID will be guild.id-channel.id
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
@@ -105,7 +106,7 @@ export default class Shardtimes extends Command {
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
             let userID = interaction.options.getString("user");
             let flag = interaction.options.getString("flag");
-            let timezone = interaction.options.getString("timezone");
+            let timezone: string | number = interaction.options.getString("timezone");
             const timeTil = interaction.options.getString("time_until");
 
             let type = "id";
@@ -149,7 +150,7 @@ export default class Shardtimes extends Command {
                 } else if (match) {
                     // It's a UTC +/- zone  (+8:00 / -4:15)
                     zoneType = "utc";
-                    timezone = Number.parseInt(`${match[1]}${match[2] * 60 + Number.parseInt(match[3], 10)}`, 10);
+                    timezone = Number.parseInt(`${match[1]}${Number.parseInt(match[2], 10) * 60 + Number.parseInt(match[3], 10)}`, 10);
                 } else {
                     // Grumble that it's an invalid tz
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
@@ -167,7 +168,7 @@ export default class Shardtimes extends Command {
                 const nowTime = new Date();
                 const hourMS = 60 * 60 * 1000;
                 const minMS = 60 * 1000;
-                const updatedTime = new Date(new Date().setTime(nowTime.getTime() + hour * hourMS || 0 + minute * minMS || 0));
+                const updatedTime = new Date(new Date().setTime(nowTime.getTime() + Number.parseInt(hour, 10) * hourMS || 0 + Number.parseInt(minute, 10) * minMS || 0));
                 const tempH = updatedTime.getHours();
                 const tempM = updatedTime.getMinutes();
 
@@ -258,7 +259,7 @@ export default class Shardtimes extends Command {
             }
         } else if (action === "copy") {
             // ;shardtimes copy destChannel
-            const destChannel = interaction.options.getChannel("dest_channel");
+            const destChannel: TextChannel = interaction.options.getChannel("dest_channel");
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
             if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
@@ -383,12 +384,12 @@ export default class Shardtimes extends Command {
             });
         }
 
-        function timeTil(zone, timeToAdd, type) {
+        function timeTil(zone: string, timeToAdd: number, type: string) {
             const nowTime = Date.now();
             const hrMS = 1000 * 60 * 60;
             const dayMS = 1000 * 60 * 60 * 24;
 
-            let targetTime;
+            let targetTime: number;
             if (type === "zone") {
                 const target = Bot.getStartOfDay(zone).getTime() + hrMS * timeToAdd;
                 targetTime = target + nowTime > target ? target : target + dayMS;
@@ -402,7 +403,7 @@ export default class Shardtimes extends Command {
             return `${times.hour.toString().padStart(2, "0")}:${times.minute.toString().padStart(2, "0")}`;
         }
 
-        function getUTCAtTime(hhmm) {
+        function getUTCAtTime(hhmm: string) {
             const [hr, min] = hhmm.split(":").map((t) => Number.parseInt(t, 10));
             const nowDate = new Date();
             return Date.UTC(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate(), hr, min);
