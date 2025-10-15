@@ -1,8 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Zetas extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "zetas",
             guildOnly: false,
@@ -49,7 +51,7 @@ export default class Zetas extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         let allycode = interaction.options.getString("allycode");
         allycode = await Bot.getAllyCode(interaction, allycode);
         if (!allycode) {
@@ -83,13 +85,13 @@ export default class Zetas extends Command {
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
-        let player;
+        let player: SWAPIPlayer;
         try {
-            player = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = player[0];
+            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            player = playerRes?.[0] || null;
         } catch (e) {
             Bot.logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_ACCT"), { edit: true });
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_ACCT"));
         }
 
         if (!player?.roster) return super.error(interaction, "I cannot get this player's info right now. Please try again later");
@@ -103,7 +105,7 @@ export default class Zetas extends Command {
             let count = 0;
 
             // This will grab the character info for any entered character
-            const getCharInfo = async (thisChar) => {
+            const getCharInfo = async (thisChar: SWAPIUnit) => {
                 const langedChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
                 if (!langedChar.nameKey) {
                     const tmp = Bot.characters.filter((c) => c.uniqueName === langedChar.defId);
@@ -128,7 +130,7 @@ export default class Zetas extends Command {
             };
 
             const desc = [];
-            const author = {};
+            const author = {name: ""};
             const fields = [];
             if (character) {
                 // Grab just the one character from the roster
@@ -211,8 +213,8 @@ export default class Zetas extends Command {
             // Display the zetas for the whole guild (Takes a while)
             await interaction.editReply({ content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD") });
 
-            let guild = null;
-            let guildGG = null;
+            let guild: SWAPIGuild = null;
+            let guildGG: SWAPIPlayer[] = null;
 
             try {
                 guild = await Bot.swgohAPI.guild(player.allyCode, cooldown);
@@ -228,7 +230,7 @@ export default class Zetas extends Command {
                     cooldown,
                 );
             } catch (e) {
-                super.error(interaction, e.message, { edit: true });
+                super.error(interaction, e.message);
             }
 
             const zetas = {};
@@ -255,7 +257,7 @@ export default class Zetas extends Command {
             if (!character) {
                 // They want to see all zetas for the guild
                 for (const char of Object.keys(zetas)) {
-                    const outObj = {};
+                    const outObj = { name: "", abilities: "" };
                     outObj.name = `**${Bot.characters.find((c) => c.uniqueName === char).name}**`;
                     outObj.abilities = "";
                     for (const skill of Object.keys(zetas[char])) {

@@ -7,7 +7,7 @@ import type Help from "../data/help.ts";
 import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -156,6 +156,8 @@ export interface BotType {
         units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
         guild: (allycode: number | string, cooldown: PlayerCooldown) => SWAPIGuild;
         getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => RawGuild;
+        playerByName: (name: string, limit?: number) => SWAPIPlayer[];
+        abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => ComlinkAbility[] | {nameKey: string}[];
     };
     findChar: (searchName: string, charList: BotUnit | BotUnit[], isShip?: boolean) => BotUnit[];
 
@@ -165,6 +167,7 @@ export interface BotType {
     getGearStr(charIn: SWAPIUnit, preStr: string): string;
 
     // util functions
+    chunkArray: (inArray: Array<any>, chunkSize: number) => Array<any>;
     msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
     makeTable: (
         headers: {

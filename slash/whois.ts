@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class WhoIs extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "whois",
             guildOnly: false,
@@ -18,7 +19,7 @@ export default class WhoIs extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const PLAYER_LIMIT = 25;
         const name = interaction.options.getString("name");
         if (name.length > 50) return super.error(interaction, "Invalid name, max length is 50 characters");

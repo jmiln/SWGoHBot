@@ -316,6 +316,21 @@ export interface ComlinkUnit {
     allyCode?: number;
     updated?: number;
 }
+export interface ComlinkAbility {
+    id: string;
+    languages: SWAPILang;
+    abilityTiers: string[];
+    cooldown: number;
+    isOmicron: boolean;
+    isZeta: boolean;
+    nameKey: string;
+    omicronTier: number;
+    skillId: string;
+    tierList: string[];
+    type: null;
+    zetaTier: number;
+}
+
 export interface ComlinkMod {
     definitionId: string;
     primaryStat: ComlinkModStat;
@@ -366,6 +381,7 @@ export interface SWAPIUnitSkill {
 
 export interface SWAPIUnitAbility {
     skillId: string;
+    nameKey?: string;
     zetaTier: number;
     omicronTier: number;
     omicronMode: null;
