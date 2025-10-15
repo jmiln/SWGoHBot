@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Time extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "time",
             guildOnly: false,
@@ -16,7 +17,7 @@ export default class Time extends Command {
         });
     }
 
-    run(Bot, interaction) {
+    run(Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
         const timezone = interaction.options.getString("timezone");
 

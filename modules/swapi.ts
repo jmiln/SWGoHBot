@@ -892,7 +892,7 @@ export default (opts = { noop: false }) => {
         return rawGuild;
     }
 
-    async function guild(allycode: number, cooldown: PlayerCooldown) {
+    async function guild(allycode: number | string, cooldown: PlayerCooldown) {
         let warnings: string[];
         const thisAcStr = allycode?.toString().replace(/[^\d]/g, "");
         if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid allycode");

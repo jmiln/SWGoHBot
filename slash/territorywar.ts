@@ -1,9 +1,11 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
+import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class TerritoryWar extends Command {
-    constructor(Bot) {
+    constructor(Bot: BotType) {
         super(Bot, {
             name: "territorywar",
             guildOnly: false,
@@ -24,7 +26,7 @@ export default class TerritoryWar extends Command {
         });
     }
 
-    async run(Bot, interaction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
@@ -58,7 +60,7 @@ export default class TerritoryWar extends Command {
         await interaction.editReply({ content: "> Found matching ally codes for both users, getting guilds..." });
 
         // Get the name & ally code for each player in each of the guilds
-        let guild1 = null;
+        let guild1: SWAPIGuild = null;
         try {
             guild1 = await Bot.swgohAPI.guild(user1, cooldown);
             if (!guild1?.roster?.length) {
@@ -68,7 +70,7 @@ export default class TerritoryWar extends Command {
             problemArr.push(`I could not find a guild for "${user1}"`);
         }
 
-        let guild2 = null;
+        let guild2: SWAPIGuild = null;
         try {
             guild2 = await Bot.swgohAPI.guild(user2, cooldown);
         } catch (_) {
@@ -83,7 +85,7 @@ export default class TerritoryWar extends Command {
         const unitChecklist = await getFullTWList({ cache: Bot.cache, guildId: interaction.guild?.id });
 
         // Run each of the players through to get the stats of each players' roster
-        let guild1Stats = null;
+        let guild1Stats: SWAPIPlayer[] = null;
         const guild1AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
         try {
             guild1Stats = await Bot.swgohAPI.unitStats(
@@ -104,7 +106,7 @@ export default class TerritoryWar extends Command {
             problemArr.push(`I could not get stats for ${user1str}'s guild`);
         }
 
-        let guild2Stats = null;
+        let guild2Stats: SWAPIPlayer[] = null;
         const guild2AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
         try {
             guild2Stats = await Bot.swgohAPI.unitStats(
@@ -221,7 +223,7 @@ export default class TerritoryWar extends Command {
         });
 
         // Get the overall gear levels for each user
-        let gearOverview = [];
+        const gearOverview = [];
         const [g1GearLvls, g1AvgGear] = Bot.summarizeCharLevels(guild1Stats, "gear");
         const [g2GearLvls, g2AvgGear] = Bot.summarizeCharLevels(guild2Stats, "gear");
         const maxGear = Math.max(
@@ -240,7 +242,7 @@ export default class TerritoryWar extends Command {
             user1: g1AvgGear,
             user2: g2AvgGear,
         });
-        gearOverview = codeBlock(
+        const gearTable = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -254,11 +256,11 @@ export default class TerritoryWar extends Command {
         );
         fields.push({
             name: "Character Gear Counts",
-            value: `*How many characters at each gear level*${gearOverview}`,
+            value: `*How many characters at each gear level*${gearTable}`,
         });
 
         // Get the overall relic levels for each user
-        let relicOverview = [];
+        const relicOverview = [];
         const [g1RelicLvls, g1AvgRelic] = Bot.summarizeCharLevels(guild1Stats, "relic");
         const [g2RelicLvls, g2AvgRelic] = Bot.summarizeCharLevels(guild2Stats, "relic");
         const maxRelic = Math.max(
@@ -277,7 +279,7 @@ export default class TerritoryWar extends Command {
             user1: g1AvgRelic,
             user2: g2AvgRelic,
         });
-        relicOverview = codeBlock(
+        const relicTable = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -291,11 +293,11 @@ export default class TerritoryWar extends Command {
         );
         fields.push({
             name: "Character Relic Counts",
-            value: `*How many characters at each relic level*${relicOverview}`,
+            value: `*How many characters at each relic level*${relicTable}`,
         });
 
         // Get the overall rarity levels for each user
-        let rarityOverview = [];
+        const rarityOverview = [];
         const [g1RarityLvls, g1AvgRarity] = Bot.summarizeCharLevels(guild1Stats, "rarity");
         const [g2RarityLvls, g2AvgRarity] = Bot.summarizeCharLevels(guild2Stats, "rarity");
         const maxRarity = Math.max(
@@ -314,7 +316,7 @@ export default class TerritoryWar extends Command {
             user1: g1AvgRarity,
             user2: g2AvgRarity,
         });
-        rarityOverview = codeBlock(
+        const rarityTable = codeBlock(
             "asciiDoc",
             Bot.makeTable(
                 {
@@ -329,7 +331,7 @@ export default class TerritoryWar extends Command {
 
         fields.push({
             name: "Character Rarity Counts",
-            value: `*How many characters at each rarity level*${rarityOverview}`,
+            value: `*How many characters at each rarity level*${rarityTable}`,
         });
 
         // Get some general stats for any available galactic legends
