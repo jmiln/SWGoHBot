@@ -49,7 +49,12 @@ export async function deleteGuildEvent({ cache, guildId, evName }: { cache: BotC
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
 export async function getAllEvents({ cache }: { cache: BotCache }) {
-    const resArr: GuildConfig[] = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 }) as GuildConfig[];
+    const resArr: GuildConfig[] = (await cache.get(
+        config.mongodb.swgohbotdb,
+        "guildConfigs",
+        {},
+        { guildId: 1, events: 1, _id: 0 },
+    )) as GuildConfig[];
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         return acc.concat(

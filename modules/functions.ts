@@ -1,13 +1,21 @@
 import fs from "node:fs";
 import { readdir } from "node:fs/promises";
 import { inspect, promisify } from "node:util";
-import { PermissionsBitField, time, WebhookClient } from "discord.js";
+import { GuildMember, GuildMemberRoleManager, PermissionsBitField, TextChannel, time, WebhookClient } from "discord.js";
+import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
+import type { BotClient, BotInteraction, BotType, BotUnit, UserConfig } from "../types/types.ts";
 
-export default (Bot, client) => {
+export default (Bot: BotType, client: BotClient) => {
     // Get a color for embed edges
     Bot.getSideColor = (side) => {
-        if (!side) return Error("[func/getSideColor] Missing side.");
-        if (!["light", "dark"].includes(side.toLowerCase())) return Error("[func/getSideColor] Missing side.");
+        if (!side) {
+            console.error("[func/getSideColor] No side provided");
+            return null;
+        }
+        if (!["light", "dark"].includes(side.toLowerCase())) {
+            console.error(`[func/getSideColor] Invalid side: ${side}`);
+            return null;
+        }
         return side === "light" ? Bot.constants.colors.lightblue : Bot.constants.colors.brightred;
     };
 
@@ -28,7 +36,7 @@ export default (Bot, client) => {
         }
 
         // If DMs or webhook, return 0 perm level.
-        if (!interaction.guild || !interaction.member) {
+        if (!interaction.guild || !interaction.member || !interaction.inGuild() || !(interaction.member instanceof GuildMember)) {
             return permMap.BASE_USER;
         }
 
@@ -52,10 +60,18 @@ export default (Bot, client) => {
         const guildConf = interaction.guildSettings;
         const hasAdminRole = guildConf?.adminRole?.some((roleId) => {
             const adminRole = interaction.guild.roles.cache.find((r) => r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase());
-            return adminRole && interaction.member.roles.cache.has(adminRole.id);
+            return adminRole && hasRole(interaction, adminRole.id);
         });
         return hasAdminRole ? permMap.GUILD_ADMIN : permMap.BASE_USER;
     };
+    function hasRole(interaction: BotInteraction, roleId: string): boolean {
+        return (
+            interaction.inGuild() &&
+            interaction.member &&
+            interaction.member.roles instanceof GuildMemberRoleManager &&
+            interaction.member.roles.cache.has(roleId)
+        );
+    }
 
     // Check if the bot's account is the main (real) bot
     Bot.isMain = () => client.user.id === "315739499932024834";
@@ -126,7 +142,7 @@ export default (Bot, client) => {
     };
 
     // Parse the webhook url, and get the id & token from the end
-    function parseWebhook(url) {
+    function parseWebhook(url: string) {
         const [id, token] = url.split("/").slice(-2);
         return { id, token };
     }
@@ -141,7 +157,7 @@ export default (Bot, client) => {
     /* ANNOUNCEMENT MESSAGE
      * Sends a message to the set announcement channel
      */
-    client.announceMsg = async (guild, announceMsg, channel = "", guildConf = {}) => {
+    client.announceMsg = async (guild, announceMsg, channel = "", guildConf: Partial<GuildConfigSettings> = {}) => {
         if (!guild?.id) return;
 
         // Use the guildConf announcement channel
@@ -157,6 +173,7 @@ export default (Bot, client) => {
 
         // If that still didn't work, or if it doesn't have the base required perms, return
         if (
+            !(chan instanceof TextChannel) ||
             !chan?.send ||
             !chan?.permissionsFor(client.user)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
         )
@@ -173,7 +190,7 @@ export default (Bot, client) => {
         });
     };
 
-    async function importAndReload(modulePath) {
+    async function importAndReload(modulePath: string) {
         const timestamp = Date.now();
         const moduleUrl = `${modulePath}?t=${timestamp}`;
         const { default: module } = await import(moduleUrl);
@@ -201,7 +218,7 @@ export default (Bot, client) => {
         let err = null;
         try {
             const { default: swapi } = await import("../modules/swapi.ts");
-            Bot.swgohAPI = swapi(Bot);
+            Bot.swgohAPI = swapi();
         } catch (e) {
             err = e;
         }
@@ -243,7 +260,7 @@ export default (Bot, client) => {
                 return { name: `${ch.name} ${suffix}`, defId: ch.uniqueName, aliases: ch.aliases || [] };
             });
             Bot.ShipNames = Bot.ships.map((sh) => {
-                return { name: sh.name, defId: sh.uniqueName };
+                return { name: sh.name, defId: sh.uniqueName, aliases: sh.aliases || [] };
             });
 
             const { default: help } = await import("../data/help.ts");
@@ -255,7 +272,6 @@ export default (Bot, client) => {
 
     // Reload all the language files
     client.reloadLanguages = async () => {
-        let err = false;
         try {
             for (const lang of Object.keys(Bot.languages)) {
                 delete Bot.languages[lang];
@@ -266,10 +282,10 @@ export default (Bot, client) => {
                 const { default: lang } = await import(`${process.cwd()}/languages/${file}`);
                 Bot.languages[langName] = new lang(Bot);
             }
-        } catch (e) {
-            err = e;
+        } catch (err) {
+            return err;
         }
-        return err;
+        return null;
     };
 
     /* MISCELANEOUS NON-CRITICAL FUNCTIONS */
@@ -286,7 +302,10 @@ export default (Bot, client) => {
         const outArr = Array.isArray(arr) ? arr : arr.toString().split("\n");
         let currentMsg = "";
         for (const elem of outArr) {
-            if (typeof elem !== "string") return Bot.logger.error(`In msgArray, ${elem} Is not a string!`);
+            if (typeof elem !== "string") {
+                Bot.logger.error(`In msgArray, ${elem} Is not a string!`);
+                return [];
+            }
             const expandedElem = Bot.expandSpaces(elem);
             // Check if something big somehow got in
             if (expandedElem.length > maxLen) {
@@ -320,10 +339,7 @@ export default (Bot, client) => {
         const durationMS = Bot.convertMS(duration);
         const outArr = [];
 
-        if (durationMS.day) {
-            outArr.push(`${durationMS.day} ${durationMS.day > 1 ? langOut.getTime("DAY", "PLURAL") : langOut.getTime("DAY", "SING")}`);
-        }
-        if (durationMS.hour || durationMS.day) {
+        if (durationMS.hour) {
             outArr.push(
                 `${durationMS.hour || "0"} ${
                     durationMS.hour > 1 ? langOut.getTime("HOUR", "SHORT_PLURAL") : langOut.getTime("HOUR", "SHORT_SING")
@@ -393,8 +409,8 @@ export default (Bot, client) => {
 
     Bot.getSetTimeForTimezone = (mmddyyyy_HHmm, zone) => {
         const offset = Bot.getTimezoneOffset(zone);
-        const [month, day, year, hour, min] = mmddyyyy_HHmm.split(/[/\s:]/);
-        if (year.toString().length !== 4) return Error("[Bot.getSetTimeForTimezone] Year MUST be 4 numbers long");
+        const [month, day, year, hour, min] = mmddyyyy_HHmm.split(/[/\s:]/).map((i) => Number.parseInt(i, 10));
+        if (year.toString().length !== 4) throw Error("[Bot.getSetTimeForTimezone] Year MUST be 4 numbers long");
         const utcAtTarget = Date.UTC(year, month - 1, day, hour, min);
         return utcAtTarget - offset * Bot.constants.minMS;
     };
@@ -438,23 +454,27 @@ export default (Bot, client) => {
     // Get the current user count
     Bot.userCount = async () => {
         if (client.shard?.count) {
-            return await client.shard
-                .fetchClientValues("users.cache.size")
-                .then((results) => results.reduce((prev, val) => prev + val, 0))
-                .catch(console.error);
+            return (
+                (await client.shard
+                    .fetchClientValues("users.cache.size")
+                    .then((results: number[]) => results.reduce((prev, val) => prev + val, 0))
+                    .catch(console.error)) || 0
+            );
         }
-        return client.users.cache.size;
+        return client.users.cache.size || 0;
     };
 
     // Get the current guild count
     Bot.guildCount = async () => {
         if (client.shard?.count) {
-            return await client.shard
-                .fetchClientValues("guilds.cache.size")
-                .then((results) => results.reduce((prev, val) => prev + val, 0))
-                .catch(console.error);
+            return (
+                (await client.shard
+                    .fetchClientValues("guilds.cache.size")
+                    .then((results: number[]) => results.reduce((prev, val) => prev + val, 0))
+                    .catch(console.error)) || 0
+            );
         }
-        return client.guilds.cache.size;
+        return client.guilds.cache.size || 0;
     };
 
     /* isUserID
@@ -469,11 +489,11 @@ export default (Bot, client) => {
     /* getUserID
      * Get a valid Discord id string from a given string.
      */
-    Bot.getUserID = (numStr) => {
-        if (!numStr || !numStr.length) return null;
-        const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
+    Bot.getUserID = (userMention) => {
+        if (!userMention || !userMention.length) return null;
+        const match = /(?:\\<@!?)?([0-9]{17,20})>?/gi.exec(userMention);
         if (match) {
-            return numStr.replace(/[^0-9]/g, "");
+            return userMention.replace(/[^0-9]/g, "");
         }
         return null;
     };
@@ -635,16 +655,10 @@ export default (Bot, client) => {
         let userStr = user;
         if (Array.isArray(user)) userStr = user?.join(" ")?.toString().trim() || "";
 
-        let userAcct = null;
+        let userAcct: UserConfig = null;
         if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useMessageId)) {
             // Grab the sender's primary code
-            if (message.author) {
-                // Message.author for messages
-                userAcct = await Bot.userReg.getUser(message.author.id);
-            } else {
-                // Message.user for interactions
-                userAcct = await Bot.userReg.getUser(message.user.id);
-            }
+            userAcct = await Bot.userReg.getUser(message.user.id);
         } else if (Bot.isUserID(userStr)) {
             // Try to grab the primary code for the mentioned user
             userAcct = await Bot.userReg.getUser(userStr.replace(/[^\d]*/g, ""));
@@ -721,8 +735,8 @@ export default (Bot, client) => {
     // Get the overall levels for a guild as a whole (Gear, rarity, relic, etc)
     Bot.summarizeCharLevels = (guildMembers, type) => {
         const max = { gear: 13, relic: 9, rarity: 7 };
-        if (!max?.[type]) return new Error(`[summarizeLevels] Invalid type (${type})`);
-        if (!Array.isArray(guildMembers)) return new Error("[summarizeCharLevels] guildMembers must be an array!");
+        if (!max?.[type]) throw new Error(`[summarizeLevels] Invalid type (${type})`);
+        if (!Array.isArray(guildMembers)) throw new Error("[summarizeCharLevels] guildMembers must be an array!");
 
         const levels = {};
         for (let ix = max[type]; ix >= 1; ix--) {
@@ -750,7 +764,7 @@ export default (Bot, client) => {
         if (!strIn) return strIn;
         return strIn.replace(/([^\W_]+[^\s-]*) */g, (txt) => {
             if (ROMAN_REGEX.test(txt)) return txt.toUpperCase();
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
         });
     };
 
@@ -769,7 +783,7 @@ export default (Bot, client) => {
 
     // Helper for shortenNum,
     // Trims a fload down to either 0 or 1 (by default) decimal points
-    function trimFloat(num, dec = 1) {
+    function trimFloat(num: number, dec = 1) {
         if (num % 1 === 0) {
             return num.toString();
         }
@@ -845,7 +859,7 @@ export default (Bot, client) => {
 
     let unitsList = [...Bot.characters, ...Bot.ships];
     Bot.getUnitImage = async (defId, { rarity, level, gear, skills, relic }) => {
-        let thisChar;
+        let thisChar: BotUnit;
         try {
             thisChar = unitsList.find((ch) => ch.uniqueName === defId);
 

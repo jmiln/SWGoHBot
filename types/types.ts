@@ -6,9 +6,9 @@ import type slashCommand from "../base/slashCommand.ts";
 import type Help from "../data/help.ts";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 import type { BotCache } from "./cache_types.ts";
 import type { GuildConfigEvent } from "./guildConfig_types.ts";
+import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -35,8 +35,11 @@ export interface BotType {
     getAllyCode: (message: Interaction, userId: string, useMessageId?: boolean) => Promise<string>;
     isAllyCode: (allyCode: string | number) => boolean;
     isUserMention: (userMention: string) => boolean;
+    getUserID: (userMention: string) => string;
     isUserID: (userID: string) => boolean;
     isChannelId: (channelId: string) => boolean;
+    isChannelMention: (mention: string) => boolean;
+    isRoleMention: (mention: string) => boolean;
     isMain: () => boolean;
     toProperCase(strIn: string): string;
     deployCommands(force?: boolean): Promise<string>;
@@ -57,8 +60,8 @@ export interface BotType {
     eventAnnounce: (event: GuildConfigEvent) => void;
 
     mongo: MongoClient;
-    guildCount: () => number;
-    userCount: () => number;
+    guildCount: () => Promise<number>;
+    userCount: () => Promise<number>;
     shardId: number;
     swgohLangList: SWAPILang[];
 
@@ -87,12 +90,12 @@ export interface BotType {
     CharacterNames: {
         name: string;
         defId: string;
-        aliases: GuildAlias[];
+        aliases: string[];
     }[];
     ShipNames: {
         name: string;
         defId: string;
-        aliases: GuildAlias[];
+        aliases: string[];
     }[];
     acronyms: {
         [key: string]: string;
@@ -145,6 +148,15 @@ export interface BotType {
         conquest: string[];
         other: string[];
     };
+    sortOmicrons: () => Promise<{
+        tw: string[];
+        ga3: string[];
+        ga: string[];
+        tb: string[];
+        raid: string[];
+        conquest: string[];
+        other: string[];
+    }>;
 
     // swapi functs
     swgohAPI: {
@@ -162,16 +174,24 @@ export interface BotType {
         playerByName: (name: string, limit?: number) => SWAPIPlayer[];
         abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => ComlinkAbility[] | { nameKey: string }[];
     };
-    findChar: (searchName: string, charList: BotUnit | BotUnit[], isShip?: boolean) => BotUnit[];
+    findChar: (searchName: string, charList: BotUnit[], isShip?: boolean) => BotUnit[];
 
     findFaction: (fact: string) => string | string[] | null;
     getSideColor: (side: UnitSide) => number;
-    summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) => [{ [key: string]: number }, number];
+    summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) => [{ [key: string]: number }, string];
     getGearStr(charIn: SWAPIUnit, preStr: string): string;
 
+    // Data files attached to the bot
+    abilityCosts: Record<string, { [key: string]: number }>;
+    missions: Record<string, { [key: string]: { [key: string]: string | number } }>;
+    resources: Record<string, { [key: string]: string }>;
+    factions: string[];
+
     // util functions
+    wait: () => Promise<void>;
     chunkArray: <T>(inArray: T[], chunkSize: number) => T[][];
-    msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
+    msgArray: (arr: string | string[], join?: string, maxLen?: number) => string[];
+    getDivider: (count: number, divChar: string) => string;
     makeTable: (
         headers: {
             [key: string]: {
@@ -189,9 +209,10 @@ export interface BotType {
     ) => string[];
     expandSpaces: (strIn: string) => string;
     updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
-    getSetTimeForTimezone: (dtString: string, timezone?: string) => number;
+    getSetTimeForTimezone: (mmddyyyy_HHmm: string, zone?: string) => number;
     getStartOfDay: (timezone: string) => Date;
-    getUTCFromOffset: (timezone: string) => number;
+    getEndOfDay: (timezone: string) => Date;
+    getUTCFromOffset: (offset: number) => number;
     convertMS: (ms: number) => {
         hour: number;
         minute: number;
@@ -200,10 +221,13 @@ export interface BotType {
     };
     formatCurrentTime: (timezone?: string) => string;
     isValidZone: (timezone: string) => boolean;
+    getTimezoneOffset: (timezone: string) => number;
     shortenNum: (number: number, trimTo?: number) => string;
+    duration: (time: number, interaciton: BotInteraction) => string;
     formatDuration: (duration: number, lang?: Language) => string;
-    getBlankUnitImage: (defId: string) => Buffer;
-    getUnitImage: (defId: string, unit?: Partial<SWAPIUnit>) => Buffer;
+    getBlankUnitImage: (defId: string) => Promise<Buffer>;
+    getUnitImage: (defId: string, unit?: Partial<SWAPIUnit>) => Promise<Buffer>;
+    myTime: () => string;
 
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
@@ -211,8 +235,8 @@ export interface BotType {
     help: Help;
     cache: BotCache;
     userReg: UserReg;
-    permLevel: (interaction: Interaction) => number;
-    hasViewAndSend: (channel: TextChannel, user: GuildMember) => boolean;
+    permLevel: (interaction: BotInteraction) => Promise<number>;
+    hasViewAndSend: (channel: TextChannel, user: GuildMember) => Promise<boolean>;
     commandList: string[];
     constants: BotConstants;
     languages: {
@@ -262,7 +286,11 @@ export interface BotUnitMods {
 
 export interface BotClient extends Client {
     slashcmds: Collection<string, slashCommand>;
-    reloadDataFiles: () => Promise<void>;
+    reloadDataFiles: () => Promise<{ err: string }>;
+    reloadFunctions: () => Promise<{ err: string }>;
+    reloadSwapi: () => Promise<void>;
+    reloadUserReg: () => Promise<void>;
+    reloadLanguages: () => Promise<void | Error>;
     announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
 }
 

@@ -63,7 +63,7 @@ export default (Bot: BotType, client: BotClient) => {
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
                 const days = ev.repeatDays.splice(0, 1)[0];
-                ev.eventDT = ev.eventDT + (dayMS * days);
+                ev.eventDT = ev.eventDT + dayMS * days;
             }
             if (nowTime > ev.eventDT) {
                 // It ran out of days
@@ -73,11 +73,7 @@ export default (Bot: BotType, client: BotClient) => {
             // 0d0h0m
             // Else it's using basic repeat
             while (nowTime >= ev.eventDT) {
-                ev.eventDT =
-                    ev.eventDT +
-                    ev.repeat.repeatDay * dayMS +
-                    ev.repeat.repeatHour * hourMS +
-                    ev.repeat.repeatMin * minMS;
+                ev.eventDT = ev.eventDT + ev.repeat.repeatDay * dayMS + ev.repeat.repeatHour * hourMS + ev.repeat.repeatMin * minMS;
             }
         }
         return ev;
