@@ -156,7 +156,7 @@ export default class Poll extends Command {
                     pollsArr.splice(targetIndex, 1);
                     await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
                     return super.success(interaction, "> Poll deleted.");
-                } catch (err) {
+                } catch (_) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                 }
             }
@@ -177,7 +177,7 @@ export default class Poll extends Command {
                             },
                         ],
                     });
-                } catch (err) {
+                } catch (_) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                 }
             }

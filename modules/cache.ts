@@ -1,4 +1,6 @@
-export default (clientMongo) => {
+import type { AnyBulkWriteOperation, Document, Filter, MongoClient } from "mongodb";
+
+export default (clientMongo: MongoClient) => {
     const mongo = clientMongo;
 
     return {
@@ -12,7 +14,7 @@ export default (clientMongo) => {
         replace: replace,
     };
 
-    async function put(database, collection, matchCondition, saveObject, autoUpdate = true) {
+    async function put(database: string, collection: string, matchCondition: Filter<Document>, saveObject: Document, autoUpdate = true) {
         if (!database) throw new Error("No database specified to put");
         if (!collection) throw new Error("No collection specified to put");
         if (!saveObject) throw new Error("No object provided to put");
@@ -32,7 +34,7 @@ export default (clientMongo) => {
     }
 
     // Getting it to work with bulkWrite
-    async function putMany(database, collection, saveObjectArray) {
+    async function putMany(database: string, collection: string, saveObjectArray: readonly AnyBulkWriteOperation<Document>[]) {
         if (!database) throw new Error("No database specified to putMany");
         if (!collection) throw new Error("No collection specified to putMany");
         if (!saveObjectArray?.length) throw new Error("Object array is empty or missing");
@@ -43,7 +45,7 @@ export default (clientMongo) => {
         return saveObjectArray;
     }
 
-    async function get(database, collection, matchCondition, projection, limit = 0) {
+    async function get(database: string, collection: string, matchCondition: Filter<Document>, projection: Document, limit = 0) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
@@ -56,7 +58,7 @@ export default (clientMongo) => {
             .toArray();
     }
 
-    async function getOne(database, collection, matchCondition, projection) {
+    async function getOne(database: string, collection: string, matchCondition: Filter<Document>, projection: Document) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
@@ -64,7 +66,7 @@ export default (clientMongo) => {
         return await dbo.collection(collection).findOne(matchCondition || {}, { projection: projection || {} });
     }
 
-    async function remove(database, collection, matchCondition) {
+    async function remove(database: string, collection: string, matchCondition: Filter<Document>) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
@@ -72,7 +74,13 @@ export default (clientMongo) => {
         return await dbo.collection(collection).deleteOne(matchCondition || {});
     }
 
-    async function replace(database, collection, matchCondition, saveObject, autoUpdate = true) {
+    async function replace(
+        database: string,
+        collection: string,
+        matchCondition: Filter<Document>,
+        saveObject: Document,
+        autoUpdate = true,
+    ) {
         if (!database) throw new Error("No database specified to replace");
         if (!collection) throw new Error("No collection specified to replace");
         if (!saveObject) throw new Error("No object provided to replace");
@@ -92,7 +100,7 @@ export default (clientMongo) => {
         return saveObject;
     }
 
-    async function exists(database, collection, matchCondition) {
+    async function exists(database: string, collection: string, matchCondition: Filter<Document>) {
         if (!database) throw new Error("No database specified to replace");
         if (!collection) throw new Error("No collection specified to replace");
         if (!matchCondition) throw new Error("No match condition specified to replace");
@@ -103,7 +111,7 @@ export default (clientMongo) => {
         return !!exists;
     }
 
-    async function checkIndexes(database, collection) {
+    async function checkIndexes(database: string, collection: string) {
         const out = [];
         const dbo = await mongo.db(database);
 

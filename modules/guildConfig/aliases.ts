@@ -1,8 +1,8 @@
 import config from "../../config.js";
+import type { BotCache } from "../../types/cache_types.ts";
 import type { GuildAlias } from "../../types/types.ts";
-import type Cache from "../cache.js";
 
-export async function getGuildAliases({ cache, guildId }: { cache: Cache; guildId: string }): Promise<GuildAlias[]> {
+export async function getGuildAliases({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildAlias[]> {
     if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
     return resArr[0]?.aliases || [];
@@ -13,7 +13,7 @@ export async function setGuildAliases({
     guildId,
     aliasesOut,
 }: {
-    cache: Cache;
+    cache: BotCache;
     guildId: string;
     aliasesOut: GuildAlias[];
 }): Promise<{ success: boolean; error: string | null }> {
@@ -26,7 +26,7 @@ export async function setGuildAliases({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            return { success: false, error: error };
+            return { success: false, error: error.toString() };
         });
     return res;
 }

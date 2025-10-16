@@ -4,18 +4,10 @@ import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import type Help from "../data/help.ts";
-import type Cache from "../modules/cache.js";
 import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
-import type {
-    ComlinkAbility,
-    RawCharacter,
-    RawGuild,
-    SWAPIGuild,
-    SWAPILang,
-    SWAPIPlayer,
-    SWAPIUnit,
-} from "./swapi_types.ts";
+import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { BotCache } from "./cache_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -175,7 +167,7 @@ export interface BotType {
     getGearStr(charIn: SWAPIUnit, preStr: string): string;
 
     // util functions
-    chunkArray: (inArray: Array<any>, chunkSize: number) => Array<any>;
+    chunkArray: <T>(inArray: T[], chunkSize: number) => T[][];
     msgArray: (message: string | string[], splitStr?: string, limit?: number) => string[];
     makeTable: (
         headers: {
@@ -214,7 +206,7 @@ export interface BotType {
     toProperCase: (strIn: string) => string;
     logger: Logger;
     help: Help;
-    cache: Cache;
+    cache: BotCache;
     userReg: UserReg;
     permLevel: (interaction: Interaction) => number;
     hasViewAndSend: (channel: TextChannel, user: GuildMember) => boolean;

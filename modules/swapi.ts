@@ -7,7 +7,7 @@ import { eachLimit } from "async";
 import { MongoClient } from "mongodb";
 import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
-import mongoCache from "../modules/cache.js";
+import mongoCache from "../modules/cache.ts";
 
 import type {
     ComlinkMod,

@@ -202,7 +202,7 @@ export default class MyMods extends Command {
                 // Then all the secondaries
                 for (const s of mod.secondaryStat) {
                     let t = stats[s.unitStat];
-                    let statStr = "" + s.value;
+                    let statStr = `${s.value}`;
                     if (t.indexOf("%") > -1) {
                         t = t.replace(/%/g, "").trim();
                         statStr = `${s.value.toFixed(2)}%`;
