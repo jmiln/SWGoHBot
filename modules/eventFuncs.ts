@@ -1,7 +1,9 @@
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
+import type { BotClient, BotType } from "../types/types.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 
-export default (Bot, client) => {
+export default (Bot: BotType, client: BotClient) => {
     // Some base time conversions to milliseconds
     const dayMS = 86400000;
     const hourMS = 3600000;
@@ -21,7 +23,7 @@ export default (Bot, client) => {
     };
 
     // BroadcastEval a message send
-    async function sendMsg(event, guildConf, guildId, announceMessage) {
+    async function sendMsg(event: GuildConfigEvent, guildConf: GuildConfigSettings, guildId: string, announceMessage: string) {
         if (guildConf.announceChan !== "" || event.channel !== "") {
             let chan = "";
             if (event?.channel?.length) {
@@ -54,14 +56,14 @@ export default (Bot, client) => {
     }
 
     // Re-caclulate a viable eventDT, and return the updated event
-    async function reCalc(ev) {
+    async function reCalc(ev: GuildConfigEvent) {
         const nowTime = Date.now();
         if (ev.repeatDays.length > 0) {
             // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
-                const days = Number.parseInt(ev.repeatDays.splice(0, 1)[0], 10);
-                ev.eventDT = Number.parseInt(ev.eventDT, 10) + Number.parseInt(dayMS * days, 10);
+                const days = ev.repeatDays.splice(0, 1)[0];
+                ev.eventDT = ev.eventDT + (dayMS * days);
             }
             if (nowTime > ev.eventDT) {
                 // It ran out of days
@@ -72,7 +74,7 @@ export default (Bot, client) => {
             // Else it's using basic repeat
             while (nowTime >= ev.eventDT) {
                 ev.eventDT =
-                    Number.parseInt(ev.eventDT, 10) +
+                    ev.eventDT +
                     ev.repeat.repeatDay * dayMS +
                     ev.repeat.repeatHour * hourMS +
                     ev.repeat.repeatMin * minMS;

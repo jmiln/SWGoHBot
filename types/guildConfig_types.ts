@@ -1,14 +1,29 @@
-import type { BotDefaultSettings, GuildAlias } from "./types.ts";
+import type { SWAPILang } from "./swapi_types.ts";
+import type { BotLanguage, GuildAlias } from "./types.ts";
 
 export interface GuildConfig {
     guildId: string;
     events: GuildConfigEvent[];
     polls: GuildConfigPoll[];
     shardTimes: GuildConfigShardTimes[];
-    settings: BotDefaultSettings;
+    settings: GuildConfigSettings;
     aliases: GuildAlias[];
     patreonSettings: GuildConfigPatreonSettings;
     twList: GuildConfigTWList;
+}
+export interface GuildConfigSettings {
+    adminRole: string[];
+    enableWelcome: boolean;
+    welcomeMessage: string;
+    enablePart: boolean;
+    partMessage: string;
+    useEmbeds: boolean;
+    timezone: string;
+    announceChan: string;
+    eventCountdown: number[];
+    language: BotLanguage;
+    swgohLanguage: SWAPILang;
+    shardtimeVertical: boolean;
 }
 export interface GuildConfigShardTimes {
     times: {
@@ -47,6 +62,9 @@ export interface GuildConfigEvent {
     repeatDay: string; // The comma separated list of days that gets parsed into repeatDays
     channelID?: string; // Deprecated field
     guildId?: string; // Used in the getAllEvents function to specify which is from where
+
+    // Used if the event is set with cooldowns
+    isCD?: boolean;
 }
 export interface GuildConfigPoll {
     question: string;

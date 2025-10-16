@@ -8,6 +8,7 @@ import type Logger from "../modules/Logger.ts";
 import type UserReg from "../modules/users.js";
 import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 import type { BotCache } from "./cache_types.ts";
+import type { GuildConfigEvent } from "./guildConfig_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -50,8 +51,10 @@ export interface BotType {
     getPlayerCooldown: (userId: string, guildId: string) => PlayerCooldown;
 
     // Scheduled events
-    manageEvents: (eventsList: object[]) => void;
+    manageEvents: (eventsList: GuildConfigEvent[]) => void;
     sendWebhook: (webhookURL: string, data: object) => void;
+    countdownAnnounce: (event: GuildConfigEvent) => void;
+    eventAnnounce: (event: GuildConfigEvent) => void;
 
     mongo: MongoClient;
     guildCount: () => number;
@@ -198,7 +201,7 @@ export interface BotType {
     formatCurrentTime: (timezone?: string) => string;
     isValidZone: (timezone: string) => boolean;
     shortenNum: (number: number, trimTo?: number) => string;
-    formatDuration: (duration: number, lang?: BotLanguage) => string;
+    formatDuration: (duration: number, lang?: Language) => string;
     getBlankUnitImage: (defId: string) => Buffer;
     getUnitImage: (defId: string, unit?: Partial<SWAPIUnit>) => Buffer;
 

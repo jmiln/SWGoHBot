@@ -1,9 +1,9 @@
 import { MongoClient } from "mongodb";
 import { Server } from "socket.io";
 import config from "../config.js";
-import cache from "../modules/cache.js";
+import cache from "../modules/cache.ts";
 import { addGuildEvent, deleteGuildEvent, getAllEvents, getGuildEvents, guildEventExists } from "../modules/guildConfig/events.ts";
-import { getGuildSettings } from "../modules/guildConfig/settings.js";
+import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 
 const io = new Server(config.eventServe.port);
 let botCache = null;

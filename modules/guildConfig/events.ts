@@ -1,6 +1,6 @@
 import config from "../../config.js";
+import type { BotCache } from "../../types/cache_types.ts";
 import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
-import type BotCache from "../cache.js";
 
 export async function setEvents({ cache, guildId, evArrOut }: { cache: BotCache; guildId: string; evArrOut: GuildConfigEvent[] }) {
     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
@@ -26,7 +26,7 @@ export async function updateGuildEvent({ cache, guildId, evName, event }) {
     return out;
 }
 
-export async function getGuildEvents({ cache, guildId }: { cache: BotCache; guildId: string }) {
+export async function getGuildEvents({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigEvent[]> {
     if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: 1 });
     return resArr[0]?.events || [];
@@ -49,7 +49,7 @@ export async function deleteGuildEvent({ cache, guildId, evName }: { cache: BotC
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
 export async function getAllEvents({ cache }: { cache: BotCache }) {
-    const resArr: GuildConfig[] = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 });
+    const resArr: GuildConfig[] = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 }) as GuildConfig[];
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         return acc.concat(
