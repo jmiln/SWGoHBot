@@ -1,9 +1,11 @@
 import { readdirSync } from "node:fs";
-import { REST, Routes } from "discord.js";
+import { type APIApplicationCommand, type APIApplicationCommandOption, REST, Routes } from "discord.js";
+import type slashCommand from "../base/slashCommand.ts";
+import type { BotClient, BotType } from "../types/types.ts";
 
 const slashDir = `${import.meta.dirname}/../slash/`;
 
-export default async (Bot, client) => {
+export default async (Bot: BotType, client: BotClient) => {
     const slashFiles = readdirSync(slashDir);
     const slashError = [];
     for (const file of slashFiles) {
@@ -33,10 +35,10 @@ export default async (Bot, client) => {
 
     client.unloadSlash = (commandName) => {
         if (client.slashcmds.has(commandName)) {
-            const command = client.slashcmds.get(commandName);
-            client.slashcmds.delete(command);
+            client.slashcmds.delete(commandName);
+            return true;
         }
-        return;
+        return false;
     };
     client.loadSlash = async (commandName) => {
         try {
@@ -44,23 +46,24 @@ export default async (Bot, client) => {
             const { default: command } = await import(path);
             const cmd = new command(Bot);
             if (!cmd.commandData.enabled) {
-                return `${commandName} is not enabled`;
+                return false;
             }
             client.slashcmds.set(cmd.commandData.name, cmd);
-            return false;
+            return true;
         } catch (err) {
-            console.log(err);
-            return `Unable to load command ${commandName}: ${err}`;
+            console.error(`Unable to load command ${commandName}: ${err}`);
+            console.error(err);
+            return false;
         }
     };
     client.reloadSlash = async (commandName) => {
         let response = client.unloadSlash(commandName);
-        if (response) {
-            return new Error(`Error Unloading: ${response}`);
+        if (!response) {
+            throw new Error(`Error Unloading: ${commandName}`);
         }
-        response = client.loadSlash(commandName);
-        if (response) {
-            return new Error(`Error Loading: ${response}`);
+        response = await client.loadSlash(commandName);
+        if (!response) {
+            throw new Error(`Error Loading: ${commandName}`);
         }
         return commandName;
     };
@@ -131,22 +134,40 @@ export default async (Bot, client) => {
         }
         return "No commands needed updating";
     };
-    function compareOptions(localOptions, existingOptions) {
+    function compareOptions(localOptions: APIApplicationCommandOption[], existingOptions: APIApplicationCommandOption[]) {
         if (localOptions.length !== existingOptions.length) return false;
         return localOptions.every((localOption, index) => {
             const existingOption = existingOptions[index];
             if (!existingOption || existingOption.name !== localOption.name || existingOption.type !== localOption.type) {
                 return false;
             }
-            if (localOption.options) {
-                // Handle subcommands or groups
-                return compareOptions(localOption.options, existingOption.options || []);
+            let localCmdOptions = [];
+            let existingCmdOptions = [];
+            if ("options" in localOption) {
+                localCmdOptions = localOption.options;
             }
-            if (localOption.choices) {
+            if ("options" in existingOption) {
+                existingCmdOptions = existingOption.options;
+            }
+            if (localCmdOptions.length !== existingCmdOptions.length) return false;
+            if (localCmdOptions.length) {
+                // Handle subcommands or groups
+                return compareOptions(localCmdOptions, existingCmdOptions);
+            }
+
+            let localCmdChoices = [];
+            let existingCmdChoices = [];
+            if ("choices" in localOption) {
+                localCmdChoices = localOption.choices;
+            }
+            if ("choices" in existingOption) {
+                existingCmdChoices = existingOption.choices;
+            }
+            if (localCmdChoices.length !== existingCmdChoices.length) return false;
+            if (localCmdChoices.length) {
                 // Handle choices
-                if (!existingOption.choices || localOption.choices.length !== existingOption.choices.length) return false;
-                return localOption.choices.every((choice, choiceIndex) => {
-                    const existingChoice = existingOption.choices[choiceIndex];
+                return localCmdChoices.every((choice) => {
+                    const existingChoice = existingCmdChoices.find((ch) => ch.name === choice.name);
                     return existingChoice && choice.name === existingChoice.name && choice.value === existingChoice.value;
                 });
             }
@@ -155,17 +176,19 @@ export default async (Bot, client) => {
     }
 
     // Fetch and compare commands as previously described
-    async function fetchCommands() {
+    async function fetchCommands(): Promise<APIApplicationCommand[]> {
         const rest = new REST().setToken(Bot.config.token);
         const cmdOut = [];
         try {
             if (Bot.config.dev_server) {
-                const guildCmds = await rest.get(Routes.applicationGuildCommands(Bot.config.clientId, Bot.config.dev_server));
+                const guildCmds = (await rest.get(
+                    Routes.applicationGuildCommands(Bot.config.clientId, Bot.config.dev_server),
+                )) as APIApplicationCommand[];
                 for (const cmd of guildCmds) {
                     cmdOut.push(cmd);
                 }
             }
-            const globalCmds = await rest.get(Routes.applicationCommands(Bot.config.clientId));
+            const globalCmds = (await rest.get(Routes.applicationCommands(Bot.config.clientId))) as APIApplicationCommand[];
             for (const cmd of globalCmds) {
                 cmdOut.push(cmd);
             }
@@ -175,7 +198,7 @@ export default async (Bot, client) => {
         return cmdOut;
     }
 
-    async function sendCommandData(commands) {
+    async function sendCommandData(commands: slashCommand["commandData"][]) {
         const rest = new REST().setToken(Bot.config.token);
 
         try {
@@ -184,15 +207,17 @@ export default async (Bot, client) => {
 
             // Deploy global commands
             if (Bot.config.enableGlobalCmds && globalCommands.length) {
-                const response = await rest.put(Routes.applicationCommands(Bot.config.clientId), { body: globalCommands });
+                const response = (await rest.put(Routes.applicationCommands(Bot.config.clientId), {
+                    body: globalCommands,
+                })) as APIApplicationCommand[];
                 console.log(`Successfully reloaded ${response.length} global (/) commands.`);
             }
 
             // Deploy guild commands if there's a dev_server set
             if (Bot.config?.dev_server && guildCommands.length) {
-                const response = await rest.put(Routes.applicationGuildCommands(Bot.config.clientId, Bot.config?.dev_server), {
+                const response = (await rest.put(Routes.applicationGuildCommands(Bot.config.clientId, Bot.config?.dev_server), {
                     body: guildCommands,
-                });
+                })) as APIApplicationCommand[];
                 console.log(`Successfully reloaded ${response.length} guild (/) commands.`);
             }
         } catch (error) {

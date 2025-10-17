@@ -311,13 +311,18 @@ export interface BotUnitMods {
 }
 
 export interface BotClient extends Client {
-    slashcmds: Collection<string, slashCommand>;
+    announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
+    reloadAllEvents: () => Promise<{ succArr: string[]; errArr: string[] }>;
     reloadDataFiles: () => Promise<{ err: string }>;
     reloadFunctions: () => Promise<{ err: string }>;
     reloadSwapi: () => Promise<void>;
     reloadUserReg: () => Promise<void>;
     reloadLanguages: () => Promise<undefined | Error>;
-    announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
+    slashcmds: Collection<string, slashCommand>;
+    loadSlash: (commandName: string) => Promise<boolean>;
+    reloadSlash: (commandName: string) => Promise<string>;
+    reloadAllSlashCommands: () => Promise<{ succArr: string[]; errArr: string[] }>;
+    unloadSlash: (commandName: string) => boolean;
 }
 
 export interface BotInteraction extends BaseInteraction {
@@ -331,6 +336,8 @@ export interface BotConfig {
     ownerid: string;
     clientId: string;
     defaultSettings: BotDefaultSettings;
+    token: string;
+    dev_server: string;
     patrons: {
         [key: string]: number; // discordID: amount
     };

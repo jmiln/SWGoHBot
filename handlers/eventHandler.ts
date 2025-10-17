@@ -1,9 +1,10 @@
 import { readdirSync } from "node:fs";
+import type { BotClient, BotType } from "../types/types.ts";
 
 const needsClient = ["error", "clientReady", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${import.meta.dirname}/../events/`;
 
-export default async (Bot, client) => {
+export default async (Bot: BotType, client: BotClient) => {
     const evtFiles = readdirSync(evDir);
     for (const file of evtFiles) {
         const path = `${evDir}${file}`;
@@ -18,15 +19,15 @@ export default async (Bot, client) => {
 
     // Reload the events files (message, guildCreate, etc)
     client.reloadAllEvents = async () => {
-        const ev = [];
-        const errEv = [];
+        const ev: string[] = [];
+        const errEv: string[] = [];
 
         const evtFiles = await readdirSync(evDir);
         for (const file of evtFiles) {
             try {
                 const eventName = file.split(".")[0];
                 client.removeAllListeners(eventName);
-                const event = import(`${evDir}${file}`);
+                const event = await import(`${evDir}${file}`);
                 if (needsClient.includes(eventName)) {
                     client.on(eventName, event.bind(null, Bot, client));
                 } else {
