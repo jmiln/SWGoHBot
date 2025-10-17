@@ -1,11 +1,12 @@
 import ComlinkStub from "@swgoh-utils/comlink";
+import type { ComlinkPlayer } from "../../types/swapi_types.ts";
 
 export default async function ({ playerId, modMap, clientStub }) {
     // console.log(`[getStrippedModsWorker] ${playerId}`);
     const comlinkStub = new ComlinkStub(clientStub);
     return await comlinkStub
         .getPlayer(null, playerId.toString())
-        .then((res) => {
+        .then((res: ComlinkPlayer) => {
             return res?.rosterUnit
                 .filter((unit) => unit?.equippedStatMod?.length)
                 .map((unit) => ({
@@ -20,7 +21,7 @@ export default async function ({ playerId, modMap, clientStub }) {
                     }),
                 }));
         })
-        .catch((err) => {
+        .catch((err: Error) => {
             console.error(`[${myTime()}] [getStrippedModsWorker] Error: ${err}`);
         });
 }
