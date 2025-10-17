@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, Client, Collection, Guild, GuildMember, Interaction, TextChannel } from "discord.js";
+import type { BaseInteraction, Client, Collection, Guild, GuildMember, Interaction, TextChannel } from "discord.js";
 import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
@@ -320,7 +320,7 @@ export interface BotClient extends Client {
     announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
 }
 
-export interface BotInteraction extends ChatInputCommandInteraction {
+export interface BotInteraction extends BaseInteraction {
     guildSettings: BotDefaultSettings;
     language: Language;
     swgohLanguage: SWAPILang;

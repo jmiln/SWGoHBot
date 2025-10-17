@@ -12,6 +12,9 @@ const defCmdData = {
     permLevel: 0,
 };
 export default abstract class slashCommand {
+    run(_Bot: BotType, _interaction: BotInteraction, _opts: { level: number }) {
+        throw new Error("Method not implemented.");
+    }
     Bot: BotType;
     commandData: typeof defCmdData;
     guildOnly: boolean;
