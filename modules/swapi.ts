@@ -158,7 +158,7 @@ export default (opts = { noop: false }) => {
         );
     }
 
-    async function getPlayersArena(allycodes: string | string[]) {
+    async function getPlayersArena(allycodes: number | number[]) {
         let acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
         acArr = acArr.filter((ac) => !!ac && ac.toString().length === 9);
         if (!acArr.length) throw new Error("No valid ally code(s) entered");
@@ -194,7 +194,7 @@ export default (opts = { noop: false }) => {
             .filter((p) => !!p);
     }
 
-    async function getPlayerUpdates(allycodes: string | string[]) {
+    async function getPlayerUpdates(allycodes: number | number[]) {
         const specialAbilities = await getSpecialAbilities();
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
 
@@ -211,7 +211,7 @@ export default (opts = { noop: false }) => {
             }
         });
         const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {
-            allyCode: { $in: acArr.map((ac) => Number.parseInt(ac, 10)) },
+            allyCode: { $in: acArr },
         });
         const processMemberChunk = async (updatedBare: SWAPIPlayer[], chunkIx: number) => {
             const chunkRes: SWAPIWorkerOutput = await new Promise((resolve, reject) => {
@@ -892,7 +892,7 @@ export default (opts = { noop: false }) => {
         return rawGuild;
     }
 
-    async function guild(allycode: number | string, cooldown: PlayerCooldown) {
+    async function guild(allycode: number | string, cooldown?: PlayerCooldown) {
         let warnings: string[];
         const thisAcStr = allycode?.toString().replace(/[^\d]/g, "");
         if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid allycode");

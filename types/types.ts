@@ -45,13 +45,17 @@ export interface BotType {
     deployCommands(force?: boolean): Promise<string>;
 
     // Patreon / auto-updater functions
-    getRanks: () => string[];
-    shardRanks: () => string[];
-    shardTimes: () => number;
-    guildTickets: () => string[];
-    guildsUpdate: () => void;
-    getPatronUser: (userId: string) => PatronUser;
-    getPlayerCooldown: (userId: string, guildId: string) => PlayerCooldown;
+    getRanks:     () => Promise<void>;
+    shardRanks:   () => Promise<void>;
+    shardTimes:   () => Promise<void>;
+    guildTickets: () => Promise<void>;
+    guildsUpdate: () => Promise<void>;
+
+    getActivePatrons: () => Promise<{discordID: string, amount_cents: number}[]>
+    getGuildSupporterTier: () => Promise<number>;
+    getPatronUser: (userId: string) => Promise<PatronUser>;
+    getPatreonTier(user: PatronUser): number;
+    getPlayerCooldown: (userId: string, guildId?: string) => Promise<PlayerCooldown>;
 
     // Scheduled events
     manageEvents: (eventsList: GuildConfigEvent[]) => void;
@@ -167,10 +171,12 @@ export interface BotType {
         ) => SWAPIPlayer[];
         guildUnitStats: (allyCodes: number[], defId: string, cooldown?: PlayerCooldown) => SWAPIUnit[];
         getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
+        getPlayersArena: (allyCodes: number | number[]) => PlayerArenaRes[];
         langChar: (char: Partial<SWAPIUnit>, lang?: SWAPILang) => SWAPIUnit;
         units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
-        guild: (allycode: number | string, cooldown: PlayerCooldown) => SWAPIGuild;
+        guild: (allycode: number | string, cooldown?: PlayerCooldown) => SWAPIGuild;
         getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => RawGuild;
+        getPlayerUpdates: (allycodes: number | number[]) => PlayerUpdates;
         playerByName: (name: string, limit?: number) => SWAPIPlayer[];
         abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => ComlinkAbility[] | { nameKey: string }[];
     };
@@ -188,7 +194,7 @@ export interface BotType {
     factions: string[];
 
     // util functions
-    wait: () => Promise<void>;
+    wait: (ms?: number) => Promise<void>;
     chunkArray: <T>(inArray: T[], chunkSize: number) => T[][];
     msgArray: (arr: string | string[], join?: string, maxLen?: number) => string[];
     getDivider: (count: number, divChar: string) => string;
@@ -244,6 +250,25 @@ export interface BotType {
     };
     config: BotConfig;
     socket: Socket;
+}
+
+export interface PlayerArenaRes {
+    name: string;
+    allyCode: number;
+    arena: {
+        char: {
+            rank: number | null;
+        },
+        ship: {
+            rank: number | null;
+        }
+    };
+    poUTCOffsetMinutes: number;
+};
+export interface PlayerUpdates {
+    [key: string]: { // username?
+        [key: string]: string[]; // ChangeType: [change, change, change]
+    }
 }
 
 // Local units from the json files
@@ -302,8 +327,12 @@ export interface BotInteraction extends ChatInputCommandInteraction {
 }
 
 export interface BotConfig {
-    [key: string]: string | number | boolean | object;
+    ownerid: string;
+    clientId: string;
     defaultSettings: BotDefaultSettings;
+    patrons: {
+        [key: string]: number; // discordID: amount
+    }
     eventServe: {
         port: number;
     };
@@ -313,7 +342,13 @@ export interface BotConfig {
     logs: {
         logToChannel: boolean;
     };
+    arenaWatchConfig: {
+        tier1: number;
+        tier2: number;
+        tier3: number;
+    }
     webhookURL: string;
+    [key: string]: string | number | boolean | object;
 }
 export interface BotDefaultSettings {
     adminRole: string[];
@@ -379,20 +414,36 @@ export interface GuildAlias {
     name: string;
 }
 
-interface PatronUser {
-    guild: string;
+export interface PatronUser {
+    guild?: string;
     userId: string;
     playerTime: number;
     guildTime: number;
     awAccounts: number;
     discordID: string;
     amount_cents: number;
+
+    declined_since?: string;
 }
-// interface PatreonTier {
-//     playerTime: number;
-//     guildTime: number;
-//     awAccounts: number;
-// }
+export interface PatreonTier {
+    playerTime: number;
+    guildTime: number;
+    awAccounts: number;
+}
+export interface PatreonTiers {
+    tiers: {
+        [key: number]: {
+            name: string;
+            benefits?: Record<string, string>;
+            playerTime: number;
+            guildTime: number;
+            awAccounts: number;
+            sharePlayer: number;
+            shareGuild: number;
+        }
+    };
+    commands: Record<string, string>;
+}
 
 export interface UserConfig {
     id: string;
@@ -455,7 +506,7 @@ interface UserAcct {
     lastShipRank?: number;
     lastShipClimb?: number;
 }
-interface ArenaWatchAcct {
+export interface ArenaWatchAcct {
     allyCode: number;
     name: string;
     mention: string;
@@ -467,6 +518,11 @@ interface ArenaWatchAcct {
     result?: string;
     lastCharChange?: number;
     lastShipChange?: number;
+
+    // Added in temporarily while processing
+    duration?: number;
+    timeTil?: string;
+    outString?: string;
 }
 export interface TWList {
     [key: string]: {

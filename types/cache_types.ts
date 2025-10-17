@@ -7,10 +7,10 @@ export interface BotCache {
         database: string,
         collection: string,
         matchCondition: Filter<Document>,
-        projection: Document,
+        projection?: Document,
         limit?: number,
     ) => Promise<Document[]>;
-    getOne: (database: string, collection: string, matchCondition: Filter<Document>, projection: Document) => Promise<Document>;
+    getOne: (database: string, collection: string, matchCondition: Filter<Document>, projection?: Document) => Promise<Document>;
     put: (
         database: string,
         collection: string,

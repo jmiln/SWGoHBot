@@ -12,7 +12,8 @@ class Logger {
         this.Bot = Bot;
         this.client = client;
     }
-    log(content: string, type = "log", webhook = false) {
+    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
+    log(content: any, type = "log", webhook = false) {
         const shard = this.Bot?.shardId > -1 ? ` (${this.Bot.shardId})` : "";
         const time = Intl.DateTimeFormat("en", {
             day: "numeric",
