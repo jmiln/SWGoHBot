@@ -5,10 +5,10 @@ import { MongoClient } from "mongodb";
 import config from "./config.js";
 import eventHandler from "./handlers/eventHandler.js";
 import slashHandler from "./handlers/slashHandler.js";
-import cache from "./modules/cache.js";
+import cache from "./modules/cache.ts";
 import Logger from "./modules/Logger.ts";
 import swgohAPI from "./modules/swapi.ts";
-import userReg from "./modules/users.js";
+import userReg from "./modules/users.ts";
 
 const Bot = {};
 Bot.config = config;
@@ -44,17 +44,17 @@ Bot.journeyReqs = JSON.parse(readFileSync("./data/journeyReqs.json", "utf-8"));
 processJourneyNames();
 
 // Load in various general functions for the bot
-import funct from "./modules/functions.js";
+import funct from "./modules/functions.ts";
 
 funct(Bot, client);
 
 // Load in stuff for the events command
-import eventFuncs from "./modules/eventFuncs.js";
+import eventFuncs from "./modules/eventFuncs.ts";
 
 eventFuncs(Bot, client);
 
 // Load in stuff for patrons and such
-import patreonFuncs from "./modules/patreonFuncs.js";
+import patreonFuncs from "./modules/patreonFuncs.ts";
 
 patreonFuncs(Bot, client);
 

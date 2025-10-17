@@ -5,10 +5,10 @@ import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import type Help from "../data/help.ts";
 import type Logger from "../modules/Logger.ts";
-import type UserReg from "../modules/users.js";
 import type { BotCache } from "./cache_types.ts";
 import type { GuildConfigEvent } from "./guildConfig_types.ts";
 import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { UserReg } from "./userReg_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -45,13 +45,13 @@ export interface BotType {
     deployCommands(force?: boolean): Promise<string>;
 
     // Patreon / auto-updater functions
-    getRanks:     () => Promise<void>;
-    shardRanks:   () => Promise<void>;
-    shardTimes:   () => Promise<void>;
+    getRanks: () => Promise<void>;
+    shardRanks: () => Promise<void>;
+    shardTimes: () => Promise<void>;
     guildTickets: () => Promise<void>;
     guildsUpdate: () => Promise<void>;
 
-    getActivePatrons: () => Promise<{discordID: string, amount_cents: number}[]>
+    getActivePatrons: () => Promise<{ discordID: string; amount_cents: number }[]>;
     getGuildSupporterTier: () => Promise<number>;
     getPatronUser: (userId: string) => Promise<PatronUser>;
     getPatreonTier(user: PatronUser): number;
@@ -258,17 +258,18 @@ export interface PlayerArenaRes {
     arena: {
         char: {
             rank: number | null;
-        },
+        };
         ship: {
             rank: number | null;
-        }
+        };
     };
     poUTCOffsetMinutes: number;
-};
+}
 export interface PlayerUpdates {
-    [key: string]: { // username?
+    [key: string]: {
+        // username?
         [key: string]: string[]; // ChangeType: [change, change, change]
-    }
+    };
 }
 
 // Local units from the json files
@@ -315,7 +316,7 @@ export interface BotClient extends Client {
     reloadFunctions: () => Promise<{ err: string }>;
     reloadSwapi: () => Promise<void>;
     reloadUserReg: () => Promise<void>;
-    reloadLanguages: () => Promise<void | Error>;
+    reloadLanguages: () => Promise<undefined | Error>;
     announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
 }
 
@@ -332,12 +333,13 @@ export interface BotConfig {
     defaultSettings: BotDefaultSettings;
     patrons: {
         [key: string]: number; // discordID: amount
-    }
+    };
     eventServe: {
         port: number;
     };
     mongodb: {
         swapidb: string;
+        swgohbotdb: string;
     };
     logs: {
         logToChannel: boolean;
@@ -346,7 +348,7 @@ export interface BotConfig {
         tier1: number;
         tier2: number;
         tier3: number;
-    }
+    };
     webhookURL: string;
     [key: string]: string | number | boolean | object;
 }
@@ -440,7 +442,7 @@ export interface PatreonTiers {
             awAccounts: number;
             sharePlayer: number;
             shareGuild: number;
-        }
+        };
     };
     commands: Record<string, string>;
 }

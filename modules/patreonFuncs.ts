@@ -19,7 +19,7 @@ export default (Bot: BotType, client: BotClient) => {
         if (!userId) throw new Error("Missing user ID");
 
         // Try and get em from the db
-        const patron: PatronUser = await Bot.cache.getOne("swgohbot", "patrons", { discordID: userId }) as PatronUser;
+        const patron: PatronUser = (await Bot.cache.getOne("swgohbot", "patrons", { discordID: userId })) as PatronUser;
 
         // If they aren't in the db, see if we have em in there manually
         if (!patron && Bot.config.patrons?.[userId]) {
@@ -104,9 +104,9 @@ export default (Bot: BotType, client: BotClient) => {
         const supporterTimes: { playerTime: number; guildTime: number } = !tiers?.[supporterTier]?.sharePlayer
             ? tiers[0]
             : {
-                playerTime: tiers[supporterTier].sharePlayer,
-                guildTime: tiers[supporterTier].shareGuild,
-            };
+                  playerTime: tiers[supporterTier].sharePlayer,
+                  guildTime: tiers[supporterTier].shareGuild,
+              };
 
         // Grab the best times for the user themselves, patreon sub or not
         const playerTier = getPatreonTier(patron);
@@ -137,7 +137,7 @@ export default (Bot: BotType, client: BotClient) => {
                 // If the user only has em enabled for the primary ac, ignore the rest
                 if (
                     ((user.accounts.length > 1 && patron.amount_cents < 500) || user.arenaAlert.enableRankDMs === "primary") &&
-                        !acc.primary
+                    !acc.primary
                 ) {
                     continue;
                 }
@@ -226,8 +226,8 @@ export default (Bot: BotType, client: BotClient) => {
                                                 {
                                                     author: { name: "Character Arena" },
                                                     description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${
-player.arena.char.rank
-}**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
+                                                        player.arena.char.rank
+                                                    }**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
                                                     color: Bot.constants.colors.red,
                                                     footer: {
                                                         text: payoutTime,
@@ -298,8 +298,8 @@ player.arena.char.rank
                                                 {
                                                     author: { name: "Fleet Arena" },
                                                     description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${
-player.arena.ship.rank
-}**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
+                                                        player.arena.ship.rank
+                                                    }**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
                                                     color: Bot.constants.colors.red,
                                                     footer: {
                                                         text: payoutTime,
@@ -352,8 +352,8 @@ player.arena.ship.rank
             // Make a copy just in case, so nothing goes wonky
             let acctCount = 0;
             if (patron.amount_cents < 500) acctCount = Bot.config.arenaWatchConfig.tier1;
-                else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
-                    else acctCount = Bot.config.arenaWatchConfig.tier3;
+            else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
+            else acctCount = Bot.config.arenaWatchConfig.tier3;
 
             const players = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
             if (!players || !players.length) continue;
@@ -362,7 +362,7 @@ player.arena.ship.rank
             if (aw?.payout?.char?.enabled && aw.payout.char.channel) {
                 const playerTimes = getPayoutTimes(players, "char");
                 const formattedEmbed = formatPayouts(playerTimes, "char");
-                const sentMessage = await sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed) as Message;
+                const sentMessage = (await sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed)) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.char.msgID = sentMessage.id;
                 } else {
@@ -373,7 +373,7 @@ player.arena.ship.rank
             if (aw.payout?.fleet?.enabled && aw.payout.fleet.channel) {
                 const playerTimes = getPayoutTimes(players, "fleet");
                 const formattedEmbed = formatPayouts(playerTimes, "fleet");
-                const sentMessage = await sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed) as Message;
+                const sentMessage = (await sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed)) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.fleet.msgID = sentMessage.id;
                 } else {
@@ -410,9 +410,9 @@ player.arena.ship.rank
             fieldOut.push({
                 name: `PO in ${key}`,
                 value: time.players
-                .sort((a: string, b: string) => a[arenaString] - b[arenaString])
-                .map((p: { outString: string }) => p.outString)
-                .join("\n"),
+                    .sort((a: string, b: string) => a[arenaString] - b[arenaString])
+                    .map((p: { outString: string }) => p.outString)
+                    .join("\n"),
             });
         }
         return {
@@ -520,16 +520,16 @@ player.arena.ship.rank
             // If they don't want any alerts
             if (
                 !aw?.enabled ||
-                    (!aw.arena?.fleet?.channel && !aw.arena?.char?.channel) ||
-                    (!aw.arena?.fleet?.enabled && !aw.arena?.char?.enabled)
+                (!aw.arena?.fleet?.channel && !aw.arena?.char?.channel) ||
+                (!aw.arena?.fleet?.enabled && !aw.arena?.char?.enabled)
             ) {
                 continue;
             }
 
             let acctCount = 0;
             if (patron.amount_cents < 500) acctCount = Bot.config.arenaWatchConfig.tier1;
-                else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
-                    else acctCount = Bot.config.arenaWatchConfig.tier3;
+            else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
+            else acctCount = Bot.config.arenaWatchConfig.tier3;
 
             const accountsToCheck: ArenaWatchAcct[] = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
             const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
@@ -636,7 +636,9 @@ player.arena.ship.rank
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (
                                 chan instanceof TextChannel &&
-                                chan?.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                                chan
+                                    ?.permissionsFor(client.user)
+                                    .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                             ) {
                                 chan.send(`>>> ${fields.join("\n")}`);
                             }
@@ -651,7 +653,9 @@ player.arena.ship.rank
                                 const chan = client.channels.cache.get(aw.arena.char.channel);
                                 if (
                                     chan instanceof TextChannel &&
-                                    chan?.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                                    chan
+                                        ?.permissionsFor(client.user)
+                                        .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                                 ) {
                                     chan.send(`>>> ${charFields.join("\n")}`);
                                 }
@@ -665,7 +669,9 @@ player.arena.ship.rank
                                 const chan = client.channels.cache.get(aw.arena.fleet.channel);
                                 if (
                                     chan instanceof TextChannel &&
-                                    chan?.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                                    chan
+                                        ?.permissionsFor(client.user)
+                                        .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                                 ) {
                                     chan.send(`>>> ${shipFields.join("\n")}`);
                                 }
@@ -679,7 +685,10 @@ player.arena.ship.rank
     };
 
     // Compare ranks to see if we have both sides of the fight or not
-    function checkRanks(inArr: { allyCode: string; name: string; oldRank: number; newRank: number; mark: string }[], aw: UserConfig["arenaWatch"]) {
+    function checkRanks(
+        inArr: { allyCode: string; name: string; oldRank: number; newRank: number; mark: string }[],
+        aw: UserConfig["arenaWatch"],
+    ) {
         const checked = [];
         const outArr = [];
         if (aw.showvs) {
@@ -747,9 +756,9 @@ player.arena.ship.rank
                     if (
                         channel instanceof TextChannel &&
                         channel?.guild &&
-                            channel
-                                .permissionsFor(client.user)
-                                .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                        channel
+                            .permissionsFor(client.user)
+                            .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                     ) {
                         return true;
                     }
@@ -860,7 +869,7 @@ player.arena.ship.rank
                 if (
                     channel instanceof TextChannel &&
                     channel?.guild &&
-                        channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                    channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                 ) {
                     if (!msgIdIn) {
                         targetMsg = await channel.send({ embeds: [outEmbed] });
@@ -935,9 +944,9 @@ player.arena.ship.rank
             // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
             if (
                 isMsgType &&
-                    gt?.nextChallengesRefresh &&
-                    !isWithinTime(gt.nextChallengesRefresh, nowTime, 1, 5) &&
-                    gt.nextChallengesRefresh > nowTime
+                gt?.nextChallengesRefresh &&
+                !isWithinTime(gt.nextChallengesRefresh, nowTime, 1, 5) &&
+                gt.nextChallengesRefresh > nowTime
             ) {
                 continue;
             }
@@ -949,9 +958,9 @@ player.arena.ship.rank
                     if (
                         channel instanceof TextChannel &&
                         channel?.guild &&
-                            channel
-                                .permissionsFor(client.user)
-                                .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                        channel
+                            .permissionsFor(client.user)
+                            .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                     ) {
                         return true;
                     }
@@ -1036,7 +1045,7 @@ player.arena.ship.rank
 
             // If the user wants the messages just before each reset, send a new message instead of updating an old one
             //  - Just don't send the msg ID
-            const sentMsg: Message = await sendBroadcastMsg(gt?.updateType === "msg" ? null : gt.msgId, gt.channel, outEmbed) as Message;
+            const sentMsg: Message = (await sendBroadcastMsg(gt?.updateType === "msg" ? null : gt.msgId, gt.channel, outEmbed)) as Message;
             if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
                 gt.msgId = sentMsg.id;
                 user.guildTickets = gt;
@@ -1049,7 +1058,7 @@ player.arena.ship.rank
         if (min >= max) throw new Error("[patreonFuncs / isWithinTime] Min MUST be less than max.");
         if (
             targetTime - min * 60_000 < nowTime || // min minutes before targetTime is past
-                targetTime - max * 60_000 > nowTime
+            targetTime - max * 60_000 > nowTime
         ) {
             // max minutes before targetTime is in the future
             return false;
