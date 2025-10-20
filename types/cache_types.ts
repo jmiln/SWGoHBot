@@ -1,4 +1,4 @@
-import type { AnyBulkWriteOperation, DeleteResult, Document, Filter, ListIndexesCursor } from "mongodb";
+import type { AnyBulkWriteOperation, BulkWriteResult, DeleteResult, Document, Filter, ListIndexesCursor } from "mongodb";
 
 export interface BotCache {
     checkIndexes: (database: string, collection: string) => Promise<ListIndexesCursor[]>;
@@ -18,7 +18,7 @@ export interface BotCache {
         saveObject: Document,
         autoUpdate?: boolean,
     ) => Promise<Document>;
-    putMany: (database: string, collection: string, saveObjectArray: readonly AnyBulkWriteOperation<Document>[]) => Promise<Document[]>;
+    putMany: (database: string, collection: string, saveObjectArray: readonly AnyBulkWriteOperation<Document>[]) => Promise<BulkWriteResult>;
     remove: (database: string, collection: string, matchCondition: Filter<Document>) => Promise<DeleteResult>;
     replace: (
         database: string,

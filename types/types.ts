@@ -16,7 +16,7 @@ export interface PlayerCooldown {
 }
 
 export type BotLanguage = "en_US" | "de_DE" | "es_SP" | "ko_KR" | "pt_BR";
-export type UnitSide = "light" | "dark";
+export type UnitSide = "light" | "dark" | "neutral";
 
 export interface LangHelpStrs {
     description: string;
@@ -77,20 +77,7 @@ export interface BotType {
         name: string;
         aliases: string[];
     }[];
-    journeyReqs: {
-        [key: string]: {
-            guideId: string;
-            type: string;
-            reqs: {
-                defId: string;
-                type: string;
-                tier: number;
-                ship?: boolean;
-                required?: boolean;
-                manual?: boolean;
-            }[];
-        };
-    };
+    journeyReqs: JourneyReqs[];
     CharacterNames: {
         name: string;
         defId: string;
@@ -107,17 +94,7 @@ export interface BotType {
     arenaJumps: {
         [key: string]: number;
     };
-    charLocs: {
-        name: string;
-        defId: string;
-        locations: {
-            type: string;
-            locId: string;
-            name?: string;
-            level?: string;
-            cost?: string;
-        }[];
-    }[];
+    charLocs: UnitLocation[];
     shipLocs: {
         name: string;
         defId: string;
@@ -252,6 +229,33 @@ export interface BotType {
     socket: Socket;
 }
 
+export interface JourneyReqs {
+    [key: string]: {
+        guideId: string;
+        type: string;
+        faction?: {
+            name: string;
+            type: string;
+            tier: number;
+        };
+        reqs: {
+            defId: string;
+            type: string;
+            tier: number;
+            ship?: boolean;
+            required?: boolean;
+            manual?: boolean;
+        }[];
+        auto?: {
+            faction: string;
+            ship?: boolean;
+            capital?: boolean;
+            type: string;
+            tier: number;
+        }[]
+    };
+}
+
 export interface PlayerArenaRes {
     name: string;
     allyCode: number;
@@ -265,6 +269,18 @@ export interface PlayerArenaRes {
     };
     poUTCOffsetMinutes: number;
 }
+export interface UnitLocation {
+        name: string;
+        defId: string;
+        locations: Location[];
+}
+export interface Location {
+    type: string;
+    locId: string;
+    name?: string;
+    level?: string;
+    cost?: string;
+}
 export interface PlayerUpdates {
     [key: string]: {
         // username?
@@ -277,7 +293,7 @@ export interface BotUnit {
     uniqueName: string;
     name: string;
     aliases: string[];
-    url: string;
+    url?: string;
     avatarURL: string;
     side: UnitSide;
     factions: string[];

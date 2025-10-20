@@ -2,6 +2,7 @@ import config from "../../config.js";
 
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
+import type { BotCache } from "../../types/cache_types.ts";
 import type { GuildConfig } from "../../types/guildConfig_types.ts";
 
 export async function getPatreonSettings({ cache, guildId }) {
@@ -196,7 +197,7 @@ export async function ensureGuildSupporter({ cache }) {
 }
 
 // Make sure the user's info is logged correctly in the guild they have set
-export async function ensureBonusServerSet({ cache, userId, amount_cents }) {
+export async function ensureBonusServerSet({ cache, userId, amount_cents }: { cache: BotCache; userId: string; amount_cents: number }) {
     // If the user is active, and has a server linked, make sure it shows up in that guild's settings
     const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userId });
 
@@ -210,7 +211,7 @@ export async function ensureBonusServerSet({ cache, userId, amount_cents }) {
     if (guildSupArr.filter((sup) => sup.userId === userId)?.length > 0) return {};
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
-    const addServerRes = await addServerSupporter({
+    const addServerRes: { user: { success: boolean; error: string }; guild: { success: boolean; error: string } } = await addServerSupporter({
         cache,
         guildId: userConf.bonusServer,
         userInfo: {

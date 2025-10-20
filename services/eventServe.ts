@@ -4,6 +4,9 @@ import config from "../config.js";
 import cache from "../modules/cache.ts";
 import { addGuildEvent, deleteGuildEvent, getAllEvents, getGuildEvents, guildEventExists } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import type { BotCache } from "../types/cache_types.ts";
+import type { Socket } from "socket.io";
+import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
 const io = new Server(config.eventServe.port);
 let botCache = null;
@@ -18,7 +21,7 @@ async function init() {
     });
 }
 
-function setupEventHandlers(socket, cache) {
+function setupEventHandlers(socket: Socket, cache: BotCache) {
     socket.on("checkEvents", async (callback) => {
         try {
             const eventsOut = await processEvents(cache);
@@ -80,7 +83,7 @@ function setupEventHandlers(socket, cache) {
     });
 }
 
-async function processEvents(cache) {
+async function processEvents(cache: BotCache) {
     const nowTime = Date.now();
     const events = await getAllEvents({ cache });
     const eventsOut = events.filter((e) => Number.parseInt(e.eventDT, 10) <= nowTime);
@@ -104,7 +107,7 @@ async function processEvents(cache) {
     return eventsOut;
 }
 
-async function addEvents(cache, guildId, events) {
+async function addEvents(cache: BotCache, guildId: string, events: GuildConfigEvent | GuildConfigEvent[]) {
     const eventArr = Array.isArray(events) ? events : [events];
     const results = [];
 
@@ -117,7 +120,6 @@ async function addEvents(cache, guildId, events) {
             results.push(evRes);
             continue;
         }
-        event.countdown = event.countdown === "true" || event.countdown === true;
 
         try {
             await addGuildEvent({ cache, guildId, newEvent: event });
@@ -131,7 +133,7 @@ async function addEvents(cache, guildId, events) {
     return results;
 }
 
-async function removeEvent(cache, guildId, eventName) {
+async function removeEvent(cache: BotCache, guildId: string, eventName: string) {
     const res = { eventName, success: true, error: null };
     const exists = await guildEventExists({ cache, guildId, evName: eventName });
 
@@ -150,13 +152,13 @@ async function removeEvent(cache, guildId, eventName) {
     return res;
 }
 
-async function getEventsByFilter(cache, guildId, filter) {
+async function getEventsByFilter(cache: BotCache, guildId: string, filter: string | string[]) {
     const filterArr = Array.isArray(filter) ? filter : [filter];
     const events = await getGuildEvents({ cache, guildId });
     return events.filter((ev) => filterArr.every((e) => `${ev.message} ${ev.name}`.includes(e)));
 }
 
-function convertMS(milliseconds) {
+function convertMS(milliseconds: number) {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const totalMin = Math.floor(totalSeconds / 60);
     const seconds = totalSeconds % 60;

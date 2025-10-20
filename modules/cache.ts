@@ -41,8 +41,8 @@ export default (clientMongo: MongoClient) => {
 
         const dbo = await mongo.db(database);
 
-        await dbo.collection(collection).bulkWrite(saveObjectArray);
-        return saveObjectArray;
+        return await dbo.collection(collection).bulkWrite(saveObjectArray);
+        // return saveObjectArray;
     }
 
     async function get(database: string, collection: string, matchCondition: Filter<Document>, projection: Document, limit = 0) {
