@@ -1,6 +1,6 @@
-import { readFileSync } from "node:fs";
+import fs from "node:fs";
 import { inspect } from "node:util";
-import { Client, Collection, DiscordAPIError } from "discord.js";
+import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
 import { MongoClient } from "mongodb";
 import config from "./config.js";
 import eventHandler from "./handlers/eventHandler.ts";
@@ -10,28 +10,30 @@ import Logger from "./modules/Logger.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
 
-const Bot = {};
+const Bot = {} as BotType;
 Bot.config = config;
 
 const client = new Client({
     intents: Bot.config.botIntents,
     partials: Bot.config.partials,
     closeTimeout: 30_000,
-});
+}) as BotClient;
+
+const jsonFromFile = async (file: string) => await fs.promises.readFile(file, "utf-8").then(JSON.parse);
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
-Bot.abilityCosts = JSON.parse(readFileSync("./data/abilityCosts.json", "utf-8"));
-Bot.acronyms = JSON.parse(readFileSync("./data/acronyms.json", "utf-8"));
-Bot.arenaJumps = JSON.parse(readFileSync("./data/arenaJumps.json", "utf-8"));
-Bot.charLocs = JSON.parse(readFileSync("./data/charLocations.json", "utf-8"));
-Bot.characters = JSON.parse(readFileSync("./data/characters.json", "utf-8"));
-Bot.factions = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.missions = JSON.parse(readFileSync("./data/missions.json", "utf-8"));
-Bot.raidNames = JSON.parse(readFileSync("./data/raidNames.json", "utf-8"));
-Bot.resources = JSON.parse(readFileSync("./data/resources.json", "utf-8"));
-Bot.shipLocs = JSON.parse(readFileSync("./data/shipLocations.json", "utf-8"));
-Bot.ships = JSON.parse(readFileSync("./data/ships.json", "utf-8"));
-Bot.timezones = JSON.parse(readFileSync("./data/timezones.json", "utf-8"));
+Bot.abilityCosts = await jsonFromFile("./data/abilityCosts.json");
+Bot.acronyms     = await jsonFromFile("./data/acronyms.json");
+Bot.arenaJumps   = await jsonFromFile("./data/arenaJumps.json");
+Bot.charLocs     = await jsonFromFile("./data/charLocations.json");
+Bot.characters   = await jsonFromFile("./data/characters.json");
+Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
+Bot.missions     = await jsonFromFile("./data/missions.json");
+Bot.raidNames    = await jsonFromFile("./data/raidNames.json");
+Bot.resources    = await jsonFromFile("./data/resources.json");
+Bot.shipLocs     = await jsonFromFile("./data/shipLocations.json");
+Bot.ships        = await jsonFromFile("./data/ships.json");
+Bot.timezones    = await jsonFromFile("./data/timezones.json");
 
 import constants from "./data/constants.ts";
 import help from "./data/help.ts";
@@ -40,7 +42,7 @@ Bot.constants = constants;
 Bot.help = help;
 
 // Load the journeyReqs and process the names for autocomplete
-Bot.journeyReqs = JSON.parse(readFileSync("./data/journeyReqs.json", "utf-8"));
+Bot.journeyReqs = await jsonFromFile("./data/journeyReqs.json");
 processJourneyNames();
 
 // Load in various general functions for the bot
@@ -55,6 +57,9 @@ eventFuncs(Bot, client);
 
 // Load in stuff for patrons and such
 import patreonFuncs from "./modules/patreonFuncs.ts";
+import type { SWAPILang } from "./types/swapi_types.ts";
+import type { BotClient, BotType } from "./types/types.ts";
+import type { UserReg } from "./types/userReg_types.ts";
 
 patreonFuncs(Bot, client);
 
@@ -75,7 +80,7 @@ Bot.swgohLangList = [
     "IND_ID",
     "JPN_JP",
     "THA_TH",
-];
+] as SWAPILang[];
 client.reloadLanguages();
 
 // List of all the unit names to use for autocomplete
@@ -97,7 +102,7 @@ const init = async () => {
 
     // Set up the caching
     Bot.cache = cache(Bot.mongo);
-    Bot.userReg = userReg(Bot);
+    Bot.userReg = userReg(Bot) as UserReg;
 
     if (Bot.config.swapiConfig || Bot.config.fakeSwapiConfig) {
         // Load up the api connector/ helpers
@@ -121,7 +126,9 @@ const init = async () => {
         // If it's that error, don't bother showing it again
         try {
             if (!errorMsg?.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel)?.send("```inspect(errorMsg)```", { split: true });
+                const thisChannel = client.channels.cache.get(Bot.config.logs.channel);
+                if (!thisChannel || !(thisChannel instanceof TextChannel) || !thisChannel?.send) return;
+                thisChannel?.send("```inspect(errorMsg)```");
             }
         } catch (_) {
             // Don't bother doing anything
@@ -133,16 +140,16 @@ const init = async () => {
     });
 
     const IGNORED_ERRORS = [
-        DiscordAPIError.UnknownMessage,
-        DiscordAPIError.UnknownChannel,
-        DiscordAPIError.UnknownGuild,
-        DiscordAPIError.UnknownMember,
-        DiscordAPIError.UnknownUser,
-        DiscordAPIError.UnknownInteraction,
-        DiscordAPIError.MissingAccess,
+        APIErrors.UnknownMessage,
+        APIErrors.UnknownChannel,
+        APIErrors.UnknownGuild,
+        APIErrors.UnknownMember,
+        APIErrors.UnknownUser,
+        APIErrors.UnknownInteraction,
+        APIErrors.MissingAccess,
     ];
 
-    process.on("unhandledRejection", (err) => {
+    process.on("unhandledRejection", (err: Error) => {
         const errorMsg = err?.stack.replace(new RegExp(process.cwd(), "g"), ".");
 
         // If it's something I can't do anything about, ignore it
@@ -159,7 +166,9 @@ const init = async () => {
         console.error(err);
         try {
             if (Bot.config.logs.logToChannel) {
-                client.channels.cache.get(Bot.config.logs.channel)?.send(`\`\`\`${inspect(errorMsg)}\`\`\``, { split: true });
+                const thisChannel = client.channels.cache.get(Bot.config.logs.channel);
+                if (!thisChannel || !(thisChannel instanceof TextChannel) || !thisChannel?.send) return;
+                thisChannel?.send(`\`\`\`${inspect(errorMsg)}\`\`\``);
             }
         } catch (e) {
             console.error("[swgohBot.js unhandledRejection] Error while logging error:", e);

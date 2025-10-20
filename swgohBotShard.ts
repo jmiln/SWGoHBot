@@ -1,15 +1,14 @@
-// At max, each shard can have 2500 servers
-import Discord from "discord.js";
+import { type Shard, ShardingManager } from "discord.js";
 import config from "./config.js";
 
-const Manager = new Discord.ShardingManager("./swgohBot.js", {
+const Manager = new ShardingManager("./swgohBot.ts", {
     totalShards: config.shardCount, // Tell it how many shards we want (Approx. 1100 servers per shard)
 });
 
 // Give it a large timeout since it refuses to work otherwise
 Manager.spawn({ timeout: 60000 });
 
-Manager.on("shardCreate", (shard) => {
+Manager.on("shardCreate", (shard: Shard) => {
     // shard.on("reconnecting", () => {
     //     console.log(`  [${shard.id}] Reconnecting shard`);
     // });

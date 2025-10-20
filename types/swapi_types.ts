@@ -1,18 +1,18 @@
 export type SWAPILang =
-    | "eng_us"
-    | "ger_de"
-    | "spa_xm"
-    | "fre_fr"
-    | "rus_ru"
-    | "por_br"
-    | "kor_kr"
-    | "ita_it"
-    | "tur_tr"
-    | "chs_cn"
-    | "cht_cn"
-    | "ind_id"
-    | "jpn_jp"
-    | "tha_th";
+    | "eng_us" | "ENG_US"
+    | "ger_de" | "GER_DE"
+    | "spa_xm" | "SPA_XM"
+    | "fre_fr" | "FRE_FR"
+    | "rus_ru" | "RUS_RU"
+    | "por_br" | "POR_BR"
+    | "kor_kr" | "KOR_KR"
+    | "ita_it" | "ITA_IT"
+    | "tur_tr" | "TUR_TR"
+    | "chs_cn" | "CHS_CN"
+    | "cht_cn" | "CHT_CN"
+    | "ind_id" | "IND_ID"
+    | "jpn_jp" | "JPN_JP"
+    | "tha_th" | "THA_TH";
 
 export interface SWAPIPlayer {
     id: string;
@@ -122,7 +122,7 @@ export interface SWAPIUnit {
     gear: number;
     equipped: {
         equipmentId: number;
-        slot: string;
+        slot: number;
     }[];
     factions?: string[]; // Only there after processing
     skills: SWAPIUnitSkill[];
@@ -130,7 +130,7 @@ export interface SWAPIUnit {
     stats?: SWAPIUnitStats; // Not there til processed
     relic: { currentTier: number } | null;
     purchasedAbilityId: string[]; // Ultimate ability if available
-    crew: SWAPIPlayerCrew[];
+    crew: SWAPIPlayerCrew[] | null;
     combatType: 1 | 2;
     gp?: number; // This won't be there til we process the stats
     level: number;
@@ -329,6 +329,7 @@ export interface ComlinkAbility {
     tierList: string[];
     type: null;
     zetaTier: number;
+    descKey: string;
 }
 
 export interface ComlinkMod {
@@ -379,9 +380,9 @@ export interface SWAPIUnitSkill {
     omicronMode?: null; // Not sure, they all seem to be null
 
     // And these just sometimes mid-command usage
-    type: string;
-    tierStr: string;
-    defId: string;
+    type?: string;
+    tierStr?: string;
+    defId?: string;
 }
 
 export interface SWAPIUnitAbility {
@@ -678,8 +679,16 @@ interface SWAPIGuildMemberContribution {
     currentValue: string;
     lifetimeValue: string;
 }
-interface SWAPIGuildAlteredMemberContribution {
-    [key: number]: {
+export interface SWAPIGuildAlteredMemberContribution {
+    "1": {
+        currentValue: string;
+        lifetimeValue: string;
+    };
+    "2": {
+        currentValue: string;
+        lifetimeValue: string;
+    };
+    "3": {
         currentValue: string;
         lifetimeValue: string;
     };

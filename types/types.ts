@@ -1,4 +1,4 @@
-import type { BaseInteraction, Client, Collection, Guild, GuildMember, Interaction, TextChannel } from "discord.js";
+import type { BaseInteraction, Client, Collection, GatewayIntentBits, Guild, GuildMember, IntentsBitField, Interaction, Partials, TextChannel } from "discord.js";
 import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
@@ -145,17 +145,17 @@ export interface BotType {
             allyCodes: string | string[] | number | number[],
             cooldown?: PlayerCooldown,
             options?: { force?: boolean; defId?: string },
-        ) => SWAPIPlayer[];
-        guildUnitStats: (allyCodes: number[], defId: string, cooldown?: PlayerCooldown) => SWAPIUnit[];
-        getCharacter: (defId: string, lang?: SWAPILang) => RawCharacter;
-        getPlayersArena: (allyCodes: number | number[]) => PlayerArenaRes[];
-        langChar: (char: Partial<SWAPIUnit>, lang?: SWAPILang) => SWAPIUnit;
-        units: (defId: string, lang?: SWAPILang) => SWAPIUnit;
-        guild: (allycode: number | string, cooldown?: PlayerCooldown) => SWAPIGuild;
-        getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => RawGuild;
-        getPlayerUpdates: (allycodes: number | number[]) => PlayerUpdates;
-        playerByName: (name: string, limit?: number) => SWAPIPlayer[];
-        abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => ComlinkAbility[] | { nameKey: string }[];
+        ) => Promise<SWAPIPlayer[]>;
+        guildUnitStats: (allyCodes: number[], defId: string, cooldown?: PlayerCooldown) => Promise<SWAPIUnit[]>;
+        getCharacter: (defId: string, lang?: SWAPILang) => Promise<RawCharacter>;
+        getPlayersArena: (allyCodes: number | number[]) => Promise<PlayerArenaRes[]>;
+        langChar: (char: Partial<SWAPIUnit>, lang?: SWAPILang) => Promise<Partial<SWAPIUnit>>;
+        units: (defId: string, lang?: SWAPILang) => Promise<SWAPIUnit>;
+        guild: (allycode: number | string, cooldown?: PlayerCooldown) => Promise<SWAPIGuild>;
+        getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => Promise<RawGuild>;
+        getPlayerUpdates: (allycodes: number | number[]) => Promise<PlayerUpdates>;
+        playerByName: (name: string, limit?: number) => Promise<SWAPIPlayer[]>;
+        abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => Promise<ComlinkAbility[] | { nameKey: string }[]>;
     };
     findChar: (searchName: string, charList: BotUnit[], isShip?: boolean) => BotUnit[];
 
@@ -205,6 +205,7 @@ export interface BotType {
     formatCurrentTime: (timezone?: string) => string;
     isValidZone: (timezone: string) => boolean;
     getTimezoneOffset: (timezone: string) => number;
+    timezones: string[];
     shortenNum: (number: number, trimTo?: number) => string;
     duration: (time: number, interaciton: BotInteraction) => string;
     formatDuration: (duration: number, lang?: Language) => string;
@@ -361,11 +362,13 @@ export interface BotConfig {
         port: number;
     };
     mongodb: {
+        url: string;
         swapidb: string;
         swgohbotdb: string;
     };
     logs: {
         logToChannel: boolean;
+        channel: string;
     };
     arenaWatchConfig: {
         tier1: number;
@@ -373,6 +376,8 @@ export interface BotConfig {
         tier3: number;
     };
     webhookURL: string;
+    botIntents: IntentsBitField[]
+    partials: Partials[]
     [key: string]: string | number | boolean | object;
 }
 export interface BotDefaultSettings {

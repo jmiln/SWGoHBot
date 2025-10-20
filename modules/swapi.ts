@@ -10,6 +10,7 @@ import statEnums from "../data/statEnum.ts";
 import mongoCache from "../modules/cache.ts";
 
 import type {
+    ComlinkAbility,
     ComlinkMod,
     ComlinkPlayer,
     RawCharacter,
@@ -17,6 +18,7 @@ import type {
     RawGuildMember,
     SWAPIGear,
     SWAPIGuild,
+    SWAPIGuildAlteredMemberContribution,
     SWAPILang,
     SWAPIPlayer,
     SWAPIPlayerArenaProfile,
@@ -486,7 +488,7 @@ export default (opts = { noop: false }) => {
                             .filter((sk) => !!sk),
                         relic: unit.relic,
                         purchasedAbilityId: unit.purchasedAbilityId,
-                        crew: thisUnit.crew,
+                        crew: thisUnit?.crew,
                         combatType: thisUnit.combatType,
                         mods: unit.equippedStatMod ? unit.equippedStatMod.map((mod) => formatMod(mod)) : [],
                     };
@@ -699,14 +701,14 @@ export default (opts = { noop: false }) => {
                 "abilities",
                 { skillId: { $in: skillArr }, language: lang.toLowerCase() },
                 { nameKey: 1, _id: 0 },
-            );
+            ) as { nameKey: string }[];
         }
         return await cache.get(
             config.mongodb.swapidb,
             "abilities",
             { skillId: { $in: skillArr }, language: lang.toLowerCase() },
             { _id: 0, updated: 0 },
-        );
+        ) as ComlinkAbility[];
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
@@ -722,7 +724,7 @@ export default (opts = { noop: false }) => {
         if (!char.skillReferenceList) throw new Error("[SWGoH-API getCharacter] Missing character abilities");
 
         for (const s of char.skillReferenceList) {
-            let skill = await abilities([s.skillId], thisLang);
+            let skill = await abilities([s.skillId], thisLang) as unknown as ComlinkAbility;
             if (Array.isArray(skill)) skill = skill[0];
 
             if (!skill) {
@@ -863,7 +865,7 @@ export default (opts = { noop: false }) => {
                     tempGuild.roster = [];
                     for (const member of rawGuild.member) {
                         const tempMember: RawGuildMember = {} as RawGuildMember;
-                        const contribution = {};
+                        const contribution = {} as SWAPIGuildAlteredMemberContribution;
                         for (const contType of member.memberContribution) {
                             contribution[contType.type] = {
                                 currentValue: contType.currentValue,
