@@ -16,6 +16,17 @@
         ]
     },
     {
+        "name": "4-LOM",
+        "defId": "4LOM",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_4LOM_NAME",
+                "name": "Mist Hunters I Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "50R-T",
         "defId": "50RT",
         "locations": [
@@ -511,6 +522,11 @@
         "defId": "BRUTUS",
         "locations": [
             {
+                "type": "Hard Modes (Fleet)",
+                "level": "2-A",
+                "locId": "HARD_FLEET"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BRUTUS_NAME",
                 "name": "Fortune Favors The Bold I Special Marquee Event"
@@ -592,13 +608,13 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
-                "name": "Rebel Rouser Marquee Event"
+                "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
+                "name": "Sky Saber Special Marquee Event"
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
-                "name": "Sky Saber Special Marquee Event"
+                "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
+                "name": "Rebel Rouser Marquee Event"
             }
         ]
     },
@@ -3542,7 +3558,13 @@
     {
         "name": "Rey (Dark Side Vision)",
         "defId": "DARKREY",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Rey (Jedi Training)",
@@ -4154,6 +4176,11 @@
                 "name": "The Mandalorian (Beskar Armor)"
             }
         ]
+    },
+    {
+        "name": "The Stranger",
+        "defId": "STRANGER",
+        "locations": []
     },
     {
         "name": "Third Sister",
