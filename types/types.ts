@@ -13,7 +13,6 @@ import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
-import type Help from "../data/help.ts";
 import type Logger from "../modules/Logger.ts";
 import type { BotCache } from "./cache_types.ts";
 import type { GuildConfigEvent } from "./guildConfig_types.ts";
@@ -230,7 +229,7 @@ export interface BotType {
     getCurrentWeekday: (timezone?: string) => string;
     toProperCase: (strIn: string) => string;
     logger: Logger;
-    help: Help;
+    help: HelpObject;
     cache: BotCache;
     userReg: UserReg;
     permLevel: (interaction: BotInteraction) => Promise<number>;
@@ -571,5 +570,19 @@ export interface ArenaWatchAcct {
 export interface TWList {
     [key: string]: {
         [key: string]: string;
+    };
+}
+
+export interface HelpObject {
+    [key: string]: {
+        // The command category
+        description: string;
+        commands: {
+            [key: string]: {
+                // The command name
+                desc: string;
+                usage: string[];
+            };
+        };
     };
 }
