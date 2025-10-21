@@ -16,9 +16,9 @@ const DEBUG_LOGS = process.argv.includes("--debug") || false;
 
 import ComlinkStub from "@swgoh-utils/comlink";
 import type { BotCache } from "../types/cache_types.ts";
-import type { SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotUnit, BotUnitMods, JourneyReqs, Location, UnitLocation, UnitSide } from "../types/types.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
+import type { ComlinkAbility, SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotUnit, BotUnitMods, JourneyReqs, Location, UnitLocation, UnitSide } from "../types/types.ts";
 
 interface Metadata {
     assetVersion: string;
@@ -29,8 +29,16 @@ interface ModMap {
     [key: string]: {
         pips: number;
         set: string;
-        slot: number
-    }
+        slot: number;
+    };
+}
+interface RecipeMap {
+    id: string;
+    descKey: string;
+    ingredients: components["schemas"]["BucketItem"][];
+
+    // Added later before storage
+    language?: SWAPILang;
 }
 interface ProcessedUnit {
     baseId: string;
@@ -41,7 +49,7 @@ interface ProcessedUnit {
     unitTierList: {
         requiredTier?: components["schemas"]["UnitTier"];
         equipmentSetList: string[];
-    }[],
+    }[];
     crewList: components["schemas"]["CrewMember"][];
     creationRecipeReference: string;
     legend: boolean;
@@ -49,8 +57,9 @@ interface ProcessedUnit {
     // Added later before storage
     factions?: string[];
     crew?: string[];
+    language?: SWAPILang;
 }
-type Locales = Record<SWAPILang, Record<string, string>>
+type Locales = Record<SWAPILang, Record<string, string>>;
 
 // Simplified call for auto-generated types from comlink openapi.yaml
 type GameData = operations["getGameData"]["responses"]["2XX"]["content"]["application/json"];
@@ -97,7 +106,7 @@ async function init() {
         const mongo = await MongoClient.connect(config.mongodb.url);
         const cache = botCache(mongo) as BotCache;
         const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-        const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub) as {
+        const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
             isMetadataUpdated: boolean;
             newMetadata: Metadata;
             oldMetadata: Metadata;
@@ -321,13 +330,13 @@ const statLang = {
 const slotNames = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
 async function getGuildIds(comlinkStub: ComlinkStub) {
-    const guildLeaderboardRes = await comlinkStub._postRequestPromiseAPI("/getGuildLeaderboard", {
+    const guildLeaderboardRes = (await comlinkStub._postRequestPromiseAPI("/getGuildLeaderboard", {
         payload: {
             leaderboardId: [{ leaderboardType: 3, monthOffset: 0 }],
             count: 100,
         },
         enums: false,
-    }) as getGuildLeaderboardResponse;
+    })) as getGuildLeaderboardResponse;
     return guildLeaderboardRes.leaderboard[0].guild.map((guild) => guild.id);
 }
 
@@ -336,7 +345,7 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
 
     // Get all the players' IDs from each guild
     await eachLimit(guildIds, MAX_CONCURRENT, async (guildId) => {
-        const { guild } = await comlinkStub.getGuild(guildId) as getGuildResponse;
+        const { guild } = (await comlinkStub.getGuild(guildId)) as getGuildResponse;
         const playerIds = guild.member.map((player) => player.playerId);
         playerIdArr.push(...playerIds);
     });
@@ -403,7 +412,7 @@ async function processUnitMods(unitsIn: SWAPIUnit[]) {
     return unitsOut;
 }
 
-function incrementInObj(obj: {}, key: string | number) {
+function incrementInObj(obj: object, key: string | number) {
     obj[key] = obj[key] ? obj[key] + 1 : 1;
     return obj;
 }
@@ -422,19 +431,21 @@ const multiSets = {
 };
 
 // For each character, get rid of all but the most common results (If more than one tie, return both)
-function processModResults(unitsIn: { [defId: string]: {
-    primaries: {
-        [key: string]: number;
+function processModResults(unitsIn: {
+    [defId: string]: {
+        primaries: {
+            [key: string]: number;
+        };
+        sets: {
+            [key: string]: number;
+        };
     };
-    sets: {
-        [key: string]: number;
-    };
-} }) {
+}) {
     const unitsOut = {};
     for (const defId of Object.keys(unitsIn)) {
         const thisUnit = unitsIn[defId];
         const { primaries, sets } = thisUnit;
-        const unitOut = {mods: {sets: null}};
+        const unitOut = { mods: { sets: null } };
 
         const maxPrimaryCount = Math.max(...Object.values(primaries));
         const maxSetCount = Math.max(...Object.values(sets));
@@ -477,7 +488,7 @@ function processModResults(unitsIn: { [defId: string]: {
 }
 
 async function mergeModsToCharacters(modsIn: { [defId: string]: { mods: BotUnitMods } }) {
-    const characters = await fs.promises.readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse) as BotUnit[];
+    const characters = (await fs.promises.readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse)) as BotUnit[];
 
     for (const defId of Object.keys(modsIn)) {
         const thisChar = characters.find((ch) => ch.uniqueName === defId);
@@ -569,11 +580,11 @@ async function updatePatrons(cache: BotCache) {
             } else {
                 // If the user exists, and they're active, make sure everything is set correctly
                 // Make sure that if they have a bonus server set in their user settings, it's set properly in the given guild
-                const { user: userRes, guild: guildRes } = await ensureBonusServerSet({
+                const { user: userRes, guild: guildRes } = (await ensureBonusServerSet({
                     cache,
                     userId: newUser.discordID,
                     amount_cents: newUser.amount_cents,
-                }) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
+                })) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
 
                 // If there are no issues, move along
                 if (!userRes?.error && !guildRes?.error) continue;
@@ -596,10 +607,10 @@ async function updatePatrons(cache: BotCache) {
 
 async function updateLocs(unitListFile: string, currentLocFile: string, locales: Locales, cache: BotCache) {
     debugLog(`Updating unit locations for ${unitListFile}`);
-    const [currentUnits, currentLocs] = await Promise.all([
+    const [currentUnits, currentLocs] = (await Promise.all([
         fs.promises.readFile(unitListFile, "utf-8").then(JSON.parse),
         fs.promises.readFile(currentLocFile, "utf-8").then(JSON.parse),
-    ]) as [BotUnit[], UnitLocation[]];
+    ])) as [BotUnit[], UnitLocation[]];
 
     const shardNameMap = currentUnits.map((unit) => `unitshard_${unit.uniqueName}`);
     const shardNameRes = await cache.get(config.mongodb.swapidb, "materials", { id: { $in: shardNameMap } });
@@ -654,7 +665,7 @@ async function updateLocs(unitListFile: string, currentLocFile: string, locales:
         const usedLocId = new Set();
         for (const node of missions) {
             let locId = null;
-            let charObj = {} as { type: string; locId: string, name?: string };
+            let charObj = {} as { type: string; locId: string; name?: string };
 
             // Skip ones that haven't existed for years
             if (["BASICTRAINING"].includes(node.campaignMapId)) continue;
@@ -898,7 +909,7 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string) 
     }
 
     // If we don't have the most recent version locally, grab a new copy of the gameData from CG
-    gameData = await comlinkStub.getGameData(version, false) as operations["getGameData"]["responses"];
+    gameData = (await comlinkStub.getGameData(version, false)) as operations["getGameData"]["responses"];
 
     // This is going to be a new version, so we can just delete the old files
     const oldFiles = fs.readdirSync(GAMEDATA_DIR_PATH).filter((fileName) => fileName.startsWith("gameData_") && fileName !== dataFile);
@@ -938,7 +949,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         debugLog("Finished processing Abilities");
 
         debugTime("Finished processing Categories");
-        const catMapOut = await processCategories(gameData.category) as {id: string; descKey: string}[];
+        const catMapOut = (await processCategories(gameData.category)) as { id: string; descKey: string }[];
         // await saveFile(dataDir + "catMap.json", catMapOut, false);
         await processLocalization(catMapOut, "categories", ["descKey"], "id", locales, cache);
         debugTimeEnd("Finished processing Categories");
@@ -1004,17 +1015,22 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
     }
 }
 
-/**
- * function
- * @param {Object[]} rawDataIn  - The array of objects to localize
- * @param {string}   dbTarget   - The mongo table to insert into
- * @param {string[]} targetKeys - An array of keys to localize
- * @param {string}   dbIdKey    - The key to use as the unique db key
- * @param {Object}   locales    - The localization data
- * @param {Object}   cache      - The mongodb cache
- * @param {string[]} langList   - An array of localization languages
- */
-async function processLocalization(rawDataIn: { language?: string; [key: string]: any }[], dbTarget: string, targetKeys: string[], dbIdKey: string, locales: Locales, cache: BotCache, langList: SWAPILang[] = null) {
+async function processLocalization(
+    rawDataIn:
+        | ComlinkAbility[]
+        | RecipeMap[]
+        | ProcessedUnit[]
+        | {
+              language?: string;
+              [key: string]: string | string[] | Record<string, string>;
+          }[],
+    dbTarget: string,
+    targetKeys: string[],
+    dbIdKey: string,
+    locales: Locales,
+    cache: BotCache,
+    langList: SWAPILang[] = null,
+) {
     const idKey = dbIdKey || "id";
     const thisLangList = langList || Object.keys(locales);
     const bulkWriteArr = [];
@@ -1073,8 +1089,15 @@ function saveRaidNames(locales: Locales) {
 }
 
 function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: comlinkComponents["SkillDefinition"][]) {
-    const abilitiesOut = [];
-    const skillMap = {};
+    const abilitiesOut = [] as ComlinkAbility[];
+    const skillMap = {} as {
+        [key: string]: {
+            nameKey: string;
+            isZeta: boolean;
+            tiers: number;
+            abilityId: string;
+        };
+    };
 
     for (const ability of abilityIn) {
         const skill = skillIn.find((sk) => sk.abilityReference === ability.id);
@@ -1083,8 +1106,7 @@ function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: co
         const abTiers = ability.tier?.map((ti) => ti.descKey) || [];
         abilitiesOut.push({
             id: ability.id,
-            type: ability.abilityType,
-            // type: ability.type,
+            type: ability.abilityType as string,
             nameKey: ability.nameKey,
             descKey: abTiers.slice(-1)[0] || ability.descKey,
             cooldown: ability.cooldown,
@@ -1161,7 +1183,7 @@ function processModData(modsIn: comlinkComponents["StatModDefinition"][]) {
 }
 
 function processRecipes(recipeIn: comlinkComponents["Recipe"][]) {
-    const mappedRecipeList = [];
+    const mappedRecipeList = [] as RecipeMap[];
     const unitRecipeList: { id: string; unitShard: string }[] = [];
 
     for (const recipe of recipeIn) {
@@ -1218,10 +1240,10 @@ function processUnits(unitsIn: comlinkComponents["UnitDef"][]): ProcessedUnit[] 
 function unitsToUnitFiles(
     filteredList: ProcessedUnit[],
     locales: Locales,
-    catMap: {id: string; descKey: string}[],
+    catMap: { id: string; descKey: string }[],
     unitDefIdMap: Record<string, string>,
     unitRecipeList: { id: string; unitShard: string }[],
-    unitShardList: { id: string; iconKey: string }[]
+    unitShardList: { id: string; iconKey: string }[],
 ) {
     const oldCharFile: BotUnit[] = JSON.parse(fs.readFileSync(CHAR_FILE_PATH, "utf-8"));
     const oldShipFile: BotUnit[] = JSON.parse(fs.readFileSync(SHIP_FILE_PATH, "utf-8"));
@@ -1252,7 +1274,7 @@ function unitsToUnitFiles(
                 avatarURL: `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`,
                 side,
                 factions: factions.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1)),
-                mods: unit.combatType === CHAR_COMBAT_TYPE ? {} as BotUnitMods : null,
+                mods: unit.combatType === CHAR_COMBAT_TYPE ? ({} as BotUnitMods) : null,
                 crew: (unit.combatType === SHIP_COMBAT_TYPE && unit.crewList?.map((cr) => unitDefIdMap[cr.unitId])) || [],
             };
         }
@@ -1269,7 +1291,11 @@ function unitsToUnitFiles(
     return { charactersOut, shipsOut };
 }
 
-function getCharUIName(creationRecipeId: string, unitRecipeList: { id: string; unitShard: string }[], unitShardList: { id: string; iconKey: string }[]) {
+function getCharUIName(
+    creationRecipeId: string,
+    unitRecipeList: { id: string; unitShard: string }[],
+    unitShardList: { id: string; iconKey: string }[],
+) {
     const thisRecipe = unitRecipeList.find((rec) => rec.id === creationRecipeId);
     const thisUnitShard = unitShardList.find((sh) => sh.id === thisRecipe?.unitShard);
     return thisUnitShard?.iconKey;
@@ -1444,7 +1470,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
             ind_id: null,
             jpn_jp: null,
             tha_th: null,
-        };
+        } as Locales;
         for (const [lang, content] of Object.entries(localeData)) {
             const out = {};
             if (lang === "Loc_Key_Mapping.txt") continue;
@@ -1582,7 +1608,7 @@ async function processJourneyReqs(gameData: GameData) {
                             return unit.factions.includes(autoReq.faction);
                         })
                         .map((unit) => {
-                            const out: { defId: string; type: string; tier: number; ship?: boolean; } = {
+                            const out: { defId: string; type: string; tier: number; ship?: boolean } = {
                                 defId: unit.uniqueName,
                                 type: autoReq.type,
                                 tier: autoReq.tier,

@@ -337,7 +337,24 @@ export interface components {
             marqueeUnitTexture?: string;
             hideCompleted?: boolean;
         };
-        GameEventType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 9 | 10 | 11 | 12 | 13 | 14) | ("GameEventType_DEFAULT" | "SCHEDULED" | "KEYCARD" | "PROGRESSION" | "MODS" | "PVP_EVENT" | "ECONOMY_EVENT" | "TERRITORY_WAR_EVENT" | "TERRITORY_BATTLE_EVENT" | "TERRITORY_TOURNAMENT_EVENT" | "ARCADE_RAID" | "SEASON" | "LIFECYCLED" | "CONQUEST_EVENT");
+        GameEventType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 9 | 10 | 11 | 12 | 13 | 14)
+            | (
+                  | "GameEventType_DEFAULT"
+                  | "SCHEDULED"
+                  | "KEYCARD"
+                  | "PROGRESSION"
+                  | "MODS"
+                  | "PVP_EVENT"
+                  | "ECONOMY_EVENT"
+                  | "TERRITORY_WAR_EVENT"
+                  | "TERRITORY_BATTLE_EVENT"
+                  | "TERRITORY_TOURNAMENT_EVENT"
+                  | "ARCADE_RAID"
+                  | "SEASON"
+                  | "LIFECYCLED"
+                  | "CONQUEST_EVENT"
+              );
         GameEventInstance: {
             id?: string;
             /** Format: int64 */
@@ -375,7 +392,21 @@ export interface components {
             campaignNodeDifficulty?: components["schemas"]["CampaignNodeDifficulty"];
             campaignMissionId?: string;
         };
-        CampaignNodeDifficulty: (0 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13) | ("NOT_SET" | "NORMAL_DIFF" | "HARD_DIFF" | "NIGHTMARE_DIFF" | "SPECIAL_DIFF" | "I_DIFF" | "II_DIFF" | "III_DIFF" | "IV_DIFF" | "V_DIFF" | "VI_DIFF");
+        CampaignNodeDifficulty:
+            | (0 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13)
+            | (
+                  | "NOT_SET"
+                  | "NORMAL_DIFF"
+                  | "HARD_DIFF"
+                  | "NIGHTMARE_DIFF"
+                  | "SPECIAL_DIFF"
+                  | "I_DIFF"
+                  | "II_DIFF"
+                  | "III_DIFF"
+                  | "IV_DIFF"
+                  | "V_DIFF"
+                  | "VI_DIFF"
+              );
         BucketItem: {
             id?: string;
             type?: components["schemas"]["ItemType"];
@@ -392,8 +423,88 @@ export interface components {
             unitTier?: components["schemas"]["UnitTier"];
             primaryReward?: boolean;
         };
-        ItemType: (0 | 1 | 2 | 3 | 4 | 6 | 7 | 8 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34) | ("ItemType_DEFAULT" | "EMPTY" | "UNIT" | "CURRENCY" | "BUCKET" | "XP" | "MATERIAL" | "ENERGY" | "EQUIPMENT" | "EVENT_KEYCARD" | "POWERUP_BUNDLE" | "MYSTERY_BOX" | "STAT_MOD" | "MYSTERY_STAT_MOD" | "PLAYER_TITLE" | "STAT_MOD_PARAMETERIZED" | "PLAYER_PORTRAIT" | "SEASON_POINT" | "GALACTIC_BUNDLE" | "CONQUEST_POINT" | "ARTIFACT" | "CONQUEST_CONSUMABLE" | "BATTLE_PASS" | "LOGIN_CALENDAR" | "CONQUEST_STAMINA_REGEN_REDUCE" | "CONQUEST_ENERGY_REGEN_REDUCE" | "CONQUEST_ARTIFACT_FREE_SWAP_BONUS" | "DATACRON" | "EPISODE_XP" | "EPISODE_PASS" | "EPISODE_PASS_PLUS" | "LIGHTSPEED_TOKEN");
-        Rarity: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8) | ("Rarity_DEFAULT" | "ONE_STAR" | "TWO_STAR" | "THREE_STAR" | "FOUR_STAR" | "FIVE_STAR" | "SIX_STAR" | "SEVEN_STAR" | "NO_STAR");
+        ItemType:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 6
+                  | 7
+                  | 8
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+              )
+            | (
+                  | "ItemType_DEFAULT"
+                  | "EMPTY"
+                  | "UNIT"
+                  | "CURRENCY"
+                  | "BUCKET"
+                  | "XP"
+                  | "MATERIAL"
+                  | "ENERGY"
+                  | "EQUIPMENT"
+                  | "EVENT_KEYCARD"
+                  | "POWERUP_BUNDLE"
+                  | "MYSTERY_BOX"
+                  | "STAT_MOD"
+                  | "MYSTERY_STAT_MOD"
+                  | "PLAYER_TITLE"
+                  | "STAT_MOD_PARAMETERIZED"
+                  | "PLAYER_PORTRAIT"
+                  | "SEASON_POINT"
+                  | "GALACTIC_BUNDLE"
+                  | "CONQUEST_POINT"
+                  | "ARTIFACT"
+                  | "CONQUEST_CONSUMABLE"
+                  | "BATTLE_PASS"
+                  | "LOGIN_CALENDAR"
+                  | "CONQUEST_STAMINA_REGEN_REDUCE"
+                  | "CONQUEST_ENERGY_REGEN_REDUCE"
+                  | "CONQUEST_ARTIFACT_FREE_SWAP_BONUS"
+                  | "DATACRON"
+                  | "EPISODE_XP"
+                  | "EPISODE_PASS"
+                  | "EPISODE_PASS_PLUS"
+                  | "LIGHTSPEED_TOKEN"
+              );
+        Rarity:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8)
+            | (
+                  | "Rarity_DEFAULT"
+                  | "ONE_STAR"
+                  | "TWO_STAR"
+                  | "THREE_STAR"
+                  | "FOUR_STAR"
+                  | "FIVE_STAR"
+                  | "SIX_STAR"
+                  | "SEVEN_STAR"
+                  | "NO_STAR"
+              );
         StatMod: {
             id?: string;
             definitionId?: string;
@@ -414,7 +525,9 @@ export interface components {
             /** Format: int32 */
             rerolledCount?: number;
         };
-        StatModTier: (0 | 1 | 2 | 3 | 4 | 5) | ("StatModTier_DEFAULT" | "STATMOD_TIER_01" | "STATMOD_TIER_02" | "STATMOD_TIER_03" | "STATMOD_TIER_04" | "STATMOD_TIER_05");
+        StatModTier:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | ("StatModTier_DEFAULT" | "STATMOD_TIER_01" | "STATMOD_TIER_02" | "STATMOD_TIER_03" | "STATMOD_TIER_04" | "STATMOD_TIER_05");
         CurrencyItem: {
             currency?: components["schemas"]["CurrencyType"];
             /** Format: int64 */
@@ -422,7 +535,103 @@ export interface components {
             /** Format: int32 */
             bonusQuantity?: number;
         };
-        CurrencyType: (0 | 1 | 2 | 3 | 4 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48) | ("CurrencyType_DEFAULT" | "GRIND" | "PREMIUM" | "REAL_MONEY" | "SOCIAL" | "IGC_EVENT_KEYCARD" | "XP_EVENT_KEYCARD" | "PVP_CURRENCY" | "FORCE_POINT" | "PVP_SHIP_CURRENCY" | "FREE" | "WAR_SHIP_CURRENCY" | "GRIND_TICKET" | "SHARD_CURRENCY" | "GUILD_CURRENCY" | "GUILD_BANK_CURRENCY" | "SHIP_GRIND" | "GUILD_RAID_CURRENCY_01" | "GUILD_RAID_CURRENCY_02" | "GUILD_RAID_CURRENCY_03" | "GUILD_RAID_CURRENCY_04" | "GUILD_RAID_CURRENCY_05" | "GUILD_RAID_CURRENCY_06" | "GUILD_RAID_CURRENCY_07" | "GUILD_RAID_CURRENCY_08" | "GUILD_RAID_CURRENCY_09" | "GUILD_RAID_CURRENCY_10" | "GUILD_RAID_CURRENCY_11" | "GUILD_RAID_CURRENCY_12" | "TERRITORY_BATTLE_CURRENCY" | "SEASONS_CURRENCY" | "TERRITORY_BATTLE_CURRENCY_02" | "GALACTIC_BUNDLE_CURRENCY" | "LIGHT_SIDE_CURRENCY" | "DARK_SIDE_CURRENCY" | "GALACTIC_CHALLENGE_CURRENCY" | "CONQUEST_CURRENCY" | "DATACRON_CURRENCY" | "MOD_REROLL_CURRENCY" | "TERRITORY_BATTLE_CURRENCY_03" | "RAID_REWARD_CURRENCY_01" | "RAID_REWARD_CURRENCY_02" | "RAID_REWARD_CURRENCY_03" | "RAID_REWARD_CURRENCY_04" | "GL_EVENT_CURRENCY" | "EPISODE_CURRENCY");
+        CurrencyType:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 8
+                  | 9
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+                  | 46
+                  | 47
+                  | 48
+              )
+            | (
+                  | "CurrencyType_DEFAULT"
+                  | "GRIND"
+                  | "PREMIUM"
+                  | "REAL_MONEY"
+                  | "SOCIAL"
+                  | "IGC_EVENT_KEYCARD"
+                  | "XP_EVENT_KEYCARD"
+                  | "PVP_CURRENCY"
+                  | "FORCE_POINT"
+                  | "PVP_SHIP_CURRENCY"
+                  | "FREE"
+                  | "WAR_SHIP_CURRENCY"
+                  | "GRIND_TICKET"
+                  | "SHARD_CURRENCY"
+                  | "GUILD_CURRENCY"
+                  | "GUILD_BANK_CURRENCY"
+                  | "SHIP_GRIND"
+                  | "GUILD_RAID_CURRENCY_01"
+                  | "GUILD_RAID_CURRENCY_02"
+                  | "GUILD_RAID_CURRENCY_03"
+                  | "GUILD_RAID_CURRENCY_04"
+                  | "GUILD_RAID_CURRENCY_05"
+                  | "GUILD_RAID_CURRENCY_06"
+                  | "GUILD_RAID_CURRENCY_07"
+                  | "GUILD_RAID_CURRENCY_08"
+                  | "GUILD_RAID_CURRENCY_09"
+                  | "GUILD_RAID_CURRENCY_10"
+                  | "GUILD_RAID_CURRENCY_11"
+                  | "GUILD_RAID_CURRENCY_12"
+                  | "TERRITORY_BATTLE_CURRENCY"
+                  | "SEASONS_CURRENCY"
+                  | "TERRITORY_BATTLE_CURRENCY_02"
+                  | "GALACTIC_BUNDLE_CURRENCY"
+                  | "LIGHT_SIDE_CURRENCY"
+                  | "DARK_SIDE_CURRENCY"
+                  | "GALACTIC_CHALLENGE_CURRENCY"
+                  | "CONQUEST_CURRENCY"
+                  | "DATACRON_CURRENCY"
+                  | "MOD_REROLL_CURRENCY"
+                  | "TERRITORY_BATTLE_CURRENCY_03"
+                  | "RAID_REWARD_CURRENCY_01"
+                  | "RAID_REWARD_CURRENCY_02"
+                  | "RAID_REWARD_CURRENCY_03"
+                  | "RAID_REWARD_CURRENCY_04"
+                  | "GL_EVENT_CURRENCY"
+                  | "EPISODE_CURRENCY"
+              );
         StatModStat: {
             stat?: components["schemas"]["Stat"];
             roll?: string[];
@@ -445,8 +654,160 @@ export interface components {
             /** Format: int64 */
             scalar?: number;
         };
-        UnitStat: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61) | ("UnitStat_DEFAULT" | "UNIT_STAT_MAX_HEALTH" | "UNIT_STAT_STRENGTH" | "UNIT_STAT_AGILITY" | "UNIT_STAT_INTELLIGENCE" | "UNIT_STAT_SPEED" | "UNIT_STAT_ATTACK_DAMAGE" | "UNIT_STAT_ABILITY_POWER" | "UNIT_STAT_ARMOR" | "UNIT_STAT_SUPPRESSION" | "UNIT_STAT_ARMOR_PENETRATION" | "UNIT_STAT_SUPPRESSION_PENETRATION" | "UNIT_STAT_DODGE_RATING" | "UNIT_STAT_DEFLECTION_RATING" | "UNIT_STAT_ATTACK_CRITICAL_RATING" | "UNIT_STAT_ABILITY_CRITICAL_RATING" | "UNIT_STAT_CRITICAL_DAMAGE" | "UNIT_STAT_ACCURACY" | "UNIT_STAT_RESISTANCE" | "UNIT_STAT_DODGE_PERCENT_ADDITIVE" | "UNIT_STAT_DEFLECTION_PERCENT_ADDITIVE" | "UNIT_STAT_ATTACK_CRITICAL_PERCENT_ADDITIVE" | "UNIT_STAT_ABILITY_CRITICAL_PERCENT_ADDITIVE" | "UNIT_STAT_ARMOR_PERCENT_ADDITIVE" | "UNIT_STAT_SUPPRESSION_PERCENT_ADDITIVE" | "UNIT_STAT_ARMOR_PENETRATION_PERCENT_ADDITIVE" | "UNIT_STAT_SUPPRESSION_PENETRATION_PERCENT_ADDITIVE" | "UNIT_STAT_HEALTH_STEAL" | "UNIT_STAT_MAX_SHIELD" | "UNIT_STAT_SHIELD_PENETRATION" | "UNIT_STAT_HEALTH_REGEN" | "UNIT_STAT_ATTACK_DAMAGE_PERCENT_ADDITIVE" | "UNIT_STAT_ABILITY_POWER_PERCENT_ADDITIVE" | "UNIT_STAT_DODGE_NEGATE_PERCENT_ADDITIVE" | "UNIT_STAT_DEFLECTION_NEGATE_PERCENT_ADDITIVE" | "UNIT_STAT_ATTACK_CRITICAL_NEGATE_PERCENT_ADDITIVE" | "UNIT_STAT_ABILITY_CRITICAL_NEGATE_PERCENT_ADDITIVE" | "UNIT_STAT_DODGE_NEGATE_RATING" | "UNIT_STAT_DEFLECTION_NEGATE_RATING" | "UNIT_STAT_ATTACK_CRITICAL_NEGATE_RATING" | "UNIT_STAT_ABILITY_CRITICAL_NEGATE_RATING" | "UNIT_STAT_OFFENSE" | "UNIT_STAT_DEFENSE" | "UNIT_STAT_DEFENSE_PENETRATION" | "UNIT_STAT_EVASION_RATING" | "UNIT_STAT_CRITICAL_RATING" | "UNIT_STAT_EVASION_NEGATE_RATING" | "UNIT_STAT_CRITICAL_NEGATE_RATING" | "UNIT_STAT_OFFENSE_PERCENT_ADDITIVE" | "UNIT_STAT_DEFENSE_PERCENT_ADDITIVE" | "UNIT_STAT_DEFENSE_PENETRATION_PERCENT_ADDITIVE" | "UNIT_STAT_EVASION_PERCENT_ADDITIVE" | "UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE" | "UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE" | "UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE" | "UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE" | "UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE" | "UNIT_STAT_SPEED_PERCENT_ADDITIVE" | "UNIT_STAT_COUNTER_ATTACK_RATING" | "UNIT_STAT_TAUNT" | "UNIT_STAT_DEFENSE_PENETRATION_TARGET_PERCENT_ADDITIVE" | "UNIT_STAT_MASTERY");
-        UnitTier: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20) | ("TIER_UNDEFINED" | "TIER_01" | "TIER_02" | "TIER_03" | "TIER_04" | "TIER_05" | "TIER_06" | "TIER_07" | "TIER_08" | "TIER_09" | "TIER_10" | "TIER_11" | "TIER_12" | "TIER_13" | "TIER_14" | "TIER_15" | "TIER_16" | "TIER_17" | "TIER_18" | "TIER_19" | "TIER_20");
+        UnitStat:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 5
+                  | 6
+                  | 7
+                  | 8
+                  | 9
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+                  | 46
+                  | 47
+                  | 48
+                  | 49
+                  | 50
+                  | 51
+                  | 52
+                  | 53
+                  | 54
+                  | 55
+                  | 56
+                  | 57
+                  | 58
+                  | 59
+                  | 60
+                  | 61
+              )
+            | (
+                  | "UnitStat_DEFAULT"
+                  | "UNIT_STAT_MAX_HEALTH"
+                  | "UNIT_STAT_STRENGTH"
+                  | "UNIT_STAT_AGILITY"
+                  | "UNIT_STAT_INTELLIGENCE"
+                  | "UNIT_STAT_SPEED"
+                  | "UNIT_STAT_ATTACK_DAMAGE"
+                  | "UNIT_STAT_ABILITY_POWER"
+                  | "UNIT_STAT_ARMOR"
+                  | "UNIT_STAT_SUPPRESSION"
+                  | "UNIT_STAT_ARMOR_PENETRATION"
+                  | "UNIT_STAT_SUPPRESSION_PENETRATION"
+                  | "UNIT_STAT_DODGE_RATING"
+                  | "UNIT_STAT_DEFLECTION_RATING"
+                  | "UNIT_STAT_ATTACK_CRITICAL_RATING"
+                  | "UNIT_STAT_ABILITY_CRITICAL_RATING"
+                  | "UNIT_STAT_CRITICAL_DAMAGE"
+                  | "UNIT_STAT_ACCURACY"
+                  | "UNIT_STAT_RESISTANCE"
+                  | "UNIT_STAT_DODGE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_DEFLECTION_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ATTACK_CRITICAL_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ABILITY_CRITICAL_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ARMOR_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_SUPPRESSION_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ARMOR_PENETRATION_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_SUPPRESSION_PENETRATION_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_HEALTH_STEAL"
+                  | "UNIT_STAT_MAX_SHIELD"
+                  | "UNIT_STAT_SHIELD_PENETRATION"
+                  | "UNIT_STAT_HEALTH_REGEN"
+                  | "UNIT_STAT_ATTACK_DAMAGE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ABILITY_POWER_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_DODGE_NEGATE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_DEFLECTION_NEGATE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ATTACK_CRITICAL_NEGATE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_ABILITY_CRITICAL_NEGATE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_DODGE_NEGATE_RATING"
+                  | "UNIT_STAT_DEFLECTION_NEGATE_RATING"
+                  | "UNIT_STAT_ATTACK_CRITICAL_NEGATE_RATING"
+                  | "UNIT_STAT_ABILITY_CRITICAL_NEGATE_RATING"
+                  | "UNIT_STAT_OFFENSE"
+                  | "UNIT_STAT_DEFENSE"
+                  | "UNIT_STAT_DEFENSE_PENETRATION"
+                  | "UNIT_STAT_EVASION_RATING"
+                  | "UNIT_STAT_CRITICAL_RATING"
+                  | "UNIT_STAT_EVASION_NEGATE_RATING"
+                  | "UNIT_STAT_CRITICAL_NEGATE_RATING"
+                  | "UNIT_STAT_OFFENSE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_DEFENSE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_DEFENSE_PENETRATION_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_EVASION_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_SPEED_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_COUNTER_ATTACK_RATING"
+                  | "UNIT_STAT_TAUNT"
+                  | "UNIT_STAT_DEFENSE_PENETRATION_TARGET_PERCENT_ADDITIVE"
+                  | "UNIT_STAT_MASTERY"
+              );
+        UnitTier:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20)
+            | (
+                  | "TIER_UNDEFINED"
+                  | "TIER_01"
+                  | "TIER_02"
+                  | "TIER_03"
+                  | "TIER_04"
+                  | "TIER_05"
+                  | "TIER_06"
+                  | "TIER_07"
+                  | "TIER_08"
+                  | "TIER_09"
+                  | "TIER_10"
+                  | "TIER_11"
+                  | "TIER_12"
+                  | "TIER_13"
+                  | "TIER_14"
+                  | "TIER_15"
+                  | "TIER_16"
+                  | "TIER_17"
+                  | "TIER_18"
+                  | "TIER_19"
+                  | "TIER_20"
+              );
         RankRewardPreview: {
             /** Format: int32 */
             rankStart?: number;
@@ -497,7 +858,117 @@ export interface components {
             /** Format: int32 */
             slot?: number;
         };
-        RelicTier: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52) | ("RelicTier_DEFAULT" | "RELIC_LOCKED" | "RELIC_UNLOCKED" | "RELIC_TIER_01" | "RELIC_TIER_02" | "RELIC_TIER_03" | "RELIC_TIER_04" | "RELIC_TIER_05" | "RELIC_TIER_06" | "RELIC_TIER_07" | "RELIC_TIER_08" | "RELIC_TIER_09" | "RELIC_TIER_10" | "RELIC_TIER_11" | "RELIC_TIER_12" | "RELIC_TIER_13" | "RELIC_TIER_14" | "RELIC_TIER_15" | "RELIC_TIER_16" | "RELIC_TIER_17" | "RELIC_TIER_18" | "RELIC_TIER_19" | "RELIC_TIER_20" | "RELIC_TIER_21" | "RELIC_TIER_22" | "RELIC_TIER_23" | "RELIC_TIER_24" | "RELIC_TIER_25" | "RELIC_TIER_26" | "RELIC_TIER_27" | "RELIC_TIER_28" | "RELIC_TIER_29" | "RELIC_TIER_30" | "RELIC_TIER_31" | "RELIC_TIER_32" | "RELIC_TIER_33" | "RELIC_TIER_34" | "RELIC_TIER_35" | "RELIC_TIER_36" | "RELIC_TIER_37" | "RELIC_TIER_38" | "RELIC_TIER_39" | "RELIC_TIER_40" | "RELIC_TIER_41" | "RELIC_TIER_42" | "RELIC_TIER_43" | "RELIC_TIER_44" | "RELIC_TIER_45" | "RELIC_TIER_46" | "RELIC_TIER_47" | "RELIC_TIER_48" | "RELIC_TIER_49" | "RELIC_TIER_50");
+        RelicTier:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 5
+                  | 6
+                  | 7
+                  | 8
+                  | 9
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+                  | 46
+                  | 47
+                  | 48
+                  | 49
+                  | 50
+                  | 51
+                  | 52
+              )
+            | (
+                  | "RelicTier_DEFAULT"
+                  | "RELIC_LOCKED"
+                  | "RELIC_UNLOCKED"
+                  | "RELIC_TIER_01"
+                  | "RELIC_TIER_02"
+                  | "RELIC_TIER_03"
+                  | "RELIC_TIER_04"
+                  | "RELIC_TIER_05"
+                  | "RELIC_TIER_06"
+                  | "RELIC_TIER_07"
+                  | "RELIC_TIER_08"
+                  | "RELIC_TIER_09"
+                  | "RELIC_TIER_10"
+                  | "RELIC_TIER_11"
+                  | "RELIC_TIER_12"
+                  | "RELIC_TIER_13"
+                  | "RELIC_TIER_14"
+                  | "RELIC_TIER_15"
+                  | "RELIC_TIER_16"
+                  | "RELIC_TIER_17"
+                  | "RELIC_TIER_18"
+                  | "RELIC_TIER_19"
+                  | "RELIC_TIER_20"
+                  | "RELIC_TIER_21"
+                  | "RELIC_TIER_22"
+                  | "RELIC_TIER_23"
+                  | "RELIC_TIER_24"
+                  | "RELIC_TIER_25"
+                  | "RELIC_TIER_26"
+                  | "RELIC_TIER_27"
+                  | "RELIC_TIER_28"
+                  | "RELIC_TIER_29"
+                  | "RELIC_TIER_30"
+                  | "RELIC_TIER_31"
+                  | "RELIC_TIER_32"
+                  | "RELIC_TIER_33"
+                  | "RELIC_TIER_34"
+                  | "RELIC_TIER_35"
+                  | "RELIC_TIER_36"
+                  | "RELIC_TIER_37"
+                  | "RELIC_TIER_38"
+                  | "RELIC_TIER_39"
+                  | "RELIC_TIER_40"
+                  | "RELIC_TIER_41"
+                  | "RELIC_TIER_42"
+                  | "RELIC_TIER_43"
+                  | "RELIC_TIER_44"
+                  | "RELIC_TIER_45"
+                  | "RELIC_TIER_46"
+                  | "RELIC_TIER_47"
+                  | "RELIC_TIER_48"
+                  | "RELIC_TIER_49"
+                  | "RELIC_TIER_50"
+              );
         MandatoryDatacron: {
             /** Format: int32 */
             minLevel?: number;
@@ -524,12 +995,33 @@ export interface components {
             id?: string;
             category?: string;
         };
-        MaterialType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15) | ("MaterialType_DEFAULT" | "CRAFTING_MATERIAL" | "XP_MATERIAL" | "UNIT_SHARD_MATERIAL" | "PROMOTION_MATERIAL" | "SKILL_MATERIAL" | "SELL_MATERIAL" | "SHIP_XP_MATERIAL" | "SHIP_SKILL_MATERIAL" | "STAT_MOD_SLICING_MATERIAL" | "STAT_MOD_OVERCLOCKING_MATERIAL" | "RELIC_MATERIAL" | "SCRAP_MATERIAL" | "SCRAP_SURPLUS" | "DATACRON_MATERIAL" | "TRACKING_MATERIAL");
+        MaterialType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15)
+            | (
+                  | "MaterialType_DEFAULT"
+                  | "CRAFTING_MATERIAL"
+                  | "XP_MATERIAL"
+                  | "UNIT_SHARD_MATERIAL"
+                  | "PROMOTION_MATERIAL"
+                  | "SKILL_MATERIAL"
+                  | "SELL_MATERIAL"
+                  | "SHIP_XP_MATERIAL"
+                  | "SHIP_SKILL_MATERIAL"
+                  | "STAT_MOD_SLICING_MATERIAL"
+                  | "STAT_MOD_OVERCLOCKING_MATERIAL"
+                  | "RELIC_MATERIAL"
+                  | "SCRAP_MATERIAL"
+                  | "SCRAP_SURPLUS"
+                  | "DATACRON_MATERIAL"
+                  | "TRACKING_MATERIAL"
+              );
         ModifierLocation: {
             type?: components["schemas"]["ModifierLocationType"];
             identifier?: string;
         };
-        ModifierLocationType: (0 | 1 | 2) | ("ModifierLocationType_DEFAULT" | "MODIFIER_LOCATION_CAMPAIGN" | "MODIFIER_LOCATION_GALACTIC_WAR");
+        ModifierLocationType:
+            | (0 | 1 | 2)
+            | ("ModifierLocationType_DEFAULT" | "MODIFIER_LOCATION_CAMPAIGN" | "MODIFIER_LOCATION_GALACTIC_WAR");
         AdditionalItemModifier: {
             addedItem?: components["schemas"]["BucketItem"][];
         };
@@ -539,8 +1031,141 @@ export interface components {
         };
         ActionLinkType: (0 | 1 | 2) | ("ActionLinkType_DEFAULT" | "INTERNAL" | "EXTERNAL");
         GameEventStatus: (0 | 1 | 2) | ("GameEventStatus_DEFAULT" | "EVENT_LOCKED" | "EVENT_UNLOCKED");
-        SquadType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58) | ("SquadType_DEFAULT" | "SQUAD_NEUTRAL" | "SQUAD_LIGHT" | "SQUAD_DARK" | "SQUAD_EVENT" | "SQUAD_PVP" | "SQUAD_RESTRICTED" | "SQUAD_SUPPLIED" | "SQUAD_WAR" | "SQUAD_EVENT_01" | "SQUAD_EVENT_02" | "SQUAD_EVENT_03" | "SQUAD_EVENT_04" | "SQUAD_EVENT_05" | "SQUAD_EVENT_06" | "SQUAD_EVENT_07" | "SQUAD_EVENT_08" | "SQUAD_EVENT_09" | "SQUAD_EVENT_10" | "SQUAD_EVENT_11" | "SQUAD_EVENT_12" | "SQUAD_EVENT_13" | "SQUAD_EVENT_14" | "SQUAD_EVENT_15" | "SQUAD_EVENT_16" | "SQUAD_EVENT_17" | "SQUAD_EVENT_18" | "SQUAD_EVENT_19" | "SQUAD_EVENT_20" | "SQUAD_WAR_DEFENSIVE" | "SQUAD_GUILD_RAID" | "SQUAD_STAT_MOD_BATTLES" | "SQUAD_EVENT_DEFENSIVE" | "SQUAD_EVENT_DEFENSIVE_01" | "SQUAD_EVENT_DEFENSIVE_02" | "SQUAD_EVENT_DEFENSIVE_03" | "SQUAD_EVENT_DEFENSIVE_04" | "SQUAD_EVENT_DEFENSIVE_05" | "SQUAD_EVENT_DEFENSIVE_06" | "SQUAD_EVENT_DEFENSIVE_07" | "SQUAD_EVENT_DEFENSIVE_08" | "SQUAD_EVENT_DEFENSIVE_09" | "SQUAD_EVENT_DEFENSIVE_10" | "SQUAD_EVENT_DEFENSIVE_11" | "SQUAD_EVENT_DEFENSIVE_12" | "SQUAD_EVENT_DEFENSIVE_13" | "SQUAD_EVENT_DEFENSIVE_14" | "SQUAD_EVENT_DEFENSIVE_15" | "SQUAD_EVENT_DEFENSIVE_16" | "SQUAD_EVENT_DEFENSIVE_17" | "SQUAD_EVENT_DEFENSIVE_18" | "SQUAD_EVENT_DEFENSIVE_19" | "SQUAD_EVENT_DEFENSIVE_20" | "SQUAD_TERRITORY_WAR_ATTACK" | "SQUAD_TERRITORY_WAR_DEFENSIVE" | "SQUAD_TERRITORY_TOURNAMENT_ATTACK" | "SQUAD_TERRITORY_TOURNAMENT_DEFENSIVE" | "SQUAD_ARCADE_RAID" | "SQUAD_CONQUEST");
-        GameEventUILocation: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7) | ("GameEventUILocation_DEFAULT" | "GAME_EVENT_UI_LOCATION_TRIALS" | "GAME_EVENT_UI_LOCATION_EVENTS" | "GAME_EVENT_UI_LOCATION_MODS" | "GAME_EVENT_UI_LOCATION_SHIP_TRIALS" | "GAME_EVENT_UI_LOCATION_NONE" | "GAME_EVENT_UI_LOCATION_SEASON_HUB" | "GAME_EVENT_UI_LOCATION_CONQUEST");
+        SquadType:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 5
+                  | 6
+                  | 7
+                  | 8
+                  | 9
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+                  | 46
+                  | 47
+                  | 48
+                  | 49
+                  | 50
+                  | 51
+                  | 52
+                  | 53
+                  | 54
+                  | 55
+                  | 56
+                  | 57
+                  | 58
+              )
+            | (
+                  | "SquadType_DEFAULT"
+                  | "SQUAD_NEUTRAL"
+                  | "SQUAD_LIGHT"
+                  | "SQUAD_DARK"
+                  | "SQUAD_EVENT"
+                  | "SQUAD_PVP"
+                  | "SQUAD_RESTRICTED"
+                  | "SQUAD_SUPPLIED"
+                  | "SQUAD_WAR"
+                  | "SQUAD_EVENT_01"
+                  | "SQUAD_EVENT_02"
+                  | "SQUAD_EVENT_03"
+                  | "SQUAD_EVENT_04"
+                  | "SQUAD_EVENT_05"
+                  | "SQUAD_EVENT_06"
+                  | "SQUAD_EVENT_07"
+                  | "SQUAD_EVENT_08"
+                  | "SQUAD_EVENT_09"
+                  | "SQUAD_EVENT_10"
+                  | "SQUAD_EVENT_11"
+                  | "SQUAD_EVENT_12"
+                  | "SQUAD_EVENT_13"
+                  | "SQUAD_EVENT_14"
+                  | "SQUAD_EVENT_15"
+                  | "SQUAD_EVENT_16"
+                  | "SQUAD_EVENT_17"
+                  | "SQUAD_EVENT_18"
+                  | "SQUAD_EVENT_19"
+                  | "SQUAD_EVENT_20"
+                  | "SQUAD_WAR_DEFENSIVE"
+                  | "SQUAD_GUILD_RAID"
+                  | "SQUAD_STAT_MOD_BATTLES"
+                  | "SQUAD_EVENT_DEFENSIVE"
+                  | "SQUAD_EVENT_DEFENSIVE_01"
+                  | "SQUAD_EVENT_DEFENSIVE_02"
+                  | "SQUAD_EVENT_DEFENSIVE_03"
+                  | "SQUAD_EVENT_DEFENSIVE_04"
+                  | "SQUAD_EVENT_DEFENSIVE_05"
+                  | "SQUAD_EVENT_DEFENSIVE_06"
+                  | "SQUAD_EVENT_DEFENSIVE_07"
+                  | "SQUAD_EVENT_DEFENSIVE_08"
+                  | "SQUAD_EVENT_DEFENSIVE_09"
+                  | "SQUAD_EVENT_DEFENSIVE_10"
+                  | "SQUAD_EVENT_DEFENSIVE_11"
+                  | "SQUAD_EVENT_DEFENSIVE_12"
+                  | "SQUAD_EVENT_DEFENSIVE_13"
+                  | "SQUAD_EVENT_DEFENSIVE_14"
+                  | "SQUAD_EVENT_DEFENSIVE_15"
+                  | "SQUAD_EVENT_DEFENSIVE_16"
+                  | "SQUAD_EVENT_DEFENSIVE_17"
+                  | "SQUAD_EVENT_DEFENSIVE_18"
+                  | "SQUAD_EVENT_DEFENSIVE_19"
+                  | "SQUAD_EVENT_DEFENSIVE_20"
+                  | "SQUAD_TERRITORY_WAR_ATTACK"
+                  | "SQUAD_TERRITORY_WAR_DEFENSIVE"
+                  | "SQUAD_TERRITORY_TOURNAMENT_ATTACK"
+                  | "SQUAD_TERRITORY_TOURNAMENT_DEFENSIVE"
+                  | "SQUAD_ARCADE_RAID"
+                  | "SQUAD_CONQUEST"
+              );
+        GameEventUILocation:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7)
+            | (
+                  | "GameEventUILocation_DEFAULT"
+                  | "GAME_EVENT_UI_LOCATION_TRIALS"
+                  | "GAME_EVENT_UI_LOCATION_EVENTS"
+                  | "GAME_EVENT_UI_LOCATION_MODS"
+                  | "GAME_EVENT_UI_LOCATION_SHIP_TRIALS"
+                  | "GAME_EVENT_UI_LOCATION_NONE"
+                  | "GAME_EVENT_UI_LOCATION_SEASON_HUB"
+                  | "GAME_EVENT_UI_LOCATION_CONQUEST"
+              );
         ContextualMessageGroup: {
             groupId?: string;
             startMessage?: string;
@@ -576,7 +1201,19 @@ export interface components {
             storePromoDialog?: components["schemas"]["StorePromoDialog"];
             showExitButton?: boolean;
         };
-        ContextualMessageType: (0 | 1 | 3 | 4 | 5 | 6 | 7 | 8 | 9) | ("ContextualMessageType_DEFAULT" | "POINT_AT_VIEW_ELEMENT" | "CHARACTER_DIALOG" | "MODAL_DIALOG_ONE_BUTTON" | "MODAL_DIALOG_TWO_BUTTON" | "CANTINA_CHARACTER_DIALOG" | "UNIT_UNLOCK" | "STORE_PROMO_DIALOG" | "CHALLENGE_QUEST_REWARDS");
+        ContextualMessageType:
+            | (0 | 1 | 3 | 4 | 5 | 6 | 7 | 8 | 9)
+            | (
+                  | "ContextualMessageType_DEFAULT"
+                  | "POINT_AT_VIEW_ELEMENT"
+                  | "CHARACTER_DIALOG"
+                  | "MODAL_DIALOG_ONE_BUTTON"
+                  | "MODAL_DIALOG_TWO_BUTTON"
+                  | "CANTINA_CHARACTER_DIALOG"
+                  | "UNIT_UNLOCK"
+                  | "STORE_PROMO_DIALOG"
+                  | "CHALLENGE_QUEST_REWARDS"
+              );
         PointAtElement: {
             elementId?: string;
             /** Format: int32 */
@@ -614,7 +1251,14 @@ export interface components {
             showBartender?: boolean;
             bartenderTexture?: string;
         };
-        PointAtRotationBehavior: (0 | 1 | 2 | 3) | ("PointAtRotationBehavior_DEFAULT" | "ROTATION_BEHAVIOR_NONE" | "ROTATION_BEHAVIOR_AUTO_FROM_CENTER" | "ROTATION_BEHAVIOR_AUTO_FROM_CENTER_IF_CLAMPED");
+        PointAtRotationBehavior:
+            | (0 | 1 | 2 | 3)
+            | (
+                  | "PointAtRotationBehavior_DEFAULT"
+                  | "ROTATION_BEHAVIOR_NONE"
+                  | "ROTATION_BEHAVIOR_AUTO_FROM_CENTER"
+                  | "ROTATION_BEHAVIOR_AUTO_FROM_CENTER_IF_CLAMPED"
+              );
         PointerType: (0 | 1 | 2 | 3) | ("PointerType_DEFAULT" | "POINT" | "CLICK" | "SWIPE");
         Requirement: {
             evalType?: components["schemas"]["EvaluationType"];
@@ -631,7 +1275,241 @@ export interface components {
             locKey?: string;
             negate?: boolean;
         };
-        RequirementType: (0 | 3 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 19 | 20 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100 | 101 | 102 | 103 | 104 | 105 | 106 | 107 | 108 | 109 | 110 | 111 | 112 | 113 | 114 | 115 | 116 | 117 | 118 | 119 | 120 | 121 | 122 | 123 | 135 | 136) | ("RequirementType_DEFAULT" | "CURRENCY_REQUIREMENT" | "ROSTER_CHARACTER_NOT_CATEGORY_NOT_IN_SQUAD_REQUIREMENT" | "SQUAD_SIZE_MAXIMUM_REQUIREMENT" | "ROSTER_CHARACTER_CATEGORY_NOT_IN_USE_REQUIREMENT" | "ROSTER_CHARACTER_NOT_IN_USE_REQUIREMENT" | "SQUAD_SIZE_MINIMUM_REQUIREMENT" | "ENEMY_THREAT_LEVEL_REQUIREMENT" | "ANY_CHARACTER_READY_FOR_PROMOTION" | "UNIT_TRAINING_AVAILABLE" | "PLAYER_LEVEL_MIN_REQUIREMENT" | "ROSTER_UNIT_TYPE_REQUIREMENT" | "ROSTER_UNIT_TYPE_MAX_REQUIREMENT" | "UNIT_ABILITY_UPGRADE_AVAILABLE" | "UNIT_GEAR_EQUIP_AVAILABLE" | "CURRENT_UNIT_GEAR_EQUIP_AVAILABLE" | "PLAYER_UNIT_HEALTH_BELOW_PERCENT" | "REQUIREMENT_INVALID" | "CURRENT_CHARACTER_READY_FOR_PROMOTION" | "BATTLE_ANY_STATUS_EFFECT_ACTIVE" | "STORE_ITEM_AVAILABLE_FOR_PURCHASE" | "CURRENT_MISSION_HAS_GEAR_DROP" | "PLAYER_LEVEL_MAX_REQUIREMENT" | "CAMPAIGN_REQUIREMENT" | "ANY_DAILY_ACTIVITY_READY_FOR_CLAIM" | "FACEBOOK_LOGIN_AVAILABLE" | "ANY_UNIT_REACHED_MAX_RARITY" | "CURRENT_CHARACTER_READY_FOR_TIER_UP" | "EVENT_ACTIVE" | "BATTLE_ANY_UNIT_HAS_SHIELD" | "CURRENT_CHARACTER_MIN_TIER" | "UNIT_LEVEL_MAX_REQUIREMENT" | "UNIT_LEVEL_MIN_REQUIREMENT" | "ROSTER_UNIT_REQUIREMENT" | "UNIT_SHARD_REQUIREMENT" | "ROSTER_UNIT_COMBAT_TYPE_REQUIREMENT" | "BATTLE_TURN_COUNT" | "BATTLE_ENCOUNTER_STARTED" | "BATTLE_UNIT_TURN_SQUAD_CELL_INDEX" | "ROSTER_UNIT_CLASS_REQUIREMENT" | "SHIPS_UNLOCKED" | "UNIT_HAS_ALLY_ABILITY_REQUIREMENT" | "UNIT_HAS_REINFORCEMENT_ABILITY_READY" | "REINFORCEMENT_SLOT_AVAILABLE" | "ROSTER_CAN_BUILD_VALID_SQUAD_REQUIREMENT" | "BATTLE_ACTIVE_COMBAT_TYPE" | "BATTLE_PLAYER_UNIT_ABILITY_CAN_BE_ACTIVATED" | "BATTLE_TURN_OWNER" | "ROSTER_UNIT_NOT_OWNED_REQUIREMENT" | "UNIT_UNLOCK_REQUIREMENT" | "GUILD_TERRITORY_MAP_CONFLICT_COMPLETED" | "GUILD_TERRITORY_RECON_SCORE_MIN" | "GUILD_TERRITORY_RECON_SCORE_MAX" | "UNIT_DEPLOY_REQUIREMENT" | "GUILD_TERRITORY_ZONE_STATUS" | "TERRITORY_WAR_EVENT_AVAILABLE" | "CHALLENGE_QUEST_REWARDS_PENDING" | "QUEST_COMPLETE_REQUIREMENT" | "GRAND_ARENA_EVENT_ACTIVE" | "GUILD_STAT_REQUIREMENT" | "GUILD_CAMPAIGN_WIN_REQUIREMENT" | "GUILD_GALACTIC_POWER_MIN" | "AUTO_BATTLE_INACTIVE" | "AUTO_BATTLE_ACTIVE" | "BATTLE_NOT_PAUSED" | "BATTLE_SETTINGS_CLOSED" | "SEASONS_MAX_DIVISION" | "SEASONS_MIN_DIVISION" | "SEASONS_IN_DIVISION" | "SEASONS_MAX_LEAGUE" | "SEASONS_MIN_LEAGUE" | "SEASONS_IN_LEAGUE" | "PLAYER_PORTRAIT_OWNED" | "SEASONS_EQUAL_HIGHEST_LIFETIME_LEAGUE" | "SEASONS_MAX_HIGHEST_LIFETIME_LEAGUE" | "SEASONS_MIN_HIGHEST_LIFETIME_LEAGUE" | "EQUIPMENT_OWNED_COUNT" | "RELIC_UNLOCK_AVAILABLE" | "MESSAGE_GROUP_AVAILABLE" | "REQUIREMENT" | "DAYS_SINCE_INSTALL_MIN_REQUIREMENT" | "DAYS_SINCE_INSTALL_MAX_REQUIREMENT" | "UNIT_MIN_RELIC_LEVEL" | "ANY_UNIT_MIN_RELIC_LEVEL" | "GALACTIC_BUNDLE_REQUIREMENT" | "UNIT_MIN_GALACTIC_POWER" | "UNIT_MAX_GALACTIC_POWER" | "OWNED_UNIT_MAX_RARITY" | "EVENT_COMPLETED_REQUIREMENT" | "GALACTIC_POWER_HIGHWATERMARK_REQUIREMENT" | "PLAYER_IS_ELIGIBLE_FOR_ACTIVE_TERRITORY_BATTLE" | "TERRITORY_BATTLE_MIN_ROUND" | "TERRITORY_BATTLE_MAX_ROUND" | "RAID_ACTIVE_REQUIREMENT" | "CHALLENGE_REQUIREMENT" | "PLAYER_IN_GUILD_REQUIREMENT" | "EVENT_MISSIONS_VIEW_VISIBLE" | "FIND_FLOW_FIRST_TIME_REWARD" | "CAMPAIGN_TIMES_COMPLETED" | "CURRENT_CHARACTER_READY_FOR_ABILITY_UPGRADE" | "CONQUEST_ACTIVE_EVENT_JOINED" | "LOGIN_CALENDAR_ACTIVE" | "GALACTIC_LEGENDS_OWNED_MIN" | "DATACRONS_OWNED_MIN" | "UNIT_OWNED_SHARD_REQUIREMENT" | "WIN_MISSION_N_TIMES" | "FILL_SPECIFIC_PLATOON" | "CONQUEST_PASS_OWNED" | "CACHED_EPISODE_PASS_OWNED" | "CACHED_EPISODE_PASS_PLUS_OWNED" | "CACHED_EPISODE_STATUS_ACTIVE" | "DATACRON_SET_OWNED_MIN_LEVEL" | "DATACRON_TEMPLATE_OWNED_MIN_LEVEL" | "GUILD_JOIN_TIME_REQUIREMENT" | "RECENT_BATTLE");
+        RequirementType:
+            | (
+                  | 0
+                  | 3
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 19
+                  | 20
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+                  | 46
+                  | 47
+                  | 48
+                  | 49
+                  | 50
+                  | 51
+                  | 52
+                  | 53
+                  | 54
+                  | 55
+                  | 56
+                  | 57
+                  | 58
+                  | 59
+                  | 60
+                  | 61
+                  | 62
+                  | 63
+                  | 64
+                  | 65
+                  | 66
+                  | 67
+                  | 68
+                  | 69
+                  | 70
+                  | 71
+                  | 72
+                  | 73
+                  | 74
+                  | 75
+                  | 76
+                  | 77
+                  | 78
+                  | 79
+                  | 80
+                  | 81
+                  | 82
+                  | 83
+                  | 84
+                  | 85
+                  | 86
+                  | 87
+                  | 88
+                  | 89
+                  | 90
+                  | 91
+                  | 92
+                  | 93
+                  | 94
+                  | 95
+                  | 96
+                  | 97
+                  | 98
+                  | 99
+                  | 100
+                  | 101
+                  | 102
+                  | 103
+                  | 104
+                  | 105
+                  | 106
+                  | 107
+                  | 108
+                  | 109
+                  | 110
+                  | 111
+                  | 112
+                  | 113
+                  | 114
+                  | 115
+                  | 116
+                  | 117
+                  | 118
+                  | 119
+                  | 120
+                  | 121
+                  | 122
+                  | 123
+                  | 135
+                  | 136
+              )
+            | (
+                  | "RequirementType_DEFAULT"
+                  | "CURRENCY_REQUIREMENT"
+                  | "ROSTER_CHARACTER_NOT_CATEGORY_NOT_IN_SQUAD_REQUIREMENT"
+                  | "SQUAD_SIZE_MAXIMUM_REQUIREMENT"
+                  | "ROSTER_CHARACTER_CATEGORY_NOT_IN_USE_REQUIREMENT"
+                  | "ROSTER_CHARACTER_NOT_IN_USE_REQUIREMENT"
+                  | "SQUAD_SIZE_MINIMUM_REQUIREMENT"
+                  | "ENEMY_THREAT_LEVEL_REQUIREMENT"
+                  | "ANY_CHARACTER_READY_FOR_PROMOTION"
+                  | "UNIT_TRAINING_AVAILABLE"
+                  | "PLAYER_LEVEL_MIN_REQUIREMENT"
+                  | "ROSTER_UNIT_TYPE_REQUIREMENT"
+                  | "ROSTER_UNIT_TYPE_MAX_REQUIREMENT"
+                  | "UNIT_ABILITY_UPGRADE_AVAILABLE"
+                  | "UNIT_GEAR_EQUIP_AVAILABLE"
+                  | "CURRENT_UNIT_GEAR_EQUIP_AVAILABLE"
+                  | "PLAYER_UNIT_HEALTH_BELOW_PERCENT"
+                  | "REQUIREMENT_INVALID"
+                  | "CURRENT_CHARACTER_READY_FOR_PROMOTION"
+                  | "BATTLE_ANY_STATUS_EFFECT_ACTIVE"
+                  | "STORE_ITEM_AVAILABLE_FOR_PURCHASE"
+                  | "CURRENT_MISSION_HAS_GEAR_DROP"
+                  | "PLAYER_LEVEL_MAX_REQUIREMENT"
+                  | "CAMPAIGN_REQUIREMENT"
+                  | "ANY_DAILY_ACTIVITY_READY_FOR_CLAIM"
+                  | "FACEBOOK_LOGIN_AVAILABLE"
+                  | "ANY_UNIT_REACHED_MAX_RARITY"
+                  | "CURRENT_CHARACTER_READY_FOR_TIER_UP"
+                  | "EVENT_ACTIVE"
+                  | "BATTLE_ANY_UNIT_HAS_SHIELD"
+                  | "CURRENT_CHARACTER_MIN_TIER"
+                  | "UNIT_LEVEL_MAX_REQUIREMENT"
+                  | "UNIT_LEVEL_MIN_REQUIREMENT"
+                  | "ROSTER_UNIT_REQUIREMENT"
+                  | "UNIT_SHARD_REQUIREMENT"
+                  | "ROSTER_UNIT_COMBAT_TYPE_REQUIREMENT"
+                  | "BATTLE_TURN_COUNT"
+                  | "BATTLE_ENCOUNTER_STARTED"
+                  | "BATTLE_UNIT_TURN_SQUAD_CELL_INDEX"
+                  | "ROSTER_UNIT_CLASS_REQUIREMENT"
+                  | "SHIPS_UNLOCKED"
+                  | "UNIT_HAS_ALLY_ABILITY_REQUIREMENT"
+                  | "UNIT_HAS_REINFORCEMENT_ABILITY_READY"
+                  | "REINFORCEMENT_SLOT_AVAILABLE"
+                  | "ROSTER_CAN_BUILD_VALID_SQUAD_REQUIREMENT"
+                  | "BATTLE_ACTIVE_COMBAT_TYPE"
+                  | "BATTLE_PLAYER_UNIT_ABILITY_CAN_BE_ACTIVATED"
+                  | "BATTLE_TURN_OWNER"
+                  | "ROSTER_UNIT_NOT_OWNED_REQUIREMENT"
+                  | "UNIT_UNLOCK_REQUIREMENT"
+                  | "GUILD_TERRITORY_MAP_CONFLICT_COMPLETED"
+                  | "GUILD_TERRITORY_RECON_SCORE_MIN"
+                  | "GUILD_TERRITORY_RECON_SCORE_MAX"
+                  | "UNIT_DEPLOY_REQUIREMENT"
+                  | "GUILD_TERRITORY_ZONE_STATUS"
+                  | "TERRITORY_WAR_EVENT_AVAILABLE"
+                  | "CHALLENGE_QUEST_REWARDS_PENDING"
+                  | "QUEST_COMPLETE_REQUIREMENT"
+                  | "GRAND_ARENA_EVENT_ACTIVE"
+                  | "GUILD_STAT_REQUIREMENT"
+                  | "GUILD_CAMPAIGN_WIN_REQUIREMENT"
+                  | "GUILD_GALACTIC_POWER_MIN"
+                  | "AUTO_BATTLE_INACTIVE"
+                  | "AUTO_BATTLE_ACTIVE"
+                  | "BATTLE_NOT_PAUSED"
+                  | "BATTLE_SETTINGS_CLOSED"
+                  | "SEASONS_MAX_DIVISION"
+                  | "SEASONS_MIN_DIVISION"
+                  | "SEASONS_IN_DIVISION"
+                  | "SEASONS_MAX_LEAGUE"
+                  | "SEASONS_MIN_LEAGUE"
+                  | "SEASONS_IN_LEAGUE"
+                  | "PLAYER_PORTRAIT_OWNED"
+                  | "SEASONS_EQUAL_HIGHEST_LIFETIME_LEAGUE"
+                  | "SEASONS_MAX_HIGHEST_LIFETIME_LEAGUE"
+                  | "SEASONS_MIN_HIGHEST_LIFETIME_LEAGUE"
+                  | "EQUIPMENT_OWNED_COUNT"
+                  | "RELIC_UNLOCK_AVAILABLE"
+                  | "MESSAGE_GROUP_AVAILABLE"
+                  | "REQUIREMENT"
+                  | "DAYS_SINCE_INSTALL_MIN_REQUIREMENT"
+                  | "DAYS_SINCE_INSTALL_MAX_REQUIREMENT"
+                  | "UNIT_MIN_RELIC_LEVEL"
+                  | "ANY_UNIT_MIN_RELIC_LEVEL"
+                  | "GALACTIC_BUNDLE_REQUIREMENT"
+                  | "UNIT_MIN_GALACTIC_POWER"
+                  | "UNIT_MAX_GALACTIC_POWER"
+                  | "OWNED_UNIT_MAX_RARITY"
+                  | "EVENT_COMPLETED_REQUIREMENT"
+                  | "GALACTIC_POWER_HIGHWATERMARK_REQUIREMENT"
+                  | "PLAYER_IS_ELIGIBLE_FOR_ACTIVE_TERRITORY_BATTLE"
+                  | "TERRITORY_BATTLE_MIN_ROUND"
+                  | "TERRITORY_BATTLE_MAX_ROUND"
+                  | "RAID_ACTIVE_REQUIREMENT"
+                  | "CHALLENGE_REQUIREMENT"
+                  | "PLAYER_IN_GUILD_REQUIREMENT"
+                  | "EVENT_MISSIONS_VIEW_VISIBLE"
+                  | "FIND_FLOW_FIRST_TIME_REWARD"
+                  | "CAMPAIGN_TIMES_COMPLETED"
+                  | "CURRENT_CHARACTER_READY_FOR_ABILITY_UPGRADE"
+                  | "CONQUEST_ACTIVE_EVENT_JOINED"
+                  | "LOGIN_CALENDAR_ACTIVE"
+                  | "GALACTIC_LEGENDS_OWNED_MIN"
+                  | "DATACRONS_OWNED_MIN"
+                  | "UNIT_OWNED_SHARD_REQUIREMENT"
+                  | "WIN_MISSION_N_TIMES"
+                  | "FILL_SPECIFIC_PLATOON"
+                  | "CONQUEST_PASS_OWNED"
+                  | "CACHED_EPISODE_PASS_OWNED"
+                  | "CACHED_EPISODE_PASS_PLUS_OWNED"
+                  | "CACHED_EPISODE_STATUS_ACTIVE"
+                  | "DATACRON_SET_OWNED_MIN_LEVEL"
+                  | "DATACRON_TEMPLATE_OWNED_MIN_LEVEL"
+                  | "GUILD_JOIN_TIME_REQUIREMENT"
+                  | "RECENT_BATTLE"
+              );
         CharacterDialog: {
             characterPrefab?: string;
             animations?: string[];
@@ -783,7 +1661,217 @@ export interface components {
             /** Format: int32 */
             priority?: number;
         };
-        ConditionType: (0 | 1 | 2 | 3 | 4 | 5 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45 | 46 | 47 | 48 | 49 | 50 | 51 | 52 | 53 | 54 | 55 | 56 | 57 | 58 | 59 | 60 | 61 | 62 | 63 | 64 | 65 | 66 | 67 | 68 | 69 | 70 | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90 | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100 | 101 | 102 | 103 | 104 | 105) | ("ConditionType_DEFAULT" | "ROUND_COUNT" | "END_OF_ROUND" | "START_OF_ROUND" | "START_OF_BATTLE" | "CHANCE" | "START_OF_ENCOUNTER" | "CRIT" | "RECEIVE_CRIT" | "PERFORM_MOVE" | "ATTACK" | "LIMIT_BREAK" | "RECEIVE_DAMAGE" | "RECEIVE_HEAL" | "COMBO" | "RECEIVE_COMBO" | "KILL" | "REVIVE" | "ENEMY_KILLED" | "ALLY_KILLED" | "DEATH" | "ALLY_REVIVED" | "ENEMY_REVIVED" | "END_OF_ENCOUNTER" | "START_OF_TURN" | "HEALTH_DECREASE" | "HEALTH_INCREASE" | "PERSISTENT_EFFECT_ADD" | "PERSISTENT_EFFECT_REMOVE" | "DODGED" | "WAS_DODGED" | "END_OF_TURN" | "RESISTED" | "WAS_RESISTED" | "START_MOVE" | "START_ATTACK" | "START_LIMIT_BREAK" | "PRE_EFFECT_EVAL" | "RECEIVE_PRE_EFFECT_EVAL" | "POST_EFFECT_EVAL" | "RECEIVE_POST_EFFECT_EVAL" | "PRE_EVASION_EVAL" | "RECEIVE_PRE_EVASION_EVAL" | "POST_EVASION_EVAL" | "RECEIVE_POST_EVASION_EVAL" | "START_OF_GUILD_RAID_FOR_PLAYER" | "START_OF_GUILD_RAID_ENCOUNTER_FOR_PLAYER" | "PRE_RECEIVE_DAMAGE" | "FULL_TURN_COMPLETE" | "PERSISTENT_EFFECT_ADD_INSTANCE" | "PERSISTENT_EFFECT_REMOVE_INSTANCE" | "FLED" | "ALLY_FLED" | "ENEMY_FLED" | "REINFORCED" | "ALLY_REINFORCED" | "ENEMY_REINFORCED" | "DEAL_DAMAGE" | "PERSISTENT_EFFECT_INFLICTED" | "PERSISTENT_EFFECT_INFLICTED_INSTANCE" | "DODGED_POST_EVASION_EVAL" | "HEALTH_MAX_LIMIT_REACHED" | "HEALTH_MIN_LIMIT_REACHED" | "RECEIVE_PROTECTION_HEAL" | "BONUS_SPEED_GAIN" | "BONUS_SPEED_REMOVE" | "RECEIVE_PROTECTION_HEAL_ACTUAL" | "BONUS_SPEED_GAIN_ACTUAL" | "BONUS_SPEED_REMOVE_ACTUAL" | "RECEIVE_HEAL_ACTUAL" | "PRE_DAMAGE" | "SUMMONED" | "ALLY_SUMMONED" | "ENEMY_SUMMONED" | "ULTIMATE_CHARGE_INCREASED" | "ULTIMATE_CHARGE_DECREASED" | "ULTIMATE_THRESHOLD_GAINED" | "ULTIMATE_THRESHOLD_LOST" | "ALLY_TRANSFORMED" | "ENEMY_TRANSFORMED" | "PERSISTENT_EFFECT_DISPELLED" | "PERSISTENT_EFFECT_DISPELLED_INSTANCE" | "PERSISTENT_EFFECT_WAS_DISPELLED_INSTANCE" | "PERSISTENT_EFFECT_WAS_DISPELLED" | "ALLY_PERSISTENT_EFFECT_ADD" | "ALLY_PERSISTENT_EFFECT_ADD_INSTANCE" | "ENEMY_PERSISTENT_EFFECT_ADD" | "ENEMY_PERSISTENT_EFFECT_ADD_INSTANCE" | "ALLY_PERSISTENT_EFFECT_REMOVE" | "ALLY_PERSISTENT_EFFECT_REMOVE_INSTANCE" | "ENEMY_PERSISTENT_EFFECT_REMOVE" | "ENEMY_PERSISTENT_EFFECT_REMOVE_INSTANCE" | "OWNERSHIP_MODIFIED" | "ALLY_OWNERSHIP_MODIFIED" | "ENEMY_OWNERSHIP_MODIFIED" | "BLACKBOARD_MIN_LIMIT_REACHED" | "BLACKBOARD_MAX_LIMIT_REACHED" | "BLACKBOARD_INCREASED" | "BLACKBOARD_DECREASED" | "SQUAD_BLACKBOARD_MIN_LIMIT_REACHED" | "SQUAD_BLACKBOARD_MAX_LIMIT_REACHED" | "SQUAD_BLACKBOARD_INCREASED" | "SQUAD_BLACKBOARD_DECREASED");
+        ConditionType:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 5
+                  | 7
+                  | 8
+                  | 9
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+                  | 46
+                  | 47
+                  | 48
+                  | 49
+                  | 50
+                  | 51
+                  | 52
+                  | 53
+                  | 54
+                  | 55
+                  | 56
+                  | 57
+                  | 58
+                  | 59
+                  | 60
+                  | 61
+                  | 62
+                  | 63
+                  | 64
+                  | 65
+                  | 66
+                  | 67
+                  | 68
+                  | 69
+                  | 70
+                  | 71
+                  | 72
+                  | 73
+                  | 74
+                  | 75
+                  | 76
+                  | 77
+                  | 78
+                  | 79
+                  | 80
+                  | 83
+                  | 84
+                  | 85
+                  | 86
+                  | 87
+                  | 88
+                  | 89
+                  | 90
+                  | 91
+                  | 92
+                  | 93
+                  | 94
+                  | 95
+                  | 96
+                  | 97
+                  | 98
+                  | 99
+                  | 100
+                  | 101
+                  | 102
+                  | 103
+                  | 104
+                  | 105
+              )
+            | (
+                  | "ConditionType_DEFAULT"
+                  | "ROUND_COUNT"
+                  | "END_OF_ROUND"
+                  | "START_OF_ROUND"
+                  | "START_OF_BATTLE"
+                  | "CHANCE"
+                  | "START_OF_ENCOUNTER"
+                  | "CRIT"
+                  | "RECEIVE_CRIT"
+                  | "PERFORM_MOVE"
+                  | "ATTACK"
+                  | "LIMIT_BREAK"
+                  | "RECEIVE_DAMAGE"
+                  | "RECEIVE_HEAL"
+                  | "COMBO"
+                  | "RECEIVE_COMBO"
+                  | "KILL"
+                  | "REVIVE"
+                  | "ENEMY_KILLED"
+                  | "ALLY_KILLED"
+                  | "DEATH"
+                  | "ALLY_REVIVED"
+                  | "ENEMY_REVIVED"
+                  | "END_OF_ENCOUNTER"
+                  | "START_OF_TURN"
+                  | "HEALTH_DECREASE"
+                  | "HEALTH_INCREASE"
+                  | "PERSISTENT_EFFECT_ADD"
+                  | "PERSISTENT_EFFECT_REMOVE"
+                  | "DODGED"
+                  | "WAS_DODGED"
+                  | "END_OF_TURN"
+                  | "RESISTED"
+                  | "WAS_RESISTED"
+                  | "START_MOVE"
+                  | "START_ATTACK"
+                  | "START_LIMIT_BREAK"
+                  | "PRE_EFFECT_EVAL"
+                  | "RECEIVE_PRE_EFFECT_EVAL"
+                  | "POST_EFFECT_EVAL"
+                  | "RECEIVE_POST_EFFECT_EVAL"
+                  | "PRE_EVASION_EVAL"
+                  | "RECEIVE_PRE_EVASION_EVAL"
+                  | "POST_EVASION_EVAL"
+                  | "RECEIVE_POST_EVASION_EVAL"
+                  | "START_OF_GUILD_RAID_FOR_PLAYER"
+                  | "START_OF_GUILD_RAID_ENCOUNTER_FOR_PLAYER"
+                  | "PRE_RECEIVE_DAMAGE"
+                  | "FULL_TURN_COMPLETE"
+                  | "PERSISTENT_EFFECT_ADD_INSTANCE"
+                  | "PERSISTENT_EFFECT_REMOVE_INSTANCE"
+                  | "FLED"
+                  | "ALLY_FLED"
+                  | "ENEMY_FLED"
+                  | "REINFORCED"
+                  | "ALLY_REINFORCED"
+                  | "ENEMY_REINFORCED"
+                  | "DEAL_DAMAGE"
+                  | "PERSISTENT_EFFECT_INFLICTED"
+                  | "PERSISTENT_EFFECT_INFLICTED_INSTANCE"
+                  | "DODGED_POST_EVASION_EVAL"
+                  | "HEALTH_MAX_LIMIT_REACHED"
+                  | "HEALTH_MIN_LIMIT_REACHED"
+                  | "RECEIVE_PROTECTION_HEAL"
+                  | "BONUS_SPEED_GAIN"
+                  | "BONUS_SPEED_REMOVE"
+                  | "RECEIVE_PROTECTION_HEAL_ACTUAL"
+                  | "BONUS_SPEED_GAIN_ACTUAL"
+                  | "BONUS_SPEED_REMOVE_ACTUAL"
+                  | "RECEIVE_HEAL_ACTUAL"
+                  | "PRE_DAMAGE"
+                  | "SUMMONED"
+                  | "ALLY_SUMMONED"
+                  | "ENEMY_SUMMONED"
+                  | "ULTIMATE_CHARGE_INCREASED"
+                  | "ULTIMATE_CHARGE_DECREASED"
+                  | "ULTIMATE_THRESHOLD_GAINED"
+                  | "ULTIMATE_THRESHOLD_LOST"
+                  | "ALLY_TRANSFORMED"
+                  | "ENEMY_TRANSFORMED"
+                  | "PERSISTENT_EFFECT_DISPELLED"
+                  | "PERSISTENT_EFFECT_DISPELLED_INSTANCE"
+                  | "PERSISTENT_EFFECT_WAS_DISPELLED_INSTANCE"
+                  | "PERSISTENT_EFFECT_WAS_DISPELLED"
+                  | "ALLY_PERSISTENT_EFFECT_ADD"
+                  | "ALLY_PERSISTENT_EFFECT_ADD_INSTANCE"
+                  | "ENEMY_PERSISTENT_EFFECT_ADD"
+                  | "ENEMY_PERSISTENT_EFFECT_ADD_INSTANCE"
+                  | "ALLY_PERSISTENT_EFFECT_REMOVE"
+                  | "ALLY_PERSISTENT_EFFECT_REMOVE_INSTANCE"
+                  | "ENEMY_PERSISTENT_EFFECT_REMOVE"
+                  | "ENEMY_PERSISTENT_EFFECT_REMOVE_INSTANCE"
+                  | "OWNERSHIP_MODIFIED"
+                  | "ALLY_OWNERSHIP_MODIFIED"
+                  | "ENEMY_OWNERSHIP_MODIFIED"
+                  | "BLACKBOARD_MIN_LIMIT_REACHED"
+                  | "BLACKBOARD_MAX_LIMIT_REACHED"
+                  | "BLACKBOARD_INCREASED"
+                  | "BLACKBOARD_DECREASED"
+                  | "SQUAD_BLACKBOARD_MIN_LIMIT_REACHED"
+                  | "SQUAD_BLACKBOARD_MAX_LIMIT_REACHED"
+                  | "SQUAD_BLACKBOARD_INCREASED"
+                  | "SQUAD_BLACKBOARD_DECREASED"
+              );
         AbilityTier: {
             descKey?: string;
             upgradeDescKey?: string;
@@ -808,9 +1896,34 @@ export interface components {
             titleKey?: string;
             descKey?: string;
         };
-        AbilityButtonLocationType: (0 | 1 | 2 | 3 | 4) | ("AbilityButtonLocationType_DEFAULT" | "ABILITY_STANDARD" | "ABILITY_ADDITIONAL" | "ABILITY_HIDDEN" | "ABILITY_SECOND_STANDARD");
-        AbilityType: (0 | 7 | 8 | 9 | 10 | 11) | ("AbilityType_DEFAULT" | "ABILITY_ACTIVATED" | "ABILITY_PASSIVE" | "ABILITY_REINFORCEMENT" | "ABILITY_ACTIVATED_ALLY_SELECT" | "ABILITY_HARDWARE");
-        UnitDetailsAbilityLocation: (0 | 1 | 2 | 3 | 4) | ("UnitDetailsAbilityLocation_DEFAULT" | "ABILITY_LOCATION_NORMAL" | "ABILITY_LOCATION_ADVANCED" | "ABILITY_LOCATION_CREW" | "ABILITY_LOCATION_HIDDEN");
+        AbilityButtonLocationType:
+            | (0 | 1 | 2 | 3 | 4)
+            | (
+                  | "AbilityButtonLocationType_DEFAULT"
+                  | "ABILITY_STANDARD"
+                  | "ABILITY_ADDITIONAL"
+                  | "ABILITY_HIDDEN"
+                  | "ABILITY_SECOND_STANDARD"
+              );
+        AbilityType:
+            | (0 | 7 | 8 | 9 | 10 | 11)
+            | (
+                  | "AbilityType_DEFAULT"
+                  | "ABILITY_ACTIVATED"
+                  | "ABILITY_PASSIVE"
+                  | "ABILITY_REINFORCEMENT"
+                  | "ABILITY_ACTIVATED_ALLY_SELECT"
+                  | "ABILITY_HARDWARE"
+              );
+        UnitDetailsAbilityLocation:
+            | (0 | 1 | 2 | 3 | 4)
+            | (
+                  | "UnitDetailsAbilityLocation_DEFAULT"
+                  | "ABILITY_LOCATION_NORMAL"
+                  | "ABILITY_LOCATION_ADVANCED"
+                  | "ABILITY_LOCATION_CREW"
+                  | "ABILITY_LOCATION_HIDDEN"
+              );
         AbilityAIParams: {
             preferredAllyTargetingRuleId?: string;
             preferredEnemyTargetingRuleId?: string;
@@ -840,8 +1953,25 @@ export interface components {
             requiredCategory?: components["schemas"]["EffectTargetCategoryCriteria"];
             requiredActiveEffectTagCriteria?: components["schemas"]["EffectTagCriteria"][];
         };
-        EffectTargetUnitSelect: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11) | ("EffectTargetUnitSelect_DEFAULT" | "SELECT_ALL" | "SELECTED_TARGET" | "SELECT_RANDOM" | "SELECT_SELF" | "SELECT_PREVIOUS" | "SELECT_LAST_REINFORCEMENT" | "SELECT_LOWEST_SURVIVABILITY" | "SELECT_HIGHEST_SURVIVABILITY" | "SELECT_LEADER" | "SELECT_SUPPORT" | "SELECT_LAST_SUMMON");
-        EffectTargetBattleSide: (0 | 1 | 2 | 3 | 4 | 5) | ("EffectTargetBattleSide_DEFAULT" | "BOTH_SIDES" | "ALLY_SIDE" | "ENEMY_SIDE" | "PLAYER_SIDE" | "OPPONENT_SIDE");
+        EffectTargetUnitSelect:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11)
+            | (
+                  | "EffectTargetUnitSelect_DEFAULT"
+                  | "SELECT_ALL"
+                  | "SELECTED_TARGET"
+                  | "SELECT_RANDOM"
+                  | "SELECT_SELF"
+                  | "SELECT_PREVIOUS"
+                  | "SELECT_LAST_REINFORCEMENT"
+                  | "SELECT_LOWEST_SURVIVABILITY"
+                  | "SELECT_HIGHEST_SURVIVABILITY"
+                  | "SELECT_LEADER"
+                  | "SELECT_SUPPORT"
+                  | "SELECT_LAST_SUMMON"
+              );
+        EffectTargetBattleSide:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | ("EffectTargetBattleSide_DEFAULT" | "BOTH_SIDES" | "ALLY_SIDE" | "ENEMY_SIDE" | "PLAYER_SIDE" | "OPPONENT_SIDE");
         UnitClass: (0 | 6 | 7) | ("UnitClass_DEFAULT" | "UNITCLASS_STANDARD" | "UNITCLASS_COMMANDER");
         EffectTargetCategoryCriteria: {
             exclude?: boolean;
@@ -852,14 +1982,26 @@ export interface components {
             exclude?: boolean;
             categoryId?: string;
         };
-        UnitHealthState: (0 | 1 | 2 | 3) | ("UnitHealthState_DEFAULT" | "UNIT_HEALTH_STATE_ANY" | "UNIT_HEALTH_STATE_ALIVE" | "UNIT_HEALTH_STATE_DEAD");
+        UnitHealthState:
+            | (0 | 1 | 2 | 3)
+            | ("UnitHealthState_DEFAULT" | "UNIT_HEALTH_STATE_ANY" | "UNIT_HEALTH_STATE_ALIVE" | "UNIT_HEALTH_STATE_DEAD");
         StatValueRange: {
             stat?: components["schemas"]["UnitStat"];
             battleStat?: components["schemas"]["BattleUnitStateStat"];
             min?: components["schemas"]["StatValueRangeNumber"];
             max?: components["schemas"]["StatValueRangeNumber"];
         };
-        BattleUnitStateStat: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("BattleUnitStateStat_DEFAULT" | "BATTLE_UNIT_STAT_UNDEFINED" | "BATTLE_UNIT_STAT_HEALTH" | "BATTLE_UNIT_STAT_HEALTH_PERCENT" | "BATTLE_UNIT_STAT_SPEED_FILL" | "BATTLE_UNIT_STAT_SPEED_FILL_PERCENT" | "BATTLE_UNIT_STAT_SHIELD_PERCENT");
+        BattleUnitStateStat:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6)
+            | (
+                  | "BattleUnitStateStat_DEFAULT"
+                  | "BATTLE_UNIT_STAT_UNDEFINED"
+                  | "BATTLE_UNIT_STAT_HEALTH"
+                  | "BATTLE_UNIT_STAT_HEALTH_PERCENT"
+                  | "BATTLE_UNIT_STAT_SPEED_FILL"
+                  | "BATTLE_UNIT_STAT_SPEED_FILL_PERCENT"
+                  | "BATTLE_UNIT_STAT_SHIELD_PERCENT"
+              );
         StatValueRangeNumber: {
             /** Format: int32 */
             value?: number;
@@ -869,7 +2011,14 @@ export interface components {
             tag?: string;
             exclude?: boolean;
         };
-        BattleDeploymentState: (0 | 1 | 2 | 3) | ("BattleDeploymentState_DEFAULT" | "BATTLE_DEPLOYMENT_STATE_ANY" | "BATTLE_DEPLOYMENT_STATE_DEPLOYED" | "BATTLE_DEPLOYMENT_STATE_REINFORCEMENT");
+        BattleDeploymentState:
+            | (0 | 1 | 2 | 3)
+            | (
+                  | "BattleDeploymentState_DEFAULT"
+                  | "BATTLE_DEPLOYMENT_STATE_ANY"
+                  | "BATTLE_DEPLOYMENT_STATE_DEPLOYED"
+                  | "BATTLE_DEPLOYMENT_STATE_REINFORCEMENT"
+              );
         AbilityReference: {
             abilityId?: string;
             requiredTier?: components["schemas"]["UnitTier"];
@@ -974,7 +2123,22 @@ export interface components {
             unlockLevel?: number;
             craftRequirement?: components["schemas"]["Requirement"];
         };
-        RecipeType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11) | ("RecipeType_DEFAULT" | "RECIPE_INVALID" | "RECIPE_PROMOTION" | "RECIPE_SHIP" | "RECIPE_CONSUMABLE" | "RECIPE_CHARACTER" | "RECIPE_SKILL" | "RECIPE_EQUIPMENT" | "RECIPE_MOD_SLICING" | "RECIPE_MATERIAL" | "RECIPE_RELIC" | "RECIPE_DATACRON");
+        RecipeType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11)
+            | (
+                  | "RecipeType_DEFAULT"
+                  | "RECIPE_INVALID"
+                  | "RECIPE_PROMOTION"
+                  | "RECIPE_SHIP"
+                  | "RECIPE_CONSUMABLE"
+                  | "RECIPE_CHARACTER"
+                  | "RECIPE_SKILL"
+                  | "RECIPE_EQUIPMENT"
+                  | "RECIPE_MOD_SLICING"
+                  | "RECIPE_MATERIAL"
+                  | "RECIPE_RELIC"
+                  | "RECIPE_DATACRON"
+              );
         StatProgression: {
             id?: string;
             stat?: components["schemas"]["StatDef"];
@@ -1030,8 +2194,22 @@ export interface components {
             claimDisabledMessageKey?: string;
             descParameterKey?: string[];
         };
-        ChallengeType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8) | ("ChallengeType_DEFAULT" | "DAILY_CHALLENGE" | "LIFETIME_CHALLENGE" | "QUEST_CHALLENGE" | "PLAYER_ACTIVATED_CHALLENGE" | "FEAT_CHALLENGE" | "EPISODE_QUEST_BLOCK" | "LOYALTY_MILESTONE" | "CHARACTER_QUEST_BLOCK");
-        ChallengeClaimType: (0 | 1 | 2 | 3) | ("ChallengeClaimType_DEFAULT" | "CHALLENGE_CLAIM_MANUAL" | "CHALLENGE_CLAIM_AUTOMATIC" | "CHALLENGE_CLAIM_DAILY");
+        ChallengeType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8)
+            | (
+                  | "ChallengeType_DEFAULT"
+                  | "DAILY_CHALLENGE"
+                  | "LIFETIME_CHALLENGE"
+                  | "QUEST_CHALLENGE"
+                  | "PLAYER_ACTIVATED_CHALLENGE"
+                  | "FEAT_CHALLENGE"
+                  | "EPISODE_QUEST_BLOCK"
+                  | "LOYALTY_MILESTONE"
+                  | "CHARACTER_QUEST_BLOCK"
+              );
+        ChallengeClaimType:
+            | (0 | 1 | 2 | 3)
+            | ("ChallengeClaimType_DEFAULT" | "CHALLENGE_CLAIM_MANUAL" | "CHALLENGE_CLAIM_AUTOMATIC" | "CHALLENGE_CLAIM_DAILY");
         ChallengeRewardType: (0 | 1 | 2) | ("ChallengeRewardType_DEFAULT" | "CHALLENGE_REWARD_FIXED" | "CHALLENGE_REWARD_RATIO");
         ChallengeTask: {
             id?: string;
@@ -1062,7 +2240,28 @@ export interface components {
             isOmicronTier?: boolean;
         };
         SkillType: (0 | 1 | 2) | ("SkillType_DEFAULT" | "UNIT_SKILL" | "CREW_SKILL");
-        OmicronMode: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17) | ("OmicronMode_DEFAULT" | "ALL_OMICRON" | "PVE_OMICRON" | "PVP_OMICRON" | "GUILD_RAID_OMICRON" | "TERRITORY_STRIKE_OMICRON" | "TERRITORY_COVERT_OMICRON" | "TERRITORY_BATTLE_BOTH_OMICRON" | "TERRITORY_WAR_OMICRON" | "TERRITORY_TOURNAMENT_OMICRON" | "WAR_OMICRON" | "CONQUEST_OMICRON" | "GALACTIC_CHALLENGE_OMICRON" | "PVE_EVENT_OMICRON" | "TERRITORY_TOURNAMENT_3_OMICRON" | "TERRITORY_TOURNAMENT_5_OMICRON" | "GALACTIC_CHALLENGE_3_OMICRON" | "GALACTIC_CHALLENGE_5_OMICRON");
+        OmicronMode:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17)
+            | (
+                  | "OmicronMode_DEFAULT"
+                  | "ALL_OMICRON"
+                  | "PVE_OMICRON"
+                  | "PVP_OMICRON"
+                  | "GUILD_RAID_OMICRON"
+                  | "TERRITORY_STRIKE_OMICRON"
+                  | "TERRITORY_COVERT_OMICRON"
+                  | "TERRITORY_BATTLE_BOTH_OMICRON"
+                  | "TERRITORY_WAR_OMICRON"
+                  | "TERRITORY_TOURNAMENT_OMICRON"
+                  | "WAR_OMICRON"
+                  | "CONQUEST_OMICRON"
+                  | "GALACTIC_CHALLENGE_OMICRON"
+                  | "PVE_EVENT_OMICRON"
+                  | "TERRITORY_TOURNAMENT_3_OMICRON"
+                  | "TERRITORY_TOURNAMENT_5_OMICRON"
+                  | "GALACTIC_CHALLENGE_3_OMICRON"
+                  | "GALACTIC_CHALLENGE_5_OMICRON"
+              );
         EventSampling: {
             eventId?: string;
             /** Format: int32 */
@@ -1106,7 +2305,9 @@ export interface components {
             combatType?: components["schemas"]["CombatType"];
             position?: components["schemas"]["Position"];
         };
-        WarNodeType: (0 | 1 | 2 | 3 | 4) | ("WarNodeType_DEFAULT" | "NODETYPE_OPPONENT" | "NODETYPE_CHEST_COMMON" | "NODETYPE_CHEST_RARE" | "NODETYPE_CHEST_EPIC");
+        WarNodeType:
+            | (0 | 1 | 2 | 3 | 4)
+            | ("WarNodeType_DEFAULT" | "NODETYPE_OPPONENT" | "NODETYPE_CHEST_COMMON" | "NODETYPE_CHEST_RARE" | "NODETYPE_CHEST_EPIC");
         Position: {
             x?: string;
             y?: string;
@@ -1189,7 +2390,103 @@ export interface components {
             applyEffectEnabled?: boolean;
             applyEffectLabel?: string;
         };
-        EffectType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40 | 41 | 42 | 43 | 44 | 45) | ("EffectType_DEFAULT" | "DAMAGE" | "RECOVER" | "PARALYSIS" | "CURSE" | "DISPELL" | "IMMUNITY" | "BONUS_MOVE" | "MODIFY_STAT" | "APPLY_EFFECT" | "DISTRIBUTE_RECOVERY" | "QUERY_COUNT" | "QUERY_STAT" | "REVIVE_UNIT" | "SCRIPT_COMPONENT" | "FLEE" | "DESTROY" | "REINFORCE" | "GRANT_SHIELD" | "GRANT_ABILITY" | "HEALTH_LIMIT" | "BLACKBOARD_MODIFY" | "BLACKBOARD_QUERY" | "STAT_LIMIT" | "SUMMON_UNIT" | "QUERY_COOLDOWN" | "QUERY_UNIT_VALUE" | "BATTLE_RESOLUTION" | "MODIFY_ULTIMATE_CHARGE" | "MODIFY_DAMAGE" | "FORCE_ABILITY" | "OVERHEAD_DISPLAY" | "QUERY_BATTLE_TYPE" | "MODIFY_RECOVER" | "QUERY_DATACRON_LEVEL" | "SQUAD_BLACKBOARD_MODIFY" | "SQUAD_BLACKBOARD_QUERY" | "MODIFY_COOLDOWN" | "MODIFY_CATEGORY" | "MODIFY_OWNERSHIP" | "BLACKBOARD_COMPARE" | "SQUAD_BLACKBOARD_COMPARE" | "BLACKBOARD_LIMIT" | "SQUAD_BLACKBOARD_LIMIT" | "COPY_EFFECT" | "REPLACE_EFFECT");
+        EffectType:
+            | (
+                  | 0
+                  | 1
+                  | 2
+                  | 3
+                  | 4
+                  | 5
+                  | 6
+                  | 7
+                  | 8
+                  | 9
+                  | 10
+                  | 11
+                  | 12
+                  | 13
+                  | 14
+                  | 15
+                  | 16
+                  | 17
+                  | 18
+                  | 19
+                  | 20
+                  | 21
+                  | 22
+                  | 23
+                  | 24
+                  | 25
+                  | 26
+                  | 27
+                  | 28
+                  | 29
+                  | 30
+                  | 31
+                  | 32
+                  | 33
+                  | 34
+                  | 35
+                  | 36
+                  | 37
+                  | 38
+                  | 39
+                  | 40
+                  | 41
+                  | 42
+                  | 43
+                  | 44
+                  | 45
+              )
+            | (
+                  | "EffectType_DEFAULT"
+                  | "DAMAGE"
+                  | "RECOVER"
+                  | "PARALYSIS"
+                  | "CURSE"
+                  | "DISPELL"
+                  | "IMMUNITY"
+                  | "BONUS_MOVE"
+                  | "MODIFY_STAT"
+                  | "APPLY_EFFECT"
+                  | "DISTRIBUTE_RECOVERY"
+                  | "QUERY_COUNT"
+                  | "QUERY_STAT"
+                  | "REVIVE_UNIT"
+                  | "SCRIPT_COMPONENT"
+                  | "FLEE"
+                  | "DESTROY"
+                  | "REINFORCE"
+                  | "GRANT_SHIELD"
+                  | "GRANT_ABILITY"
+                  | "HEALTH_LIMIT"
+                  | "BLACKBOARD_MODIFY"
+                  | "BLACKBOARD_QUERY"
+                  | "STAT_LIMIT"
+                  | "SUMMON_UNIT"
+                  | "QUERY_COOLDOWN"
+                  | "QUERY_UNIT_VALUE"
+                  | "BATTLE_RESOLUTION"
+                  | "MODIFY_ULTIMATE_CHARGE"
+                  | "MODIFY_DAMAGE"
+                  | "FORCE_ABILITY"
+                  | "OVERHEAD_DISPLAY"
+                  | "QUERY_BATTLE_TYPE"
+                  | "MODIFY_RECOVER"
+                  | "QUERY_DATACRON_LEVEL"
+                  | "SQUAD_BLACKBOARD_MODIFY"
+                  | "SQUAD_BLACKBOARD_QUERY"
+                  | "MODIFY_COOLDOWN"
+                  | "MODIFY_CATEGORY"
+                  | "MODIFY_OWNERSHIP"
+                  | "BLACKBOARD_COMPARE"
+                  | "SQUAD_BLACKBOARD_COMPARE"
+                  | "BLACKBOARD_LIMIT"
+                  | "SQUAD_BLACKBOARD_LIMIT"
+                  | "COPY_EFFECT"
+                  | "REPLACE_EFFECT"
+              );
         EffectApplyType: (0 | 1 | 2 | 3) | ("EffectApplyType_DEFAULT" | "UNAVOIDABLE" | "PHYSICAL" | "MENTAL");
         EffectDamageType: (0 | 1 | 2 | 3) | ("EffectDamageType_DEFAULT" | "UNMITIGABLE" | "ATTACK_DAMAGE" | "ABILITY_POWER");
         PersistentVfxReference: {
@@ -1228,7 +2525,15 @@ export interface components {
             raidDuration?: number;
         };
         GuildRaidType: (0 | 1 | 2) | ("GuildRaidType_DEFAULT" | "RAID_TYPE_PERMANENT" | "RAID_TYPE_TIME_LIMITED");
-        GuildRaidRosterRefreshType: (0 | 1 | 2 | 3 | 4) | ("GuildRaidRosterRefreshType_DEFAULT" | "RAID_ROSTER_REFRESH_NONE" | "RAID_ROSTER_REFRESH_SCHEDULED" | "RAID_ROSTER_REFRESH_PURCHASABLE" | "RAID_ROSTER_REFRESH_TIMED");
+        GuildRaidRosterRefreshType:
+            | (0 | 1 | 2 | 3 | 4)
+            | (
+                  | "GuildRaidRosterRefreshType_DEFAULT"
+                  | "RAID_ROSTER_REFRESH_NONE"
+                  | "RAID_ROSTER_REFRESH_SCHEDULED"
+                  | "RAID_ROSTER_REFRESH_PURCHASABLE"
+                  | "RAID_ROSTER_REFRESH_TIMED"
+              );
         GuildRaidRosterRefresh: {
             type?: string;
             value?: number[];
@@ -1298,7 +2603,17 @@ export interface components {
             rerollCapTableId?: string;
             raidImmediateLookup?: components["schemas"]["LookupMission"][];
         };
-        StatModSlot: (0 | 2 | 3 | 4 | 5 | 6 | 7) | ("StatModSlot_DEFAULT" | "STATMOD_SLOT_01" | "STATMOD_SLOT_02" | "STATMOD_SLOT_03" | "STATMOD_SLOT_04" | "STATMOD_SLOT_05" | "STATMOD_SLOT_06");
+        StatModSlot:
+            | (0 | 2 | 3 | 4 | 5 | 6 | 7)
+            | (
+                  | "StatModSlot_DEFAULT"
+                  | "STATMOD_SLOT_01"
+                  | "STATMOD_SLOT_02"
+                  | "STATMOD_SLOT_03"
+                  | "STATMOD_SLOT_04"
+                  | "STATMOD_SLOT_05"
+                  | "STATMOD_SLOT_06"
+              );
         GuildExchangeItem: {
             item?: components["schemas"]["BucketItem"];
         };
@@ -1379,7 +2694,9 @@ export interface components {
             value?: number;
             rewardId?: string;
         };
-        TerritoryRewardType: (0 | 1 | 2 | 3) | ("TerritoryRewardType_DEFAULT" | "GALACTIC_SCORE" | "VICTORY_POINT" | "MYSTERY_BOX_CONFLICT");
+        TerritoryRewardType:
+            | (0 | 1 | 2 | 3)
+            | ("TerritoryRewardType_DEFAULT" | "GALACTIC_SCORE" | "VICTORY_POINT" | "MYSTERY_BOX_CONFLICT");
         TerritoryZoneDefinition: {
             zoneId?: string;
             prefabName?: string;
@@ -1413,7 +2730,9 @@ export interface components {
             tierKey?: string;
             icon?: string;
         };
-        TerritoryBattleZoneUnitType: (0 | 1 | 2 | 3 | 4) | ("TerritoryBattleZoneUnitType_DEFAULT" | "CHARACTER_ZONE" | "SHIP_ZONE" | "MIXED_ZONE" | "UNDEFINED_ZONE");
+        TerritoryBattleZoneUnitType:
+            | (0 | 1 | 2 | 3 | 4)
+            | ("TerritoryBattleZoneUnitType_DEFAULT" | "CHARACTER_ZONE" | "SHIP_ZONE" | "MIXED_ZONE" | "UNDEFINED_ZONE");
         TerritoryStrikeZoneDefinition: {
             campaignElementIdentifier?: components["schemas"]["CampaignElementIdentifier"];
             zoneDefinition?: components["schemas"]["TerritoryZoneDefinition"];
@@ -1462,14 +2781,26 @@ export interface components {
             textAlignment?: components["schemas"]["DynamicDescriptionTextAlignmentType"];
             backgroundOverrideSprite?: string;
         };
-        DynamicDescriptionType: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("DynamicDescriptionType_DEFAULT" | "LAYOUT_TEXT" | "LAYOUT_UNIT" | "LAYOUT_ABILITY" | "LAYOUT_HEADER" | "LAYOUT_TEXT_COLUMN" | "LAYOUT_HORIZONTAL_BREAK");
+        DynamicDescriptionType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6)
+            | (
+                  | "DynamicDescriptionType_DEFAULT"
+                  | "LAYOUT_TEXT"
+                  | "LAYOUT_UNIT"
+                  | "LAYOUT_ABILITY"
+                  | "LAYOUT_HEADER"
+                  | "LAYOUT_TEXT_COLUMN"
+                  | "LAYOUT_HORIZONTAL_BREAK"
+              );
         DynamicDescriptionTextColumn: {
             headerKey?: string;
             bodyKey?: string;
             bodyAlignment?: components["schemas"]["DynamicDescriptionTextAlignmentType"];
             tag?: string;
         };
-        DynamicDescriptionTextAlignmentType: (0 | 1 | 2 | 3) | ("DynamicDescriptionTextAlignmentType_DEFAULT" | "TEXT_ALIGNMENT_LEFT" | "TEXT_ALIGNMENT_RIGHT" | "TEXT_ALIGNMENT_CENTER");
+        DynamicDescriptionTextAlignmentType:
+            | (0 | 1 | 2 | 3)
+            | ("DynamicDescriptionTextAlignmentType_DEFAULT" | "TEXT_ALIGNMENT_LEFT" | "TEXT_ALIGNMENT_RIGHT" | "TEXT_ALIGNMENT_CENTER");
         TerritoryCovertZoneDefinition: {
             zoneDefinition?: components["schemas"]["TerritoryZoneDefinition"];
             campaignElementIdentifier?: components["schemas"]["CampaignElementIdentifier"];
@@ -1491,8 +2822,20 @@ export interface components {
             finalMatchOnly?: boolean;
             perSubPhaseRoundEnd?: boolean;
         };
-        TerritoryMapPhase: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("TerritoryMapPhase_DEFAULT" | "TERRITORY_MAP_OPT_IN" | "TERRITORY_MAP_MATCHMAKING" | "TERRITORY_MAP_SET_INITIAL_DEFENSE" | "TERRITORY_MAP_ATTACK" | "TERRITORY_MAP_REVIEW" | "TERRITORY_MAP_EXPIRED");
-        GuildMemberLevel: (0 | 1 | 2 | 3 | 4) | ("GuildMemberLevel_DEFAULT" | "GUILD_PENDING" | "GUILD_MEMBER" | "GUILD_OFFICER" | "GUILD_LEADER");
+        TerritoryMapPhase:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6)
+            | (
+                  | "TerritoryMapPhase_DEFAULT"
+                  | "TERRITORY_MAP_OPT_IN"
+                  | "TERRITORY_MAP_MATCHMAKING"
+                  | "TERRITORY_MAP_SET_INITIAL_DEFENSE"
+                  | "TERRITORY_MAP_ATTACK"
+                  | "TERRITORY_MAP_REVIEW"
+                  | "TERRITORY_MAP_EXPIRED"
+              );
+        GuildMemberLevel:
+            | (0 | 1 | 2 | 3 | 4)
+            | ("GuildMemberLevel_DEFAULT" | "GUILD_PENDING" | "GUILD_MEMBER" | "GUILD_OFFICER" | "GUILD_LEADER");
         TerritoryBonusZoneDefinition: {
             zoneDefinition?: components["schemas"]["TerritoryZoneDefinition"];
             linkedBonusConflictId?: string;
@@ -1582,7 +2925,9 @@ export interface components {
             defendNumber?: number;
             reward?: components["schemas"]["TerritoryReward"];
         };
-        TerritoryRewardStructure: (0 | 1 | 2) | ("TerritoryRewardStructure_DEFAULT" | "TERRITORY_REWARD_PERSONAL" | "TERRITORY_REWARD_CUMULATIVE");
+        TerritoryRewardStructure:
+            | (0 | 1 | 2)
+            | ("TerritoryRewardStructure_DEFAULT" | "TERRITORY_REWARD_PERSONAL" | "TERRITORY_REWARD_CUMULATIVE");
         EnvironmentCollection: {
             id?: string;
             battleEnvironment?: components["schemas"]["Environment"][];
@@ -1837,7 +3182,9 @@ export interface components {
             upcomingDescKey?: string;
             showRequirement?: components["schemas"]["Requirement"];
         };
-        EnergyType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7) | ("EnergyType_DEFAULT" | "PVE" | "PVP" | "SHIP_PVE" | "SHIP_PVP" | "CANTINA_PVE" | "MOD" | "CONQUEST");
+        EnergyType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7)
+            | ("EnergyType_DEFAULT" | "PVE" | "PVP" | "SHIP_PVE" | "SHIP_PVP" | "CANTINA_PVE" | "MOD" | "CONQUEST");
         EnergyRewardInstance: {
             type?: components["schemas"]["EnergyRewardInstanceType"];
             /** Format: int32 */
@@ -1930,7 +3277,15 @@ export interface components {
             bannerImageSubtextKey?: string;
             unitStagePrefab?: string;
         };
-        UnitGuideActivityType: (0 | 1 | 2 | 4 | 5) | ("UnitGuideActivityType_DEFAULT" | "GUIDEACTIVITY_EVENT" | "GUIDEACTIVITY_RAID" | "GUIDEACTIVITY_TERRITORY_BATTLE" | "GUIDEACTIVITY_UNDEFINED");
+        UnitGuideActivityType:
+            | (0 | 1 | 2 | 4 | 5)
+            | (
+                  | "UnitGuideActivityType_DEFAULT"
+                  | "GUIDEACTIVITY_EVENT"
+                  | "GUIDEACTIVITY_RAID"
+                  | "GUIDEACTIVITY_TERRITORY_BATTLE"
+                  | "GUIDEACTIVITY_UNDEFINED"
+              );
         GalacticBundle: {
             id?: string;
             /** Format: int32 */
@@ -1993,15 +3348,42 @@ export interface components {
             description?: string[];
             sprite?: string[];
         };
-        GalacticBundleMainElementType: (0 | 1 | 2 | 3 | 4 | 5) | ("GalacticBundleMainElementType_DEFAULT" | "GALACTICBUNDLEMAINELEMENTTYPE_PAGINATION" | "GALACTICBUNDLEMAINELEMENTTYPE_INVENTORY" | "GALACTICBUNDLEMAINELEMENTTYPE_SPLIT" | "GALACTICBUNDLEMAINELEMENTTYPE_HIGHTLIGHTS" | "GALACTICBUNDLEMAINELEMENTTYPE_ACCESS");
-        GalacticBundleMainElementInventoryType: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("GalacticBundleMainElementInventoryType_DEFAULT" | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_NONE" | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_CHARACTERS" | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_SHIPS" | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_UNITS" | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_ITEMS" | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_ALL");
+        GalacticBundleMainElementType:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | (
+                  | "GalacticBundleMainElementType_DEFAULT"
+                  | "GALACTICBUNDLEMAINELEMENTTYPE_PAGINATION"
+                  | "GALACTICBUNDLEMAINELEMENTTYPE_INVENTORY"
+                  | "GALACTICBUNDLEMAINELEMENTTYPE_SPLIT"
+                  | "GALACTICBUNDLEMAINELEMENTTYPE_HIGHTLIGHTS"
+                  | "GALACTICBUNDLEMAINELEMENTTYPE_ACCESS"
+              );
+        GalacticBundleMainElementInventoryType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6)
+            | (
+                  | "GalacticBundleMainElementInventoryType_DEFAULT"
+                  | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_NONE"
+                  | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_CHARACTERS"
+                  | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_SHIPS"
+                  | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_UNITS"
+                  | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_ITEMS"
+                  | "GALACTICBUNDLEMAINELEMENTINVENTORYTYPE_ALL"
+              );
         LinkedStoreItem: {
             linkId?: string;
             storeItem?: string[];
             type?: components["schemas"]["LinkedStoreItemType"];
             contextualStoreItem?: components["schemas"]["ContextualStoreItem"][];
         };
-        LinkedStoreItemType: (0 | 1 | 2 | 3 | 4) | ("LinkedStoreItemType_DEFAULT" | "LINKEDSTOREITEM_UNIT" | "LINKEDSTOREITEM_EVENT" | "LINKEDSTOREITEM_RAID" | "LINKEDSTOREITEM_PREVIEW");
+        LinkedStoreItemType:
+            | (0 | 1 | 2 | 3 | 4)
+            | (
+                  | "LinkedStoreItemType_DEFAULT"
+                  | "LINKEDSTOREITEM_UNIT"
+                  | "LINKEDSTOREITEM_EVENT"
+                  | "LINKEDSTOREITEM_RAID"
+                  | "LINKEDSTOREITEM_PREVIEW"
+              );
         ContextualStoreItem: {
             id?: string;
             storeItemId?: string[];
@@ -2064,7 +3446,22 @@ export interface components {
             entryCategoryAllowed?: components["schemas"]["EntryCategoryAllowed"];
             grindEnabled?: boolean;
         };
-        CampaignType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 11 | 12) | ("CampaignType_DEFAULT" | "STANDARD" | "ONBOARDING" | "CAMPAIGN_EVENT" | "GUILD_RAID" | "CAMPAIGN_PVE_LIGHT" | "CAMPAIGN_PVE_DARK" | "CAMPAIGN_PVE_MOD_BATTLES" | "CAMPAIGN_PVE_HOLOCRON" | "CAMPAIGN_SHIP_PVE" | "TERRITORY_BATTLE" | "ARCADE_RAID_BATTLES");
+        CampaignType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 11 | 12)
+            | (
+                  | "CampaignType_DEFAULT"
+                  | "STANDARD"
+                  | "ONBOARDING"
+                  | "CAMPAIGN_EVENT"
+                  | "GUILD_RAID"
+                  | "CAMPAIGN_PVE_LIGHT"
+                  | "CAMPAIGN_PVE_DARK"
+                  | "CAMPAIGN_PVE_MOD_BATTLES"
+                  | "CAMPAIGN_PVE_HOLOCRON"
+                  | "CAMPAIGN_SHIP_PVE"
+                  | "TERRITORY_BATTLE"
+                  | "ARCADE_RAID_BATTLES"
+              );
         CampaignMap: {
             id?: string;
             campaignNodeDifficultyGroup?: components["schemas"]["CampaignNodeDifficultyGroup"][];
@@ -2204,7 +3601,18 @@ export interface components {
             triggerCondition?: string;
         };
         ColorType: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("ColorType_DEFAULT" | "WHITE" | "RED" | "ORANGE" | "YELLOW" | "GREEN" | "BLUE");
-        CampaignElementProgress: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7) | ("CampaignElementProgress_DEFAULT" | "HIDDEN" | "LOCKED" | "UNLOCKED" | "COMPLETE" | "COMPLETE_ONE_STAR" | "COMPLETE_TWO_STAR" | "COMPLETE_THREE_STAR");
+        CampaignElementProgress:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7)
+            | (
+                  | "CampaignElementProgress_DEFAULT"
+                  | "HIDDEN"
+                  | "LOCKED"
+                  | "UNLOCKED"
+                  | "COMPLETE"
+                  | "COMPLETE_ONE_STAR"
+                  | "COMPLETE_TWO_STAR"
+                  | "COMPLETE_THREE_STAR"
+              );
         CampaignMissionEnemyPreview: {
             baseEnemyItem?: components["schemas"]["BucketItem"];
             /** Format: int32 */
@@ -2289,7 +3697,16 @@ export interface components {
             /** Format: int32 */
             tier?: number;
         };
-        SquadUnitType: (0 | 1 | 2 | 3 | 4 | 5) | ("SquadUnitType_DEFAULT" | "UNITTYPE_DEFAULT" | "UNITTYPE_LEADER" | "UNITTYPE_COMMANDER" | "UNITTYPE_SUPPORT" | "UNITTYPE_REINFORCEMENT");
+        SquadUnitType:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | (
+                  | "SquadUnitType_DEFAULT"
+                  | "UNITTYPE_DEFAULT"
+                  | "UNITTYPE_LEADER"
+                  | "UNITTYPE_COMMANDER"
+                  | "UNITTYPE_SUPPORT"
+                  | "UNITTYPE_REINFORCEMENT"
+              );
         BattleUnitState: {
             unitId?: string;
             healthPercent?: string;
@@ -2320,7 +3737,15 @@ export interface components {
             /** Format: int32 */
             cooldown?: number;
         };
-        BattleTargetingTactic: (0 | 1 | 2 | 3 | 4) | ("BattleTargetingTactic_DEFAULT" | "TARGET_RANDOM" | "TARGET_RANDOM_SWITCH" | "TARGET_RANDOM_OVERKILL" | "TARGET_RANDOM_WEIGHTED_SWITCH");
+        BattleTargetingTactic:
+            | (0 | 1 | 2 | 3 | 4)
+            | (
+                  | "BattleTargetingTactic_DEFAULT"
+                  | "TARGET_RANDOM"
+                  | "TARGET_RANDOM_SWITCH"
+                  | "TARGET_RANDOM_OVERKILL"
+                  | "TARGET_RANDOM_WEIGHTED_SWITCH"
+              );
         DatacronBattleStat: {
             id?: string;
             /** Format: int32 */
@@ -2436,7 +3861,17 @@ export interface components {
             style?: components["schemas"]["ConquestNodeStyle"];
             finishSector?: boolean;
         };
-        ConquestNodeType: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("ConquestNodeType_DEFAULT" | "COMBAT_NODE" | "ARTIFACT_NODE" | "MERCHANT_NODE" | "START_NODE" | "BOSS_NODE" | "COMBAT_NO_POINTS_NODE");
+        ConquestNodeType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6)
+            | (
+                  | "ConquestNodeType_DEFAULT"
+                  | "COMBAT_NODE"
+                  | "ARTIFACT_NODE"
+                  | "MERCHANT_NODE"
+                  | "START_NODE"
+                  | "BOSS_NODE"
+                  | "COMBAT_NO_POINTS_NODE"
+              );
         ConquestNodeStyle: (0 | 1 | 2 | 3) | ("ConquestNodeStyle_DEFAULT" | "DEFAULT_STYLE" | "LEGEND" | "DATACRON_STYLE");
         ConsumableDetails: {
             typeId?: string;
@@ -2453,7 +3888,9 @@ export interface components {
             textId?: string;
             type?: components["schemas"]["ConquestPurchasePassMiscTextEntryType"];
         };
-        ConquestPurchasePassMiscTextEntryType: (0 | 1 | 2 | 3) | ("ConquestPurchasePassMiscTextEntryType_DEFAULT" | "PASS_WITH_EXTRAS" | "PASS_ONLY" | "ALL_PASS_VARIANTS");
+        ConquestPurchasePassMiscTextEntryType:
+            | (0 | 1 | 2 | 3)
+            | ("ConquestPurchasePassMiscTextEntryType_DEFAULT" | "PASS_WITH_EXTRAS" | "PASS_ONLY" | "ALL_PASS_VARIANTS");
         ConquestMission: {
             id?: string;
             battleDetails?: components["schemas"]["BattleDetails"];
@@ -2507,9 +3944,27 @@ export interface components {
             negate?: boolean;
             decisionResult?: components["schemas"]["AbilityDecisionResult"];
         };
-        AbilityDecisionType: (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12) | ("AbilityDecisionType_DEFAULT" | "SINGLE_HEALTH" | "MEDIAN_HEALTH" | "NUMBER_OF_TARGETS" | "PERSISTENT_EFFECT" | "NUMBER_OF_ENEMIES_ALIVE" | "REINFORCE_AVAILABLE" | "OUTNUMBERED" | "SINGLE_SURVIVABILITY_PERCENT" | "SUMMON_AVAILABLE" | "SINGLE_PROTECTION" | "SINGLE_SPEED_FILL" | "TARGET_BY_UNIT_IDS");
+        AbilityDecisionType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12)
+            | (
+                  | "AbilityDecisionType_DEFAULT"
+                  | "SINGLE_HEALTH"
+                  | "MEDIAN_HEALTH"
+                  | "NUMBER_OF_TARGETS"
+                  | "PERSISTENT_EFFECT"
+                  | "NUMBER_OF_ENEMIES_ALIVE"
+                  | "REINFORCE_AVAILABLE"
+                  | "OUTNUMBERED"
+                  | "SINGLE_SURVIVABILITY_PERCENT"
+                  | "SUMMON_AVAILABLE"
+                  | "SINGLE_PROTECTION"
+                  | "SINGLE_SPEED_FILL"
+                  | "TARGET_BY_UNIT_IDS"
+              );
         AbilityDecisionTarget: (0 | 1 | 2 | 3 | 4) | ("AbilityDecisionTarget_DEFAULT" | "SELF" | "ALLY" | "ENEMY" | "DEAD_ALLY");
-        AbilityDecisionParamModifier: (0 | 1 | 2 | 3) | ("AbilityDecisionParamModifier_DEFAULT" | "GREATER_THAN" | "EQUAL_TO" | "LESS_THAN");
+        AbilityDecisionParamModifier:
+            | (0 | 1 | 2 | 3)
+            | ("AbilityDecisionParamModifier_DEFAULT" | "GREATER_THAN" | "EQUAL_TO" | "LESS_THAN");
         AbilityDecisionResult: {
             chosenAbilityTag?: string;
             decisionResultTarget?: components["schemas"]["AbilityDecisionResultTarget"];
@@ -2638,7 +4093,9 @@ export interface components {
             rerollCostRecipeId?: string[];
             scopeIdentifier?: components["schemas"]["DatacronScopeIdentifier"];
         };
-        DatacronScopeIdentifier: (0 | 1 | 2 | 3 | 4) | ("DatacronScopeIdentifier_DEFAULT" | "STAT_SCOPE" | "ALIGNMENT_SCOPE" | "FACTION_SCOPE" | "CHARACTER_SCOPE");
+        DatacronScopeIdentifier:
+            | (0 | 1 | 2 | 3 | 4)
+            | ("DatacronScopeIdentifier_DEFAULT" | "STAT_SCOPE" | "ALIGNMENT_SCOPE" | "FACTION_SCOPE" | "CHARACTER_SCOPE");
         DatacronSetMaterial: {
             materialId?: string;
             /** Format: int32 */
@@ -2864,7 +4321,14 @@ export interface components {
             /** Format: int64 */
             lifetimeValue?: number;
         };
-        MemberContributionType: (0 | 1 | 2 | 3) | ("MemberContributionType_DEFAULT" | "CONTRIBUTION_TYPE_COMMENDATION" | "CONTRIBUTION_TYPE_TRIBUTE" | "CONTRIBUTION_TYPE_DONATION");
+        MemberContributionType:
+            | (0 | 1 | 2 | 3)
+            | (
+                  | "MemberContributionType_DEFAULT"
+                  | "CONTRIBUTION_TYPE_COMMENDATION"
+                  | "CONTRIBUTION_TYPE_TRIBUTE"
+                  | "CONTRIBUTION_TYPE_DONATION"
+              );
         SeasonStatus: {
             seasonId?: string;
             eventInstanceId?: string;
@@ -2942,7 +4406,9 @@ export interface components {
             /** Format: int32 */
             memberRank?: number;
         };
-        RaidState: (0 | 1 | 2 | 3 | 4 | 5) | ("RaidState_DEFAULT" | "RAID_IN_PROGRESS" | "RAID_IN_TALLY" | "RAID_COMPLETE" | "RAID_EXPIRED" | "RAID_PENDING_COMPLETE");
+        RaidState:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | ("RaidState_DEFAULT" | "RAID_IN_PROGRESS" | "RAID_IN_TALLY" | "RAID_COMPLETE" | "RAID_EXPIRED" | "RAID_PENDING_COMPLETE");
         RaidMember: {
             playerId?: string;
             /** Format: int64 */
@@ -2976,7 +4442,16 @@ export interface components {
             guildRewardScore?: number;
             cachedRewards?: components["schemas"]["CachedRaidRewards"];
         };
-        RaidOutcome: (0 | 1 | 2 | 3 | 4 | 5) | ("RAID_OUTCOME_UNDEFINED" | "RAID_OUTCOME_WIN" | "RAID_OUTCOME_EXPIRED" | "RAID_OUTCOME_IN_PROGRESS" | "RAID_OUTCOME_ABANDONED" | "RAID_OUTCOME_SIMMED");
+        RaidOutcome:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | (
+                  | "RAID_OUTCOME_UNDEFINED"
+                  | "RAID_OUTCOME_WIN"
+                  | "RAID_OUTCOME_EXPIRED"
+                  | "RAID_OUTCOME_IN_PROGRESS"
+                  | "RAID_OUTCOME_ABANDONED"
+                  | "RAID_OUTCOME_SIMMED"
+              );
         GuildProgress: {
             raidProgress?: components["schemas"]["GuildRaidProgress"][];
         };
@@ -3017,7 +4492,9 @@ export interface components {
             commandMessage?: string;
             commandState?: components["schemas"]["TerritoryZoneCommandState"];
         };
-        TerritoryZoneState: (0 | 1 | 2 | 3 | 4) | ("TerritoryZoneState_DEFAULT" | "ZONE_LOCKED" | "ZONE_ACTIVE" | "ZONE_OPEN" | "ZONE_COMPLETED");
+        TerritoryZoneState:
+            | (0 | 1 | 2 | 3 | 4)
+            | ("TerritoryZoneState_DEFAULT" | "ZONE_LOCKED" | "ZONE_ACTIVE" | "ZONE_OPEN" | "ZONE_COMPLETED");
         TerritoryZoneCommandState: (0 | 1 | 2 | 3) | ("TerritoryZoneCommandState_DEFAULT" | "NO_COMMAND" | "FOCUSED" | "IGNORED");
         TerritoryStrikeZoneStatus: {
             /** Format: int32 */
@@ -3150,7 +4627,9 @@ export interface components {
             successfulDefends?: number;
             crewInfo?: components["schemas"]["UnitTierSummary"][];
         };
-        TerritoryWarSquadStatus: (0 | 1 | 2 | 3) | ("TerritoryWarSquadStatus_DEFAULT" | "SQUAD_AVAILABLE" | "SQUAD_LOCKED" | "SQUAD_DEFEATED");
+        TerritoryWarSquadStatus:
+            | (0 | 1 | 2 | 3)
+            | ("TerritoryWarSquadStatus_DEFAULT" | "SQUAD_AVAILABLE" | "SQUAD_LOCKED" | "SQUAD_DEFEATED");
         UnitTierSummary: {
             baseId?: string;
             tier?: components["schemas"]["UnitTier"];
@@ -3179,7 +4658,9 @@ export interface components {
             creationTime?: number;
             ownerId?: string;
         };
-        RoomType: (0 | 1 | 2 | 3 | 4 | 5) | ("RoomType_DEFAULT" | "GUILD_DEFAULT" | "GUILD_CHAT" | "GUILD_CHAT_OFFICER" | "PLAYER_DIRECT_CHAT" | "PLAYER_GROUP_CHAT");
+        RoomType:
+            | (0 | 1 | 2 | 3 | 4 | 5)
+            | ("RoomType_DEFAULT" | "GUILD_DEFAULT" | "GUILD_CHAT" | "GUILD_CHAT_OFFICER" | "PLAYER_DIRECT_CHAT" | "PLAYER_GROUP_CHAT");
         GuildStat: {
             id?: string;
             /** Format: int64 */
@@ -3213,7 +4694,17 @@ export interface components {
             /** Format: int32 */
             monthOffset?: number;
         };
-        GuildLeaderboardType: (0 | 1 | 2 | 3 | 4 | 5 | 6) | ("GuildLeaderboardType_DEFAULT" | "GUILD_RAID_ALL_COMP_PTS" | "GUILD_RAID_COMP_PTS" | "GUILD_GALACTIC_POWER" | "GUILD_TERRITORY_BATTLE_STARS" | "GUILD_TERRITORY_WAR_OPPONENT_GALACTIC_POWER" | "GUILD_RAID_HIGH_WATERMARK");
+        GuildLeaderboardType:
+            | (0 | 1 | 2 | 3 | 4 | 5 | 6)
+            | (
+                  | "GuildLeaderboardType_DEFAULT"
+                  | "GUILD_RAID_ALL_COMP_PTS"
+                  | "GUILD_RAID_COMP_PTS"
+                  | "GUILD_GALACTIC_POWER"
+                  | "GUILD_TERRITORY_BATTLE_STARS"
+                  | "GUILD_TERRITORY_WAR_OPPONENT_GALACTIC_POWER"
+                  | "GUILD_RAID_HIGH_WATERMARK"
+              );
         LeaderboardPlayer: {
             id?: string;
             name?: string;
@@ -3313,7 +4804,9 @@ export interface components {
             squad?: components["schemas"]["Squad"];
             eventId?: string;
         };
-        PlayerProfileTab: (0 | 1 | 2 | 3) | ("PlayerProfileTab_DEFAULT" | "PROFILE_PVP_CHARACTER" | "PROFILE_PVP_SHIP" | "PROFILE_PVP_TOURNAMENT");
+        PlayerProfileTab:
+            | (0 | 1 | 2 | 3)
+            | ("PlayerProfileTab_DEFAULT" | "PROFILE_PVP_CHARACTER" | "PROFILE_PVP_SHIP" | "PROFILE_PVP_TOURNAMENT");
         PlayerTitle: {
             id?: string;
         };
@@ -3582,45 +5075,52 @@ export interface operations {
             content: {
                 "application/json": {
                     payload: {
-                        leaderboardId: ({
-                            /** @constant */
-                            leaderboardType?: 0;
-                            /** @enum {number} */
-                            monthOffset?: 0 | 1;
-                        } | {
-                            /** @constant */
-                            leaderboardType?: 2;
-                            /** @description Values such as `sith_raid`, `rancor`, `rancor_challenge`, `aat`, `kraytdragon`, `speederbike` and so on */
-                            defId?: string;
-                            /** @enum {number} */
-                            monthOffset?: 0 | 1;
-                        } | {
-                            /** @constant */
-                            leaderboardType?: 3;
-                            /** @enum {number} */
-                            monthOffset?: 0 | 1;
-                        } | {
-                            /** @constant */
-                            leaderboardType?: 4;
-                            /** @description Values such as `t01D`, `t02D`, and so on */
-                            defId?: string;
-                            /** @enum {number} */
-                            monthOffset?: 0 | 1;
-                        } | {
-                            /** @constant */
-                            leaderboardType?: 5;
-                            /** @constant */
-                            defId?: "TERRITORY_WAR_LEADERBOARD";
-                            /** @enum {number} */
-                            monthOffset?: 0 | 1;
-                        } | {
-                            /** @constant */
-                            leaderboardType?: 6;
-                            /** @description Values such as `GUILD:RAIDS:NORMAL_DIFF:SITH_RAID:DIFF06`. Known values are `SITH_RAID:DIFF06` and `HEROIC85`, `AAT:DIFF06` and `HEROIC80`, `RANCOR:DIFF01` through `DIFF06`, `KRAYTDRAGON:DIFF01`, and `ROTJ:SPEEDERBIKE` */
-                            defId?: string;
-                            /** @enum {number} */
-                            monthOffset?: 0 | 1;
-                        })[];
+                        leaderboardId: (
+                            | {
+                                  /** @constant */
+                                  leaderboardType?: 0;
+                                  /** @enum {number} */
+                                  monthOffset?: 0 | 1;
+                              }
+                            | {
+                                  /** @constant */
+                                  leaderboardType?: 2;
+                                  /** @description Values such as `sith_raid`, `rancor`, `rancor_challenge`, `aat`, `kraytdragon`, `speederbike` and so on */
+                                  defId?: string;
+                                  /** @enum {number} */
+                                  monthOffset?: 0 | 1;
+                              }
+                            | {
+                                  /** @constant */
+                                  leaderboardType?: 3;
+                                  /** @enum {number} */
+                                  monthOffset?: 0 | 1;
+                              }
+                            | {
+                                  /** @constant */
+                                  leaderboardType?: 4;
+                                  /** @description Values such as `t01D`, `t02D`, and so on */
+                                  defId?: string;
+                                  /** @enum {number} */
+                                  monthOffset?: 0 | 1;
+                              }
+                            | {
+                                  /** @constant */
+                                  leaderboardType?: 5;
+                                  /** @constant */
+                                  defId?: "TERRITORY_WAR_LEADERBOARD";
+                                  /** @enum {number} */
+                                  monthOffset?: 0 | 1;
+                              }
+                            | {
+                                  /** @constant */
+                                  leaderboardType?: 6;
+                                  /** @description Values such as `GUILD:RAIDS:NORMAL_DIFF:SITH_RAID:DIFF06`. Known values are `SITH_RAID:DIFF06` and `HEROIC85`, `AAT:DIFF06` and `HEROIC80`, `RANCOR:DIFF01` through `DIFF06`, `KRAYTDRAGON:DIFF01`, and `ROTJ:SPEEDERBIKE` */
+                                  defId?: string;
+                                  /** @enum {number} */
+                                  monthOffset?: 0 | 1;
+                              }
+                        )[];
                         /** @default 200 */
                         count?: number;
                     };
@@ -3743,9 +5243,11 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        localizationBundle?: string;
-                    } | Record<string, never>;
+                    "application/json":
+                        | {
+                              localizationBundle?: string;
+                          }
+                        | Record<string, never>;
                 };
             };
             "4XX": components["responses"]["errorResponse"];

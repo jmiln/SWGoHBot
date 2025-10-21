@@ -696,19 +696,19 @@ export default (opts = { noop: false }) => {
 
         // All the skills should be loaded, so just get em from the cache
         if (opts.min) {
-            return await cache.get(
+            return (await cache.get(
                 config.mongodb.swapidb,
                 "abilities",
                 { skillId: { $in: skillArr }, language: lang.toLowerCase() },
                 { nameKey: 1, _id: 0 },
-            ) as { nameKey: string }[];
+            )) as { nameKey: string }[];
         }
-        return await cache.get(
+        return (await cache.get(
             config.mongodb.swapidb,
             "abilities",
             { skillId: { $in: skillArr }, language: lang.toLowerCase() },
             { _id: 0, updated: 0 },
-        ) as ComlinkAbility[];
+        )) as ComlinkAbility[];
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
@@ -724,7 +724,7 @@ export default (opts = { noop: false }) => {
         if (!char.skillReferenceList) throw new Error("[SWGoH-API getCharacter] Missing character abilities");
 
         for (const s of char.skillReferenceList) {
-            let skill = await abilities([s.skillId], thisLang) as unknown as ComlinkAbility;
+            let skill = (await abilities([s.skillId], thisLang)) as unknown as ComlinkAbility;
             if (Array.isArray(skill)) skill = skill[0];
 
             if (!skill) {

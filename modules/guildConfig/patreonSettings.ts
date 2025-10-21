@@ -211,14 +211,15 @@ export async function ensureBonusServerSet({ cache, userId, amount_cents }: { ca
     if (guildSupArr.filter((sup) => sup.userId === userId)?.length > 0) return {};
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
-    const addServerRes: { user: { success: boolean; error: string }; guild: { success: boolean; error: string } } = await addServerSupporter({
-        cache,
-        guildId: userConf.bonusServer,
-        userInfo: {
-            userId: userId,
-            tier: Math.floor(amount_cents / 100),
-        },
-    });
+    const addServerRes: { user: { success: boolean; error: string }; guild: { success: boolean; error: string } } =
+        await addServerSupporter({
+            cache,
+            guildId: userConf.bonusServer,
+            userInfo: {
+                userId: userId,
+                tier: Math.floor(amount_cents / 100),
+            },
+        });
 
     return addServerRes;
 }

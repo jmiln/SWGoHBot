@@ -1,11 +1,11 @@
 import { MongoClient } from "mongodb";
+import type { Socket } from "socket.io";
 import { Server } from "socket.io";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
 import { addGuildEvent, deleteGuildEvent, getAllEvents, getGuildEvents, guildEventExists } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotCache } from "../types/cache_types.ts";
-import type { Socket } from "socket.io";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
 const io = new Server(config.eventServe.port);

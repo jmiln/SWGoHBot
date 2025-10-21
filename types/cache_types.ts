@@ -18,7 +18,11 @@ export interface BotCache {
         saveObject: Document,
         autoUpdate?: boolean,
     ) => Promise<Document>;
-    putMany: (database: string, collection: string, saveObjectArray: readonly AnyBulkWriteOperation<Document>[]) => Promise<BulkWriteResult>;
+    putMany: (
+        database: string,
+        collection: string,
+        saveObjectArray: readonly AnyBulkWriteOperation<Document>[],
+    ) => Promise<BulkWriteResult>;
     remove: (database: string, collection: string, matchCondition: Filter<Document>) => Promise<DeleteResult>;
     replace: (
         database: string,

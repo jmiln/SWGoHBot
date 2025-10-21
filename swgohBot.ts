@@ -23,17 +23,17 @@ const jsonFromFile = async (file: string) => await fs.promises.readFile(file, "u
 
 // Attach the character and team files to the Bot so I don't have to reopen em each time
 Bot.abilityCosts = await jsonFromFile("./data/abilityCosts.json");
-Bot.acronyms     = await jsonFromFile("./data/acronyms.json");
-Bot.arenaJumps   = await jsonFromFile("./data/arenaJumps.json");
-Bot.charLocs     = await jsonFromFile("./data/charLocations.json");
-Bot.characters   = await jsonFromFile("./data/characters.json");
-Bot.factions     = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.missions     = await jsonFromFile("./data/missions.json");
-Bot.raidNames    = await jsonFromFile("./data/raidNames.json");
-Bot.resources    = await jsonFromFile("./data/resources.json");
-Bot.shipLocs     = await jsonFromFile("./data/shipLocations.json");
-Bot.ships        = await jsonFromFile("./data/ships.json");
-Bot.timezones    = await jsonFromFile("./data/timezones.json");
+Bot.acronyms = await jsonFromFile("./data/acronyms.json");
+Bot.arenaJumps = await jsonFromFile("./data/arenaJumps.json");
+Bot.charLocs = await jsonFromFile("./data/charLocations.json");
+Bot.characters = await jsonFromFile("./data/characters.json");
+Bot.factions = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
+Bot.missions = await jsonFromFile("./data/missions.json");
+Bot.raidNames = await jsonFromFile("./data/raidNames.json");
+Bot.resources = await jsonFromFile("./data/resources.json");
+Bot.shipLocs = await jsonFromFile("./data/shipLocations.json");
+Bot.ships = await jsonFromFile("./data/ships.json");
+Bot.timezones = await jsonFromFile("./data/timezones.json");
 
 import constants from "./data/constants.ts";
 import help from "./data/help.ts";

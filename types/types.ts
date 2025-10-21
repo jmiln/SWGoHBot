@@ -1,4 +1,14 @@
-import type { BaseInteraction, Client, Collection, GatewayIntentBits, Guild, GuildMember, IntentsBitField, Interaction, Partials, TextChannel } from "discord.js";
+import type {
+    BaseInteraction,
+    Client,
+    Collection,
+    Guild,
+    GuildMember,
+    IntentsBitField,
+    Interaction,
+    Partials,
+    TextChannel,
+} from "discord.js";
 import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
@@ -155,7 +165,11 @@ export interface BotType {
         getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => Promise<RawGuild>;
         getPlayerUpdates: (allycodes: number | number[]) => Promise<PlayerUpdates>;
         playerByName: (name: string, limit?: number) => Promise<SWAPIPlayer[]>;
-        abilities: (skillArray: string | string[], lang?: SWAPILang, opts?: { min?: boolean }) => Promise<ComlinkAbility[] | { nameKey: string }[]>;
+        abilities: (
+            skillArray: string | string[],
+            lang?: SWAPILang,
+            opts?: { min?: boolean },
+        ) => Promise<ComlinkAbility[] | { nameKey: string }[]>;
     };
     findChar: (searchName: string, charList: BotUnit[], isShip?: boolean) => BotUnit[];
 
@@ -253,7 +267,7 @@ export interface JourneyReqs {
             capital?: boolean;
             type: string;
             tier: number;
-        }[]
+        }[];
     };
 }
 
@@ -271,9 +285,9 @@ export interface PlayerArenaRes {
     poUTCOffsetMinutes: number;
 }
 export interface UnitLocation {
-        name: string;
-        defId: string;
-        locations: Location[];
+    name: string;
+    defId: string;
+    locations: Location[];
 }
 export interface Location {
     type: string;
@@ -376,8 +390,8 @@ export interface BotConfig {
         tier3: number;
     };
     webhookURL: string;
-    botIntents: IntentsBitField[]
-    partials: Partials[]
+    botIntents: IntentsBitField[];
+    partials: Partials[];
     [key: string]: string | number | boolean | object;
 }
 export interface BotDefaultSettings {

@@ -1,18 +1,32 @@
 export type SWAPILang =
-    | "eng_us" | "ENG_US"
-    | "ger_de" | "GER_DE"
-    | "spa_xm" | "SPA_XM"
-    | "fre_fr" | "FRE_FR"
-    | "rus_ru" | "RUS_RU"
-    | "por_br" | "POR_BR"
-    | "kor_kr" | "KOR_KR"
-    | "ita_it" | "ITA_IT"
-    | "tur_tr" | "TUR_TR"
-    | "chs_cn" | "CHS_CN"
-    | "cht_cn" | "CHT_CN"
-    | "ind_id" | "IND_ID"
-    | "jpn_jp" | "JPN_JP"
-    | "tha_th" | "THA_TH";
+    | "eng_us"
+    | "ENG_US"
+    | "ger_de"
+    | "GER_DE"
+    | "spa_xm"
+    | "SPA_XM"
+    | "fre_fr"
+    | "FRE_FR"
+    | "rus_ru"
+    | "RUS_RU"
+    | "por_br"
+    | "POR_BR"
+    | "kor_kr"
+    | "KOR_KR"
+    | "ita_it"
+    | "ITA_IT"
+    | "tur_tr"
+    | "TUR_TR"
+    | "chs_cn"
+    | "CHS_CN"
+    | "cht_cn"
+    | "CHT_CN"
+    | "ind_id"
+    | "IND_ID"
+    | "jpn_jp"
+    | "JPN_JP"
+    | "tha_th"
+    | "THA_TH";
 
 export interface SWAPIPlayer {
     id: string;
@@ -318,18 +332,18 @@ export interface ComlinkUnit {
 }
 export interface ComlinkAbility {
     id: string;
-    languages: SWAPILang;
+    descKey: string;
+    language?: SWAPILang;
     abilityTiers: string[];
     cooldown: number;
-    isOmicron: boolean;
-    isZeta: boolean;
     nameKey: string;
-    omicronTier: number;
     skillId: string;
     tierList: string[];
-    type: null;
+    type: string;
+    isZeta: boolean;
     zetaTier: number;
-    descKey: string;
+    isOmicron: boolean;
+    omicronTier: number;
 }
 
 export interface ComlinkMod {
