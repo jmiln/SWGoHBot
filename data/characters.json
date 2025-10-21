@@ -28,6 +28,25 @@
         "avatarName": "charui_triplezero"
     },
     {
+        "name": "4-LOM",
+        "uniqueName": "4LOM",
+        "aliases": [
+            "4-LOM"
+        ],
+        "avatarName": "charui_4lom",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_4lom.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_BOUNTYHUNTER_DESC_V2",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC",
+            "CATEGORY_SCOUNDREL_DESC",
+            "CATEGORY_SPECIESDROID_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "50R-T",
         "uniqueName": "50RT",
         "aliases": [
@@ -199,7 +218,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Tenacity"
         },
         "avatarName": "charui_admiraltrench"
     },
@@ -223,7 +242,7 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
+                "Defense x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -1025,7 +1044,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
+            "triangle": "Crit. Damage",
             "circle": "Health",
             "cross": "Offense"
         },
@@ -1257,9 +1276,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -2021,9 +2040,9 @@
         ],
         "mods": {
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -3525,7 +3544,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Potency"
         },
         "crew": []
@@ -4402,7 +4421,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection"
         },
@@ -4723,9 +4742,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health"
+            "cross": "Offense"
         }
     },
     {
@@ -5229,9 +5248,9 @@
         ],
         "mods": {
             "sets": [
-                "Tenacity x2",
-                "Tenacity x2",
-                "Tenacity x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -5498,7 +5517,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5816,7 +5835,18 @@
             "CATEGORY_SMUGGLER_DESC",
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health"
+        },
         "crew": []
     },
     {
@@ -7068,7 +7098,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Offense x4"
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -7955,7 +7985,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -8220,6 +8250,23 @@
             "cross": "Offense"
         },
         "avatarName": "charui_mandobeskar"
+    },
+    {
+        "name": "The Stranger",
+        "uniqueName": "STRANGER",
+        "aliases": [
+            "The Stranger"
+        ],
+        "avatarName": "charui_stranger",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_stranger.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_SITH_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Third Sister",

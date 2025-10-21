@@ -26,15 +26,10 @@ const config = {
     // Let it register global commands or not
     enableGlobalCmds: true,
 
-    // Unit locations google sheet links
-    locations: {
-        char: "",
-        ship: "",
-    },
-
-    // Mongo DB, url for login & db name in mongo
+    // Mongo DB, url for login & db names in mongo
     mongodb: {
         url: "",
+        swgohbotdb: "",
         swapidb: "",
     },
     // The event manager's port
@@ -171,7 +166,7 @@ const config = {
     // If you want to send error/ create/ delete message to a log channel
     logs: {
         logToChannel: false,
-        channel: "",
+        channel: "", // Discord channel ID to send the logs to
         logComs: false,
     },
 
@@ -200,14 +195,7 @@ const config = {
         tier2: 20,
         tier3: 50,
     },
-    // SWGoH.help config
-    swapiConfig: {
-        username: "",
-        password: "",
-        client_id: "",
-        client_secret: "YOUR_SECRET",
-        host: "api.swgoh.help",
-    },
+
     // Alternative source
     fakeSwapiConfig: {
         enabled: false,

@@ -73,7 +73,7 @@ While I'd recommend just using the one that I host, you can run a copy yourself,
 ## Requirements
 - `git` command line ([Windows](https://git-scm.com/download/win)|[Linux](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)|[MacOS](https://git-scm.com/download/mac)) installed
 - `Node` [Version 18.x or higher](https://nodejs.org)
-- `MongoDB` [I use version 6.0.6 currently](https://www.mongodb.com/download-center/community)
+- `MongoDB` [I use version 7.0.23 currently](https://www.mongodb.com/download-center/community)
 - `A machine` to host it on. Want it to be online 24/7? Get a VPS.
   * My copy of the bot is hosted on a machine from [Hyperexpert](p.hyper.expert/aff.php?aff=127). (Affiliate link)
 - `Some knowledge of Node/ JavaScript` if you want to modify it.
@@ -94,19 +94,27 @@ Once finished:
 In order to get game data, you'll need to set up and use Comlink and SWGoH-Stats.
 These can be run as docker instances, with the setup described in each repo
 - https://github.com/swgoh-utils/swgoh-comlink
+  * Get data from the game itself
 - https://github.com/swgoh-utils/swgoh-stats
+  * Calculate the stats of units when fed into this
 
 If you want character images, you'll want to check out my image server to run alongside it, as well as swgoh-ae2
 - https://github.com/jmiln/swgohImageServe
+  * This is to create the images for the panic and mycharacter commands
 - https://github.com/swgoh-utils/swgoh-ae2
+  * This is a container that gets the various unit images from the game
 
 ## Starting the bot
+Before starting the bot itself, you currently need to run the event service 
+- This is used to schedule and tell the bot to send any events created by the ./slash/events.js command
+- Run with: `node services/eventServe.js`
+
 To start the bot, in the command prompt, run the following command:
 `node swgohbotShard.js`
 > If at any point it says "cannot find module X" just run `npm install X` and try again.
 
-If you are using PM2 to keep the bot running, run it like this:
-`pm2 start swgohBotShard.js`
+If you are using PM2 to keep the bot running, you can run it like this:
+`pm2 start services/eventServe.js swgohBotShard.js`
 
 
 # Contributing to the website (swgohbot.com)

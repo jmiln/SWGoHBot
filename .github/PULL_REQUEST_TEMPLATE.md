@@ -24,7 +24,6 @@
 <!-- 
     For completed items, change [ ] to [x].
 -->
-
-- [ ] Code passes eslint check/ is valid
+- [ ] Code passes biome linting check/ is valid
 - [ ] Code is commented and readable
 
