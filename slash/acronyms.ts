@@ -27,44 +27,28 @@ export default class Acronyms extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         const acronymsLookup = Bot.acronyms;
-        const acronyms = Object.keys(acronymsLookup);
 
         // Get whatever the user put in
         const acronym = interaction.options.getString("acronym");
 
         if (!acronym?.length) {
             // Apparently this should never happen because it's set as a required argument, but who knows/ just in case
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_INVALID"), { example: usageExample });
+            return this.handleError(interaction, "COMMAND_ACRONYMS_INVALID");
         }
 
-        // Split it up in case they're looking for more than one
-        const lookupList = acronym.split(" ").map((a) => a.trim().toLowerCase());
-
-        // Match up as many of the entered ones as possible
-        const matchingItems = acronyms.filter((acr) => lookupList.includes(acr.toLowerCase()));
+        const matchingItems = this.findMatchingAcronyms(acronym, acronymsLookup);
 
         if (!matchingItems.length) {
             // If there were no matches, go ahead and let the user know
-            return super.error(interaction, interaction.language.get("COMMAND_ACRONYMS_NOT_FOUND"), { example: usageExample });
+            return this.handleError(interaction, "COMMAND_ACRONYMS_NOT_FOUND");
         }
 
-        let acronymMeaningMessage = "";
-        for (let i = 0; i < matchingItems.length; i++) {
-            if (acronymMeaningMessage !== "") {
-                acronymMeaningMessage += "\n";
-            }
-            /*
-             * TODO This next line won't translate well, as is. BUT we could move this to
-             * const acronymMeaning = message.language.get("COMMAND_ACRONYM_" + matchingItems[i]);
-             * acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymMeaning}`;
-             */
-            acronymMeaningMessage += `**${matchingItems[i]}**: ${acronymsLookup[matchingItems[i]]}`;
-        }
+        const acronymMeaningMessage = this.formatAcronymMessage(matchingItems, acronymsLookup);
 
         await interaction.reply({
             embeds: [
                 {
-                    description: `**Acronyms for:**\n${lookupList.map((l) => `- ${l}`).join("\n")}`,
+                    description: `**Acronyms for:**\n${acronym.split(" ").map((l) => `- ${l}`).join("\n")}`,
                     fields: [
                         {
                             name: "Results",
@@ -74,5 +58,33 @@ export default class Acronyms extends Command {
                 },
             ],
         });
+    }
+
+    // Split it up in case they're looking for more than one
+    private parseAcronymInput(acronym: string) {
+        return acronym.split(" ").map((a) => a.trim().toLowerCase());
+    }
+
+    // Match up as many of the entered ones as possible
+    private findMatchingAcronyms(acronym: string, acronymsLookup: Record<string, string>) {
+        const acronyms = Object.keys(acronymsLookup);
+        const lookupList = this.parseAcronymInput(acronym);
+        return acronyms.filter((acr) => lookupList.includes(acr.toLowerCase()));
+    }
+
+    private formatAcronymMessage(matchingItems: string[], acronymsLookup: Record<string, string>) {
+        let acronymMeaningMessage = "";
+        for (let ix = 0; ix < matchingItems.length; ix++) {
+            if (acronymMeaningMessage !== "") {
+                acronymMeaningMessage += "\n";
+            }
+            acronymMeaningMessage += `**${matchingItems[ix]}**: ${acronymsLookup[matchingItems[ix]]}`;
+        }
+        return acronymMeaningMessage;
+    }
+
+    private async handleError(interaction: BotInteraction, errorKey: string) {
+        const errorMessage = interaction.language.get(errorKey);
+        return super.error(interaction, errorMessage, { example: usageExample });
     }
 }

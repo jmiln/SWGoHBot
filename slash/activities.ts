@@ -33,28 +33,12 @@ export default class Activites extends Command {
         let day = interaction.options.getString("day");
 
         if (!day) {
-            if (!guildConf?.timezone) {
-                day = `day_${Bot.toProperCase(Bot.getCurrentWeekday())}`;
-            } else {
-                day = `day_${Bot.toProperCase(Bot.getCurrentWeekday(guildConf.timezone))}`;
-            }
+            const weekday = Bot.getCurrentWeekday(guildConf?.timezone || null);
+            day = `day_${weekday}`;
         }
 
-        switch (day) {
-            case "day_Sunday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_SUNDAY")) });
-            case "day_Monday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_MONDAY")) });
-            case "day_Tuesday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_TUESDAY")) });
-            case "day_Wednesday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_WEDNESDAY")) });
-            case "day_Thursday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_THURSDAY")) });
-            case "day_Friday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_FRIDAY")) });
-            case "day_Saturday":
-                return interaction.reply({ content: codeBlock("asciiDoc", interaction.language.get("COMMAND_ACTIVITIES_SATURDAY")) });
-        }
+        const langKey = `COMMAND_ACTIVITIES_${day?.split("_")[1].toUpperCase()}`;
+        const message = interaction.language.get(langKey);
+        return interaction.reply({ content: codeBlock("asciiDoc", message) });
     }
 }

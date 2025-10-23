@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 import Command from "../base/slashCommand.ts";
-
-import { getGuildAliases, setGuildAliases } from "../modules/guildConfig/aliases.ts";
-import type { BotType } from "../types/types.ts";
+import config from "../config.js";
+import type { BotInteraction, BotType, GuildAlias } from "../types/types.ts";
 
 export default class Aliases extends Command {
     constructor(Bot: BotType) {
@@ -54,53 +53,76 @@ export default class Aliases extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: ChatInputCommandInteraction) {
+    async run(Bot: BotType, interaction: BotInteraction) {
+        // Make sure this is running in a server, since it doesn't do any good in DMs
+        if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
+
         const action = interaction.options.getSubcommand();
         const searchUnit = interaction.options.getString("unit");
         const alias = interaction.options.getString("alias");
+        const guildId = interaction.guild.id;
 
         // Load up all the guild's settings and such
-        const guildAliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction.guild.id });
-
-        // Make sure this is running in a server, since it doesn't do any good in DMs
-        if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
+        const res = await Bot.cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
+        const guildAliases = res[0]?.aliases || [];
 
         if (action === "add") {
             // Make sure both fields were filled. They're both marked required so it shouldn't hit this, but just in case.
             if (!searchUnit || !alias) return super.error(interaction, "Both fields MUST be filled in. Please try again.");
 
-            // Grab the unit if available, then complain if not found
-            const unit =
-                Bot.characters.find((char) => char.uniqueName === searchUnit) || Bot.ships.find((ship) => ship.uniqueName === searchUnit);
-            if (!unit) return super.error(interaction, `I couldn't find a matching unit for '${searchUnit}'`);
-
-            // If the selected alias is already in use, alert em and back out
-            if (guildAliases.filter((al) => al.alias === alias)?.length)
-                return super.error(interaction, `This alias is already in use for ***${unit.name}***`);
-
-            // If it makes it here, everything *should* be fine, so go ahead and save it
-            guildAliases.push({ alias: alias, defId: unit.uniqueName, name: unit.name });
-            const res = await setGuildAliases({ cache: Bot.cache, guildId: interaction.guild.id, aliasesOut: guildAliases });
-
-            // Then report on it either saving properly or breaking
-            if (res?.error) return super.error(interaction, `There was an issue when submitting that: \n${res.error}`);
-            super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
-        } else if (action === "remove") {
-            // We're removing an alias
-            if (!guildAliases.filter((al) => al.alias === alias)?.length) return super.error(interaction, "That isn't a current alias.");
-
-            // Set the aliases back, with the specified one removed
-            const res = await setGuildAliases({
-                cache: Bot.cache,
-                guildId: interaction.guild.id,
-                aliasesOut: guildAliases.filter((al) => al.alias !== alias),
-            });
-
-            // Then report on it either saving properly or breaking
-            if (res?.error) return super.error(interaction, `There was an issue when submitting that: \n${res.error}`);
-            super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
-        } else {
-            return interaction.reply({ content: `>>> ${`- ${guildAliases.map((al) => `${al.alias} - ${al.name}`).join("\n- ")}`}` });
+            return this.handleAddAlias(Bot, interaction, alias, searchUnit, guildAliases);
         }
+        if (action === "remove") {
+            return this.handleRemoveAlias(Bot, interaction, alias, guildAliases);
+        }
+        return interaction.reply({
+            content: `>>> ${`- ${guildAliases.map((al: GuildAlias) => `${al.alias} - ${al.name}`).join("\n- ")}`}`,
+        });
+    }
+
+    private async handleAddAlias(
+        Bot: BotType,
+        interaction: BotInteraction,
+        alias: string,
+        unitKey: string,
+        guildAliases: GuildAlias[]
+    ) {
+        const unit = Bot.characters.find((c) => c.uniqueName === unitKey) || Bot.ships.find((s) => s.uniqueName === unitKey);
+
+        if (!unit) {
+            return super.error(interaction, `I couldn't find a matching unit for '${unitKey}'`);
+        }
+
+        if (guildAliases.some((al) => al.alias === alias)) {
+            return super.error(interaction, `This alias is already in use for ***${unit.name}***`);
+        }
+
+        guildAliases.push({ alias, defId: unit.uniqueName, name: unit.name });
+
+        await Bot.cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: guildAliases }, false).then(() => {
+            super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
+        }).catch((error: Error) => {
+            super.error(interaction, `There was an issue when submitting that: \n${error.toString()}`);
+        })
+    }
+
+    private async handleRemoveAlias(
+        Bot: BotType,
+        interaction: ChatInputCommandInteraction,
+        alias: string,
+        guildAliases: GuildAlias[]
+    ) {
+        if (!guildAliases.some((al) => al.alias === alias)) {
+            return super.error(interaction, "That isn't a current alias.");
+        }
+
+        const filteredAliases = guildAliases
+        .filter((al) => al.alias !== alias)
+        .sort((a, b) => (a.alias > b.alias ? 1 : -1));
+        await Bot.cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: filteredAliases }, false).then(() => {
+            super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
+        }).catch((error: Error) => {
+            super.error(interaction, `There was an issue when submitting that: \n${error.toString()}`);
+        })
     }
 }

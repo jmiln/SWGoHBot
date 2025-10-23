@@ -1,5 +1,6 @@
 import type {
     BaseInteraction,
+    ChatInputCommandInteraction,
     Client,
     Collection,
     Guild,
@@ -7,6 +8,7 @@ import type {
     IntentsBitField,
     Interaction,
     Partials,
+    ReplyOptions,
     TextChannel,
 } from "discord.js";
 import type { MongoClient } from "mongodb";
@@ -355,10 +357,12 @@ export interface BotClient extends Client {
     unloadSlash: (commandName: string) => boolean;
 }
 
-export interface BotInteraction extends BaseInteraction {
+export interface BotInteraction extends ChatInputCommandInteraction {
     guildSettings: BotDefaultSettings;
     language: Language;
     swgohLanguage: SWAPILang;
+}
+export interface BotBaseInteraction extends BaseInteraction {
     respond?: (args: { name: string; value: string }[]) => Promise<void>;
 }
 
@@ -497,6 +501,7 @@ export interface UserConfig {
         arena: string;
         payoutWarning: number;
         enablePayoutResult: boolean;
+        payoutResult?: string;
     };
     updated: number;
     lang: {

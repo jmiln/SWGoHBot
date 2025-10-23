@@ -368,6 +368,7 @@ export default (Bot: BotType, client: BotClient) => {
     // Check against the list of timezones to make sure the given one is valid
     Bot.isValidZone = (zone) => {
         // Check if the entered string is a valid timezone (According to Wikipedia's list), so go ahead and process
+        if (!zone) return false;
         try {
             Intl.DateTimeFormat(undefined, { timeZone: zone });
             return true;
@@ -378,7 +379,7 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Return the full name of whatever day of the week it is
     Bot.getCurrentWeekday = (zone) => {
-        const tz = !zone || !Bot.isValidZone(zone) ? "UTC" : zone;
+        const tz = Bot.isValidZone(zone) ? zone : "UTC";
         return Intl.DateTimeFormat("en", { weekday: "long", timeZone: tz }).format(new Date());
     };
 
