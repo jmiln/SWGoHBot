@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
     constructor(Bot: BotType) {
@@ -81,9 +81,9 @@ export default class ArenaAlert extends Command {
 
         // Grab the user's info
         const userID = interaction.user.id;
-        const user = await Bot.userReg.getUser(userID); // eslint-disable-line no-unused-vars
+        const user = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userID }) as UserConfig;
         if (!user) {
-            return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+            return super.error(interaction, "I couldn't find your data. Please try again.");
         }
 
         // Make sure the user is a patreon
@@ -115,41 +115,63 @@ export default class ArenaAlert extends Command {
             });
         }
 
-        const changelog = [];
-
-        // ArenaAlert -> activate/ deactivate
-        if (enabledms && user.arenaAlert.enableRankDMs !== enabledms) {
-            changelog.push(`Changed EnableDMs from ${user.arenaAlert.enableRankDMs} to ${enabledms}`);
-            user.arenaAlert.enableRankDMs = enabledms;
-        }
-
-        // Set which of the arenas to watch (char, fleet, both)
-        if (arena && user.arenaAlert.arena !== arena) {
-            changelog.push(`Changed arena from ${user.arenaAlert.arena} to ${arena}`);
-            user.arenaAlert.arena = arena;
-        }
-
-        // Set to DM the user with their final result or not
-        if (payoutResult && user.arenaAlert.payoutResult !== payoutResult) {
-            changelog.push(`Changed Payout Result from ${user.arenaAlert.payoutResult} to ${payoutResult}`);
-            user.arenaAlert.payoutResult = payoutResult;
-        }
-
-        // Set how long before their payout to warn them
-        if (payoutWarning && !Number.isNaN(payoutWarning)) {
-            if (payoutWarning < 0 || payoutWarning > 1439) {
-                changelog.push(`Cannot change the Payout Warning to ${payoutWarning}. Value must be between 0 and 1439`);
-            } else if (user.arenaAlert.payoutWarning !== payoutWarning) {
-                changelog.push(`Changed Payout Warning from ${user.arenaAlert.payoutWarning} to ${payoutWarning}`);
-                user.arenaAlert.payoutWarning = payoutWarning;
-            }
-        }
+        const { changelog, updatedUser } = this.computeArenaAlertChanges(user, {
+            enabledms,
+            arena,
+            payoutResult,
+            payoutWarning,
+        });
 
         // TODO Get a res from this, so it can be replied to more accurately
-        await Bot.userReg.updateUser(userID, user);
+        await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userID }, updatedUser);
         if (!changelog?.length) {
             return super.success(interaction, "It looks like nothing was updated.");
         }
         return super.success(interaction, changelog.join("\n"));
+    }
+
+    private computeArenaAlertChanges(
+        user: UserConfig,
+        input: {
+            enabledms?: string;
+            arena?: string;
+            payoutResult?: string;
+            payoutWarning?: number | null;
+        }
+    ): { changelog: string[]; updatedUser: UserConfig } {
+        const changelog: string[] = [];
+        const updatedUser = structuredClone(user);
+
+        const { enabledms, arena, payoutResult, payoutWarning } = input;
+
+        // ArenaAlert -> activate/ deactivate
+        if (enabledms && updatedUser.arenaAlert.enableRankDMs !== enabledms) {
+            changelog.push(`Changed EnableDMs from ${updatedUser.arenaAlert.enableRankDMs} to ${enabledms}`);
+            updatedUser.arenaAlert.enableRankDMs = enabledms;
+        }
+
+        // Set which of the arenas to watch
+        if (arena && updatedUser.arenaAlert.arena !== arena) {
+            changelog.push(`Changed arena from ${updatedUser.arenaAlert.arena} to ${arena}`);
+            updatedUser.arenaAlert.arena = arena;
+        }
+
+        // Set payout result DM preference
+        if (payoutResult && updatedUser.arenaAlert.payoutResult !== payoutResult) {
+            changelog.push(`Changed Payout Result from ${updatedUser.arenaAlert.payoutResult} to ${payoutResult}`);
+            updatedUser.arenaAlert.payoutResult = payoutResult;
+        }
+
+        // Set payout warning
+        if (payoutWarning !== undefined && !Number.isNaN(payoutWarning)) {
+            if (payoutWarning < 0 || payoutWarning > 1439) {
+                changelog.push(`Cannot change the Payout Warning to ${payoutWarning}. Value must be between 0 and 1439`);
+            } else if (updatedUser.arenaAlert.payoutWarning !== payoutWarning) {
+                changelog.push(`Changed Payout Warning from ${updatedUser.arenaAlert.payoutWarning} to ${payoutWarning}`);
+                updatedUser.arenaAlert.payoutWarning = payoutWarning;
+            }
+        }
+
+        return { changelog, updatedUser };
     }
 }
