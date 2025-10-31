@@ -106,14 +106,14 @@ async function init() {
         const mongo = await MongoClient.connect(config.mongodb.url);
         const cache = botCache(mongo) as BotCache;
         const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
-        const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
-            isMetadataUpdated: boolean;
-            newMetadata: Metadata;
-            oldMetadata: Metadata;
-        };
 
         if (!FORCE_UPDATE) {
             (async function runUpdatersAsNeeded() {
+                const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
+                    isMetadataUpdated: boolean;
+                    newMetadata: Metadata;
+                    oldMetadata: Metadata;
+                };
                 if (isMetadataUpdated) {
                     const log = [];
                     if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
@@ -144,6 +144,11 @@ async function init() {
         } else {
             // If we're forcing an update, just run the bits we want then exit
             console.log("Forcing update, running updaters");
+            const { newMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
+                isMetadataUpdated: boolean;
+                newMetadata: Metadata;
+                oldMetadata: Metadata;
+            };
             await runGameDataUpdaters(newMetadata, cache, comlinkStub);
             // await updatePatrons(cache);
             process.exit(0);
