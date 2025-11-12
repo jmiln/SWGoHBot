@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, ChannelType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
@@ -408,6 +408,11 @@ export default class ArenaWatch extends Command {
         let cmdOut = null;
         const outLog = [];
 
+        // Need to make sure that the user has the correct permissions to set this up
+        if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
+            return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+        }
+
         const user: UserConfig = await Bot.userReg.getUser(interaction.user.id);
         if (!user) return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
 
@@ -495,6 +500,15 @@ export default class ArenaWatch extends Command {
             return player;
         }
 
+        // Takes in a channel from the interaction.options.getChannel, but always whines about it
+        function getChannelIdIfValid(channel): string | null {
+            if (!channel) return null;
+            if (!("guild" in channel)) return null;
+            if (channel?.type !== ChannelType.GuildText) return null;
+            if (channel?.guild?.id !== interaction?.guild?.id) return null;
+            return channel.id;
+        }
+
         switch (target) {
             // ArenaWatch -> activate/ deactivate
             case "enabled": {
@@ -507,44 +521,15 @@ export default class ArenaWatch extends Command {
                 const channel = interaction.options.getChannel("target_channel");
                 const targetArena = interaction.options.getString("arena");
 
-                if (!channel?.guild) {
-                    // They choose an invalid channel/ one that doesn't exist?
-                    return super.error(
-                        interaction,
-                        "Invalid channel, please make sure you're choosing a channel in this server, and are mentioning it.",
-                    );
-                }
+                const chanId = getChannelIdIfValid(channel);
 
-                if (channel?.guild?.id !== interaction?.guild?.id) {
-                    // They chose a channel in a different server
-                    return super.error(interaction, "Invalid channel, please choose one in this server");
-                }
-
-                // If it gets this far, it should be a valid code
-                // Need to make sure that the user has the correct permissions to set this up
-                if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
-                    return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                if (!chanId) {
+                    return super.error(interaction, "Invalid channel, please make sure you're choosing a text channel in this server.");
                 }
 
                 // They got throught all that, go ahead and set it
-                switch (targetArena) {
-                    case "both": {
-                        // Set the channel for both the char and fleet arenas
-                        aw.arena.char.channel = channel.id;
-                        aw.arena.fleet.channel = channel.id;
-                        break;
-                    }
-                    case "char": {
-                        // Set just the char arena channel
-                        aw.arena.char.channel = channel.id;
-                        break;
-                    }
-                    case "fleet": {
-                        // Set just the fleet arena channel
-                        aw.arena.fleet.channel = channel.id;
-                        break;
-                    }
-                }
+                aw.arena.char.channel = ["both", "char"].includes(targetArena) ? channel.id : null;
+                aw.arena.fleet.channel = ["both", "fleet"].includes(targetArena) ? channel.id : null;
                 break;
             }
             case "payout": {
@@ -560,33 +545,21 @@ export default class ArenaWatch extends Command {
                     const enabled = interaction.options.getBoolean("enabled");
 
                     // If it's one of the correct options
-                    if (arena === "char") {
-                        aw.payout.char.enabled = enabled;
-                    } else if (arena === "fleet") {
-                        aw.payout.fleet.enabled = enabled;
-                    } else {
-                        aw.payout.char.enabled = enabled;
-                        aw.payout.fleet.enabled = enabled;
-                    }
+                    aw.payout.char.enabled = ["char", "both"].includes(arena) ? enabled : null;
+                    aw.payout.fleet.enabled = ["fleet", "both"].includes(arena) ? enabled : null;
                 } else if (setting === "channel") {
                     // Set the channel for one of the options (Char/ fleet)
                     const channel = interaction.options.getChannel("target_channel");
                     const targetArena = interaction.options.getString("arena");
 
-                    // Need to make sure that the user has the correct permissions to set this up
-                    if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
-                        return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                    const chanId = getChannelIdIfValid(channel);
+                    if (!chanId) {
+                        return super.error(interaction, "Invalid channel, please make sure you're choosing a text channel in this server.");
                     }
 
                     // They got throught all that, go ahead and set it
-                    if (targetArena === "char") {
-                        aw.payout.char.channel = channel.id;
-                    } else if (targetArena === "fleet") {
-                        aw.payout.fleet.channel = channel.id;
-                    } else {
-                        aw.payout.char.channel = channel.id;
-                        aw.payout.fleet.channel = channel.id;
-                    }
+                    aw.payout.char.channel = ["char", "both"].includes(targetArena) ? chanId : null;
+                    aw.payout.fleet.channel = ["fleet", "both"].includes(targetArena) ? chanId : null;
                 } else if (setting === "mark") {
                     // Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy
                     // ;aw payout mark 123123123 :smile:
@@ -608,15 +581,11 @@ export default class ArenaWatch extends Command {
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
                         cmdOut =
-                            "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from";
+                            "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from";
                     }
                     aw.allycodes = aw.allycodes.map((p) => {
                         if (p.allyCode.toString() === ac.toString()) {
-                            if (remove_mark) {
-                                p.mark = null;
-                            } else {
-                                p.mark = mark;
-                            }
+                            p.mark = remove_mark ? null : mark;
                         }
                         return p;
                     });
@@ -627,14 +596,8 @@ export default class ArenaWatch extends Command {
                 const enabled = interaction.options.getBoolean("enabled");
                 const arena = interaction.options.getString("arena");
 
-                if (arena === "both") {
-                    aw.arena.char.enabled = enabled;
-                    aw.arena.fleet.enabled = enabled;
-                } else if (arena === "char") {
-                    aw.arena.char.enabled = enabled;
-                } else if (arena === "fleet") {
-                    aw.arena.fleet.enabled = enabled;
-                }
+                aw.arena.char.enabled = ["char", "both"].includes(arena) ? enabled : null;
+                aw.arena.fleet.enabled = ["fleet", "both"].includes(arena) ? enabled : null;
                 break;
             }
             case "allycode": {
@@ -650,21 +613,20 @@ export default class ArenaWatch extends Command {
                         .map((a) => a?.trim()) // Trim off any spaces in case
                         .filter(Boolean);
 
+                    if (!codesIn.length) {
+                        return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
+                    }
+
                     // The mark to put with the ally code (Optional)
                     const mark = interaction.options.getString("mark") || "";
                     const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
                     if (emojiRegex.test(mark)) {
                         outLog.push(
-                            "If you are using an external emote from outside this server, be aware that it will not work if this bot does not also have access to the server that it's from",
+                            "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from",
                         );
                     }
 
-                    // Bunch of checks before getting to the logic
-                    if (!codesIn.length) {
-                        return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_AC", action));
-                    }
                     const codes = [];
-
                     for (const code of codesIn) {
                         let ac: number;
                         let mention: string;
@@ -712,10 +674,10 @@ export default class ArenaWatch extends Command {
                             allyCode: c.code,
                             name: player.name,
                             mention: c.mention,
-                            lastChar: player.arena.char ? player.arena.char.rank : null,
-                            lastShip: player.arena.ship ? player.arena.ship.rank : null,
+                            lastChar: player.arena.char?.rank || null,
+                            lastShip: player.arena.ship?.rank || null,
                             poOffset: player.poUTCOffsetMinutes,
-                            mark: mark ? mark : null,
+                            mark: mark || null,
                         });
                         outLog.push(`${c.code} added!`);
                     }
@@ -816,12 +778,6 @@ export default class ArenaWatch extends Command {
 
                 if (!Bot.isAllyCode(code)) {
                     return super.error(interaction, `Invalid ally code (${code})`);
-                }
-
-                if (!mins || mins <= 0) {
-                    return super.error(interaction, "Invalid minute count. Only values of 1 and above are valid.", {
-                        example: "aw warn 123123123 30 both",
-                    });
                 }
 
                 const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(code, 10));
@@ -959,10 +915,11 @@ export default class ArenaWatch extends Command {
             default:
                 return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_OPTION"));
         }
-        if (target !== "view") {
-            user.arenaWatch = aw;
-            await Bot.userReg.updateUser(interaction.user.id, user);
-        }
+
+        // Update the user's data since if it gets here, it would be changed
+        user.arenaWatch = aw;
+        await Bot.userReg.updateUser(interaction.user.id, user);
+
         return super.error(
             interaction,
             outLog.length
@@ -981,10 +938,7 @@ export default class ArenaWatch extends Command {
                 return null;
             }
             const thisAW = aw?.[alertType]?.[arenaType];
-            if (thisAW.channel) {
-                return `<#${thisAW.channel}>`;
-            }
-            return "N/A";
+            return thisAW.channel ? `<#${thisAW.channel}>` : "N/A";
         }
     }
 }

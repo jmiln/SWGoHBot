@@ -52,7 +52,7 @@ export default class Arenarank extends Command {
         });
     }
 
-    private computeArenaRanks( currentRank: number, rankHops: number ): { battles: number[]; isEstimated: boolean } {
+    private computeArenaRanks(currentRank: number, rankHops: number): { battles: number[]; isEstimated: boolean } {
         const isEstimated = !this.Bot.arenaJumps[currentRank.toString()];
         const battles: number[] = [currentRank];
 

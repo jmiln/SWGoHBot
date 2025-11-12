@@ -81,7 +81,7 @@ export default class ArenaAlert extends Command {
 
         // Grab the user's info
         const userID = interaction.user.id;
-        const user = await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userID }) as UserConfig;
+        const user = (await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userID })) as UserConfig;
         if (!user) {
             return super.error(interaction, "I couldn't find your data. Please try again.");
         }
@@ -137,7 +137,7 @@ export default class ArenaAlert extends Command {
             arena?: string;
             payoutResult?: string;
             payoutWarning?: number | null;
-        }
+        },
     ): { changelog: string[]; updatedUser: UserConfig } {
         const changelog: string[] = [];
         const updatedUser = structuredClone(user);

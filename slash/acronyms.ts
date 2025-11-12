@@ -48,7 +48,10 @@ export default class Acronyms extends Command {
         await interaction.reply({
             embeds: [
                 {
-                    description: `**Acronyms for:**\n${acronym.split(" ").map((l) => `- ${l}`).join("\n")}`,
+                    description: `**Acronyms for:**\n${acronym
+                        .split(" ")
+                        .map((l) => `- ${l}`)
+                        .join("\n")}`,
                     fields: [
                         {
                             name: "Results",

@@ -80,13 +80,7 @@ export default class Aliases extends Command {
         });
     }
 
-    private async handleAddAlias(
-        Bot: BotType,
-        interaction: BotInteraction,
-        alias: string,
-        unitKey: string,
-        guildAliases: GuildAlias[]
-    ) {
+    private async handleAddAlias(Bot: BotType, interaction: BotInteraction, alias: string, unitKey: string, guildAliases: GuildAlias[]) {
         const unit = Bot.characters.find((c) => c.uniqueName === unitKey) || Bot.ships.find((s) => s.uniqueName === unitKey);
 
         if (!unit) {
@@ -99,30 +93,29 @@ export default class Aliases extends Command {
 
         guildAliases.push({ alias, defId: unit.uniqueName, name: unit.name });
 
-        await Bot.cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: guildAliases }, false).then(() => {
-            super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
-        }).catch((error: Error) => {
-            super.error(interaction, `There was an issue when submitting that: \n${error.toString()}`);
-        })
+        await Bot.cache
+            .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: guildAliases }, false)
+            .then(() => {
+                super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
+            })
+            .catch((error: Error) => {
+                super.error(interaction, `There was an issue when submitting that: \n${error.toString()}`);
+            });
     }
 
-    private async handleRemoveAlias(
-        Bot: BotType,
-        interaction: ChatInputCommandInteraction,
-        alias: string,
-        guildAliases: GuildAlias[]
-    ) {
+    private async handleRemoveAlias(Bot: BotType, interaction: ChatInputCommandInteraction, alias: string, guildAliases: GuildAlias[]) {
         if (!guildAliases.some((al) => al.alias === alias)) {
             return super.error(interaction, "That isn't a current alias.");
         }
 
-        const filteredAliases = guildAliases
-        .filter((al) => al.alias !== alias)
-        .sort((a, b) => (a.alias > b.alias ? 1 : -1));
-        await Bot.cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: filteredAliases }, false).then(() => {
-            super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
-        }).catch((error: Error) => {
-            super.error(interaction, `There was an issue when submitting that: \n${error.toString()}`);
-        })
+        const filteredAliases = guildAliases.filter((al) => al.alias !== alias).sort((a, b) => (a.alias > b.alias ? 1 : -1));
+        await Bot.cache
+            .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: filteredAliases }, false)
+            .then(() => {
+                super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
+            })
+            .catch((error: Error) => {
+                super.error(interaction, `There was an issue when submitting that: \n${error.toString()}`);
+            });
     }
 }
