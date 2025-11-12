@@ -4325,6 +4325,11 @@
         "defId": "VANE",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "3-B",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_VANE_NAME",
                 "name": "Fortune Favors The Bold Ii Special Marquee Event"
@@ -4520,6 +4525,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_ZORIIBLISS_NAME",
                 "name": "Resistance Runner Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Zuckuss",
+        "defId": "ZUCKUSS",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ZUCKUSS_NAME",
+                "name": "Mist Hunters Ii Special Marquee Event"
             }
         ]
     }

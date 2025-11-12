@@ -43,7 +43,18 @@
             "CATEGORY_SCOUNDREL_DESC",
             "CATEGORY_SPECIESDROID_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Tenacity"
+        },
         "crew": []
     },
     {
@@ -242,7 +253,7 @@
         ],
         "mods": {
             "sets": [
-                "Defense x2",
+                "Health x2",
                 "Speed x4"
             ],
             "square": "Offense",
@@ -1276,9 +1287,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1396,7 +1407,7 @@
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Protection"
+            "cross": "Potency"
         },
         "crew": []
     },
@@ -2040,9 +2051,9 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ],
             "square": "Offense",
             "arrow": "Protection",
@@ -3544,7 +3555,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Health",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Potency"
         },
         "crew": []
@@ -5517,7 +5528,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Potency"
         },
@@ -5755,7 +5766,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense"
         },
         "crew": []
@@ -6815,7 +6826,7 @@
                 "Defense x2"
             ],
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -6871,8 +6882,8 @@
         ],
         "mods": {
             "sets": [
-                "Offense x4",
-                "Tenacity x2"
+                "Health x2",
+                "Speed x4"
             ],
             "square": "Offense",
             "arrow": "Speed",
@@ -8489,7 +8500,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Tenacity"
+            "cross": "Potency"
         },
         "avatarName": "charui_ugnaught"
     },
@@ -8983,5 +8994,35 @@
             "cross": "Protection"
         },
         "avatarName": "charui_zoriibliss"
+    },
+    {
+        "name": "Zuckuss",
+        "uniqueName": "ZUCKUSS",
+        "aliases": [
+            "Zuckuss"
+        ],
+        "avatarName": "charui_zuckuss",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zuckuss.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_BOUNTYHUNTER_DESC_V2",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLETANK_DESC",
+            "CATEGORY_SCOUNDREL_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {
+            "sets": [
+                "Speed x4",
+                "Tenacity x2"
+            ],
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection"
+        },
+        "crew": []
     }
 ]
