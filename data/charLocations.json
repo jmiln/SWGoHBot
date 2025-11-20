@@ -225,6 +225,17 @@
         ]
     },
     {
+        "name": "Asajj Ventress (Dark Disciple)",
+        "defId": "ASAJJDARKDISCIPLE",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_ASAJJDARKDISCIPLE_NAME",
+                "name": "Heretic Hunter Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Aurra Sing",
         "defId": "AURRA_SING",
         "locations": [
@@ -696,6 +707,11 @@
         "name": "Captain Silvo",
         "defId": "CAPTAINSILVO",
         "locations": [
+            {
+                "type": "Cantina",
+                "level": "6-A",
+                "locId": "CANTINA"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CAPTAINSILVO_NAME",
@@ -1241,6 +1257,17 @@
             {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/5"
+            }
+        ]
+    },
+    {
+        "name": "Darth Vader (Duel's End)",
+        "defId": "VADERDUELSEND",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_VADERDUELSEND_NAME",
+                "name": "What Remains Special Marquee Event"
             }
         ]
     },
@@ -2235,6 +2262,17 @@
         ]
     },
     {
+        "name": "IG-90",
+        "defId": "IG90",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_IG90_NAME",
+                "name": "Seeing Red Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Ima-Gun Di",
         "defId": "IMAGUNDI",
         "locations": [
@@ -2285,6 +2323,17 @@
                 "type": "Hard Modes (Fleet)",
                 "level": "4-A",
                 "locId": "HARD_FLEET"
+            }
+        ]
+    },
+    {
+        "name": "Inquisitor Barriss",
+        "defId": "INQUISITORBARRISS",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_INQUISITORBARRISS_NAME",
+                "name": "From Light To Shadow Special Marquee Event"
             }
         ]
     },
@@ -2615,9 +2664,9 @@
         "defId": "KYLEKATARN",
         "locations": [
             {
-                "type": "Cantina",
-                "level": "6-A",
-                "locId": "CANTINA"
+                "type": "Hard Modes (Fleet)",
+                "level": "2-E",
+                "locId": "HARD_FLEET"
             },
             {
                 "type": "Marquee",
@@ -3995,6 +4044,17 @@
         ]
     },
     {
+        "name": "Stormtrooper Luke",
+        "defId": "STORMTROOPERLUKE",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_STORMTROOPERLUKE_NAME",
+                "name": "Situation Normal Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Sun Fac",
         "defId": "SUNFAC",
         "locations": [
@@ -4463,6 +4523,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_WRECKERS3_NAME",
                 "name": "The Cavalry Has Arrived Iv Special Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Yoda & Chewie",
+        "defId": "YODACHEWBACCA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_YODACHEWBACCA_NAME",
+                "name": "The Last Hope Special Marquee Event"
             }
         ]
     },
