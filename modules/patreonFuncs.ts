@@ -776,6 +776,7 @@ export default (Bot: BotType, client: BotClient) => {
             try {
                 guild = await Bot.swgohAPI.guild(gu.allycode);
             } catch (err) {
+                if (err.toString().includes("not in a guild")) continue;
                 console.log(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
                 continue;
             }
@@ -978,6 +979,7 @@ export default (Bot: BotType, client: BotClient) => {
             try {
                 rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
             } catch (err) {
+                if (err.toString().includes("not in a guild")) continue;
                 console.log(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
                 continue;
             }
