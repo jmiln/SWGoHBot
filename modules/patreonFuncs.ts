@@ -943,12 +943,8 @@ export default (Bot: BotType, client: BotClient) => {
             const isMsgType = gt?.updateType === "msg";
 
             // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
-            if (
-                isMsgType &&
-                gt?.nextChallengesRefresh &&
-                !isWithinTime(gt.nextChallengesRefresh, nowTime, 1, 5) &&
-                gt.nextChallengesRefresh > nowTime
-            ) {
+            const refresh = Number.parseInt(gt.nextChallengesRefresh, 10);
+            if (isMsgType && refresh && !isWithinTime(refresh, nowTime, 1, 5) && refresh > nowTime) {
                 continue;
             }
 
