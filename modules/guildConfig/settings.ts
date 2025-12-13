@@ -1,12 +1,13 @@
 import config from "../../config.js";
+import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
 
 // Get the guildsettings from the mongo db
 export async function getGuildSettings({ cache, guildId }) {
-    if (!guildId) return config.defaultSettings;
+    if (!guildId) return defaultSettings;
 
     const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
-    if (!guildSettings?.length) return config.defaultSettings;
-    return { ...config.defaultSettings, ...guildSettings[0].settings };
+    if (!guildSettings?.length) return defaultSettings;
+    return { ...defaultSettings, ...guildSettings[0].settings };
 }
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config
@@ -14,13 +15,13 @@ export async function setGuildSettings({ cache, guildId, settings }) {
     // Filter out any settings that are the same as the defaults
     const diffObj = {};
 
-    for (const key of Object.keys(config.defaultSettings)) {
-        const configVal = config.defaultSettings[key];
+    for (const key of Object.keys(defaultSettings)) {
+        const configVal = defaultSettings[key];
         if (Array.isArray(configVal)) {
             if (!arrayEquals(configVal, settings[key])) {
                 diffObj[key] = settings[key];
             }
-        } else if (config.defaultSettings[key] !== settings[key]) {
+        } else if (defaultSettings[key] !== settings[key]) {
             diffObj[key] = settings[key];
         }
     }

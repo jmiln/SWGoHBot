@@ -16,7 +16,7 @@ import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import type Logger from "../modules/Logger.ts";
 import type { BotCache } from "./cache_types.ts";
-import type { GuildConfigEvent } from "./guildConfig_types.ts";
+import type { GuildConfigEvent,GuildConfigSettings } from "./guildConfig_types.ts";
 import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
 import type { UserReg } from "./userReg_types.ts";
 
@@ -240,6 +240,7 @@ export interface BotType {
         [key: string]: Language;
     };
     config: BotConfig;
+    getDefaultGuildSettings: () => GuildConfigSettings;
     socket: Socket;
 }
 

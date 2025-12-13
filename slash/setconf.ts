@@ -4,7 +4,6 @@ import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts"
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
-import type { TypedDefaultSettings } from "../types/guildConfig_types.ts"
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 // Set the base subargs up
@@ -79,11 +78,8 @@ const options = {
     },
 };
 
-// Quick workaround to make it shut up
-const defSettings: TypedDefaultSettings = typedDefaultSettings;
-
 // Check out each option in the config file, and set it up in each subarg as needed
-for (const [key, value] of Object.entries(defSettings)) {
+for (const [key, value] of Object.entries(typedDefaultSettings)) {
     // Fill out the options based on the default settings in the config file
     const optOut = {
         name: key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
@@ -247,9 +243,9 @@ export default class SetConf extends Command {
         const settingsIn = {};
         const errors = [];
         const changeLog = [];
-        for (const key of Object.keys(typedDefaultSettings)) {
+        for (const [key, defConf] of Object.entries(typedDefaultSettings)) {
             const optionKey = key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
-            const keyType = typedDefaultSettings[key]?.type;
+            const keyType = defConf?.type;
             let settingStr = null;
             let nameStr = null;
             if (keyType === ApplicationCommandOptionType.String) {

@@ -1,9 +1,8 @@
 import Command from "../base/slashCommand.ts";
+import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
-import type { TypedDefaultSettings } from "../types/guildConfig_types.ts";
-import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 
 export default class Showconf extends Command {
     constructor(Bot: BotType) {
@@ -24,11 +23,8 @@ export default class Showconf extends Command {
         // Change it so adminRoles show the names instead of ID
         // Change eventCountdown so it shows just a list of numbers instead of as an array, same for the rest, make it look nicer instead of inspected strings and such
 
-        // Quick workaround to make it shut up
-        const defSettings: TypedDefaultSettings = typedDefaultSettings;
-
         // Check out each option in the config file, and set it up in each subarg as needed
-        for (const key of Object.keys(defSettings)) {
+        for (const key of Object.keys(typedDefaultSettings)) {
             switch (key) {
                 case "adminRole": {
                     const roleArr = [];

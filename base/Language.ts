@@ -1,4 +1,5 @@
 import type { BotLanguage, BotType } from "../types/types.ts";
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 
 export default class Language {
     Bot: BotType;
@@ -11,7 +12,7 @@ export default class Language {
     // also | {[key: string]: string} | LangHelpStrs
     get(str: string, ...args: null | (string | number | boolean | object)[]): string {
         if (!this.language[str]) {
-            const defLang = this.Bot.languages[this.Bot.config.defaultSettings.language];
+            const defLang = this.Bot.languages[defaultSettings.language];
             let res = null;
             try {
                 if (!args.length) {

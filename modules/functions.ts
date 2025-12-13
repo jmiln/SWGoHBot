@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { readdir } from "node:fs/promises";
 import { inspect, promisify } from "node:util";
 import { GuildMember, GuildMemberRoleManager, PermissionsBitField, TextChannel, time, WebhookClient } from "discord.js";
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { BotClient, BotInteraction, BotType, BotUnit, UserConfig } from "../types/types.ts";
 
@@ -325,7 +326,7 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Return a duration string
     Bot.duration = (time, interaction = null) => {
-        const lang = interaction ? interaction.language : Bot.languages[Bot.config.defaultSettings.language];
+        const lang = interaction ? interaction.language : Bot.languages[defaultSettings.language];
 
         if (!time) console.error(`Missing time value in Bot.duration.\n${inspect(interaction?.options)}`);
         const timeDiff = Math.abs(Date.now() - time);
@@ -334,7 +335,7 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Given a duration number, format the string like it would have been done from moment-duration-format before
     Bot.formatDuration = (duration, lang) => {
-        const langOut = lang || Bot.languages[Bot.config.defaultSettings.language];
+        const langOut = lang || Bot.languages[defaultSettings.language];
 
         const durationMS = Bot.convertMS(duration);
         const outArr = [];

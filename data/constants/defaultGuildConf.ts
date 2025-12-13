@@ -1,5 +1,8 @@
+import { ApplicationCommandOptionType } from "discord.js";
+import type { GuildConfigSettings, TypedDefaultSettings } from "../../types/guildConfig_types.ts";
+
 // Default guild config settings, leave these as-is
-export const typedDefaultSettings = {
+export const typedDefaultSettings: TypedDefaultSettings = {
     // Settings in a way that the bot can parse em out into slash command args
     //
     // Removed the prefix now that it should all be slash commands
@@ -83,4 +86,15 @@ export const typedDefaultSettings = {
         type: ApplicationCommandOptionType.Boolean,
         description: "Display the shardtimes info vertically",
     },
+};
+
+export const defaultSettings = getDefaultGuildConf();
+
+function getDefaultGuildConf() {
+    const defSettings: TypedDefaultSettings = typedDefaultSettings;
+    const settingsOut: Partial<GuildConfigSettings> = {};
+    for (const [key, conf] of Object.entries(defSettings)) {
+        settingsOut[key] = conf.value;
+    }
+    return settingsOut as GuildConfigSettings;
 };

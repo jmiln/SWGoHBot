@@ -49,11 +49,12 @@ export default {
 
             // Load the language file for whatever language they have set
             const user = await Bot.userReg.getUser(interaction.user.id);
-            const selectedLanguage = user?.lang?.language || Bot.config.defaultSettings.language;
-            interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
+            const defaultGuildConf = Bot.getDefaultGuildSettings();
+            const selectedLanguage = user?.lang?.language || defaultGuildConf.language;
+            interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultGuildConf.swgohLanguage;
 
-            interaction.language = Bot.languages[selectedLanguage] || Bot.languages[Bot.config.defaultSettings.language];
-            interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || Bot.config.defaultSettings.swgohLanguage;
+            interaction.language = Bot.languages[selectedLanguage] || Bot.languages[defaultGuildConf.language];
+            interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || defaultGuildConf.swgohLanguage;
 
             // Run the command
             try {
