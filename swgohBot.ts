@@ -35,7 +35,7 @@ Bot.shipLocs = await jsonFromFile("./data/shipLocations.json");
 Bot.ships = await jsonFromFile("./data/ships.json");
 Bot.timezones = await jsonFromFile("./data/timezones.json");
 
-import constants from "./data/constants.ts";
+import constants from "./data/constants/constants.ts";
 import help from "./data/help.ts";
 
 Bot.constants = constants;

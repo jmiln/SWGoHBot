@@ -1,3 +1,4 @@
+import type { ApplicationCommandOptionType } from "discord.js";
 import type { SWAPILang } from "./swapi_types.ts";
 import type { BotLanguage, GuildAlias } from "./types.ts";
 
@@ -24,6 +25,15 @@ export interface GuildConfigSettings {
     language: BotLanguage;
     swgohLanguage: SWAPILang;
     shardtimeVertical: boolean;
+}
+export interface TypedDefaultSettings {
+    [key: string]: {
+        value: string | string[] | number[] | boolean;
+        type: ApplicationCommandOptionType;
+        description: string;
+        choices?: string[];
+        isArray?: boolean;
+    };
 }
 export interface GuildConfigShardTimes {
     times: {

@@ -8,7 +8,6 @@ import type {
     IntentsBitField,
     Interaction,
     Partials,
-    ReplyOptions,
     TextChannel,
 } from "discord.js";
 import type { MongoClient } from "mongodb";
@@ -196,7 +195,7 @@ export interface BotType {
                 value: string;
                 startWith?: string;
                 endWith?: string;
-                align?: "left" | "center" | "right";
+                align?: string;
             };
         },
         rows: { [key: string]: string | number }[],
@@ -229,7 +228,6 @@ export interface BotType {
     myTime: () => string;
 
     getCurrentWeekday: (timezone?: string) => string;
-    toProperCase: (strIn: string) => string;
     logger: Logger;
     help: HelpObject;
     cache: BotCache;

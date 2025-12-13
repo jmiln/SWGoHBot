@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import typedDefaultSettings from "../config.js";
+import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts"
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
+import type { TypedDefaultSettings } from "../types/guildConfig_types.ts"
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 // Set the base subargs up
@@ -78,25 +79,27 @@ const options = {
     },
 };
 
+// Quick workaround to make it shut up
+const defSettings: TypedDefaultSettings = typedDefaultSettings;
+
 // Check out each option in the config file, and set it up in each subarg as needed
-for (const set of Object.keys(typedDefaultSettings)) {
+for (const [key, value] of Object.entries(defSettings)) {
     // Fill out the options based on the default settings in the config file
-    const thisSet = typedDefaultSettings[set];
     const optOut = {
-        name: set.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
-        type: thisSet.type,
-        description: thisSet.description,
+        name: key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
+        type: value.type,
+        description: value.description,
         choices: null,
     };
-    if (thisSet?.choices) {
-        optOut.choices = thisSet.choices.map((choice: string) => {
+    if (value?.choices) {
+        optOut.choices = value.choices.map((choice: string) => {
             return {
                 name: choice,
                 value: choice,
             };
         });
     }
-    if (thisSet.isArray) {
+    if (value.isArray) {
         options.add.options.push(optOut);
         options.remove.options.push(optOut);
     } else {

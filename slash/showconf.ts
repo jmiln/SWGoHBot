@@ -2,6 +2,8 @@ import Command from "../base/slashCommand.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import type { TypedDefaultSettings } from "../types/guildConfig_types.ts";
+import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 
 export default class Showconf extends Command {
     constructor(Bot: BotType) {
@@ -21,7 +23,12 @@ export default class Showconf extends Command {
         // TODO Make this show nicer instead of just a basic code block
         // Change it so adminRoles show the names instead of ID
         // Change eventCountdown so it shows just a list of numbers instead of as an array, same for the rest, make it look nicer instead of inspected strings and such
-        for (const key of Object.keys(Bot.config.typedDefaultSettings)) {
+
+        // Quick workaround to make it shut up
+        const defSettings: TypedDefaultSettings = typedDefaultSettings;
+
+        // Check out each option in the config file, and set it up in each subarg as needed
+        for (const key of Object.keys(defSettings)) {
             switch (key) {
                 case "adminRole": {
                     const roleArr = [];
@@ -29,7 +36,7 @@ export default class Showconf extends Command {
                         for (const role of guildConf.adminRole) {
                             if (Bot.isUserID(role)) {
                                 // If it's a role ID, try and get a name for it
-                                const roleRes = await interaction.guild.roles.cache.find((r) => r.id === role);
+                                const roleRes = interaction.guild.roles.cache.find((r) => r.id === role);
                                 roleArr.push(roleRes?.name || role);
                             } else {
                                 roleArr.push(role);
@@ -48,7 +55,7 @@ export default class Showconf extends Command {
                 }
                 case "announceChan": {
                     if (guildConf.announceChan?.length) {
-                        const channel = await interaction.guild.channels.cache.get(guildConf.announceChan);
+                        const channel = interaction.guild.channels.cache.get(guildConf.announceChan);
                         let channelName = guildConf.announceChan;
                         if (channel?.name) channelName = `#${channel?.name} (${channel?.id})`;
                         outArr.push(`* ${key}: ${`${channelName} (${channel?.id})` || guildConf.announceChan}`);
@@ -75,7 +82,7 @@ export default class Showconf extends Command {
         const totalSuppTier = await getGuildSupporterTier({ cache: Bot.cache, guildId: interaction.guild.id });
         const guildSupporters = await getServerSupporters({ cache: Bot.cache, guildId: interaction.guild.id });
         for (const supp of guildSupporters) {
-            const user = await interaction.guild.members.cache.get(supp.userId);
+            const user = interaction.guild.members.cache.get(supp.userId);
             if (!user?.displayName) continue;
 
             supporterList.push(user.displayName);
