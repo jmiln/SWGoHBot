@@ -88,9 +88,9 @@ export const typedDefaultSettings: TypedDefaultSettings = {
     },
 };
 
-export const defaultSettings = getDefaultGuildConf();
+export const defaultSettings = getDefaultGuildSettings();
 
-function getDefaultGuildConf() {
+function getDefaultGuildSettings() {
     const defSettings: TypedDefaultSettings = typedDefaultSettings;
     const settingsOut: Partial<GuildConfigSettings> = {};
     for (const [key, conf] of Object.entries(defSettings)) {

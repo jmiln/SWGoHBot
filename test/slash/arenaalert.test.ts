@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import test, {mock} from "node:test";
+import test from "node:test";
 import ArenaAlert from "../../slash/arenaalert.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 

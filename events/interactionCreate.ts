@@ -3,6 +3,7 @@ import { MessageFlags } from "discord.js";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 
 const ignoreArr = [
     "DiscordAPIError: Missing Access",
@@ -49,7 +50,7 @@ export default {
 
             // Load the language file for whatever language they have set
             const user = await Bot.userReg.getUser(interaction.user.id);
-            const defaultGuildConf = Bot.getDefaultGuildSettings();
+            const defaultGuildConf = defaultSettings;
             const selectedLanguage = user?.lang?.language || defaultGuildConf.language;
             interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultGuildConf.swgohLanguage;
 
