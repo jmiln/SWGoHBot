@@ -19,7 +19,7 @@ export default (clientMongo: MongoClient) => {
         if (!collection) throw new Error("No collection specified to put");
         if (!saveObject) throw new Error("No object provided to put");
 
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
 
         if (autoUpdate) {
             //set updated time to now
@@ -39,7 +39,7 @@ export default (clientMongo: MongoClient) => {
         if (!collection) throw new Error("No collection specified to putMany");
         if (!saveObjectArray?.length) throw new Error("Object array is empty or missing");
 
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
 
         return await dbo.collection(collection).bulkWrite(saveObjectArray);
         // return saveObjectArray;
@@ -49,7 +49,7 @@ export default (clientMongo: MongoClient) => {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
         return await dbo
             .collection(collection)
             .find(matchCondition || {})
@@ -58,19 +58,19 @@ export default (clientMongo: MongoClient) => {
             .toArray();
     }
 
-    async function getOne(database: string, collection: string, matchCondition: Filter<Document>, projection: Document) {
+    async function getOne<T>(database: string, collection: string, matchCondition: Filter<T>, projection: Partial<Record<keyof T, 1 | 0>>) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
-        const dbo = await mongo.db(database);
-        return await dbo.collection(collection).findOne(matchCondition || {}, { projection: projection || {} });
+        const dbo = mongo.db(database);
+        return await dbo.collection<T>(collection).findOne(matchCondition || {}, { projection: projection || {} });
     }
 
     async function remove(database: string, collection: string, matchCondition: Filter<Document>) {
         if (!database) throw new Error("No database specified to get");
         if (!collection) throw new Error("No collection specified to get");
 
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
         return await dbo.collection(collection).deleteOne(matchCondition || {});
     }
 
@@ -86,7 +86,7 @@ export default (clientMongo: MongoClient) => {
         if (!saveObject) throw new Error("No object provided to replace");
         if (!matchCondition) throw new Error("No match condition specified to replace");
 
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
 
         if (autoUpdate) {
             //set updated time to now
@@ -105,7 +105,7 @@ export default (clientMongo: MongoClient) => {
         if (!collection) throw new Error("No collection specified to replace");
         if (!matchCondition) throw new Error("No match condition specified to replace");
 
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
 
         const exists = await dbo.collection(collection).findOne(matchCondition);
         return !!exists;
@@ -113,7 +113,7 @@ export default (clientMongo: MongoClient) => {
 
     async function checkIndexes(database: string, collection: string) {
         const out = [];
-        const dbo = await mongo.db(database);
+        const dbo = mongo.db(database);
 
         const indexes = await dbo.collection(collection).listIndexes().toArray();
 

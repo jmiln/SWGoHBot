@@ -45,25 +45,24 @@ export default (Bot: BotType) => {
 
     async function getUser(userId: string) {
         // Get and return the user's info
-        const user = await cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userId });
+        const user = await cache.getOne<UserConfig>(Bot.config.mongodb.swgohbotdb, "users", { id: userId });
         return user || null;
     }
 
     async function getUsersFromAlly(allyCode: string | number) {
-        const users = await cache.get(Bot.config.mongodb.swgohbotdb, "users", { "accounts.allyCode": allyCode?.toString() });
+        const users = await cache.get<UserConfig>(Bot.config.mongodb.swgohbotdb, "users", { "accounts.allyCode": allyCode?.toString() });
         return users?.length ? users : null;
     }
 
     async function updateUser(userId: string, userObj: UserConfig) {
         // Get and update a user's info
-        const newUser = await cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userId }, userObj);
+        const newUser = await cache.put<UserConfig>(Bot.config.mongodb.swgohbotdb, "users", { id: userId }, userObj);
         return newUser?.[0] || newUser;
     }
 
     async function removeAllyCode(userId: string, allyCode: string | number) {
         // Remove one of the ally codes from a user
-        const userRes = (await cache.get(Bot.config.mongodb.swgohbotdb, "users", { id: userId })) as UserConfig[];
-        const user = userRes?.[0] || null;
+        const user = (await cache.getOne<UserConfig>(Bot.config.mongodb.swgohbotdb, "users", { id: userId }));
         if (!user) throw new Error("Could not find specified user");
         const exists = user.accounts.find((a) => a.allyCode === allyCode);
         if (!exists) throw new Error("Specified ally code not linked to this user");
