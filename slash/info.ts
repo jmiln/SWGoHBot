@@ -1,6 +1,7 @@
 import { codeBlock, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { guildCount,userCount } from "../modules/functions.ts";
 
 interface InfoContent {
     statHeader: string;
@@ -31,8 +32,8 @@ export default class Info extends Command {
         const swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
         const swgohGuildCount = await dbo.collection("guilds").estimatedDocumentCount();
         try {
-            const guilds = await Bot.guildCount();
-            const users = await Bot.userCount();
+            const guilds = await guildCount(interaction.client);
+            const users = await userCount(interaction.client);
             const content = interaction.language.get("COMMAND_INFO_OUTPUT", Bot.shardId) as unknown as InfoContent;
             const fields = [];
             let desc = `${content.statHeader}\n`;

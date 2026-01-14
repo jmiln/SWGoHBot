@@ -1,11 +1,14 @@
 {
     "name": "swgohbot",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "description": "Discord bot for the Star Wars Galaxy of Heroes game.",
     "main": "swgohBot.js",
     "type": "module",
     "scripts": {
-        "start": "node --experimental-strip-types swgohBotShard.js",
+        "start": "node --experimental-strip-types swgohBotShard.ts",
+        "pm2_start": "pm2 start ecosystem.config.cjs --only 'eventServe,swgohBot'",
+        "lint": "biome check --no-errors-on-unmatched .",
+        "lint:write": "biome check --write --no-errors-on-unmatched .",
         "test": "node --test ./test/**/*.test.js"
     },
     "author": "Jeffrey Milner",
@@ -19,20 +22,21 @@
         "url": "git+https://github.com/jmiln/SWGoHBot.git"
     },
     "dependencies": {
-        "@swgoh-utils/comlink": "^1.4.1",
+        "@swgoh-utils/comlink": "^2.0.0",
         "async": "^3.2.6",
-        "discord.js": "^14.22.1",
-        "mongodb": "^6.19.0",
-        "piscina": "^5.1.3",
-        "socket.io": "^4.8.1",
-        "socket.io-client": "^4.8.1"
+        "discord.js": "^14.25.1",
+        "mongodb": "^7.0.0",
+        "piscina": "^5.1.4",
+        "socket.io": "^4.8.3",
+        "socket.io-client": "^4.8.3"
     },
     "engines": {
-        "node": ">=20"
+        "node": ">=22.6"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.2.2",
+        "@biomejs/biome": "^2.3.11",
         "@types/async": "^3.2.25",
-        "@types/node": "^24.3.0"
+        "@types/node": "^25.0.3",
+        "discord-api-types": "^0.38.37"
     }
 }

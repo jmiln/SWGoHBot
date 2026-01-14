@@ -46,7 +46,7 @@ Bot.journeyReqs = await jsonFromFile("./data/journeyReqs.json");
 processJourneyNames();
 
 // Load in various general functions for the bot
-import funct from "./modules/functions.ts";
+import funct, { sortOmicrons } from "./modules/functions.ts";
 
 funct(Bot, client);
 
@@ -112,7 +112,7 @@ const init = async () => {
     }
 
     // Store the list of omicrons to be used later
-    Bot.omicrons = await Bot.sortOmicrons();
+    Bot.omicrons = await sortOmicrons(Bot.cache);
 
     Bot.logger = new Logger(Bot, client);
 

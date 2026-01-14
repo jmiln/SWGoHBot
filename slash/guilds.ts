@@ -960,7 +960,7 @@ export default class Guilds extends Command {
                 p.memberLvl = p.guildMemberLevel ? gRanks[p.guildMemberLevel] : null;
 
                 // Check if the player is registered, then bold the name if so
-                const codes = await Bot.userReg.getUsersFromAlly(p.allyCode);
+                const codes = await Bot.userReg.getUsersFromAlly(p.allyCode.toString());
                 if (!codes?.length) continue;
                 for (const c of codes) {
                     // Make sure they're in the same server

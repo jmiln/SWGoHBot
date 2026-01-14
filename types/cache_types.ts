@@ -1,34 +1,43 @@
-import type { AnyBulkWriteOperation, BulkWriteResult, DeleteResult, Document, Filter, ListIndexesCursor } from "mongodb";
+import type { AnyBulkWriteOperation, BulkWriteResult, DeleteResult, Document, Filter, ListIndexesCursor} from "mongodb";
 
 export interface BotCache {
     checkIndexes: (database: string, collection: string) => Promise<ListIndexesCursor[]>;
     exists: (database: string, collection: string, matchCondition: Filter<Document>) => Promise<boolean>;
-    get: (
+    get: <T>(
         database: string,
         collection: string,
-        matchCondition: Filter<Document>,
-        projection?: Document,
+        matchCondition: Filter<T>,
+        projection?: Partial<Record<keyof T, 0 | 1>>,
         limit?: number,
-    ) => Promise<Document[]>;
-    getOne: (database: string, collection: string, matchCondition: Filter<Document>, projection?: Document) => Promise<Document>;
-    put: (
+    ) => Promise<T[]>;
+    getOne: <T>(
         database: string,
         collection: string,
-        matchCondition: Filter<Document>,
-        saveObject: Document,
+        matchCondition: Filter<T>,
+        projection?: Partial<Record<keyof T, 0 | 1>>,
+    ) => Promise<T>;
+    put: <T>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        saveObject: T,
         autoUpdate?: boolean,
-    ) => Promise<Document>;
-    putMany: (
+    ) => Promise<T>;
+    putMany: <T>(
         database: string,
         collection: string,
-        saveObjectArray: readonly AnyBulkWriteOperation<Document>[],
+        saveObjectArray: readonly AnyBulkWriteOperation<T>[],
     ) => Promise<BulkWriteResult>;
-    remove: (database: string, collection: string, matchCondition: Filter<Document>) => Promise<DeleteResult>;
-    replace: (
+    remove: <T>(
         database: string,
         collection: string,
-        matchCondition: Filter<Document>,
-        saveObject: Document,
+        matchCondition: Filter<T>
+    ) => Promise<DeleteResult>;
+    replace: <T>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        saveObject: T,
         autoUpdate?: boolean,
-    ) => Promise<Document>;
+    ) => Promise<T>;
 }

@@ -1,4 +1,103 @@
 {
+    "eng_us": {
+        "aat": "TANK TAKEDOWN",
+        "rancor": "THE PIT",
+        "rancor_challenge": "THE PIT (CHALLENGE)",
+        "sith_raid": "THE SITH TRIUMVIRATE",
+        "kraytdragon": "KRAYT DRAGON HUNT",
+        "heroic": "HEROIC",
+        "speederbike": "SPEEDER BIKE PURSUIT",
+        "naboo": "BATTLE FOR NABOO",
+        "order66": "ORDER 66"
+    },
+    "ger_de": {
+        "aat": "TANK-TAKEDOWN",
+        "rancor": "DIE GRUBE",
+        "rancor_challenge": "DIE GRUBE (HERAUSFOR.)",
+        "sith_raid": "DAS SITH-TRIUMVIRAT",
+        "kraytdragon": "KRAYT-DRACHENJAGD",
+        "heroic": "HELDENHAFT",
+        "speederbike": "SPEEDER-VERFOLGUNG",
+        "naboo": "SCHLACHT UM NABOO",
+        "order66": "ORDER 66"
+    },
+    "spa_xm": {
+        "aat": "DERRIBO DE TANQUE",
+        "rancor": "EL FOSO",
+        "rancor_challenge": "EL FOSO (DESAFÍO)",
+        "sith_raid": "EL TRIUNVIRATO SITH",
+        "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
+        "heroic": "HEROICO",
+        "speederbike": "PERSECUCIÓN EN MOTO SPEEDER",
+        "naboo": "BATALLA POR NABOO",
+        "order66": "ORDEN 66"
+    },
+    "fre_fr": {
+        "aat": "ASSAUT DE CHAR",
+        "rancor": "LA FOSSE",
+        "rancor_challenge": "LA FOSSE (DÉFI)",
+        "sith_raid": "LE TRIUMVIRAT SITH",
+        "kraytdragon": "CHASSE AU DRAGON KRAYT",
+        "heroic": "HÉROÏQUE",
+        "speederbike": "POURSUITE EN MOTOJET",
+        "naboo": "BATAILLE POUR NABOO",
+        "order66": "ORDRE 66"
+    },
+    "rus_ru": {
+        "aat": "УНИЧТОЖЕНИЕ ТАНКА",
+        "rancor": "ЯМА",
+        "rancor_challenge": "ЯМА (ИСПЫТАНИЕ)",
+        "sith_raid": "ТРИУМВИРАТ СИТХОВ",
+        "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
+        "heroic": "ГЕРОИЧЕСКИЙ",
+        "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ",
+        "naboo": "БИТВА ЗА НАБУ",
+        "order66": "ПРИКАЗ 66"
+    },
+    "por_br": {
+        "aat": "ELIMINAÇÃO DE TANQUE",
+        "rancor": "O FOSSO",
+        "rancor_challenge": "O FOSSO (DESAFIO)",
+        "sith_raid": "O TRIUNVIRATO SITH",
+        "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
+        "heroic": "HEROICA",
+        "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE",
+        "naboo": "BATALHA POR NABOO",
+        "order66": "ORDEM 66"
+    },
+    "kor_kr": {
+        "aat": "탱크 테이크다운",
+        "rancor": "구덩이",
+        "rancor_challenge": "핏 (챌린지)",
+        "sith_raid": "시스 삼인방",
+        "kraytdragon": "크레이트 드래곤 사냥",
+        "heroic": "영웅",
+        "speederbike": "스피더 바이크 추격",
+        "naboo": "나부 전투",
+        "order66": "오더 66"
+    },
+    "ita_it": {
+        "aat": "ALL'ASSALTO DEL CARRO",
+        "rancor": "LA FOSSA",
+        "rancor_challenge": "LA FOSSA (SFIDA)",
+        "sith_raid": "IL TRIUMVIRATO SITH",
+        "kraytdragon": "CACCIA AL DRAGO KRAYT",
+        "heroic": "EROICO",
+        "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE",
+        "naboo": "BATTAGLIA PER NABOO",
+        "order66": "ORDINE 66"
+    },
+    "tur_tr": {
+        "aat": "TANK PARÇALAMA",
+        "rancor": "ÇUKUR",
+        "rancor_challenge": "ÇUKUR (GÖREV)",
+        "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
+        "kraytdragon": "KRAYT DRAGON AVI",
+        "heroic": "EPİK",
+        "speederbike": "HIZ MOTOSİKLETİ TAKİBİ",
+        "naboo": "NABOO SAVAŞI",
+        "order66": "EMİR 66"
+    },
     "chs_cn": {
         "aat": "坦克歼击",
         "rancor": "挑战坑",
@@ -21,39 +120,6 @@
         "naboo": "那卜戰役",
         "order66": "66號密令"
     },
-    "eng_us": {
-        "aat": "TANK TAKEDOWN",
-        "rancor": "THE PIT",
-        "rancor_challenge": "THE PIT (CHALLENGE)",
-        "sith_raid": "THE SITH TRIUMVIRATE",
-        "kraytdragon": "KRAYT DRAGON HUNT",
-        "heroic": "HEROIC",
-        "speederbike": "SPEEDER BIKE PURSUIT",
-        "naboo": "BATTLE FOR NABOO",
-        "order66": "ORDER 66"
-    },
-    "fre_fr": {
-        "aat": "ASSAUT DE CHAR",
-        "rancor": "LA FOSSE",
-        "rancor_challenge": "LA FOSSE (DÉFI)",
-        "sith_raid": "LE TRIUMVIRAT SITH",
-        "kraytdragon": "CHASSE AU DRAGON KRAYT",
-        "heroic": "HÉROÏQUE",
-        "speederbike": "POURSUITE EN MOTOJET",
-        "naboo": "BATAILLE POUR NABOO",
-        "order66": "ORDRE 66"
-    },
-    "ger_de": {
-        "aat": "TANK-TAKEDOWN",
-        "rancor": "DIE GRUBE",
-        "rancor_challenge": "DIE GRUBE (HERAUSFOR.)",
-        "sith_raid": "DAS SITH-TRIUMVIRAT",
-        "kraytdragon": "KRAYT-DRACHENJAGD",
-        "heroic": "HELDENHAFT",
-        "speederbike": "SPEEDER-VERFOLGUNG",
-        "naboo": "SCHLACHT UM NABOO",
-        "order66": "ORDER 66"
-    },
     "ind_id": {
         "aat": "PELUMPUHAN TANK",
         "rancor": "GUA",
@@ -64,17 +130,6 @@
         "speederbike": "PENGEJARAN MOTOR SPEEDER",
         "naboo": "PERANG UNTUK NABOO",
         "order66": "PERINTAH 66"
-    },
-    "ita_it": {
-        "aat": "ALL'ASSALTO DEL CARRO",
-        "rancor": "LA FOSSA",
-        "rancor_challenge": "LA FOSSA (SFIDA)",
-        "sith_raid": "IL TRIUMVIRATO SITH",
-        "kraytdragon": "CACCIA AL DRAGO KRAYT",
-        "heroic": "EROICO",
-        "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE",
-        "naboo": "BATTAGLIA PER NABOO",
-        "order66": "ORDINE 66"
     },
     "jpn_jp": {
         "aat": "タンク排除",
@@ -87,50 +142,6 @@
         "naboo": "ナブーの戦い",
         "order66": "オーダー66"
     },
-    "kor_kr": {
-        "aat": "탱크 테이크다운",
-        "rancor": "구덩이",
-        "rancor_challenge": "핏 (챌린지)",
-        "sith_raid": "시스 삼인방",
-        "kraytdragon": "크레이트 드래곤 사냥",
-        "heroic": "영웅",
-        "speederbike": "스피더 바이크 추격",
-        "naboo": "나부 전투",
-        "order66": "오더 66"
-    },
-    "por_br": {
-        "aat": "ELIMINAÇÃO DE TANQUE",
-        "rancor": "O FOSSO",
-        "rancor_challenge": "O FOSSO (DESAFIO)",
-        "sith_raid": "O TRIUNVIRATO SITH",
-        "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
-        "heroic": "HEROICA",
-        "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE",
-        "naboo": "BATALHA POR NABOO",
-        "order66": "ORDEM 66"
-    },
-    "rus_ru": {
-        "aat": "УНИЧТОЖЕНИЕ ТАНКА",
-        "rancor": "ЯМА",
-        "rancor_challenge": "ЯМА (ИСПЫТАНИЕ)",
-        "sith_raid": "ТРИУМВИРАТ СИТХОВ",
-        "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
-        "heroic": "ГЕРОИЧЕСКИЙ",
-        "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ",
-        "naboo": "БИТВА ЗА НАБУ",
-        "order66": "ПРИКАЗ 66"
-    },
-    "spa_xm": {
-        "aat": "DERRIBO DE TANQUE",
-        "rancor": "EL FOSO",
-        "rancor_challenge": "EL FOSO (DESAFÍO)",
-        "sith_raid": "EL TRIUNVIRATO SITH",
-        "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
-        "heroic": "HEROICO",
-        "speederbike": "PERSECUCIÓN EN MOTO SPEEDER",
-        "naboo": "BATALLA POR NABOO",
-        "order66": "ORDEN 66"
-    },
     "tha_th": {
         "aat": "แทงค์บรรลัยกัลป์",
         "rancor": "หลุมลึก",
@@ -141,16 +152,5 @@
         "speederbike": "ไล่ล่าสปีดเดอร์ไบค์",
         "naboo": "สงครามแห่งนาบู",
         "order66": "คำสั่งที่ 66"
-    },
-    "tur_tr": {
-        "aat": "TANK PARÇALAMA",
-        "rancor": "ÇUKUR",
-        "rancor_challenge": "ÇUKUR (GÖREV)",
-        "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
-        "kraytdragon": "KRAYT DRAGON AVI",
-        "heroic": "EPİK",
-        "speederbike": "HIZ MOTOSİKLETİ TAKİBİ",
-        "naboo": "NABOO SAVAŞI",
-        "order66": "EMİR 66"
     }
 }
