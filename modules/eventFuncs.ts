@@ -8,9 +8,10 @@ export default (Bot: BotType, client: BotClient) => {
     const dayMS = 86400000;
     const hourMS = 3600000;
     const minMS = 60000;
+    const lateEventThresholdMS = 2 * minMS; // Threshold for marking events as running late
 
     // Handle any events that have been found via the checker
-    Bot.manageEvents = async (eventList) => {
+    Bot.manageEvents = async (eventList): Promise<void> => {
         for (const event of eventList) {
             if (event.isCD) {
                 // It's a countdown alert, so do that
@@ -23,7 +24,12 @@ export default (Bot: BotType, client: BotClient) => {
     };
 
     // BroadcastEval a message send
-    async function sendMsg(event: GuildConfigEvent, guildConf: GuildConfigSettings, guildId: string, announceMessage: string) {
+    async function sendMsg(
+        event: GuildConfigEvent,
+        guildConf: GuildConfigSettings,
+        guildId: string,
+        announceMessage: string,
+    ): Promise<void> {
         if (guildConf.announceChan !== "" || event.channel !== "") {
             let chan = "";
             if (event?.channel?.length) {
@@ -35,7 +41,7 @@ export default (Bot: BotType, client: BotClient) => {
             try {
                 await client.shard.broadcastEval(
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
-                        const targetGuild = await client.guilds.cache.find((g) => g.id === guildId);
+                        const targetGuild = client.guilds.cache.get(guildId);
                         if (targetGuild) {
                             client.announceMsg(targetGuild, announceMessage, chan, guildConf);
                         }
@@ -43,9 +49,9 @@ export default (Bot: BotType, client: BotClient) => {
                     {
                         context: {
                             guildId,
-                            announceMessage: announceMessage,
-                            chan: chan,
-                            guildConf: guildConf,
+                            announceMessage,
+                            chan,
+                            guildConf,
                         },
                     },
                 );
@@ -55,10 +61,10 @@ export default (Bot: BotType, client: BotClient) => {
         }
     }
 
-    // Re-caclulate a viable eventDT, and return the updated event
-    async function reCalc(ev: GuildConfigEvent) {
+    // Re-calculate a viable eventDT, and return the updated event
+    async function reCalc(ev: GuildConfigEvent): Promise<GuildConfigEvent | null> {
         const nowTime = Date.now();
-        if (ev.repeatDays.length > 0) {
+        if (ev.repeatDays && ev.repeatDays.length > 0) {
             // repeatDays is an array of days to skip
             // If it's got repeatDays set up, splice the next time, and if it runs out of times, return null
             while (nowTime > ev.eventDT && ev.repeatDays.length > 0) {
@@ -69,7 +75,7 @@ export default (Bot: BotType, client: BotClient) => {
                 // It ran out of days
                 return null;
             }
-        } else if (ev.repeat.repeatDay || ev.repeat.repeatHour || ev.repeat.repeatMin) {
+        } else if (ev.repeat && (ev.repeat.repeatDay || ev.repeat.repeatHour || ev.repeat.repeatMin)) {
             // 0d0h0m
             // Else it's using basic repeat
             while (nowTime >= ev.eventDT) {
@@ -80,7 +86,7 @@ export default (Bot: BotType, client: BotClient) => {
     }
 
     // Send out an alert based on the guild's countdown settings
-    Bot.countdownAnnounce = async (event) => {
+    Bot.countdownAnnounce = async (event): Promise<void> => {
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: event.guildId });
         const diffNum = Math.abs(Date.now() - event.eventDT);
         const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
@@ -90,7 +96,7 @@ export default (Bot: BotType, client: BotClient) => {
         await sendMsg(event, guildConf, event.guildId, announceMessage);
     };
 
-    Bot.eventAnnounce = async (event) => {
+    Bot.eventAnnounce = async (event): Promise<void> => {
         // Parse out the eventName and guildName from the ID
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: event.guildId });
 
@@ -98,7 +104,7 @@ export default (Bot: BotType, client: BotClient) => {
 
         // If it's running late, tack a notice onto the end of the message
         const diffTime = Math.abs(event.eventDT - Date.now());
-        if (diffTime > 2 * minMS) {
+        if (diffTime > lateEventThresholdMS) {
             const minPast = Math.floor(diffTime / minMS);
             outMsg += `\n> This event is ${minPast} minutes past time.`;
         }
@@ -108,7 +114,7 @@ export default (Bot: BotType, client: BotClient) => {
         await sendMsg(event, guildConf, event.guildId, announceMessage);
 
         let doRepeat = false;
-        if ((event.repeat && (event.repeat.repeatDay || event.repeat.repeatHour || event.repeat.repeatMin)) || event.repeatDays.length) {
+        if ((event.repeat && (event.repeat.repeatDay || event.repeat.repeatHour || event.repeat.repeatMin)) || event.repeatDays?.length) {
             if (event.repeatDays?.length === 1) {
                 event.message += Bot.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
             }
