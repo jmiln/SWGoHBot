@@ -1,5 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { characters } from "../data/constants/units.ts";
+import { expandSpaces, findChar, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
@@ -56,11 +59,11 @@ export default class Charactergear extends Command {
             return super.error(interaction, `${gearLvl} is not a valid gear level. It must be between 1 and ${MAX_GEAR}`);
         }
 
-        const chars = Bot.findChar(searchChar, Bot.characters);
+        const chars = findChar(searchChar, characters);
 
         let character: BotUnit;
         if (!chars.length) {
-            return interaction.channel.send({ content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         }
         if (chars.length > 1) {
             const charL = [];
@@ -68,11 +71,17 @@ export default class Charactergear extends Command {
             for (const ch of charS) {
                 charL.push(ch.name);
             }
-            return interaction.reply({ content: interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")) });
+            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
         character = chars[0];
 
-        const char = await Bot.swgohAPI.getCharacter(character.uniqueName);
+        let char;
+        try {
+            char = await Bot.swgohAPI.getCharacter(character.uniqueName);
+        } catch (err) {
+            return super.error(interaction, "There was an error fetching character data. Please try again later.");
+        }
+
         if (!allycode) {
             if (!gearLvl) {
                 const allGear = {};
@@ -99,8 +108,8 @@ export default class Charactergear extends Command {
                     allGearList = allGearList.filter((g) => g !== "???????");
                     const out = await expandPieces(Bot, allGearList);
                     const outK = Object.keys(out).sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10));
-                    gearString = Bot.expandSpaces(
-                        outK.map((g) => `* ${" ".repeat(3 - out[g].count.toString().length)}${out[g].count}x ${g}`).join("\n"),
+                    gearString = expandSpaces(
+                        outK.map((g) => `*${" ".repeat(3 - out[g].count.toString().length)}${out[g].count}x${g}`).join("\n"),
                     );
                 } else {
                     const sortedGear = Object.keys(allGear).sort((a, b) => {
@@ -115,11 +124,7 @@ export default class Charactergear extends Command {
                         gearString += `* ${allGear[key]}x ${key}\n`;
                     }
                 }
-                const msgArr = Bot.msgArray(
-                    interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString),
-                    "\n",
-                    1900,
-                );
+                const msgArr = msgArray(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
                 for (const [ix, msg] of msgArr.entries()) {
                     if (ix === 0) {
                         await interaction.reply({ content: codeBlock("md", msg) });
@@ -139,7 +144,7 @@ export default class Charactergear extends Command {
 
                         f = {
                             name: `Gear Lvl ${g.tier}`,
-                            value: Bot.expandSpaces(
+                            value: expandSpaces(
                                 outK.map((g) => `**${out[g].count}x** ${" ".repeat(3 - out[g].count.toString().length)}${g}`).join("\n"),
                             ),
                         };
@@ -157,7 +162,7 @@ export default class Charactergear extends Command {
                     content: null,
                     embeds: [
                         {
-                            color: Bot.getSideColor(character.side),
+                            color: getSideColor(character.side),
                             author: {
                                 name: character.name,
                                 url: character.url,
@@ -173,7 +178,7 @@ export default class Charactergear extends Command {
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
             const playerArr = await Bot.swgohAPI.unitStats(allycode, cooldown);
-            if (Array.isArray(player)) player = playerArr[0];
+            if (Array.isArray(playerArr)) player = playerArr[0];
 
             if (!player?.roster) {
                 return super.error(
@@ -225,7 +230,7 @@ export default class Charactergear extends Command {
 
                         fields.push({
                             name: `Gear Lvl ${g.tier}`,
-                            value: Bot.expandSpaces(
+                            value: expandSpaces(
                                 outK.map((g) => `**${out[g].count}x** ${" ".repeat(3 - out[g].count.toString().length)}${g}`).join("\n"),
                             ),
                         });
@@ -246,7 +251,7 @@ export default class Charactergear extends Command {
             const totalLen = fields.reduce((acc, cur) => {
                 return acc + cur.value.length;
             }, 0);
-            const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+            const footerStr = updatedFooterStr(player.updated, interaction);
             if (totalLen < 5500) {
                 return interaction.reply({
                     embeds: [
@@ -257,7 +262,7 @@ export default class Charactergear extends Command {
                                         ? `${player.name}'s ${character.name} gear til g${gearLvl}`
                                         : `${player.name}'s ${character.name} needs:`,
                             },
-                            fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                            fields: [...fields, { name: constants.zws, value: footerStr }],
                         },
                     ],
                 });
@@ -279,8 +284,8 @@ export default class Charactergear extends Command {
             return await interaction.followUp({
                 embeds: [
                     {
-                        title: Bot.constants.zws,
-                        fields: [...fields.slice(half), { name: Bot.constants.zws, value: footerStr }],
+                        title: constants.zws,
+                        fields: [...fields.slice(half), { name: constants.zws, value: footerStr }],
                     },
                 ],
             });

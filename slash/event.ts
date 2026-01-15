@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray, toProperCase } from "../modules/functions.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
@@ -513,7 +515,7 @@ export default class Event extends Command {
                                 (c) => c.name === guildConf.announceChan || c.id === guildConf.announceChan,
                             );
                         }
-                        if (channel && Bot.hasViewAndSend(channel, interaction.guild.members.me)) {
+                        if (channel && hasViewAndSend(channel, interaction.guild.members.me)) {
                             try {
                                 channel.send({ content: announceMessage });
                                 return interaction.reply({
@@ -611,7 +613,7 @@ export default class Event extends Command {
                                 let code = true; // Show in inline code blocks
                                 if (field === "channel") {
                                     if (event.channel) {
-                                        if (Bot.isChannelId(event.channel)) {
+                                        if (isChannelId(event.channel)) {
                                             from = `<#${event.channel}>`;
                                         } else {
                                             from = event.channel;
@@ -626,9 +628,9 @@ export default class Event extends Command {
                                     to = validEvent.event[field]?.toString().length ? validEvent.event[field].toString() : "N/A";
                                 }
                                 if (code) {
-                                    outLog.push(`Updated **${Bot.toProperCase(field)}** from \`${from}\` to \`${to}\``);
+                                    outLog.push(`Updated **${toProperCase(field)}** from \`${from}\` to \`${to}\``);
                                 } else {
-                                    outLog.push(`Updated **${Bot.toProperCase(field)}** from ${from} to ${to}`);
+                                    outLog.push(`Updated **${toProperCase(field)}** from ${from} to ${to}`);
                                 }
                             }
                         }
@@ -636,7 +638,7 @@ export default class Event extends Command {
                             interaction,
                             `**__UPDATED:__**\n${outLog.map((e) => `- ${e}`).join("\n")}`,
                             // `Updated event from ${codeBlock(JSON.stringify(event, null, 2))}to ${codeBlock(JSON.stringify(validEvent.event, null, 2))}`,
-                            { title: "Success", color: Bot.constants.colors.green },
+                            { title: "Success", color: constants.colors.green },
                         );
                     }
                     return super.error(interaction, `${interaction.language.get("COMMAND_EVENT_EDIT_BROKE")}\n${res.error}`);
@@ -739,7 +741,7 @@ export default class Event extends Command {
                 }
 
                 if (thisEvent.day && thisEvent.time) {
-                    newEvent.eventDT = Bot.getSetTimeForTimezone(`${mmddyyyDate} ${thisEvent.time}`, guildConf.timezone);
+                    newEvent.eventDT = getSetTimeForTimezone(`${mmddyyyDate} ${thisEvent.time}`, guildConf.timezone);
                     if (newEvent.eventDT < now) {
                         const eventDATE = new Date(newEvent.eventDT).toLocaleString("en-GB", {
                             timeZone: guildConf.timezone,
@@ -855,7 +857,7 @@ export default class Event extends Command {
         }
 
         function getDateTimeStr(timeNum: number, zone: string) {
-            if (!Bot.isValidZone(zone)) return "Invalid Zone";
+            if (!isValidZone(zone)) return "Invalid Zone";
             const outStr = new Date(timeNum).toLocaleString("en-US", {
                 timeZone: zone,
                 hour12: false,
@@ -926,7 +928,7 @@ export default class Event extends Command {
                 }
                 evOutArr.push(eventString);
             }
-            const evArray = Bot.msgArray(evOutArr, "\n\n");
+            const evArray = msgArray(evOutArr, "\n\n");
             try {
                 if (evArray.length === 0) {
                     return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_NO_EVENT") });

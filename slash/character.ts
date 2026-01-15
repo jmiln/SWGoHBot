@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
+import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -23,8 +25,6 @@ export default class Character extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const charList = Bot.characters;
-
         const searchName = interaction.options.getString("character");
 
         const abilityMatMK3 = emoteStrings.abilityMatMK3;
@@ -33,7 +33,7 @@ export default class Character extends Command {
         const omicron = emoteStrings.omicronMat;
 
         // Find any characters that match what they're looking for
-        const chars = Bot.findChar(searchName, charList);
+        const chars = findChar(searchName, characters);
         if (!chars?.length) {
             const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER");
             if (err.indexOf("\n") > -1) {
@@ -63,7 +63,7 @@ export default class Character extends Command {
         if (char.factions.length) {
             fields.push({
                 name: "Factions",
-                value: char.factions.map((f) => Bot.toProperCase(f)).join(", "),
+                value: char.factions.map((f) => toProperCase(f)).join(", "),
             });
         }
 
@@ -73,7 +73,7 @@ export default class Character extends Command {
             let type = "Basic";
             for (const t of types) {
                 if (ability.skillId.startsWith(t)) {
-                    type = Bot.toProperCase(t);
+                    type = toProperCase(t);
                 }
             }
 
@@ -105,13 +105,7 @@ export default class Character extends Command {
                 ability.desc = ability.desc.replace(ability.zetaDesc, `**${ability.zetaDesc}**`);
             }
 
-            const msgArr = Bot.msgArray(
-                Bot.expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(
-                    " ",
-                ),
-                " ",
-                1000,
-            );
+            const msgArr = msgArray(expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
 
             msgArr.forEach((m, ix) => {
                 if (ix === 0) {
@@ -130,10 +124,10 @@ export default class Character extends Command {
 
         let embeds1Len = 0;
         let useEmbeds2 = false;
-        const charImage = await Bot.getBlankUnitImage(character.uniqueName);
+        const charImage = await getBlankUnitImage(character.uniqueName);
         const embeds = [
             {
-                color: Bot.getSideColor(character.side),
+                color: getSideColor(character.side),
                 author: {
                     name: character.name,
                     url: character?.url || null,
@@ -152,7 +146,7 @@ export default class Character extends Command {
                 // Use msg2
                 if (!embeds[1]) {
                     embeds.push({
-                        color: Bot.getSideColor(character.side),
+                        color: getSideColor(character.side),
                         author: {
                             name: `${character.name} continued...`,
                             url: null,

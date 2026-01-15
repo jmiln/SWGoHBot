@@ -1,6 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { getCurrentWeekday,
+toProperCase } from "../modules/functions.ts";
 
 export default class Challenges extends Command {
     constructor(Bot: BotType) {
@@ -27,7 +29,7 @@ export default class Challenges extends Command {
         });
     }
 
-    run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
 
         const challenges = {
@@ -46,7 +48,7 @@ export default class Challenges extends Command {
         };
 
         const dayString = (day: string) => {
-            let dayString = `== Challenges for ${Bot.toProperCase(interaction.language.getDay(day.toUpperCase(), "LONG"))} ==`;
+            let dayString = `== Challenges for ${toProperCase(interaction.language.getDay(day.toUpperCase(), "LONG"))} ==`;
             for (const challenge in challenges) {
                 if (challenges[challenge].includes(day)) {
                     dayString += `\n* ${challenge}`;
@@ -59,9 +61,9 @@ export default class Challenges extends Command {
 
         if (!day) {
             if (!guildConf?.timezone) {
-                day = `day_${Bot.toProperCase(Bot.getCurrentWeekday())}`;
+                day = `day_${toProperCase(getCurrentWeekday())}`;
             } else {
-                day = `day_${Bot.toProperCase(Bot.getCurrentWeekday(guildConf.timezone))}`;
+                day = `day_${toProperCase(getCurrentWeekday(guildConf.timezone))}`;
             }
         }
 
