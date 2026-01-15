@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
+import { characters,ships } from "../data/constants/units.ts";
 import type { BotInteraction, BotType, GuildAlias } from "../types/types.ts";
 
 export default class Aliases extends Command {
@@ -81,7 +82,7 @@ export default class Aliases extends Command {
     }
 
     private async handleAddAlias(Bot: BotType, interaction: BotInteraction, alias: string, unitKey: string, guildAliases: GuildAlias[]) {
-        const unit = Bot.characters.find((c) => c.uniqueName === unitKey) || Bot.ships.find((s) => s.uniqueName === unitKey);
+        const unit = characters.find((c) => c.uniqueName === unitKey) || ships.find((s) => s.uniqueName === unitKey);
 
         if (!unit) {
             return super.error(interaction, `I couldn't find a matching unit for '${unitKey}'`);

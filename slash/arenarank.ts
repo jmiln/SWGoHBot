@@ -4,6 +4,7 @@
 
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { arenaJumps } from "../data/constants/units.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Arenarank extends Command {
@@ -53,7 +54,7 @@ export default class Arenarank extends Command {
     }
 
     private computeArenaRanks(currentRank: number, rankHops: number): { battles: number[]; isEstimated: boolean } {
-        const isEstimated = !this.Bot.arenaJumps[currentRank.toString()];
+        const isEstimated = !arenaJumps[currentRank.toString()];
         const battles: number[] = [currentRank];
 
         if (currentRank === 1) return { battles, isEstimated };
@@ -68,7 +69,7 @@ export default class Arenarank extends Command {
     }
     private findNextRank(currentRank: number): number {
         const rankStr = currentRank.toString();
-        const jump = this.Bot.arenaJumps?.[rankStr] || null;
+        const jump = arenaJumps?.[rankStr] || null;
         return jump || Math.floor(currentRank * 0.85);
     }
 }

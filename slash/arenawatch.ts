@@ -506,7 +506,7 @@ export default class ArenaWatch extends Command {
             return;
         }
 
-        return super.error(interaction, result.outLog, { title: " ", color: Bot.constants.colors.blue });
+        return super.error(interaction, result.outLog, { title: " ", color: constants.colors.blue });
     }
 }
 

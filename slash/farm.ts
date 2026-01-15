@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
+import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Farm extends Command {
@@ -25,12 +27,12 @@ export default class Farm extends Command {
         let isChar = true;
 
         // Check the characters list
-        let chars = Bot.findChar(searchChar, Bot.characters);
+        let chars = findChar(searchChar, characters);
 
         // If there was no luck with characters, try checking the ships
         if (!chars?.length) {
             isChar = false;
-            chars = Bot.findChar(searchChar, Bot.ships, true);
+            chars = findChar(searchChar, ships, true);
         }
         if (!chars?.length) {
             // Didn't find one
@@ -52,9 +54,9 @@ export default class Farm extends Command {
         const outList = [];
         let unitLocs = null;
         if (!isChar) {
-            unitLocs = Bot.shipLocs.find((s) => s.defId === character.uniqueName);
+            unitLocs = shipLocs.find((s) => s.defId === character.uniqueName);
         } else {
-            unitLocs = Bot.charLocs.find((c) => c.defId === character.uniqueName);
+            unitLocs = charLocs.find((c) => c.defId === character.uniqueName);
         }
 
         if (!unitLocs) {
@@ -79,9 +81,9 @@ export default class Farm extends Command {
 
                     // If it's a proving grounds event, stick the unit name after
                     if (loc.locId === "EVENT_CONQUEST_UNIT_TRIALS_NAME") {
-                        outList.push(`${Bot.toProperCase(langLoc.langKey)} - ${character.name}`);
+                        outList.push(`${toProperCase(langLoc.langKey)} - ${character.name}`);
                     } else {
-                        outList.push(`${Bot.toProperCase(langLoc?.langKey)} ${loc.level}`);
+                        outList.push(`${toProperCase(langLoc?.langKey)} ${loc.level}`);
                     }
                 } else {
                     loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
@@ -97,7 +99,7 @@ export default class Farm extends Command {
                 }
             } else if (loc.name) {
                 // This will be any of the events
-                outList.push(Bot.expandSpaces(`__${loc.type}__: ${loc.name}`));
+                outList.push(expandSpaces(`__${loc.type}__: ${loc.name}`));
             } else if (loc.locId) {
                 // Just has the location id, so probably a marquee
                 const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {
@@ -105,7 +107,7 @@ export default class Farm extends Command {
                     language: interaction.swgohLanguage.toLowerCase(),
                 });
                 if (!langLoc) continue;
-                outList.push(Bot.toProperCase(langLoc?.langKey));
+                outList.push(toProperCase(langLoc?.langKey));
             }
         }
         if (!outList.length) {
@@ -117,7 +119,7 @@ export default class Farm extends Command {
                     author: {
                         name: character.name + interaction.language.get("COMMAND_FARM_LOCATIONS"),
                     },
-                    color: Bot.getSideColor(character.side),
+                    color: getSideColor(character.side),
                     description: `**${outList.map((f) => `* ${f}`).join("\n")}**`,
                 },
             ],

@@ -1,6 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
+import { msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -42,8 +45,6 @@ export default class Faction extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const charList = Bot.characters;
-
         const faction1 = interaction.options.getString("faction_group_1");
         const faction2 = interaction.options.getString("faction_group_2");
 
@@ -82,7 +83,7 @@ export default class Faction extends Command {
         const searchName = factionMap.find((f) => f.value === query)?.name;
 
         // Filter out any ships that show up
-        chars = chars.filter((c) => charList.find((char) => char.uniqueName === c.baseId));
+        chars = chars.filter((c) => characters.find((char) => char.uniqueName === c.baseId));
 
         if (!chars.length) {
             return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {
@@ -128,7 +129,7 @@ export default class Faction extends Command {
                 embeds: [
                     {
                         author: {
-                            name: `Matches for ${Bot.toProperCase(searchName)}${extra}`,
+                            name: `Matches for ${toProperCase(searchName)}${extra}`,
                         },
                         description: chars.map((c) => c.nameKey).join("\n"),
                     },
@@ -176,7 +177,7 @@ export default class Faction extends Command {
                 );
                 factionChars.push(`**\`[ ${ch.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${ch.nameKey}**`);
             }
-            const msgArr = Bot.msgArray(factionChars, "\n", 1000);
+            const msgArr = msgArray(factionChars, "\n", 1000);
             const fields = [];
             let desc: string;
             if (msgArr.length > 1) {
@@ -190,16 +191,16 @@ export default class Faction extends Command {
                 desc = msgArr[0];
             }
 
-            const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+            const footerStr = updatedFooterStr(player.updated, interaction);
             return interaction.editReply({
                 content: null,
                 embeds: [
                     {
                         author: {
-                            name: `${player.name}'s matches for ${Bot.toProperCase(searchName)}${extra}`,
+                            name: `${player.name}'s matches for ${toProperCase(searchName)}${extra}`,
                         },
                         description: desc,
-                        fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                        fields: [...fields, { name: constants.zws, value: footerStr }],
                     },
                 ],
             });

@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { getCurrentWeekday } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Activites extends Command {
@@ -27,13 +28,13 @@ export default class Activites extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
 
         let day = interaction.options.getString("day");
 
         if (!day) {
-            const weekday = Bot.getCurrentWeekday(guildConf?.timezone || null);
+            const weekday = getCurrentWeekday(guildConf?.timezone || null);
             day = `day_${weekday}`;
         }
 

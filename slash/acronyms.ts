@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { acronyms } from "../data/constants/units.ts";
 
 const usageExample = "/acronyms acronym:CLS";
 
@@ -25,9 +26,7 @@ export default class Acronyms extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
-        const acronymsLookup = Bot.acronyms;
-
+    async run(_Bot: BotType, interaction: BotInteraction) {
         // Get whatever the user put in
         const acronym = interaction.options.getString("acronym");
 
@@ -36,14 +35,14 @@ export default class Acronyms extends Command {
             return this.handleError(interaction, "COMMAND_ACRONYMS_INVALID");
         }
 
-        const matchingItems = this.findMatchingAcronyms(acronym, acronymsLookup);
+        const matchingItems = this.findMatchingAcronyms(acronym, acronyms);
 
         if (!matchingItems.length) {
             // If there were no matches, go ahead and let the user know
             return this.handleError(interaction, "COMMAND_ACRONYMS_NOT_FOUND");
         }
 
-        const acronymMeaningMessage = this.formatAcronymMessage(matchingItems, acronymsLookup);
+        const acronymMeaningMessage = this.formatAcronymMessage(matchingItems, acronyms);
 
         await interaction.reply({
             embeds: [
