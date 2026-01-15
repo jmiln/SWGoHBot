@@ -1,44 +1,85 @@
-import fs from "node:fs";
+import { readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
 import { MongoClient } from "mongodb";
 import config from "./config.js";
+import { characters, ships } from "./data/constants/units.ts";
+import help from "./data/help.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
+import eventFuncs from "./modules/eventFuncs.ts";
+import funct, { myTime, sortOmicrons } from "./modules/functions.ts";
 import Logger from "./modules/Logger.ts";
+import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
+import type { SWAPILang } from "./types/swapi_types.ts";
+import type { BotClient, BotType, BotUnit } from "./types/types.ts";
+import type { UserReg } from "./types/userReg_types.ts";
 
 const Bot = {} as BotType;
-Bot.config = config;
 
 const client = new Client({
-    intents: Bot.config.botIntents,
-    partials: Bot.config.partials,
+    intents: config.botIntents,
+    partials: config.partials,
     closeTimeout: 30_000,
 }) as BotClient;
 
-const jsonFromFile = async (file: string) => await fs.promises.readFile(file, "utf-8").then(JSON.parse);
+// Regex to replace absolute paths with relative paths in error messages
+const CWD_REGEX = new RegExp(process.cwd(), "g");
 
-// Attach the character and team files to the Bot so I don't have to reopen em each time
-Bot.abilityCosts = await jsonFromFile("./data/abilityCosts.json");
-Bot.acronyms = await jsonFromFile("./data/acronyms.json");
-Bot.arenaJumps = await jsonFromFile("./data/arenaJumps.json");
-Bot.charLocs = await jsonFromFile("./data/charLocations.json");
-Bot.characters = await jsonFromFile("./data/characters.json");
-Bot.factions = [...new Set(Bot.characters.reduce((a, b) => a.concat(b.factions), []))];
-Bot.missions = await jsonFromFile("./data/missions.json");
-Bot.raidNames = await jsonFromFile("./data/raidNames.json");
-Bot.resources = await jsonFromFile("./data/resources.json");
-Bot.shipLocs = await jsonFromFile("./data/shipLocations.json");
-Bot.ships = await jsonFromFile("./data/ships.json");
-Bot.timezones = await jsonFromFile("./data/timezones.json");
+const jsonFromFile = async (file: string) => {
+    try {
+        return await readFile(file, { encoding: "utf-8" }).then(JSON.parse);
+    } catch (err) {
+        console.error(`[${myTime()}] Failed to load JSON from ${file}: ${err instanceof Error ? err.message : String(err)}`);
+        throw err;
+    }
+};
 
-import constants from "./data/constants/constants.ts";
-import help from "./data/help.ts";
+const logErrorToChannel = (errorMsg: string) => {
+    try {
+        if (!config.logs.logToChannel) return;
+        const thisChannel = client.channels.cache.get(config.logs.channel);
+        if (!thisChannel || !(thisChannel instanceof TextChannel) || !thisChannel?.send) return;
+        thisChannel.send(`\`\`\`${inspect(errorMsg)}\`\`\``);
+    } catch {
+        // Silently fail - we're already in error handling
+    }
+};
 
-Bot.constants = constants;
+const mapUnitNames = (units: BotUnit[], addGLSuffix = false) => {
+    return units.map((unit) => {
+        let suffix = "";
+        if (addGLSuffix && unit.factions?.includes("Galactic Legend")) {
+            suffix = "(GL)";
+        }
+        return {
+            name: `${unit.name} ${suffix}`.trim(),
+            defId: unit.uniqueName,
+            aliases: unit.aliases || [],
+        };
+    });
+};
+
+function processJourneyNames() {
+    const journeyKeys = Object.keys(Bot.journeyReqs);
+    Bot.journeyNames = [];
+    for (const key of journeyKeys) {
+        let unit = characters.find((ch) => ch.uniqueName === key);
+        if (!unit) {
+            unit = ships.find((sh) => sh.uniqueName === key);
+        }
+        if (!unit) continue;
+        Bot.journeyNames.push({
+            defId: key,
+            name: unit.name,
+            aliases: unit?.aliases?.map((u) => u.toLowerCase()) || [],
+        });
+    }
+}
+
 Bot.help = help;
 
 // Load the journeyReqs and process the names for autocomplete
@@ -46,21 +87,12 @@ Bot.journeyReqs = await jsonFromFile("./data/journeyReqs.json");
 processJourneyNames();
 
 // Load in various general functions for the bot
-import funct, { sortOmicrons } from "./modules/functions.ts";
-
 funct(Bot, client);
 
 // Load in stuff for the events command
-import eventFuncs from "./modules/eventFuncs.ts";
-
 eventFuncs(Bot, client);
 
 // Load in stuff for patrons and such
-import patreonFuncs from "./modules/patreonFuncs.ts";
-import type { SWAPILang } from "./types/swapi_types.ts";
-import type { BotClient, BotType } from "./types/types.ts";
-import type { UserReg } from "./types/userReg_types.ts";
-
 patreonFuncs(Bot, client);
 
 // Languages
@@ -84,54 +116,50 @@ Bot.swgohLangList = [
 client.reloadLanguages();
 
 // List of all the unit names to use for autocomplete
-Bot.CharacterNames = Bot.characters.map((ch) => {
-    let suffix = "";
-    if (ch.factions.includes("Galactic Legend")) {
-        suffix = "(GL)";
-    }
-    return { name: `${ch.name} ${suffix}`, defId: ch.uniqueName, aliases: ch.aliases || [] };
-});
-Bot.ShipNames = Bot.ships.map((sh) => {
-    return { name: sh.name, defId: sh.uniqueName, aliases: sh.aliases || [] };
-});
+Bot.CharacterNames = mapUnitNames(characters, true);
+Bot.ShipNames = mapUnitNames(ships);
 
 client.slashcmds = new Collection();
 
 const init = async () => {
-    Bot.mongo = await MongoClient.connect(Bot.config.mongodb.url);
+    try {
+        Bot.mongo = await MongoClient.connect(config.mongodb.url);
+        console.log(`[${myTime()}] Connected to MongoDB`);
+    } catch (err) {
+        console.error(`[${myTime()}] Failed to connect to MongoDB: ${err instanceof Error ? err.message : String(err)}`);
+        process.exit(1);
+    }
 
     // Set up the caching
     Bot.cache = cache(Bot.mongo);
     Bot.userReg = userReg(Bot) as UserReg;
 
-    if (Bot.config.swapiConfig || Bot.config.fakeSwapiConfig) {
+    if (config.swapiConfig) {
         // Load up the api connector/ helpers
-        Bot.swgohAPI = await swgohAPI(null);
+        try {
+            Bot.swgohAPI = await swgohAPI(null);
+        } catch (err) {
+            console.error(`[${myTime()}] Failed to initialize swgohAPI: ${err instanceof Error ? err.message : String(err)}`);
+        }
     } else {
-        console.log("Couldn't load swapi");
+        console.error(`[${myTime()}] Failed to load swapi: No swapiConfig found`);
     }
 
     // Store the list of omicrons to be used later
     Bot.omicrons = await sortOmicrons(Bot.cache);
 
-    Bot.logger = new Logger(Bot, client);
+    Bot.logger = new Logger(Bot, config.timezone || "America/Los_Angeles");
 
     slashHandler(Bot, client);
     eventHandler(Bot, client);
 
     process.on("uncaughtException", (err) => {
-        const errorMsg = err.stack?.replace(new RegExp(`${process.cwd()}`, "g"), ".");
-        console.error(`[${Bot.myTime()}] Uncaught Exception: ${errorMsg}`);
+        const errorMsg = err.stack?.replace(CWD_REGEX, ".") || String(err);
+        console.error(`[${myTime()}] Uncaught Exception: ${errorMsg}`);
 
         // If it's that error, don't bother showing it again
-        try {
-            if (!errorMsg?.startsWith("Error: RSV2 and RSV3 must be clear") && Bot.config.logs.logToChannel) {
-                const thisChannel = client.channels.cache.get(Bot.config.logs.channel);
-                if (!thisChannel || !(thisChannel instanceof TextChannel) || !thisChannel?.send) return;
-                thisChannel?.send("```inspect(errorMsg)```");
-            }
-        } catch (_) {
-            // Don't bother doing anything
+        if (!errorMsg.includes("RSV2 and RSV3 must be clear")) {
+            logErrorToChannel(errorMsg);
         }
         if (Bot.mongo) {
             Bot.mongo.close();
@@ -150,48 +178,27 @@ const init = async () => {
     ];
 
     process.on("unhandledRejection", (err: Error) => {
-        const errorMsg = err?.stack.replace(new RegExp(process.cwd(), "g"), ".");
-
         // If it's something I can't do anything about, ignore it
         if (err instanceof DiscordAPIError && typeof err.code === "number" && IGNORED_ERRORS.includes(err.code)) {
             return;
         }
 
+        const errorMsg = err?.stack?.replace(CWD_REGEX, ".") || String(err);
+
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
-        // console.log(err);
-        console.error(`[${Bot.myTime()}] Uncaught Promise Error: ${errorMsg}`);
-        console.error(err.stack);
-        console.error(err);
-        try {
-            if (Bot.config.logs.logToChannel) {
-                const thisChannel = client.channels.cache.get(Bot.config.logs.channel);
-                if (!thisChannel || !(thisChannel instanceof TextChannel) || !thisChannel?.send) return;
-                thisChannel?.send(`\`\`\`${inspect(errorMsg)}\`\`\``);
-            }
-        } catch (e) {
-            console.error("[swgohBot.js unhandledRejection] Error while logging error:", e);
-        }
+        console.error(`[${myTime()}] Uncaught Promise Error: ${errorMsg}`);
+        logErrorToChannel(errorMsg);
     });
 };
 
-function processJourneyNames() {
-    const journeyKeys = Object.keys(Bot.journeyReqs);
-    Bot.journeyNames = [];
-    for (const key of journeyKeys) {
-        let unit = Bot.characters.find((ch) => ch.uniqueName === key);
-        if (!unit) {
-            unit = Bot.ships.find((sh) => sh.uniqueName === key);
-        }
-        if (!unit) continue;
-        Bot.journeyNames.push({
-            defId: key,
-            name: unit.name,
-            aliases: unit?.aliases.map((u) => u.toLowerCase()) || [],
-        });
-    }
-}
-
-init();
-client.login(Bot.config.token);
+init()
+    .then(() => {
+        console.log(`[${myTime()}] Bot initialization complete`);
+        return client.login(config.token);
+    })
+    .catch((err) => {
+        console.error(`[${myTime()}] Failed to initialize bot: ${err instanceof Error ? err.message : String(err)}`);
+        process.exit(1);
+    });

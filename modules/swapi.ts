@@ -33,10 +33,10 @@ import type { PlayerCooldown } from "../types/types.ts";
 const THREAD_COUNT = os.cpus().length;
 const abilityCosts = JSON.parse(readFileSync(`${import.meta.dirname}/../data/abilityCosts.json`, "utf-8"));
 
-if (!config.fakeSwapiConfig?.clientStub) {
+if (!config.swapiConfig?.clientStub) {
     throw new Error("Missing clientStub config info!");
 }
-const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
+const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
 
 let modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
 let unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
@@ -367,7 +367,7 @@ export default (opts = { noop: false }) => {
                 for (const bareP of updatedBare) {
                     if (bareP?.roster?.length) {
                         try {
-                            const statRoster = await fetch(`${config.fakeSwapiConfig.statCalc.url}/api?flags=gameStyle,calcGP`, {
+                            const statRoster = await fetch(`${config.swapiConfig.statCalc.url}/api?flags=gameStyle,calcGP`, {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(bareP.roster),

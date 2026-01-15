@@ -391,6 +391,16 @@ export interface BotConfig {
         tier2: number;
         tier3: number;
     };
+    swapiConfig?: {
+        statCalc: {
+            url: string;
+        };
+        clientStub: {
+            url: string;
+            accessKey: string;
+            secretKey: string;
+        };
+    };
     webhookURL: string;
     botIntents: IntentsBitField[];
     partials: Partials[];

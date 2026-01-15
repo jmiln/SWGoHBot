@@ -197,7 +197,7 @@ const config = {
     },
 
     // Alternative source
-    fakeSwapiConfig: {
+    swapiConfig: {
         enabled: false,
         options: {
             username: "",

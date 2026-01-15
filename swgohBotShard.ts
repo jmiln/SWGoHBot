@@ -6,28 +6,33 @@ const Manager = new ShardingManager("./swgohBot.ts", {
 });
 
 // Give it a large timeout since it refuses to work otherwise
-Manager.spawn({ timeout: 60000 });
+Manager.spawn({ timeout: 60000 }).catch((err) => {
+    console.error(`Failed to spawn shards: ${err instanceof Error ? err.message : String(err)}`);
+    process.exit(1);
+});
 
 Manager.on("shardCreate", (shard: Shard) => {
-    // shard.on("reconnecting", () => {
-    //     console.log(`  [${shard.id}] Reconnecting shard`);
-    // });
     shard.on("spawn", () => {
         console.log(`  [${shard.id}] Spawned shard`);
     });
-    // shard.on("ready", () => {
-    //     console.log(`  [${shard.id}] Shard is ready`);
-    // });
+
+    shard.on("ready", () => {
+        console.log(`  [${shard.id}] Shard is ready`);
+    });
+
+    shard.on("reconnecting", () => {
+        console.log(`  [${shard.id}] Reconnecting shard`);
+    });
+
+    shard.on("disconnect", () => {
+        console.log(`  [${shard.id}] Shard disconnected`);
+    });
+
     shard.on("death", () => {
         console.log(`  [${shard.id}] Shard died`);
     });
-    shard.on("disconnect", () => {
-        console.log(`  [${shard.id}] Shard Disconnected`);
-    });
-    shard.on("death", () => {
-        console.log(`  [${shard.id}] Shard Died`);
-    });
+
     shard.on("error", (err) => {
-        console.log(`ERROR: Shard had issues starting: \n${err}`);
+        console.error(`  [${shard.id}] Shard error: ${err instanceof Error ? err.message : String(err)}`);
     });
 });

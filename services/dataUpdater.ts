@@ -105,7 +105,7 @@ async function init() {
     try {
         const mongo = await MongoClient.connect(config.mongodb.url);
         const cache = botCache(mongo) as BotCache;
-        const comlinkStub = new ComlinkStub(config.fakeSwapiConfig.clientStub);
+        const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
 
         if (!FORCE_UPDATE) {
             (async function runUpdatersAsNeeded() {
@@ -372,7 +372,7 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
     await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
         try {
             playerCount++;
-            const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.fakeSwapiConfig.clientStub });
+            const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.swapiConfig.clientStub });
             rosterArr.push(...(strippedUnits || []));
         } catch (err) {
             console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] There was an error: `, err);
