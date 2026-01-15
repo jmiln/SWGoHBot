@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Panic extends Command {
@@ -133,7 +134,7 @@ export default class Panic extends Command {
                 return Buffer.from(resBuf);
             });
         } catch (err) {
-            Bot.logger.error(`[Bot.getUnitImage] Something broke while requesting image.\n${err}`);
+            logger.error(`[Bot.getUnitImage] Something broke while requesting image.\n${err}`);
             console.log(err);
             return null;
         }

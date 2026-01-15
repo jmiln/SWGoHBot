@@ -148,9 +148,6 @@ const init = async () => {
     // Store the list of omicrons to be used later
     Bot.omicrons = await sortOmicrons(Bot.cache);
 
-    // Attach the singleton logger instance to Bot for backward compatibility
-    Bot.logger = logger;
-
     slashHandler(Bot, client);
     eventHandler(Bot, client);
 

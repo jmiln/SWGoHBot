@@ -2,6 +2,7 @@ import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Showconf extends Command {
@@ -17,7 +18,7 @@ export default class Showconf extends Command {
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: interaction.guild.id });
 
         const outArr = [];
-        if (!guildConf) Bot.logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
+        if (!guildConf) logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
 
         // TODO Make this show nicer instead of just a basic code block
         // Change it so adminRoles show the names instead of ID

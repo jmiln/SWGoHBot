@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
 
@@ -202,7 +203,7 @@ export default class UserConf extends Command {
                             );
                         }
                     } catch (e) {
-                        Bot.logger.error(`ERROR[UC AC ADD]: Incorrect Ally Code(${allycode}): ${e}`);
+                        logger.error(`ERROR[UC AC ADD]: Incorrect Ally Code(${allycode}): ${e}`);
                         return super.error(
                             interaction,
                             `Something broke. Please make sure you've got the correct ally code${codeBlock(e.message)}`,

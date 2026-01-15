@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
+import logger from "../modules/Logger.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, TWList } from "../types/types.ts";
 
@@ -322,9 +323,9 @@ export default class Guilds extends Command {
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(GS_GEAR) getting guild: ${e}`);
+                logger.error(`ERROR(GS_GEAR) getting guild: ${e}`);
                 // Spit out the gId so I can go check on why it's breaking
-                Bot.logger.error(`GuildID: ${guild.id}`);
+                logger.error(`GuildID: ${guild.id}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
@@ -496,7 +497,7 @@ export default class Guilds extends Command {
             try {
                 interaction.editReply({ content: null, embeds: [embed] });
             } catch (err) {
-                Bot.logger.error(`ERROR(Guilds/guildMods) sending embed: ${err}`);
+                logger.error(`ERROR(Guilds/guildMods) sending embed: ${err}`);
                 return interaction.channel.send({ content: null, embeds: [embed] });
             }
         }
@@ -518,7 +519,7 @@ export default class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRosterCodes, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(Guilds/guildRelics) getting guild: ${e}`);
+                logger.error(`ERROR(Guilds/guildRelics) getting guild: ${e}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
@@ -834,7 +835,7 @@ export default class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${e}`);
+                logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${e}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
@@ -1053,7 +1054,7 @@ export default class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
-                Bot.logger.error(`ERROR(Guilds/twSummary) getting guild: ${e}`);
+                logger.error(`ERROR(Guilds/twSummary) getting guild: ${e}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [

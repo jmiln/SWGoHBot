@@ -5,6 +5,7 @@ import constants from "../data/constants/constants.ts";
 import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray, toProperCase } from "../modules/functions.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import logger from "../modules/Logger.ts";
 import { SocketHelper } from "../modules/socketHelper.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -494,7 +495,7 @@ export default class Event extends Command {
                             flags: MessageFlags.Ephemeral,
                         });
                     } catch (_) {
-                        Bot.logger.error(`Event trigger Broke! ${announceMessage}`);
+                        logger.error(`Event trigger Broke! ${announceMessage}`);
                         return interaction.reply({
                             content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
                             flags: MessageFlags.Ephemeral,
@@ -931,7 +932,7 @@ export default class Event extends Command {
                     }
                 }
             } catch (_) {
-                Bot.logger.error(`Event View Broke! ${evArray}`);
+                logger.error(`Event View Broke! ${evArray}`);
             }
         }
     }

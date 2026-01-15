@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import type slashCommand from "../base/slashCommand.ts";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
 
 export default class Reload extends Command {
@@ -43,7 +44,7 @@ export default class Reload extends Command {
                     super.error(interaction, interaction.language.get("COMMAND_RELOAD_FAILURE", commandName, e.stack));
                 });
         } else {
-            Bot.logger.log("Trying to reload out of shards");
+            logger.log("Trying to reload out of shards");
             client
                 .reloadSlash(commandName)
                 .then(() => {

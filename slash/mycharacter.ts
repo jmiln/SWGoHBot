@@ -1,6 +1,7 @@
 import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -164,7 +165,7 @@ export default class MyCharacter extends Command {
                         `\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`,
                     );
                 } catch (_) {
-                    Bot.logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
+                    logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
                 }
             }
         }

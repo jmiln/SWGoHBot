@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -92,7 +93,7 @@ export default class Character extends Command {
                     costs.push(`${ability.cost.AbilityMatMk3} ${abilityMatMK3}`);
                 }
             } else {
-                Bot.logger.log(ability.toString());
+                logger.log(ability.toString());
             }
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 

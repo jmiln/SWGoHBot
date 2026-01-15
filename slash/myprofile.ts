@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -33,7 +34,7 @@ export default class MyProfile extends Command {
             const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
-            Bot.logger.error(`Broke getting player in myprofile: ${e}`);
+            logger.error(`Broke getting player in myprofile: ${e}`);
             return super.error(interaction, "Please make sure you are registered with a valid ally code");
         }
 

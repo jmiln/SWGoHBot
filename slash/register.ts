@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
@@ -132,14 +133,14 @@ export default class Register extends Command {
                     );
                 })
                 .catch((e: Error) => {
-                    Bot.logger.error(`[REGISTER] Broke while trying to link new user: ${e}`);
+                    logger.error(`[REGISTER] Broke while trying to link new user: ${e}`);
                     return super.error(interaction, codeBlock(e.message), {
                         title: interaction.language.get("BASE_SOMETHING_BROKE"),
                         footer: "Please try again in a bit.",
                     });
                 });
         } catch (e) {
-            Bot.logger.error(`[REGISTER] Incorrect Ally Code: ${e}`);
+            logger.error(`[REGISTER] Incorrect Ally Code: ${e}`);
             return super.error(interaction, `Something broke. Make sure you've got the correct ally code${codeBlock(e.message)}`);
         }
     }

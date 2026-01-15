@@ -1,5 +1,6 @@
 import { codeBlock, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 import { guildCount,userCount } from "../modules/functions.ts";
 
@@ -87,7 +88,7 @@ export default class Info extends Command {
                 ],
             });
         } catch (e) {
-            return Bot.logger.error(`[slash/info] Caught error: ${e.toString()}`);
+            return logger.error(`[slash/info] Caught error: ${e.toString()}`);
         }
     }
 }

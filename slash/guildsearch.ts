@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
@@ -365,7 +366,7 @@ export default class GuildSearch extends Command {
             try {
                 await interaction.editReply({ content: null, embeds: [embed] });
             } catch (err) {
-                Bot.logger.error(`ERROR(GuildSearch) ${err}`);
+                logger.error(`ERROR(GuildSearch) ${err}`);
                 await interaction.channel.send({ content: null, embeds: [embed] });
             }
             return;
@@ -581,8 +582,8 @@ export default class GuildSearch extends Command {
                 ],
             });
         } catch (e) {
-            Bot.logger.error(`Error sending message in guildsearch - ${e}`);
-            Bot.logger.error(fields);
+            logger.error(`Error sending message in guildsearch - ${e}`);
+            logger.error(fields);
         }
     }
 }

@@ -14,7 +14,6 @@ import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
-import type { Logger } from "../modules/Logger.ts";
 import type { BotCache } from "./cache_types.ts";
 import type { GuildConfigEvent,GuildConfigSettings } from "./guildConfig_types.ts";
 import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
@@ -228,7 +227,6 @@ export interface BotType {
     myTime: () => string;
 
     getCurrentWeekday: (timezone?: string) => string;
-    logger: Logger;
     help: HelpObject;
     cache: BotCache;
     userReg: UserReg;

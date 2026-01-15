@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -90,7 +91,7 @@ export default class Zetas extends Command {
             const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
-            Bot.logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);
+            logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);
             return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_ACCT"));
         }
 

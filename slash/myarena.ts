@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -47,7 +48,7 @@ export default class MyArena extends Command {
             const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
-            Bot.logger.error(`Broke getting player in myarena: ${e}`);
+            logger.error(`Broke getting player in myarena: ${e}`);
             return super.error(interaction, "Something broke, please try again in a bit");
         }
 
