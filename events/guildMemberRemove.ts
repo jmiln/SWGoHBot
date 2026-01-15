@@ -1,4 +1,5 @@
 import { Events, type GuildMember } from "discord.js";
+import logger from "../modules/Logger.ts";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotType } from "../types/types.ts";
@@ -19,7 +20,7 @@ export default {
                 await client.announceMsg(member.guild, partMessage, null, guildConf);
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
-                Bot.logger.error(
+                logger.error(
                     `[GuildMemberRemove] Error sending departure message:\nGuild: ${member.guild.name} (${member.guild.id})\nError: ${errorMessage}`,
                 );
             }

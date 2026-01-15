@@ -1,7 +1,10 @@
 import { inspect } from "node:util";
 import { Events, MessageFlags } from "discord.js";
 import type slashCommand from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
+import logger from "../modules/Logger.ts";
+import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
@@ -64,7 +67,7 @@ function filterAutocomplete(
  */
 function logErr(Bot: BotType, errStr: string, useWebhook = false): void {
     if (IGNORED_ERRORS.some((str) => errStr.includes(str))) return;
-    Bot.logger.error(errStr, useWebhook);
+    logger.error(errStr, useWebhook);
 }
 
 /**
@@ -79,7 +82,7 @@ function isIgnoredError(err: unknown): boolean {
  * Sends an error reply to the user based on the interaction state
  */
 async function sendErrorReply(Bot: BotType, interaction: BotInteraction, commandName: string): Promise<void> {
-    const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`;
+    const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${constants.invite}`;
 
     try {
         if (interaction.replied) {
@@ -202,7 +205,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
     interaction.guildSettings = await getGuildSettings({ cache: Bot.cache, guildId: interaction?.guild?.id });
 
     // Check permissions
-    const level = await Bot.permLevel(interaction);
+    const level = await permLevel(interaction);
     if (level < cmd.commandData.permLevel) {
         await interaction.reply({
             content: "Sorry, but you don't have permission to run that command.",

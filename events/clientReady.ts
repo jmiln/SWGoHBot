@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import { Events } from "discord.js";
 import config from "../config.js";
+import logger from "../modules/Logger.ts";
 import { SocketHelper } from "../modules/socketHelper.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
@@ -25,10 +26,13 @@ export default {
     execute: async (Bot: BotType, client: BotClient) => {
         Bot.shardId = client.shard.ids[0];
 
+        // Initialize the logger with the shard ID
+        logger.init(Bot.shardId);
+
         // Validate bot configuration - must be private bot unless authorized
         const application = client.application;
         if (!Bot.isMain() && application.botPublic && application.owner.id !== config.ownerid) {
-            Bot.logger.error(
+            logger.error(
                 Buffer.from(
                     "RkFUQUwgRVJST1I6IElOVkFMSUQgQk9UIFNFVFVQCgpHbyB0byB5b3VyIEJvdCdzIGFwcGxpY2F0aW9uIHBhZ2UgaW4gRGlzY29yZCBEZXZlbG9wZXJzIHNpdGUgYW5kIGRpc2FibGUgdGhlICJQdWJsaWMgQm90IiBvcHRpb24uCgpQbGVhc2UgY29udGFjdCB0aGUgc3VwcG9ydCB0ZWFtIGF0IFNXR29IQm90IEhRIC0gaHR0cHM6Ly9kaXNjb3JkLmdnL0Zmd0d2aHIgLSBmb3IgbW9yZSBpbmZvcm1hdGlvbi4=",
                     "base64",
@@ -53,7 +57,7 @@ export default {
             setupBackgroundTasks(Bot, client);
         }
 
-        Bot.logger.log(readyString, "ready", true);
+        logger.log(readyString, "ready", true);
         setPresence(Bot, client);
     },
 };
@@ -135,7 +139,7 @@ function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
                 reloadDataFiles(Bot, client);
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
-                Bot.logger.error(`[${Bot.shardId}] Error in data update tasks: ${message}`);
+                logger.error(`[${Bot.shardId}] Error in data update tasks: ${message}`);
             }
         }, MINUTE_MS);
     }, STARTUP_DELAY_MS);
@@ -183,7 +187,7 @@ function reloadDataFiles(Bot: BotType, client: BotClient): void {
             .broadcastEval((client: BotClient) => client.reloadDataFiles())
             .catch((err) => {
                 const message = err instanceof Error ? err.message : String(err);
-                Bot.logger.error(`[Ready/ReloadData] Error reloading data files: ${message}`);
+                logger.error(`[Ready/ReloadData] Error reloading data files: ${message}`);
             });
     } else {
         client.reloadDataFiles();
@@ -200,6 +204,6 @@ function setPresence(Bot: BotType, client: BotClient): void {
         });
     } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
-        Bot.logger.error(`[Ready] Error setting presence: ${message}`);
+        logger.error(`[Ready] Error setting presence: ${message}`);
     }
 }

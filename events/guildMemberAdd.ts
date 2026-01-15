@@ -1,4 +1,5 @@
 import { Events, type GuildMember } from "discord.js";
+import logger from "../modules/Logger.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
@@ -22,7 +23,7 @@ export default {
             await client.announceMsg(member.guild, welcomeMessage, null, guildConf);
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
-            Bot.logger.error(
+            logger.error(
                 `[GuildMemberAdd] Error sending welcome message:\nGuild: ${member.guild.name} (${member.guild.id})\nError: ${errorMessage}`,
             );
         }

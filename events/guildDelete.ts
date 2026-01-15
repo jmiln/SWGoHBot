@@ -1,4 +1,5 @@
 import { Events, type Guild } from "discord.js";
+import logger from "../modules/Logger.ts";
 import { deleteGuildConfig } from "../modules/guildConfig/settings.ts";
 import type { BotType } from "../types/types.ts";
 
@@ -12,6 +13,6 @@ export default {
         await deleteGuildConfig({ cache: Bot.cache, guildId: guild.id });
 
         // Log that the bot left
-        Bot.logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);
+        logger.log(`[GuildDelete] I left ${guild.name}(${guild.id})`);
     },
 };

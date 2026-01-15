@@ -1,6 +1,7 @@
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { BotClient, BotType } from "../types/types.ts";
+import { formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 
 export default (Bot: BotType, client: BotClient) => {
@@ -89,7 +90,7 @@ export default (Bot: BotType, client: BotClient) => {
     Bot.countdownAnnounce = async (event): Promise<void> => {
         const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: event.guildId });
         const diffNum = Math.abs(Date.now() - event.eventDT);
-        const timeToGo = Bot.formatDuration(diffNum, Bot.languages[guildConf.language]);
+        const timeToGo = formatDuration(diffNum, Bot.languages[guildConf.language]);
 
         const announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
 

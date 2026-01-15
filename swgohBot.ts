@@ -10,7 +10,7 @@ import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
 import funct, { myTime, sortOmicrons } from "./modules/functions.ts";
-import Logger from "./modules/Logger.ts";
+import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
@@ -148,7 +148,8 @@ const init = async () => {
     // Store the list of omicrons to be used later
     Bot.omicrons = await sortOmicrons(Bot.cache);
 
-    Bot.logger = new Logger(Bot, config.timezone || "America/Los_Angeles");
+    // Attach the singleton logger instance to Bot for backward compatibility
+    Bot.logger = logger;
 
     slashHandler(Bot, client);
     eventHandler(Bot, client);
@@ -186,7 +187,7 @@ const init = async () => {
         const errorMsg = err?.stack?.replace(CWD_REGEX, ".") || String(err);
 
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
-            Bot.logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
+            logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
         console.error(`[${myTime()}] Uncaught Promise Error: ${errorMsg}`);
         logErrorToChannel(errorMsg);

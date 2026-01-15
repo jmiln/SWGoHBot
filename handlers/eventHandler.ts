@@ -1,48 +1,67 @@
 import { readdirSync } from "node:fs";
+import logger from "../modules/Logger.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
 const needsClient = ["error", "clientReady", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${import.meta.dirname}/../events/`;
 
+/**
+ * Loads an event file and binds it to the client
+ */
+async function loadEvent(Bot: BotType, client: BotClient, file: string, cacheBust = false): Promise<string> {
+    const path = cacheBust ? `${evDir}${file}?t=${Date.now()}` : `${evDir}${file}`;
+    const { default: event } = await import(path);
+    const eventName = event.name;
+
+    if (needsClient.includes(eventName)) {
+        client.on(eventName, event.execute.bind(null, Bot, client));
+    } else {
+        client.on(eventName, event.execute.bind(null, Bot));
+    }
+
+    return eventName;
+}
+
+/**
+ * Gets all event files from the events directory
+ */
+function getEventFiles(): string[] {
+    return readdirSync(evDir).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
+}
+
 export default async (Bot: BotType, client: BotClient) => {
-    const evtFiles = readdirSync(evDir);
+    const evtFiles = getEventFiles();
+
     for (const file of evtFiles) {
-        const path = `${evDir}${file}`;
-        const { default: event } = await import(path);
-        if (needsClient.includes(event.name)) {
-            client.on(event.name, event.execute.bind(null, Bot, client));
-        } else {
-            client.on(event.name, event.execute.bind(null, Bot));
+        try {
+            await loadEvent(Bot, client, file);
+        } catch (e) {
+            logger.error(`Failed to load event ${file}: ${e}`);
         }
-        // delete require.cache[require.resolve(`${evDir}${file}`)];
     }
 
     // Reload the events files (message, guildCreate, etc)
     client.reloadAllEvents = async () => {
-        const ev: string[] = [];
-        const errEv: string[] = [];
+        const succArr: string[] = [];
+        const errArr: string[] = [];
 
-        const evtFiles = await readdirSync(evDir);
+        // Remove all existing event listeners
+        client.removeAllListeners();
+
+        const evtFiles = getEventFiles();
         for (const file of evtFiles) {
             try {
-                const eventName = file.split(".")[0];
-                client.removeAllListeners(eventName);
-                const event = await import(`${evDir}${file}`);
-                if (needsClient.includes(eventName)) {
-                    client.on(eventName, event.bind(null, Bot, client));
-                } else {
-                    client.on(eventName, event.bind(null, Bot));
-                }
-                // delete require.cache[require.resolve(`${evDir}${file}`)];
-                ev.push(eventName);
+                const eventName = await loadEvent(Bot, client, file, true);
+                succArr.push(eventName);
             } catch (e) {
-                Bot.logger.error(`In Event reload: ${e}`);
-                errEv.push(file);
+                logger.error(`Failed to reload event ${file}: ${e}`);
+                errArr.push(file);
             }
         }
+
         return {
-            succArr: ev,
-            errArr: errEv,
+            succArr,
+            errArr,
         };
     };
 };

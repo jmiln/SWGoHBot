@@ -93,10 +93,10 @@ export default (Bot: BotType, client: BotClient) => {
         if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {
             // Grab the sender's primary code
             userAcct = await Bot.userReg.getUser(interaction.user.id);
-        } else if (Bot.isUserID(userStr)) {
+        } else if (isUserID(userStr)) {
             // Try to grab the primary code for the mentioned user
             userAcct = await Bot.userReg.getUser(userStr.replace(/[^\d]*/g, ""));
-        } else if (Bot.isAllyCode(userStr)) {
+        } else if (isAllyCode(userStr)) {
             // Otherwise, just scrap everything but numbers, and send it back
             return userStr.replace(/[^\d]*/g, "");
         }
@@ -413,7 +413,7 @@ export function getTimezoneOffset(zone: string): number | null {
 export function getSetTimeForTimezone(mmddyyyy_HHmm: string, zone: string): number {
     const offset = getTimezoneOffset(zone);
     const [month, day, year, hour, min] = mmddyyyy_HHmm.split(/[/\s:]/).map((i) => Number.parseInt(i, 10));
-    if (year.toString().length !== 4) throw Error("[Bot.getSetTimeForTimezone] Year MUST be 4 numbers long");
+    if (year.toString().length !== 4) throw Error("[getSetTimeForTimezone] Year MUST be 4 numbers long");
     const utcAtTarget = Date.UTC(year, month - 1, day, hour, min);
     return utcAtTarget - (offset ?? 0) * constants.minMS;
 }
