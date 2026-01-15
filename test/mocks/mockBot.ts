@@ -1,13 +1,15 @@
-import type { BotType } from "../../types/types.ts";
+import type { BotType, BotClient } from "../../types/types.ts";
+import attachFunctions from "../../modules/functions.ts";
+import constants from "../../data/constants/constants.ts";
+import { getSideColor } from "../../modules/functions.ts";
 
 export function createMockBot(overrides: Partial<BotType> = {}): BotType {
     const bot: BotType = {
-        acronyms: {
-            CLS: "Commander Luke Skywalker",
-            TB: "Territory Battle",
-            SLKR: "Supreme Leader Kylo Ren",
-        },
-        arenaJumps: { "59":47, "50":39, "49":38, "48":38, "46":36, "42":32, "41":32, "40":32, "39":31, "38":30, "37":29, "36":28, "35":27, "34":26, "33":25, "32":25, "31":24, "30":23, "29":22, "28":21, "27":20, "26":19, "25":18, "24":18, "23":17, "22":16, "21":15, "20":14, "19":13, "18":13, "17":12, "16":11, "15":10, "14":9, "13":8, "12":8, "11":7, "10":6, "9":5, "8":4, "7":3, "6":2, "5":1, "4":1, "3":1, "2":1 },
+        characters: [
+            { name: "Commander Luke Skywalker", uniqueName: "COMMANDERLUKESKYWALKER", side: "light", url: "https://swgoh.gg/characters/commander-luke-skywalker/", aliases: ["CLS", "Luke"] },
+            { name: "Darth Vader", uniqueName: "DARTHVADER", side: "dark", url: "https://swgoh.gg/characters/darth-vader/", aliases: ["Vader", "DV"] },
+            { name: "Rey", uniqueName: "REY", side: "light", url: "https://swgoh.gg/characters/rey/", aliases: [] },
+        ],
         cache: {
             get: async (args) => {
                 return args;
@@ -19,28 +21,63 @@ export function createMockBot(overrides: Partial<BotType> = {}): BotType {
                 return saveObject;
             }
         },
-        characters: [
-            { name: "Commander Luke Skywalker", uniqueName: "COMMANDERLUKESKYWALKER" },
-        ],
         config: {
            mongodb: {
                 swgohbotdb: "swgohbotdb",
             }
         },
-        constants: {
-            colors: {
-                black:     0,
-                blue:      255,
-                lightblue: 22015,
-                green:     65280,
-                red:       16711680,
-                brightred: 14685204,
-                white:     16777215,
-                yellow:    16776960,
-            }
+        constants: constants,
+        logger: {
+            log: () => {},
+            error: () => {},
+            warn: () => {},
+            info: () => {},
         },
         getCurrentWeekday: (tz?: string) => (tz ? "Monday" : "Tuesday"),
+        getSideColor: getSideColor,
         getPatronUser: async (discordID: string) => ({ discordID, amount_cents: 0 }),
+        swgohAPI: {
+            getCharacter: async (uniqueName: string, language: string) => {
+                if (uniqueName === "COMMANDERLUKESKYWALKER") {
+                    return {
+                        name: "Commander Luke Skywalker",
+                        factions: ["Rebel", "Jedi"],
+                        skillReferenceList: [
+                            {
+                                skillId: "basicskill_COMMANDERLUKESKYWALKER01",
+                                name: "Call to Action",
+                                desc: "Deal Physical damage to target enemy and grant all allies Critical Chance Up for 2 turns.",
+                                cooldown: 0,
+                                cost: {
+                                    AbilityMatMk3: 20,
+                                    AbilityMatOmega: 0,
+                                    AbilityMatZeta: 0,
+                                    AbilityMatOmicron: 0,
+                                },
+                            },
+                            {
+                                skillId: "uniqueskill_COMMANDERLUKESKYWALKER02",
+                                name: "Learn Control",
+                                desc: "Luke has +40% Potency and +40% Tenacity. **At the start of battle, Luke gains Foresight for 2 turns. Rebel and Jedi allies gain 5% Turn Meter whenever they Evade.**",
+                                zetaDesc: "At the start of battle, Luke gains Foresight for 2 turns. Rebel and Jedi allies gain 5% Turn Meter whenever they Evade.",
+                                cooldown: 0,
+                                cost: {
+                                    AbilityMatMk3: 35,
+                                    AbilityMatOmega: 5,
+                                    AbilityMatZeta: 1,
+                                    AbilityMatOmicron: 0,
+                                },
+                            },
+                        ],
+                    };
+                }
+                return {
+                    name: "Mock Character",
+                    factions: [],
+                    skillReferenceList: [],
+                };
+            },
+        },
         userReg: {
             getUser: () => ({
                 id: "123",
@@ -53,7 +90,7 @@ export function createMockBot(overrides: Partial<BotType> = {}): BotType {
                     enablePayoutResult: true
                 },
             }),
-        }
+        },
     } as any;
 
     return {
