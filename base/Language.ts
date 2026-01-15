@@ -1,15 +1,16 @@
-import type { BotLanguage, BotType } from "../types/types.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
+import type { BotLanguage, BotType } from "../types/types.ts";
 
 export default class Language {
     Bot: BotType;
     language: BotLanguage;
+    DAYSOFWEEK: Record<string, Record<string, string>>;
+    TIMES: Record<string, Record<string, string>>;
 
     constructor(bot: BotType) {
         this.Bot = bot;
     }
 
-    // also | {[key: string]: string} | LangHelpStrs
     get(str: string, ...args: null | (string | number | boolean | object)[]): string {
         if (!this.language[str]) {
             const defLang = this.Bot.languages[defaultSettings.language];
@@ -39,10 +40,10 @@ export default class Language {
         return res;
     }
 
-    getDay(day: string, type: string) {
-        return this.getDay(day, type);
+    getDay(day: string, type: string): string {
+        return this.DAYSOFWEEK[day][type];
     }
-    getTime(time: string, type: string) {
-        return this.getTime(time, type);
+    getTime(time: string, type: string): string {
+        return this.TIMES[time][type];
     }
 }

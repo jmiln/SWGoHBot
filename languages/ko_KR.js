@@ -57,20 +57,13 @@ const TIMES = {
     }
 };
 
-function getDay(day, type) {
-    return DAYSOFWEEK[`${day}`][`${type}`];
-}
-
-function getTime(unit, type) {
-    return TIMES[`${unit}`][`${type}`];
-}
-
 export default class extends Language {
     constructor(...args) {
         super(...args);
 
-        this.getDay = getDay;
-        this.getTime = getTime;
+        this.DAYSOFWEEK = DAYSOFWEEK;
+        this.TIMES = TIMES;
+
         this.language = {
             // Default in case it can't find one.
             BASE_DEFAULT_MISSING: "없는 단어를 사용하려고 합니다. 이 메시지를 보시면, 수정할 수 있도록 알려주시면 감사하겠습니다.",

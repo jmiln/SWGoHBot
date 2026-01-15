@@ -57,20 +57,13 @@ SING: "minuto",
     }
 };
 
-function getDay(day, type) {
-    return DAYSOFWEEK[`${day}`][`${type}`];
-}
-
-function getTime(unit, type) {
-    return TIMES[`${unit}`][`${type}`];
-}
-
 export default class extends Language {
     constructor(...args) {
         super(...args);
 
-        this.getDay = getDay;
-        this.getTime = getTime;
+        this.DAYSOFWEEK = DAYSOFWEEK;
+        this.TIMES = TIMES;
+
         this.language = {
             // Default in case it can't find one.
             BASE_DEFAULT_MISSING: "Tentativa de usar uma string inexistente. Se você receber esta mensagem, por favor avise para que seja consertado.",

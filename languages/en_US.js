@@ -59,20 +59,13 @@ const TIMES = {
     }
 };
 
-function getDay(day, type) {
-    return DAYSOFWEEK[`${day}`][`${type}`];
-}
-
-function getTime(unit, type) {
-    return TIMES[`${unit}`][`${type}`];
-}
-
 export default class extends Language {
     constructor(...args) {
         super(...args);
 
-        this.getDay = getDay;
-        this.getTime = getTime;
+        this.DAYSOFWEEK = DAYSOFWEEK;
+        this.TIMES = TIMES;
+
         this.language = {
             // Default in case it can't find one.
             BASE_DEFAULT_MISSING: "Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.",
