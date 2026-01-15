@@ -1,218 +1,269 @@
 import { inspect } from "node:util";
-import { MessageFlags } from "discord.js";
+import { Events, MessageFlags } from "discord.js";
+import type slashCommand from "../base/slashCommand.ts";
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
-import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 
-const ignoreArr = [
+// Constants
+const IGNORED_ERRORS = [
     "DiscordAPIError: Missing Access",
     "HTTPError [AbortError]: The user aborted a request.",
     "HTTPError: Service Unavailable",
-    "Internal Server Error", // Something on Discord's end
-    "Invalid Webhook Token", // ?????
-    "The user aborted a request", // Pretty sure this is also on Discord's end
-    "Cannot send messages to this user", // A user probably has the bot blocked or doesn't allow DMs (No way to check for that)
-    "Unknown interaction", // Not sure, but seems to happen when someone deletes an interaction that the bot is trying to reply to?
-    "Unknown message", // Not sure, but seems to happen when someone deletes a message that the bot is trying to reply to?
+    "Internal Server Error",
+    "Invalid Webhook Token",
+    "The user aborted a request",
+    "Cannot send messages to this user",
+    "Unknown interaction",
+    "Unknown message",
 ];
 
-export default {
-    name: "interactionCreate",
-    execute: async (Bot: BotType, client: BotClient, interaction: BotInteraction) => {
-        // If it's not a command, don't bother trying to do anything
-        if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
+const AUTOCOMPLETE_IGNORED_ERRORS = ["unknown interaction", "bad gateway", "service unavailable", "connect timeout", "unknown message"];
 
-        // If it's a bot trying to use it, don't bother
+const AUTOCOMPLETE_SILENT_ERRORS = ["unknown interaction", "service unavailable"];
+
+const MAX_AUTOCOMPLETE_RESULTS = 24;
+
+const UNIT_OPTION_NAMES = ["unit", "character", "ship"] as const;
+type UnitOptionName = (typeof UNIT_OPTION_NAMES)[number];
+
+// Helper Functions
+
+/**
+ * Filters autocomplete options based on search term
+ * Searches by alias, name prefix, name contains, and then aliases array
+ */
+function filterAutocomplete(
+    arrIn: { isAlias?: boolean; defId?: string; alias?: string; name: string; aliases: string[] }[],
+    search: string,
+) {
+    const searchTerm = search?.toLowerCase() || "";
+
+    // Try prefix match first (most relevant)
+    let filtered = arrIn.filter((unit) => {
+        if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(searchTerm);
+        return unit?.name?.toLowerCase().startsWith(searchTerm);
+    });
+
+    // Fall back to contains match
+    if (!filtered.length) {
+        filtered = arrIn.filter((unit) => unit.name?.toLowerCase().includes(searchTerm));
+    }
+
+    // Fall back to aliases array match
+    if (!filtered.length) {
+        filtered = arrIn.filter((unit) => unit?.aliases?.some((alias) => alias.toLowerCase() === searchTerm));
+    }
+
+    return filtered;
+}
+
+/**
+ * Logs errors while filtering out common/expected Discord API errors
+ */
+function logErr(Bot: BotType, errStr: string, useWebhook = false): void {
+    if (IGNORED_ERRORS.some((str) => errStr.includes(str))) return;
+    Bot.logger.error(errStr, useWebhook);
+}
+
+/**
+ * Checks if an error should be ignored based on common Discord API errors
+ */
+function isIgnoredError(err: unknown): boolean {
+    const errStr = err?.toString().toLowerCase() || "";
+    return IGNORED_ERRORS.some((str) => errStr.includes(str.toLowerCase()));
+}
+
+/**
+ * Sends an error reply to the user based on the interaction state
+ */
+async function sendErrorReply(Bot: BotType, interaction: BotInteraction, commandName: string): Promise<void> {
+    const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`;
+
+    try {
+        if (interaction.replied) {
+            await interaction.followUp({ content: replyContent });
+        } else if (interaction.deferred) {
+            await interaction.editReply({ content: replyContent });
+        } else {
+            await interaction.reply({ content: replyContent, flags: MessageFlags.Ephemeral });
+        }
+    } catch (e) {
+        logErr(Bot, `[cmd:${commandName}] Error trying to send error message: ${String(e)}`);
+    }
+}
+
+/**
+ * Builds a unit list based on the option name (unit, character, or ship)
+ */
+function buildUnitList(Bot: BotType, optionName: UnitOptionName, aliases: Array<{ isAlias: boolean; defId: string; alias: string }>) {
+    const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
+
+    switch (optionName) {
+        case "unit":
+            return [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
+        case "character":
+            return [...aliasList.filter((al) => Bot.CharacterNames.some((cn) => cn.defId === al.defId)), ...Bot.CharacterNames];
+        case "ship":
+            return [...aliasList.filter((al) => Bot.ShipNames.some((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
+    }
+}
+
+/**
+ * Formats unit autocomplete results
+ */
+function formatUnitResults(units: Array<{ isAlias?: boolean; name: string; defId: string; alias?: string }>) {
+    return units
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((unit) => ({
+            name: unit.isAlias ? `${unit.name} (${unit.alias})` : unit.name,
+            value: unit.defId,
+        }));
+}
+
+/**
+ * Processes autocomplete for unit-related options
+ */
+function processUnitAutocomplete(
+    Bot: BotType,
+    focusedOption: { name: string; value: string },
+    aliases: Array<{ isAlias: boolean; defId: string; alias: string }>,
+) {
+    if (!UNIT_OPTION_NAMES.includes(focusedOption.name as UnitOptionName)) {
+        return [];
+    }
+
+    const unitList = buildUnitList(Bot, focusedOption.name as UnitOptionName, aliases);
+    const filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
+    return formatUnitResults(filtered);
+}
+
+/**
+ * Handles autocomplete interactions
+ */
+async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd: slashCommand): Promise<void> {
+    const focusedOption = interaction.options.getFocused(true);
+
+    // If command has custom autocomplete handler, use it
+    if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
+        await cmd.autocomplete(Bot, interaction, focusedOption);
+        return;
+    }
+
+    // Otherwise, handle default autocomplete
+    let filtered: Array<{ name: string; value: string }> = [];
+
+    try {
+        const aliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction?.guild?.id });
+
+        if (interaction.commandName === "panic") {
+            // Process the autocompletions for the /panic command
+            const journeyFiltered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
+            filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
+        } else if (focusedOption.name === "command") {
+            // Process command name autocomplete
+            const commands = Bot.commandList.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+            filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
+        } else {
+            // Process unit/character/ship autocomplete
+            filtered = processUnitAutocomplete(Bot, focusedOption, aliases);
+        }
+    } catch (err) {
+        logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);
+        console.error("Autocomplete error details:", err);
+    }
+
+    // Send autocomplete response
+    try {
+        await interaction.respond(filtered.slice(0, MAX_AUTOCOMPLETE_RESULTS));
+    } catch (err) {
+        const errStr = err?.toString().toLowerCase() || "";
+        const ignoredError = AUTOCOMPLETE_IGNORED_ERRORS.find((errType) => errStr.includes(errType));
+
+        if (ignoredError) {
+            // Only log non-silent errors
+            if (!AUTOCOMPLETE_SILENT_ERRORS.includes(ignoredError)) {
+                logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Ignoring error: ${ignoredError}`);
+            }
+        } else {
+            // Log unexpected errors
+            logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unexpected error: ${String(err)}`);
+            console.error("Autocomplete response error:", err);
+        }
+    }
+}
+
+/**
+ * Handles chat input command interactions
+ */
+async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction, cmd: slashCommand): Promise<void> {
+    // Load guild settings
+    interaction.guildSettings = await getGuildSettings({ cache: Bot.cache, guildId: interaction?.guild?.id });
+
+    // Check permissions
+    const level = await Bot.permLevel(interaction);
+    if (level < cmd.commandData.permLevel) {
+        await interaction.reply({
+            content: "Sorry, but you don't have permission to run that command.",
+            flags: MessageFlags.Ephemeral,
+        });
+        return;
+    }
+
+    // Load user language settings
+    const user = await Bot.userReg.getUser(interaction.user.id);
+    const selectedLanguage = user?.lang?.language || defaultSettings.language;
+    interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
+
+    interaction.language = Bot.languages[selectedLanguage] || Bot.languages[defaultSettings.language];
+    interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || defaultSettings.swgohLanguage;
+
+    // Execute command
+    try {
+        await cmd.run(Bot, interaction, { level });
+    } catch (err) {
+        // Special handling for test command
+        if (cmd.commandData.name === "test") {
+            console.log(
+                `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, { depth: 5 })} \n${inspect(err, { depth: 5 })}`,
+            );
+            return;
+        }
+
+        // Log the error
+        if (isIgnoredError(err)) {
+            const firstLine = err?.toString().split("\n")[0] || String(err);
+            logErr(Bot, `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${firstLine}`);
+        } else {
+            logErr(
+                Bot,
+                `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, { depth: 5 })} \n${inspect(err, { depth: 5 })}`,
+                true,
+            );
+        }
+
+        // Send error reply to user
+        await sendErrorReply(Bot, interaction, cmd.commandData.name);
+    }
+}
+
+export default {
+    name: Events.InteractionCreate,
+    execute: async (Bot: BotType, client: BotClient, interaction: BotInteraction) => {
+        // Filter out non-command interactions and bot users
+        if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
         if (interaction.user.bot) return;
 
-        // Grab the command data from the client.slashcmds Collection
+        // Get command
         const cmd = client.slashcmds.get(interaction.commandName);
-
-        // If that command doesn't exist, silently exit and do nothing
         if (!cmd) return;
 
+        // Route to appropriate handler
         if (interaction.isChatInputCommand()) {
-            // Grab the settings for this server, and if there's no guild, just give it the defaults
-            // Attach the guildsettings to the interaction to make it easier to grab later
-            interaction.guildSettings = await getGuildSettings({ cache: Bot.cache, guildId: interaction?.guild?.id });
-
-            // Get the user or member's permission level from the elevation
-            const level = await Bot.permLevel(interaction);
-
-            // Make sure the user has the correct perms to run the command
-            if (level < cmd.commandData.permLevel) {
-                return interaction.reply({
-                    content: "Sorry, but you don't have permission to run that command.",
-                    flags: MessageFlags.Ephemeral,
-                });
-            }
-
-            // Load the language file for whatever language they have set
-            const user = await Bot.userReg.getUser(interaction.user.id);
-            const defaultGuildConf = defaultSettings;
-            const selectedLanguage = user?.lang?.language || defaultGuildConf.language;
-            interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultGuildConf.swgohLanguage;
-
-            interaction.language = Bot.languages[selectedLanguage] || Bot.languages[defaultGuildConf.language];
-            interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || defaultGuildConf.swgohLanguage;
-
-            // Run the command
-            try {
-                await cmd.run(Bot, interaction, { level: level });
-                // console.log(`[interCreate] Trying to run: ${cmd.commandData.name}\n - Options: ${inspect(interaction.options, {depth: 5})}`);
-            } catch (err) {
-                if (cmd.commandData.name === "test") {
-                    return console.log(
-                        `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(
-                            interaction.options,
-                            { depth: 5 },
-                        )} \n${inspect(err, { depth: 5 })}`,
-                        true,
-                    );
-                }
-
-                if (ignoreArr.some((str) => err.toString().toLowerCase().includes(str.toLowerCase()))) {
-                    // Don't bother spitting out the whole mess.
-                    // Log which command broke, and the first line of the error
-                    logErr(
-                        `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${err.toString().split("\n")[0]}`,
-                    );
-                } else {
-                    logErr(
-                        `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(
-                            interaction.options,
-                            { depth: 5 },
-                        )} \n${inspect(err, { depth: 5 })}`,
-                        true,
-                    );
-                }
-
-                const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${Bot.constants.invite}`;
-                if (interaction.replied) {
-                    return interaction
-                        .followUp({ content: replyContent })
-                        .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send followUp error message: \n${e}`));
-                }
-                if (interaction.deferred) {
-                    return interaction
-                        .editReply({ content: replyContent })
-                        .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send editReply error message: \n${e}`));
-                }
-                return interaction
-                    .reply({
-                        content: replyContent,
-                        flags: MessageFlags.Ephemeral,
-                    })
-                    .catch((e) => logErr(`[cmd:${cmd.commandData.name}] Error trying to send reply error message: \n${e}`));
-            }
+            await handleChatInputCommand(Bot, interaction, cmd);
         } else if (interaction.isAutocomplete()) {
-            // Process the autocomplete inputs
-            const focusedOption = interaction.options.getFocused(true);
-            let filtered = [];
-
-            if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
-                // As needed, process autocompletes in each file, or just passes the list of options.
-                await cmd.autocomplete(Bot, interaction, focusedOption);
-            } else if (!filtered?.length) {
-                // Process the general ones here, or others that didn't give a proper response
-                try {
-                    // Grab any aliases that the guild has set
-                    const aliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction?.guild?.id });
-
-                    if (interaction.commandName === "panic") {
-                        // Process the autocompletions for the /panic command
-                        filtered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
-                        filtered = filtered.map((unit) => ({ name: unit.name, value: unit.defId }));
-                    } else if (focusedOption.name === "command") {
-                        filtered = Bot.commandList.filter((cmdName) =>
-                            cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()),
-                        );
-                    } else {
-                        const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
-
-                        if (!["unit", "character", "ship"].includes(focusedOption.name)) return;
-
-                        let unitList = [];
-                        if (focusedOption.name === "unit") {
-                            unitList = [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
-                        } else if (focusedOption.name === "character") {
-                            unitList = [
-                                ...aliasList.filter((al) => Bot.CharacterNames.find((cn) => cn.defId === al.defId)),
-                                ...Bot.CharacterNames,
-                            ];
-                        } else if (focusedOption.name === "ship") {
-                            unitList = [...aliasList.filter((al) => Bot.ShipNames.find((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
-                        }
-                        filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
-                        filtered = filtered
-                            .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
-                            .map((unit) => {
-                                if (unit.isAlias) return { name: `${unit.name} (${unit.alias})`, value: unit.defId };
-                                return { name: unit.name, value: unit.defId };
-                            });
-                    }
-                } catch (err) {
-                    logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unit name issue.`);
-                    console.error(interaction);
-                    console.error(err);
-                }
-                try {
-                    await interaction.respond(
-                        filtered
-                            .map((choice) => ({
-                                name: choice?.name || choice,
-                                value: choice?.value || choice,
-                            }))
-                            .slice(0, 24),
-                    );
-                } catch (err) {
-                    // If it's one of the common errors, just move on, nothing that I can do about it
-                    const ignoreArr = ["unknown interaction", "bad gateway", "service unavailable", "connect timeout", "unknown message"];
-                    const errStr = ignoreArr.find((elem) => err.toString().toLowerCase().includes(elem));
-                    if (errStr) {
-                        if (!["unknown interaction", "service unavailable"].includes(errStr)) {
-                            logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Ignoring error: ${errStr}`);
-                        }
-                        return;
-                    }
-
-                    // Otherwise, print out what I can about it
-                    if (typeof err !== "string") {
-                        logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Missing error.`);
-                        console.error(interaction?.options);
-                        console.error(err);
-                    } else {
-                        logErr(err);
-                    }
-                }
-            }
-        }
-
-        function filterAutocomplete(
-            arrIn: { isAlias?: boolean; defId?: string; alias?: string; name: string; aliases: string[] }[],
-            search: string,
-        ) {
-            const searchTerm = search?.toLowerCase() || "";
-            let filtered = arrIn.filter((unit) => {
-                if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(searchTerm);
-                return unit?.name?.toLowerCase().startsWith(searchTerm);
-            });
-            if (!filtered?.length) {
-                filtered = arrIn.filter((unit) => unit.name?.toLowerCase().includes(searchTerm));
-            }
-            if (!filtered?.length) {
-                filtered = arrIn.filter((unit) => {
-                    return unit?.aliases?.map((u) => u.toLowerCase()).includes(searchTerm);
-                });
-            }
-
-            return filtered;
-        }
-
-        function logErr(errStr: string, useWebhook = false) {
-            if (ignoreArr.some((str) => errStr.toString().includes(str))) return;
-            Bot.logger.error(errStr, useWebhook);
+            await handleAutocomplete(Bot, interaction, cmd);
         }
     },
 };
