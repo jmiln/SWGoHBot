@@ -3,7 +3,14 @@ import type { Socket } from "socket.io";
 import { Server } from "socket.io";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
-import { addGuildEvent, deleteGuildEvent, getAllEvents, getGuildEvents, guildEventExists } from "../modules/guildConfig/events.ts";
+import {
+    addGuildEvent,
+    deleteGuildEvent,
+    getCountdownEvents,
+    getGuildEvents,
+    getTriggeredEvents,
+    guildEventExists,
+} from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotCache } from "../types/cache_types.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
@@ -12,14 +19,32 @@ const io = new Server(config.eventServe.port);
 let botCache = null;
 
 async function init() {
-    const mongo = await MongoClient.connect(config.mongodb.url);
-    botCache = cache(mongo);
+    try {
+        const mongo = await MongoClient.connect(config.mongodb.url);
+        botCache = cache(mongo);
 
-    io.on("connection", (socket) => {
-        console.log("Socket connected");
-        setupEventHandlers(socket, botCache);
-    });
+        io.on("connection", (socket) => {
+            console.log("EventMgr: Socket connected");
+            setupEventHandlers(socket, botCache);
+        });
+
+        console.log(`EventMgr: Service started on port ${config.eventServe.port}`);
+    } catch (error) {
+        console.error(`EventMgr: Failed to initialize - ${error.message}`);
+        process.exit(1);
+    }
 }
+
+// Handle uncaught errors
+process.on("uncaughtException", (error) => {
+    console.error(`EventMgr: Uncaught exception - ${error.message}`);
+    console.error(error.stack);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+    console.error(`EventMgr: Unhandled rejection at ${promise}`);
+    console.error(`Reason: ${reason}`);
+});
 
 function setupEventHandlers(socket: Socket, cache: BotCache) {
     socket.on("checkEvents", async (callback) => {
@@ -85,10 +110,16 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
 
 async function processEvents(cache: BotCache) {
     const nowTime = Date.now();
-    const events = await getAllEvents({ cache });
-    const eventsOut = events.filter((e) => Number.parseInt(e.eventDT, 10) <= nowTime);
 
-    for (const ev of events.filter((e) => Number.parseInt(e.eventDT, 10) > nowTime && e.countdown)) {
+    // Use database-level filtering to get triggered events
+    const triggeredEvents = await getTriggeredEvents({ cache, nowTime });
+    const eventsOut = [...triggeredEvents];
+
+    // Get countdown events separately with database filtering
+    const countdownEvents = await getCountdownEvents({ cache, nowTime });
+
+    // Process countdown events to check if they match configured countdown times
+    for (const ev of countdownEvents) {
         const guildConf = await getGuildSettings({ cache, guildId: ev.guildId });
 
         if (!guildConf?.eventCountdown?.length) continue;

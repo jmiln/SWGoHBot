@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
+import { SocketHelper } from "../modules/socketHelper.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 // const checkWSHealth = require("../modules/wsWatcher.js");
 
@@ -29,18 +29,42 @@ export default {
         if (client.shard) {
             readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers. Shard #${Bot.shardId}`;
 
-            // Connect the sockets and such
-            Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`);
-            Bot.socket.on("connect", () => {
-                console.log(`  [${Bot.shardId}] Connected to EventMgr socket!`);
+            // Track last error time to throttle error messages
+            let lastErrorTime = 0;
+            let errorCount = 0;
+            const ERROR_THROTTLE_MS = 60000; // Only log errors once per minute
+
+            // Connect the sockets and such with limited reconnection attempts
+            Bot.socket = io(`ws://localhost:${Bot.config.eventServe.port}`, {
+                reconnection: true,
+                reconnectionAttempts: 10,
+                reconnectionDelay: 1000,
+                reconnectionDelayMax: 30000,
+                timeout: 5000,
             });
 
-            Bot.socket.on("connect_error", (err) => console.error("[Socket.io connect_error]", err));
-            Bot.socket.on("reconnect_error", (err) => console.error("[Socket.io reconnect_error]", err));
-            Bot.socket.on("connect_failed", (err) => console.error("[Socket.io connect_failed]", err));
+            Bot.socket.on("connect", () => {
+                console.log(`  [${Bot.shardId}] Connected to EventMgr socket!`);
+                errorCount = 0; // Reset error count on successful connection
+            });
+
+            const logThrottledError = (type: string, err?: Error) => {
+                const now = Date.now();
+                errorCount++;
+
+                if (now - lastErrorTime > ERROR_THROTTLE_MS) {
+                    const message = err?.message || "Unknown error";
+                    console.error(`  [${Bot.shardId}] EventMgr ${type}: ${message} (${errorCount} errors in last minute)`);
+                    lastErrorTime = now;
+                    errorCount = 0;
+                }
+            };
+
+            Bot.socket.on("connect_error", (err) => logThrottledError("connection failed", err));
+            Bot.socket.on("reconnect_error", (err) => logThrottledError("reconnect failed", err));
+            Bot.socket.on("connect_failed", (err) => logThrottledError("connect failed", err));
             Bot.socket.on("disconnect", (reason) => {
-                // The reason of the disconnection, for example "Ping Timeout"
-                console.log(`  [${Bot.shardId}] Socket.io disconnected from EventMgr socket! (${reason})`);
+                console.log(`  [${Bot.shardId}] EventMgr disconnected: ${reason}`);
             });
 
             // Start up the client.ws watcher
@@ -103,15 +127,33 @@ export default {
 
             // If it's the last shard being started, load all the events in
             if (Bot.shardId + 1 === client.shard.count) {
+                const socketHelper = new SocketHelper(Bot.socket);
+                let consecutiveFailures = 0;
+                const MAX_CONSECUTIVE_FAILURES = 5;
+
                 setInterval(
-                    () => {
-                        Bot.socket.emit("checkEvents", (eventsList: GuildConfigEvent[]) => {
+                    async () => {
+                        if (!socketHelper.isConnected()) {
+                            consecutiveFailures++;
+                            if (consecutiveFailures === MAX_CONSECUTIVE_FAILURES) {
+                                console.warn(`  [${Bot.shardId}] EventMgr not connected, skipping event checks (will retry silently)`);
+                            }
+                            return;
+                        }
+
+                        try {
+                            const eventsList = await socketHelper.checkEvents();
+                            consecutiveFailures = 0; // Reset on success
                             if (eventsList.length) {
                                 Bot.manageEvents(eventsList);
                             }
-                        });
-                    },
-                    1 * 60 * 1000,
+                        } catch (err) {
+                            consecutiveFailures++;
+                            if (consecutiveFailures <= MAX_CONSECUTIVE_FAILURES) {
+                                console.error(`  [${Bot.shardId}] Error checking events: ${err.message}`);
+                            }
+                        }
+                    }, 1 * 60 * 1000,
                 );
             }
         }

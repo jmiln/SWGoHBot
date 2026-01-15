@@ -27,9 +27,9 @@ export async function updateGuildEvent({ cache, guildId, evName, event }) {
 }
 
 export async function getGuildEvents({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigEvent[]> {
-    if (!guildId) return [];
+    if (!guildId) return [] as GuildConfigEvent[];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: 1 });
-    return resArr[0]?.events || [];
+    return resArr[0]?.events || ([] as GuildConfigEvent[]);
 }
 export async function addGuildEvent({ cache, guildId, newEvent }: { cache: BotCache; guildId: string; newEvent: GuildConfigEvent }) {
     const events = await getGuildEvents({ cache, guildId });
@@ -48,13 +48,13 @@ export async function deleteGuildEvent({ cache, guildId, evName }: { cache: BotC
     const evArrOut = res.filter((ev) => ev.name !== evName);
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
-export async function getAllEvents({ cache }: { cache: BotCache }) {
-    const resArr: GuildConfig[] = (await cache.get(
+export async function getAllEvents({ cache }: { cache: BotCache }): Promise<GuildConfigEvent[]> {
+    const resArr = (await cache.get(
         config.mongodb.swgohbotdb,
         "guildConfigs",
         {},
         { guildId: 1, events: 1, _id: 0 },
-    )) as GuildConfig[];
+    )) as { guildId: string; events: GuildConfigEvent[] }[];
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         return acc.concat(
@@ -63,5 +63,64 @@ export async function getAllEvents({ cache }: { cache: BotCache }) {
                 return ev;
             }),
         );
-    }, []);
+    }, [] as GuildConfigEvent[]);
+}
+
+/**
+ * Get events that should be triggered (eventDT <= current time)
+ * Uses database-level filtering for better performance
+ */
+export async function getTriggeredEvents({ cache, nowTime }: { cache: BotCache; nowTime: number }): Promise<GuildConfigEvent[]> {
+    const resArr = (await cache.get(
+        config.mongodb.swgohbotdb,
+        "guildConfigs",
+        {
+            "events.eventDT": { $lte: nowTime },
+        },
+        { guildId: 1, events: 1, _id: 0 },
+    )) as { guildId: string; events: GuildConfigEvent[] }[];
+
+    return resArr.reduce((acc, curr) => {
+        if (!curr?.events?.length) return acc;
+        const triggeredEvents = curr.events
+            .filter((ev) => Number.parseInt(ev.eventDT.toString(), 10) <= nowTime)
+            .map((ev) => {
+                ev.guildId = curr.guildId;
+                return ev;
+            });
+        return acc.concat(triggeredEvents);
+    }, [] as GuildConfigEvent[]);
+}
+
+/**
+ * Get events that have countdown enabled and are in the future
+ * Uses database-level filtering for better performance
+ */
+export async function getCountdownEvents({
+    cache,
+    nowTime,
+}: {
+    cache: BotCache;
+    nowTime: number;
+}): Promise<GuildConfigEvent[]> {
+    const resArr = (await cache.get(
+        config.mongodb.swgohbotdb,
+        "guildConfigs",
+        {
+            "events.countdown": true,
+            "events.eventDT": { $gt: nowTime },
+        },
+        { guildId: 1, events: 1, _id: 0 },
+    )) as { guildId: string; events: GuildConfigEvent[] }[];
+
+    return resArr.reduce((acc, curr) => {
+        if (!curr?.events?.length) return acc;
+        const countdownEvents = curr.events
+            .filter((ev) => ev.countdown && Number.parseInt(ev.eventDT.toString(), 10) > nowTime)
+            .map((ev) => {
+                ev.guildId = curr.guildId;
+                return ev;
+            });
+        return acc.concat(countdownEvents);
+    }, [] as GuildConfigEvent[]);
 }
