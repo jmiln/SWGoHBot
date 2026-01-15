@@ -1,5 +1,5 @@
 import { type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
-import config from "../config.ts";
+import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
@@ -15,7 +15,7 @@ import type {
     UserAcct,
     UserConfig,
 } from "../types/types.ts";
-import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray } from "./functions.ts";
+import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 
 const tiers = patreonModule.tiers;
@@ -286,7 +286,7 @@ export default (Bot: BotType, client: BotClient) => {
     // Format the output for the payouts embed
     function formatPayouts(players: ArenaWatchAcct[], arena: "char" | "fleet") {
         const times = new Map<string, { players: ArenaWatchAcct[] }>();
-        const arenaString = `last${Bot.toProperCase(arena === "fleet" ? "ship" : arena)}`;
+        const arenaString = `last${toProperCase(arena === "fleet" ? "ship" : arena)}`;
 
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);

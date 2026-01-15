@@ -1,4 +1,4 @@
-import config from "../config.ts";
+import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import type { BotType } from "../types/types.ts";
 import { sendWebhook, toProperCase } from "./functions.ts";
