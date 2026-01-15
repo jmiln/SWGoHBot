@@ -471,6 +471,12 @@ export interface PatronUser {
 
     declined_since?: string;
 }
+
+export interface ActivePatron {
+    discordID: string;
+    amount_cents: number;
+    declined_since?: string;
+}
 export interface PatreonTier {
     playerTime: number;
     guildTime: number;
@@ -544,7 +550,7 @@ export interface UserConfig {
     };
     bonusServer: string;
 }
-interface UserAcct {
+export interface UserAcct {
     allyCode: string;
     name: string;
     primary: boolean;

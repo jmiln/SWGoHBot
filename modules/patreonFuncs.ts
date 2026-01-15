@@ -1,29 +1,68 @@
 import { type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
+import config from "../config.ts";
+import constants from "../data/constants/constants.ts";
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
 import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
-import type { ArenaWatchAcct, BotClient, BotType, PatronUser, PlayerArenaRes, PlayerUpdates, UserConfig } from "../types/types.ts";
+import type {
+    ActivePatron,
+    ArenaWatchAcct,
+    BotClient,
+    BotType,
+    PatronUser,
+    PlayerArenaRes,
+    PlayerUpdates,
+    UserAcct,
+    UserConfig,
+} from "../types/types.ts";
+import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 
 const tiers = patreonModule.tiers;
 
+// Arena payout offsets (hours difference from daily reset)
+const ARENA_OFFSETS = {
+    char: 6,
+    fleet: 5,
+} as const;
+
+// Patron tier thresholds (in cents)
+const TIER_1_CENTS = 100; // $1
+const TIER_5_CENTS = 500; // $5
+const TIER_10_CENTS = 1000; // $10
+
 export default (Bot: BotType, client: BotClient) => {
-    // Time chunks, in milliseconds
-    //             ms    sec  min  hr
-    const dayMS = 1000 * 60 * 60 * 24;
-    const hrMS = 1000 * 60 * 60;
-    const minMS = 1000 * 60;
-    // const secMS = 1000;
+    const { dayMS, hrMS, minMS } = constants;
+
+    // Helper function to check if a channel is available and has proper permissions
+    async function isChannelAvailable(channelId: string): Promise<boolean> {
+        const channels = await client.shard.broadcastEval(
+            async (client, { chanId }) => {
+                const channel = client.channels.cache.get(chanId);
+                if (
+                    channel instanceof TextChannel &&
+                    channel?.guild &&
+                    channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                ) {
+                    return true;
+                }
+                return false;
+            },
+            { context: { chanId: channelId } },
+        );
+        return channels.some((ch) => !!ch);
+    }
 
     // Check if a given user is a patron, and if so, return their info
     Bot.getPatronUser = async (userId) => {
         if (!userId) throw new Error("Missing user ID");
 
         // Try and get em from the db
-        const patron: PatronUser = (await Bot.cache.getOne("swgohbot", "patrons", { discordID: userId })) as PatronUser;
+        const patron = (await Bot.cache.getOne("swgohbot", "patrons", { discordID: userId })) as PatronUser;
 
         // If they aren't in the db, see if we have em in there manually
-        if (!patron && Bot.config.patrons?.[userId]) {
-            const currentAmountCents = Bot.config.patrons[userId];
+        if (!patron && config.patrons?.[userId]) {
+            const currentAmountCents = config.patrons[userId];
             const currentTierNum = getPatreonTier({ amount_cents: currentAmountCents });
             const currentTier = tiers[currentTierNum];
             return {
@@ -51,13 +90,17 @@ export default (Bot: BotType, client: BotClient) => {
                 awAccounts: currentTier.awAccounts,
             };
         }
+
+        return null;
     };
 
-    function getPatreonTier(user: { amount_cents: number }) {
+    function getPatreonTier(user: { amount_cents: number } | null): number {
         const patreonTiers = Object.keys(tiers).map((t) => Number.parseInt(t, 10));
         const amount_dollars = (user?.amount_cents || 0) / 100;
         const minTier = Math.min(...patreonTiers);
-        if (amount_dollars && amount_dollars < minTier) return 0;
+
+        // If no amount or less than minimum tier, return tier 0
+        if (!amount_dollars || amount_dollars < minTier) return 0;
 
         let tierNum = minTier;
         for (const tier of patreonTiers) {
@@ -71,18 +114,18 @@ export default (Bot: BotType, client: BotClient) => {
     }
 
     // Get an array of all active patrons
-    async function getActivePatrons() {
-        let patrons = await Bot.cache.get("swgohbot", "patrons", {});
+    async function getActivePatrons(): Promise<ActivePatron[]> {
+        let patrons = (await Bot.cache.get("swgohbot", "patrons", {})) as ActivePatron[];
         patrons = patrons.filter((p) => !p.declined_since);
-        const others: string[] = Object.keys(Bot.config.patrons).length
-            ? Object.keys(Bot.config.patrons).concat([Bot.config.ownerid])
-            : [Bot.config.ownerid];
+        const others: string[] = Object.keys(config.patrons).length
+            ? Object.keys(config.patrons).concat([config.ownerid])
+            : [config.ownerid];
         for (const patUser of others) {
             const user = patrons.find((p) => p.discordID === patUser);
             if (!user) {
                 patrons.push({
                     discordID: patUser,
-                    amount_cents: Bot.config.patrons[patUser],
+                    amount_cents: config.patrons[patUser],
                 });
             }
         }
@@ -123,27 +166,27 @@ export default (Bot: BotType, client: BotClient) => {
     Bot.getRanks = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
-            if (patron.amount_cents < 100) continue;
+            if (patron.amount_cents < TIER_1_CENTS) continue;
             const user: UserConfig = await Bot.userReg.getUser(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
             if (!user?.accounts?.length) continue;
 
             // If they don't want any alerts
             if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off") continue;
-            const accountsToCheck = JSON.parse(JSON.stringify(user.accounts));
+            const accountsToCheck = structuredClone(user.accounts);
 
             for (let ix = 0; ix < accountsToCheck.length; ix++) {
                 const acc = accountsToCheck[ix];
                 // If the user only has em enabled for the primary ac, ignore the rest
                 if (
-                    ((user.accounts.length > 1 && patron.amount_cents < 500) || user.arenaAlert.enableRankDMs === "primary") &&
+                    ((user.accounts.length > 1 && patron.amount_cents < TIER_5_CENTS) || user.arenaAlert.enableRankDMs === "primary") &&
                     !acc.primary
                 ) {
                     continue;
                 }
                 let player: PlayerArenaRes;
                 try {
-                    const playerRes = await Bot.swgohAPI.getPlayersArena(acc.allyCode);
+                    const playerRes = await Bot.swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
                     player = playerRes?.[0] || null;
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
@@ -166,163 +209,22 @@ export default (Bot: BotType, client: BotClient) => {
                     continue;
                 }
                 if (!player?.arena) {
-                    Bot.logger.log("[patreonFuncs/getRanks] No player arena:");
-                    Bot.logger.log(player);
+                    Bot.logger.log(`[patreonFuncs/getRanks] No player arena: ${JSON.stringify(player)}`);
                     continue;
                 }
                 const pCharRank = player?.arena?.char?.rank;
                 const pShipRank = player?.arena?.ship?.rank;
                 if (!pCharRank && pCharRank !== 0 && !pShipRank && pShipRank !== 0) {
-                    Bot.logger.error("[patreonFuncs/getRanks] No arena ranks");
-                    console.log(player);
+                    Bot.logger.error(`[patreonFuncs/getRanks] No arena ranks: ${JSON.stringify(player)}`);
                     continue;
                 }
 
-                if (player.arena?.char?.rank) {
-                    if (["both", "char"].includes(user.arenaAlert.arena)) {
-                        const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, 6);
-                        const minTil = Math.floor(timeLeft / minMS);
-                        const payoutTime = `${Bot.formatDuration(timeLeft)} until payout.`;
+                // Handle character arena alerts
+                await handleArenaAlerts("char", player, acc, user, patron);
 
-                        const pUser = await client.users.fetch(patron.discordID);
-                        if (pUser) {
-                            try {
-                                if (user.arenaAlert.payoutWarning > 0) {
-                                    if (user.arenaAlert.payoutWarning === minTil) {
-                                        pUser
-                                            .send({
-                                                embeds: [
-                                                    {
-                                                        author: { name: "Arena Payout Alert" },
-                                                        description: `${player.name}'s character arena payout is in **${minTil}** minutes!\nYour current rank is ${player.arena.char.rank}`,
-                                                        color: Bot.constants.colors.green,
-                                                    },
-                                                ],
-                                            })
-                                            .catch(() => {});
-                                        // .catch(err => console.log("[patFunc getRanks]", err));
-                                    }
-                                }
-                                if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                                    pUser
-                                        .send({
-                                            embeds: [
-                                                {
-                                                    author: { name: "Character arena" },
-                                                    description: `${player.name}'s payout ended at **${player.arena.char.rank}**!`,
-                                                    color: Bot.constants.colors.green,
-                                                },
-                                            ],
-                                        })
-                                        .catch(() => {});
-                                    // .catch(err => console.log("[patFunc getRanks]", err));
-                                }
-
-                                if (player.arena.char.rank > acc.lastCharRank) {
-                                    // DM user that they dropped
-                                    pUser
-                                        .send({
-                                            embeds: [
-                                                {
-                                                    author: { name: "Character Arena" },
-                                                    description: `**${player.name}'s** rank just dropped from ${acc.lastCharRank} to **${
-                                                        player.arena.char.rank
-                                                    }**\nDown by **${player.arena.char.rank - acc.lastCharClimb}** since last climb`,
-                                                    color: Bot.constants.colors.red,
-                                                    footer: {
-                                                        text: payoutTime,
-                                                    },
-                                                },
-                                            ],
-                                        })
-                                        .catch(() => {});
-                                    // .catch(err => console.log("[patFunc getRanks]", err));
-                                }
-                            } catch (e) {
-                                Bot.logger.error(`Broke getting ranks: ${e}`);
-                            }
-                        }
-                    }
-                    acc.lastCharClimb = acc.lastCharClimb
-                        ? player.arena.char.rank < acc.lastCharRank
-                            ? player.arena.char.rank
-                            : acc.lastCharClimb
-                        : player.arena.char.rank;
-                    acc.lastCharRank = player.arena.char.rank;
-                }
-                if (player.arena.ship?.rank) {
-                    if (["both", "fleet"].includes(user.arenaAlert.arena)) {
-                        const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, 5);
-                        const minTil = Math.floor(timeLeft / minMS);
-                        const payoutTime = `${Bot.formatDuration(timeLeft)} until payout.`;
-
-                        const pUser = await client.users.fetch(patron.discordID);
-                        if (pUser) {
-                            try {
-                                if (user.arenaAlert.payoutWarning > 0) {
-                                    if (user.arenaAlert.payoutWarning === minTil) {
-                                        pUser
-                                            .send({
-                                                embeds: [
-                                                    {
-                                                        author: { name: "Arena Payout Alert" },
-                                                        description: `${player.name}'s ship arena payout is in **${minTil}** minutes!`,
-                                                        color: Bot.constants.colors.green,
-                                                    },
-                                                ],
-                                            })
-                                            .catch(() => {});
-                                        // .catch(err => console.log("[patFunc getRanks]", err));
-                                    }
-                                }
-
-                                if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                                    pUser
-                                        .send({
-                                            embeds: [
-                                                {
-                                                    author: { name: "Fleet arena" },
-                                                    description: `${player.name}'s payout ended at **${player.arena.ship.rank}**!`,
-                                                    color: Bot.constants.colors.green,
-                                                },
-                                            ],
-                                        })
-                                        .catch(() => {});
-                                    // .catch(err => console.log("[patFunc getRanks]", err));
-                                }
-
-                                if (player.arena.ship.rank > acc.lastShipRank) {
-                                    pUser
-                                        .send({
-                                            embeds: [
-                                                {
-                                                    author: { name: "Fleet Arena" },
-                                                    description: `**${player.name}'s** rank just dropped from ${acc.lastShipRank} to **${
-                                                        player.arena.ship.rank
-                                                    }**\nDown by **${player.arena.ship.rank - acc.lastShipClimb}** since last climb`,
-                                                    color: Bot.constants.colors.red,
-                                                    footer: {
-                                                        text: payoutTime,
-                                                    },
-                                                },
-                                            ],
-                                        })
-                                        .catch(() => {});
-                                    // .catch(err => console.log("[patFunc getRanks]", err));
-                                }
-                            } catch (e) {
-                                Bot.logger.error(`Broke getting ranks: ${e}`);
-                            }
-                        }
-                    }
-                    acc.lastShipClimb = acc.lastShipClimb
-                        ? player.arena.ship.rank < acc.lastShipRank
-                            ? player.arena.ship.rank
-                            : acc.lastShipClimb
-                        : player.arena.ship.rank;
-                    acc.lastShipRank = player.arena.ship.rank;
-                }
-                if (patron.amount_cents < 500) {
+                // Handle ship arena alerts
+                await handleArenaAlerts("ship", player, acc, user, patron);
+                if (patron.amount_cents < TIER_5_CENTS) {
                     user.accounts[user.accounts.findIndex((a) => a.primary)] = acc;
                 } else {
                     user.accounts[ix] = acc;
@@ -338,7 +240,7 @@ export default (Bot: BotType, client: BotClient) => {
     Bot.shardTimes = async () => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
-            if (patron.amount_cents < 100) continue;
+            if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
@@ -351,11 +253,11 @@ export default (Bot: BotType, client: BotClient) => {
 
             // Make a copy just in case, so nothing goes wonky
             let acctCount = 0;
-            if (patron.amount_cents < 500) acctCount = Bot.config.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
-            else acctCount = Bot.config.arenaWatchConfig.tier3;
+            if (patron.amount_cents < TIER_5_CENTS) acctCount = config.arenaWatchConfig.tier1;
+            else if (patron.amount_cents < TIER_10_CENTS) acctCount = config.arenaWatchConfig.tier2;
+            else acctCount = config.arenaWatchConfig.tier3;
 
-            const players = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
+            const players = structuredClone(aw.allycodes.slice(0, acctCount));
             if (!players || !players.length) continue;
 
             // If char is enabled, send it there
@@ -365,8 +267,6 @@ export default (Bot: BotType, client: BotClient) => {
                 const sentMessage = (await sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed)) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.char.msgID = sentMessage.id;
-                } else {
-                    // console.log(`Could not send char arena message for ${user.id}, patreon ${inspect(patron)}`);
                 }
             }
             // Then if fleet is enabled, send it there as well/ instead
@@ -376,9 +276,6 @@ export default (Bot: BotType, client: BotClient) => {
                 const sentMessage = (await sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed)) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.fleet.msgID = sentMessage.id;
-                } else {
-                    // If it gets here, then someone couldn't be found
-                    // console.log(`Could not send fleet arena message for ${user.id}`);
                 }
             }
             // Update the user in case something changed (Likely message ID)
@@ -388,30 +285,30 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Format the output for the payouts embed
     function formatPayouts(players: ArenaWatchAcct[], arena: "char" | "fleet") {
-        const times = {};
+        const times = new Map<string, { players: ArenaWatchAcct[] }>();
         const arenaString = `last${Bot.toProperCase(arena === "fleet" ? "ship" : arena)}`;
 
         for (const player of players) {
             const rankString = player[arenaString].toString().padStart(3);
-            player.outString = Bot.expandSpaces(
-                `**\`${Bot.constants.zws} ${rankString} ${Bot.constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`,
+            player.outString = expandSpaces(
+                `**\`${constants.zws} ${rankString} ${constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`,
             );
-            if (times[player.timeTil]) {
-                times[player.timeTil].players.push(player);
+            const existingTime = times.get(player.timeTil);
+            if (existingTime) {
+                existingTime.players.push(player);
             } else {
-                times[player.timeTil] = {
+                times.set(player.timeTil, {
                     players: [player],
-                };
+                });
             }
         }
         const fieldOut = [];
-        for (const key of Object.keys(times)) {
-            const time = times[key];
+        for (const [key, time] of times.entries()) {
             fieldOut.push({
                 name: `PO in ${key}`,
                 value: time.players
-                    .sort((a: string, b: string) => a[arenaString] - b[arenaString])
-                    .map((p: { outString: string }) => p.outString)
+                    .sort((a: ArenaWatchAcct, b: ArenaWatchAcct) => a[arenaString] - b[arenaString])
+                    .map((p: ArenaWatchAcct) => p.outString)
                     .join("\n"),
             });
         }
@@ -425,26 +322,18 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Go through the given list and return how long til payouts
     function getPayoutTimes(players: ArenaWatchAcct[], arena: "char" | "fleet") {
-        const offsets = {
-            char: 6,
-            fleet: 5,
-        };
         for (const player of players) {
             if (!player.poOffset && player.poOffset !== 0) continue;
 
-            const timeLeft = getTimeLeft(player.poOffset, offsets[arena]);
+            const timeLeft = getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
             player.duration = Math.floor(timeLeft / minMS);
-            player.timeTil = `${Bot.formatDuration(timeLeft)} until payout.`;
+            player.timeTil = `${formatDuration(timeLeft, Bot.languages[defaultSettings.language])} until payout.`;
         }
         return players.sort((a, b) => (a.duration > b.duration ? 1 : -1));
     }
 
     // Go through a given list and get the payout times for both arenas
     function getAllPayoutTimes(player: ArenaWatchAcct) {
-        const offsets = {
-            char: 6,
-            fleet: 5,
-        };
         const payout = {
             poOffset: player.poOffset,
             charDuration: null,
@@ -452,11 +341,11 @@ export default (Bot: BotType, client: BotClient) => {
             fleetDuration: null,
             fleetTimeTil: null,
         };
-        for (const arena of ["fleet", "char"]) {
+        for (const arena of ["fleet", "char"] as const) {
             if (!payout.poOffset && payout.poOffset !== 0) continue;
-            const timeLeft = getTimeLeft(player.poOffset, offsets[arena]);
+            const timeLeft = getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
             payout[`${arena}Duration`] = Math.floor(timeLeft / minMS);
-            payout[`${arena}TimeTil`] = `${Bot.formatDuration(timeLeft)} until payout.`;
+            payout[`${arena}TimeTil`] = `${formatDuration(timeLeft, Bot.languages[defaultSettings.language])} until payout.`;
         }
         return payout;
     }
@@ -510,7 +399,7 @@ export default (Bot: BotType, client: BotClient) => {
             //     "fleetTimeTil"
             // }
 
-            if (patron.amount_cents < 100) continue;
+            if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
@@ -527,16 +416,15 @@ export default (Bot: BotType, client: BotClient) => {
             }
 
             let acctCount = 0;
-            if (patron.amount_cents < 500) acctCount = Bot.config.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < 1000) acctCount = Bot.config.arenaWatchConfig.tier2;
-            else acctCount = Bot.config.arenaWatchConfig.tier3;
+            if (patron.amount_cents < TIER_5_CENTS) acctCount = config.arenaWatchConfig.tier1;
+            else if (patron.amount_cents < TIER_10_CENTS) acctCount = config.arenaWatchConfig.tier2;
+            else acctCount = config.arenaWatchConfig.tier3;
 
-            const accountsToCheck: ArenaWatchAcct[] = JSON.parse(JSON.stringify(aw.allycodes.slice(0, acctCount)));
+            const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allycodes.slice(0, acctCount));
             const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
             if (!allyCodes || !allyCodes.length) continue;
 
             const newPlayers = await Bot.swgohAPI.getPlayersArena(allyCodes);
-            // if (allyCodes.length !== newPlayers.length) Bot.logger.error(`Did not get all players! ${newPlayers.length}/${allyCodes.length}`);
 
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
             let charOut = [];
@@ -557,7 +445,7 @@ export default (Bot: BotType, client: BotClient) => {
                     const charOverview = {
                         name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                         allyCode: player.allyCode,
-                        oldRank: player.lastChar || 0,
+                        oldRank: player.lastChar ?? 0,
                         newRank: newPlayer.arena.char.rank,
                         mark: player.mark,
                     };
@@ -569,7 +457,7 @@ export default (Bot: BotType, client: BotClient) => {
                     const shipOverview = {
                         name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                         allyCode: player.allyCode,
-                        oldRank: player.lastShip || 0,
+                        oldRank: player.lastShip ?? 0,
                         newRank: newPlayer.arena.ship.rank,
                         mark: player.mark,
                     };
@@ -731,7 +619,7 @@ export default (Bot: BotType, client: BotClient) => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
-            if (!patron.discordID || patron.amount_cents < 100) continue;
+            if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
             const user = await Bot.userReg.getUser(patron.discordID);
 
             // If the guild update isn't enabled, then move along
@@ -750,23 +638,7 @@ export default (Bot: BotType, client: BotClient) => {
             // }
 
             // Check if the bot is able to send messages into the set channel
-            const channels = await client.shard.broadcastEval(
-                async (client, { guChan }) => {
-                    const channel = client.channels.cache.get(guChan);
-                    if (
-                        channel instanceof TextChannel &&
-                        channel?.guild &&
-                        channel
-                            .permissionsFor(client.user)
-                            .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
-                    ) {
-                        return true;
-                    }
-                    return false;
-                },
-                { context: { guChan: gu.channel } },
-            );
-            const chanAvail = channels.some((ch) => !!ch);
+            const chanAvail = await isChannelAvailable(gu.channel);
 
             // If the channel is not available, move on
             if (!chanAvail) continue;
@@ -777,22 +649,26 @@ export default (Bot: BotType, client: BotClient) => {
                 guild = await Bot.swgohAPI.guild(gu.allycode);
             } catch (err) {
                 if (err.toString().includes("not in a guild")) continue;
-                console.log(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
+                Bot.logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
                 continue;
             }
-            if (!guild?.roster)
-                return console.log(
-                    `[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${guild}`,
+            if (!guild?.roster) {
+                Bot.logger.error(
+                    `[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${JSON.stringify(guild)}`,
                 );
+                return;
+            }
 
             let guildLog: PlayerUpdates;
             try {
                 if (!guild?.roster?.length) {
-                    return console.log(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
+                    Bot.logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
+                    return;
                 }
                 guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
             } catch (err) {
-                return console.log(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
+                Bot.logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
+                return;
             }
 
             // If there were not changes found, move along, not the changes we were looking for
@@ -809,7 +685,7 @@ export default (Bot: BotType, client: BotClient) => {
                 }
 
                 // Run it through the splitter in case it needs it
-                const outVals = Bot.msgArray(fieldVal, "\n", 900);
+                const outVals = msgArray(fieldVal, "\n", 900);
                 for (const [ix, val] of outVals.entries()) {
                     fields.push({
                         name: ix === 0 ? memberName : `${memberName} (cont)`,
@@ -822,7 +698,7 @@ export default (Bot: BotType, client: BotClient) => {
             if (!fields.length) continue;
 
             const MAX_FIELDS = 6;
-            const fieldsOut = Bot.chunkArray(fields, MAX_FIELDS);
+            const fieldsOut = chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
                 await client.shard.broadcastEval(
@@ -884,12 +760,12 @@ export default (Bot: BotType, client: BotClient) => {
                             // @ts-expect-error  (Won't shut up about partial messages or void, etc)
                             targetMsg = await msg
                                 .edit({ embeds: [outEmbed] })
-                                .catch((err) => console.error("[PF sendBroadcastMsg edit]", err?.toString()));
+                                .catch((err) => Bot.logger.error("[PF sendBroadcastMsg edit]", err?.toString()));
                         } else {
                             // @ts-expect-error  (Won't shut up about partial messages or void, etc)
                             targetMsg = await channel
                                 .send({ embeds: [outEmbed] })
-                                .catch((err) => console.error("[PF sendBroadcastMsg send]", err));
+                                .catch((err) => Bot.logger.error("[PF sendBroadcastMsg send]", err));
                         }
                     }
                 }
@@ -913,7 +789,7 @@ export default (Bot: BotType, client: BotClient) => {
         const nowTime = Date.now();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
-            if (!patron.discordID || patron.amount_cents < 100) continue;
+            if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
 
             // This is what will be in the user.guildTickets
             // gt = {
@@ -949,23 +825,7 @@ export default (Bot: BotType, client: BotClient) => {
             }
 
             // Check if the bot is able to send messages into the set channel
-            const channels = await client.shard.broadcastEval(
-                async (client, { gtChan }) => {
-                    const channel = client.channels.cache.get(gtChan);
-                    if (
-                        channel instanceof TextChannel &&
-                        channel?.guild &&
-                        channel
-                            .permissionsFor(client.user)
-                            .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
-                    ) {
-                        return true;
-                    }
-                    return false;
-                },
-                { context: { gtChan: gt.channel } },
-            );
-            const chanAvail = channels.some((ch) => !!ch);
+            const chanAvail = await isChannelAvailable(gt.channel);
 
             // If the channel is not available, move on
             if (!chanAvail) continue;
@@ -976,7 +836,7 @@ export default (Bot: BotType, client: BotClient) => {
                 rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
             } catch (err) {
                 if (err.toString().includes("not in a guild")) continue;
-                console.log(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
+                Bot.logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
                 continue;
             }
 
@@ -986,9 +846,10 @@ export default (Bot: BotType, client: BotClient) => {
             }
 
             if (!rawGuild?.roster?.length) {
-                return console.log(
-                    `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${rawGuild}`,
+                Bot.logger.error(
+                    `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${JSON.stringify(rawGuild)}`,
                 );
+                return;
             }
 
             let roster = null;
@@ -1007,10 +868,10 @@ export default (Bot: BotType, client: BotClient) => {
 
             if (refreshTime > nowTime) {
                 // It's in the future
-                timeUntilReset = Bot.formatDuration(refreshTime - nowTime);
+                timeUntilReset = formatDuration(refreshTime - nowTime, Bot.languages[defaultSettings.language]);
             } else {
                 // It's in the past, so calculate the next time
-                timeUntilReset = Bot.formatDuration(refreshTime + dayMS - nowTime);
+                timeUntilReset = formatDuration(refreshTime + dayMS - nowTime, Bot.languages[defaultSettings.language]);
             }
 
             // If the user only wants the message, and we didn't have a saved refreshTime for them, check here
@@ -1023,10 +884,10 @@ export default (Bot: BotType, client: BotClient) => {
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
                 if (tickets < MAX_TICKETS) {
-                    outArr.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
+                    outArr.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else if (isMsgType || gt?.showMax) {
                     // Bold/ italicise the maxed players' counts
-                    outArr.push(Bot.expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${`**${member.playerName}**`}`));
+                    outArr.push(expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${`**${member.playerName}**`}`));
                 } else {
                     maxed += 1;
                 }
@@ -1066,10 +927,116 @@ export default (Bot: BotType, client: BotClient) => {
 
     function getTimeLeft(offset: number, hrDiff: number) {
         const now = Date.now();
-        let then = dayMS - 1 + Bot.getUTCFromOffset(offset) - hrDiff * hrMS;
+        let then = dayMS - 1 + getUTCFromOffset(offset) - hrDiff * hrMS;
         if (then < now) {
             then = then + dayMS;
         }
         return then - now;
+    }
+
+    // Helper function to handle arena alerts for both character and ship arenas
+    async function handleArenaAlerts(
+        arenaType: "char" | "ship",
+        player: PlayerArenaRes,
+        acc: UserAcct,
+        user: UserConfig,
+        patron: { discordID: string },
+    ) {
+        const arenaConfig = {
+            char: {
+                alertType: "both" as const,
+                altType: "char" as const,
+                hrDiff: ARENA_OFFSETS.char,
+                rankKey: "lastCharRank" as const,
+                climbKey: "lastCharClimb" as const,
+                displayName: "character",
+                capitalName: "Character",
+            },
+            ship: {
+                alertType: "both" as const,
+                altType: "fleet" as const,
+                hrDiff: ARENA_OFFSETS.fleet,
+                rankKey: "lastShipRank" as const,
+                climbKey: "lastShipClimb" as const,
+                displayName: "ship",
+                capitalName: "Fleet",
+            },
+        };
+
+        const config = arenaConfig[arenaType];
+        const arenaData = arenaType === "char" ? player.arena?.char : player.arena?.ship;
+
+        if (!arenaData?.rank) return;
+
+        if ([config.alertType, config.altType].includes(user.arenaAlert.arena)) {
+            const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
+            const minTil = Math.floor(timeLeft / minMS);
+            const payoutTime = `${formatDuration(timeLeft, Bot.languages[defaultSettings.language])} until payout.`;
+
+            const pUser = await client.users.fetch(patron.discordID);
+            if (pUser) {
+                try {
+                    // Payout warning
+                    if (user.arenaAlert.payoutWarning > 0 && user.arenaAlert.payoutWarning === minTil) {
+                        await pUser
+                            .send({
+                                embeds: [
+                                    {
+                                        author: { name: "Arena Payout Alert" },
+                                        description: `${player.name}'s ${config.displayName} arena payout is in **${minTil}** minutes!${
+                                            arenaType === "char" ? `\nYour current rank is ${arenaData.rank}` : ""
+                                        }`,
+                                        color: constants.colors.green,
+                                    },
+                                ],
+                            })
+                            .catch((err) => Bot.logger.error(`[getRanks] Failed to send payout warning: ${err}`));
+                    }
+
+                    // Payout result
+                    if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
+                        await pUser
+                            .send({
+                                embeds: [
+                                    {
+                                        author: { name: `${config.capitalName} arena` },
+                                        description: `${player.name}'s payout ended at **${arenaData.rank}**!`,
+                                        color: constants.colors.green,
+                                    },
+                                ],
+                            })
+                            .catch((err) => Bot.logger.error(`[getRanks] Failed to send payout result: ${err}`));
+                    }
+
+                    // Rank drop alert
+                    const lastRank = acc[config.rankKey];
+                    const lastClimb = acc[config.climbKey];
+                    if (arenaData.rank > lastRank) {
+                        await pUser
+                            .send({
+                                embeds: [
+                                    {
+                                        author: { name: `${config.capitalName} Arena` },
+                                        description: `**${player.name}'s** rank just dropped from ${lastRank} to **${arenaData.rank}**\nDown by **${
+                                            arenaData.rank - lastClimb
+                                        }** since last climb`,
+                                        color: constants.colors.red,
+                                        footer: { text: payoutTime },
+                                    },
+                                ],
+                            })
+                            .catch((err) => Bot.logger.error(`[getRanks] Failed to send rank drop alert: ${err}`));
+                    }
+                } catch (e) {
+                    Bot.logger.error(`[getRanks] Error processing ${config.displayName} arena alerts: ${e}`);
+                }
+            }
+        }
+
+        // Update climb and rank tracking
+        const currentClimb = acc[config.climbKey];
+        const currentRank = acc[config.rankKey];
+        acc[config.climbKey] = currentClimb ? (arenaData.rank < currentRank ? arenaData.rank : currentClimb) : arenaData.rank;
+        acc[config.rankKey] = arenaData.rank;
     }
 };
