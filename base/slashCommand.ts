@@ -1,4 +1,5 @@
 import { type AutocompleteFocusedOption, type ChatInputCommandInteraction, codeBlock, MessageFlags } from "discord.js";
+import logger from "../modules/Logger.ts";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -44,11 +45,11 @@ export default abstract class slashCommand {
     ): Promise<void> {
         let msgOut = errMsg || null;
         if (!interaction?.channel) {
-            console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
+            logger.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
             return;
         }
         if (!errMsg?.length) {
-            console.error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
+            logger.error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
             msgOut = "Something broke, please try again in a bit, or report it.";
         }
         if (msgOut?.includes("DiscordAPIError") && msgOut.includes("Unknown Message")) {
@@ -108,7 +109,7 @@ export default abstract class slashCommand {
                 return interaction.editReply(embedObj);
             } catch (e) {
                 // If something breaks with the editReply, log it, then just send a message to that channel
-                console.log(`[base/slashCommand Error: ${this.commandData.name}] ${e.message}`);
+                logger.error(`[base/slashCommand Error: ${this.commandData.name}] ${e.message}`);
                 return interaction.channel.send(embedObj);
             }
         }

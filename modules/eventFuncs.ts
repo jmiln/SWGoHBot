@@ -3,6 +3,7 @@ import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig
 import type { BotClient, BotType } from "../types/types.ts";
 import { formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
+import logger from "./Logger.ts";
 
 export default (Bot: BotType, client: BotClient) => {
     // Some base time conversions to milliseconds
@@ -57,7 +58,7 @@ export default (Bot: BotType, client: BotClient) => {
                     },
                 );
             } catch (e) {
-                Bot.logger.error(`Broke trying to announce event with name/channel: ${event.name} (${event.channel}) \n${e.stack}`);
+                logger.error(`Broke trying to announce event with name/channel: ${event.name} (${event.channel}) \n${e.stack}`);
             }
         }
     }
@@ -140,16 +141,16 @@ export default (Bot: BotType, client: BotClient) => {
                     // console.log(`Updating repeating event ${event.name} (${event.channel}).`);
                 })
                 .catch((error) => {
-                    Bot.logger.error(`Broke trying to replace event: ${error}`);
+                    logger.error(`Broke trying to replace event: ${error}`);
                 });
         } else {
             // If it's not going to be repeating, just destroy it
             await deleteGuildEvent({ cache: Bot.cache, guildId: event.guildId, evName: event.name })
                 .then(() => {
-                    Bot.logger.debug(`Deleting non-repeating event ${event.name}`);
+                    logger.debug(`Deleting non-repeating event ${event.name}`);
                 })
                 .catch((error) => {
-                    Bot.logger.error(`Broke trying to delete old event ${error}`);
+                    logger.error(`Broke trying to delete old event ${error}`);
                 });
         }
     };

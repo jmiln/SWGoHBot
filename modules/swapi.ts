@@ -8,6 +8,7 @@ import { MongoClient } from "mongodb";
 import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import mongoCache from "../modules/cache.ts";
+import logger from "./Logger.ts";
 
 import type {
     ComlinkAbility,
@@ -144,7 +145,7 @@ export default (opts = { noop: false }) => {
 
             return player;
         } catch (e) {
-            console.error(`SWAPI Broke getting player by name (${name}): ${e}`);
+            logger.error(`SWAPI Broke getting player by name (${name}): ${e}`);
             throw e;
         }
     }
@@ -168,7 +169,7 @@ export default (opts = { noop: false }) => {
         const playersOut = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
             const p: SWAPIPlayerArenaProfile = await comlinkStub.getPlayerArenaProfile(ac.toString()).catch(() => {});
-            // .catch(err => console.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
+            // .catch(err => logger.log(`Error in stub.getPlayerArenaProfile for (${ac}) \n${inspect(err)}`));//`?.response?.body ? err.response.body : err)}`));
             playersOut.push(p);
         });
 
@@ -203,10 +204,10 @@ export default (opts = { noop: false }) => {
         const updatedBare: SWAPIPlayer[] = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
             const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch((err: Error) => {
-                console.error(`Error in eachLimit getPlayer (${ac}):`);
-                return console.error(err.toString());
+                logger.error(`Error in eachLimit getPlayer (${ac}):`);
+                return logger.error(err.toString());
             });
-            if (!tempBare) console.error("[getPlayerUpdates] Broke while getting tempBare");
+            if (!tempBare) logger.error("[getPlayerUpdates] Broke while getting tempBare");
             else {
                 const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
                 updatedBare.push(formattedComlinkPlayer);
@@ -223,7 +224,7 @@ export default (opts = { noop: false }) => {
                 worker.on("message", resolve);
                 worker.on("error", reject);
                 worker.on("exit", (code) => {
-                    if (code !== 0) console.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
+                    if (code !== 0) logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
                     worker.terminate();
                 });
             });
@@ -286,7 +287,7 @@ export default (opts = { noop: false }) => {
                 }
             })
             .catch((err) => {
-                console.error(`Error running workers: ${err}`);
+                logger.error(`Error running workers: ${err}`);
             });
 
         return guildLog;
@@ -426,7 +427,7 @@ export default (opts = { noop: false }) => {
             }
             return playerStats;
         } catch (error) {
-            console.error(`SWAPI Broke getting playerStats: ${error}`);
+            logger.error(`SWAPI Broke getting playerStats: ${error}`);
             throw error;
         }
     }
@@ -618,7 +619,7 @@ export default (opts = { noop: false }) => {
         //         );
         //         if (Array.isArray(skillName)) skillName = skillName[0];
         //         if (!skillName) {
-        //             console.error(`[swapi langChar] Cannot find skillName for ${char.skillReferenceList[skill].skillId}`);
+        //             logger.error(`[swapi langChar] Cannot find skillName for ${char.skillReferenceList[skill].skillId}`);
         //             char.skillReferenceList[skill].nameKey = "N/A";
         //             continue;
         //         }
@@ -637,7 +638,7 @@ export default (opts = { noop: false }) => {
                 );
                 if (Array.isArray(skillName)) skillName = skillName[0];
                 if (!skillName) {
-                    console.error(`[swapi langChar] Cannot find skillName for ${char.skills[skill].id}`);
+                    logger.error(`[swapi langChar] Cannot find skillName for ${char.skills[skill].id}`);
                     char.skills[skill].nameKey = "N/A";
                     continue;
                 }
@@ -728,9 +729,9 @@ export default (opts = { noop: false }) => {
             if (Array.isArray(skill)) skill = skill[0];
 
             if (!skill) {
-                console.log(s);
-                console.error("[swapi getCharacter] Missing ability - ");
-                console.error(s);
+                logger.log(s);
+                logger.error("[swapi getCharacter] Missing ability - ");
+                logger.error(s);
                 throw new Error(`Missing character ability ${s.skillId}`);
             }
             s.isZeta = skill.isZeta;
@@ -759,7 +760,7 @@ export default (opts = { noop: false }) => {
             for (const [ix, e] of tier.equipmentSetList.entries()) {
                 const eq = eqList.find((equipment) => equipment.id === e);
                 if (!eq) {
-                    console.error(`Missing equipment for char ${char.baseId}, make sure to update the gear lang stuff${inspect(e)}`);
+                    logger.error(`Missing equipment for char ${char.baseId}, make sure to update the gear lang stuff${inspect(e)}`);
                     continue;
                 }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
@@ -918,10 +919,10 @@ export default (opts = { noop: false }) => {
                 tempGuild = await fetchGuild(player.guildId);
             } catch (err) {
                 // Probably API timeout
-                console.log(`[SWAPI-guild] Couldn't update guild for: ${player.name}`);
+                logger.log(`[SWAPI-guild] Couldn't update guild for: ${player.name}`);
                 throw new Error(err);
             }
-            // console.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
+            // logger.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
 
             if (Array.isArray(tempGuild)) {
                 tempGuild = tempGuild[0];
@@ -932,12 +933,12 @@ export default (opts = { noop: false }) => {
                 if (guild[0]?.roster) {
                     return guild[0];
                 }
-                // console.log("Broke getting tempGuild: " + inspect(tempGuild.error));
+                // logger.log("Broke getting tempGuild: " + inspect(tempGuild.error));
                 // throw new Error("Could not find your guild. The API is likely overflowing.");
             }
 
             if (tempGuild.roster?.length !== tempGuild.members) {
-                console.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
+                logger.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
             guild = await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
             if (warnings) guild.warnings = warnings;
@@ -1067,7 +1068,7 @@ export default (opts = { noop: false }) => {
             }
             return guild[0];
         } catch (e) {
-            console.error(`SWAPI(guild) Broke getting guild: ${e}`);
+            logger.error(`SWAPI(guild) Broke getting guild: ${e}`);
             throw e;
         }
     }

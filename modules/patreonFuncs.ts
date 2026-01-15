@@ -17,6 +17,7 @@ import type {
 } from "../types/types.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
+import logger from "./Logger.ts";
 
 const tiers = patreonModule.tiers;
 
@@ -191,7 +192,7 @@ export default (Bot: BotType, client: BotClient) => {
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
                     await Bot.wait(750);
-                    Bot.logger.error(`Broke in getRanks: ${e}`);
+                    logger.error(`Broke in getRanks: ${e}`);
                     return;
                 }
                 if (!acc.lastCharRank) {
@@ -205,17 +206,17 @@ export default (Bot: BotType, client: BotClient) => {
                 if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
                 if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
                 if (!player) {
-                    Bot.logger.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
+                    logger.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
                     continue;
                 }
                 if (!player?.arena) {
-                    Bot.logger.log(`[patreonFuncs/getRanks] No player arena: ${JSON.stringify(player)}`);
+                    logger.log(`[patreonFuncs/getRanks] No player arena: ${JSON.stringify(player)}`);
                     continue;
                 }
                 const pCharRank = player?.arena?.char?.rank;
                 const pShipRank = player?.arena?.ship?.rank;
                 if (!pCharRank && pCharRank !== 0 && !pShipRank && pShipRank !== 0) {
-                    Bot.logger.error(`[patreonFuncs/getRanks] No arena ranks: ${JSON.stringify(player)}`);
+                    logger.error(`[patreonFuncs/getRanks] No arena ranks: ${JSON.stringify(player)}`);
                     continue;
                 }
 
@@ -649,11 +650,11 @@ export default (Bot: BotType, client: BotClient) => {
                 guild = await Bot.swgohAPI.guild(gu.allycode);
             } catch (err) {
                 if (err.toString().includes("not in a guild")) continue;
-                Bot.logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
+                logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
                 continue;
             }
             if (!guild?.roster) {
-                Bot.logger.error(
+                logger.error(
                     `[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${JSON.stringify(guild)}`,
                 );
                 return;
@@ -662,12 +663,12 @@ export default (Bot: BotType, client: BotClient) => {
             let guildLog: PlayerUpdates;
             try {
                 if (!guild?.roster?.length) {
-                    Bot.logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
+                    logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
                     return;
                 }
                 guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
             } catch (err) {
-                Bot.logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
+                logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
                 return;
             }
 
@@ -760,12 +761,12 @@ export default (Bot: BotType, client: BotClient) => {
                             // @ts-expect-error  (Won't shut up about partial messages or void, etc)
                             targetMsg = await msg
                                 .edit({ embeds: [outEmbed] })
-                                .catch((err) => Bot.logger.error("[PF sendBroadcastMsg edit]", err?.toString()));
+                                .catch((err) => logger.error("[PF sendBroadcastMsg edit]", err?.toString()));
                         } else {
                             // @ts-expect-error  (Won't shut up about partial messages or void, etc)
                             targetMsg = await channel
                                 .send({ embeds: [outEmbed] })
-                                .catch((err) => Bot.logger.error("[PF sendBroadcastMsg send]", err));
+                                .catch((err) => logger.error("[PF sendBroadcastMsg send]", err));
                         }
                     }
                 }
@@ -836,7 +837,7 @@ export default (Bot: BotType, client: BotClient) => {
                 rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
             } catch (err) {
                 if (err.toString().includes("not in a guild")) continue;
-                Bot.logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
+                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
                 continue;
             }
 
@@ -846,7 +847,7 @@ export default (Bot: BotType, client: BotClient) => {
             }
 
             if (!rawGuild?.roster?.length) {
-                Bot.logger.error(
+                logger.error(
                     `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${JSON.stringify(rawGuild)}`,
                 );
                 return;
@@ -990,7 +991,7 @@ export default (Bot: BotType, client: BotClient) => {
                                     },
                                 ],
                             })
-                            .catch((err) => Bot.logger.error(`[getRanks] Failed to send payout warning: ${err}`));
+                            .catch((err) => logger.error(`[getRanks] Failed to send payout warning: ${err}`));
                     }
 
                     // Payout result
@@ -1005,7 +1006,7 @@ export default (Bot: BotType, client: BotClient) => {
                                     },
                                 ],
                             })
-                            .catch((err) => Bot.logger.error(`[getRanks] Failed to send payout result: ${err}`));
+                            .catch((err) => logger.error(`[getRanks] Failed to send payout result: ${err}`));
                     }
 
                     // Rank drop alert
@@ -1025,10 +1026,10 @@ export default (Bot: BotType, client: BotClient) => {
                                     },
                                 ],
                             })
-                            .catch((err) => Bot.logger.error(`[getRanks] Failed to send rank drop alert: ${err}`));
+                            .catch((err) => logger.error(`[getRanks] Failed to send rank drop alert: ${err}`));
                     }
                 } catch (e) {
-                    Bot.logger.error(`[getRanks] Error processing ${config.displayName} arena alerts: ${e}`);
+                    logger.error(`[getRanks] Error processing ${config.displayName} arena alerts: ${e}`);
                 }
             }
         }

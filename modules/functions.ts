@@ -21,6 +21,7 @@ import type { BotCache } from "../types/cache_types.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotClient, BotInteraction, BotType, BotUnit, UserConfig } from "../types/types.ts";
+import logger from "./Logger.ts";
 
 // These are just the ones that need access to Bot or the client
 export default (Bot: BotType, client: BotClient) => {
@@ -52,12 +53,12 @@ export default (Bot: BotType, client: BotClient) => {
         )
             return;
         // TODO Should probably log this / tell users about the issue somehow?
-        // return console.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
+        // return logger.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
 
         // If everything is ok, go ahead and try sending the message
         await chan.send(announceMsg).catch((err) => {
             // if (err.stack.toString().includes("user aborted a request")) return;
-            console.error(
+            logger.error(
                 `Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n`,
             );
         });
@@ -142,7 +143,7 @@ export function msgArray(arr: string | string[], join = "\n", maxLen = 1900): st
     let currentMsg = "";
     for (const elem of outArr) {
         if (typeof elem !== "string") {
-            console.error(`[functions/msgArray] ${elem} is not a string!`);
+            logger.error(`[functions/msgArray] ${elem} is not a string!`);
             return [];
         }
         const expandedElem = expandSpaces(elem);
@@ -191,11 +192,11 @@ export function isRoleMention(mention: string): boolean {
 
 export function getSideColor(side: string): number | null {
     if (!side) {
-        console.error("[functions/getSideColor] No side provided");
+        logger.error("[functions/getSideColor] No side provided");
         return null;
     }
     if (!["light", "dark"].includes(side.toLowerCase())) {
-        console.error(`[functions/getSideColor] Invalid side: ${side}`);
+        logger.error(`[functions/getSideColor] Invalid side: ${side}`);
         return null;
     }
     return side === "light" ? constants.colors.lightblue : constants.colors.brightred;
@@ -325,7 +326,7 @@ export function parseWebhook(url: string): { id: string; token: string } {
 export function sendWebhook(hookUrl: string, embed: Embed): void {
     const { id, token } = parseWebhook(hookUrl);
     const hook = new WebhookClient({ id, token });
-    hook.send({ embeds: [embed] }).catch(console.error);
+    hook.send({ embeds: [embed] }).catch(logger.error);
 }
 
 // Return a duration string
@@ -333,7 +334,7 @@ export function duration(time: number, interaction: BotInteraction | null = null
     if (!interaction?.language) throw new Error("[functions/duration] Missing language setting");
     const lang = interaction.language;
 
-    if (!time) console.error(`[functions/duration] Missing time value.\n${inspect(interaction?.options)}`);
+    if (!time) logger.error(`[functions/duration] Missing time value.\n${inspect(interaction?.options)}`);
     const timeDiff = Math.abs(Date.now() - time);
     return formatDuration(timeDiff, lang);
 }
@@ -389,7 +390,7 @@ export function getCurrentWeekday(zone?: string): string {
 // https://stackoverflow.com/a/64263359
 export function getTimezoneOffset(zone: string): number | null {
     if (!isValidZone(zone)) {
-        console.error("[functions/getTimezoneOffset] Missing or invalid timezone");
+        logger.error("[functions/getTimezoneOffset] Missing or invalid timezone");
         return null;
     }
     const timeZoneName =
@@ -445,7 +446,7 @@ export function getEndOfDay(zone: string): Date {
  */
 export function updatedFooterStr(updated: number, interaction: BotInteraction | null = null): string {
     if (!updated) {
-        console.error("[functions/updatedFooterStr] Missing updated timestamp");
+        logger.error("[functions/updatedFooterStr] Missing updated timestamp");
         return "";
     }
 
@@ -461,7 +462,7 @@ export async function userCount(client: Client): Promise<number> {
             (await client.shard
                 .fetchClientValues("users.cache.size")
                 .then((results: number[]) => results.reduce((prev, val) => prev + val, 0))
-                .catch(console.error)) || 0
+                .catch(logger.error)) || 0
         );
     }
     return client.users.cache.size || 0;
@@ -474,7 +475,7 @@ export async function guildCount(client: Client): Promise<number> {
             (await client.shard
                 .fetchClientValues("guilds.cache.size")
                 .then((results: number[]) => results.reduce((prev, val) => prev + val, 0))
-                .catch(console.error)) || 0
+                .catch(logger.error)) || 0
         );
     }
     return client.guilds.cache.size || 0;
@@ -820,13 +821,13 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
     try {
         thisChar = allUnitsList.find((ch) => ch.uniqueName === defId);
     } catch (err) {
-        console.error("[functions/getUnitImage] Issue getting character image:");
-        console.error(err);
+        logger.error("[functions/getUnitImage] Issue getting character image:");
+        logger.error(err);
         return null;
     }
 
     if (!thisChar) {
-        console.error(`[functions/getUnitImage] Cannot find matching defId: ${defId}`);
+        logger.error(`[functions/getUnitImage] Cannot find matching defId: ${defId}`);
         return null;
     }
     const fetchBody = {
@@ -851,7 +852,7 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
         const resBuf = await res.arrayBuffer();
         return resBuf ? Buffer.from(resBuf) : null;
     } catch (e) {
-        console.error(`[functions/getUnitImage] Error requesting image from server.\n${e}`);
+        logger.error(`[functions/getUnitImage] Error requesting image from server.\n${e}`);
         return null;
     }
 }
