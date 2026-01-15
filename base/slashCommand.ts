@@ -43,7 +43,10 @@ export default abstract class slashCommand {
         },
     ): Promise<void> {
         let msgOut = errMsg || null;
-        if (!interaction?.channel) return console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
+        if (!interaction?.channel) {
+            console.error(`[baseSlash/error:${this.commandData.name}] Missing interaction (${interaction})`);
+            return;
+        }
         if (!errMsg?.length) {
             console.error(`[baseSlash/error:${this.commandData.name}] Missing error message`);
             msgOut = "Something broke, please try again in a bit, or report it.";
