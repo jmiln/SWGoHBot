@@ -31,24 +31,6 @@ export default abstract class slashCommand {
         this.guildOnly = this.commandData.guildOnly;
     }
 
-    async getUser(interaction: ChatInputCommandInteraction, userID: string, useAuth = false) {
-        let id = null;
-        if (useAuth && (!userID || (userID !== "me" && !this.Bot.isAllyCode(userID) && !this.Bot.isUserID(userID)))) {
-            // No valid user, so use the message's author as the user
-            id = interaction.user.id;
-        }
-
-        // If it still somehow doesn't have a valid userID, return null
-        if (!id) return null;
-
-        // If it got this far, it's got a valid userID (ally code or Discord ID)
-        // so regardless of which, grab an ally code
-        const allyCodes = await this.Bot.getAllyCode(interaction, id);
-        if (allyCodes?.length) {
-            return allyCodes[0] || null;
-        }
-    }
-
     async error(
         interaction: ChatInputCommandInteraction,
         errMsg: string,
