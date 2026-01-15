@@ -1199,7 +1199,7 @@ export function isValidZone(zone: string) {
 }
 
 // Return the full name of whatever day of the week it is
-export function getCurrentWeekday(zone: string) {
+export function getCurrentWeekday(zone?: string) {
     const tz = isValidZone(zone) ? zone : "UTC";
     return Intl.DateTimeFormat("en", { weekday: "long", timeZone: tz }).format(new Date());
 }
@@ -1637,7 +1637,7 @@ export async function sortOmicrons(cache: BotCache) {
 }
 
 // Function to see if we have permission to see/ send messages in a given channel
-export async function hasViewAndSend(channel: GuildChannel, user: User) {
+export async function hasViewAndSend(channel: GuildChannel, user: User | GuildMember) {
     return (
         (channel?.guild &&
             channel.permissionsFor(user)?.has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages])) ||

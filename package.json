@@ -9,7 +9,7 @@
         "pm2_start": "pm2 start ecosystem.config.cjs --only 'eventServe,swgohBot'",
         "lint": "biome check --no-errors-on-unmatched .",
         "lint:write": "biome check --write --no-errors-on-unmatched .",
-        "test": "node --test ./test/**/*.test.js"
+        "test": "node --experimental-strip-types --test ./test/**/*.test.js"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",
