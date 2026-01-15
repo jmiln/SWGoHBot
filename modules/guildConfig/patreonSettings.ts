@@ -5,13 +5,21 @@ import patreonTiers from "../../data/patreon.ts";
 import type { BotCache } from "../../types/cache_types.ts";
 import type { GuildConfig } from "../../types/guildConfig_types.ts";
 
-export async function getPatreonSettings({ cache, guildId }) {
+export async function getPatreonSettings({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return {};
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings || {};
 }
 
-export async function setPatreonSettings({ cache, guildId, patreonSettingsOut }) {
+export async function setPatreonSettings({
+    cache,
+    guildId,
+    patreonSettingsOut,
+}: {
+    cache: BotCache;
+    guildId: string;
+    patreonSettingsOut: unknown;
+}) {
     // Filter out any settings that are the same as the defaults
     const res = await cache
         .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: patreonSettingsOut }, false)
@@ -19,6 +27,7 @@ export async function setPatreonSettings({ cache, guildId, patreonSettingsOut })
             return { success: true, error: null };
         })
         .catch((error: Error) => {
+            console.error(`[guildConfig/patreonSettings/setPatreonSettings] Error: ${error.message}`);
             return { success: false, error: error };
         });
     return res;
@@ -32,6 +41,10 @@ export async function addServerSupporter({
     cache,
     guildId,
     userInfo,
+}: {
+    cache: BotCache;
+    guildId: string;
+    userInfo: { userId: string; tier: number };
 }): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string } }> {
     const resOut = { user: { success: false, error: null }, guild: { success: false, error: null } };
     if (!guildId) resOut.guild = { success: false, error: "Missing guild ID." };
@@ -46,7 +59,7 @@ export async function addServerSupporter({
     if (!patSettings?.supporters) patSettings.supporters = [];
 
     // Check if the user is already set in there
-    if (patSettings.supporters?.filter((supp) => supp.userId === userInfo.id)?.length) {
+    if (patSettings.supporters?.filter((supp) => supp.userId === userInfo.userId)?.length) {
         resOut.user = { success: false, error: "User already set." };
         return resOut;
     }
@@ -60,6 +73,7 @@ export async function addServerSupporter({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
+            console.error(`[guildConfig/patreonSettings/addServerSupporter] Error updating guild: ${error.message}`);
             return { success: false, error: error };
         });
 
@@ -76,7 +90,7 @@ export async function addServerSupporter({
         userConf.bonusServer = guildId;
         const newUser = await cache.put(config.mongodb.swgohbotdb, "users", { id: userInfo.userId }, userConf);
 
-        if (!newUser && !newUser[0]) resOut.user = { success: false, error: `Cannot update userConf for <@${userInfo.userId}>` };
+        if (!newUser) resOut.user = { success: false, error: `Cannot update userConf for <@${userInfo.userId}>` };
         else resOut.user = { success: true, error: null };
     }
 
@@ -84,14 +98,28 @@ export async function addServerSupporter({
 }
 
 //  - Get the users from the given guilds' supporters list if available
-export async function getServerSupporters({ cache, guildId }): Promise<{ userId: string; tier: number }[]> {
+export async function getServerSupporters({
+    cache,
+    guildId,
+}: {
+    cache: BotCache;
+    guildId: string;
+}): Promise<{ userId: string; tier: number }[]> {
     if (!guildId) return [];
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings?.supporters || [];
 }
 
 // Remove a user from the given guilds' supporters
-export async function removeServerSupporter({ cache, guildId, userId }): Promise<{ success: boolean; error: string }> {
+export async function removeServerSupporter({
+    cache,
+    guildId,
+    userId,
+}: {
+    cache: BotCache;
+    guildId: string;
+    userId: string;
+}): Promise<{ success: boolean; error: string }> {
     if (!guildId) return { success: false, error: "Missing guild ID." };
     if (!userId) return { success: false, error: "Missing userId." };
 
@@ -101,7 +129,7 @@ export async function removeServerSupporter({ cache, guildId, userId }): Promise
         { guildId },
         { patreonSettings: 1, _id: 0 },
     );
-    const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 1;
+    const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 0;
 
     // If the user isn't in the supporters arr, say so
     if (!hasUser) return { success: false, error: "User not in supporters array" };
@@ -114,6 +142,7 @@ export async function removeServerSupporter({ cache, guildId, userId }): Promise
             return { success: true, error: null };
         })
         .catch((error: Error) => {
+            console.error(`[guildConfig/patreonSettings/removeServerSupporter] Error: ${error.message}`);
             return { success: false, error: error };
         });
 }
@@ -139,6 +168,7 @@ export async function clearSupporterInfo({
     try {
         await cache.put(config.mongodb.swgohbotdb, "users", { id: userId }, userConf);
     } catch (err) {
+        console.error(`[guildConfig/patreonSettings/clearSupporterInfo] Error updating user: ${err.toString()}`);
         resOut.user = { success: false, error: err.toString() };
     }
 
@@ -150,7 +180,7 @@ export async function clearSupporterInfo({
 }
 
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
-export async function ensureGuildSupporter({ cache }) {
+export async function ensureGuildSupporter({ cache }: { cache: BotCache }) {
     // Grab all guilds' patreonSettings that have someone listed
     const supporterGuilds: { guildId: string; supporters: { userId: string; tier: number }[] }[] = await cache.get(
         config.mongodb.swgohbotdb,
@@ -191,6 +221,7 @@ export async function ensureGuildSupporter({ cache }) {
                 return { success: true, error: null };
             })
             .catch((error: Error) => {
+                console.error(`[guildConfig/patreonSettings/ensureGuildSupporter] Error updating guild: ${error.message}`);
                 return { success: false, error: error };
             });
     }
@@ -226,7 +257,7 @@ export async function ensureBonusServerSet({ cache, userId, amount_cents }: { ca
 
 //  - Get the combined / highest available tier from the supporters of a given server
 const tierNums = Object.keys(patreonTiers.tiers);
-export async function getGuildSupporterTier({ cache, guildId }) {
+export async function getGuildSupporterTier({ cache, guildId }: { cache: BotCache; guildId: string }) {
     // If no guildId supplied, return the lowest tier available (0)
     if (!guildId) return 0;
 
@@ -237,7 +268,7 @@ export async function getGuildSupporterTier({ cache, guildId }) {
     const totalRes = res?.patreonSettings?.supporters?.reduce((curr, acc) => {
         return curr + acc.tier;
     }, 0);
-    for (const tier of tierNums.reverse()) {
+    for (const tier of [...tierNums].reverse()) {
         const tierNum = Number.parseInt(tier, 10);
         if (totalRes >= tierNum) return tierNum;
     }

@@ -1,5 +1,6 @@
 import config from "../../config.js";
 import unitChecklist from "../../data/unitChecklist.ts";
+import type { BotCache } from "../../types/cache_types.ts";
 import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
 
 const defaultTWList = {
@@ -11,7 +12,7 @@ const defaultTWList = {
     Blacklist: [], // List of units to not show in the list output (Can't have units both here and one of the others)
 };
 
-export async function getGuildTWList({ cache, guildId }): Promise<GuildConfigTWList> {
+export async function getGuildTWList({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigTWList> {
     if (!guildId) return defaultTWList;
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
     const outObj = {};
@@ -21,10 +22,10 @@ export async function getGuildTWList({ cache, guildId }): Promise<GuildConfigTWL
     return outObj || defaultTWList;
 }
 
-export async function getFullTWList({ cache, guildId }) {
+export async function getFullTWList({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return unitChecklist;
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
-    const twList = resArr[0]?.twList || defaultTWList;
+    const twList: GuildConfigTWList = resArr[0]?.twList || defaultTWList;
 
     const twListOut = {};
     for (const unitType of Object.keys(unitChecklist)) {
@@ -41,13 +42,14 @@ export async function getFullTWList({ cache, guildId }) {
     return twListOut;
 }
 
-export async function setGuildTWList({ cache, guildId, twListOut }) {
+export async function setGuildTWList({ cache, guildId, twListOut }: { cache: BotCache; guildId: string; twListOut: GuildConfigTWList }) {
     const res = await cache
         .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { twList: twListOut }, false)
         .then(() => {
             return { success: true, error: null };
         })
-        .catch((error) => {
+        .catch((error: Error) => {
+            console.error(`[guildConfig/twlist/setGuildTWList] Error: ${error.message}`);
             return { success: false, error: error };
         });
     return res;

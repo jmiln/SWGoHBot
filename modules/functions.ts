@@ -95,14 +95,14 @@ export default (Bot: BotType, client: BotClient) => {
     Bot.isMain = () => client.user.id === "315739499932024834";
 
     // Default formatting for current US/Pacific time
-    Bot.myTime = () => {
+    Bot.myTime = (timezone?: string) => {
         return Intl.DateTimeFormat("en", {
             day: "numeric",
             month: "numeric",
             year: "numeric",
             hour: "numeric",
             minute: "numeric",
-            timeZone: "America/Los_Angeles",
+            timeZone: timezone || "America/Los_Angeles",
         }).format(new Date());
     };
 

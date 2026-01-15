@@ -19,8 +19,8 @@ export async function updateGuildEvent({ cache, guildId, evName, event }) {
         .then(() => {
             return { success: true, error: null };
         })
-        .catch((error: string) => {
-            // Bot.logger.error(`(Ev updateEvent)Broke trying to create new event \ninteraction: ${interaction.content}\nError: ${error}`);
+        .catch((error: Error) => {
+            console.error(`[guildConfig/events/updateGuildEvent] Error: ${error.message}`);
             return { success: false, error: error };
         });
     return out;
@@ -49,12 +49,10 @@ export async function deleteGuildEvent({ cache, guildId, evName }: { cache: BotC
     return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
 export async function getAllEvents({ cache }: { cache: BotCache }): Promise<GuildConfigEvent[]> {
-    const resArr = (await cache.get(
-        config.mongodb.swgohbotdb,
-        "guildConfigs",
-        {},
-        { guildId: 1, events: 1, _id: 0 },
-    )) as { guildId: string; events: GuildConfigEvent[] }[];
+    const resArr = (await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 })) as {
+        guildId: string;
+        events: GuildConfigEvent[];
+    }[];
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         return acc.concat(
@@ -83,7 +81,7 @@ export async function getTriggeredEvents({ cache, nowTime }: { cache: BotCache; 
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         const triggeredEvents = curr.events
-            .filter((ev) => Number.parseInt(ev.eventDT.toString(), 10) <= nowTime)
+            .filter((ev) => ev.eventDT <= nowTime)
             .map((ev) => {
                 ev.guildId = curr.guildId;
                 return ev;
@@ -96,13 +94,7 @@ export async function getTriggeredEvents({ cache, nowTime }: { cache: BotCache; 
  * Get events that have countdown enabled and are in the future
  * Uses database-level filtering for better performance
  */
-export async function getCountdownEvents({
-    cache,
-    nowTime,
-}: {
-    cache: BotCache;
-    nowTime: number;
-}): Promise<GuildConfigEvent[]> {
+export async function getCountdownEvents({ cache, nowTime }: { cache: BotCache; nowTime: number }): Promise<GuildConfigEvent[]> {
     const resArr = (await cache.get(
         config.mongodb.swgohbotdb,
         "guildConfigs",
@@ -116,7 +108,7 @@ export async function getCountdownEvents({
     return resArr.reduce((acc, curr) => {
         if (!curr?.events?.length) return acc;
         const countdownEvents = curr.events
-            .filter((ev) => ev.countdown && Number.parseInt(ev.eventDT.toString(), 10) > nowTime)
+            .filter((ev) => ev.countdown && ev.eventDT > nowTime)
             .map((ev) => {
                 ev.guildId = curr.guildId;
                 return ev;

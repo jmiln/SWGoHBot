@@ -1,13 +1,11 @@
 import { parentPort, workerData } from "node:worker_threads";
 
-// import {langChar} from "../../modules/swapi.js"(null);
-
 import type { SWAPIPlayer, SWAPIUnit, SWAPIUnitAbility, SWAPIWorkerGuildLog, SWAPIWorkerPlayerLog } from "../../types/swapi_types.ts";
 
 const guildLogOut: SWAPIWorkerGuildLog = {};
-const cacheUpdatesOut = [];
-const defIdList = new Set();
-const skillIdList = new Set();
+const cacheUpdatesOut: Array<{ updateOne: { filter: { allyCode: number }; update: { $set: SWAPIPlayer }; upsert: boolean } }> = [];
+const defIdList = new Set<string>();
+const skillIdList = new Set<string>();
 
 // WorkerData: { oldMembers, updatedBare, specialAbilities, chunkIx }
 async function init(workerData: {
@@ -15,8 +13,8 @@ async function init(workerData: {
     updatedBare: SWAPIPlayer[];
     specialAbilities: SWAPIUnitAbility[];
     chunkIx: number;
-}) {
-    if (!workerData?.updatedBare) return null;
+}): Promise<void> {
+    if (!workerData?.updatedBare) return;
     for (const newPlayer of workerData.updatedBare) {
         const oldPlayer = workerData.oldMembers.find((p: SWAPIPlayer) => p.allyCode === newPlayer.allyCode);
         if (!oldPlayer?.roster) {
@@ -45,15 +43,12 @@ async function init(workerData: {
         };
 
         // Check through each of the 250ish? units in their roster for differences
-        const oldRoster = {};
+        const oldRoster: Record<string, SWAPIUnit> = {};
         for (const oldUnit of oldPlayer.roster) {
             oldRoster[oldUnit.defId] = oldUnit;
         }
         for (const newUnit of newPlayer.roster) {
-            // const oldUnit = oldPlayer.roster.find(u => u.defId === newUnit.defId);
             const oldUnit: SWAPIUnit = oldRoster?.[newUnit.defId];
-            if (!oldUnit) continue;
-            if (JSON.stringify(oldUnit) === JSON.stringify(newUnit)) continue;
             if (!oldUnit) {
                 playerLog.unlocked.push(`Unlocked {${newUnit.defId}}!`);
                 if (newUnit?.level > 1) {
@@ -64,6 +59,7 @@ async function init(workerData: {
                 }
                 continue;
             }
+            if (JSON.stringify(oldUnit) === JSON.stringify(newUnit)) continue;
             if (oldUnit.level < newUnit.level) {
                 playerLog.leveled.push(`Leveled up {${newUnit.defId}} to ${newUnit.level}!`);
             }
@@ -119,7 +115,7 @@ async function init(workerData: {
                 playerLog.reliced.push(`Upgraded {${newUnit.defId}} to relic ${newUnit.relic.currentTier - 2}!`);
             }
             if (oldUnit?.purchasedAbilityId?.length < newUnit?.purchasedAbilityId?.length) {
-                playerLog.ultimate.push(`Unlocked {${newUnit.defId}}'s **ultimate**'`);
+                playerLog.ultimate.push(`Unlocked {${newUnit.defId}}'s **ultimate**`);
             }
             if (isPlayerUpdated(playerLog)) {
                 defIdList.add(newUnit.defId);

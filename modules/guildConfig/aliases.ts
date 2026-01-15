@@ -26,6 +26,7 @@ export async function setGuildAliases({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
+            console.error(`[guildConfig/aliases/setGuildAliases] Error: ${error.message}`);
             return { success: false, error: error.toString() };
         });
     return res;

@@ -1,7 +1,7 @@
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import type { BotType } from "../types/types.ts";
-import { sendWebhook, toProperCase } from "./functions.ts";
+import { myTime, sendWebhook, toProperCase } from "./functions.ts";
 
 type LogType = "log" | "warn" | "error" | "debug" | "cmd" | "ready" | "info";
 
@@ -58,15 +58,8 @@ class Logger {
         if (!this.logConfigs[type].shouldLog(!!config.debugLogs)) return;
 
         const shard = this.Bot?.shardId > -1 ? ` (${this.Bot.shardId})` : "";
-        const formatter = new Intl.DateTimeFormat("en", {
-            day: "numeric",
-            month: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            timeZone: this.timezone,
-        });
-        const time = formatter.format(new Date()).replace(" 0", "  ");
+        const myTimeStr = myTime(this.timezone);
+        const time = myTimeStr.replace(" 0", "  ");
         const timestamp = `[${time
             .split(",")
             .map((t) => t.padStart(9, " "))

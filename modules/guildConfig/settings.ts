@@ -1,8 +1,9 @@
 import config from "../../config.js";
 import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
+import type { BotCache } from "../../types/cache_types.ts";
 
 // Get the guildsettings from the mongo db
-export async function getGuildSettings({ cache, guildId }) {
+export async function getGuildSettings({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return defaultSettings;
 
     const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
@@ -11,7 +12,15 @@ export async function getGuildSettings({ cache, guildId }) {
 }
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config
-export async function setGuildSettings({ cache, guildId, settings }) {
+export async function setGuildSettings({
+    cache,
+    guildId,
+    settings,
+}: {
+    cache: BotCache;
+    guildId: string;
+    settings: typeof defaultSettings;
+}) {
     // Filter out any settings that are the same as the defaults
     const diffObj = {};
 
@@ -26,7 +35,7 @@ export async function setGuildSettings({ cache, guildId, settings }) {
         }
     }
 
-    if (!Object.keys(diffObj)?.length) {
+    if (!Object.keys(diffObj).length) {
         // In this case, there's nothing different than the default, so go ahead and set it to blank
         return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: {} }, false);
     }
@@ -34,7 +43,7 @@ export async function setGuildSettings({ cache, guildId, settings }) {
 }
 
 // Check if there are settings for the guild
-export async function hasGuildSettings(cache, guildId) {
+export async function hasGuildSettings(cache: BotCache, guildId: string) {
     const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
     if (guildSettings?.length) {
         return true;
@@ -43,17 +52,12 @@ export async function hasGuildSettings(cache, guildId) {
 }
 
 // Remove all settings, events, polls, etc for the given guild
-export async function deleteGuildConfig({ cache, guildId }) {
+export async function deleteGuildConfig({ cache, guildId }: { cache: BotCache; guildId: string }) {
     return await cache.remove(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId });
 }
 
-function arrayEquals(a, b) {
+function arrayEquals(a: unknown, b: unknown) {
+    if (!Array.isArray(a) || !Array.isArray(b)) return false;
     if (!a?.length || !b?.length) return false;
-    return (
-        Array.isArray(a) &&
-        Array.isArray(b) &&
-        a.length === b.length &&
-        a.every((val, index) => val === b[index]) &&
-        b.every((val, index) => val === a[index])
-    );
+    return a.length === b.length && a.every((val, index) => val === b[index]);
 }

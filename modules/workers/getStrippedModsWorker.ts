@@ -1,7 +1,16 @@
 import ComlinkStub from "@swgoh-utils/comlink";
 import type { ComlinkPlayer } from "../../types/swapi_types.ts";
+import { myTime } from "../functions.ts";
 
-export default async function ({ playerId, modMap, clientStub }) {
+interface ModMap {
+    [key: string]: {
+        pips: number;
+        set: string;
+        slot: number;
+    };
+}
+
+export default async function ({ playerId, modMap, clientStub }: { playerId: number; modMap: ModMap; clientStub: string }) {
     // console.log(`[getStrippedModsWorker] ${playerId}`);
     const comlinkStub = new ComlinkStub(clientStub);
     return await comlinkStub
@@ -11,28 +20,20 @@ export default async function ({ playerId, modMap, clientStub }) {
                 .filter((unit) => unit?.equippedStatMod?.length)
                 .map((unit) => ({
                     defId: unit.definitionId.split(":")[0],
-                    mods: unit.equippedStatMod.map(({ definitionId, primaryStat }) => {
-                        const modSchema = modMap[definitionId] || {};
-                        return {
-                            slot: modSchema.slot - 1, // mod slots are numbered 2-7
-                            set: Number(modSchema.set),
-                            primaryStat: primaryStat?.stat.unitStatId,
-                        };
-                    }),
+                    mods: unit.equippedStatMod
+                        .map(({ definitionId, primaryStat }) => {
+                            const modSchema = modMap[definitionId];
+                            if (!modSchema) return null;
+                            return {
+                                slot: modSchema.slot - 1, // mod slots are numbered 2-7
+                                set: Number(modSchema.set),
+                                primaryStat: primaryStat?.stat.unitStatId,
+                            };
+                        })
+                        .filter((mod) => mod !== null),
                 }));
         })
         .catch((err: Error) => {
             console.error(`[${myTime()}] [getStrippedModsWorker] Error: ${err}`);
         });
-}
-
-function myTime() {
-    return Intl.DateTimeFormat("en", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        timeZone: "America/Los_Angeles",
-    }).format(new Date());
 }
