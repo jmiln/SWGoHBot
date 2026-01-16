@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
 import { updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -54,17 +55,17 @@ export default class GuildQuality extends Command {
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
         } catch (e) {
-            return super.error(interaction, `Issue getting guild: \`${codeBlock(e.message)}\``);
+            return super.error(interaction, `Issue getting guild: ${codeBlock(e.message)}`);
         }
 
         if (!guild) {
-            return super.error(interaction, `Couldn't get guild${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild. ${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
         }
 
         const rosterQualities = await getGuildRosterQualities(guild);
 
         if (!rosterQualities?.length) {
-            return super.error(interaction, `Couldn't get guild stats${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild stats. ${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
         }
 
         const outArr = ["`ModQ | GearQ | TotalQ | CharGP | Name  `"];

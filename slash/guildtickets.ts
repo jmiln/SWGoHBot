@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import constants from "../data/constants/constants.ts";
 import { isAllyCode, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -90,9 +89,6 @@ export default class GuildTickets extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
-        const cmdOut = null;
-        const outLog = [];
-
         const userID = interaction.user.id;
         const user = await Bot.userReg.getUser(userID);
 
@@ -191,6 +187,7 @@ export default class GuildTickets extends Command {
                     ],
                 });
             }
+            return super.error(interaction, "No options provided. Please specify at least one setting to update.");
         } else if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
             return interaction.reply({
@@ -210,13 +207,5 @@ export default class GuildTickets extends Command {
                 ],
             });
         }
-
-        return super.error(
-            interaction,
-            outLog.length
-                ? outLog.join("\n")
-                : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
-            { title: " ", color: constants.colors.blue },
-        );
     }
 }
