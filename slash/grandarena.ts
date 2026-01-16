@@ -28,6 +28,7 @@ export default class GrandArena extends Command {
         super(Bot, {
             name: "grandarena",
             guildOnly: false,
+            description: "Compare two players' rosters for Grand Arena",
             options: [
                 {
                     name: "allycode_1",
@@ -424,8 +425,9 @@ export default class GrandArena extends Command {
             let thisCharName: string;
             if (!cName) {
                 // See if you can get it from the ships
-                if (ships.find((s) => s.uniqueName === char)) {
-                    thisCharName = ships.find((s) => s.uniqueName === char).name;
+                const foundShip = ships.find((s) => s.uniqueName === char);
+                if (foundShip) {
+                    thisCharName = foundShip.name;
                     ship = true;
                 } else {
                     continue;
@@ -459,12 +461,12 @@ export default class GrandArena extends Command {
                     check: labels.zetas,
                     user1: user1Char
                         ? user1Char.skills
-                              .filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1))
+                              .filter((s) => s.isZeta && s.tier === s.tiers)
                               .length.toString()
                         : "N/A",
                     user2: user2Char
                         ? user2Char.skills
-                              .filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1))
+                              .filter((s) => s.isZeta && s.tier === s.tiers)
                               .length.toString()
                         : "N/A",
                 });
@@ -581,11 +583,11 @@ function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, label
     overview.push({
         check: labels.zetas,
         user1: user1.roster.reduce(
-            (a, b) => a + b.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1)).length,
+            (a, b) => a + b.skills.filter((s) => s.isZeta && s.tier === s.tiers).length,
             0,
         ),
         user2: user2.roster.reduce(
-            (a, b) => a + b.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1)).length,
+            (a, b) => a + b.skills.filter((s) => s.isZeta && s.tier === s.tiers).length,
             0,
         ),
     });
@@ -616,14 +618,14 @@ const sumGP = (rosterIn: SWAPIUnit[]) => {
 // Get the top X characters from the roster (Sort then slice)
 const getTopX = (rosterIn: SWAPIUnit[], x: number) => {
     // Sort it so the ones with a higher gp are first
-    const sortedIn = rosterIn.sort((a, b) => (a.gp < b.gp ? 1 : -1));
+    const sortedIn = [...rosterIn].sort((a, b) => (a.gp < b.gp ? 1 : -1));
     return sortedIn.slice(0, x);
 };
 
 // Get which division info these users will work with
 const getDiv = (gpIn: number) => {
     const divKeys = Object.keys(gpMap);
-    for (const key of divKeys.reverse()) {
+    for (const key of [...divKeys].reverse()) {
         if (gpIn < Number.parseInt(key, 10)) continue;
         return gpMap[key];
     }

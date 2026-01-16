@@ -74,16 +74,23 @@ export default class Farm extends Command {
             } else if (loc.level) {
                 // It's a node, fleet, cantina, light/ dark side
                 if (loc.locId) {
-                    const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {
-                        id: loc.locId,
-                        language: interaction.swgohLanguage.toLowerCase(),
-                    });
+                    const langLoc = await Bot.cache.getOne<{ id: string; language: string; langKey: string }>(
+                        Bot.config.mongodb.swapidb,
+                        "locations",
+                        {
+                            id: loc.locId,
+                            language: interaction.swgohLanguage.toLowerCase(),
+                        },
+                        {},
+                    );
+
+                    if (!langLoc) continue;
 
                     // If it's a proving grounds event, stick the unit name after
                     if (loc.locId === "EVENT_CONQUEST_UNIT_TRIALS_NAME") {
                         outList.push(`${toProperCase(langLoc.langKey)} - ${character.name}`);
                     } else {
-                        outList.push(`${toProperCase(langLoc?.langKey)} ${loc.level}`);
+                        outList.push(`${toProperCase(langLoc.langKey)} ${loc.level}`);
                     }
                 } else {
                     loc.type = loc.type.replace("Hard Modes (", "").replace(")", "");
@@ -102,12 +109,17 @@ export default class Farm extends Command {
                 outList.push(expandSpaces(`__${loc.type}__: ${loc.name}`));
             } else if (loc.locId) {
                 // Just has the location id, so probably a marquee
-                const langLoc = await Bot.cache.getOne(Bot.config.mongodb.swapidb, "locations", {
-                    id: loc.locId,
-                    language: interaction.swgohLanguage.toLowerCase(),
-                });
+                const langLoc = await Bot.cache.getOne<{ id: string; language: string; langKey: string }>(
+                    Bot.config.mongodb.swapidb,
+                    "locations",
+                    {
+                        id: loc.locId,
+                        language: interaction.swgohLanguage.toLowerCase(),
+                    },
+                    {},
+                );
                 if (!langLoc) continue;
-                outList.push(toProperCase(langLoc?.langKey));
+                outList.push(toProperCase(langLoc.langKey));
             }
         }
         if (!outList.length) {

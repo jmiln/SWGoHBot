@@ -30,7 +30,8 @@ test.describe("Activities Command", () => {
         const cmd = new Activities(bot);
         await cmd.run(bot, interaction);
 
-        assert.match(replyCalls[0].content, /COMMAND_ACTIVITIES_TUESDAY/);
+        // Should match one of the day patterns (test works regardless of current day)
+        assert.match(replyCalls[0].content, /COMMAND_ACTIVITIES_(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)/);
     });
 });
 

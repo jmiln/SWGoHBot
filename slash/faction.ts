@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
@@ -75,7 +76,7 @@ export default class Faction extends Command {
         const factionChars = [];
         const query = faction1 ? faction1 : faction2;
         let chars: RawCharacter[] = await Bot.cache.get(
-            Bot.config.mongodb.swapidb,
+            config.mongodb.swapidb,
             "units",
             { categoryIdList: query, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
             { _id: 0, baseId: 1, nameKey: 1 },
@@ -102,8 +103,8 @@ export default class Faction extends Command {
 
             for (const c of chars) {
                 const char: RawCharacter = await Bot.swgohAPI.getCharacter(c.baseId, interaction.guildSettings.swgohLanguage);
-                const isLeader = char.skillReferenceList.filter((s) => s.skillId.startsWith("leader"));
-                const hasZeta = char.skillReferenceList.filter((s) => s.cost.AbilityMatZeta > 0);
+                const isLeader = char.skillReferenceList.some((s) => s.skillId.startsWith("leader"));
+                const hasZeta = char.skillReferenceList.some((s) => s.cost?.AbilityMatZeta > 0);
                 units.push({
                     char,
                     isLeader,
@@ -169,9 +170,9 @@ export default class Faction extends Command {
             factionChars.push(`**\`=================${"=".repeat(lvlMax + gpMax + gearMax)}\`**`);
 
             for (const ch of playerChars) {
-                const lvlStr = ch.level.toString().padStart(lvlMax - ch.level.toString().length);
-                const gpStr = ch.gp.toLocaleString().padStart(gpMax - ch.gp.toLocaleString().length);
-                const gearStr = ch.gear.toString().padStart(gearMax - ch.gear.toString().length);
+                const lvlStr = ch.level.toString().padStart(lvlMax);
+                const gpStr = ch.gp.toLocaleString().padStart(gpMax);
+                const gearStr = ch.gear.toString().padStart(gearMax);
                 const zetas = "z".repeat(
                     ch.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1)).length,
                 );

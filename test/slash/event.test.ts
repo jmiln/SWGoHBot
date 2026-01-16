@@ -547,6 +547,7 @@ test.describe("Event Command", () => {
                 getOne: async () => ({ timezone: "America/Los_Angeles", announceChan: "announcements" }),
             } as any,
             socket: {
+                connected: true,
                 emit: async (event: string, data: any, callback: any) => {
                     socketEmitCalled = true;
                     if (event === "addEvents") {
