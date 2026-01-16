@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import os from "node:os";
-import { inspect } from "node:util"; // eslint-disable-line no-unused-vars
 import { Worker } from "node:worker_threads";
 import ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
@@ -8,8 +7,6 @@ import { MongoClient } from "mongodb";
 import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import mongoCache from "../modules/cache.ts";
-import logger from "./Logger.ts";
-
 import type {
     ComlinkAbility,
     ComlinkMod,
@@ -30,6 +27,7 @@ import type {
     SWAPIWorkerOutput,
 } from "../types/swapi_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
+import logger from "./Logger.ts";
 
 const THREAD_COUNT = os.cpus().length;
 const abilityCosts = JSON.parse(readFileSync(`${import.meta.dirname}/../data/abilityCosts.json`, "utf-8"));
@@ -61,7 +59,7 @@ async function init() {
     const mongo = await MongoClient.connect(config.mongodb.url);
     cache = mongoCache(mongo);
 
-    // Set it to reload the api map files every hour
+    // Reload the api map files every 6 minutes
     setInterval(() => {
         modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
         unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
@@ -73,6 +71,7 @@ export default (opts = { noop: false }) => {
     // This is just here so it'll actually accept it properly when I require() this file... Doesn't work with just `module.exports = () => ` for some reason
     if (opts?.noop) return null;
     init();
+
     // Set the max cooldowns (In minutes)
     const playerMinCooldown = 1; // 1 min
     const playerMaxCooldown = 3 * 60; // 3 hours
@@ -205,10 +204,12 @@ export default (opts = { noop: false }) => {
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
             const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch((err: Error) => {
                 logger.error(`Error in eachLimit getPlayer (${ac}):`);
-                return logger.error(err.toString());
+                logger.error(err.toString());
+                return null;
             });
-            if (!tempBare) logger.error("[getPlayerUpdates] Broke while getting tempBare");
-            else {
+            if (!tempBare) {
+                logger.error("[getPlayerUpdates] Broke while getting tempBare");
+            } else {
                 const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
                 updatedBare.push(formattedComlinkPlayer);
             }
@@ -402,7 +403,7 @@ export default (opts = { noop: false }) => {
                         }
 
                         if (!bareP.updated) bareP.updated = Date.now();
-                        if (!bareP.updated) bareP.updatedAt = new Date();
+                        if (!bareP.updatedAt) bareP.updatedAt = new Date();
                         bulkWrites.push({
                             updateOne: {
                                 filter: { allyCode: bareP.allyCode },
@@ -760,7 +761,9 @@ export default (opts = { noop: false }) => {
             for (const [ix, e] of tier.equipmentSetList.entries()) {
                 const eq = eqList.find((equipment) => equipment.id === e);
                 if (!eq) {
-                    logger.error(`Missing equipment for char ${char.baseId}, make sure to update the gear lang stuff${inspect(e)}`);
+                    logger.error(
+                        `Missing equipment for char ${char.baseId}, make sure to update the gear lang stuff: ${JSON.stringify(e)}`,
+                    );
                     continue;
                 }
                 tier.equipmentSetList.splice(ix, 1, eq.nameKey);
@@ -838,11 +841,7 @@ export default (opts = { noop: false }) => {
 
         let rawGuild = await cache.get(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
         if (forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true)) {
-            try {
-                rawGuild = await comlinkStub.getGuild(player.guildId, true);
-            } catch (err) {
-                throw new Error(err);
-            }
+            rawGuild = await comlinkStub.getGuild(player.guildId, true);
 
             rawGuild = rawGuild.guild;
             const ignoreArr = [
@@ -896,7 +895,6 @@ export default (opts = { noop: false }) => {
     }
 
     async function guild(allycode: number | string, cooldown?: PlayerCooldown) {
-        let warnings: string[];
         const thisAcStr = allycode?.toString().replace(/[^\d]/g, "");
         if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid allycode");
         const thisAc = Number.parseInt(thisAcStr, 10);
@@ -920,7 +918,7 @@ export default (opts = { noop: false }) => {
             } catch (err) {
                 // Probably API timeout
                 logger.log(`[SWAPI-guild] Couldn't update guild for: ${player.name}`);
-                throw new Error(err);
+                throw err;
             }
             // logger.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
 
@@ -941,7 +939,6 @@ export default (opts = { noop: false }) => {
                 logger.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
             guild = await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
-            if (warnings) guild.warnings = warnings;
         } else {
             /** If found and valid, serve from cache */
             guild = guild[0];

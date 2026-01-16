@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { isAllyCode, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 const updateTypeStrings = {
@@ -148,7 +150,7 @@ export default class GuildTickets extends Command {
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!Bot.isAllyCode(allycode) && allycode !== "me")
+                if (!isAllyCode(allycode) && allycode !== "me")
                     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
@@ -200,7 +202,7 @@ export default class GuildTickets extends Command {
                             `Channel:  **${gt.channel ? `<#${gt.channel}>` : "N/A"}**`,
                             `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
                             `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
-                            `SortBy:   **${Bot.toProperCase(gt.sortBy)}**`,
+                            `SortBy:   **${toProperCase(gt.sortBy)}**`,
                             `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
                             `Tickets:  **${gt.tickets || 600}**`,
                         ].join("\n"),
@@ -214,7 +216,7 @@ export default class GuildTickets extends Command {
             outLog.length
                 ? outLog.join("\n")
                 : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
-            { title: " ", color: Bot.constants.colors.blue },
+            { title: " ", color: constants.colors.blue },
         );
     }
 }

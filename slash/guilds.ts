@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { expandSpaces, makeTable, msgArray, shortenNum, summarizeCharLevels, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
@@ -333,7 +335,7 @@ export default class Guilds extends Command {
                             description: codeBlock(e),
                             title: "Something Broke while getting your guild's characters",
                             footer: { text: "Please try again in a bit" },
-                            color: Bot.constants.colors.red,
+                            color: constants.colors.red,
                         },
                     ],
                 });
@@ -378,7 +380,7 @@ export default class Guilds extends Command {
                 name: { value: "", align: "left" },
             };
 
-            const tableOut = Bot.makeTable(tableFormat, tableIn);
+            const tableOut = makeTable(tableFormat, tableIn);
             return interaction.editReply({
                 content: null,
                 embeds: [
@@ -389,8 +391,8 @@ export default class Guilds extends Command {
                         description: tableOut.length ? tableOut.join("\n") : "No users found in guild",
                         fields: [
                             {
-                                name: Bot.constants.zws,
-                                value: Bot.updatedFooterStr(guild.updated, interaction),
+                                name: constants.zws,
+                                value: updatedFooterStr(guild.updated, interaction),
                             },
                         ],
                     },
@@ -471,7 +473,7 @@ export default class Guilds extends Command {
                 output = output.sort((m, n) => m.sixPip - n.sixPip);
             }
 
-            const table = Bot.makeTable(
+            const table = makeTable(
                 {
                     sixPip: { value: "6*", startWith: "`" },
                     spd15: { value: "15+" },
@@ -481,9 +483,9 @@ export default class Guilds extends Command {
                 },
                 output,
             );
-            const header = [Bot.expandSpaces("`     ┏╸ Spd ┓  Off �`")];
+            const header = [expandSpaces("`     ┏╸ Spd ┓  Off �`")];
 
-            const fields = Bot.msgArray(header.concat(table), "\n", 700).map((m) => {
+            const fields = msgArray(header.concat(table), "\n", 700).map((m) => {
                 if (!m?.length) return null;
                 return { name: "-", value: m };
             });
@@ -601,7 +603,7 @@ export default class Guilds extends Command {
             };
 
             // Format all the output, then send it on
-            const memOut = Bot.makeTable(
+            const memOut = makeTable(
                 tierFormat,
                 members.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)),
             );
@@ -625,11 +627,11 @@ export default class Guilds extends Command {
                     tierTotals[key] += member[key];
                 }
             }
-            const totalOut = Bot.makeTable(totalsFormat, [tierTotals]);
+            const totalOut = makeTable(totalsFormat, [tierTotals]);
 
             // Chunk the info into sections so it'll fit in the embed fields
             const fields = [];
-            const fieldVals = Bot.msgArray(memOut, "\n", 1000);
+            const fieldVals = msgArray(memOut, "\n", 1000);
 
             // Stick the formatted bits into the fields
             for (const fieldVal of fieldVals) {
@@ -698,10 +700,10 @@ export default class Guilds extends Command {
             for (const member of roster) {
                 const tickets = member.memberContribution["2"].currentValue;
                 if (tickets < maxTickets) {
-                    out.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
+                    out.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else {
                     maxed += 1;
-                    if (showAll) fullOut.push(Bot.expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
+                    if (showAll) fullOut.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 }
             }
 
@@ -709,7 +711,7 @@ export default class Guilds extends Command {
                 out.push("\n**__Members with full tickets:__**");
                 out.push(...fullOut);
             }
-            const footerStr = Bot.updatedFooterStr(rawGuild.updated, interaction);
+            const footerStr = updatedFooterStr(rawGuild.updated, interaction);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
             const maxedString = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
             return interaction.editReply({
@@ -743,9 +745,9 @@ export default class Guilds extends Command {
                 );
                 for (const r in guild.raid) {
                     if (!raidNames[r]) console.log("Missing raid name", r);
-                    const thisRaidName = Bot.expandSpaces(Bot.toProperCase(raidNames[r]?.padEnd(maxRaidLen + 1, " ") || r));
+                    const thisRaidName = expandSpaces(toProperCase(raidNames[r]?.padEnd(maxRaidLen + 1, " ") || r));
                     const raidTier = guild.raid[r]?.diffId.includes("HEROIC")
-                        ? Bot.toProperCase(raidNames.heroic)
+                        ? toProperCase(raidNames.heroic)
                         : guild.raid[r]?.diffId.replace("DIFF0", "T");
                     raidArr.push(`${thisRaidName} | ${raidTier}`);
                 }
@@ -796,9 +798,9 @@ export default class Guilds extends Command {
                 });
             }
 
-            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, interaction);
             fields.push({
-                name: Bot.constants.zws,
+                name: constants.zws,
                 value: footerStr,
             });
             return interaction.editReply({
@@ -876,13 +878,13 @@ export default class Guilds extends Command {
                 }
                 if (member.inGuild) {
                     users.push(
-                        `\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${Bot.shortenNum(
+                        `\`[ ${shortenNum(charTotal, 2)} | ${shortenNum(shipTotal, 2)} | ${shortenNum(
                             charTotal + shipTotal,
                         )} ]\` - **${member.name}**`,
                     );
                 } else {
                     users.push(
-                        `\`[ ${Bot.shortenNum(charTotal, 2)} | ${Bot.shortenNum(shipTotal, 2)} | ${Bot.shortenNum(
+                        `\`[ ${shortenNum(charTotal, 2)} | ${shortenNum(shipTotal, 2)} | ${shortenNum(
                             charTotal + shipTotal,
                         )} ]\` - ${member.name}`,
                     );
@@ -891,7 +893,7 @@ export default class Guilds extends Command {
 
             const fields = [];
             const header = "**`[ Char  | Ship  | Total ]`**";
-            const msgArr = Bot.msgArray([header, ...users], "\n", 1000);
+            const msgArr = msgArray([header, ...users], "\n", 1000);
             msgArr.forEach((m, ix) => {
                 fields.push({
                     name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix + 1, msgArr.length),
@@ -904,9 +906,9 @@ export default class Guilds extends Command {
                     value: guild.warnings.join("\n"),
                 });
             }
-            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, interaction);
             fields.push({
-                name: Bot.constants.zws,
+                name: constants.zws,
                 value: footerStr,
             });
             return interaction.editReply({
@@ -914,7 +916,7 @@ export default class Guilds extends Command {
                 embeds: [
                     {
                         author: {
-                            name: `${Bot.toProperCase(showSide)} side GP`,
+                            name: `${toProperCase(showSide)} side GP`,
                         },
                         fields: fields,
                     },
@@ -1012,9 +1014,9 @@ export default class Guilds extends Command {
                     value: guild.warnings.join("\n"),
                 });
             }
-            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, interaction);
             fields.push({
-                name: Bot.constants.zws,
+                name: constants.zws,
                 value: footerStr,
             });
             return interaction.editReply({
@@ -1042,7 +1044,7 @@ export default class Guilds extends Command {
                         {
                             title: "Missing Guild",
                             description: interaction.language.get("BASE_SWGOH_NO_GUILD"),
-                            color: Bot.constants.colors.brightred,
+                            color: constants.colors.brightred,
                         },
                     ],
                 });
@@ -1061,7 +1063,7 @@ export default class Guilds extends Command {
                         {
                             description: codeBlock(e),
                             title: "Something Broke while getting your guild's characters",
-                            color: Bot.constants.colors.brightred,
+                            color: constants.colors.brightred,
                             footer: { text: "Please try again in a bit." },
                         },
                     ],
@@ -1090,8 +1092,8 @@ export default class Guilds extends Command {
                 value: codeBlock(
                     [
                         `Members:        ${guild.roster.length}`,
-                        `Total GP:       ${Bot.shortenNum(guild.gp)}`,
-                        `Average GP:     ${Bot.shortenNum(avgMemberGP)}`,
+                        `Total GP:       ${shortenNum(guild.gp)}`,
+                        `Average GP:     ${shortenNum(avgMemberGP)}`,
                         // `AVG Char Arena: ${charArenaAVG.toFixed(2)}`,
                         // `AVG Ship Arena: ${shipArenaAVG.toFixed(2)}`,
                         `Zetas:          ${zetaCount.toLocaleString()}`,
@@ -1109,7 +1111,7 @@ export default class Guilds extends Command {
                     const ourScore = Number.parseInt(match.score, 10);
                     const opponentScore = Number.parseInt(match.opponentScore, 10);
                     const matchPower = (match.power / 1_000_000).toFixed(1);
-                    return `Match ${ix + 1} :: ${ourScore > opponentScore ? Bot.constants.emotes.check : Bot.constants.emotes.x} ${(`${ourScore}-${opponentScore},`).padEnd(maxLenCompare + 1, " ")} ${matchPower}M`;
+                    return `Match ${ix + 1} :: ${ourScore > opponentScore ? constants.emotes.check : constants.emotes.x} ${(`${ourScore}-${opponentScore},`).padEnd(maxLenCompare + 1, " ")} ${matchPower}M`;
                 });
                 fields.push({
                     name: "Previous Matches",
@@ -1162,7 +1164,7 @@ export default class Guilds extends Command {
                 name: "Previous Matches Stats",
                 value: codeBlock(
                     [
-                        `Streak     :: ${winStreak} ${Bot.constants.emotes.check}`,
+                        `Streak     :: ${winStreak} ${constants.emotes.check}`,
                         `W-L-D      :: ${wld.wins}-${wld.losses}-${wld.draws}, (${((wld.wins / previousMatches.length) * 100).toFixed(1)}%)`,
                         `Off range  :: ${offRangeStr}`,
                         `Off mean   :: ${offMean.toFixed(0)}`,
@@ -1175,7 +1177,7 @@ export default class Guilds extends Command {
             });
 
             // Get the overall gear levels for the guild as a whole
-            const [gearLvls, avgGear] = Bot.summarizeCharLevels(guildMembers, "gear");
+            const [gearLvls, avgGear] = summarizeCharLevels(guildMembers, "gear");
             const formattedGearLvls = Object.keys(gearLvls)
                 .slice(doExpand ? 0 : -4)
                 .map((g) => `G${g.toString().padEnd(12, " ")}:: ${gearLvls[g].toLocaleString().padStart(7, " ")}`)
@@ -1188,7 +1190,7 @@ export default class Guilds extends Command {
             });
 
             // Get the overall rarity levels for the guild as a whole
-            const [rarityLvls, avgRarity] = Bot.summarizeCharLevels(guildMembers, "rarity");
+            const [rarityLvls, avgRarity] = summarizeCharLevels(guildMembers, "rarity");
             const formattedRarityLvls = `${Object.keys(rarityLvls)
                 .splice(doExpand ? 0 : -4)
                 .map((g) => `${g}*           :: ${rarityLvls[g].toLocaleString().padStart(7, " ")}`)
@@ -1228,7 +1230,7 @@ export default class Guilds extends Command {
             fields.push(
                 ...charOut.map((char) => {
                     return {
-                        name: Bot.toProperCase(char.name),
+                        name: toProperCase(char.name),
                         value: char.value,
                     };
                 }),
@@ -1238,15 +1240,15 @@ export default class Guilds extends Command {
             fields.push(
                 ...shipOut.map((ship) => {
                     return {
-                        name: Bot.toProperCase(ship.name),
+                        name: toProperCase(ship.name),
                         value: ship.value,
                     };
                 }),
             );
 
-            const footerStr = Bot.updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated)), interaction);
+            const footerStr = updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated)), interaction);
             fields.push({
-                name: Bot.constants.zws,
+                name: constants.zws,
                 value: footerStr,
             });
             const embed = {

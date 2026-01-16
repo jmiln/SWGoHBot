@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { findChar, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -67,7 +69,7 @@ export default class Zetas extends Command {
         const searchChar = interaction.options.getString("character");
         // If a character was entered, see if it can find a match to display later
         if (searchChar) {
-            const chars = Bot.findChar(searchChar, Bot.characters);
+            const chars = findChar(searchChar, Bot.characters);
 
             if (!chars?.length) {
                 // No character found
@@ -172,9 +174,9 @@ export default class Zetas extends Command {
                 });
             }
 
-            const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+            const footerStr = updatedFooterStr(player.updated, interaction);
             fields.push({
-                name: Bot.constants.zws,
+                name: constants.zws,
                 value: footerStr,
             });
             if (character) {
@@ -183,7 +185,7 @@ export default class Zetas extends Command {
                     content: null,
                     embeds: [
                         {
-                            color: Bot.constants.colors.black,
+                            color: constants.colors.black,
                             author: author,
                             description: desc.join("\n"),
                             fields: fields,
@@ -202,7 +204,7 @@ export default class Zetas extends Command {
                 content: null,
                 embeds: [
                     {
-                        color: Bot.constants.colors.black,
+                        color: constants.colors.black,
                         author: author,
                         description: desc.join("\n"),
                         fields: fields,
@@ -271,7 +273,7 @@ export default class Zetas extends Command {
                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
                     .map((c) => `${c.name}\n${c.abilities}`);
                 const MAX_FIELDS = 5;
-                const msgArr = Bot.msgArray(sortedChars, "", 1000);
+                const msgArr = msgArray(sortedChars, "", 1000);
                 for (const m of msgArr) {
                     fields.push({
                         name: "____",
@@ -280,9 +282,9 @@ export default class Zetas extends Command {
                     });
                 }
                 const fieldArrChunks = Bot.chunkArray(fields, MAX_FIELDS);
-                const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+                const footerStr = updatedFooterStr(guild.updated, interaction);
                 fields.push({
-                    name: Bot.constants.zws,
+                    name: constants.zws,
                     value: footerStr,
                 });
 
@@ -309,7 +311,7 @@ export default class Zetas extends Command {
                     });
                 }
             } else {
-                const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+                const footerStr = updatedFooterStr(guild.updated, interaction);
                 if (!zetas[character.uniqueName]?.length) {
                     return interaction.editReply({
                         embeds: [
@@ -330,7 +332,7 @@ export default class Zetas extends Command {
                     });
                 }
                 fields.push({
-                    name: Bot.constants.zws,
+                    name: constants.zws,
                     value: footerStr,
                 });
                 return interaction.editReply({

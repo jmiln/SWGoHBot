@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { expandSpaces, findChar, getGearStr, makeTable, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
@@ -196,11 +198,11 @@ export default class GuildSearch extends Command {
         if (searchType === "character") {
             // Get any matches for the character
             searchStr = interaction.options.getString("character");
-            unitList = Bot.findChar(searchStr, Bot.characters);
+            unitList = findChar(searchStr, Bot.characters);
         } else {
             // Get any matches for the ship
             searchStr = interaction.options.getString("ship");
-            unitList = Bot.findChar(searchStr, Bot.ships, true);
+            unitList = findChar(searchStr, Bot.ships, true);
             isShip = true;
         }
 
@@ -334,10 +336,10 @@ export default class GuildSearch extends Command {
                 header[stat] = { value: checkableStats[stat].short, endWith: "]`", align: "right" };
                 const outHeader = { ...header, player: { value: "", align: "left" } };
 
-                const outTable = Bot.makeTable(outHeader, outArr);
+                const outTable = makeTable(outHeader, outArr);
 
                 if (outTable.length) {
-                    const outMsgArr = Bot.msgArray(outTable, "\n", 700);
+                    const outMsgArr = msgArray(outTable, "\n", 700);
                     outMsgArr.forEach((m, ix) => {
                         const name =
                             ix === 0
@@ -356,12 +358,12 @@ export default class GuildSearch extends Command {
                 }
             }
 
-            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, interaction);
             const embed = {
                 author: {
                     name: guild.name,
                 },
-                fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                fields: [...fields, { name: constants.zws, value: footerStr }],
             };
             try {
                 await interaction.editReply({ content: null, embeds: [embed] });
@@ -397,7 +399,7 @@ export default class GuildSearch extends Command {
             } else {
                 desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
             }
-            const footerStr = Bot.updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, interaction);
             return super.error(interaction, desc, {
                 title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
                 description: footerStr,
@@ -469,7 +471,7 @@ export default class GuildSearch extends Command {
 
             if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity];
 
-            const gearStr = Bot.getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
+            const gearStr = getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
             let unitStr = " | ";
             const unitStrLen = unitStr.length;
             if (hasUlt) {
@@ -506,7 +508,7 @@ export default class GuildSearch extends Command {
                 uStr = member.player;
             }
 
-            uStr = Bot.expandSpaces(uStr);
+            uStr = expandSpaces(uStr);
 
             if (!charOut[member.rarity]) {
                 charOut[member.rarity] = [uStr];
@@ -526,7 +528,7 @@ export default class GuildSearch extends Command {
 
         for (const star of outArr) {
             if (star >= starLvl) {
-                const msgArr = Bot.msgArray(charOut[star], "\n", 700);
+                const msgArr = msgArray(charOut[star], "\n", 700);
                 for (const [ix, msg] of msgArr.entries()) {
                     const name =
                         Number.parseInt(star, 10) === 0
@@ -557,7 +559,7 @@ export default class GuildSearch extends Command {
         }
 
         const maxUpdated = Math.max(...guildChar.map((ch) => ch.updated));
-        const footerStr = Bot.updatedFooterStr(maxUpdated, interaction);
+        const footerStr = updatedFooterStr(maxUpdated, interaction);
         let description = null;
         if (doZeta || doOmicron) {
             if (doZeta && doOmicron) {
@@ -577,7 +579,7 @@ export default class GuildSearch extends Command {
                             name: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked),
                         },
                         description: description,
-                        fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                        fields: [...fields, { name: constants.zws, value: footerStr }],
                     },
                 ],
             });

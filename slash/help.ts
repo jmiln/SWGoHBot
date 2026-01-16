@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { msgArray, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Help extends Command {
@@ -65,10 +67,10 @@ export default class Help extends Command {
                 }
 
                 // TODO Put the patreon logo at the start of the patreon section
-                const chunks = Bot.msgArray(outArr, "\n\n", 1000);
+                const chunks = msgArray(outArr, "\n\n", 1000);
                 for (const [ix, chunk] of chunks.entries()) {
                     fields.push({
-                        name: ix > 0 ? Bot.constants.zws : cat.toUpperCase(),
+                        name: ix > 0 ? constants.zws : cat.toUpperCase(),
                         value: chunk,
                     });
                 }
@@ -111,7 +113,7 @@ export default class Help extends Command {
             await interaction.reply({
                 embeds: [
                     {
-                        title: `Command description for ${Bot.toProperCase(search)}`,
+                        title: `Command description for ${toProperCase(search)}`,
                         description: ` - Options are either \`<required>\` or \`[optional]\`\n\n${cmdArr.join("\n")}`,
                         color: color,
                     },

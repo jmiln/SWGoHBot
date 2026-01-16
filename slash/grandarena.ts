@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import unitChecklist from "../data/unitChecklist.ts";
-import { findChar,findFaction,makeTable,shortenNum,summarizeCharLevels,updatedFooterStr } from "../modules/functions.ts";
+import { findChar, findFaction, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -229,7 +229,7 @@ export default class GrandArena extends Command {
                     user2: { value: "", align: "left" },
                 },
                 gpStats,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
 
@@ -267,7 +267,7 @@ export default class GrandArena extends Command {
                     user2: { value: "", align: "left" },
                 },
                 gearOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
         fields.push({
@@ -304,7 +304,7 @@ export default class GrandArena extends Command {
                     user2: { value: "", align: "left" },
                 },
                 rarityOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
 
@@ -334,7 +334,7 @@ export default class GrandArena extends Command {
                     user2: { value: "", align: "left" },
                 },
                 glOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
         fields.push({
@@ -371,7 +371,7 @@ export default class GrandArena extends Command {
                     user2: { value: "", align: "left" },
                 },
                 relicOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
         fields.push({
@@ -410,7 +410,7 @@ export default class GrandArena extends Command {
                         user2: { value: "", align: "left" },
                     },
                     modOverview,
-                    { useHeader: false },
+                    { boldHeader: false, useHeader: false },
                 ).join("\n"),
             ),
         });
@@ -500,7 +500,7 @@ export default class GrandArena extends Command {
                             user2: { value: "", align: "left" },
                         },
                         checkArr[c],
-                        { useHeader: false },
+                        { boldHeader: false, useHeader: false },
                     )
                         .map((e) => e.replace(" ::", "::"))
                         .join("\n"),
@@ -603,7 +603,7 @@ function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, label
                 user2: { value: "", align: "left" },
             },
             overview,
-            { useHeader: false },
+            { boldHeader: false, useHeader: false },
         ).join("\n"),
     );
 }

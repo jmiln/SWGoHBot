@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { findChar, getSideColor } from "../modules/functions.ts";
 import type { BotInteraction, BotType, BotUnitMods } from "../types/types.ts";
 
 export default class Mods extends Command {
@@ -92,7 +93,7 @@ export default class Mods extends Command {
         const searchName = interaction.options.getString("character");
 
         // Find any characters that match that
-        const chars = Bot.findChar(searchName, charList);
+        const chars = findChar(searchName, charList);
         if (!chars?.length) {
             return super.error(
                 interaction,
@@ -126,7 +127,7 @@ export default class Mods extends Command {
         return interaction.editReply({
             embeds: [
                 {
-                    color: Bot.getSideColor(character.side),
+                    color: getSideColor(character.side),
                     author: {
                         name: character.name,
                         icon_url: character.avatarURL,

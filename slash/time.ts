@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { formatCurrentTime, isValidZone } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Time extends Command {
@@ -21,21 +22,21 @@ export default class Time extends Command {
         const guildConf = interaction.guildSettings;
         const timezone = interaction.options.getString("timezone");
 
-        if (timezone && Bot.isValidZone(timezone)) {
+        if (timezone && isValidZone(timezone)) {
             return interaction.reply({
-                content: interaction.language.get("COMMAND_TIME_CURRENT", Bot.formatCurrentTime(timezone), timezone),
+                content: interaction.language.get("COMMAND_TIME_CURRENT", formatCurrentTime(timezone), timezone),
             });
         }
 
-        if (guildConf?.timezone && Bot.isValidZone(guildConf.timezone)) {
+        if (guildConf?.timezone && isValidZone(guildConf.timezone)) {
             // If we got here because timezone above had issues, say so, but if it's just here because they left it empty, don'tcomplain
             if (timezone?.length) {
-                return super.error(interaction, interaction.language.get("COMMAND_TIME_INVALID_ZONE", Bot.formatCurrentTime()));
+                return super.error(interaction, interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime()));
             }
             return interaction.reply({
                 content: `Here's your guild's default time:\n${interaction.language.get(
                     "COMMAND_TIME_CURRENT",
-                    Bot.formatCurrentTime(guildConf.timezone),
+                    formatCurrentTime(guildConf.timezone),
                     guildConf.timezone,
                 )}`,
             });
@@ -46,7 +47,7 @@ export default class Time extends Command {
             interaction,
             `I couldn't find a valid timezone to match your request, so this is my default one:\n${interaction.language.get(
                 "COMMAND_TIME_INVALID_ZONE",
-                Bot.formatCurrentTime(),
+                formatCurrentTime(),
             )}`,
         );
     }

@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
+import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
@@ -157,7 +158,7 @@ export default class UserConf extends Command {
             // This means the user is working with the allycode, so go from there
 
             let allycode = interaction.options.getString("allycode");
-            if (!Bot.isAllyCode(allycode)) {
+            if (!isAllyCode(allycode)) {
                 return super.error(interaction, `${allycode} is not a valid ally code, please double check your digits.`);
             }
             allycode = allycode.replace(/[^\d]*/g, "");

@@ -1,5 +1,6 @@
 import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
+import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
@@ -31,7 +32,7 @@ export default class Showconf extends Command {
                     const roleArr = [];
                     if (guildConf.adminRole?.length) {
                         for (const role of guildConf.adminRole) {
-                            if (Bot.isUserID(role)) {
+                            if (isUserID(role)) {
                                 // If it's a role ID, try and get a name for it
                                 const roleRes = interaction.guild.roles.cache.find((r) => r.id === role);
                                 roleArr.push(roleRes?.name || role);

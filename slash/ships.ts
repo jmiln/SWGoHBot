@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Ships extends Command {
@@ -24,7 +25,7 @@ export default class Ships extends Command {
         const searchName = interaction.options.getString("ship");
 
         // Find any characters that match that
-        const ships = Bot.findChar(searchName, shipList, true);
+        const ships = findChar(searchName, shipList, true);
         if (ships.length <= 0) {
             return super.error(
                 interaction,
@@ -63,24 +64,24 @@ export default class Ships extends Command {
             }
             fields.push({
                 name: interaction.language.get("COMMAND_SHIPS_CREW"),
-                value: Bot.toProperCase(crew.join(", ")),
+                value: toProperCase(crew.join(", ")),
             });
         }
         if (unit.factions.length) {
             fields.push({
                 name: interaction.language.get("COMMAND_SHIPS_FACTIONS"),
-                value: Bot.toProperCase(unit.factions.join(", ")),
+                value: toProperCase(unit.factions.join(", ")),
             });
         }
         if (shipAbilities.length) {
             for (const ability of shipAbilities) {
                 const a = {
-                    type: Bot.toProperCase(ability.skillId.split("_")[0].replace("skill", "")),
+                    type: toProperCase(ability.skillId.split("_")[0].replace("skill", "")),
                     abilityCooldown: ability.cooldown,
                     abilityDesc: ability.desc,
                 };
 
-                const msgArr = Bot.msgArray(Bot.expandSpaces(interaction.language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
+                const msgArr = msgArray(expandSpaces(interaction.language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
 
                 msgArr.forEach((m, ix) => {
                     if (ix === 0) {
@@ -103,13 +104,13 @@ export default class Ships extends Command {
                 value: "Sorry, but this ship has not been fully updated yet.",
             });
         }
-        const charImg = await Bot.getBlankUnitImage(ship.uniqueName);
+        const charImg = await getBlankUnitImage(ship.uniqueName);
         return interaction.reply({
             embeds: [
                 {
-                    color: Bot.getSideColor(ship.side),
+                    color: getSideColor(ship.side),
                     author: {
-                        name: Bot.toProperCase(ship.name),
+                        name: toProperCase(ship.name),
                         url: ship.url,
                     },
                     fields: fields,

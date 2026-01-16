@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -155,37 +157,37 @@ export default class TerritoryWar extends Command {
         // Overall basic gp stats
         gpStats.push({
             check: labels.charGP,
-            user1: Bot.shortenNum(guild1GP.char, 2),
-            user2: Bot.shortenNum(guild2GP.char, 2),
+            user1: shortenNum(guild1GP.char, 2),
+            user2: shortenNum(guild2GP.char, 2),
         });
         gpStats.push({
             check: labels.shipGP,
-            user1: Bot.shortenNum(guild1GP.ship, 2),
-            user2: Bot.shortenNum(guild2GP.ship, 2),
+            user1: shortenNum(guild1GP.ship, 2),
+            user2: shortenNum(guild2GP.ship, 2),
         });
         gpStats.push({
             check: "Avg GP",
-            user1: Bot.shortenNum(guild1GP.total / guild1.roster.length, 2),
-            user2: Bot.shortenNum(guild2GP.total / guild2.roster.length, 2),
+            user1: shortenNum(guild1GP.total / guild1.roster.length, 2),
+            user2: shortenNum(guild2GP.total / guild2.roster.length, 2),
         });
         gpStats.push({
             check: "Total GP",
-            user1: Bot.shortenNum(guild1GP.total, 2),
-            user2: Bot.shortenNum(guild2GP.total, 2),
+            user1: shortenNum(guild1GP.total, 2),
+            user2: shortenNum(guild2GP.total, 2),
         });
 
         fields.push({
             name: "GP Stats Overview",
             value: codeBlock(
                 "asciiDoc",
-                Bot.makeTable(
+                makeTable(
                     {
                         check: { value: "", align: "left", endWith: "::" },
                         user1: { value: "", endWith: "vs", align: "right" },
                         user2: { value: "", align: "left" },
                     },
                     gpStats,
-                    { useHeader: false },
+                    { boldHeader: false, useHeader: false },
                 ).join("\n"),
             ),
         });
@@ -208,14 +210,14 @@ export default class TerritoryWar extends Command {
             user2: guild2AbilityStats.omicrons,
         });
 
-        const overViewTable = Bot.makeTable(
+        const overViewTable = makeTable(
             {
                 check: { value: "", align: "left", endWith: "::" },
                 user1: { value: "", endWith: "vs", align: "right" },
                 user2: { value: "", align: "left" },
             },
             abilityStats,
-            { useHeader: false },
+            { boldHeader: false, useHeader: false },
         );
         fields.push({
             name: "Ability Stats Overview",
@@ -224,8 +226,8 @@ export default class TerritoryWar extends Command {
 
         // Get the overall gear levels for each user
         const gearOverview = [];
-        const [g1GearLvls, g1AvgGear] = Bot.summarizeCharLevels(guild1Stats, "gear");
-        const [g2GearLvls, g2AvgGear] = Bot.summarizeCharLevels(guild2Stats, "gear");
+        const [g1GearLvls, g1AvgGear] = summarizeCharLevels(guild1Stats, "gear");
+        const [g2GearLvls, g2AvgGear] = summarizeCharLevels(guild2Stats, "gear");
         const maxGear = Math.max(
             Math.max(...Object.keys(g1GearLvls).map((g) => Number.parseInt(g, 10))),
             Math.max(...Object.keys(g2GearLvls).map((g) => Number.parseInt(g, 10))),
@@ -244,14 +246,14 @@ export default class TerritoryWar extends Command {
         });
         const gearTable = codeBlock(
             "asciiDoc",
-            Bot.makeTable(
+            makeTable(
                 {
                     check: { value: "", align: "left", endWith: "::" },
                     user1: { value: "", endWith: "vs", align: "right" },
                     user2: { value: "", align: "left" },
                 },
                 gearOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
         fields.push({
@@ -261,8 +263,8 @@ export default class TerritoryWar extends Command {
 
         // Get the overall relic levels for each user
         const relicOverview = [];
-        const [g1RelicLvls, g1AvgRelic] = Bot.summarizeCharLevels(guild1Stats, "relic");
-        const [g2RelicLvls, g2AvgRelic] = Bot.summarizeCharLevels(guild2Stats, "relic");
+        const [g1RelicLvls, g1AvgRelic] = summarizeCharLevels(guild1Stats, "relic");
+        const [g2RelicLvls, g2AvgRelic] = summarizeCharLevels(guild2Stats, "relic");
         const maxRelic = Math.max(
             Math.max(...Object.keys(g1RelicLvls).map((g) => Number.parseInt(g, 10))),
             Math.max(...Object.keys(g2RelicLvls).map((g) => Number.parseInt(g, 10))),
@@ -281,14 +283,14 @@ export default class TerritoryWar extends Command {
         });
         const relicTable = codeBlock(
             "asciiDoc",
-            Bot.makeTable(
+            makeTable(
                 {
                     check: { value: "", align: "left", endWith: "::" },
                     user1: { value: "", endWith: "vs", align: "right" },
                     user2: { value: "", align: "left" },
                 },
                 relicOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
         fields.push({
@@ -298,8 +300,8 @@ export default class TerritoryWar extends Command {
 
         // Get the overall rarity levels for each user
         const rarityOverview = [];
-        const [g1RarityLvls, g1AvgRarity] = Bot.summarizeCharLevels(guild1Stats, "rarity");
-        const [g2RarityLvls, g2AvgRarity] = Bot.summarizeCharLevels(guild2Stats, "rarity");
+        const [g1RarityLvls, g1AvgRarity] = summarizeCharLevels(guild1Stats, "rarity");
+        const [g2RarityLvls, g2AvgRarity] = summarizeCharLevels(guild2Stats, "rarity");
         const maxRarity = Math.max(
             Math.max(...Object.keys(g1RarityLvls).map((g) => Number.parseInt(g, 10))),
             Math.max(...Object.keys(g2RarityLvls).map((g) => Number.parseInt(g, 10))),
@@ -318,14 +320,14 @@ export default class TerritoryWar extends Command {
         });
         const rarityTable = codeBlock(
             "asciiDoc",
-            Bot.makeTable(
+            makeTable(
                 {
                     check: { value: "", align: "left", endWith: "::" },
                     user1: { value: "", endWith: "vs", align: "right" },
                     user2: { value: "", align: "left" },
                 },
                 rarityOverview,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n"),
         );
 
@@ -374,14 +376,14 @@ export default class TerritoryWar extends Command {
                 user2: `${guild2GLCount[glDefId]}+${guild2GLUltCount[glDefId]}`,
             });
         }
-        const glOverviewTable = Bot.makeTable(
+        const glOverviewTable = makeTable(
             {
                 check: { value: "", align: "left", endWith: "::" },
                 user1: { value: "", endWith: "vs", align: "right" },
                 user2: { value: "", align: "left" },
             },
             glOverview,
-            { useHeader: false },
+            { boldHeader: false, useHeader: false },
         );
         fields.push({
             name: "Galactic Legend Overview",
@@ -424,21 +426,21 @@ export default class TerritoryWar extends Command {
             name: "Capital Ship Overview",
             value: `*How many of each Capital Ship each guild has*\n${codeBlock(
                 "asciiDoc",
-                Bot.makeTable(
+                makeTable(
                     {
                         check: { value: "", align: "left", endWith: "::" },
                         user1: { value: "", endWith: "vs", align: "right" },
                         user2: { value: "", align: "left" },
                     },
                     capitalOverview,
-                    { useHeader: false },
+                    { boldHeader: false, useHeader: false },
                 ).join("\n"),
             )}`,
         });
 
-        const footerStr = Bot.updatedFooterStr(Math.min(guild1.updated, guild2.updated), interaction);
+        const footerStr = updatedFooterStr(Math.min(guild1.updated, guild2.updated), interaction);
         fields.push({
-            name: Bot.constants.zws,
+            name: constants.zws,
             value: footerStr,
         });
         const embed = {

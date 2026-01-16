@@ -1,6 +1,8 @@
 import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { expandSpaces, findChar, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -66,7 +68,7 @@ export default class MyCharacter extends Command {
         }
 
         // Get any matching units
-        const units = Bot.findChar(searchUnit, searchType === "ship" ? Bot.ships : Bot.characters, true);
+        const units = findChar(searchUnit, searchType === "ship" ? Bot.ships : Bot.characters, true);
 
         // If there are no results or too many results, let the user know
         if (units.length === 0) {
@@ -101,7 +103,7 @@ export default class MyCharacter extends Command {
         }
 
         const pName = player.name;
-        const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+        const footerStr = updatedFooterStr(player.updated, interaction);
 
         const thisUnit = player.roster.find((c) => c.defId === unit.uniqueName);
 
@@ -136,13 +138,13 @@ export default class MyCharacter extends Command {
                 gearStr = gearStr.replace(e.slot, "X");
             }
             gearStr = gearStr.replace(/[0-9]/g, "  ");
-            gearStr = Bot.expandSpaces(gearStr);
+            gearStr = expandSpaces(gearStr);
         }
         if (!thisLangChar.skills) {
             console.log(thisLangChar);
         } else {
             for (const a of thisLangChar.skills) {
-                a.type = Bot.toProperCase(a.id.split("skill")[0]);
+                a.type = toProperCase(a.id.split("skill")[0]);
                 if (a.tier === a.tiers) {
                     if (a.isOmicron) {
                         // Maxed Omicron ability
@@ -267,11 +269,11 @@ export default class MyCharacter extends Command {
                     }
                 }
             }
-            statArr.push(Bot.expandSpaces(statStr));
+            statArr.push(expandSpaces(statStr));
         }
 
         const fields = [];
-        Bot.msgArray(statArr, "\n", 1000).forEach((m: string, ix: number) => {
+        msgArray(statArr, "\n", 1000).forEach((m: string, ix: number) => {
             fields.push({
                 name: ix === 0 ? "Stats" : "-",
                 value: codeBlock("asciidoc", m),
@@ -293,7 +295,7 @@ export default class MyCharacter extends Command {
         const unitImg = await Bot.getUnitImage(thisUnit.defId, thisUnit);
 
         fields.push({
-            name: Bot.constants.zws,
+            name: constants.zws,
             value: footerStr,
         });
 

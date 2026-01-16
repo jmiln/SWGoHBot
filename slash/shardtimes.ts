@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, type TextChannel } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -112,7 +114,7 @@ export default class Shardtimes extends Command {
             let type = "id";
             if (userID === "me") {
                 userID = interaction.user.id;
-            } else if (Bot.isUserID(userID)) {
+            } else if (isUserID(userID)) {
                 // If it's an ID, use it as such
                 userID = userID.replace(/[^\d]*/g, "");
             } else {
@@ -126,7 +128,7 @@ export default class Shardtimes extends Command {
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
             if (
                 [interaction.user.id, interaction.user.username, "me"].includes(userID) &&
-                options.level < Bot.constants.permMap.GUILD_ADMIN
+                options.level < constants.permMap.GUILD_ADMIN
             ) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
@@ -145,7 +147,7 @@ export default class Shardtimes extends Command {
 
             if (timezone) {
                 const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
-                if (Bot.isValidZone(timezone)) {
+                if (isValidZone(timezone)) {
                     // Timezone is fine & already set, continue on
                 } else if (match) {
                     // It's a UTC +/- zone  (+8:00 / -4:15)
@@ -235,7 +237,7 @@ export default class Shardtimes extends Command {
             let userID = interaction.options.getString("user");
             if (userID === "me") {
                 userID = interaction.user.id;
-            } else if (Bot.isUserID(userID)) {
+            } else if (isUserID(userID)) {
                 // If it's an ID, use it as such
                 userID = userID.replace(/[^\d]*/g, "");
             }
@@ -243,7 +245,7 @@ export default class Shardtimes extends Command {
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
             if (
                 [interaction.user.id, interaction.user.username, "me"].includes(userID) &&
-                options.level < Bot.constants.permMap.GUILD_ADMIN
+                options.level < constants.permMap.GUILD_ADMIN
             ) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
@@ -266,7 +268,7 @@ export default class Shardtimes extends Command {
             const destChannel: TextChannel = interaction.options.getChannel("dest_channel");
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
-            if (options.level < Bot.constants.permMap.GUILD_ADMIN) {
+            if (options.level < constants.permMap.GUILD_ADMIN) {
                 // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
                 return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
@@ -277,7 +279,7 @@ export default class Shardtimes extends Command {
             }
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
-            if (!Bot.hasViewAndSend(destChannel, interaction.guild.members.me)) {
+            if (!hasViewAndSend(destChannel, interaction.guild.members.me)) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 
@@ -388,22 +390,22 @@ export default class Shardtimes extends Command {
             });
         }
 
-        function timeTil(zone: string, timeToAdd: number, type: string) {
+        function timeTil(zone: string | number, timeToAdd: number, type: string) {
             const nowTime = Date.now();
             const hrMS = 1000 * 60 * 60;
             const dayMS = 1000 * 60 * 60 * 24;
 
             let targetTime: number;
-            if (type === "zone") {
-                const target = Bot.getStartOfDay(zone).getTime() + hrMS * timeToAdd;
+            if (type === "zone" && typeof zone === "string") {
+                const target = getStartOfDay(zone).getTime() + hrMS * timeToAdd;
                 targetTime = target + nowTime > target ? target : target + dayMS;
             } else {
-                const target = type === "hhmm" ? getUTCAtTime(zone) : Bot.getUTCFromOffset(zone) + hrMS * timeToAdd;
+                const target = type === "hhmm" && typeof zone === "string" ? getUTCAtTime(zone) : getUTCFromOffset(zone as number) + hrMS * timeToAdd;
 
                 // If it's already passed, add a day to grab the next one
                 targetTime = target + (target < nowTime ? dayMS : 0);
             }
-            const times = Bot.convertMS(targetTime - nowTime);
+            const times = convertMS(targetTime - nowTime);
             return `${times.hour.toString().padStart(2, "0")}:${times.minute.toString().padStart(2, "0")}`;
         }
 

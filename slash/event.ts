@@ -223,7 +223,7 @@ export default class Event extends Command {
 
         if (
             ["create", "createjson", "delete", "edit", "trigger"].includes(action.toLowerCase()) &&
-            options.level < Bot.constants.permMap.GUILD_ADMIN
+            options.level < constants.permMap.GUILD_ADMIN
         ) {
             return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
         }

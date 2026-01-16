@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -112,9 +113,9 @@ export default class GuildQuality extends Command {
 
         // Grab the most recently updated player's timestamp
         const maxUpdated = Math.max(...guild.roster.map((pl) => pl.updated));
-        const footerStr = Bot.updatedFooterStr(maxUpdated, interaction);
+        const footerStr = updatedFooterStr(maxUpdated, interaction);
         fields.push({
-            name: Bot.constants.zws,
+            name: constants.zws,
             value: footerStr,
         });
 

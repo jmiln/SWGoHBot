@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
@@ -32,7 +34,7 @@ export default class Register extends Command {
         let allycode = interaction.options.getString("allycode");
         let user = interaction.options.getUser("user");
 
-        if (!Bot.isAllyCode(allycode)) {
+        if (!isAllyCode(allycode)) {
             return super.error(
                 interaction,
                 `**${allycode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`,
@@ -48,7 +50,7 @@ export default class Register extends Command {
         }
 
         // First off, make sure they're not trying to do something they shouldn't do...
-        if (user.id !== interaction.user.id && options.level < Bot.constants.permMap.GUILD_ADMIN) {
+        if (user.id !== interaction.user.id && options.level < constants.permMap.GUILD_ADMIN) {
             // If they are trying to change someone else and they don't have the right permissions
             return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
         }

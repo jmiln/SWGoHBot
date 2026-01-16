@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -100,7 +102,7 @@ export default class MyArena extends Command {
                     name: unitName,
                 });
             }
-            desc = Bot.makeTable(
+            desc = makeTable(
                 {
                     pos: { value: "", startWith: "`" },
                     speed: { value: "Spd", startWith: "[", endWith: "|" },
@@ -119,7 +121,7 @@ export default class MyArena extends Command {
             });
         }
 
-        const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+        const footerStr = updatedFooterStr(player.updated, interaction);
         return interaction.editReply({
             content: null,
             embeds: [
@@ -128,7 +130,7 @@ export default class MyArena extends Command {
                         name: interaction.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name),
                     },
                     description: desc,
-                    fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                    fields: [...fields, { name: constants.zws, value: footerStr }],
                 },
             ],
         });

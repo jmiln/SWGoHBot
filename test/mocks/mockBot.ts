@@ -5,6 +5,10 @@ import { getSideColor } from "../../modules/functions.ts";
 
 export function createMockBot(overrides: Partial<BotType> = {}): BotType {
     const bot: BotType = {
+        acronyms: {
+            "CLS": "Commander Luke Skywalker",
+            "TB": "Territory Battle",
+        },
         characters: [
             { name: "Commander Luke Skywalker", uniqueName: "COMMANDERLUKESKYWALKER", side: "light", url: "https://swgoh.gg/characters/commander-luke-skywalker/", aliases: ["CLS", "Luke"] },
             { name: "Darth Vader", uniqueName: "DARTHVADER", side: "dark", url: "https://swgoh.gg/characters/darth-vader/", aliases: ["Vader", "DV"] },

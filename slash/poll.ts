@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
 import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -108,7 +110,7 @@ export default class Poll extends Command {
 
         // Make sure it's a mod or someone with the appropriate perms trying to create it
         const restrictedActions = ["cancel", "create", "end"];
-        if (restrictedActions.includes(action) && options.level < Bot.constants.permMap.GUILD_ADMIN) {
+        if (restrictedActions.includes(action) && options.level < constants.permMap.GUILD_ADMIN) {
             return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
         }
 
@@ -259,9 +261,9 @@ export default class Poll extends Command {
         function getFooter() {
             const footer = { text: "" };
             if (interaction.guild) {
-                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER"));
+                footer.text = expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER"));
             } else {
-                footer.text = Bot.expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER"));
+                footer.text = expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER"));
             }
             return footer;
         }

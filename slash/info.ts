@@ -1,8 +1,9 @@
 import { codeBlock, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
+import { guildCount, makeTable, userCount } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
-import { guildCount,userCount } from "../modules/functions.ts";
 
 interface InfoContent {
     statHeader: string;
@@ -29,7 +30,7 @@ export default class Info extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const dbo = await Bot.mongo.db(Bot.config.mongodb.swapidb);
+        const dbo = await Bot.mongo.db(config.mongodb.swapidb);
         const swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
         const swgohGuildCount = await dbo.collection("guilds").estimatedDocumentCount();
         try {
@@ -44,13 +45,13 @@ export default class Info extends Command {
                 { title: content.nodeVer, content: process.version },
                 { title: content.discordVer, content: `v${version}` },
             ];
-            desc += Bot.makeTable(
+            desc += makeTable(
                 {
                     title: { value: "", align: "left", endWith: "::" },
                     content: { value: "", align: "left" },
                 },
                 statTable,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n");
 
             desc += `\n\n${content.swgohHeader}\n`;
@@ -59,13 +60,13 @@ export default class Info extends Command {
                 { title: content.guilds, content: swgohGuildCount },
                 { title: content.lang, content: Bot.swgohLangList.length },
             ];
-            desc += Bot.makeTable(
+            desc += makeTable(
                 {
                     title: { value: "", align: "left", endWith: "::" },
                     content: { value: "", align: "left" },
                 },
                 swgohTable,
-                { useHeader: false },
+                { boldHeader: false, useHeader: false },
             ).join("\n");
 
             for (const link of Object.keys(content.links)) {

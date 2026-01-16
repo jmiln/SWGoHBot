@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import raids from "../data/raiddmg.ts";
+import { toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class RaidDamage extends Command {
@@ -101,8 +102,8 @@ export default class RaidDamage extends Command {
                     author: {
                         name: interaction.language.get(
                             "COMMAND_RAIDDAMAGE_OUT_HEADER",
-                            Bot.toProperCase(thisRaid.name),
-                            Bot.toProperCase(thisPhase.name),
+                            toProperCase(thisRaid.name),
+                            toProperCase(thisPhase.name),
                         ),
                     },
                     description: percent

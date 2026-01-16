@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import factionMap from "../data/factionMap.ts";
+import { msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -194,7 +195,7 @@ export default class Need extends Command {
             outChars = outChars.filter((c) => c.name);
             outChars = outChars.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
             outChars = outChars.map((c) => `\`${c.rarity}*\` ${c.rarity ? c.name : `~~${c.name}~~`}`);
-            const msgArr = Bot.msgArray(outChars, "\n", 1000);
+            const msgArr = msgArray(outChars, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix + 1})`;
@@ -207,7 +208,7 @@ export default class Need extends Command {
         if (outShips.length) {
             outShips = outShips.filter((a) => !!a.name).sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
             outShips = outShips.map((s) => `\`${s.rarity}*\` ${s.rarity ? s.name : `~~${s.name}~~`}`);
-            const msgArr = Bot.msgArray(outShips, "\n", 1000);
+            const msgArr = msgArray(outShips, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix + 1})`;
@@ -233,7 +234,7 @@ export default class Need extends Command {
                 embeds: [
                     {
                         author: {
-                            name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", "))),
+                            name: interaction.language.get("COMMAND_NEED_HEADER", player.name, toProperCase(headerNames.join(", "))),
                         },
                         description: desc,
                         fields: fields.slice(0, Math.floor(fields.length / 2)),
@@ -255,7 +256,7 @@ export default class Need extends Command {
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, Bot.toProperCase(headerNames.join(", "))),
+                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, toProperCase(headerNames.join(", "))),
                     },
                     description: desc,
                     fields: fields,

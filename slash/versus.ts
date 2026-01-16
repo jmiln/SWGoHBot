@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { findChar, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -81,9 +83,9 @@ export default class Versus extends Command {
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
-        let charRes = Bot.findChar(character, Bot.characters);
+        let charRes = findChar(character, Bot.characters);
         if (!charRes.length) {
-            charRes = Bot.findChar(character, Bot.ships, true);
+            charRes = findChar(character, Bot.ships, true);
         }
         if (!charRes.length) {
             // Didn't find any matches
@@ -191,7 +193,7 @@ export default class Versus extends Command {
             }
         }
 
-        const generalTable = Bot.makeTable(
+        const generalTable = makeTable(
             {
                 stat: { value: "Stat", align: "right", endWith: "::" },
                 user1: { value: user1.name, align: "right", endWith: "vs" },
@@ -215,7 +217,7 @@ export default class Versus extends Command {
 
         const langChar = await Bot.swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId });
         const charName = langChar.nameKey;
-        const statTable = Bot.makeTable(
+        const statTable = makeTable(
             {
                 stat: { value: "Stat", align: "right", endWith: "::" },
                 user1: { value: user1.name, align: "right", endWith: "vs" },
@@ -225,7 +227,7 @@ export default class Versus extends Command {
             { boldHeader: false, useHeader: false },
         );
 
-        const footerStr = Bot.updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
+        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
         return interaction.editReply({
             content: null,
             embeds: [
@@ -241,7 +243,7 @@ export default class Versus extends Command {
                             value: codeBlock(statTable.join("\n"), "asciidoc"),
                         },
                         {
-                            name: Bot.constants.zws,
+                            name: constants.zws,
                             value: footerStr,
                         },
                     ],

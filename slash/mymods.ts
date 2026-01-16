@@ -1,7 +1,9 @@
 import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
+import { expandSpaces, findChar, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
@@ -140,7 +142,7 @@ export default class MyMods extends Command {
                 footer: "Please try again in a bit.",
             });
         }
-        const footerStr = Bot.updatedFooterStr(player.updated, interaction) || "";
+        const footerStr = updatedFooterStr(player.updated, interaction) || "";
 
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");
@@ -150,7 +152,7 @@ export default class MyMods extends Command {
                 return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_MISSING_CHAR") });
             }
 
-            const chars = Bot.findChar(searchChar, Bot.characters);
+            const chars = findChar(searchChar, Bot.characters);
             if (chars.length === 0) {
                 return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
             }
@@ -218,7 +220,7 @@ export default class MyMods extends Command {
             for (const mod of Object.keys(slots)) {
                 // Set some default strings in case we don't have perms to use external emotes
                 let typeIcon = slots[mod].type;
-                let shapeIcon = Bot.toProperCase(modSlots[Number.parseInt(mod, 10) - 1]);
+                let shapeIcon = toProperCase(modSlots[Number.parseInt(mod, 10) - 1]);
 
                 const stats = slots[mod].stats;
                 // If the bot has the right perms to use external emotes, go ahead and set it to use them
@@ -248,8 +250,8 @@ export default class MyMods extends Command {
                             name: `${player.name}'s ${character.name}`,
                             icon_url: character.avatarURL,
                         },
-                        color: Bot.getSideColor(character.side),
-                        fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                        color: getSideColor(character.side),
+                        fields: [...fields, { name: constants.zws, value: footerStr }],
                     },
                 ],
             });
@@ -320,7 +322,7 @@ export default class MyMods extends Command {
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);
             let outStr = "";
             for (const outChar of out) {
-                outStr += `\`${outChar?.stat}${` ${Bot.constants.zws}`.repeat(longest - (outChar.stat?.length || 3))}\`** : ${
+                outStr += `\`${outChar?.stat}${` ${constants.zws}`.repeat(longest - (outChar.stat?.length || 3))}\`** : ${
                     outChar.name
                 }**\n`;
             }
@@ -339,7 +341,7 @@ export default class MyMods extends Command {
                             ),
                         },
                         description: `==============================\n${outStr}==============================`,
-                        fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                        fields: [...fields, { name: constants.zws, value: footerStr }],
                     },
                 ],
             });

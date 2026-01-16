@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { expandSpaces, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -199,7 +201,7 @@ export default class MyProfile extends Command {
                 Object.keys(rarityCount)
                     .filter((r) => rarityCount[r].c > 0 || rarityCount[r].s > 0)
                     .map((r) =>
-                        Bot.expandSpaces(
+                        expandSpaces(
                             `\` ${r} | ${" ".repeat(4 - rarityCount[r].c.toString().length)}${rarityCount[r].c} | ${" ".repeat(
                                 4 - rarityCount[r].s.toString().length,
                             )}${rarityCount[r].s} \``,
@@ -226,7 +228,7 @@ export default class MyProfile extends Command {
             });
         }
 
-        const footerStr = Bot.updatedFooterStr(player.updated, interaction);
+        const footerStr = updatedFooterStr(player.updated, interaction);
         return interaction.editReply({
             content: null,
             embeds: [
@@ -244,7 +246,7 @@ export default class MyProfile extends Command {
                         gpFull.toLocaleString(),
                         mods,
                     ),
-                    fields: [...fields, { name: Bot.constants.zws, value: footerStr }],
+                    fields: [...fields, { name: constants.zws, value: footerStr }],
                 },
             ],
         });

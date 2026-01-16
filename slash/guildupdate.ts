@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { isAllyCode } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class GuildUpdate extends Command {
@@ -91,7 +93,7 @@ export default class GuildUpdate extends Command {
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!Bot.isAllyCode(allycode)) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!isAllyCode(allycode)) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
                 allycode = await Bot.getAllyCode(interaction, allycode);
@@ -140,7 +142,7 @@ export default class GuildUpdate extends Command {
             outLog.length
                 ? outLog.join("\n")
                 : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
-            { title: " ", color: Bot.constants.colors.blue },
+            { title: " ", color: constants.colors.blue },
         );
     }
 }
