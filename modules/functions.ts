@@ -22,6 +22,7 @@ import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotClient, BotInteraction, BotType, BotUnit, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
+import userReg from "./users.ts";
 
 // These are just the ones that need access to Bot or the client
 export default (Bot: BotType, client: BotClient) => {
@@ -64,24 +65,6 @@ export default (Bot: BotType, client: BotClient) => {
         });
     };
 
-    // Reload all the language files
-    client.reloadLanguages = async () => {
-        try {
-            for (const lang of Object.keys(Bot.languages)) {
-                delete Bot.languages[lang];
-            }
-            const langFiles = await readdir(`${process.cwd()}/languages/`);
-            for (const file of langFiles) {
-                const langName = file.split(".")[0];
-                const { default: lang } = await import(`${process.cwd()}/languages/${file}`);
-                Bot.languages[langName] = new lang(Bot);
-            }
-        } catch (err) {
-            return err;
-        }
-        return null;
-    };
-
     // `await wait(1000);` to "pause" for 1 second.
     Bot.wait = promisify(setTimeout);
 
@@ -93,10 +76,10 @@ export default (Bot: BotType, client: BotClient) => {
         let userAcct: UserConfig | null = null;
         if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {
             // Grab the sender's primary code
-            userAcct = await Bot.userReg.getUser(interaction.user.id);
+            userAcct = await userReg.getUser(interaction.user.id);
         } else if (isUserID(userStr)) {
             // Try to grab the primary code for the mentioned user
-            userAcct = await Bot.userReg.getUser(userStr.replace(/[^\d]*/g, ""));
+            userAcct = await userReg.getUser(userStr.replace(/[^\d]*/g, ""));
         } else if (isAllyCode(userStr)) {
             // Otherwise, just scrap everything but numbers, and send it back
             return userStr.replace(/[^\d]*/g, "");
@@ -537,7 +520,6 @@ export function makeTable(
     for (const h in headers) {
         // Get the max length needed, then add a bit for padding
         if (options.useHeader) {
-            // console.log(h, rows);
             max[h] = Math.max(...[headers[h].value.length].concat(rows.map((v) => v[h]?.toString().length || 0))) + 2;
         } else {
             max[h] =
@@ -855,4 +837,66 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
         logger.error(`[functions/getUnitImage] Error requesting image from server.\n${e}`);
         return null;
     }
+}
+
+export async function announceMsg({
+    client,
+    guild,
+    announceMsg,
+    channel,
+    guildConf,
+}: {
+    client: BotClient;
+    guild: Guild;
+    announceMsg: string;
+    channel: string;
+    guildConf: Partial<GuildConfigSettings>;
+}): Promise<void> {
+    if (!guild?.id) return;
+
+    // Use the guildConf announcement channel
+    const announceChan = channel || guildConf?.announceChan || "";
+
+    // Try and get the channel by ID first
+    let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
+
+    // If  that didn't work, try and get it by name
+    if (!chan) {
+        chan = guild.channels.cache.find((c) => c.name === announceChan);
+    }
+
+    // If that still didn't work, or if it doesn't have the base required perms, return
+    if (
+        !(chan instanceof TextChannel) ||
+        !chan?.send ||
+        !chan?.permissionsFor(client.user)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+    ) {
+        return;
+    }
+    // TODO Should probably log this / tell users about the issue somehow?
+    // return logger.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
+
+    // If everything is ok, go ahead and try sending the message
+    await chan.send(announceMsg).catch((err) => {
+        // if (err.stack.toString().includes("user aborted a request")) return;
+        logger.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n`);
+    });
+}
+
+// Reload all the language files
+export async function reloadLanguages(Bot: BotType): Promise<Error | null> {
+    try {
+        for (const lang of Object.keys(Bot.languages)) {
+            delete Bot.languages[lang];
+        }
+        const langFiles = await readdir(`${process.cwd()}/languages/`);
+        for (const file of langFiles) {
+            const langName = file.split(".")[0];
+            const { default: lang } = await import(`${process.cwd()}/languages/${file}`);
+            Bot.languages[langName] = new lang(Bot);
+        }
+    } catch (err) {
+        return err;
+    }
+    return null;
 }

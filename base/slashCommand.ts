@@ -1,4 +1,5 @@
 import { type AutocompleteFocusedOption, type ChatInputCommandInteraction, codeBlock, MessageFlags } from "discord.js";
+import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -39,7 +40,7 @@ export default abstract class slashCommand {
             ephemeral: true,
             title: "Error",
             footer: "",
-            color: this.Bot.constants.colors.red,
+            color: constants.colors.red,
             example: "",
         },
     ): Promise<void> {
@@ -65,7 +66,7 @@ export default abstract class slashCommand {
     async success(
         interaction: ChatInputCommandInteraction,
         msgOut: string,
-        options: SlashEmbedOptions = { title: "Success", color: this.Bot.constants.colors.green, ephemeral: false, footer: "" },
+        options: SlashEmbedOptions = { title: "Success", color: constants.colors.green, ephemeral: false, footer: "" },
     ) {
         if (!interaction?.channel) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing interaction`);
         if (!msgOut) throw new Error(`[baseSlash/success:${this.commandData.name}] Missing outgoing success message`);
@@ -77,7 +78,7 @@ export default abstract class slashCommand {
         msgIn: string,
         options: SlashEmbedOptions = {
             title: "TITLE HERE",
-            color: this.Bot.constants.colors.green,
+            color: constants.colors.green,
             ephemeral: false,
             footer: "",
             iconURL: "",

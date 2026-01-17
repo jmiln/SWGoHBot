@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, raidNames, ships } from "../data/constants/units.ts";
 import {
@@ -15,6 +16,7 @@ import {
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
+import userReg from "../modules/users.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, TWList } from "../types/types.ts";
 
@@ -238,11 +240,11 @@ export default class Guilds extends Command {
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: interaction.guild?.id || null });
+        const guildConf = await getGuildSettings({ cache, guildId: interaction.guild?.id || null });
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
-            const user = await Bot.userReg.getUser(interaction.user.id);
+            const user = await userReg.getUser(interaction.user.id);
             const showAll = interaction.options.getBoolean("show_all") || false;
             const maxTickets = user?.guildTickets?.tickets || 600;
             return await guildTickets(Number.parseInt(userAC, 10), maxTickets, showAll);
@@ -989,7 +991,7 @@ export default class Guilds extends Command {
                 p.memberLvl = p.guildMemberLevel ? gRanks[p.guildMemberLevel] : null;
 
                 // Check if the player is registered, then bold the name if so
-                const codes = await Bot.userReg.getUsersFromAlly(p.allyCode.toString());
+                const codes = await userReg.getUsersFromAlly(p.allyCode.toString());
                 if (!codes?.length) continue;
                 for (const c of codes) {
                     // Make sure they're in the same server
@@ -1062,7 +1064,7 @@ export default class Guilds extends Command {
         async function twSummary() {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
-            const unitChecklist = await getFullTWList({ cache: Bot.cache, guildId: interaction.guild?.id });
+            const unitChecklist = await getFullTWList({ cache, guildId: interaction.guild?.id });
             if (!guild || !guild.roster || !guild.roster.length) {
                 return interaction.editReply({
                     content: null,

@@ -1,3 +1,4 @@
+import cache from "./cache.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { BotClient, BotType } from "../types/types.ts";
@@ -89,7 +90,7 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Send out an alert based on the guild's countdown settings
     Bot.countdownAnnounce = async (event): Promise<void> => {
-        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: event.guildId });
+        const guildConf = await getGuildSettings({ cache: cache, guildId: event.guildId });
         const diffNum = Math.abs(Date.now() - event.eventDT);
         const timeToGo = formatDuration(diffNum, Bot.languages[guildConf.language]);
 
@@ -100,7 +101,7 @@ export default (Bot: BotType, client: BotClient) => {
 
     Bot.eventAnnounce = async (event): Promise<void> => {
         // Parse out the eventName and guildName from the ID
-        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: event.guildId });
+        const guildConf = await getGuildSettings({ cache: cache, guildId: event.guildId });
 
         let outMsg = event?.message || "";
 
@@ -133,10 +134,10 @@ export default (Bot: BotType, client: BotClient) => {
 
         if (doRepeat) {
             // If it's set to repeat, just delete the old one, and save a new version of the event
-            const guildEvents = await getGuildEvents({ cache: Bot.cache, guildId: event.guildId });
+            const guildEvents = await getGuildEvents({ cache: cache, guildId: event.guildId });
             const evArrOut = guildEvents.filter((ev) => ev.name !== event.name);
             evArrOut.push(event);
-            await setEvents({ cache: Bot.cache, guildId: event.guildId, evArrOut })
+            await setEvents({ cache: cache, guildId: event.guildId, evArrOut })
                 .then(() => {
                     // console.log(`Updating repeating event ${event.name} (${event.channel}).`);
                 })
@@ -145,7 +146,7 @@ export default (Bot: BotType, client: BotClient) => {
                 });
         } else {
             // If it's not going to be repeating, just destroy it
-            await deleteGuildEvent({ cache: Bot.cache, guildId: event.guildId, evName: event.name })
+            await deleteGuildEvent({ cache: cache, guildId: event.guildId, evName: event.name })
                 .then(() => {
                     logger.debug(`Deleting non-repeating event ${event.name}`);
                 })

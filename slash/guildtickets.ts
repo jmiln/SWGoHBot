@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { isAllyCode, toProperCase } from "../modules/functions.ts";
+import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 const updateTypeStrings = {
@@ -90,7 +91,7 @@ export default class GuildTickets extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const userID = interaction.user.id;
-        const user = await Bot.userReg.getUser(userID);
+        const user = await userReg.getUser(userID);
 
         if (!user) {
             return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
@@ -176,7 +177,7 @@ export default class GuildTickets extends Command {
 
             if (updatedArr.length) {
                 user.guildTickets = gt;
-                await Bot.userReg.updateUser(userID, user);
+                await userReg.updateUser(userID, user);
                 return interaction.reply({
                     content: null,
                     embeds: [

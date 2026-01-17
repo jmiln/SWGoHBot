@@ -9,14 +9,12 @@ import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
-import funct, { myTime, sortOmicrons } from "./modules/functions.ts";
+import funct, { myTime, reloadLanguages, sortOmicrons } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
-import type { SWAPILang } from "./types/swapi_types.ts";
 import type { BotClient, BotType, BotUnit } from "./types/types.ts";
-import type { UserReg } from "./types/userReg_types.ts";
 
 const Bot = {} as BotType;
 
@@ -95,26 +93,6 @@ eventFuncs(Bot, client);
 // Load in stuff for patrons and such
 patreonFuncs(Bot, client);
 
-// Languages
-Bot.languages = {};
-Bot.swgohLangList = [
-    "ENG_US",
-    "GER_DE",
-    "SPA_XM",
-    "FRE_FR",
-    "RUS_RU",
-    "POR_BR",
-    "KOR_KR",
-    "ITA_IT",
-    "TUR_TR",
-    "CHS_CN",
-    "CHT_CN",
-    "IND_ID",
-    "JPN_JP",
-    "THA_TH",
-] as SWAPILang[];
-client.reloadLanguages();
-
 // List of all the unit names to use for autocomplete
 Bot.CharacterNames = mapUnitNames(characters, true);
 Bot.ShipNames = mapUnitNames(ships);
@@ -130,9 +108,18 @@ const init = async () => {
         process.exit(1);
     }
 
+    // Load the language files
+    Bot.languages = {};
+    try {
+        await reloadLanguages(Bot);
+    } catch (err) {
+        console.error(`[${myTime()}] Failed to load languages: ${err instanceof Error ? err.message : String(err)}`);
+        process.exit(1);
+    }
+
     // Set up the caching
-    Bot.cache = cache(Bot.mongo);
-    Bot.userReg = userReg(Bot) as UserReg;
+    cache.init(Bot.mongo);
+    userReg.init(cache);
 
     if (config.swapiConfig) {
         // Load up the api connector/ helpers
@@ -146,7 +133,7 @@ const init = async () => {
     }
 
     // Store the list of omicrons to be used later
-    Bot.omicrons = await sortOmicrons(Bot.cache);
+    Bot.omicrons = await sortOmicrons(cache);
 
     slashHandler(Bot, client);
     eventHandler(Bot, client);

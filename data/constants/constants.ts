@@ -68,5 +68,21 @@ export default {
         "PVEEVENTOMICRON3",
         "TERRITORYTOURNAMENT3OMICRON4",
         "TERRITORYTOURNAMENT5OMICRON5"
+    ],
+    swgohLangList: [
+        "ENG_US",
+        "GER_DE",
+        "SPA_XM",
+        "FRE_FR",
+        "RUS_RU",
+        "POR_BR",
+        "KOR_KR",
+        "ITA_IT",
+        "TUR_TR",
+        "CHS_CN",
+        "CHT_CN",
+        "IND_ID",
+        "JPN_JP",
+        "THA_TH",
     ]
 };

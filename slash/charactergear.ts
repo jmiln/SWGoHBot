@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
@@ -296,7 +297,7 @@ export default class Charactergear extends Command {
 async function expandPieces(Bot: BotType, list: string[]) {
     let end = [];
     for (const piece of list) {
-        const gr = await Bot.cache.get(
+        const gr = await cache.get(
             Bot.config.mongodb.swapidb,
             "gear",
             {
@@ -333,7 +334,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
     if (!gr) return [];
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {
-        const recArr: SWAPIRecipe = await Bot.cache.get(
+        const recArr: SWAPIRecipe = await cache.get(
             Bot.config.mongodb.swapidb,
             "recipes",
             {
@@ -350,7 +351,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
         if (!Array.isArray(rec) && !rec?.ingredients) return [];
         const thisRec = rec.ingredients.filter((r: SWAPIIngredient) => r.id !== "GRIND");
         for (const r of thisRec) {
-            const gear = await Bot.cache.get(
+            const gear = await cache.get(
                 Bot.config.mongodb.swapidb,
                 "gear",
                 {

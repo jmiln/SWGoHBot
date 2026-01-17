@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
@@ -97,7 +98,7 @@ export default class Poll extends Command {
             );
         }
 
-        const pollsArr = await getGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id });
+        const pollsArr = await getGuildPolls({ cache: cache, guildId: interaction.guild.id });
         const oldPoll = pollsArr.find((p) => p.channelId === interaction.channel.id);
 
         if (oldPoll && action === "create") {
@@ -137,7 +138,7 @@ export default class Poll extends Command {
                 }
 
                 pollsArr.push(poll);
-                await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
+                await setGuildPolls({ cache: cache, guildId: interaction.guild.id, pollsOut: pollsArr });
                 return interaction.reply({
                     content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
                     embeds: [
@@ -157,7 +158,7 @@ export default class Poll extends Command {
                 const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
                 try {
                     pollsArr.splice(targetIndex, 1);
-                    await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
+                    await setGuildPolls({ cache: cache, guildId: interaction.guild.id, pollsOut: pollsArr });
                     return super.success(interaction, "> Poll deleted.");
                 } catch (_) {
                     return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
@@ -169,7 +170,7 @@ export default class Poll extends Command {
                 const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
                 try {
                     pollsArr.splice(targetIndex, 1);
-                    await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
+                    await setGuildPolls({ cache: cache, guildId: interaction.guild.id, pollsOut: pollsArr });
                     return interaction.reply({
                         embeds: [
                             {
@@ -221,7 +222,7 @@ export default class Poll extends Command {
 
                 try {
                     pollsArr[targetIndex] = oldPoll;
-                    await setGuildPolls({ cache: Bot.cache, guildId: interaction.guild.id, pollsOut: pollsArr });
+                    await setGuildPolls({ cache: cache, guildId: interaction.guild.id, pollsOut: pollsArr });
                     if (voted !== null && voted !== undefined) {
                         return interaction.reply({
                             content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),

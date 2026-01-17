@@ -1,4 +1,5 @@
 import { Events, type GuildMember } from "discord.js";
+import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { BotClient, BotType } from "../types/types.ts";
@@ -6,7 +7,7 @@ import type { BotClient, BotType } from "../types/types.ts";
 export default {
     name: Events.GuildMemberAdd,
     execute: async (Bot: BotType, client: BotClient, member: GuildMember) => {
-        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: member.guild.id });
+        const guildConf = await getGuildSettings({ cache: cache, guildId: member.guild.id });
 
         // Check if welcome messages are enabled
         if (!guildConf.enableWelcome || !guildConf.welcomeMessage?.length || !guildConf.announceChan?.length) {

@@ -17,7 +17,6 @@ import type slashCommand from "../base/slashCommand.ts";
 import type { BotCache } from "./cache_types.ts";
 import type { GuildConfigEvent,GuildConfigSettings } from "./guildConfig_types.ts";
 import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
-import type { UserReg } from "./userReg_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -229,7 +228,6 @@ export interface BotType {
     getCurrentWeekday: (timezone?: string) => string;
     help: HelpObject;
     cache: BotCache;
-    userReg: UserReg;
     permLevel: (interaction: BotInteraction) => Promise<number>;
     hasViewAndSend: (channel: TextChannel, user: GuildMember) => Promise<boolean>;
     commandList: string[];

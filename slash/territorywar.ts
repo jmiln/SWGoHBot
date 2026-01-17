@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
@@ -84,7 +85,7 @@ export default class TerritoryWar extends Command {
         }
         await interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
 
-        const unitChecklist = await getFullTWList({ cache: Bot.cache, guildId: interaction.guild?.id });
+        const unitChecklist = await getFullTWList({ cache: cache, guildId: interaction.guild?.id });
 
         // Run each of the players through to get the stats of each players' roster
         let guild1Stats: SWAPIPlayer[] = null;

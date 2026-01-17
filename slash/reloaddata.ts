@@ -126,13 +126,13 @@ export default class ReloadData extends Command {
             case "languages":
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
                     interaction.client.shard
-                        .broadcastEval(() => reloadLanguages())
+                        .broadcastEval(() => reloadLanguages(Bot))
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "Languages");
                         })
                         .catch((err) => logger.error(`[ReloadData data]\n${err}`));
                 } else {
-                    reloadLanguages();
+                    reloadLanguages(Bot);
                 }
                 break;
             case "swlang": {

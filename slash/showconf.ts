@@ -1,4 +1,5 @@
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
@@ -16,7 +17,7 @@ export default class Showconf extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: interaction.guild.id });
+        const guildConf = await getGuildSettings({ cache: cache, guildId: interaction.guild.id });
 
         const outArr = [];
         if (!guildConf) logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
@@ -77,8 +78,8 @@ export default class Showconf extends Command {
         }
 
         const supporterList = [];
-        const totalSuppTier = await getGuildSupporterTier({ cache: Bot.cache, guildId: interaction.guild.id });
-        const guildSupporters = await getServerSupporters({ cache: Bot.cache, guildId: interaction.guild.id });
+        const totalSuppTier = await getGuildSupporterTier({ cache: cache, guildId: interaction.guild.id });
+        const guildSupporters = await getServerSupporters({ cache: cache, guildId: interaction.guild.id });
         for (const supp of guildSupporters) {
             const user = interaction.guild.members.cache.get(supp.userId);
             if (!user?.displayName) continue;

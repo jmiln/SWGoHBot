@@ -1,5 +1,6 @@
 import { type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
 import config from "../config.js";
+import cache from "./cache.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
@@ -18,6 +19,7 @@ import type {
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
+import userReg from "./users.ts";
 
 const tiers = patreonModule.tiers;
 
@@ -59,7 +61,7 @@ export default (Bot: BotType, client: BotClient) => {
         if (!userId) throw new Error("Missing user ID");
 
         // Try and get em from the db
-        const patron = (await Bot.cache.getOne("swgohbot", "patrons", { discordID: userId })) as PatronUser;
+        const patron = (await cache.getOne("swgohbot", "patrons", { discordID: userId })) as PatronUser;
 
         // If they aren't in the db, see if we have em in there manually
         if (!patron && config.patrons?.[userId]) {
@@ -116,7 +118,7 @@ export default (Bot: BotType, client: BotClient) => {
 
     // Get an array of all active patrons
     async function getActivePatrons(): Promise<ActivePatron[]> {
-        let patrons = (await Bot.cache.get("swgohbot", "patrons", {})) as ActivePatron[];
+        let patrons = (await cache.get("swgohbot", "patrons", {})) as ActivePatron[];
         patrons = patrons.filter((p) => !p.declined_since);
         const others: string[] = Object.keys(config.patrons).length
             ? Object.keys(config.patrons).concat([config.ownerid])
@@ -142,7 +144,7 @@ export default (Bot: BotType, client: BotClient) => {
         const patron = await Bot.getPatronUser(userId);
 
         // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
-        const supporterTier = await getGuildSupporterTier({ cache: Bot.cache, guildId });
+        const supporterTier = await getGuildSupporterTier({ cache: cache, guildId });
 
         // Grab the best times available based on the supporterTier
         const supporterTimes: { playerTime: number; guildTime: number } = !tiers?.[supporterTier]?.sharePlayer
@@ -168,7 +170,7 @@ export default (Bot: BotType, client: BotClient) => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user: UserConfig = await Bot.userReg.getUser(patron.discordID);
+            const user: UserConfig = await userReg.getUser(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
             if (!user?.accounts?.length) continue;
 
@@ -233,7 +235,7 @@ export default (Bot: BotType, client: BotClient) => {
                 // Wait here in case of extra accounts
                 await Bot.wait(750);
             }
-            await Bot.userReg.updateUser(patron.discordID, user);
+            await userReg.updateUser(patron.discordID, user);
         }
     };
 
@@ -242,7 +244,7 @@ export default (Bot: BotType, client: BotClient) => {
         const patrons = await getActivePatrons();
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user = await Bot.userReg.getUser(patron.discordID);
+            const user = await userReg.getUser(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
             if (!user || !user.arenaWatch || !user.arenaWatch.payout) continue;
@@ -280,7 +282,7 @@ export default (Bot: BotType, client: BotClient) => {
                 }
             }
             // Update the user in case something changed (Likely message ID)
-            await Bot.userReg.updateUser(patron.discordID, user);
+            await userReg.updateUser(patron.discordID, user);
         }
     };
 
@@ -401,7 +403,7 @@ export default (Bot: BotType, client: BotClient) => {
             // }
 
             if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user = await Bot.userReg.getUser(patron.discordID);
+            const user = await userReg.getUser(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
             if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) continue;
@@ -515,7 +517,7 @@ export default (Bot: BotType, client: BotClient) => {
             if (charFields.length || shipFields.length) {
                 // If something has changed, update the user & let them know
                 user.arenaWatch.allycodes = accountsToCheck;
-                await Bot.userReg.updateUser(patron.discordID, user);
+                await userReg.updateUser(patron.discordID, user);
 
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
                     // If they're both set to the same channel, send it all
@@ -621,7 +623,7 @@ export default (Bot: BotType, client: BotClient) => {
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
-            const user = await Bot.userReg.getUser(patron.discordID);
+            const user = await userReg.getUser(patron.discordID);
 
             // If the guild update isn't enabled, then move along
             if (!user?.guildUpdate?.enabled) continue;
@@ -808,7 +810,7 @@ export default (Bot: BotType, client: BotClient) => {
             // }
 
             // Get the user's saved data
-            const user = await Bot.userReg.getUser(patron.discordID);
+            const user = await userReg.getUser(patron.discordID);
 
             // If the guild update isn't enabled, or is missing some needed info, move along
             const gt = user?.guildTickets;
@@ -909,7 +911,7 @@ export default (Bot: BotType, client: BotClient) => {
             if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
                 gt.msgId = sentMsg.id;
                 user.guildTickets = gt;
-                await Bot.userReg.updateUser(patron.discordID, user);
+                await userReg.updateUser(patron.discordID, user);
             }
         }
     };

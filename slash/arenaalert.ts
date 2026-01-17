@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
@@ -81,7 +82,7 @@ export default class ArenaAlert extends Command {
 
         // Grab the user's info
         const userID = interaction.user.id;
-        const user = (await Bot.cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userID })) as UserConfig;
+        const user = (await cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userID })) as UserConfig;
         if (!user) {
             return super.error(interaction, "I couldn't find your data. Please try again.");
         }
@@ -123,7 +124,7 @@ export default class ArenaAlert extends Command {
         });
 
         // TODO Get a res from this, so it can be replied to more accurately
-        await Bot.cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userID }, updatedUser);
+        await cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userID }, updatedUser);
         if (!changelog?.length) {
             return super.success(interaction, "It looks like nothing was updated.");
         }

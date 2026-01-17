@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
@@ -75,7 +76,7 @@ export default class Faction extends Command {
 
         const factionChars = [];
         const query = faction1 ? faction1 : faction2;
-        let chars: RawCharacter[] = await Bot.cache.get(
+        let chars: RawCharacter[] = await cache.get(
             config.mongodb.swapidb,
             "units",
             { categoryIdList: query, language: interaction.guildSettings.swgohLanguage.toLowerCase() },

@@ -1,13 +1,15 @@
 import { Events, type GuildMember } from "discord.js";
+import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import userReg from "../modules/users.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
 export default {
     name: Events.GuildMemberRemove,
     async execute(Bot: BotType, client: BotClient, member: GuildMember) {
-        const guildConf = await getGuildSettings({ cache: Bot.cache, guildId: member.guild.id });
+        const guildConf = await getGuildSettings({ cache: cache, guildId: member.guild.id });
 
         // Send departure message if enabled
         if (guildConf.enablePart && guildConf.partMessage?.length && guildConf.announceChan?.length) {
@@ -27,12 +29,12 @@ export default {
         }
 
         // Check if user has this server marked as their bonus server
-        const userConf = await Bot.userReg.getUser(member.id);
+        const userConf = await userReg.getUser(member.id);
         if (!userConf?.bonusServer || userConf.bonusServer !== member.guild.id) {
             return;
         }
 
         // Remove bonus server setting
-        await clearSupporterInfo({ cache: Bot.cache, userId: member.id });
+        await clearSupporterInfo({ cache: cache, userId: member.id });
     },
 };

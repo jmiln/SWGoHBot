@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import factionMap from "../data/factionMap.ts";
 import { msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
@@ -318,7 +319,7 @@ export default class Need extends Command {
 
         async function getFactionUnits(searchName: string) {
             // Get units based on their faction
-            const units = await Bot.cache.get(
+            const units = await cache.get(
                 Bot.config.mongodb.swapidb,
                 "units",
                 { categoryIdList: searchName, language: interaction.guildSettings.swgohLanguage.toLowerCase() },

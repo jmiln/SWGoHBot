@@ -1,12 +1,14 @@
 import { inspect } from "node:util";
 import { Events, MessageFlags } from "discord.js";
 import type slashCommand from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import logger from "../modules/Logger.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import userReg from "../modules/users.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
 
 // Constants
@@ -158,7 +160,7 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
     let filtered: Array<{ name: string; value: string }> = [];
 
     try {
-        const aliases = await getGuildAliases({ cache: Bot.cache, guildId: interaction?.guild?.id });
+        const aliases = await getGuildAliases({ cache: cache, guildId: interaction?.guild?.id });
 
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
@@ -202,7 +204,7 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
  */
 async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction, cmd: slashCommand): Promise<void> {
     // Load guild settings
-    interaction.guildSettings = await getGuildSettings({ cache: Bot.cache, guildId: interaction?.guild?.id });
+    interaction.guildSettings = await getGuildSettings({ cache: cache, guildId: interaction?.guild?.id });
 
     // Check permissions
     const level = await permLevel(interaction);
@@ -215,7 +217,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
     }
 
     // Load user language settings
-    const user = await Bot.userReg.getUser(interaction.user.id);
+    const user = await userReg.getUser(interaction.user.id);
     const selectedLanguage = user?.lang?.language || defaultSettings.language;
     interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
 

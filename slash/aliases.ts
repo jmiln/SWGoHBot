@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
+import cache from "../modules/cache.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import type { BotInteraction, BotType, GuildAlias } from "../types/types.ts";
 
@@ -64,7 +65,7 @@ export default class Aliases extends Command {
         const guildId = interaction.guild.id;
 
         // Load up all the guild's settings and such
-        const res = await Bot.cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
+        const res = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
         const guildAliases = res[0]?.aliases || [];
 
         if (action === "add") {
@@ -94,7 +95,7 @@ export default class Aliases extends Command {
 
         guildAliases.push({ alias, defId: unit.uniqueName, name: unit.name });
 
-        await Bot.cache
+        await cache
             .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: guildAliases }, false)
             .then(() => {
                 super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
@@ -110,7 +111,7 @@ export default class Aliases extends Command {
         }
 
         const filteredAliases = guildAliases.filter((al) => al.alias !== alias).sort((a, b) => (a.alias > b.alias ? 1 : -1));
-        await Bot.cache
+        await cache
             .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: filteredAliases }, false)
             .then(() => {
                 super.success(interaction, `Your alias (${alias}) has been successfully removed.`);

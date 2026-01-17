@@ -1,7 +1,9 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import patreonInfo from "../data/patreon.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
+import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Patreon extends Command {
@@ -108,7 +110,7 @@ export default class Patreon extends Command {
                     userId: interaction.user.id,
                     tier: Math.floor(pat.amount_cents / 100),
                 };
-                const res = await addServerSupporter({ cache: Bot.cache, guildId: interaction.guild.id, userInfo });
+                const res = await addServerSupporter({ cache, guildId: interaction.guild.id, userInfo });
                 if (res.user?.error || res.guild?.error) {
                     return super.error(
                         interaction,
@@ -124,12 +126,12 @@ export default class Patreon extends Command {
             }
             case "unset_server": {
                 // Remove the user from whichever server they have set as their bonusServer, and clear the bonusServer from their settings
-                const userConf = await Bot.userReg.getUser(interaction.user.id);
+                const userConf = await userReg.getUser(interaction.user.id);
                 if (!userConf?.bonusServer?.length) {
                     return super.error(interaction, "Sorry, but it doesn't look like you have a bonus server set");
                 }
 
-                const clearRes = await clearSupporterInfo({ cache: Bot.cache, userId: interaction.user.id });
+                const clearRes = await clearSupporterInfo({ cache, userId: interaction.user.id });
 
                 if (clearRes.user.error || clearRes.guild.error) {
                     return super.error(
@@ -169,7 +171,7 @@ export default class Patreon extends Command {
                     });
 
                     // Show which server they have marked to support/ share the benefits with
-                    const userConf = await Bot.userReg.getUser(interaction.user.id);
+                    const userConf = await userReg.getUser(interaction.user.id);
                     fields.push({
                         name: "Selected Server",
                         value: userConf?.bonusServer ? `<#${userConf.bonusServer}>` : "N/A",

@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, type TextChannel } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
@@ -96,7 +97,7 @@ export default class Shardtimes extends Command {
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
-        const shardArr = await getGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id });
+        const shardArr = await getGuildShardTimes({ cache: cache, guildId: interaction.guild.id });
         const targetIndex = await shardArr.findIndex((sh) => sh.channelId === interaction.channel.id);
         const shardTimes =
             targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : { channelId: interaction.channel.id, times: {} };
@@ -219,7 +220,7 @@ export default class Shardtimes extends Command {
             } else {
                 shardArr.push(shardTimes);
             }
-            await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
+            await setGuildShardTimes({ cache: cache, guildId: interaction.guild.id, stOut: shardArr })
                 .then(() => {
                     if (tempUser) {
                         return interaction.reply({
@@ -253,7 +254,7 @@ export default class Shardtimes extends Command {
             if (shardTimes.times[userID]) {
                 delete shardTimes.times[userID];
                 shardArr[targetIndex] = shardTimes;
-                await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
+                await setGuildShardTimes({ cache: cache, guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
                         return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS") });
                     })
@@ -294,7 +295,7 @@ export default class Shardtimes extends Command {
                 // If there's no shard info in the destination channel
                 shardTimes.channelId = destChannel.id;
                 shardArr.push(shardTimes);
-                await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
+                await setGuildShardTimes({ cache: cache, guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
                         return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })
@@ -308,7 +309,7 @@ export default class Shardtimes extends Command {
                 // Or if there is shard info there, but no listings
                 destTimes.times = shardTimes.times;
                 shardArr[destTarget] = destTimes;
-                await setGuildShardTimes({ cache: Bot.cache, guildId: interaction.guild.id, stOut: shardArr })
+                await setGuildShardTimes({ cache: cache, guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
                         return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })

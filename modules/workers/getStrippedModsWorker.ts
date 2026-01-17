@@ -11,7 +11,6 @@ interface ModMap {
 }
 
 export default async function ({ playerId, modMap, clientStub }: { playerId: number; modMap: ModMap; clientStub: string }) {
-    // console.log(`[getStrippedModsWorker] ${playerId}`);
     const comlinkStub = new ComlinkStub(clientStub);
     return await comlinkStub
         .getPlayer(null, playerId.toString())

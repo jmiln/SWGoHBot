@@ -148,7 +148,7 @@ export default class UserConf extends Command {
         const userID = interaction.user.id;
         const cooldown = await Bot.getPlayerCooldown(userID, interaction?.guild?.id);
 
-        let user: UserConfig = await Bot.userReg.getUser(userID);
+        let user: UserConfig = await userReg.getUser(userID);
         if (!user) {
             // If the user doesn't have a config available, set the default one for embeds
             // This has id, accounts, arenaAlert, and lang
@@ -188,7 +188,7 @@ export default class UserConf extends Command {
                                 name: player.name,
                                 primary: !user.accounts.length,
                             });
-                            await Bot.userReg.updateUser(userID, user);
+                            await userReg.updateUser(userID, user);
                             return super.success(
                                 interaction,
                                 codeBlock(
@@ -229,7 +229,7 @@ export default class UserConf extends Command {
                     if (user.accounts.length && !user.accounts.find((a) => a.primary)) {
                         user.accounts[0].primary = true;
                     }
-                    await Bot.userReg.updateUser(userID, user);
+                    await userReg.updateUser(userID, user);
                     return super.success(
                         interaction,
                         interaction.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode),
@@ -250,7 +250,7 @@ export default class UserConf extends Command {
                         if (a.allyCode === allycode) a.primary = true;
                         return a;
                     });
-                    await Bot.userReg.updateUser(userID, user);
+                    await userReg.updateUser(userID, user);
                     return super.success(
                         interaction,
                         interaction.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode),
@@ -296,7 +296,7 @@ export default class UserConf extends Command {
                     }
 
                     if (updateLog.length) {
-                        await Bot.userReg.updateUser(userID, user);
+                        await userReg.updateUser(userID, user);
                         return super.success(
                             interaction,
                             `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map((update) => ` * ${update}`).join("\n"))}`,
@@ -323,7 +323,7 @@ export default class UserConf extends Command {
                     }
 
                     if (updateLog.length) {
-                        await Bot.userReg.updateUser(userID, user);
+                        await userReg.updateUser(userID, user);
                         return super.success(
                             interaction,
                             `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map((update) => ` * ${update}`).join("\n"))}`,
