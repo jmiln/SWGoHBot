@@ -6,6 +6,7 @@ import { characters, raidNames, ships } from "../data/constants/units.ts";
 import {
     expandSpaces,
     formatDuration,
+    getAllyCode,
     makeTable,
     msgArray,
     shortenNum,
@@ -229,7 +230,7 @@ export default class Guilds extends Command {
 
         const allycode = interaction.options.getString("allycode");
         const showSide = interaction.options.getString("show_side");
-        const userAC = await Bot.getAllyCode(interaction, allycode, true);
+        const userAC = await getAllyCode(interaction, allycode, true);
 
         // If it hasn't found a valid ally code, grumble at the user, since that's required
         if (!userAC) {

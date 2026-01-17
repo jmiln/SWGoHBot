@@ -2,7 +2,7 @@ import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { expandSpaces, findChar, getUnitImage, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { expandSpaces, findChar, getAllyCode, getUnitImage, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -63,7 +63,7 @@ export default class MyCharacter extends Command {
         const searchType = interaction.options.getSubcommand();
         const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
         let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode);
+        allycode = await getAllyCode(interaction, allycode);
 
         if (!allycode) {
             return super.error(interaction, "I could not find a valid allycode. Please make sure you're using a valid code.");

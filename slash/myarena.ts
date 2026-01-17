@@ -1,7 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { makeTable, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode,
+makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -35,7 +36,7 @@ export default class MyArena extends Command {
 
         await interaction.reply({ content: "> Please wait while I look up your info" });
 
-        const allycode = await Bot.getAllyCode(interaction, ac);
+        const allycode = await getAllyCode(interaction, ac);
 
         if (!allycode) {
             return super.error(

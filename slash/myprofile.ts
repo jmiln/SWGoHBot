@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { expandSpaces, updatedFooterStr } from "../modules/functions.ts";
+import { expandSpaces, getAllyCode, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -24,7 +24,7 @@ export default class MyProfile extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         const allycodeIn = interaction.options.getString("allycode");
-        const allycode = await Bot.getAllyCode(interaction, allycodeIn);
+        const allycode = await getAllyCode(interaction, allycodeIn);
         if (!allycode) {
             return super.error(interaction, `Sorry, but ${allycodeIn} is not a valid allycode`);
         }

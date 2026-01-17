@@ -6,7 +6,7 @@ import { eachLimit } from "async";
 import { MongoClient } from "mongodb";
 import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
-import mongoCache from "../modules/cache.ts";
+import cache from "../modules/cache.ts";
 import type {
     ComlinkAbility,
     ComlinkMod,
@@ -52,13 +52,9 @@ const flatStats = [
 ];
 
 const MAX_CONCURRENT = 20;
-let cache = null;
 
 let specialAbilityList = null;
 async function init() {
-    const mongo = await MongoClient.connect(config.mongodb.url);
-    cache = mongoCache(mongo);
-
     // Reload the api map files every 6 minutes
     setInterval(() => {
         modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
@@ -315,7 +311,7 @@ export default (opts = { noop: false }) => {
             }
             const filtereredAcArr = acArr.filter((a) => a?.toString().length === 9);
 
-            let players: SWAPIPlayer[] = null;
+            let players: SWAPIPlayer[] | null = null;
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options?.defId?.length) {
@@ -595,8 +591,7 @@ export default (opts = { noop: false }) => {
         }
 
         if (char.factions) {
-            for (const factionIx in char.factions) {
-                const thisFaction = char.factions[factionIx];
+            for (const [factionIx, thisFaction] of char.factions.entries()) {
                 let factionName = await cache.get(
                     config.mongodb.swapidb,
                     "categories",
@@ -630,20 +625,20 @@ export default (opts = { noop: false }) => {
 
         // In case it doesn't
         if (char.skills) {
-            for (const skill in char.skills) {
+            for (const skill of char.skills) {
                 let skillName = await cache.get(
                     config.mongodb.swapidb,
                     "abilities",
-                    { skillId: char.skills[skill].id, language: thisLang },
+                    { skillId: skill.id, language: thisLang },
                     { nameKey: 1, _id: 0 },
                 );
                 if (Array.isArray(skillName)) skillName = skillName[0];
                 if (!skillName) {
-                    logger.error(`[swapi langChar] Cannot find skillName for ${char.skills[skill].id}`);
-                    char.skills[skill].nameKey = "N/A";
+                    logger.error(`[swapi langChar] Cannot find skillName for ${skill.id}`);
+                    skill.nameKey = "N/A";
                     continue;
                 }
-                char.skills[skill].nameKey = skillName.nameKey;
+                skill.nameKey = skillName.nameKey;
             }
         }
         return char;

@@ -1,7 +1,10 @@
 import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts"
+import { characterNameList,
+characters,shipNameList,ships } from "../data/constants/units.ts";
+import cache from "../modules/cache.ts";
+import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
@@ -132,8 +135,8 @@ export default class SetConf extends Command {
 
         function getCharName(defId: string) {
             return (
-                Bot.CharacterNames.find((char) => char.defId === defId)?.name ||
-                Bot.ShipNames.find((ship) => ship.defId === defId)?.name ||
+                characterNameList.find((char) => char.defId === defId)?.name ||
+                shipNameList.find((ship) => ship.defId === defId)?.name ||
                 "N/A"
             );
         }
@@ -168,7 +171,7 @@ export default class SetConf extends Command {
                             return super.error(interaction, `Trying to add ${addUnitDefId}. This unit is already in your list`);
                         }
                     }
-                    const thisChar = Bot.characters.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
+                    const thisChar = characters.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
                     if (thisChar) {
                         if (thisChar.factions.includes("Galactic Legend")) {
                             guildTWList["Galactic Legends"].push(thisChar.uniqueName);
@@ -178,7 +181,7 @@ export default class SetConf extends Command {
                             guildTWList["Light Side"].push(thisChar.uniqueName);
                         }
                     } else {
-                        const thisShip = Bot.ships.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
+                        const thisShip = ships.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
                         if (thisShip) {
                             if (thisShip.factions.includes("Capital Ship")) {
                                 guildTWList["Capital Ships"].push(thisShip.uniqueName);
@@ -252,7 +255,7 @@ export default class SetConf extends Command {
             if (keyType === ApplicationCommandOptionType.String) {
                 settingStr = interaction.options.getString(optionKey);
                 if (!settingStr) continue;
-                if (key === "timezone" && !Bot.isValidZone(settingStr)) {
+                if (key === "timezone" && !isValidZone(settingStr)) {
                     // If it's not a valid timezone, let em know
                     errors.push(interaction.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                     continue;
@@ -351,8 +354,8 @@ export default class SetConf extends Command {
                 const aliases = await getGuildAliases({ cache: cache, guildId: interaction?.guild?.id });
                 const unitList = [
                     ...aliases.map((alias) => ({ name: `${alias.name} (${alias.alias})`, defId: alias.defId })),
-                    ...Bot.CharacterNames,
-                    ...Bot.ShipNames,
+                    ...characterNameList,
+                    ...shipNameList,
                 ];
                 const outArr =
                     unitList
@@ -367,14 +370,14 @@ export default class SetConf extends Command {
                         guildTWList.Blacklist.filter((defId) => {
                             if (!searchKey?.length) return true;
                             const thisUnit =
-                                Bot.CharacterNames.find((char) => char.defId === defId) ||
-                                Bot.ShipNames.find((ship) => ship.defId === defId);
+                                characterNameList.find((char) => char.defId === defId) ||
+                                shipNameList.find((ship) => ship.defId === defId);
                             return thisUnit.name.toLowerCase().includes(searchKey);
                         })
                             .map((defId) => {
                                 const thisUnit =
-                                    Bot.CharacterNames.find((char) => char.defId === defId) ||
-                                    Bot.ShipNames.find((ship) => ship.defId === defId);
+                                    characterNameList.find((char) => char.defId === defId) ||
+                                    shipNameList.find((ship) => ship.defId === defId);
                                 return { name: thisUnit.name, value: thisUnit.defId };
                             })
                             .slice(0, 24) || [];
@@ -390,14 +393,14 @@ export default class SetConf extends Command {
                             .filter((defId) => {
                                 if (!searchKey?.length) return true;
                                 const thisUnit =
-                                    Bot.CharacterNames.find((char) => char.defId === defId) ||
-                                    Bot.ShipNames.find((ship) => ship.defId === defId);
+                                    characterNameList.find((char) => char.defId === defId) ||
+                                    shipNameList.find((ship) => ship.defId === defId);
                                 return thisUnit.name.toLowerCase().includes(searchKey);
                             })
                             .map((key) => {
                                 const thisUnit =
-                                    Bot.CharacterNames.find((char) => char.defId === key) ||
-                                    Bot.ShipNames.find((ship) => ship.defId === key);
+                                    characterNameList.find((char) => char.defId === key) ||
+                                    shipNameList.find((ship) => ship.defId === key);
                                 return { name: thisUnit.name, value: thisUnit.defId };
                             })
                             .slice(0, 24) || [];

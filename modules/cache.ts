@@ -24,7 +24,10 @@ class Cache implements BotCache {
             (saveObject as Document).updatedAt = new Date();
         }
 
-        await dbo.collection(collection).updateOne(matchCondition, { $set: saveObject }, { upsert: true });
+        // Remove _id from the update object to avoid "immutable field '_id'" error
+        const { _id, ...updateObject } = saveObject as Document;
+
+        await dbo.collection(collection).updateOne(matchCondition, { $set: updateObject }, { upsert: true });
 
         return saveObject;
     }
@@ -95,7 +98,10 @@ class Cache implements BotCache {
             (saveObject as Document).updatedAt = new Date();
         }
 
-        await dbo.collection(collection).replaceOne(matchCondition, saveObject, { upsert: true });
+        // Remove _id from the replacement object to avoid "immutable field '_id'" error
+        const { _id, ...replaceObject } = saveObject as Document;
+
+        await dbo.collection(collection).replaceOne(matchCondition, replaceObject, { upsert: true });
 
         return saveObject;
     }

@@ -1,12 +1,13 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
+import constants from "../data/constants/constants.ts";
 import patreonInfo from "../data/patreon.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
-import constants from "../data/constants/constants.ts";
 
 export default class UserConf extends Command {
     constructor(Bot: BotType) {
@@ -152,7 +153,7 @@ export default class UserConf extends Command {
         if (!user) {
             // If the user doesn't have a config available, set the default one for embeds
             // This has id, accounts, arenaAlert, and lang
-            user = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
+            user = structuredClone(config.defaultUserConf);
             user.id = userID;
         }
 

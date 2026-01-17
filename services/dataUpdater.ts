@@ -6,7 +6,7 @@ import { eachLimit } from "async";
 import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
 import config from "../config.js";
-import botCache from "../modules/cache.ts";
+import cache from "../modules/cache.ts";
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
@@ -18,7 +18,7 @@ import ComlinkStub from "@swgoh-utils/comlink";
 import type { BotCache } from "../types/cache_types.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
 import type { ComlinkAbility, SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotUnit, BotUnitMods, JourneyReqs, Location, UnitLocation, UnitSide } from "../types/types.ts";
+import type { BotUnit, BotUnitMods, JourneyReqs, Location, UnitLocation, UnitSide,UserConfig } from "../types/types.ts";
 
 interface Metadata {
     assetVersion: string;
@@ -104,7 +104,7 @@ if (!process.env.TESTING_ENV) {
 async function init() {
     try {
         const mongo = await MongoClient.connect(config.mongodb.url);
-        const cache = botCache(mongo) as BotCache;
+        cache.init(mongo);
         const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
 
         if (!FORCE_UPDATE) {
@@ -214,7 +214,7 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
     // Go through each character and find the most common versions of
     // set and primaries, and convert them to be readable
     debugTime("Processing modResults");
-    const modsOut = await processModResults(unitsOut);
+    const modsOut = processModResults(unitsOut);
     debugTimeEnd("Processing modResults");
 
     // Process each batch of mods and put them into the characters
@@ -562,7 +562,7 @@ async function updatePatrons(cache: BotCache) {
 
             if (newUser.patron_status !== "active_patron" || !newUser.amount_cents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
-                const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: newUser.discordID });
+                const userConf = await cache.getOne<UserConfig>(config.mongodb.swgohbotdb, "users", { id: newUser.discordID });
 
                 // If they don't have bonusServer set (As it should be), move on
                 if (!userConf?.bonusServer?.length) continue;

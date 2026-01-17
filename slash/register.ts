@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
@@ -70,7 +71,7 @@ export default class Register extends Command {
 
         if (!userConfig) {
             // If they don't exist in the DB yet, stick em with a default config
-            userConfig = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
+            userConfig = JSON.parse(JSON.stringify(config.defaultUserConf));
             userConfig.id = user.id;
         } else if (userConfig.accounts.find((a) => a.allyCode === allycode && a.primary)) {
             // This ally code is already registered & primary

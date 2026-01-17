@@ -1,7 +1,8 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { findChar, msgArray, updatedFooterStr } from "../modules/functions.ts";
+import { characters } from "../data/constants/units.ts";
+import { chunkArray, findChar, getAllyCode, getBlankUnitImage, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -56,7 +57,7 @@ export default class Zetas extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode);
+        allycode = await getAllyCode(interaction, allycode);
         if (!allycode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
@@ -69,21 +70,21 @@ export default class Zetas extends Command {
         const searchChar = interaction.options.getString("character");
         // If a character was entered, see if it can find a match to display later
         if (searchChar) {
-            const chars = findChar(searchChar, Bot.characters);
+            const foundCharacters = findChar(searchChar, characters);
 
-            if (!chars?.length) {
+            if (!foundCharacters?.length) {
                 // No character found
                 return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
-            if (chars.length > 1) {
+            if (foundCharacters.length > 1) {
                 const charL = [];
-                const charS = chars.sort((p, c) => (p.name > c.name ? 1 : -1));
+                const charS = foundCharacters.sort((p, c) => (p.name > c.name ? 1 : -1));
                 for (const c of charS) {
                     charL.push(c.name);
                 }
                 return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
             }
-            character = chars[0];
+            character = foundCharacters[0];
         }
 
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
@@ -111,7 +112,7 @@ export default class Zetas extends Command {
             const getCharInfo = async (thisChar: SWAPIUnit) => {
                 const langedChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
                 if (!langedChar.nameKey) {
-                    const tmp = Bot.characters.filter((c) => c.uniqueName === langedChar.defId);
+                    const tmp = characters.filter((c) => c.uniqueName === langedChar.defId);
                     if (tmp.length) {
                         langedChar.nameKey = tmp[0].name;
                     }
@@ -154,7 +155,7 @@ export default class Zetas extends Command {
                 }
                 const sorted = Object.keys(zetas).sort((p, c) => (p > c ? 1 : -1));
                 const formatted = sorted.map((character) => `\`(${zetas[character].length})\` ${character}`);
-                const chunked = Bot.chunkArray(formatted, 45);
+                const chunked = chunkArray(formatted, 45);
 
                 author.name = interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
                 desc.push("`------------------------------`");
@@ -180,7 +181,7 @@ export default class Zetas extends Command {
                 value: footerStr,
             });
             if (character) {
-                const charImg = await Bot.getBlankUnitImage(character.uniqueName);
+                const charImg = await getBlankUnitImage(character.uniqueName);
                 return interaction.editReply({
                     content: null,
                     embeds: [
@@ -261,7 +262,7 @@ export default class Zetas extends Command {
                 // They want to see all zetas for the guild
                 for (const char of Object.keys(zetas)) {
                     const outObj = { name: "", abilities: "" };
-                    outObj.name = `**${Bot.characters.find((c) => c.uniqueName === char).name}**`;
+                    outObj.name = `**${characters.find((c) => c.uniqueName === char).name}**`;
                     outObj.abilities = "";
                     for (const skill of Object.keys(zetas[char])) {
                         const s = await Bot.swgohAPI.abilities(skill, null, { min: true });
@@ -281,7 +282,7 @@ export default class Zetas extends Command {
                         inline: true,
                     });
                 }
-                const fieldArrChunks = Bot.chunkArray(fields, MAX_FIELDS);
+                const fieldArrChunks = chunkArray(fields, MAX_FIELDS);
                 const footerStr = updatedFooterStr(guild.updated, interaction);
                 fields.push({
                     name: constants.zws,

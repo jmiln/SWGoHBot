@@ -2,6 +2,9 @@ import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { characters,ships } from "../data/constants/units.ts";
+import config from "../config.js";
+import { getAllyCode } from "../modules/functions.ts";
 
 export default class Panic extends Command {
     constructor(Bot: BotType) {
@@ -29,18 +32,17 @@ export default class Panic extends Command {
     async run(Bot: BotType, interaction: BotInteraction) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
-        const allycode = await Bot.getAllyCode(interaction, ac);
+        const allycode = await getAllyCode(interaction, ac);
 
         if (!allycode) {
             return super.error(interaction, "I could not find a valid allycode. Please make sure you've type it in correctly.");
         }
 
-        const thisReq = Bot.journeyReqs?.[searchUnit] || null;
+        const thisReq = journeyReqs?.[searchUnit] || null;
         if (!thisReq) {
             return super.error(interaction, `Please select one of the autocompleted options, I couldn't find a match for ${searchUnit}`);
         }
-        const targetUnit =
-            Bot.characters.find((unit) => unit.uniqueName === searchUnit) || Bot.ships.find((unit) => unit.uniqueName === searchUnit);
+        const targetUnit = characters.find((unit) => unit.uniqueName === searchUnit) || ships.find((unit) => unit.uniqueName === searchUnit);
 
         await interaction.reply({ content: "Please wait while I process your request." });
 
@@ -57,8 +59,7 @@ export default class Panic extends Command {
 
         const reqsOut = [];
         for (const unitReq of thisReq.reqs) {
-            const baseChar =
-                Bot.characters.find((u) => u.uniqueName === unitReq.defId) || Bot.ships.find((u) => u.uniqueName === unitReq.defId);
+            const baseChar = characters.find((u) => u.uniqueName === unitReq.defId) || ships.find((u) => u.uniqueName === unitReq.defId);
             const playerUnit = player.roster.find((u) => u.defId === unitReq.defId);
 
             // Set some defaults so we can adjust what are needed for everything
@@ -121,7 +122,7 @@ export default class Panic extends Command {
         // Now that we have the units all formatted to send over to the image generator, go ahead and send it
         let imageOut = null;
         try {
-            imageOut = await fetch(`${Bot.config.imageServIP_Port}/panic/`, {
+            imageOut = await fetch(`${config.imageServIP_Port}/panic/`, {
                 method: "post",
                 body: JSON.stringify({
                     header: `${player.name}'s ${targetUnit.name} requirements`,
@@ -134,7 +135,7 @@ export default class Panic extends Command {
                 return Buffer.from(resBuf);
             });
         } catch (err) {
-            logger.error(`[Bot.getUnitImage] Something broke while requesting image.\n${err}`);
+            logger.error(`[getUnitImage] Something broke while requesting image.\n${err}`);
             logger.error(`[slash/panic] Error: ${err}`);
             return null;
         }

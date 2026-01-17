@@ -1,7 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode,
+updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -34,7 +35,7 @@ export default class GuildQuality extends Command {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const allycode = interaction.options.getString("allycode");
-        const userAC = await Bot.getAllyCode(interaction, allycode, true);
+        const userAC = await getAllyCode(interaction, allycode, true);
 
         // If it hasn't found a valid ally code, grumble at the user, since that's required
         if (!userAC) {

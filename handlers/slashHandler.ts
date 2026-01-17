@@ -1,7 +1,8 @@
 import { readdirSync } from "node:fs";
 import { type APIApplicationCommand, type APIApplicationCommandOption, REST, Routes } from "discord.js";
-import logger from "../modules/Logger.ts";
 import type slashCommand from "../base/slashCommand.ts";
+import config from "../config.js";
+import logger from "../modules/Logger.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
 const slashDir = `${import.meta.dirname}/../slash/`;
@@ -208,20 +209,20 @@ export default async (Bot: BotType, client: BotClient) => {
      * Fetches existing commands from Discord API
      */
     async function fetchCommands(): Promise<APIApplicationCommand[]> {
-        const rest = new REST().setToken(Bot.config.token);
+        const rest = new REST().setToken(config.token);
         const cmdOut: APIApplicationCommand[] = [];
 
         try {
             // Fetch guild commands if dev_server is configured
-            if (Bot.config.dev_server) {
+            if (config.dev_server) {
                 const guildCmds = (await rest.get(
-                    Routes.applicationGuildCommands(Bot.config.clientId, Bot.config.dev_server),
+                    Routes.applicationGuildCommands(config.clientId, config.dev_server),
                 )) as APIApplicationCommand[];
                 cmdOut.push(...guildCmds);
             }
 
             // Fetch global commands
-            const globalCmds = (await rest.get(Routes.applicationCommands(Bot.config.clientId))) as APIApplicationCommand[];
+            const globalCmds = (await rest.get(Routes.applicationCommands(config.clientId))) as APIApplicationCommand[];
             cmdOut.push(...globalCmds);
         } catch (error) {
             logger.error("Failed to fetch commands:", error);
@@ -234,23 +235,23 @@ export default async (Bot: BotType, client: BotClient) => {
      * Sends command data to Discord API
      */
     async function sendCommandData(commands: slashCommand["commandData"][]) {
-        const rest = new REST().setToken(Bot.config.token);
+        const rest = new REST().setToken(config.token);
 
         try {
             const globalCommands = commands.filter((cmd) => !cmd.guildOnly);
-            const guildCommands = commands.filter((cmd) => cmd.guildOnly && Bot.config?.dev_server);
+            const guildCommands = commands.filter((cmd) => cmd.guildOnly && config?.dev_server);
 
             // Deploy global commands
-            if (Bot.config.enableGlobalCmds && globalCommands.length) {
-                const response = (await rest.put(Routes.applicationCommands(Bot.config.clientId), {
+            if (config.enableGlobalCmds && globalCommands.length) {
+                const response = (await rest.put(Routes.applicationCommands(config.clientId), {
                     body: globalCommands,
                 })) as APIApplicationCommand[];
                 logger.log(`Successfully reloaded ${response.length} global (/) commands.`);
             }
 
             // Deploy guild commands if there's a dev_server set
-            if (Bot.config?.dev_server && guildCommands.length) {
-                const response = (await rest.put(Routes.applicationGuildCommands(Bot.config.clientId, Bot.config?.dev_server), {
+            if (config?.dev_server && guildCommands.length) {
+                const response = (await rest.put(Routes.applicationGuildCommands(config.clientId, config?.dev_server), {
                     body: guildCommands,
                 })) as APIApplicationCommand[];
                 logger.log(`Successfully reloaded ${response.length} guild (/) commands.`);

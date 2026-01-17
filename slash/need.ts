@@ -1,8 +1,11 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
+import config from "../config.js";
+import { characters,charLocs,shipLocs,ships } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
-import { msgArray, toProperCase } from "../modules/functions.ts";
+import cache from "../modules/cache.ts";
+import { getAllyCode,
+msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -83,7 +86,7 @@ export default class Need extends Command {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode, true);
+        allycode = await getAllyCode(interaction, allycode, true);
         if (!allycode) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }
@@ -148,7 +151,7 @@ export default class Need extends Command {
         namesToSearch = [...new Set(namesToSearch)];
         if (namesToSearch.includes("*")) {
             // Just stick everything in there
-            units = [...Bot.characters, ...Bot.ships].map((u) => {
+            units = [...characters, ...ships].map((u) => {
                 return { ...u, baseId: u.uniqueName };
             });
         } else {
@@ -164,29 +167,29 @@ export default class Need extends Command {
         let outShips = [];
         for (const unit of units) {
             // Go through the found characters and check them against the player's roster
-            let u = player.roster.find((c) => c.defId === unit.baseId);
-            if (!u) {
+            let playerUnit = player.roster.find((c) => c.defId === unit.baseId);
+            if (!playerUnit) {
                 // If Malak (I don't remember why...)
                 if (unit.baseId === "DARTHMALAK") continue;
-                u = {
+                playerUnit = {
                     rarity: 0,
                     nameKey: unit.nameKey || unit.name,
                 } as SWAPIUnit;
             }
-            if (u.rarity === 7) continue;
-            shardsLeft += shardsLeftAtStar[u.rarity];
-            u = await Bot.swgohAPI.langChar(u, interaction.guildSettings.swgohLanguage);
-            if (Bot.characters.find((c) => c.uniqueName === unit.baseId)) {
+            if (playerUnit.rarity === 7) continue;
+            shardsLeft += shardsLeftAtStar[playerUnit.rarity];
+            playerUnit = await Bot.swgohAPI.langChar(playerUnit, interaction.guildSettings.swgohLanguage);
+            if (characters.find((c) => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({
-                    rarity: u.rarity,
-                    name: u.nameKey,
+                    rarity: playerUnit.rarity,
+                    name: playerUnit.nameKey,
                 });
-            } else if (Bot.ships.find((s) => s.uniqueName === unit.baseId)) {
+            } else if (ships.find((s) => s.uniqueName === unit.baseId)) {
                 // It's a ship
                 outShips.push({
-                    rarity: u.rarity,
-                    name: u.nameKey,
+                    rarity: playerUnit.rarity,
+                    name: playerUnit.nameKey,
                 });
             }
         }
@@ -290,21 +293,21 @@ export default class Need extends Command {
             const searchNames = Array.isArray(searchArr) ? searchArr : [searchArr];
             let unitsOut = [];
             if (searchNames.includes("*")) {
-                unitsOut.push(...Bot.charLocs);
-                unitsOut.push(...Bot.shipLocs);
+                unitsOut.push(...charLocs);
+                unitsOut.push(...shipLocs);
             } else {
                 for (const searchName of searchNames) {
-                    unitsOut = unitsOut.concat(Bot.charLocs.filter((c) => c.locations.filter((l) => l.type === searchName).length));
-                    unitsOut = unitsOut.concat(Bot.shipLocs.filter((s) => s.locations.filter((l) => l.type === searchName).length));
+                    unitsOut = unitsOut.concat(charLocs.filter((c) => c.locations.filter((l) => l.type === searchName).length));
+                    unitsOut = unitsOut.concat(shipLocs.filter((s) => s.locations.filter((l) => l.type === searchName).length));
                 }
             }
             for (const c of unitsOut) {
                 // The char/ ship locations don't have the baseId so need to get those
-                let char = Bot.characters.find(
+                let char = characters.find(
                     (char) => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase(),
                 );
                 if (!char) {
-                    char = Bot.ships.find(
+                    char = ships.find(
                         (char) => char.name.replace(/[^\w]/g, "").toLowerCase() === c.name.replace(/[^\w]/g, "").toLowerCase(),
                     );
                     if (char) char.isShip = true;
@@ -320,7 +323,7 @@ export default class Need extends Command {
         async function getFactionUnits(searchName: string) {
             // Get units based on their faction
             const units = await cache.get(
-                Bot.config.mongodb.swapidb,
+                config.mongodb.swapidb,
                 "units",
                 { categoryIdList: searchName, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
                 { _id: 0, baseId: 1, nameKey: 1 },

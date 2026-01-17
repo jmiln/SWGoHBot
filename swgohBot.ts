@@ -10,12 +10,12 @@ import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
-import funct, { myTime, reloadLanguages, sortOmicrons } from "./modules/functions.ts";
+import { myTime, reloadLanguages,sortOmicrons } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
-import type { BotClient, BotType, BotUnit } from "./types/types.ts";
+import type { BotClient, BotType } from "./types/types.ts";
 
 const Bot = {} as BotType;
 
@@ -48,20 +48,6 @@ const logErrorToChannel = (errorMsg: string) => {
     }
 };
 
-const mapUnitNames = (units: BotUnit[], addGLSuffix = false) => {
-    return units.map((unit) => {
-        let suffix = "";
-        if (addGLSuffix && unit.factions?.includes("Galactic Legend")) {
-            suffix = "(GL)";
-        }
-        return {
-            name: `${unit.name} ${suffix}`.trim(),
-            defId: unit.uniqueName,
-            aliases: unit.aliases || [],
-        };
-    });
-};
-
 function processJourneyNames() {
     const journeyKeys = Object.keys(Bot.journeyReqs);
     Bot.journeyNames = [];
@@ -85,18 +71,11 @@ Bot.help = help;
 Bot.journeyReqs = await jsonFromFile("./data/journeyReqs.json");
 processJourneyNames();
 
-// Load in various general functions for the bot
-funct(Bot, client);
-
 // Load in stuff for the events command
 eventFuncs(Bot, client);
 
 // Load in stuff for patrons and such
 patreonFuncs(Bot, client);
-
-// List of all the unit names to use for autocomplete
-Bot.CharacterNames = mapUnitNames(characters, true);
-Bot.ShipNames = mapUnitNames(ships);
 
 client.slashcmds = new Collection();
 
@@ -126,7 +105,7 @@ const init = async () => {
     if (config.swapiConfig) {
         // Load up the api connector/ helpers
         try {
-            Bot.swgohAPI = await swgohAPI(null);
+            Bot.swgohAPI = swgohAPI(null);
         } catch (err) {
             console.error(`[${myTime()}] Failed to initialize swgohAPI: ${err instanceof Error ? err.message : String(err)}`);
         }
@@ -134,7 +113,6 @@ const init = async () => {
         console.error(`[${myTime()}] Failed to load swapi: No swapiConfig found`);
     }
 
-    // Store the list of omicrons to be used later
     Bot.omicrons = await sortOmicrons(cache);
 
     slashHandler(Bot, client);

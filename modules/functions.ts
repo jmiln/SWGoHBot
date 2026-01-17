@@ -1,5 +1,5 @@
 import { readdir } from "node:fs/promises";
-import { inspect, promisify } from "node:util";
+import { inspect, } from "node:util";
 import {
     type Client,
     type Embed,
@@ -16,90 +16,22 @@ import {
 import Language from "../base/Language.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
-import { characters, factions, ships } from "../data/constants/units.ts";
+import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { BotCache } from "../types/cache_types.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotClient, BotInteraction, BotType, BotUnit, UserConfig } from "../types/types.ts";
+import type { BotClient, BotInteraction, BotUnit, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
 import userReg from "./users.ts";
 
-// These are just the ones that need access to Bot or the client
-export default (Bot: BotType, client: BotClient) => {
-    // Check if the bot's account is the main (real) bot
-    Bot.isMain = () => client.user.id === "315739499932024834";
+export function isMain(client: Client): boolean {
+    return client.user.id === "315739499932024834";
+}
 
-    /* ANNOUNCEMENT MESSAGE
-     * Sends a message to the set announcement channel
-     */
-    client.announceMsg = async (guild: Guild, announceMsg: string, channel = "", guildConf: Partial<GuildConfigSettings> = {}) => {
-        if (!guild?.id) return;
-
-        // Use the guildConf announcement channel
-        const announceChan = channel || guildConf?.announceChan || "";
-
-        // Try and get the channel by ID first
-        let chan = guild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
-
-        // If  that didn't work, try and get it by name
-        if (!chan) {
-            chan = guild.channels.cache.find((c) => c.name === announceChan);
-        }
-
-        // If that still didn't work, or if it doesn't have the base required perms, return
-        if (
-            !(chan instanceof TextChannel) ||
-            !chan?.send ||
-            !chan?.permissionsFor(client.user)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
-        )
-            return;
-        // TODO Should probably log this / tell users about the issue somehow?
-        // return logger.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
-
-        // If everything is ok, go ahead and try sending the message
-        await chan.send(announceMsg).catch((err) => {
-            // if (err.stack.toString().includes("user aborted a request")) return;
-            logger.error(
-                `Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n`,
-            );
-        });
-    };
-
-    // `await wait(1000);` to "pause" for 1 second.
-    Bot.wait = promisify(setTimeout);
-
-    // Get the ally code of someone that's registered
-    Bot.getAllyCode = async (interaction: BotInteraction, user: string | string[], useInteractionId = true) => {
-        const otherCodeRegex = /^-\d{1,2}$/;
-        const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : user;
-
-        let userAcct: UserConfig | null = null;
-        if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {
-            // Grab the sender's primary code
-            userAcct = await userReg.getUser(interaction.user.id);
-        } else if (isUserID(userStr)) {
-            // Try to grab the primary code for the mentioned user
-            userAcct = await userReg.getUser(userStr.replace(/[^\d]*/g, ""));
-        } else if (isAllyCode(userStr)) {
-            // Otherwise, just scrap everything but numbers, and send it back
-            return userStr.replace(/[^\d]*/g, "");
-        }
-
-        if (userAcct?.accounts?.length) {
-            let account = null;
-            if (userStr?.match(otherCodeRegex)) {
-                // If it's a -1/ -2 code, try to grab the specified code
-                const index = Number.parseInt(userStr.replace("-", ""), 10) - 1;
-                account = userAcct.accounts[index];
-            } else {
-                // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
-                account = userAcct.accounts.find((a) => a.primary);
-            }
-            return account ? account.allyCode : null;
-        }
-        return null;
-    };
-};
+// `await wait(1000);` to "pause" for 1 second.
+export async function wait(ms: number): Promise<void> {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 /*
  * isAllyCode
@@ -253,46 +185,46 @@ export function myTime(): string {
 }
 
 // This finds any character that matches the search, and returns them in an array
-export function findChar(searchName: string, charList: BotUnit[], isShip = false): BotUnit[] {
+export function findChar(searchName: string, unitList: BotUnit[], isShip = false): BotUnit[] {
     if (!searchName?.length || typeof searchName !== "string") {
         return [];
     }
     let cleanSearchName = searchName.toLowerCase();
 
     // Try for a defId/ uniqueName match first
-    let foundChar = charList.filter((char) => char.uniqueName === cleanSearchName.toUpperCase());
+    let foundChar = unitList.filter((char) => char.uniqueName === cleanSearchName.toUpperCase());
     if (foundChar.length) return foundChar;
 
     // Try for an actual exact match
-    foundChar = charList.filter((char) => char.name.toLowerCase() === cleanSearchName);
+    foundChar = unitList.filter((char) => char.name.toLowerCase() === cleanSearchName);
     if (foundChar.length) return foundChar;
 
     // Clean out extra spaces and improper apostrophes
     cleanSearchName = cleanSearchName.replace(/’/g, "'").trim();
 
     // Try finding an exact match for the name or aliases
-    foundChar = charList.filter((char) => char.name.toLowerCase() === cleanSearchName);
+    foundChar = unitList.filter((char) => char.name.toLowerCase() === cleanSearchName);
     if (!foundChar.length) {
-        foundChar = charList.filter((char) => char.aliases.some((alias) => alias.toLowerCase() === cleanSearchName));
+        foundChar = unitList.filter((char) => char.aliases.some((alias) => alias.toLowerCase() === cleanSearchName));
     }
     if (isShip && !foundChar.length) {
-        foundChar = charList.filter((ship) => ship.crew?.some((crew) => crew.toLowerCase() === cleanSearchName));
+        foundChar = unitList.filter((ship) => ship.crew?.some((crew) => crew.toLowerCase() === cleanSearchName));
     }
     if (foundChar.length) return foundChar;
 
     // Then see if the searchName is a part of one of the names or aliases
-    foundChar = charList.filter((char) => char.name.toLowerCase().split(" ").includes(cleanSearchName));
+    foundChar = unitList.filter((char) => char.name.toLowerCase().split(" ").includes(cleanSearchName));
     if (!foundChar.length) {
-        foundChar = charList.filter((char) => char.aliases.some((alias) => alias.toLowerCase().split(" ").includes(cleanSearchName)));
+        foundChar = unitList.filter((char) => char.aliases.some((alias) => alias.toLowerCase().split(" ").includes(cleanSearchName)));
     }
     if (isShip && !foundChar.length) {
-        foundChar = charList.filter((ship) => ship.crew?.some((crew) => crew.toLowerCase().split(" ").includes(cleanSearchName)));
+        foundChar = unitList.filter((ship) => ship.crew?.some((crew) => crew.toLowerCase().split(" ").includes(cleanSearchName)));
     }
     if (foundChar.length) return foundChar;
 
     // Then try to split up the search by spaces, and see if any part of that finds any matches
     const splitName = cleanSearchName.split(" ");
-    foundChar = charList.filter((char) => splitName.some((name) => char.name.toLowerCase().includes(name)));
+    foundChar = unitList.filter((char) => splitName.some((name) => char.name.toLowerCase().includes(name)));
     if (foundChar.length) return foundChar;
 
     // If by here, it hasn't found any matching character or ship, return an empty array
@@ -784,9 +716,6 @@ export async function hasViewAndSend(channel: GuildChannel, user: User | GuildMe
     );
 }
 
-// Cache the units list to avoid recreating it on every call
-const allUnitsList: BotUnit[] = [...characters, ...ships];
-
 export async function getBlankUnitImage(defId: string): Promise<Buffer | null> {
     return await getUnitImage(defId, {
         gear: -1,
@@ -842,13 +771,13 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
 export async function announceMsg({
     client,
     guild,
-    announceMsg,
+    announceMessage,
     channel,
     guildConf,
 }: {
     client: BotClient;
     guild: Guild;
-    announceMsg: string;
+    announceMessage: string;
     channel: string;
     guildConf: Partial<GuildConfigSettings>;
 }): Promise<void> {
@@ -877,9 +806,9 @@ export async function announceMsg({
     // return logger.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
 
     // If everything is ok, go ahead and try sending the message
-    await chan.send(announceMsg).catch((err) => {
+    await chan.send(announceMessage).catch((err) => {
         // if (err.stack.toString().includes("user aborted a request")) return;
-        logger.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMsg}\n`);
+        logger.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMessage}\n`);
     });
 }
 
@@ -905,3 +834,35 @@ export async function reloadLanguages(): Promise<Error | null> {
     }
     return null;
 }
+
+    // Get the ally code of someone that's registered
+    export async function getAllyCode(interaction: BotInteraction, user: string | string[], useInteractionId = true) {
+        const otherCodeRegex = /^-\d{1,2}$/;
+        const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : user;
+
+        let userAcct: UserConfig | null = null;
+        if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {
+            // Grab the sender's primary code
+            userAcct = await userReg.getUser(interaction.user.id);
+        } else if (isUserID(userStr)) {
+            // Try to grab the primary code for the mentioned user
+            userAcct = await userReg.getUser(userStr.replace(/[^\d]*/g, ""));
+        } else if (isAllyCode(userStr)) {
+            // Otherwise, just scrap everything but numbers, and send it back
+            return userStr.replace(/[^\d]*/g, "");
+        }
+
+        if (userAcct?.accounts?.length) {
+            let account = null;
+            if (userStr?.match(otherCodeRegex)) {
+                // If it's a -1/ -2 code, try to grab the specified code
+                const index = Number.parseInt(userStr.replace("-", ""), 10) - 1;
+                account = userAcct.accounts[index];
+            } else {
+                // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
+                account = userAcct.accounts.find((a) => a.primary);
+            }
+            return account ? account.allyCode : null;
+        }
+        return null;
+    }

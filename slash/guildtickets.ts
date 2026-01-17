@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { isAllyCode, toProperCase } from "../modules/functions.ts";
+import { getAllyCode,
+isAllyCode, toProperCase } from "../modules/functions.ts";
 import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -151,7 +152,7 @@ export default class GuildTickets extends Command {
                     return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
-                allycode = await Bot.getAllyCode(interaction, allycode);
+                allycode = await getAllyCode(interaction, allycode);
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
                 const player = await Bot.swgohAPI.unitStats(allycode);

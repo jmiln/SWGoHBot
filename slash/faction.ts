@@ -5,7 +5,8 @@ import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
-import { msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode,
+msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -63,7 +64,7 @@ export default class Faction extends Command {
         const wantsLeader = interaction.options.getBoolean("leader");
         const wantsZeta = interaction.options.getBoolean("zeta");
         let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode, false);
+        allycode = await getAllyCode(interaction, allycode, false);
 
         let extra = "";
         if (wantsLeader && wantsZeta) {

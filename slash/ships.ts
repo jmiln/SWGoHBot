@@ -1,5 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { characters,
+ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -21,23 +23,22 @@ export default class Ships extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const shipList = Bot.ships;
         const searchName = interaction.options.getString("ship");
 
         // Find any characters that match that
-        const ships = findChar(searchName, shipList, true);
-        if (ships.length <= 0) {
+        const foundShips = findChar(searchName, ships, true);
+        if (foundShips.length <= 0) {
             return super.error(
                 interaction,
                 `Sorry, but I cannot find **${searchName}**. Please double check the spelling, and that it's a proper ship/ crew crew member.`,
             );
         }
-        if (ships.length > 1) {
+        if (foundShips.length > 1) {
             return super.error(
                 interaction,
                 interaction.language.get(
                     "BASE_SWGOH_CHAR_LIST",
-                    ships
+                    foundShips
                         .map((s) => {
                             if (s.crew?.length) {
                                 return `${s.name}${`\n${s.crew.map((c) => `- ${c}`).join("\n")}\n`}`;
@@ -49,7 +50,7 @@ export default class Ships extends Command {
             );
         }
 
-        const ship = ships[0];
+        const ship = foundShips[0];
         const unit = await Bot.swgohAPI.getCharacter(ship.uniqueName, interaction.guildSettings.swgohLanguage);
 
         const shipAbilities = unit.skillReferenceList;
@@ -59,7 +60,7 @@ export default class Ships extends Command {
         if (unit.crew.length) {
             const crew = [];
             for (const crewMember of unit.crew) {
-                const crewName = Bot.characters.find((c) => c.uniqueName === crewMember);
+                const crewName = characters.find((c) => c.uniqueName === crewMember);
                 crew.push(crewName.name);
             }
             fields.push({

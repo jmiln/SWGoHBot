@@ -16,16 +16,15 @@ import type { BotCache } from "../types/cache_types.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
 const io = new Server(config.eventServe.port);
-let botCache = null;
 
 async function init() {
     try {
         const mongo = await MongoClient.connect(config.mongodb.url);
-        botCache = cache(mongo);
+        cache.init(mongo);
 
         io.on("connection", (socket) => {
             console.log("EventMgr: Socket connected");
-            setupEventHandlers(socket, botCache);
+            setupEventHandlers(socket, cache);
         });
 
         console.log(`EventMgr: Service started on port ${config.eventServe.port}`);

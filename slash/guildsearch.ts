@@ -1,10 +1,11 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { expandSpaces, findChar, getGearStr, makeTable, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { expandSpaces, findChar, getAllyCode, getGearStr, makeTable, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import { characters,ships } from "../data/constants/units.ts";
 
 export default class GuildSearch extends Command {
     constructor(Bot: BotType) {
@@ -166,7 +167,7 @@ export default class GuildSearch extends Command {
 
         // If an ally code is supplied, try using it
         // If not, it'll try grabbing the primary registered code of the author
-        const userAC = await Bot.getAllyCode(interaction, allycode, true);
+        const userAC = await getAllyCode(interaction, allycode, true);
 
         if (!userAC) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
@@ -198,11 +199,11 @@ export default class GuildSearch extends Command {
         if (searchType === "character") {
             // Get any matches for the character
             searchStr = interaction.options.getString("character");
-            unitList = findChar(searchStr, Bot.characters);
+            unitList = findChar(searchStr, characters);
         } else {
             // Get any matches for the ship
             searchStr = interaction.options.getString("ship");
-            unitList = findChar(searchStr, Bot.ships, true);
+            unitList = findChar(searchStr, ships, true);
             isShip = true;
         }
 

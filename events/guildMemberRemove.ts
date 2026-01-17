@@ -1,14 +1,14 @@
 import { Events, type GuildMember } from "discord.js";
 import cache from "../modules/cache.ts";
-import logger from "../modules/Logger.ts";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
 export default {
     name: Events.GuildMemberRemove,
-    async execute(Bot: BotType, client: BotClient, member: GuildMember) {
+    async execute(_Bot: BotType, client: BotClient, member: GuildMember) {
         const guildConf = await getGuildSettings({ cache: cache, guildId: member.guild.id });
 
         // Send departure message if enabled
@@ -19,7 +19,7 @@ export default {
                 .replace(/{{server}}/gi, member.guild.name);
 
             try {
-                await client.announceMsg(member.guild, partMessage, null, guildConf);
+                await announceMsg({ client, guild: member.guild, announceMessage: partMessage, guildConf});
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(

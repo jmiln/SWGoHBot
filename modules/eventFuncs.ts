@@ -1,8 +1,8 @@
-import cache from "./cache.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { BotClient, BotType } from "../types/types.ts";
-import { formatDuration } from "./functions.ts";
+import cache from "./cache.ts";
+import { announceMsg, formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";
 
@@ -18,10 +18,10 @@ export default (Bot: BotType, client: BotClient) => {
         for (const event of eventList) {
             if (event.isCD) {
                 // It's a countdown alert, so do that
-                await Bot.countdownAnnounce(event);
+                Bot.countdownAnnounce(event);
             } else {
                 // It's a full event, so announce that
-                await Bot.eventAnnounce(event);
+                Bot.eventAnnounce(event);
             }
         }
     };
@@ -31,7 +31,7 @@ export default (Bot: BotType, client: BotClient) => {
         event: GuildConfigEvent,
         guildConf: GuildConfigSettings,
         guildId: string,
-        announceMessage: string,
+        messageToAnnounce: string,
     ): Promise<void> {
         if (guildConf.announceChan !== "" || event.channel !== "") {
             let chan = "";
@@ -46,13 +46,13 @@ export default (Bot: BotType, client: BotClient) => {
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
                         const targetGuild = client.guilds.cache.get(guildId);
                         if (targetGuild) {
-                            client.announceMsg(targetGuild, announceMessage, chan, guildConf);
+                            announceMsg({client, guild: targetGuild, announceMessage, channel: chan, guildConf});
                         }
                     },
                     {
                         context: {
                             guildId,
-                            announceMessage,
+                            announceMessage: messageToAnnounce,
                             chan,
                             guildConf,
                         },

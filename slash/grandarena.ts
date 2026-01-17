@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import unitChecklist from "../data/unitChecklist.ts";
-import { findChar, findFaction, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -63,7 +63,7 @@ export default class GrandArena extends Command {
 
         // Get the first user's ally code if possible
         const user1Str = interaction.options.getString("allycode_1");
-        const user1AC = await Bot.getAllyCode(interaction, user1Str);
+        const user1AC = await getAllyCode(interaction, user1Str);
         if (!user1AC) {
             if (user1Str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
@@ -74,7 +74,7 @@ export default class GrandArena extends Command {
 
         // Get the second user's ally code if possible
         const user2Str = interaction.options.getString("allycode_2");
-        const user2AC = await Bot.getAllyCode(interaction, user2Str);
+        const user2AC = await getAllyCode(interaction, user2Str);
         if (!user2AC) {
             if (user2Str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));

@@ -3,6 +3,8 @@ import Command from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { characters } from "../data/constants/units.ts";
+import { getAllyCode } from "../modules/functions.ts";
 
 export default class Randomchar extends Command {
     constructor(Bot: BotType) {
@@ -56,7 +58,7 @@ export default class Randomchar extends Command {
         if (!count) count = MAX_CHARACTERS;
 
         let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode, false);
+        allycode = await getAllyCode(interaction, allycode, false);
 
         if (allycode) {
             // If there is a valid allycode provided, grab the user's roster
@@ -86,7 +88,7 @@ export default class Randomchar extends Command {
             if (chars.length < MAX_CHARACTERS) count = chars.length;
         } else {
             // No allycode provided, use all bot characters
-            chars = Bot.characters;
+            chars = characters;
         }
 
         const charOut: string[] = [];

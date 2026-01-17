@@ -3,9 +3,10 @@ import Command from "../base/slashCommand.ts";
 import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
-import { expandSpaces, findChar, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
+import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import config from "../config.js";
 
 export default class Charactergear extends Command {
     constructor(Bot: BotType) {
@@ -54,7 +55,7 @@ export default class Charactergear extends Command {
 
         // Go through and verify as possible
         if (allycode) {
-            allycode = await Bot.getAllyCode(interaction, allycode, true);
+            allycode = await getAllyCode(interaction, allycode, true);
         }
         if (gearLvl < 0 || gearLvl > MAX_GEAR) {
             return super.error(interaction, `${gearLvl} is not a valid gear level. It must be between 1 and ${MAX_GEAR}`);
@@ -298,7 +299,7 @@ async function expandPieces(Bot: BotType, list: string[]) {
     let end = [];
     for (const piece of list) {
         const gr = await cache.get(
-            Bot.config.mongodb.swapidb,
+            config.mongodb.swapidb,
             "gear",
             {
                 nameKey: piece,
@@ -335,7 +336,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {
         const recArr: SWAPIRecipe = await cache.get(
-            Bot.config.mongodb.swapidb,
+            config.mongodb.swapidb,
             "recipes",
             {
                 id: gearPiece.recipeId,
@@ -352,7 +353,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
         const thisRec = rec.ingredients.filter((r: SWAPIIngredient) => r.id !== "GRIND");
         for (const r of thisRec) {
             const gear = await cache.get(
-                Bot.config.mongodb.swapidb,
+                config.mongodb.swapidb,
                 "gear",
                 {
                     id: r.id,

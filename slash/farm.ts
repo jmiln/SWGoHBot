@@ -1,7 +1,8 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
+import config from "../config.js";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
+import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -76,7 +77,7 @@ export default class Farm extends Command {
                 // It's a node, fleet, cantina, light/ dark side
                 if (loc.locId) {
                     const langLoc = await cache.getOne<{ id: string; language: string; langKey: string }>(
-                        Bot.config.mongodb.swapidb,
+                        config.mongodb.swapidb,
                         "locations",
                         {
                             id: loc.locId,
@@ -111,7 +112,7 @@ export default class Farm extends Command {
             } else if (loc.locId) {
                 // Just has the location id, so probably a marquee
                 const langLoc = await cache.getOne<{ id: string; language: string; langKey: string }>(
-                    Bot.config.mongodb.swapidb,
+                    config.mongodb.swapidb,
                     "locations",
                     {
                         id: loc.locId,

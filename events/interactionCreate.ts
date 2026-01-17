@@ -2,13 +2,14 @@ import { inspect } from "node:util";
 import { Events, MessageFlags } from "discord.js";
 import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
-import logger from "../modules/Logger.ts";
+import { characterNameList, shipNameList } from "../data/constants/units.ts";
+import cache from "../modules/cache.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
 
@@ -103,16 +104,16 @@ async function sendErrorReply(Bot: BotType, interaction: BotInteraction, command
 /**
  * Builds a unit list based on the option name (unit, character, or ship)
  */
-function buildUnitList(Bot: BotType, optionName: UnitOptionName, aliases: Array<{ isAlias: boolean; defId: string; alias: string }>) {
+function buildUnitList(optionName: UnitOptionName, aliases: Array<{ isAlias: boolean; defId: string; alias: string }>) {
     const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
 
     switch (optionName) {
         case "unit":
-            return [...aliasList, ...Bot.CharacterNames, ...Bot.ShipNames];
+            return [...aliasList, ...characterNameList, ...shipNameList];
         case "character":
-            return [...aliasList.filter((al) => Bot.CharacterNames.some((cn) => cn.defId === al.defId)), ...Bot.CharacterNames];
+            return [...aliasList.filter((al) => characterNameList.some((cn) => cn.defId === al.defId)), ...characterNameList];
         case "ship":
-            return [...aliasList.filter((al) => Bot.ShipNames.some((sn) => sn.defId === al.defId)), ...Bot.ShipNames];
+            return [...aliasList.filter((al) => shipNameList.some((sn) => sn.defId === al.defId)), ...shipNameList];
     }
 }
 
@@ -132,7 +133,6 @@ function formatUnitResults(units: Array<{ isAlias?: boolean; name: string; defId
  * Processes autocomplete for unit-related options
  */
 function processUnitAutocomplete(
-    Bot: BotType,
     focusedOption: { name: string; value: string },
     aliases: Array<{ isAlias: boolean; defId: string; alias: string }>,
 ) {
@@ -140,7 +140,7 @@ function processUnitAutocomplete(
         return [];
     }
 
-    const unitList = buildUnitList(Bot, focusedOption.name as UnitOptionName, aliases);
+    const unitList = buildUnitList(focusedOption.name as UnitOptionName, aliases);
     const filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
     return formatUnitResults(filtered);
 }
@@ -173,7 +173,7 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
             filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
         } else {
             // Process unit/character/ship autocomplete
-            filtered = processUnitAutocomplete(Bot, focusedOption, aliases);
+            filtered = processUnitAutocomplete(focusedOption, aliases);
         }
     } catch (err) {
         logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);

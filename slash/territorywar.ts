@@ -1,8 +1,9 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
-import { makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import cache from "../modules/cache.ts";
+import { getAllyCode,
+makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -37,7 +38,7 @@ export default class TerritoryWar extends Command {
 
         // Get the first user's ally code if possible
         const user1str = interaction.options.getString("allycode_1");
-        const user1 = await Bot.getAllyCode(interaction, user1str);
+        const user1 = await getAllyCode(interaction, user1str);
         if (!user1) {
             if (user1str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
@@ -48,7 +49,7 @@ export default class TerritoryWar extends Command {
 
         // Get the second user's ally code if possible
         const user2str = interaction.options.getString("allycode_2");
-        const user2 = await Bot.getAllyCode(interaction, user2str);
+        const user2 = await getAllyCode(interaction, user2str);
         if (!user2) {
             if (user2str === "me") {
                 problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));

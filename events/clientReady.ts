@@ -1,6 +1,7 @@
-import { io } from "socket.io-client";
 import { Events } from "discord.js";
+import { io } from "socket.io-client";
 import config from "../config.js";
+import { isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import { SocketHelper } from "../modules/socketHelper.ts";
 import type { BotClient, BotType } from "../types/types.ts";
@@ -31,7 +32,7 @@ export default {
 
         // Validate bot configuration - must be private bot unless authorized
         const application = client.application;
-        if (!Bot.isMain() && application.botPublic && application.owner.id !== config.ownerid) {
+        if (!isMain(client) && application.botPublic && application.owner.id !== config.ownerid) {
             logger.error(
                 Buffer.from(
                     "RkFUQUwgRVJST1I6IElOVkFMSUQgQk9UIFNFVFVQCgpHbyB0byB5b3VyIEJvdCdzIGFwcGxpY2F0aW9uIHBhZ2UgaW4gRGlzY29yZCBEZXZlbG9wZXJzIHNpdGUgYW5kIGRpc2FibGUgdGhlICJQdWJsaWMgQm90IiBvcHRpb24uCgpQbGVhc2UgY29udGFjdCB0aGUgc3VwcG9ydCB0ZWFtIGF0IFNXR29IQm90IEhRIC0gaHR0cHM6Ly9kaXNjb3JkLmdnL0Zmd0d2aHIgLSBmb3IgbW9yZSBpbmZvcm1hdGlvbi4=",
@@ -58,7 +59,7 @@ export default {
         }
 
         logger.log(readyString, "ready", true);
-        setPresence(Bot, client);
+        setPresence(client);
     },
 };
 
@@ -136,7 +137,7 @@ function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
                 }
 
                 // Reload data files across all shards
-                reloadDataFiles(Bot, client);
+                reloadDataFiles(client);
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[${Bot.shardId}] Error in data update tasks: ${message}`);
@@ -181,7 +182,7 @@ function setupEventChecking(Bot: BotType): void {
 /**
  * Reloads data files across all shards or just the current client
  */
-function reloadDataFiles(Bot: BotType, client: BotClient): void {
+function reloadDataFiles(client: BotClient): void {
     if (client.shard?.count > 0) {
         client.shard
             .broadcastEval((client: BotClient) => client.reloadDataFiles())
@@ -197,7 +198,7 @@ function reloadDataFiles(Bot: BotType, client: BotClient): void {
 /**
  * Sets the bot's Discord presence/status
  */
-function setPresence(Bot: BotType, client: BotClient): void {
+function setPresence(client: BotClient): void {
     try {
         client.user.setPresence({
             activities: [{ name: PRESENCE_NAME, type: 0 }],

@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { findChar, getSideColor } from "../modules/functions.ts";
 import type { BotInteraction, BotType, BotUnitMods } from "../types/types.ts";
+import { characters } from "../data/constants/units.ts";
 
 export default class Mods extends Command {
     constructor(Bot: BotType) {
@@ -23,7 +24,6 @@ export default class Mods extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         await interaction.deferReply();
-        const charList = Bot.characters;
 
         const getLocalizedModString = (key: string) => {
             const localizationKeyMap = {
@@ -93,7 +93,7 @@ export default class Mods extends Command {
         const searchName = interaction.options.getString("character");
 
         // Find any characters that match that
-        const chars = findChar(searchName, charList);
+        const chars = findChar(searchName, characters);
         if (!chars?.length) {
             return super.error(
                 interaction,

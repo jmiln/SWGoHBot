@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
 import { reloadLanguages } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -53,8 +54,8 @@ export default class ReloadData extends Command {
                 break;
             case "debug":
             case "debugLogs":
-                Bot.config.debugLogs = !Bot.config.debugLogs;
-                return super.success(interaction, `DebugLogs set to **${Bot.config.debugLogs}**`);
+                config.debugLogs = !config.debugLogs;
+                return super.success(interaction, `DebugLogs set to **${config.debugLogs}**`);
             case "deploy": {
                 const outLog = await Bot.deployCommands(true);
                 return interaction.reply({

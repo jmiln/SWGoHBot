@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { findChar, makeTable, updatedFooterStr } from "../modules/functions.ts";
+import { findChar, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { characters,ships } from "../data/constants/units.ts";
 
 export default class Versus extends Command {
     constructor(Bot: BotType) {
@@ -67,8 +68,8 @@ export default class Versus extends Command {
 
         await interaction.reply({ content: "Please wait while I process your data." });
 
-        const user1AC = await Bot.getAllyCode(interaction, user1str, false);
-        const user2AC = await Bot.getAllyCode(interaction, user2str, false);
+        const user1AC = await getAllyCode(interaction, user1str, false);
+        const user2AC = await getAllyCode(interaction, user2str, false);
 
         if (!user1AC && !user2AC) {
             return super.error(interaction, "Both ally codes were invalid");
@@ -83,9 +84,9 @@ export default class Versus extends Command {
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
-        let charRes = findChar(character, Bot.characters);
+        let charRes = findChar(character, characters);
         if (!charRes.length) {
-            charRes = findChar(character, Bot.ships, true);
+            charRes = findChar(character, ships, true);
         }
         if (!charRes.length) {
             // Didn't find any matches

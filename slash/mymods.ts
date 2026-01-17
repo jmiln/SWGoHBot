@@ -3,9 +3,10 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
-import { expandSpaces, findChar, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { expandSpaces, findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import { characters } from "../data/constants/units.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
@@ -118,7 +119,7 @@ export default class MyMods extends Command {
 
         const subCommand = interaction.options.getSubcommand();
         let allycode = interaction.options.getString("allycode");
-        allycode = await Bot.getAllyCode(interaction, allycode);
+        allycode = await getAllyCode(interaction, allycode);
 
         if (!allycode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
@@ -152,15 +153,15 @@ export default class MyMods extends Command {
                 return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_MISSING_CHAR") });
             }
 
-            const chars = findChar(searchChar, Bot.characters);
-            if (chars.length === 0) {
+            const foundCharacters = findChar(searchChar, characters);
+            if (foundCharacters.length === 0) {
                 return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
             }
-            if (chars.length > 1) {
-                const charList = chars.sort((p, c) => (p.name > c.name ? 1 : -1)).map((c) => c.name);
+            if (foundCharacters.length > 1) {
+                const charList = foundCharacters.sort((p, c) => (p.name > c.name ? 1 : -1)).map((c) => c.name);
                 return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n")));
             }
-            character = chars[0];
+            character = foundCharacters[0];
 
             const thisChar = player.roster.find((c) => c.defId === character.uniqueName);
             if (!thisChar) {
@@ -375,7 +376,7 @@ export default class MyMods extends Command {
             const sortedMods = statMap.sort((a, b) => b.value - a.value);
             const topSorted = sortedMods.slice(0, 20);
             const namedSorted = topSorted.map((mod) => {
-                const charName = Bot.characters.find((char) => char.uniqueName === mod.defId);
+                const charName = characters.find((char) => char.uniqueName === mod.defId);
                 mod.name = charName?.name;
                 return mod;
             });
