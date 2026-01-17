@@ -1,19 +1,44 @@
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
-import type { BotLanguage, BotType } from "../types/types.ts";
 
 export default class Language {
-    Bot: BotType;
-    language: BotLanguage;
+    // Static registry for all language instances
+    private static _languages: Record<string, Language> = {};
+
+    language: Record<string, string | ((...args: (string | number | boolean | object)[]) => string)>;
     DAYSOFWEEK: Record<string, Record<string, string>>;
     TIMES: Record<string, Record<string, string>>;
 
-    constructor(bot: BotType) {
-        this.Bot = bot;
+    /**
+     * Get all registered languages
+     */
+    static getLanguages(): Record<string, Language> {
+        return Language._languages;
+    }
+
+    /**
+     * Register a language instance
+     */
+    static registerLanguage(code: string, instance: Language): void {
+        Language._languages[code] = instance;
+    }
+
+    /**
+     * Get a specific language instance
+     */
+    static getLanguage(code: string): Language | undefined {
+        return Language._languages[code];
+    }
+
+    /**
+     * Clear all registered languages (used during reload)
+     */
+    static clearLanguages(): void {
+        Language._languages = {};
     }
 
     get(str: string, ...args: null | (string | number | boolean | object)[]): string {
         if (!this.language[str]) {
-            const defLang = this.Bot.languages[defaultSettings.language];
+            const defLang = Language._languages[defaultSettings.language];
             let res = null;
             try {
                 if (!args.length) {
@@ -30,9 +55,9 @@ export default class Language {
         let res = "";
         try {
             if (!args?.length) {
-                res = this.language[str];
+                res = this.language[str] as string;
             } else {
-                res = this.language[str](...args);
+                res = (this.language[str] as (...args: (string | number | boolean | object)[]) => string)(...args);
             }
         } catch (_) {
             res = `ERROR: Broken string for: ${str}`;

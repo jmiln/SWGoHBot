@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
 import { MongoClient } from "mongodb";
+import Language from "./base/Language.ts";
 import config from "./config.js";
 import { characters, ships } from "./data/constants/units.ts";
 import help from "./data/help.ts";
@@ -109,9 +110,10 @@ const init = async () => {
     }
 
     // Load the language files
-    Bot.languages = {};
     try {
-        await reloadLanguages(Bot);
+        await reloadLanguages();
+        // Reference the static language registry in Bot for compatibility
+        Bot.languages = Language.getLanguages();
     } catch (err) {
         console.error(`[${myTime()}] Failed to load languages: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);

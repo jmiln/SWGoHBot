@@ -1,5 +1,6 @@
 import { inspect } from "node:util";
 import { Events, MessageFlags } from "discord.js";
+import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
@@ -221,7 +222,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
     const selectedLanguage = user?.lang?.language || defaultSettings.language;
     interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
 
-    interaction.language = Bot.languages[selectedLanguage] || Bot.languages[defaultSettings.language];
+    interaction.language = Language.getLanguage(selectedLanguage) || Language.getLanguage(defaultSettings.language);
     interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || defaultSettings.swgohLanguage;
 
     // Execute command

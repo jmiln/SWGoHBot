@@ -13,7 +13,7 @@ import {
     type User,
     WebhookClient,
 } from "discord.js";
-import type Language from "../base/Language.ts";
+import Language from "../base/Language.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { characters, factions, ships } from "../data/constants/units.ts";
@@ -884,16 +884,21 @@ export async function announceMsg({
 }
 
 // Reload all the language files
-export async function reloadLanguages(Bot: BotType): Promise<Error | null> {
+export async function reloadLanguages(): Promise<Error | null> {
     try {
-        for (const lang of Object.keys(Bot.languages)) {
-            delete Bot.languages[lang];
+        const languages = Language.getLanguages();
+
+        // Clear existing languages without replacing the object reference
+        for (const lang of Object.keys(languages)) {
+            delete languages[lang];
         }
+
         const langFiles = await readdir(`${process.cwd()}/languages/`);
         for (const file of langFiles) {
             const langName = file.split(".")[0];
             const { default: lang } = await import(`${process.cwd()}/languages/${file}`);
-            Bot.languages[langName] = new lang(Bot);
+            const langInstance = new lang();
+            Language.registerLanguage(langName, langInstance);
         }
     } catch (err) {
         return err;

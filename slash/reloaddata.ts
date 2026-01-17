@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import constants from "../data/constants/constants.ts";
 import { reloadLanguages } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -126,13 +125,13 @@ export default class ReloadData extends Command {
             case "languages":
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
                     interaction.client.shard
-                        .broadcastEval(() => reloadLanguages(Bot))
+                        .broadcastEval(() => reloadLanguages())
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "Languages");
                         })
                         .catch((err) => logger.error(`[ReloadData data]\n${err}`));
                 } else {
-                    reloadLanguages(Bot);
+                    reloadLanguages();
                 }
                 break;
             case "swlang": {
