@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
+import logger from "../modules/Logger.ts";
 import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -232,7 +233,8 @@ export default class Poll extends Command {
                         flags: MessageFlags.Ephemeral,
                     });
                 } catch (err) {
-                    return console.error(`[/poll vote] Error voting: ${err}`);
+                    logger.error(`[slash/poll vote] Error voting: ${err}`);
+                    return;
                 }
             }
         }

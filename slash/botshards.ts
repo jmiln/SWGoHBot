@@ -1,5 +1,6 @@
 import { codeBlock, Status } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export type ShardData = [number[], number, number, number]; // [ids, status, ping, guildCount]
@@ -47,8 +48,8 @@ export default class BotShards extends Command {
             const formatted = formatShardInfo(results as ShardData[], shardCount);
             await interaction.reply({ content: codeBlock("prolog", formatted) });
         } catch (error) {
-            console.error(error);
-            await interaction.reply("❌ Error.");
+            logger.error(`[slash/botshards] Error fetching shard info: ${error}`);
+            await interaction.reply("❌ Error fetching shard information.");
         }
     }
 }

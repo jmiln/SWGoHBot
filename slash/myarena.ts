@@ -77,8 +77,7 @@ export default class MyArena extends Command {
                 const playerStatsRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 playerStats = playerStatsRes?.[0] || null;
             } catch (e) {
-                console.log("[ERROR MyArena]");
-                console.error(e);
+                logger.error(`[slash/myarena] Error: ${e}`);
                 return super.error(interaction, codeBlock(e.interaction), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit.",
@@ -153,7 +152,7 @@ export default class MyArena extends Command {
         async function getUnitName(player: SWAPIPlayer, defId: string) {
             const thisChar = player.roster.find((c) => c.defId === defId);
             if (!thisChar) {
-                console.error(`[ERROR MyArena] Missing ID for ${defId}`);
+                logger.error(`[slash/myarena] Missing ID for ${defId}`);
                 return `Missing ID for ${defId}`;
             }
             const thisLangChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);

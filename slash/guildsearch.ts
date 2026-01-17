@@ -369,7 +369,13 @@ export default class GuildSearch extends Command {
                 await interaction.editReply({ content: null, embeds: [embed] });
             } catch (err) {
                 logger.error(`ERROR(GuildSearch) ${err}`);
-                await interaction.channel.send({ content: null, embeds: [embed] });
+                if (interaction.channel) {
+                    try {
+                        await interaction.channel.send({ content: null, embeds: [embed] });
+                    } catch (channelErr) {
+                        logger.error(`ERROR(GuildSearch) Failed to send to channel: ${channelErr}`);
+                    }
+                }
             }
             return;
         }

@@ -447,7 +447,6 @@ export default class ArenaWatch extends Command {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
-        console.log(pat);
         const codeCap = pat?.awAccounts || 1;
 
         // A bunch of checking to make sure everything exists properly

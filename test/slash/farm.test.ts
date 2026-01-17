@@ -44,7 +44,6 @@ test.describe("Farm Command", () => {
 
         const cmd = new Farm(bot as any);
         await cmd.run(bot as any, interaction);
-        console.log(JSON.stringify(replyCalls));
 
         assert.ok(replyCalls.length > 0);
     });

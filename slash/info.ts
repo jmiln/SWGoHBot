@@ -1,6 +1,7 @@
 import { codeBlock, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
+import constants from "../data/constants/constants.ts";
 import { guildCount, makeTable, userCount } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -30,10 +31,10 @@ export default class Info extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const dbo = await Bot.mongo.db(config.mongodb.swapidb);
-        const swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
-        const swgohGuildCount = await dbo.collection("guilds").estimatedDocumentCount();
         try {
+            const dbo = await Bot.mongo.db(config.mongodb.swapidb);
+            const swgohPlayerCount = await dbo.collection("playerStats").estimatedDocumentCount();
+            const swgohGuildCount = await dbo.collection("guilds").estimatedDocumentCount();
             const guilds = await guildCount(interaction.client);
             const users = await userCount(interaction.client);
             const content = interaction.language.get("COMMAND_INFO_OUTPUT", Bot.shardId) as unknown as InfoContent;
@@ -58,7 +59,7 @@ export default class Info extends Command {
             const swgohTable = [
                 { title: content.players, content: swgohPlayerCount },
                 { title: content.guilds, content: swgohGuildCount },
-                { title: content.lang, content: Bot.swgohLangList.length },
+                { title: content.lang, content: constants.swgohLangList.length },
             ];
             desc += makeTable(
                 {
@@ -89,7 +90,8 @@ export default class Info extends Command {
                 ],
             });
         } catch (e) {
-            return logger.error(`[slash/info] Caught error: ${e.toString()}`);
+            logger.error(`[slash/info] Caught error: ${e.toString()}`);
+            return super.error(interaction, "An error occurred while fetching bot information.");
         }
     }
 }

@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
@@ -61,28 +62,28 @@ export default class Register extends Command {
 
         // Then, if not, move along
         // See if they have an entry in the DB already
-        let userReg: UserConfig = await Bot.userReg.getUser(user.id);
-        if (userReg?.accounts?.length && userReg?.id !== user.id) {
+        let userConfig: UserConfig = await userReg.getUser(user.id);
+        if (userConfig?.accounts?.length && userConfig?.id !== user.id) {
             // If someone else is trying to change the code already registered, error out
             return super.error(interaction, "This account already has an ally code linked to it.");
         }
 
-        if (!userReg) {
+        if (!userConfig) {
             // If they don't exist in the DB yet, stick em with a default config
-            userReg = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
-            userReg.id = user.id;
-        } else if (userReg.accounts.find((a) => a.allyCode === allycode && a.primary)) {
+            userConfig = JSON.parse(JSON.stringify(Bot.config.defaultUserConf));
+            userConfig.id = user.id;
+        } else if (userConfig.accounts.find((a) => a.allyCode === allycode && a.primary)) {
             // This ally code is already registered & primary
             return super.error(interaction, interaction.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
-        } else if (userReg.accounts.find((a) => a.allyCode === allycode && !a.primary)) {
+        } else if (userConfig.accounts.find((a) => a.allyCode === allycode && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
-            userReg.accounts = userReg.accounts.map((a) => {
+            userConfig.accounts = userConfig.accounts.map((a) => {
                 if (a.primary) a.primary = false;
                 if (a.allyCode === allycode) a.primary = true;
                 return a;
             });
-            userReg = await Bot.userReg.updateUser(user.id, userReg);
-            const u = userReg.accounts.find((a) => a.primary);
+            userConfig = await userReg.updateUser(user.id, userConfig);
+            const u = userConfig.accounts.find((a) => a.primary);
             return super.success(
                 interaction,
                 codeBlock(
@@ -95,7 +96,7 @@ export default class Register extends Command {
             );
         } else {
             // They're registered with a different ally code, so turn off all the other primaries
-            userReg.accounts = userReg.accounts.map((a) => {
+            userConfig.accounts = userConfig.accounts.map((a) => {
                 a.primary = false;
                 return a;
             });
@@ -110,13 +111,13 @@ export default class Register extends Command {
             if (!player) {
                 return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode);
             }
-            userReg.accounts.push({
+            userConfig.accounts.push({
                 allyCode: allycode,
                 name: player.name,
                 primary: true,
             });
-            await Bot.userReg
-                .updateUser(user.id, userReg)
+            await userReg
+                .updateUser(user.id, userConfig)
                 .then(async () => {
                     return super.success(
                         interaction,

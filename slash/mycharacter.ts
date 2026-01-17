@@ -91,7 +91,7 @@ export default class MyCharacter extends Command {
             const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
-            console.error(e);
+            logger.error(`[slash/mycharacter] Error: ${e}`);
             return super.error(interaction, codeBlock(e.message), {
                 title: interaction.language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit.",
@@ -141,7 +141,7 @@ export default class MyCharacter extends Command {
             gearStr = expandSpaces(gearStr);
         }
         if (!thisLangChar.skills) {
-            console.log(thisLangChar);
+            logger.log(JSON.stringify(thisLangChar));
         } else {
             for (const a of thisLangChar.skills) {
                 a.type = toProperCase(a.id.split("skill")[0]);
@@ -245,7 +245,7 @@ export default class MyCharacter extends Command {
                 if (!stats.final[s]) stats.final[s] = 0;
                 const thisLangStr = langStr[langMap[s]];
                 if (!thisLangStr?.length) {
-                    console.log(
+                    logger.log(
                         `[/mycharacter] Missing stat for ${unit.name}\nLangStr: \n${inspect(s)}\nThisLangMap: ${
                             langMap[s]
                         }\nThisLangStr: ${inspect(thisLangStr)}`,

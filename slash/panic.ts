@@ -135,7 +135,7 @@ export default class Panic extends Command {
             });
         } catch (err) {
             logger.error(`[Bot.getUnitImage] Something broke while requesting image.\n${err}`);
-            console.log(err);
+            logger.error(`[slash/panic] Error: ${err}`);
             return null;
         }
 

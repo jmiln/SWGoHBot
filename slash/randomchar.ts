@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -45,7 +46,7 @@ export default class Randomchar extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        let chars: SWAPIUnit[] = [];
+        let chars: SWAPIUnit[] | any[] = [];
         const MAX_CHARACTERS = 5;
 
         let star = interaction.options.getInteger("rarity");
@@ -65,7 +66,7 @@ export default class Randomchar extends Command {
                 const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
                 player = playerRes?.[0] || null;
             } catch (e) {
-                console.error(e);
+                logger.error(`[slash/randomchar] Error fetching player: ${e}`);
                 return super.error(interaction, codeBlock(e.message), {
                     title: interaction.language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit.",
@@ -83,10 +84,13 @@ export default class Randomchar extends Command {
 
             // In case a new player tries using it before they get enough characters?
             if (chars.length < MAX_CHARACTERS) count = chars.length;
+        } else {
+            // No allycode provided, use all bot characters
+            chars = Bot.characters;
         }
 
         const charOut: string[] = [];
-        if (chars?.length) {
+        if (allycode && chars?.length) {
             while (charOut.length < count) {
                 const newIndex = Math.floor(Math.random() * chars.length);
                 const newChar = chars[newIndex];
@@ -95,6 +99,10 @@ export default class Randomchar extends Command {
                 if (!charOut.includes(name)) charOut.push(name);
             }
         } else {
+            // No chars available or not using allycode
+            if (!chars.length) {
+                return super.error(interaction, "No characters available to select from.");
+            }
             while (charOut.length < count) {
                 const newIndex = Math.floor(Math.random() * chars.length);
                 const newChar = chars[newIndex];

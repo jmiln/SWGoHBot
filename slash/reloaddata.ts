@@ -1,5 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import constants from "../data/constants/constants.ts";
+import { reloadLanguages } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class ReloadData extends Command {
@@ -44,7 +47,7 @@ export default class ReloadData extends Command {
                     await interaction.client.shard
                         .broadcastEval(async (client) => await client.reloadAllSlashCommands())
                         .then((res) => this.thenResFiles(Bot, interaction, res))
-                        .catch((err) => console.log(`[ReloadData slash com]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData slash com]\n${err}`));
                 } else {
                     interaction.client.reloadAllSlashCommands();
                 }
@@ -72,7 +75,7 @@ export default class ReloadData extends Command {
                     interaction.client.shard
                         .broadcastEval((client) => client.reloadAllEvents())
                         .then((res) => this.thenResFiles(Bot, interaction, res))
-                        .catch((err) => console.log(`[ReloadData ev]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData ev]\n${err}`));
                 } else {
                     interaction.client.reloadAllEvents(channelId);
                 }
@@ -88,7 +91,7 @@ export default class ReloadData extends Command {
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "Functions");
                         })
-                        .catch((err) => console.log(`[ReloadData funct]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData funct]\n${err}`));
                 } else {
                     interaction.client.reloadFunctions();
                 }
@@ -101,7 +104,7 @@ export default class ReloadData extends Command {
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "swApi");
                         })
-                        .catch((err) => console.log(`[ReloadData swapi]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData swapi]\n${err}`));
                 } else {
                     interaction.client.reloadSwapi();
                 }
@@ -113,7 +116,7 @@ export default class ReloadData extends Command {
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "Data");
                         })
-                        .catch((err) => console.log(`[ReloadData data]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData data]\n${err}`));
                 } else {
                     interaction.client.reloadDataFiles();
                 }
@@ -123,19 +126,19 @@ export default class ReloadData extends Command {
             case "languages":
                 if (interaction.client.shard && interaction.client.shard.count > 0) {
                     interaction.client.shard
-                        .broadcastEval((client) => client.reloadLanguages())
+                        .broadcastEval(() => reloadLanguages())
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "Languages");
                         })
-                        .catch((err) => console.log(`[ReloadData data]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData data]\n${err}`));
                 } else {
-                    interaction.client.reloadLanguages();
+                    reloadLanguages();
                 }
                 break;
             case "swlang": {
                 // Do this first since it's just the basic skeleton
                 return super.error(interaction, "This is no longer needed");
-                // const langList = Bot.swgohLangList;
+                // const langList = constants.swgohLangList;
                 //
                 // // Helper funct to log the updates
                 // const progressArr = [];
@@ -179,7 +182,7 @@ export default class ReloadData extends Command {
                         .then((res) => {
                             this.thenRes(Bot, interaction, res, "Users");
                         })
-                        .catch((err) => console.log(`[ReloadData users]\n${err}`));
+                        .catch((err) => logger.error(`[ReloadData users]\n${err}`));
                 } else {
                     interaction.client.reloadUserReg();
                 }

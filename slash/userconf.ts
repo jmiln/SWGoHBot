@@ -3,8 +3,10 @@ import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import userReg from "../modules/users.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
+import constants from "../data/constants/constants.ts";
 
 export default class UserConf extends Command {
     constructor(Bot: BotType) {
@@ -121,7 +123,7 @@ export default class UserConf extends Command {
                             name: "swgoh_language",
                             description: "Set the language for the game's text",
                             type: ApplicationCommandOptionType.String,
-                            choices: Bot.swgohLangList.map((lang) => {
+                            choices: constants.swgohLangList.map((lang) => {
                                 return {
                                     name: lang,
                                     value: lang,

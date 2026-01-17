@@ -1,7 +1,17 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { expandSpaces, makeTable, msgArray, shortenNum, summarizeCharLevels, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { characters, raidNames, ships } from "../data/constants/units.ts";
+import {
+    expandSpaces,
+    formatDuration,
+    makeTable,
+    msgArray,
+    shortenNum,
+    summarizeCharLevels,
+    toProperCase,
+    updatedFooterStr,
+} from "../modules/functions.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
@@ -210,7 +220,10 @@ export default class Guilds extends Command {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const subCommand = interaction.options.getSubcommand();
-        if (!subCommand) return console.error("[slash/guilds] Somehow missing subCommand");
+        if (!subCommand) {
+            logger.error("[slash/guilds] Somehow missing subCommand");
+            return;
+        }
 
         const allycode = interaction.options.getString("allycode");
         const showSide = interaction.options.getString("show_side");
@@ -243,11 +256,12 @@ export default class Guilds extends Command {
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem: SWAPIGuildMember) => mem.guildMemberLevel > 1);
         } catch (e) {
-            return super.error(interaction, `Issue getting guild: \`${codeBlock(e.message)}\``);
+            const errorMessage = e instanceof Error ? e.message : String(e);
+            return super.error(interaction, codeBlock(`Issue getting guild: ${errorMessage}`));
         }
 
         if (!guild) {
-            return super.error(interaction, `Couldn't get guild${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild. ${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
         }
 
         // Switch out depending on the subcommand
@@ -257,7 +271,8 @@ export default class Guilds extends Command {
                 try {
                     return await guildGear();
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildGear: ${err.message}`);
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    return super.error(interaction, `Issue with guildGear: ${errorMessage}`);
                 }
             }
             case "mods": {
@@ -265,7 +280,8 @@ export default class Guilds extends Command {
                 try {
                     return await guildMods();
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildMods: ${err.message}`);
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    return super.error(interaction, `Issue with guildMods: ${errorMessage}`);
                 }
             }
             case "relics": {
@@ -273,7 +289,8 @@ export default class Guilds extends Command {
                 try {
                     return await guildRelics();
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildRelics: ${err.message}`);
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    return super.error(interaction, `Issue with guildRelics: ${errorMessage}`);
                 }
             }
             case "roster": {
@@ -283,14 +300,16 @@ export default class Guilds extends Command {
                         try {
                             return await guildRoster();
                         } catch (err) {
-                            console.log(err.message);
-                            return super.error(interaction, `Issue with guildRoster: ${err.message}`);
+                            const errorMessage = err instanceof Error ? err.message : String(err);
+                            logger.error(`[slash/guilds] guildRoster error: ${errorMessage}`);
+                            return super.error(interaction, `Issue with guildRoster: ${errorMessage}`);
                         }
                     } else {
                         return await guildSidedGP();
                     }
                 } catch (err) {
-                    return super.error(interaction, `Issue with guildRoster 2: ${err.message}`);
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    return super.error(interaction, `Issue with guildRoster 2: ${errorMessage}`);
                 }
             }
             case "tw_summary": {
@@ -298,7 +317,8 @@ export default class Guilds extends Command {
                 try {
                     return await twSummary();
                 } catch (err) {
-                    return super.error(interaction, `Issue with twSummary: ${err.message}`);
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    return super.error(interaction, `Issue with twSummary: ${errorMessage}`);
                 }
             }
             default: {
@@ -311,7 +331,7 @@ export default class Guilds extends Command {
             // List an overview of the guild's upper geared characters
             const gears = [10, 11, 12, 13];
             const sortBy = interaction.options.getInteger("sort");
-            if (sortBy && (sortBy > 13 || sortBy < 1)) {
+            if (sortBy && (sortBy > 13 || sortBy < 9)) {
                 return interaction.editReply({
                     content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string,
                 });
@@ -325,14 +345,13 @@ export default class Guilds extends Command {
             try {
                 guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
-                logger.error(`ERROR(GS_GEAR) getting guild: ${e}`);
-                // Spit out the gId so I can go check on why it's breaking
-                logger.error(`GuildID: ${guild.id}`);
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`ERROR(GS_GEAR) getting guild (${guild.id}): ${errorMessage}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
                         {
-                            description: codeBlock(e),
+                            description: codeBlock(errorMessage),
                             title: "Something Broke while getting your guild's characters",
                             footer: { text: "Please try again in a bit" },
                             color: constants.colors.red,
@@ -358,10 +377,10 @@ export default class Guilds extends Command {
 
             let tableIn = Object.keys(gearOut).map((k) => {
                 return {
-                    10: gearOut[k]["10"] || 0,
-                    11: gearOut[k]["11"] || 0,
-                    12: gearOut[k]["12"] || 0,
-                    13: gearOut[k]["13"] || 0,
+                    10: gearOut[k][10] || 0,
+                    11: gearOut[k][11] || 0,
+                    12: gearOut[k][12] || 0,
+                    13: gearOut[k][13] || 0,
                     name: k,
                 };
             });
@@ -454,23 +473,20 @@ export default class Guilds extends Command {
                         }
                     }
                 }
-                for (const k of Object.keys(mods)) {
-                    if (mods[k] === 0) mods[k] = "0";
-                }
                 output.push(mods);
             }
 
             // Sort by speed mods, offense mods, or 6* mods
             const sortBy = interaction.options.getString("sort");
             if (sortBy === "offense") {
-                // Sort by # of good offense mods
-                output = output.sort((m, n) => m.off100 - n.off100);
+                // Sort by # of good offense mods (descending)
+                output = output.sort((m, n) => n.off100 - m.off100);
             } else if (sortBy === "speed") {
-                // Sort by # of good speed mods
-                output = output.sort((m, n) => m.spd20 - n.spd20);
+                // Sort by # of good speed mods (descending)
+                output = output.sort((m, n) => n.spd20 - m.spd20);
             } else if (sortBy === "6") {
-                // Sort by # of 6* mods
-                output = output.sort((m, n) => m.sixPip - n.sixPip);
+                // Sort by # of 6* mods (descending)
+                output = output.sort((m, n) => n.sixPip - m.sixPip);
             }
 
             const table = makeTable(
@@ -483,7 +499,7 @@ export default class Guilds extends Command {
                 },
                 output,
             );
-            const header = [expandSpaces("`     ┏╸ Spd ┓  Off �`")];
+            const header = [expandSpaces("`     ┏╸ Spd ┓  Off ┓`")];
 
             const fields = msgArray(header.concat(table), "\n", 700).map((m) => {
                 if (!m?.length) return null;
@@ -497,10 +513,18 @@ export default class Guilds extends Command {
                 fields: fields,
             };
             try {
-                interaction.editReply({ content: null, embeds: [embed] });
+                return interaction.editReply({ content: null, embeds: [embed] });
             } catch (err) {
-                logger.error(`ERROR(Guilds/guildMods) sending embed: ${err}`);
-                return interaction.channel.send({ content: null, embeds: [embed] });
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                logger.error(`ERROR(Guilds/guildMods) sending embed: ${errorMessage}`);
+                if (interaction.channel) {
+                    try {
+                        return interaction.channel.send({ content: null, embeds: [embed] });
+                    } catch (channelErr) {
+                        const channelError = channelErr instanceof Error ? channelErr.message : String(channelErr);
+                        logger.error(`ERROR(Guilds/guildMods) Failed to send to channel: ${channelError}`);
+                    }
+                }
             }
         }
 
@@ -521,13 +545,14 @@ export default class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRosterCodes, cooldown);
             } catch (e) {
-                logger.error(`ERROR(Guilds/guildRelics) getting guild: ${e}`);
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`ERROR(Guilds/guildRelics) getting guild: ${errorMessage}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
                         {
                             title: "Something Broke while getting your guild's characters",
-                            description: codeBlock(e),
+                            description: codeBlock(errorMessage),
                             footer: { text: "Please try again in a bit." },
                         },
                     ],
@@ -689,11 +714,11 @@ export default class Guilds extends Command {
             const nowTime = Date.now();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = Bot.formatDuration(chaTime - nowTime);
+                timeUntilReset = formatDuration(chaTime - nowTime, interaction.language);
             } else {
                 // It's in the past, so calculate the next time
                 const dur = chaTime + dayMS - nowTime;
-                timeUntilReset = Bot.formatDuration(dur);
+                timeUntilReset = formatDuration(dur, interaction.language);
             }
 
             let maxed = 0;
@@ -737,17 +762,17 @@ export default class Guilds extends Command {
             let raids = "";
 
             if (guild.raid && Object.keys(guild.raid).length) {
-                const raidNames = Bot.raidNames[guildConf.swgohLanguage.toLowerCase()];
+                const localRaidNames: { [key: string]: string } = raidNames[guildConf.swgohLanguage.toLowerCase()];
                 const maxRaidLen = Math.max(
-                    ...Object.values(raidNames)
+                    ...Object.values(localRaidNames)
                         .filter((r) => !!r)
                         .map((r) => r.length),
                 );
                 for (const r in guild.raid) {
-                    if (!raidNames[r]) console.log("Missing raid name", r);
-                    const thisRaidName = expandSpaces(toProperCase(raidNames[r]?.padEnd(maxRaidLen + 1, " ") || r));
+                    if (!localRaidNames[r]) logger.warn(`[slash/guilds] Missing raid name: ${r}`);
+                    const thisRaidName = expandSpaces(toProperCase(localRaidNames[r]?.padEnd(maxRaidLen + 1, " ") || r));
                     const raidTier = guild.raid[r]?.diffId.includes("HEROIC")
-                        ? toProperCase(raidNames.heroic)
+                        ? toProperCase(localRaidNames.heroic)
                         : guild.raid[r]?.diffId.replace("DIFF0", "T");
                     raidArr.push(`${thisRaidName} | ${raidTier}`);
                 }
@@ -837,13 +862,14 @@ export default class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
-                logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${e}`);
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${errorMessage}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
                         {
                             title: "Something Broke while getting your guild's characters",
-                            description: codeBlock(e),
+                            description: codeBlock(errorMessage),
                             footer: { text: "Please try again in a bit." },
                         },
                     ],
@@ -854,8 +880,8 @@ export default class Guilds extends Command {
             let shipList = [];
             const users = [];
             if (showSide) {
-                charList = Bot.characters.filter((ch) => ch.side === showSide);
-                shipList = Bot.ships.filter((ch) => ch.side === showSide);
+                charList = characters.filter((ch) => ch.side === showSide);
+                shipList = ships.filter((ch) => ch.side === showSide);
             }
 
             guildMembers = guildMembers.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
@@ -1056,12 +1082,13 @@ export default class Guilds extends Command {
             try {
                 guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
-                logger.error(`ERROR(Guilds/twSummary) getting guild: ${e}`);
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`ERROR(Guilds/twSummary) getting guild: ${errorMessage}`);
                 return interaction.editReply({
                     content: null,
                     embeds: [
                         {
-                            description: codeBlock(e),
+                            description: codeBlock(errorMessage),
                             title: "Something Broke while getting your guild's characters",
                             color: constants.colors.brightred,
                             footer: { text: "Please try again in a bit." },
@@ -1192,7 +1219,7 @@ export default class Guilds extends Command {
             // Get the overall rarity levels for the guild as a whole
             const [rarityLvls, avgRarity] = summarizeCharLevels(guildMembers, "rarity");
             const formattedRarityLvls = `${Object.keys(rarityLvls)
-                .splice(doExpand ? 0 : -4)
+                .slice(doExpand ? 0 : -4)
                 .map((g) => `${g}*           :: ${rarityLvls[g].toLocaleString().padStart(7, " ")}`)
                 .join("\n")}\nAVG Star Lvl :: ${avgRarity.toString().padStart(7, " ")}`;
             fields.push({
@@ -1216,7 +1243,7 @@ export default class Guilds extends Command {
             const totalRelic = Object.keys(relicLvls).reduce((acc, curr) => acc + relicLvls[curr], 0);
             const avgRelic = tieredRelic / totalRelic;
             const formattedRelicLvls = `${Object.keys(relicLvls)
-                .splice(doExpand ? 0 : -4)
+                .slice(doExpand ? 0 : -4)
                 .map((g) => `R${g}            :: ${relicLvls[g].toLocaleString().padStart(7, " ")}`)
                 .join("\n")}\nAVG Relic Lvl :: ${avgRelic.toFixed(2).toString().padStart(7, " ")}`;
             fields.push({
@@ -1259,8 +1286,17 @@ export default class Guilds extends Command {
             };
             try {
                 return interaction.editReply({ content: null, embeds: [embed] });
-            } catch (_) {
-                return interaction.channel.send({ content: null, embeds: [embed] });
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                logger.error(`ERROR(Guilds/twSummary) sending embed: ${errorMessage}`);
+                if (interaction.channel) {
+                    try {
+                        return interaction.channel.send({ content: null, embeds: [embed] });
+                    } catch (channelErr) {
+                        const channelError = channelErr instanceof Error ? channelErr.message : String(channelErr);
+                        logger.error(`ERROR(Guilds/twSummary) Failed to send to channel: ${channelError}`);
+                    }
+                }
             }
         }
 
@@ -1269,9 +1305,9 @@ export default class Guilds extends Command {
             gearLvls: { [key: string]: number },
             divLen: number,
             guildMembers: SWAPIPlayer[],
-            ships = false,
+            isShips = false,
         ) {
-            const catToFormat = ships ? ["Ships", "Capital Ships"] : ["Galactic Legends", "Light Side", "Dark Side"];
+            const catToFormat = isShips ? ["Ships", "Capital Ships"] : ["Galactic Legends", "Light Side", "Dark Side"];
             const fieldsOut = [];
             const [gear1, gear2] = Object.keys(gearLvls)
                 .map((num) => Number.parseInt(num, 10))
@@ -1282,17 +1318,14 @@ export default class Guilds extends Command {
                 const unitListMap = unitObj?.[category];
                 if (!unitListMap || !Object.keys(unitListMap)?.length) continue;
                 for (const [defId, name] of Object.entries(unitListMap)) {
-                    if (name?.length) continue;
                     let nameOut =
-                        name ||
-                        Bot.characters.find((c) => c.uniqueName === defId)?.name ||
-                        Bot.ships.find((c) => c.uniqueName === defId)?.name;
+                        name || characters.find((c) => c.uniqueName === defId)?.name || ships.find((c) => c.uniqueName === defId)?.name;
                     if (!nameOut) nameOut = defId;
                     unitListMap[defId] = nameOut;
                 }
                 const longest = Object.values(unitListMap).reduce((acc, curr) => Math.max(acc, curr.length), 0);
                 const divider = `**\`${"=".repeat(divLen + longest)}\`**`;
-                if (ships) {
+                if (isShips) {
                     unitOut.push(`**\`${"Name".padEnd(longest - 4)}Total 7*\`**`);
                 } else {
                     if (category === "Galactic Legends") {
@@ -1320,7 +1353,7 @@ export default class Guilds extends Command {
                         } else {
                             sevenStar = roster.filter((c) => c && c.rarity === 7).length;
                         }
-                        if (!ships) {
+                        if (!isShips) {
                             g1 = roster.filter((c) => c && c.gear === gear1).length;
                             g2 = roster.filter((c) => c && c.gear === gear2).length;
                         }
@@ -1331,7 +1364,7 @@ export default class Guilds extends Command {
                                 " ".repeat(2 - g1.toString().length) + g1
                             }   ${" ".repeat(2 - g2.toString().length) + g2}   ${" ".repeat(2 - ult.toString().length) + ult}\``,
                         );
-                    } else if (ships) {
+                    } else if (isShips) {
                         unitOut.push(
                             `\`${name + " ".repeat(longest - name.length)}  ${" ".repeat(2 - total.toString().length) + total}  ${
                                 " ".repeat(2 - sevenStar.toString().length) + sevenStar

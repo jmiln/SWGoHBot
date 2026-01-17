@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import constants from "../data/constants/constants.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -45,9 +44,6 @@ export default class GuildUpdate extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
-        const cmdOut = null;
-        const outLog = [];
-
         const userID = interaction.user.id;
         const user = await Bot.userReg.getUser(userID);
 
@@ -59,6 +55,7 @@ export default class GuildUpdate extends Command {
             enabled: false,
             channel: null,
             allycode: null,
+            sortBy: null,
         };
         if (!gu) {
             gu = defGU;
@@ -137,12 +134,7 @@ export default class GuildUpdate extends Command {
             });
         }
 
-        return super.error(
-            interaction,
-            outLog.length
-                ? outLog.join("\n")
-                : interaction.language.get("COMMAND_ARENAALERT_UPDATED") + (cmdOut ? `\n\n#####################\n\n${cmdOut}` : ""),
-            { title: " ", color: constants.colors.blue },
-        );
+        // If we reach here, no valid subcommand was found
+        return super.error(interaction, "Invalid subcommand");
     }
 }
