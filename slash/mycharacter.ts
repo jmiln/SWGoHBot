@@ -2,10 +2,12 @@ import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { expandSpaces, findChar, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { expandSpaces, findChar, getUnitImage, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
+import { characters,
+ships } from "../data/constants/units.ts";
 
 export default class MyCharacter extends Command {
     constructor(Bot: BotType) {
@@ -68,7 +70,7 @@ export default class MyCharacter extends Command {
         }
 
         // Get any matching units
-        const units = findChar(searchUnit, searchType === "ship" ? Bot.ships : Bot.characters, true);
+        const units = findChar(searchUnit, searchType === "ship" ? ships : characters, true);
 
         // If there are no results or too many results, let the user know
         if (units.length === 0) {
@@ -292,7 +294,7 @@ export default class MyCharacter extends Command {
             gearOut = `\n${[`${interaction.language.get("BASE_GEAR_SHORT")}: ${thisUnit.gear}`, `${gearStr}`].join("\n")}`;
         }
 
-        const unitImg = await Bot.getUnitImage(thisUnit.defId, thisUnit);
+        const unitImg = await getUnitImage(thisUnit.defId, thisUnit);
 
         fields.push({
             name: constants.zws,
