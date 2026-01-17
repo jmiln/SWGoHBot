@@ -10,7 +10,7 @@ import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
-import { myTime, reloadLanguages,sortOmicrons } from "./modules/functions.ts";
+import { myTime, reloadLanguages, sortOmicrons } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
@@ -105,7 +105,7 @@ const init = async () => {
     if (config.swapiConfig) {
         // Load up the api connector/ helpers
         try {
-            Bot.swgohAPI = swgohAPI(null);
+            swgohAPI.init();
         } catch (err) {
             console.error(`[${myTime()}] Failed to initialize swgohAPI: ${err instanceof Error ? err.message : String(err)}`);
         }

@@ -1,12 +1,13 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
+import cache from "../modules/cache.ts";
 import { getAllyCode,
 msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -104,7 +105,7 @@ export default class Faction extends Command {
             const units = [];
 
             for (const c of chars) {
-                const char: RawCharacter = await Bot.swgohAPI.getCharacter(c.baseId, interaction.guildSettings.swgohLanguage);
+                const char: RawCharacter = await swgohAPI.getCharacter(c.baseId, interaction.guildSettings.swgohLanguage);
                 const isLeader = char.skillReferenceList.some((s) => s.skillId.startsWith("leader"));
                 const hasZeta = char.skillReferenceList.some((s) => s.cost?.AbilityMatZeta > 0);
                 units.push({
@@ -145,7 +146,7 @@ export default class Faction extends Command {
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
             try {
-                const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                const playerRes = await swgohAPI.unitStats(allycode, cooldown);
                 if (Array.isArray(playerRes)) player = playerRes[0];
             } catch (e) {
                 return super.error(interaction, e.message);
@@ -157,7 +158,7 @@ export default class Faction extends Command {
             for (const c of charDefIds) {
                 const thisChar = player.roster.find((char) => char.defId === c);
                 if (thisChar) {
-                    const found = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+                    const found = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
                     playerChars.push(found);
                 }
             }

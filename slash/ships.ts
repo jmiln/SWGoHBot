@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { characters,
-ships } from "../data/constants/units.ts";
+import { characters, ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Ships extends Command {
@@ -51,7 +51,7 @@ export default class Ships extends Command {
         }
 
         const ship = foundShips[0];
-        const unit = await Bot.swgohAPI.getCharacter(ship.uniqueName, interaction.guildSettings.swgohLanguage);
+        const unit = await swgohAPI.getCharacter(ship.uniqueName, interaction.guildSettings.swgohLanguage);
 
         const shipAbilities = unit.skillReferenceList;
 

@@ -1,9 +1,9 @@
 import { type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
 import config from "../config.js";
-import cache from "./cache.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
 import type {
     ActivePatron,
@@ -16,6 +16,7 @@ import type {
     UserAcct,
     UserConfig,
 } from "../types/types.ts";
+import cache from "./cache.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
@@ -189,7 +190,7 @@ export default (Bot: BotType, client: BotClient) => {
                 }
                 let player: PlayerArenaRes;
                 try {
-                    const playerRes = await Bot.swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
+                    const playerRes = await swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
                     player = playerRes?.[0] || null;
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
@@ -427,7 +428,7 @@ export default (Bot: BotType, client: BotClient) => {
             const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
             if (!allyCodes || !allyCodes.length) continue;
 
-            const newPlayers = await Bot.swgohAPI.getPlayersArena(allyCodes);
+            const newPlayers = await swgohAPI.getPlayersArena(allyCodes);
 
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
             let charOut = [];
@@ -649,7 +650,7 @@ export default (Bot: BotType, client: BotClient) => {
             // Get any updates for the guild
             let guild: SWAPIGuild = null;
             try {
-                guild = await Bot.swgohAPI.guild(gu.allycode);
+                guild = await swgohAPI.guild(gu.allycode);
             } catch (err) {
                 if (err.toString().includes("not in a guild")) continue;
                 logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
@@ -668,7 +669,7 @@ export default (Bot: BotType, client: BotClient) => {
                     logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
                     return;
                 }
-                guildLog = await Bot.swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
+                guildLog = await swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
             } catch (err) {
                 logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
                 return;
@@ -836,7 +837,7 @@ export default (Bot: BotType, client: BotClient) => {
             // Get any updates for the guild
             let rawGuild: RawGuild;
             try {
-                rawGuild = await Bot.swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
+                rawGuild = await swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
             } catch (err) {
                 if (err.toString().includes("not in a guild")) continue;
                 logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);

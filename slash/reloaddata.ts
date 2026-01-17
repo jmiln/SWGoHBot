@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { reloadLanguages } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class ReloadData extends Command {
@@ -124,16 +125,16 @@ export default class ReloadData extends Command {
             case "lang":
             case "language":
             case "languages":
-                if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard
-                        .broadcastEval(() => reloadLanguages())
-                        .then((res) => {
-                            this.thenRes(Bot, interaction, res, "Languages");
-                        })
-                        .catch((err) => logger.error(`[ReloadData data]\n${err}`));
-                } else {
-                    reloadLanguages();
-                }
+                // if (interaction.client.shard && interaction.client.shard.count > 0) {
+                //     interaction.client.shard
+                //         .broadcastEval(() => reloadLanguages())
+                //         .then((res) => {
+                //             this.thenRes(Bot, interaction, res, "Languages");
+                //         })
+                //         .catch((err) => logger.error(`[ReloadData data]\n${err}`));
+                // } else {
+                //     reloadLanguages();
+                // }
                 break;
             case "swlang": {
                 // Do this first since it's just the basic skeleton
@@ -151,20 +152,20 @@ export default class ReloadData extends Command {
                 //     }
                 // };
                 //
-                // await Bot.swgohAPI.character(null, true);
+                // await swgohAPI.character(null, true);
                 // progressOut("Starting update...");
                 // for (const lang of langList) {
-                //     await Bot.swgohAPI.units("", lang, true);
+                //     await swgohAPI.units("", lang, true);
                 //     progressOut(`Updated units for ${lang}`);
                 //
-                //     await Bot.swgohAPI.abilities([], lang, true);
+                //     await swgohAPI.abilities([], lang, true);
                 //     progressOut(`Updated abilities for ${lang}`);
                 //
-                //     await Bot.swgohAPI.gear([], lang, true);
+                //     await swgohAPI.gear([], lang, true);
                 //     progressOut(`Updated gear for ${lang}`);
                 //
                 //     if (lang.toLowerCase() === "eng_us") {
-                //         await Bot.swgohAPI.recipes([], lang, true);
+                //         await swgohAPI.recipes([], lang, true);
                 //         progressOut(`Updated recipes for ${lang}`);
                 //     } else {
                 //         progressOut(`Skipping recipes for ${lang}`);
@@ -175,18 +176,18 @@ export default class ReloadData extends Command {
                 // interaction.editReply({content: "API Language update complete"});
                 // break;
             }
-            case "users": // Reload the users file
-                if (interaction.client.shard && interaction.client.shard.count > 0) {
-                    interaction.client.shard
-                        .broadcastEval((client) => client.reloadUserReg())
-                        .then((res) => {
-                            this.thenRes(Bot, interaction, res, "Users");
-                        })
-                        .catch((err) => logger.error(`[ReloadData users]\n${err}`));
-                } else {
-                    interaction.client.reloadUserReg();
-                }
-                break;
+            // case "users": // Reload the users file
+            //     if (interaction.client.shard && interaction.client.shard.count > 0) {
+            //         interaction.client.shard
+            //             .broadcastEval((client) => client.reloadUserReg())
+            //             .then((res) => {
+            //                 this.thenRes(Bot, interaction, res, "Users");
+            //             })
+            //             .catch((err) => logger.error(`[ReloadData users]\n${err}`));
+            //     } else {
+            //         interaction.client.reloadUserReg();
+            //     }
+            //     break;
             default:
                 return super.error(interaction, "You can only choose `swapi, events, functions, languages, swlang, users, or data.`");
         }

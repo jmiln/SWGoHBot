@@ -2,12 +2,12 @@ import { inspect } from "node:util";
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import { characters, ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getAllyCode, getUnitImage, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
-import { characters,
-ships } from "../data/constants/units.ts";
 
 export default class MyCharacter extends Command {
     constructor(Bot: BotType) {
@@ -90,7 +90,7 @@ export default class MyCharacter extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer = null;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`[slash/mycharacter] Error: ${e}`);
@@ -118,7 +118,7 @@ export default class MyCharacter extends Command {
             });
         }
 
-        const thisLangChar = await Bot.swgohAPI.langChar(thisUnit, interaction.guildSettings.swgohLanguage);
+        const thisLangChar = await swgohAPI.langChar(thisUnit, interaction.guildSettings.swgohLanguage);
 
         const stats = thisUnit.stats;
         const isShip = thisUnit.combatType === 2;

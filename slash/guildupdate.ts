@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getAllyCode,
 isAllyCode } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -98,7 +99,7 @@ export default class GuildUpdate extends Command {
                 allycode = await getAllyCode(interaction, allycode);
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
-                const player = await Bot.swgohAPI.unitStats(allycode);
+                const player = await swgohAPI.unitStats(allycode);
                 if (!player?.length) {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");

@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, ChannelType, type Embed, type GuildChanne
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
@@ -480,7 +481,7 @@ export default class ArenaWatch extends Command {
 
         await interaction.deferReply();
 
-        const { result, aw: awRes } = await processAWChanges({ target, interactionOptions, aw, unitStats: Bot.swgohAPI.unitStats });
+        const { result, aw: awRes } = await processAWChanges({ target, interactionOptions, aw, unitStats: swgohAPI.unitStats });
 
         if (result.error) {
             await super.error(interaction, result.error);
@@ -519,7 +520,7 @@ export async function processAWChanges({
     target: string;
     interactionOptions: InteractionOptions;
     aw: UserConfig["arenaWatch"];
-    // biome-ignore lint/complexity/noBannedTypes: "Bot.swgohAPI.unitStats"
+    // biome-ignore lint/complexity/noBannedTypes: "swgohAPI.unitStats"
     unitStats: Function;
 }): Promise<{ result: AwChangeRes; aw: UserConfig["arenaWatch"] }> {
     const result = {

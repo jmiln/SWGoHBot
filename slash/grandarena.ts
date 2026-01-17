@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import unitChecklist from "../data/unitChecklist.ts";
 import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -112,7 +113,7 @@ export default class GrandArena extends Command {
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
             try {
-                const users = await Bot.swgohAPI.unitStats([user1AC, user2AC], cooldown);
+                const users = await swgohAPI.unitStats([user1AC, user2AC], cooldown);
                 if (Array.isArray(users)) {
                     user1 = users[0];
                     user2 = users[1];

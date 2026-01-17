@@ -1,10 +1,11 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import { characters,ships } from "../data/constants/units.ts";
 import { findChar, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
-import { characters,ships } from "../data/constants/units.ts";
 
 export default class Versus extends Command {
     constructor(Bot: BotType) {
@@ -105,14 +106,14 @@ export default class Versus extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let user1: SWAPIPlayer = null;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(user1AC, cooldown);
+            const playerRes = await swgohAPI.unitStats(user1AC, cooldown);
             user1 = playerRes?.[0] || null;
         } catch (_) {
             return super.error(interaction, "Something broke when getting user 1");
         }
         let user2: SWAPIPlayer = null;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(user2AC, cooldown);
+            const playerRes = await swgohAPI.unitStats(user2AC, cooldown);
             user2 = playerRes?.[0] || null;
         } catch (_) {
             return super.error(interaction, "Something broke when getting user 2");
@@ -216,7 +217,7 @@ export default class Versus extends Command {
             });
         }
 
-        const langChar = await Bot.swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId });
+        const langChar = await swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId });
         const charName = langChar.nameKey;
         const statTable = makeTable(
             {

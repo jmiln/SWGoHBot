@@ -1,7 +1,6 @@
-import type { BotType, BotClient } from "../../types/types.ts";
-import attachFunctions from "../../modules/functions.ts";
 import constants from "../../data/constants/constants.ts";
 import { getSideColor } from "../../modules/functions.ts";
+import type { BotClient, BotType } from "../../types/types.ts";
 
 export function createMockBot(overrides: Partial<BotType> = {}): BotType {
     const bot: BotType = {

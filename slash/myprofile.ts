@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { expandSpaces, getAllyCode, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -33,7 +34,7 @@ export default class MyProfile extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Broke getting player in myprofile: ${e}`);
