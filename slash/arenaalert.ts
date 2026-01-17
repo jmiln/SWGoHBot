@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
 import cache from "../modules/cache.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
@@ -82,7 +83,7 @@ export default class ArenaAlert extends Command {
 
         // Grab the user's info
         const userID = interaction.user.id;
-        const user = (await cache.getOne(Bot.config.mongodb.swgohbotdb, "users", { id: userID })) as UserConfig;
+        const user = (await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userID })) as UserConfig;
         if (!user) {
             return super.error(interaction, "I couldn't find your data. Please try again.");
         }
@@ -124,7 +125,7 @@ export default class ArenaAlert extends Command {
         });
 
         // TODO Get a res from this, so it can be replied to more accurately
-        await cache.put(Bot.config.mongodb.swgohbotdb, "users", { id: userID }, updatedUser);
+        await cache.put(config.mongodb.swgohbotdb, "users", { id: userID }, updatedUser);
         if (!changelog?.length) {
             return super.success(interaction, "It looks like nothing was updated.");
         }
@@ -145,26 +146,26 @@ export default class ArenaAlert extends Command {
 
         const { enabledms, arena, payoutResult, payoutWarning } = input;
 
-        // ArenaAlert -> activate/ deactivate
+        // ArenaAlert -> activate/ deactivate (All, Primary, Off)
         if (enabledms && updatedUser.arenaAlert.enableRankDMs !== enabledms) {
             changelog.push(`Changed EnableDMs from ${updatedUser.arenaAlert.enableRankDMs} to ${enabledms}`);
             updatedUser.arenaAlert.enableRankDMs = enabledms;
         }
 
-        // Set which of the arenas to watch
+        // Set which of the arenas to watch (Char, Fleet, Both)
         if (arena && updatedUser.arenaAlert.arena !== arena) {
             changelog.push(`Changed arena from ${updatedUser.arenaAlert.arena} to ${arena}`);
             updatedUser.arenaAlert.arena = arena;
         }
 
-        // Set payout result DM preference
+        // Set payout result DM preference (On, Off)
         if (payoutResult && updatedUser.arenaAlert.payoutResult !== payoutResult) {
             changelog.push(`Changed Payout Result from ${updatedUser.arenaAlert.payoutResult} to ${payoutResult}`);
             updatedUser.arenaAlert.payoutResult = payoutResult;
         }
 
         // Set payout warning
-        if (payoutWarning !== undefined && !Number.isNaN(payoutWarning)) {
+        if (payoutWarning !== undefined && payoutWarning !== null && !Number.isNaN(payoutWarning)) {
             if (payoutWarning < 0 || payoutWarning > 1439) {
                 changelog.push(`Cannot change the Payout Warning to ${payoutWarning}. Value must be between 0 and 1439`);
             } else if (updatedUser.arenaAlert.payoutWarning !== payoutWarning) {
