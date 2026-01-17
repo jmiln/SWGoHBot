@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode,
 updatedFooterStr } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -51,7 +52,7 @@ export default class GuildQuality extends Command {
         let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await Bot.swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
+            guild = await swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
 
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
@@ -145,7 +146,7 @@ export default class GuildQuality extends Command {
             const playerQualities = [];
             let guildGG: SWAPIPlayer[];
             try {
-                guildGG = await Bot.swgohAPI.unitStats(
+                guildGG = await swgohAPI.unitStats(
                     guild.roster.map((m) => m.allyCode),
                     cooldown,
                 );

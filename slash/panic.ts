@@ -1,10 +1,11 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import logger from "../modules/Logger.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
-import { characters,ships } from "../data/constants/units.ts";
 import config from "../config.js";
+import { characters,ships } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Panic extends Command {
     constructor(Bot: BotType) {
@@ -48,7 +49,7 @@ export default class Panic extends Command {
 
         // Grab the player's info
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const playerArr = await Bot.swgohAPI.unitStats(allycode, cooldown);
+        const playerArr = await swgohAPI.unitStats(allycode, cooldown);
 
         const player = playerArr[0];
         if (!player?.roster)

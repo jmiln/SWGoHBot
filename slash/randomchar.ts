@@ -1,10 +1,11 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import logger from "../modules/Logger.ts";
-import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
 import { characters } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
+import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Randomchar extends Command {
     constructor(Bot: BotType) {
@@ -65,7 +66,7 @@ export default class Randomchar extends Command {
             const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer = null;
             try {
-                const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                const playerRes = await swgohAPI.unitStats(allycode, cooldown);
                 player = playerRes?.[0] || null;
             } catch (e) {
                 logger.error(`[slash/randomchar] Error fetching player: ${e}`);
@@ -96,7 +97,7 @@ export default class Randomchar extends Command {
             while (charOut.length < count) {
                 const newIndex = Math.floor(Math.random() * chars.length);
                 const newChar = chars[newIndex];
-                const playerChar = await Bot.swgohAPI.units(newChar.defId);
+                const playerChar = await swgohAPI.units(newChar.defId);
                 const name = playerChar.nameKey;
                 if (!charOut.includes(name)) charOut.push(name);
             }

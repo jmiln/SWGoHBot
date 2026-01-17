@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { getAllyCode,
 makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -48,7 +49,7 @@ export default class MyArena extends Command {
         const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Broke getting player in myarena: ${e}`);
@@ -75,7 +76,7 @@ export default class MyArena extends Command {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
             let playerStats: SWAPIPlayer = null;
             try {
-                const playerStatsRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                const playerStatsRes = await swgohAPI.unitStats(allycode, cooldown);
                 playerStats = playerStatsRes?.[0] || null;
             } catch (e) {
                 logger.error(`[slash/myarena] Error: ${e}`);
@@ -156,7 +157,7 @@ export default class MyArena extends Command {
                 logger.error(`[slash/myarena] Missing ID for ${defId}`);
                 return `Missing ID for ${defId}`;
             }
-            const thisLangChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            const thisLangChar = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
             const thisZ = thisLangChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
             if (thisLangChar.name && !thisLangChar.nameKey) thisLangChar.nameKey = thisLangChar.name;
             return `${"z".repeat(thisZ.length)}${thisLangChar.nameKey}`;

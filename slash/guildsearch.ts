@@ -1,11 +1,12 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import { characters,ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getAllyCode, getGearStr, makeTable, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
-import { characters,ships } from "../data/constants/units.ts";
 
 export default class GuildSearch extends Command {
     constructor(Bot: BotType) {
@@ -224,7 +225,7 @@ export default class GuildSearch extends Command {
 
         let guild: SWAPIGuild = null;
         try {
-            guild = await Bot.swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
+            guild = await swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, "Sorry, but it looks like that player is not in a guild");
@@ -254,7 +255,7 @@ export default class GuildSearch extends Command {
 
         let guildChar: SWAPIUnit[];
         try {
-            guildChar = await Bot.swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
+            guildChar = await swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
             return super.error(interaction, codeBlock(e), {
                 title: "Something Broke while getting your guild's characters",
@@ -422,7 +423,7 @@ export default class GuildSearch extends Command {
         const omicrons = [];
         let apiChar: RawCharacter;
         try {
-            apiChar = await Bot.swgohAPI.getCharacter(foundUnit.uniqueName);
+            apiChar = await swgohAPI.getCharacter(foundUnit.uniqueName);
         } catch (e) {
             return super.error(interaction, `Couldn't get the character - ${e}`);
         }

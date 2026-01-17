@@ -4,6 +4,7 @@ import config from "../config.js";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Farm extends Command {
@@ -48,7 +49,7 @@ export default class Farm extends Command {
         // There was only one result, so lets use it
         const character = chars[0];
 
-        const unit = await Bot.swgohAPI.units(character.uniqueName, interaction.swgohLanguage);
+        const unit = await swgohAPI.units(character.uniqueName, interaction.swgohLanguage);
         if (!unit) {
             return super.error(interaction, "[FARM] Broke trying to get the unit.");
         }

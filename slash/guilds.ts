@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, raidNames, ships } from "../data/constants/units.ts";
+import cache from "../modules/cache.ts";
 import {
     expandSpaces,
     formatDuration,
@@ -17,6 +17,7 @@ import {
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, TWList } from "../types/types.ts";
@@ -254,7 +255,7 @@ export default class Guilds extends Command {
         let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await Bot.swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
+            guild = await swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
 
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem: SWAPIGuildMember) => mem.guildMemberLevel > 1);
@@ -346,7 +347,7 @@ export default class Guilds extends Command {
             }
             let guildGG: SWAPIPlayer[];
             try {
-                guildGG = await Bot.swgohAPI.unitStats(gRoster, cooldown);
+                guildGG = await swgohAPI.unitStats(gRoster, cooldown);
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`ERROR(GS_GEAR) getting guild (${guild.id}): ${errorMessage}`);
@@ -426,7 +427,7 @@ export default class Guilds extends Command {
             // Give a general overview of important mods (6*, +15, +20 speed, +100 offense?)
             let guildGG: SWAPIPlayer[];
             try {
-                guildGG = await Bot.swgohAPI.unitStats(
+                guildGG = await swgohAPI.unitStats(
                     guild.roster.map((m) => m.allyCode),
                     cooldown,
                 );
@@ -546,7 +547,7 @@ export default class Guilds extends Command {
             // Use the ally codes to get all the other info for the guild
             let guildMembers: SWAPIPlayer[];
             try {
-                guildMembers = await Bot.swgohAPI.unitStats(gRosterCodes, cooldown);
+                guildMembers = await swgohAPI.unitStats(gRosterCodes, cooldown);
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`ERROR(Guilds/guildRelics) getting guild: ${errorMessage}`);
@@ -691,7 +692,7 @@ export default class Guilds extends Command {
 
             let rawGuild: RawGuild;
             try {
-                rawGuild = await Bot.swgohAPI.getRawGuild(userAC);
+                rawGuild = await swgohAPI.getRawGuild(userAC);
             } catch (err) {
                 return interaction.editReply({ content: err.toString() });
             }
@@ -863,7 +864,7 @@ export default class Guilds extends Command {
             // Use the ally codes to get all the other info for the guild
             let guildMembers: SWAPIPlayer[];
             try {
-                guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
+                guildMembers = await swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`ERROR(Guilds/guildSidedGP) getting guild: ${errorMessage}`);
@@ -1083,7 +1084,7 @@ export default class Guilds extends Command {
 
             let guildMembers: SWAPIPlayer[];
             try {
-                guildMembers = await Bot.swgohAPI.unitStats(gRosterACs, cooldown);
+                guildMembers = await swgohAPI.unitStats(gRosterACs, cooldown);
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`ERROR(Guilds/twSummary) getting guild: ${errorMessage}`);

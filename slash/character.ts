@@ -4,6 +4,7 @@ import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -55,7 +56,7 @@ export default class Character extends Command {
         const character = chars[0];
         let char: RawCharacter;
         try {
-            char = await Bot.swgohAPI.getCharacter(character.uniqueName, interaction.guildSettings.swgohLanguage);
+            char = await swgohAPI.getCharacter(character.uniqueName, interaction.guildSettings.swgohLanguage);
         } catch (err) {
             return super.error(interaction, err.toString());
         }

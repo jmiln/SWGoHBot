@@ -7,6 +7,7 @@ import cache from "../modules/cache.ts";
 import { getAllyCode,
 msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -106,7 +107,7 @@ export default class Need extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Broke getting player in myprofile: ${e}`);
@@ -178,7 +179,7 @@ export default class Need extends Command {
             }
             if (playerUnit.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[playerUnit.rarity];
-            playerUnit = await Bot.swgohAPI.langChar(playerUnit, interaction.guildSettings.swgohLanguage);
+            playerUnit = await swgohAPI.langChar(playerUnit, interaction.guildSettings.swgohLanguage);
             if (characters.find((c) => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({

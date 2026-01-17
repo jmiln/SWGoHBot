@@ -2,9 +2,9 @@ import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
-import { getAllyCode,
-makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -66,7 +66,7 @@ export default class TerritoryWar extends Command {
         // Get the name & ally code for each player in each of the guilds
         let guild1: SWAPIGuild = null;
         try {
-            guild1 = await Bot.swgohAPI.guild(user1, cooldown);
+            guild1 = await swgohAPI.guild(user1, cooldown);
             if (!guild1?.roster?.length) {
                 problemArr.push(`The guild for ${user1} did not come back with anyone in it`);
             }
@@ -76,7 +76,7 @@ export default class TerritoryWar extends Command {
 
         let guild2: SWAPIGuild = null;
         try {
-            guild2 = await Bot.swgohAPI.guild(user2, cooldown);
+            guild2 = await swgohAPI.guild(user2, cooldown);
         } catch (_) {
             problemArr.push(`I could not find a guild for "${user2}"`);
         }
@@ -92,7 +92,7 @@ export default class TerritoryWar extends Command {
         let guild1Stats: SWAPIPlayer[] = null;
         const guild1AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
         try {
-            guild1Stats = await Bot.swgohAPI.unitStats(
+            guild1Stats = await swgohAPI.unitStats(
                 guild1.roster.map((p) => p.allyCode),
                 cooldown,
             );
@@ -113,7 +113,7 @@ export default class TerritoryWar extends Command {
         let guild2Stats: SWAPIPlayer[] = null;
         const guild2AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
         try {
-            guild2Stats = await Bot.swgohAPI.unitStats(
+            guild2Stats = await swgohAPI.unitStats(
                 guild2.roster.map((p) => p.allyCode),
                 cooldown,
             );

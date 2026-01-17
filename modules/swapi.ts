@@ -3,7 +3,6 @@ import os from "node:os";
 import { Worker } from "node:worker_threads";
 import ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
-import { MongoClient } from "mongodb";
 import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
@@ -53,50 +52,31 @@ const flatStats = [
 
 const MAX_CONCURRENT = 20;
 
-let specialAbilityList = null;
-async function init() {
-    // Reload the api map files every 6 minutes
-    setInterval(() => {
-        modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
-        unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
-        skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
-    }, 360_000);
-}
-
-export default (opts = { noop: false }) => {
-    // This is just here so it'll actually accept it properly when I require() this file... Doesn't work with just `module.exports = () => ` for some reason
-    if (opts?.noop) return null;
-    init();
+class SWAPI {
+    private specialAbilityList: SWAPIUnitAbility[] | null = null;
+    private reloadInterval: NodeJS.Timeout | null = null;
 
     // Set the max cooldowns (In minutes)
-    const playerMinCooldown = 1; // 1 min
-    const playerMaxCooldown = 3 * 60; // 3 hours
-    const guildMinCooldown = 1; // 1 min
-    const guildMaxCooldown = 6 * 60; // 6 hours
+    private readonly playerMinCooldown = 1; // 1 min
+    private readonly playerMaxCooldown = 3 * 60; // 3 hours
+    private readonly guildMinCooldown = 1; // 1 min
+    private readonly guildMaxCooldown = 6 * 60; // 6 hours
 
-    return {
-        abilities: abilities,
-        character: character,
-        gear: gear,
-        getCharacter: getCharacter,
-        getPayoutFromAC: getPayoutFromAC,
-        getPlayerUpdates: getPlayerUpdates,
-        getPlayersArena: getPlayersArena,
-        getRawGuild: getRawGuild,
-        guild: guild,
-        guildByName: guildByName,
-        guildUnitStats: guildUnitStats,
-        langChar: langChar,
-        playerByName: playerByName,
-        recipes: recipes,
-        unitStats: unitStats,
-        units: units,
-        zetaRec: zetaRec,
-    };
+    /**
+     * Initialize the SWAPI module
+     */
+    init(): void {
+        // Reload the api map files every 6 minutes
+        this.reloadInterval = setInterval(() => {
+            modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
+            unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
+            skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
+        }, 360_000);
+    }
 
     // Grab the abilities that have Zeta / Omicron levels for future reference
-    async function getSpecialAbilities() {
-        if (!specialAbilityList) {
+    private async getSpecialAbilities(): Promise<SWAPIUnitAbility[]> {
+        if (!this.specialAbilityList) {
             const abilityList = await cache.get(
                 config.mongodb.swapidb,
                 "abilities",
@@ -120,12 +100,12 @@ export default (opts = { noop: false }) => {
                     omicronMode: 1,
                 },
             );
-            specialAbilityList = abilityList;
+            this.specialAbilityList = abilityList;
         }
-        return specialAbilityList;
+        return this.specialAbilityList;
     }
 
-    async function playerByName(name: string, limit = 0) {
+    async playerByName(name: string, limit = 0) {
         try {
             if (!name?.length || typeof name !== "string") return null;
 
@@ -145,7 +125,7 @@ export default (opts = { noop: false }) => {
         }
     }
 
-    async function getPayoutFromAC(allycodes: string | string[]) {
+    async getPayoutFromAC(allycodes: string | string[]) {
         // Make sure the allycode(s) are in an array
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
         return await cache.get(
@@ -156,7 +136,7 @@ export default (opts = { noop: false }) => {
         );
     }
 
-    async function getPlayersArena(allycodes: number | number[]) {
+    async getPlayersArena(allycodes: number | number[]) {
         let acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
         acArr = acArr.filter((ac) => !!ac && ac.toString().length === 9);
         if (!acArr.length) throw new Error("No valid ally code(s) entered");
@@ -192,8 +172,8 @@ export default (opts = { noop: false }) => {
             .filter((p) => !!p);
     }
 
-    async function getPlayerUpdates(allycodes: number | number[]) {
-        const specialAbilities = await getSpecialAbilities();
+    async getPlayerUpdates(allycodes: number | number[]) {
+        const specialAbilities = await this.getSpecialAbilities();
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
 
         const updatedBare: SWAPIPlayer[] = [];
@@ -206,7 +186,7 @@ export default (opts = { noop: false }) => {
             if (!tempBare) {
                 logger.error("[getPlayerUpdates] Broke while getting tempBare");
             } else {
-                const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                 updatedBare.push(formattedComlinkPlayer);
             }
         });
@@ -290,11 +270,11 @@ export default (opts = { noop: false }) => {
         return guildLog;
     }
 
-    async function unitStats(
+    async unitStats(
         allycodes: number | number[],
         cooldown: PlayerCooldown = {
-            player: playerMaxCooldown,
-            guild: guildMaxCooldown,
+            player: this.playerMaxCooldown,
+            guild: this.guildMaxCooldown,
         },
         options: { force?: boolean; defId?: string } = { force: false, defId: null },
     ): Promise<SWAPIPlayer[]> {
@@ -302,7 +282,7 @@ export default (opts = { noop: false }) => {
         if (!allycodes) return null;
         const acArr: number[] = Array.isArray(allycodes) ? allycodes : [allycodes];
 
-        const specialAbilities: SWAPIUnitAbility[] = await getSpecialAbilities();
+        const specialAbilities: SWAPIUnitAbility[] = await this.getSpecialAbilities();
 
         let playerStats = [];
         try {
@@ -327,7 +307,7 @@ export default (opts = { noop: false }) => {
             }
 
             // If options.force is true, set the list of unexpired players to be empty so that all players will be run through the updater
-            const updatedList = options.force ? [] : players.filter((p) => !isExpired(p.updated, cooldown, players.length > 5));
+            const updatedList = options.force ? [] : players.filter((p) => !this.isExpired(p.updated, cooldown, players.length > 5));
             const updatedAC = updatedList.map((p) => p.allyCode);
             const needUpdating = acArr.filter((a) => !updatedAC.includes(a));
 
@@ -339,7 +319,7 @@ export default (opts = { noop: false }) => {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
                         const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch(() => {});
                         if (tempBare) {
-                            const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                            const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                             updatedBare.push(formattedComlinkPlayer);
                         }
                     });
@@ -351,7 +331,7 @@ export default (opts = { noop: false }) => {
                         for (const missing of missingRosters) {
                             const tempBare = await comlinkStub.getPlayer(missing?.allyCode?.toString()).catch(() => {});
                             if (tempBare) {
-                                const formattedComlinkPlayer = await formatComlinkPlayer(tempBare);
+                                const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                                 updatedBare.push(formattedComlinkPlayer);
                             }
                         }
@@ -429,12 +409,12 @@ export default (opts = { noop: false }) => {
         }
     }
 
-    function getUnitDefId(unitDefId: string) {
+    private getUnitDefId(unitDefId: string): string {
         if (typeof unitDefId !== "string") return unitDefId;
         return unitDefId.split(":")[0];
     }
 
-    async function formatComlinkPlayer(comlinkPlayer: ComlinkPlayer): Promise<SWAPIPlayer> {
+    private async formatComlinkPlayer(comlinkPlayer: ComlinkPlayer): Promise<SWAPIPlayer> {
         const comlinkPlayerArena = {};
         const emptyArena = { rank: null, squad: null };
 
@@ -445,7 +425,7 @@ export default (opts = { noop: false }) => {
                     squad?.cell?.map((unit) => {
                         return {
                             id: unit.unitId,
-                            defId: getUnitDefId(unit.unitDefId),
+                            defId: this.getUnitDefId(unit.unitDefId),
                         };
                     }) || [],
                 // TODO Should probably look into making use of this if I ever get around to figuring out datacrons
@@ -488,7 +468,7 @@ export default (opts = { noop: false }) => {
                         purchasedAbilityId: unit.purchasedAbilityId,
                         crew: thisUnit?.crew,
                         combatType: thisUnit.combatType,
-                        mods: unit.equippedStatMod ? unit.equippedStatMod.map((mod) => formatMod(mod)) : [],
+                        mods: unit.equippedStatMod ? unit.equippedStatMod.map((mod) => this.formatMod(mod)) : [],
                     };
                 })
                 .filter((unit) => !!unit),
@@ -534,7 +514,7 @@ export default (opts = { noop: false }) => {
         };
     }
 
-    function formatMod({ definitionId, primaryStat, id, level, tier, secondaryStat, ...rest }: ComlinkMod) {
+    private formatMod({ definitionId, primaryStat, id, level, tier, secondaryStat, ...rest }: ComlinkMod) {
         const modSchema = modMap[definitionId] || {};
         const primaryStatId = primaryStat.stat.unitStatId;
         const primaryStatScaler = flatStats.includes(primaryStatId) ? 1e8 : 1e6;
@@ -564,12 +544,12 @@ export default (opts = { noop: false }) => {
         };
     }
 
-    async function langChar(char: Partial<SWAPIUnit>, lang: SWAPILang) {
+    async langChar(char: Partial<SWAPIUnit>, lang: SWAPILang) {
         const thisLang = lang ? lang.toLowerCase() : "eng_us";
         if (!char) throw new Error("Missing Character");
 
         if (char.defId) {
-            const unit = await units(char.defId);
+            const unit = await this.units(char.defId);
             char.nameKey = unit ? unit.nameKey : null;
         }
 
@@ -644,9 +624,9 @@ export default (opts = { noop: false }) => {
         return char;
     }
 
-    async function guildUnitStats(allyCodes: number[], defId: string, cooldown: PlayerCooldown) {
-        if (!cooldown?.guild || cooldown.guild > guildMaxCooldown) cooldown.guild = guildMaxCooldown;
-        if (cooldown.guild < guildMinCooldown) cooldown.guild = guildMinCooldown;
+    async guildUnitStats(allyCodes: number[], defId: string, cooldown: PlayerCooldown) {
+        if (!cooldown?.guild || cooldown.guild > this.guildMaxCooldown) cooldown.guild = this.guildMaxCooldown;
+        if (cooldown.guild < this.guildMinCooldown) cooldown.guild = this.guildMinCooldown;
         if (!defId) throw new Error("[swapi guildUnitStats] You need to specify a defId");
 
         const outStats = [];
@@ -663,7 +643,7 @@ export default (opts = { noop: false }) => {
             equipped: [],
             stats: {},
         };
-        const players: SWAPIPlayer[] = await unitStats(allyCodes, cooldown, { defId: defId });
+        const players: SWAPIPlayer[] = await this.unitStats(allyCodes, cooldown, { defId: defId });
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
@@ -685,7 +665,7 @@ export default (opts = { noop: false }) => {
         return outStats;
     }
 
-    async function abilities(skillArray: string | string[], lang = "eng_us", opts = { min: false }) {
+    async abilities(skillArray: string | string[], lang = "eng_us", opts = { min: false }) {
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
         }
@@ -709,19 +689,19 @@ export default (opts = { noop: false }) => {
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
-    async function getCharacter(defId: string, lang: SWAPILang = "eng_us") {
+    async getCharacter(defId: string, lang: SWAPILang = "eng_us") {
         // Make sure it's lowercase
         const thisLang: SWAPILang = (lang ? lang.toLowerCase() : "eng_us") as SWAPILang;
 
         if (!defId) throw new Error("[getCharacter] Missing character ID.");
 
-        const char: RawCharacter = await character(defId);
+        const char: RawCharacter = await this.character(defId);
 
         if (!char) throw new Error("[SWGoH-API getCharacter] Missing Character");
         if (!char.skillReferenceList) throw new Error("[SWGoH-API getCharacter] Missing character abilities");
 
         for (const s of char.skillReferenceList) {
-            let skill = (await abilities([s.skillId], thisLang)) as unknown as ComlinkAbility;
+            let skill = (await this.abilities([s.skillId], thisLang)) as unknown as ComlinkAbility;
             if (Array.isArray(skill)) skill = skill[0];
 
             if (!skill) {
@@ -752,7 +732,7 @@ export default (opts = { noop: false }) => {
         }
 
         for (const tier of char.unitTierList) {
-            const eqList = await gear(tier.equipmentSetList, thisLang);
+            const eqList = await this.gear(tier.equipmentSetList, thisLang);
             for (const [ix, e] of tier.equipmentSetList.entries()) {
                 const eq = eqList.find((equipment) => equipment.id === e);
                 if (!eq) {
@@ -769,13 +749,13 @@ export default (opts = { noop: false }) => {
     }
 
     // Function for updating all the stored character data from the game
-    async function character(defId: string): Promise<RawCharacter> {
+    async character(defId: string): Promise<RawCharacter> {
         const outChar = await cache.get(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 });
         return outChar?.[0] || outChar;
     }
 
     // Get the gear for a given character
-    async function gear(gearArray: string | string[], lang: SWAPILang): Promise<SWAPIGear[]> {
+    async gear(gearArray: string | string[], lang: SWAPILang): Promise<SWAPIGear[]> {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!gearArray) {
             throw new Error("You need to have a list of gear here");
@@ -792,7 +772,7 @@ export default (opts = { noop: false }) => {
     }
 
     // Used by farm, randomchar, and reloaddata
-    async function units(defId: string, lang: SWAPILang = "eng_us"): Promise<SWAPIUnit> {
+    async units(defId: string, lang: SWAPILang = "eng_us"): Promise<SWAPIUnit> {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!defId) throw new Error("You need to specify a defId");
 
@@ -807,7 +787,7 @@ export default (opts = { noop: false }) => {
     }
 
     // Get gear recipes
-    async function recipes(recArray: number | number[], lang: SWAPILang): Promise<SWAPIRecipe[]> {
+    async recipes(recArray: number | number[], lang: SWAPILang): Promise<SWAPIRecipe[]> {
         const thisLang = lang?.toLowerCase() || "eng_us";
         if (!recArray) {
             throw new Error("You need to have a list of gear here");
@@ -818,9 +798,9 @@ export default (opts = { noop: false }) => {
         return await cache.get(config.mongodb.swapidb, "recipes", { id: { $in: recArr }, language: thisLang }, { _id: 0, updated: 0 });
     }
 
-    async function getRawGuild(
+    async getRawGuild(
         allycode: number,
-        cooldown: PlayerCooldown = { player: playerMaxCooldown, guild: guildMaxCooldown },
+        cooldown: PlayerCooldown = { player: this.playerMaxCooldown, guild: this.guildMaxCooldown },
         { forceUpdate } = { forceUpdate: false },
     ) {
         const tempGuild: RawGuild = {} as RawGuild;
@@ -835,7 +815,7 @@ export default (opts = { noop: false }) => {
         if (!player.guildId) throw new Error("This player is not in a guild");
 
         let rawGuild = await cache.get(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
-        if (forceUpdate || !rawGuild || !rawGuild[0] || isExpired(rawGuild[0].updated, cooldown, true)) {
+        if (forceUpdate || !rawGuild || !rawGuild[0] || this.isExpired(rawGuild[0].updated, cooldown, true)) {
             rawGuild = await comlinkStub.getGuild(player.guildId, true);
 
             rawGuild = rawGuild.guild;
@@ -889,13 +869,13 @@ export default (opts = { noop: false }) => {
         return rawGuild;
     }
 
-    async function guild(allycode: number | string, cooldown?: PlayerCooldown) {
+    async guild(allycode: number | string, cooldown?: PlayerCooldown) {
         const thisAcStr = allycode?.toString().replace(/[^\d]/g, "");
         if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid allycode");
         const thisAc = Number.parseInt(thisAcStr, 10);
 
         /** Get player from cache */
-        let player: SWAPIPlayer | SWAPIPlayer[] = await unitStats(thisAc);
+        let player: SWAPIPlayer | SWAPIPlayer[] = await this.unitStats(thisAc);
         if (Array.isArray(player)) player = player[0];
         if (!player) {
             throw new Error("I don't know this player, make sure they're registered first");
@@ -905,11 +885,11 @@ export default (opts = { noop: false }) => {
         let guild: SWAPIGuild = await cache.get(config.mongodb.swapidb, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
-        if (!guild || !guild[0] || isExpired(guild[0].updated, cooldown, true)) {
+        if (!guild || !guild[0] || this.isExpired(guild[0].updated, cooldown, true)) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild: SWAPIGuild;
             try {
-                tempGuild = await fetchGuild(player.guildId);
+                tempGuild = await this.fetchGuild(player.guildId);
             } catch (err) {
                 // Probably API timeout
                 logger.log(`[SWAPI-guild] Couldn't update guild for: ${player.name}`);
@@ -941,14 +921,14 @@ export default (opts = { noop: false }) => {
         return guild;
     }
 
-    async function fetchGuild(guildId: string) {
+    private async fetchGuild(guildId: string) {
         const comlinkGuild = await comlinkStub.getGuild(guildId, true);
 
-        const formattedGuild = await formatGuild(comlinkGuild);
+        const formattedGuild = await this.formatGuild(comlinkGuild);
         return formattedGuild;
     }
 
-    async function formatGuild({ guild, raidLaunchConfig, ...topRest }) {
+    private async formatGuild({ guild, raidLaunchConfig, ...topRest }) {
         const { profile, guildEventTracker, nextChallengesRefresh, recentTerritoryWarResult, recentRaidResult, member, ...guildRest } =
             guild;
         const {
@@ -1051,7 +1031,7 @@ export default (opts = { noop: false }) => {
         };
     }
 
-    async function guildByName(gName: string) {
+    async guildByName(gName: string) {
         try {
             const guild = await cache.get(config.mongodb.swapidb, "guilds", { name: gName });
 
@@ -1065,31 +1045,37 @@ export default (opts = { noop: false }) => {
         }
     }
 
-    async function zetaRec(lang = "ENG_US") {
+    async zetaRec(lang = "ENG_US") {
         const zetas = await cache.get(config.mongodb.swapidb, "zetaRec", { lang: lang });
         return zetas[0].zetas;
     }
 
-    function isExpired(lastUpdated: number, cooldown: PlayerCooldown, guild = false) {
+    private isExpired(lastUpdated: number, cooldown: PlayerCooldown, guild = false): boolean {
         if (!lastUpdated) return true;
-        let thisCooldown = guildMaxCooldown;
+        let thisCooldown = this.guildMaxCooldown;
 
         if (guild) {
             // If it's for a guild, apply the guild cooldown
-            thisCooldown = cooldown?.guild || guildMaxCooldown;
-            if (thisCooldown > guildMaxCooldown) thisCooldown = guildMaxCooldown;
-            if (thisCooldown < guildMinCooldown) thisCooldown = guildMinCooldown;
+            thisCooldown = cooldown?.guild || this.guildMaxCooldown;
+            if (thisCooldown > this.guildMaxCooldown) thisCooldown = this.guildMaxCooldown;
+            if (thisCooldown < this.guildMinCooldown) thisCooldown = this.guildMinCooldown;
         } else {
             // Otherwise, apply the player cooldown
-            thisCooldown = cooldown?.player || playerMaxCooldown;
-            if (thisCooldown > playerMaxCooldown) thisCooldown = playerMaxCooldown;
-            if (thisCooldown < playerMinCooldown) thisCooldown = playerMinCooldown;
+            thisCooldown = cooldown?.player || this.playerMaxCooldown;
+            if (thisCooldown > this.playerMaxCooldown) thisCooldown = this.playerMaxCooldown;
+            if (thisCooldown < this.playerMinCooldown) thisCooldown = this.playerMinCooldown;
         }
 
         const diff = convertMS(Date.now() - new Date(lastUpdated).getTime());
         return diff.totalMin >= thisCooldown;
     }
-};
+}
+
+// Create and export a singleton instance
+const swapi = new SWAPI();
+
+export default swapi;
+export { SWAPI };
 
 const convertMS = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);

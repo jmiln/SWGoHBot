@@ -1,12 +1,13 @@
 import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
-import { expandSpaces, findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
-import { characters } from "../data/constants/units.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
@@ -128,7 +129,7 @@ export default class MyMods extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const resPlayer = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const resPlayer = await swgohAPI.unitStats(allycode, cooldown);
             player = resPlayer[0];
         } catch (e) {
             return super.error(interaction, codeBlock(e.message), {
@@ -168,7 +169,7 @@ export default class MyMods extends Command {
                 return super.error(interaction, "Looks like you don't have that character activated yet.");
             }
 
-            const langChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            const langChar = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
             if (!langChar) {
                 return interaction.editReply({
                     content: null,
@@ -300,7 +301,7 @@ export default class MyMods extends Command {
             // Slice it down to a proper size, then grab the localized strings
             sortedCharList = sortedCharList.slice(0, 20);
             for (const charIx in sortedCharList) {
-                sortedCharList[charIx] = await Bot.swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage);
+                sortedCharList[charIx] = await swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage);
             }
 
             const out = sortedCharList.map((c) => {
@@ -414,7 +415,7 @@ export default class MyMods extends Command {
                 const lowerLvl = 6 - (character.mods?.filter((m) => !m || m.level >= 15).length || 0) - missingMods;
 
                 if (missingMods || lowerLvl) {
-                    const langChar = await Bot.swgohAPI.langChar(character, interaction.guildSettings.swgohLanguage);
+                    const langChar = await swgohAPI.langChar(character, interaction.guildSettings.swgohLanguage);
                     outArr.push(`\`[${missingMods}][${lowerLvl}]\` ${langChar.nameKey || langChar.defId}`);
                 }
             }

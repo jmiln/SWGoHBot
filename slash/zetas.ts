@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import { chunkArray, findChar, getAllyCode, getBlankUnitImage, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -91,7 +92,7 @@ export default class Zetas extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);
@@ -110,7 +111,7 @@ export default class Zetas extends Command {
 
             // This will grab the character info for any entered character
             const getCharInfo = async (thisChar: SWAPIUnit) => {
-                const langedChar = await Bot.swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+                const langedChar = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
                 if (!langedChar.nameKey) {
                     const tmp = characters.filter((c) => c.uniqueName === langedChar.defId);
                     if (tmp.length) {
@@ -221,7 +222,7 @@ export default class Zetas extends Command {
             let guildGG: SWAPIPlayer[] = null;
 
             try {
-                guild = await Bot.swgohAPI.guild(player.allyCode, cooldown);
+                guild = await swgohAPI.guild(player.allyCode, cooldown);
                 // TODO  Lang this
                 if (!guild) return super.error(interaction, "Cannot find guild");
                 if (!guild.roster) return super.error(interaction, "Cannot find your guild's roster");
@@ -229,7 +230,7 @@ export default class Zetas extends Command {
                 return super.error(interaction, e.message);
             }
             try {
-                guildGG = await Bot.swgohAPI.unitStats(
+                guildGG = await swgohAPI.unitStats(
                     guild.roster.map((p) => p.allyCode),
                     cooldown,
                 );
@@ -265,7 +266,7 @@ export default class Zetas extends Command {
                     outObj.name = `**${characters.find((c) => c.uniqueName === char).name}**`;
                     outObj.abilities = "";
                     for (const skill of Object.keys(zetas[char])) {
-                        const s = await Bot.swgohAPI.abilities(skill, null, { min: true });
+                        const s = await swgohAPI.abilities(skill, null, { min: true });
                         outObj.abilities += `\`${zetas[char][skill].length}\`: ${s[0].nameKey}\n`;
                     }
                     zOut.push(outObj);
@@ -326,7 +327,7 @@ export default class Zetas extends Command {
                     });
                 }
                 for (const skill of Object.keys(zetas[character.uniqueName])) {
-                    const name = await Bot.swgohAPI.abilities(skill, null, { min: true });
+                    const name = await swgohAPI.abilities(skill, null, { min: true });
                     fields.push({
                         name: name[0].nameKey,
                         value: zetas[character.uniqueName][skill].join("\n"),

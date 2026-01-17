@@ -5,6 +5,7 @@ import constants from "../data/constants/constants.ts";
 import patreonInfo from "../data/patreon.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
@@ -179,7 +180,7 @@ export default class UserConf extends Command {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
                     try {
-                        const playerRes = await Bot.swgohAPI.unitStats(allycode, cooldown);
+                        const playerRes = await swgohAPI.unitStats(allycode, cooldown);
                         const player = playerRes?.[0] || null;
                         if (!player) {
                             super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE"));

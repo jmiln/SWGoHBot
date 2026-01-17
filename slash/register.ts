@@ -4,6 +4,7 @@ import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
@@ -107,7 +108,7 @@ export default class Register extends Command {
         await interaction.reply({ content: interaction.language.get("COMMAND_REGISTER_PLEASE_WAIT") });
 
         try {
-            const playerRes: SWAPIPlayer[] = await Bot.swgohAPI.unitStats(allycode, cooldown);
+            const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(allycode, cooldown);
             const player = playerRes?.[0] || null;
             if (!player) {
                 return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode);
