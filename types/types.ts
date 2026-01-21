@@ -52,19 +52,6 @@ export interface BotType {
     toProperCase(strIn: string): string;
     deployCommands(force?: boolean): Promise<string>;
 
-    // Patreon / auto-updater functions
-    getRanks: () => Promise<void>;
-    shardRanks: () => Promise<void>;
-    shardTimes: () => Promise<void>;
-    guildTickets: () => Promise<void>;
-    guildsUpdate: () => Promise<void>;
-
-    getActivePatrons: () => Promise<{ discordID: string; amount_cents: number }[]>;
-    getGuildSupporterTier: () => Promise<number>;
-    getPatronUser: (userId: string) => Promise<PatronUser>;
-    getPatreonTier(user: PatronUser): number;
-    getPlayerCooldown: (userId: string, guildId?: string) => Promise<PlayerCooldown>;
-
     // Scheduled events
     manageEvents: (eventsList: GuildConfigEvent[]) => void;
     sendWebhook: (webhookURL: string, data: object) => void;

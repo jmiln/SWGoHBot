@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -63,7 +64,7 @@ export default class Randomchar extends Command {
 
         if (allycode) {
             // If there is a valid allycode provided, grab the user's roster
-            const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+            const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer = null;
             try {
                 const playerRes = await swgohAPI.unitStats(allycode, cooldown);

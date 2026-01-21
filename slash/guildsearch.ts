@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getAllyCode, getGearStr, makeTable, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
@@ -191,7 +192,7 @@ export default class GuildSearch extends Command {
         const doOmicron = interaction.options.getBoolean("omicrons");
 
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT") });
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let unitList: BotUnit[] = null;
         let foundUnit = null;

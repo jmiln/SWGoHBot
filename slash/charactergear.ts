@@ -5,6 +5,7 @@ import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
@@ -178,7 +179,7 @@ export default class Charactergear extends Command {
             }
         } else {
             // Looking for a player's remaining needed gear
-            const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+            const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
             const playerArr = await swgohAPI.unitStats(allycode, cooldown);
             if (Array.isArray(playerArr)) player = playerArr[0];

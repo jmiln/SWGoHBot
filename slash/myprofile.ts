@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { expandSpaces, getAllyCode, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -31,7 +32,7 @@ export default class MyProfile extends Command {
         }
         await interaction.reply({ content: `> Please wait while I look up the profile for ${allycode}` });
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer;
         try {
             const playerRes = await swgohAPI.unitStats(allycode, cooldown);

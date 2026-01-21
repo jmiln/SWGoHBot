@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import config from "../config.js";
 import { isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import { SocketHelper } from "../modules/socketHelper.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 
@@ -120,20 +121,20 @@ function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
         setInterval(async () => {
             try {
                 // Run every minute
-                await Bot.getRanks();
-                await Bot.shardRanks();
+                await patreonFuncs.getRanks();
+                await patreonFuncs.shardRanks();
 
                 const currentMinute = new Date().getMinutes();
 
                 // Run every 5 minutes
                 if (currentMinute % 5 === 0) {
-                    await Bot.shardTimes();
-                    await Bot.guildTickets();
+                    await patreonFuncs.shardTimes();
+                    await patreonFuncs.guildTickets();
                 }
 
                 // Run hourly
                 if (currentMinute === 0) {
-                    await Bot.guildsUpdate();
+                    await patreonFuncs.guildsUpdate();
                 }
 
                 // Reload data files across all shards

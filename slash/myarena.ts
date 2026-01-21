@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { getAllyCode,
 makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -46,7 +47,7 @@ export default class MyArena extends Command {
             );
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer;
         try {
             const playerRes = await swgohAPI.unitStats(allycode, cooldown);

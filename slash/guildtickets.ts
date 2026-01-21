@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getAllyCode,
 isAllyCode, toProperCase } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -112,7 +113,7 @@ export default class GuildTickets extends Command {
             gt = defGT;
         }
 
-        const pat = await Bot.getPatronUser(interaction.user.id);
+        const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }

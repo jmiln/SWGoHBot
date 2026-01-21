@@ -5,6 +5,7 @@ import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
 import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
@@ -116,7 +117,7 @@ export default class MyMods extends Command {
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         const subCommand = interaction.options.getSubcommand();
         let allycode = interaction.options.getString("allycode");

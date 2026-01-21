@@ -7,6 +7,7 @@ import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode,
 msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -143,7 +144,7 @@ export default class Faction extends Command {
         await interaction.deferReply();
         if (chars.length) {
             const charDefIds = chars.map((c) => c.baseId);
-            const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+            const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
             try {
                 const playerRes = await swgohAPI.unitStats(allycode, cooldown);

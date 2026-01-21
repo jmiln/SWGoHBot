@@ -4,6 +4,7 @@ import config from "../config.js";
 import { characters,ships } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -48,7 +49,7 @@ export default class Panic extends Command {
         await interaction.reply({ content: "Please wait while I process your request." });
 
         // Grab the player's info
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         const playerArr = await swgohAPI.unitStats(allycode, cooldown);
 
         const player = playerArr[0];

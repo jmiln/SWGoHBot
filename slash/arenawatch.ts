@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, ChannelType, type Embed, type GuildChanne
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
@@ -444,7 +445,7 @@ export default class ArenaWatch extends Command {
         const user: UserConfig = await userReg.getUser(interaction.user.id);
         if (!user) return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
 
-        const pat = await Bot.getPatronUser(interaction.user.id);
+        const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }

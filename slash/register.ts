@@ -4,6 +4,7 @@ import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
@@ -32,7 +33,7 @@ export default class Register extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         // eslint-disable-line no-unused-vars
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let allycode = interaction.options.getString("allycode");
         let user = interaction.options.getUser("user");

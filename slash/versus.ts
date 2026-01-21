@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import { findChar, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -103,7 +104,7 @@ export default class Versus extends Command {
         // It only found one match
         const char = charRes?.[0] || null;
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let user1: SWAPIPlayer = null;
         try {
             const playerRes = await swgohAPI.unitStats(user1AC, cooldown);

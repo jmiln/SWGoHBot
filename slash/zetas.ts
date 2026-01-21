@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import { chunkArray, findChar, getAllyCode, getBlankUnitImage, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -88,7 +89,7 @@ export default class Zetas extends Command {
             character = foundCharacters[0];
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let player: SWAPIPlayer;
         try {

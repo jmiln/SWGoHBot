@@ -17,6 +17,7 @@ import {
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
@@ -241,7 +242,7 @@ export default class Guilds extends Command {
             );
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         const guildConf = await getGuildSettings({ cache, guildId: interaction.guild?.id || null });
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead

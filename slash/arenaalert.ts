@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
@@ -89,7 +90,7 @@ export default class ArenaAlert extends Command {
         }
 
         // Make sure the user is a patreon
-        const pat = await Bot.getPatronUser(userID);
+        const pat = await patreonFuncs.getPatronUser(userID);
         if (!pat || pat.amount_cents < 100) {
             return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }

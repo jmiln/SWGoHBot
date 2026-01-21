@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -34,7 +35,7 @@ export default class TerritoryWar extends Command {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         // Get the first user's ally code if possible
         const user1str = interaction.options.getString("allycode_1");

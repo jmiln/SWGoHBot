@@ -295,12 +295,24 @@ class SWAPI {
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options?.defId?.length) {
-                    players = await cache.get(
-                        config.mongodb.swapidb,
-                        "playerStats",
-                        { allyCode: { $in: filtereredAcArr } },
-                        { _id: 0, name: 1, allyCode: 1, roster: { $elemMatch: { defId: options.defId } }, updated: 1 },
-                    );
+                    players = await cache.getAggregate(config.mongodb.swapidb, "playerStats", [
+                        { $match: { allyCode: { $in: filtereredAcArr } } },
+                        {
+                            $project: {
+                                _id: 0,
+                                name: 1,
+                                allyCode: 1,
+                                updated: 1,
+                                roster: {
+                                    $filter: {
+                                        input: "$roster",
+                                        as: "r",
+                                        cond: { $eq: ["$$r.defId", options.defId] },
+                                    },
+                                },
+                            },
+                        },
+                    ]);
                 } else {
                     players = await cache.get(config.mongodb.swapidb, "playerStats", { allyCode: { $in: filtereredAcArr } });
                 }

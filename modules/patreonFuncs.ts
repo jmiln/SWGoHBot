@@ -3,13 +3,10 @@ import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
-import swgohAPI from "../modules/swapi.ts";
-import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
 import type {
     ActivePatron,
     ArenaWatchAcct,
     BotClient,
-    BotType,
     PatronUser,
     PlayerArenaRes,
     PlayerUpdates,
@@ -17,9 +14,11 @@ import type {
     UserConfig,
 } from "../types/types.ts";
 import cache from "./cache.ts";
-import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase } from "./functions.ts";
+import Language from "../base/Language.ts";
+import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
+import swgohAPI from "./swapi.ts";
 import userReg from "./users.ts";
 
 const tiers = patreonModule.tiers;
@@ -35,30 +34,18 @@ const TIER_1_CENTS = 100; // $1
 const TIER_5_CENTS = 500; // $5
 const TIER_10_CENTS = 1000; // $10
 
-export default (Bot: BotType, client: BotClient) => {
-    const { dayMS, hrMS, minMS } = constants;
+class PatreonFuncs {
+    private client!: BotClient;
 
-    // Helper function to check if a channel is available and has proper permissions
-    async function isChannelAvailable(channelId: string): Promise<boolean> {
-        const channels = await client.shard.broadcastEval(
-            async (client, { chanId }) => {
-                const channel = client.channels.cache.get(chanId);
-                if (
-                    channel instanceof TextChannel &&
-                    channel?.guild &&
-                    channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
-                ) {
-                    return true;
-                }
-                return false;
-            },
-            { context: { chanId: channelId } },
-        );
-        return channels.some((ch) => !!ch);
+    /**
+     * Initialize the PatreonFuncs module with Discord client dependency
+     */
+    init(client: BotClient): void {
+        this.client = client;
     }
 
     // Check if a given user is a patron, and if so, return their info
-    Bot.getPatronUser = async (userId) => {
+    async getPatronUser(userId: string): Promise<PatronUser | null> {
         if (!userId) throw new Error("Missing user ID");
 
         // Try and get em from the db
@@ -67,7 +54,7 @@ export default (Bot: BotType, client: BotClient) => {
         // If they aren't in the db, see if we have em in there manually
         if (!patron && config.patrons?.[userId]) {
             const currentAmountCents = config.patrons[userId];
-            const currentTierNum = getPatreonTier({ amount_cents: currentAmountCents });
+            const currentTierNum = this.getPatreonTier({ amount_cents: currentAmountCents });
             const currentTier = tiers[currentTierNum];
             return {
                 userId: userId,
@@ -82,7 +69,7 @@ export default (Bot: BotType, client: BotClient) => {
         // If they're not in either spot, return null
         if (!patron) return null;
 
-        const currentTierNum = getPatreonTier(patron);
+        const currentTierNum = this.getPatreonTier(patron);
         if (!currentTierNum) return null;
         const currentTier = tiers[currentTierNum];
 
@@ -96,44 +83,6 @@ export default (Bot: BotType, client: BotClient) => {
         }
 
         return null;
-    };
-
-    function getPatreonTier(user: { amount_cents: number } | null): number {
-        const patreonTiers = Object.keys(tiers).map((t) => Number.parseInt(t, 10));
-        const amount_dollars = (user?.amount_cents || 0) / 100;
-        const minTier = Math.min(...patreonTiers);
-
-        // If no amount or less than minimum tier, return tier 0
-        if (!amount_dollars || amount_dollars < minTier) return 0;
-
-        let tierNum = minTier;
-        for (const tier of patreonTiers) {
-            if (amount_dollars >= tier) {
-                tierNum = tier;
-            } else {
-                return tierNum;
-            }
-        }
-        return tierNum;
-    }
-
-    // Get an array of all active patrons
-    async function getActivePatrons(): Promise<ActivePatron[]> {
-        let patrons = (await cache.get("swgohbot", "patrons", {})) as ActivePatron[];
-        patrons = patrons.filter((p) => !p.declined_since);
-        const others: string[] = Object.keys(config.patrons).length
-            ? Object.keys(config.patrons).concat([config.ownerid])
-            : [config.ownerid];
-        for (const patUser of others) {
-            const user = patrons.find((p) => p.discordID === patUser);
-            if (!user) {
-                patrons.push({
-                    discordID: patUser,
-                    amount_cents: config.patrons[patUser],
-                });
-            }
-        }
-        return patrons;
     }
 
     // Get the cooldown for the given player
@@ -141,8 +90,8 @@ export default (Bot: BotType, client: BotClient) => {
     //      * Give them the best lowered times available to them
     //  - If the user isn't a subscriber, and no one in their server selected it
     //      * Give them the defaults set in the data/patreon.js file
-    Bot.getPlayerCooldown = async (userId: string, guildId?: string) => {
-        const patron = await Bot.getPatronUser(userId);
+    async getPlayerCooldown(userId: string, guildId?: string): Promise<{ player: number; guild: number }> {
+        const patron = await this.getPatronUser(userId);
 
         // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
         const supporterTier = await getGuildSupporterTier({ cache: cache, guildId });
@@ -156,7 +105,7 @@ export default (Bot: BotType, client: BotClient) => {
               };
 
         // Grab the best times for the user themselves, patreon sub or not
-        const playerTier = getPatreonTier(patron);
+        const playerTier = this.getPatreonTier(patron);
         const playerTimes: { playerTime: number; guildTime: number } = tiers?.[playerTier] || tiers[0];
 
         // Return the best times available between the supporter and the user
@@ -164,11 +113,11 @@ export default (Bot: BotType, client: BotClient) => {
             player: playerTimes?.playerTime < supporterTimes?.playerTime ? playerTimes.playerTime : supporterTimes.playerTime,
             guild: playerTimes?.guildTime < supporterTimes?.guildTime ? playerTimes.guildTime : supporterTimes.guildTime,
         };
-    };
+    }
 
     // Check for updated ranks
-    Bot.getRanks = async () => {
-        const patrons = await getActivePatrons();
+    async getRanks(): Promise<void> {
+        const patrons = await this.getActivePatrons();
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
             const user: UserConfig = await userReg.getUser(patron.discordID);
@@ -194,7 +143,7 @@ export default (Bot: BotType, client: BotClient) => {
                     player = playerRes?.[0] || null;
                 } catch (e) {
                     // Wait since it won't happen later when something breaks
-                    await Bot.wait(750);
+                    await wait(750);
                     logger.error(`Broke in getRanks: ${e}`);
                     return;
                 }
@@ -224,25 +173,25 @@ export default (Bot: BotType, client: BotClient) => {
                 }
 
                 // Handle character arena alerts
-                await handleArenaAlerts("char", player, acc, user, patron);
+                await this.handleArenaAlerts("char", player, acc, user, patron);
 
                 // Handle ship arena alerts
-                await handleArenaAlerts("ship", player, acc, user, patron);
+                await this.handleArenaAlerts("ship", player, acc, user, patron);
                 if (patron.amount_cents < TIER_5_CENTS) {
                     user.accounts[user.accounts.findIndex((a) => a.primary)] = acc;
                 } else {
                     user.accounts[ix] = acc;
                 }
                 // Wait here in case of extra accounts
-                await Bot.wait(750);
+                await wait(750);
             }
             await userReg.updateUser(patron.discordID, user);
         }
-    };
+    }
 
     // Send/ update a shard payout times message (Automated shardtimes)
-    Bot.shardTimes = async () => {
-        const patrons = await getActivePatrons();
+    async shardTimes(): Promise<void> {
+        const patrons = await this.getActivePatrons();
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = await userReg.getUser(patron.discordID);
@@ -266,18 +215,18 @@ export default (Bot: BotType, client: BotClient) => {
 
             // If char is enabled, send it there
             if (aw?.payout?.char?.enabled && aw.payout.char.channel) {
-                const playerTimes = getPayoutTimes(players, "char");
-                const formattedEmbed = formatPayouts(playerTimes, "char");
-                const sentMessage = (await sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed)) as Message;
+                const playerTimes = this.getPayoutTimes(players, "char");
+                const formattedEmbed = this.formatPayouts(playerTimes, "char");
+                const sentMessage = (await this.sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed)) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.char.msgID = sentMessage.id;
                 }
             }
             // Then if fleet is enabled, send it there as well/ instead
             if (aw.payout?.fleet?.enabled && aw.payout.fleet.channel) {
-                const playerTimes = getPayoutTimes(players, "fleet");
-                const formattedEmbed = formatPayouts(playerTimes, "fleet");
-                const sentMessage = (await sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed)) as Message;
+                const playerTimes = this.getPayoutTimes(players, "fleet");
+                const formattedEmbed = this.formatPayouts(playerTimes, "fleet");
+                const sentMessage = (await this.sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed)) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.fleet.msgID = sentMessage.id;
                 }
@@ -285,78 +234,11 @@ export default (Bot: BotType, client: BotClient) => {
             // Update the user in case something changed (Likely message ID)
             await userReg.updateUser(patron.discordID, user);
         }
-    };
-
-    // Format the output for the payouts embed
-    function formatPayouts(players: ArenaWatchAcct[], arena: "char" | "fleet") {
-        const times = new Map<string, { players: ArenaWatchAcct[] }>();
-        const arenaString = `last${toProperCase(arena === "fleet" ? "ship" : arena)}`;
-
-        for (const player of players) {
-            const rankString = player[arenaString].toString().padStart(3);
-            player.outString = expandSpaces(
-                `**\`${constants.zws} ${rankString} ${constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`,
-            );
-            const existingTime = times.get(player.timeTil);
-            if (existingTime) {
-                existingTime.players.push(player);
-            } else {
-                times.set(player.timeTil, {
-                    players: [player],
-                });
-            }
-        }
-        const fieldOut = [];
-        for (const [key, time] of times.entries()) {
-            fieldOut.push({
-                name: `PO in ${key}`,
-                value: time.players
-                    .sort((a: ArenaWatchAcct, b: ArenaWatchAcct) => a[arenaString] - b[arenaString])
-                    .map((p: ArenaWatchAcct) => p.outString)
-                    .join("\n"),
-            });
-        }
-        return {
-            title: "Payout Schedule",
-            description: "=".repeat(25),
-            fields: fieldOut,
-            timestamp: new Date().toISOString(),
-        };
-    }
-
-    // Go through the given list and return how long til payouts
-    function getPayoutTimes(players: ArenaWatchAcct[], arena: "char" | "fleet") {
-        for (const player of players) {
-            if (!player.poOffset && player.poOffset !== 0) continue;
-
-            const timeLeft = getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
-            player.duration = Math.floor(timeLeft / minMS);
-            player.timeTil = `${formatDuration(timeLeft, Bot.languages[defaultSettings.language])} until payout.`;
-        }
-        return players.sort((a, b) => (a.duration > b.duration ? 1 : -1));
-    }
-
-    // Go through a given list and get the payout times for both arenas
-    function getAllPayoutTimes(player: ArenaWatchAcct) {
-        const payout = {
-            poOffset: player.poOffset,
-            charDuration: null,
-            charTimeTil: null,
-            fleetDuration: null,
-            fleetTimeTil: null,
-        };
-        for (const arena of ["fleet", "char"] as const) {
-            if (!payout.poOffset && payout.poOffset !== 0) continue;
-            const timeLeft = getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
-            payout[`${arena}Duration`] = Math.floor(timeLeft / minMS);
-            payout[`${arena}TimeTil`] = `${formatDuration(timeLeft, Bot.languages[defaultSettings.language])} until payout.`;
-        }
-        return payout;
     }
 
     // Check for updated ranks across up to 50 players
-    Bot.shardRanks = async () => {
-        const patrons = await getActivePatrons();
+    async shardRanks(): Promise<void> {
+        const patrons = await this.getActivePatrons();
         for (const patron of patrons) {
             const compChar = []; // Array to keep track of allycode, toRank, and fromRank
             const compShip = []; // Array to keep track of allycode, toRank, and fromRank
@@ -471,7 +353,7 @@ export default (Bot: BotType, client: BotClient) => {
                 }
 
                 if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
-                    const payouts = getAllPayoutTimes(player);
+                    const payouts = this.getAllPayoutTimes(player);
                     let pName = player.mention ? `<@${player.mention}>` : player.name;
                     if (aw.useMarksInLog && player.mark) {
                         pName = `${player.mark} ${pName}`;
@@ -499,10 +381,10 @@ export default (Bot: BotType, client: BotClient) => {
             });
 
             if (compChar.length && aw.arena?.char.enabled) {
-                charOut = charOut.concat(checkRanks(compChar, aw));
+                charOut = charOut.concat(this.checkRanks(compChar, aw));
             }
             if (compShip.length && aw.arena?.fleet.enabled) {
-                shipOut = shipOut.concat(checkRanks(compShip, aw));
+                shipOut = shipOut.concat(this.checkRanks(compShip, aw));
             }
 
             const charFields = [];
@@ -523,7 +405,7 @@ export default (Bot: BotType, client: BotClient) => {
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
                     // If they're both set to the same channel, send it all
                     const fields = charFields.concat(shipFields);
-                    client.shard.broadcastEval(
+                    this.client.shard.broadcastEval(
                         (client, { aw, fields }) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (
@@ -540,7 +422,7 @@ export default (Bot: BotType, client: BotClient) => {
                 } else {
                     // Else they each have their own channels, so send em there
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
-                        client.shard.broadcastEval(
+                        this.client.shard.broadcastEval(
                             (client, { aw, charFields }) => {
                                 const chan = client.channels.cache.get(aw.arena.char.channel);
                                 if (
@@ -556,7 +438,7 @@ export default (Bot: BotType, client: BotClient) => {
                         );
                     }
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
-                        client.shard.broadcastEval(
+                        this.client.shard.broadcastEval(
                             (client, { aw, shipFields }) => {
                                 const chan = client.channels.cache.get(aw.arena.fleet.channel);
                                 if (
@@ -574,53 +456,10 @@ export default (Bot: BotType, client: BotClient) => {
                 }
             }
         }
-    };
-
-    // Compare ranks to see if we have both sides of the fight or not
-    function checkRanks(
-        inArr: { allyCode: string; name: string; oldRank: number; newRank: number; mark: string }[],
-        aw: UserConfig["arenaWatch"],
-    ) {
-        const checked = [];
-        const outArr = [];
-        if (aw.showvs) {
-            // If the setting is on, show when the ranks match up
-            for (let ix = 0; ix < inArr.length; ix++) {
-                for (let jx = 0; jx < inArr.length; jx++) {
-                    const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
-                    if (!isChecked && inArr[ix].oldRank === inArr[jx].newRank && inArr[ix].newRank === inArr[jx].oldRank) {
-                        // Then they likely swapped spots
-                        const ixName = inArr[ix].mark && aw.useMarksInLog ? `${inArr[ix].mark} ${inArr[ix].name}` : inArr[ix].name;
-                        const jxName = inArr[jx].mark && aw.useMarksInLog ? `${inArr[jx].mark} ${inArr[jx].name}` : inArr[jx].name;
-                        if (inArr[ix].oldRank > inArr[ix].newRank) {
-                            outArr.push(`${ixName} has hit ${jxName} down from ${inArr[jx].oldRank} to ${inArr[jx].newRank}`);
-                        } else {
-                            outArr.push(`${jxName} has hit ${ixName} down from ${inArr[ix].oldRank} to ${inArr[ix].newRank}`);
-                        }
-
-                        // Put the players into the checked array so we can make sure not to log it twice
-                        checked.push(inArr[ix].allyCode);
-                        checked.push(inArr[jx].allyCode);
-                    }
-                }
-            }
-        }
-        // Then check for anyone that wasn't matched up with a partner
-        for (const player of inArr) {
-            if (!checked.includes(player.allyCode)) {
-                const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
-                if (player.oldRank < player.newRank && aw.report !== "climb") {
-                    outArr.push(`${pName} has dropped from ${player.oldRank} to ${player.newRank}`);
-                } else if (aw.report !== "drop") {
-                    outArr.push(`${pName} has climbed from ${player.oldRank} to ${player.newRank}`);
-                }
-            }
-        }
-        return outArr;
     }
 
-    Bot.guildsUpdate = async () => {
-        const patrons = await getActivePatrons();
+    async guildsUpdate(): Promise<void> {
+        const patrons = await this.getActivePatrons();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
@@ -642,13 +481,13 @@ export default (Bot: BotType, client: BotClient) => {
             // }
 
             // Check if the bot is able to send messages into the set channel
-            const chanAvail = await isChannelAvailable(gu.channel);
+            const chanAvail = await this.isChannelAvailable(gu.channel);
 
             // If the channel is not available, move on
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            let guild: SWAPIGuild = null;
+            let guild = null;
             try {
                 guild = await swgohAPI.guild(gu.allycode);
             } catch (err) {
@@ -705,7 +544,7 @@ export default (Bot: BotType, client: BotClient) => {
             const fieldsOut = chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
-                await client.shard.broadcastEval(
+                await this.client.shard.broadcastEval(
                     async (client, { guChan, fieldChunk }) => {
                         const channel = client.channels.cache.get(guChan);
                         if (
@@ -734,14 +573,317 @@ export default (Bot: BotType, client: BotClient) => {
                 );
             }
         }
-    };
+    }
+
+    // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
+    async guildTickets(): Promise<void> {
+        const patrons = await this.getActivePatrons();
+        const nowTime = Date.now();
+        for (const patron of patrons) {
+            // Make sure to pass if there's no DiscordId or not at least in the $1 tier
+            if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
+
+            // This is what will be in the user.guildTickets
+            // gt = {
+            //     enabled:  false,                 // If it's enabled or not
+            //     allycode: 123123123,             // Ally code to watch the guild of
+            //     channel:  channelID,             // The channel to log all this into
+            //     sortBy:   "name" / "tickets",    // What to sort the list by (Defaults to name)
+            //     tickets: 600,                    // The ticket count to consider players to be finished at (Defaults to the game's max of 600)
+            //     updateType: "msg" / "update",    // Whether to send one message before the ticket reset, or update a message every 5min
+            //
+            //     // NOTE The following are automatically set (Not user-changeable)
+            //     msgId: messageID,                    // The ID for the saved message, if we're updating it each time
+            //     // NOTE This can help it not be checked constantly, for the msg type, so less game pulls
+            //     nextChallengesRefresh: refreshTime,  // The last rawGuild.nextChallengesRefresh that was checked
+            // }
+
+            // Get the user's saved data
+            const user = await userReg.getUser(patron.discordID);
+
+            // If the guild update isn't enabled, or is missing some needed info, move along
+            const gt = user?.guildTickets;
+            if (!gt?.enabled) continue;
+            if (!gt?.allycode) continue;
+            if (!gt?.channel) continue;
+
+            const MAX_TICKETS = gt?.tickets || 600;
+            const isMsgType = gt?.updateType === "msg";
+
+            // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
+            const refresh = Number.parseInt(gt.nextChallengesRefresh, 10);
+            if (isMsgType && refresh && !this.isWithinTime(refresh, nowTime, 1, 5) && refresh > nowTime) {
+                continue;
+            }
+
+            // Check if the bot is able to send messages into the set channel
+            const chanAvail = await this.isChannelAvailable(gt.channel);
+
+            // If the channel is not available, move on
+            if (!chanAvail) continue;
+
+            // Get any updates for the guild
+            let rawGuild = null;
+            try {
+                rawGuild = await swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
+            } catch (err) {
+                if (err.toString().includes("not in a guild")) continue;
+                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
+                continue;
+            }
+
+            // Set the nextChallengesRefresh to avoid extra api calls in the future
+            if (gt?.nextChallengesRefresh !== rawGuild?.nextChallengesRefresh && rawGuild?.nextChallengesRefresh) {
+                gt.nextChallengesRefresh = rawGuild.nextChallengesRefresh;
+            }
+
+            if (!rawGuild?.roster?.length) {
+                logger.error(
+                    `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${JSON.stringify(rawGuild)}`,
+                );
+                return;
+            }
+
+            let roster = null;
+            if (gt.sortBy === "tickets") {
+                roster = rawGuild.roster.sort((a, b) =>
+                    Number.parseInt(a.memberContribution[2]?.currentValue, 10) > Number.parseInt(b.memberContribution[2]?.currentValue, 10)
+                        ? 1
+                        : -1,
+                );
+            } else {
+                roster = rawGuild.roster.sort((a, b) => (a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1));
+            }
+
+            let timeUntilReset = null;
+            const refreshTime = Number.parseInt(rawGuild.nextChallengesRefresh, 10) * 1000;
+
+            if (refreshTime > nowTime) {
+                // It's in the future
+                timeUntilReset = formatDuration(refreshTime - nowTime, Language.getLanguages()[defaultSettings.language]);
+            } else {
+                // It's in the past, so calculate the next time
+                timeUntilReset = formatDuration(refreshTime + constants.dayMS - nowTime, Language.getLanguages()[defaultSettings.language]);
+            }
+
+            // If the user only wants the message, and we didn't have a saved refreshTime for them, check here
+            if (isMsgType && !this.isWithinTime(refreshTime, nowTime, 1, 5)) {
+                continue;
+            }
+
+            let maxed = 0;
+            const outArr = [];
+            for (const member of roster) {
+                const tickets = member.memberContribution["2"].currentValue;
+                if (tickets < MAX_TICKETS) {
+                    outArr.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
+                } else if (isMsgType || gt?.showMax) {
+                    // Bold/ italicise the maxed players' counts
+                    outArr.push(expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${`**${member.playerName}**`}`));
+                } else {
+                    maxed += 1;
+                }
+            }
+            const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
+            const maxedString = maxed > 0 ? `**${maxed}** members with ${MAX_TICKETS} tickets\n\n` : "";
+            const outEmbed = {
+                author: {
+                    name: `${rawGuild.profile.name}'s Ticket Counts`,
+                },
+                description: `${timeTilString}${maxedString}${outArr.join("\n")}`,
+                timestamp: new Date().toISOString(),
+            };
+
+            // If the user wants the messages just before each reset, send a new message instead of updating an old one
+            //  - Just don't send the msg ID
+            const sentMsg: Message = (await this.sendBroadcastMsg(
+                gt?.updateType === "msg" ? null : gt.msgId,
+                gt.channel,
+                outEmbed,
+            )) as Message;
+            if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
+                gt.msgId = sentMsg.id;
+                user.guildTickets = gt;
+                await userReg.updateUser(patron.discordID, user);
+            }
+        }
+    }
+
+    // Private helper methods
+
+    private getPatreonTier(user: { amount_cents: number } | null): number {
+        const patreonTiers = Object.keys(tiers).map((t) => Number.parseInt(t, 10));
+        const amount_dollars = (user?.amount_cents || 0) / 100;
+        const minTier = Math.min(...patreonTiers);
+
+        // If no amount or less than minimum tier, return tier 0
+        if (!amount_dollars || amount_dollars < minTier) return 0;
+
+        let tierNum = minTier;
+        for (const tier of patreonTiers) {
+            if (amount_dollars >= tier) {
+                tierNum = tier;
+            } else {
+                return tierNum;
+            }
+        }
+        return tierNum;
+    }
+
+    // Get an array of all active patrons
+    private async getActivePatrons(): Promise<ActivePatron[]> {
+        let patrons = (await cache.get("swgohbot", "patrons", {})) as ActivePatron[];
+        patrons = patrons.filter((p) => !p.declined_since);
+        const others: string[] = Object.keys(config.patrons).length
+            ? Object.keys(config.patrons).concat([config.ownerid])
+            : [config.ownerid];
+        for (const patUser of others) {
+            const user = patrons.find((p) => p.discordID === patUser);
+            if (!user) {
+                patrons.push({
+                    discordID: patUser,
+                    amount_cents: config.patrons[patUser],
+                });
+            }
+        }
+        return patrons;
+    }
+
+    // Helper function to check if a channel is available and has proper permissions
+    private async isChannelAvailable(channelId: string): Promise<boolean> {
+        const channels = await this.client.shard.broadcastEval(
+            async (client, { chanId }) => {
+                const channel = client.channels.cache.get(chanId);
+                if (
+                    channel instanceof TextChannel &&
+                    channel?.guild &&
+                    channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                ) {
+                    return true;
+                }
+                return false;
+            },
+            { context: { chanId: channelId } },
+        );
+        return channels.some((ch) => !!ch);
+    }
+
+    // Format the output for the payouts embed
+    private formatPayouts(players: ArenaWatchAcct[], arena: "char" | "fleet") {
+        const times = new Map<string, { players: ArenaWatchAcct[] }>();
+        const arenaString = `last${toProperCase(arena === "fleet" ? "ship" : arena)}`;
+
+        for (const player of players) {
+            const rankString = player[arenaString].toString().padStart(3);
+            player.outString = expandSpaces(
+                `**\`${constants.zws} ${rankString} ${constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`,
+            );
+            const existingTime = times.get(player.timeTil);
+            if (existingTime) {
+                existingTime.players.push(player);
+            } else {
+                times.set(player.timeTil, {
+                    players: [player],
+                });
+            }
+        }
+        const fieldOut = [];
+        for (const [key, time] of times.entries()) {
+            fieldOut.push({
+                name: `PO in ${key}`,
+                value: time.players
+                    .sort((a: ArenaWatchAcct, b: ArenaWatchAcct) => a[arenaString] - b[arenaString])
+                    .map((p: ArenaWatchAcct) => p.outString)
+                    .join("\n"),
+            });
+        }
+        return {
+            title: "Payout Schedule",
+            description: "=".repeat(25),
+            fields: fieldOut,
+            timestamp: new Date().toISOString(),
+        };
+    }
+
+    // Go through the given list and return how long til payouts
+    private getPayoutTimes(players: ArenaWatchAcct[], arena: "char" | "fleet") {
+        for (const player of players) {
+            if (!player.poOffset && player.poOffset !== 0) continue;
+
+            const timeLeft = this.getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
+            player.duration = Math.floor(timeLeft / constants.minMS);
+            player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
+        }
+        return players.sort((a, b) => (a.duration > b.duration ? 1 : -1));
+    }
+
+    // Go through a given list and get the payout times for both arenas
+    private getAllPayoutTimes(player: ArenaWatchAcct) {
+        const payout = {
+            poOffset: player.poOffset,
+            charDuration: null,
+            charTimeTil: null,
+            fleetDuration: null,
+            fleetTimeTil: null,
+        };
+        for (const arena of ["fleet", "char"] as const) {
+            if (!payout.poOffset && payout.poOffset !== 0) continue;
+            const timeLeft = this.getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
+            payout[`${arena}Duration`] = Math.floor(timeLeft / constants.minMS);
+            payout[`${arena}TimeTil`] = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
+        }
+        return payout;
+    }
+
+    // Compare ranks to see if we have both sides of the fight or not
+    private checkRanks(
+        inArr: { allyCode: string; name: string; oldRank: number; newRank: number; mark: string }[],
+        aw: UserConfig["arenaWatch"],
+    ) {
+        const checked = [];
+        const outArr = [];
+        if (aw.showvs) {
+            // If the setting is on, show when the ranks match up
+            for (let ix = 0; ix < inArr.length; ix++) {
+                for (let jx = 0; jx < inArr.length; jx++) {
+                    const isChecked = checked.includes(inArr[ix].allyCode) || checked.includes(inArr[jx].allyCode);
+                    if (!isChecked && inArr[ix].oldRank === inArr[jx].newRank && inArr[ix].newRank === inArr[jx].oldRank) {
+                        // Then they likely swapped spots
+                        const ixName = inArr[ix].mark && aw.useMarksInLog ? `${inArr[ix].mark} ${inArr[ix].name}` : inArr[ix].name;
+                        const jxName = inArr[jx].mark && aw.useMarksInLog ? `${inArr[jx].mark} ${inArr[jx].name}` : inArr[jx].name;
+                        if (inArr[ix].oldRank > inArr[ix].newRank) {
+                            outArr.push(`${ixName} has hit ${jxName} down from ${inArr[jx].oldRank} to ${inArr[jx].newRank}`);
+                        } else {
+                            outArr.push(`${jxName} has hit ${ixName} down from ${inArr[ix].oldRank} to ${inArr[ix].newRank}`);
+                        }
+
+                        // Put the players into the checked array so we can make sure not to log it twice
+                        checked.push(inArr[ix].allyCode);
+                        checked.push(inArr[jx].allyCode);
+                    }
+                }
+            }
+        }
+        // Then check for anyone that wasn't matched up with a partner
+        for (const player of inArr) {
+            if (!checked.includes(player.allyCode)) {
+                const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
+                if (player.oldRank < player.newRank && aw.report !== "climb") {
+                    outArr.push(`${pName} has dropped from ${player.oldRank} to ${player.newRank}`);
+                } else if (aw.report !== "drop") {
+                    outArr.push(`${pName} has climbed from ${player.oldRank} to ${player.newRank}`);
+                }
+            }
+        }
+        return outArr;
+    }
 
     // Send updated messages to the given channel, and edit an old message if able & one is supplied
-    async function sendBroadcastMsg(msgId: string, channelId: string, outEmbed: Partial<Embed>) {
+    private async sendBroadcastMsg(msgId: string, channelId: string, outEmbed: Partial<Embed>) {
         // Use broadcastEval to check all shards for the channel, and if there's a valid message
         // there, edit it. If not, send a fresh copy of it.
         if (!channelId) return;
-        const messages = await client.shard.broadcastEval(
+        const messages = await this.client.shard.broadcastEval(
             async (client, { msgIdIn, chanIn, outEmbed }) => {
                 const channel = client.channels.cache.find((chan: TextChannel) => chan.id === chanIn || chan.name === chanIn);
 
@@ -787,137 +929,7 @@ export default (Bot: BotType, client: BotClient) => {
         return msg.length ? msg[0] : null;
     }
 
-    // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
-    Bot.guildTickets = async () => {
-        const patrons = await getActivePatrons();
-        const nowTime = Date.now();
-        for (const patron of patrons) {
-            // Make sure to pass if there's no DiscordId or not at least in the $1 tier
-            if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
-
-            // This is what will be in the user.guildTickets
-            // gt = {
-            //     enabled:  false,                 // If it's enabled or not
-            //     allycode: 123123123,             // Ally code to watch the guild of
-            //     channel:  channelID,             // The channel to log all this into
-            //     sortBy:   "name" / "tickets",    // What to sort the list by (Defaults to name)
-            //     tickets: 600,                    // The ticket count to consider players to be finished at (Defaults to the game's max of 600)
-            //     updateType: "msg" / "update",    // Whether to send one message before the ticket reset, or update a message every 5min
-            //
-            //     // NOTE The following are automatically set (Not user-changeable)
-            //     msgId: messageID,                    // The ID for the saved message, if we're updating it each time
-            //     // NOTE This can help it not be checked constantly, for the msg type, so less game pulls
-            //     nextChallengesRefresh: refreshTime,  // The last rawGuild.nextChallengesRefresh that was checked
-            // }
-
-            // Get the user's saved data
-            const user = await userReg.getUser(patron.discordID);
-
-            // If the guild update isn't enabled, or is missing some needed info, move along
-            const gt = user?.guildTickets;
-            if (!gt?.enabled) continue;
-            if (!gt?.allycode) continue;
-            if (!gt?.channel) continue;
-
-            const MAX_TICKETS = gt?.tickets || 600;
-            const isMsgType = gt?.updateType === "msg";
-
-            // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
-            const refresh = Number.parseInt(gt.nextChallengesRefresh, 10);
-            if (isMsgType && refresh && !isWithinTime(refresh, nowTime, 1, 5) && refresh > nowTime) {
-                continue;
-            }
-
-            // Check if the bot is able to send messages into the set channel
-            const chanAvail = await isChannelAvailable(gt.channel);
-
-            // If the channel is not available, move on
-            if (!chanAvail) continue;
-
-            // Get any updates for the guild
-            let rawGuild: RawGuild;
-            try {
-                rawGuild = await swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
-            } catch (err) {
-                if (err.toString().includes("not in a guild")) continue;
-                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
-                continue;
-            }
-
-            // Set the nextChallengesRefresh to avoid extra api calls in the future
-            if (gt?.nextChallengesRefresh !== rawGuild?.nextChallengesRefresh && rawGuild?.nextChallengesRefresh) {
-                gt.nextChallengesRefresh = rawGuild.nextChallengesRefresh;
-            }
-
-            if (!rawGuild?.roster?.length) {
-                logger.error(
-                    `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${JSON.stringify(rawGuild)}`,
-                );
-                return;
-            }
-
-            let roster = null;
-            if (gt.sortBy === "tickets") {
-                roster = rawGuild.roster.sort((a, b) =>
-                    Number.parseInt(a.memberContribution[2]?.currentValue, 10) > Number.parseInt(b.memberContribution[2]?.currentValue, 10)
-                        ? 1
-                        : -1,
-                );
-            } else {
-                roster = rawGuild.roster.sort((a, b) => (a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1));
-            }
-
-            let timeUntilReset = null;
-            const refreshTime = Number.parseInt(rawGuild.nextChallengesRefresh, 10) * 1000;
-
-            if (refreshTime > nowTime) {
-                // It's in the future
-                timeUntilReset = formatDuration(refreshTime - nowTime, Bot.languages[defaultSettings.language]);
-            } else {
-                // It's in the past, so calculate the next time
-                timeUntilReset = formatDuration(refreshTime + dayMS - nowTime, Bot.languages[defaultSettings.language]);
-            }
-
-            // If the user only wants the message, and we didn't have a saved refreshTime for them, check here
-            if (isMsgType && !isWithinTime(refreshTime, nowTime, 1, 5)) {
-                continue;
-            }
-
-            let maxed = 0;
-            const outArr = [];
-            for (const member of roster) {
-                const tickets = member.memberContribution["2"].currentValue;
-                if (tickets < MAX_TICKETS) {
-                    outArr.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
-                } else if (isMsgType || gt?.showMax) {
-                    // Bold/ italicise the maxed players' counts
-                    outArr.push(expandSpaces(`***\`${tickets.toString().padStart(3)}\`*** - ${`**${member.playerName}**`}`));
-                } else {
-                    maxed += 1;
-                }
-            }
-            const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
-            const maxedString = maxed > 0 ? `**${maxed}** members with ${MAX_TICKETS} tickets\n\n` : "";
-            const outEmbed = {
-                author: {
-                    name: `${rawGuild.profile.name}'s Ticket Counts`,
-                },
-                description: `${timeTilString}${maxedString}${outArr.join("\n")}`,
-                timestamp: new Date().toISOString(),
-            };
-
-            // If the user wants the messages just before each reset, send a new message instead of updating an old one
-            //  - Just don't send the msg ID
-            const sentMsg: Message = (await sendBroadcastMsg(gt?.updateType === "msg" ? null : gt.msgId, gt.channel, outEmbed)) as Message;
-            if (sentMsg && (!gt?.msgId || gt.msgId !== sentMsg.id)) {
-                gt.msgId = sentMsg.id;
-                user.guildTickets = gt;
-                await userReg.updateUser(patron.discordID, user);
-            }
-        }
-    };
-
-    function isWithinTime(targetTime: number, nowTime: number, min: number, max: number) {
+    private isWithinTime(targetTime: number, nowTime: number, min: number, max: number) {
         if (min >= max) throw new Error("[patreonFuncs / isWithinTime] Min MUST be less than max.");
         if (
             targetTime - min * 60_000 < nowTime || // min minutes before targetTime is past
@@ -929,17 +941,17 @@ export default (Bot: BotType, client: BotClient) => {
         return true;
     }
 
-    function getTimeLeft(offset: number, hrDiff: number) {
+    private getTimeLeft(offset: number, hrDiff: number) {
         const now = Date.now();
-        let then = dayMS - 1 + getUTCFromOffset(offset) - hrDiff * hrMS;
+        let then = constants.dayMS - 1 + getUTCFromOffset(offset) - hrDiff * constants.hrMS;
         if (then < now) {
-            then = then + dayMS;
+            then = then + constants.dayMS;
         }
         return then - now;
     }
 
     // Helper function to handle arena alerts for both character and ship arenas
-    async function handleArenaAlerts(
+    private async handleArenaAlerts(
         arenaType: "char" | "ship",
         player: PlayerArenaRes,
         acc: UserAcct,
@@ -973,11 +985,11 @@ export default (Bot: BotType, client: BotClient) => {
         if (!arenaData?.rank) return;
 
         if ([config.alertType, config.altType].includes(user.arenaAlert.arena)) {
-            const timeLeft = getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
-            const minTil = Math.floor(timeLeft / minMS);
-            const payoutTime = `${formatDuration(timeLeft, Bot.languages[defaultSettings.language])} until payout.`;
+            const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
+            const minTil = Math.floor(timeLeft / constants.minMS);
+            const payoutTime = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
 
-            const pUser = await client.users.fetch(patron.discordID);
+            const pUser = await this.client.users.fetch(patron.discordID);
             if (pUser) {
                 try {
                     // Payout warning
@@ -1043,4 +1055,10 @@ export default (Bot: BotType, client: BotClient) => {
         acc[config.climbKey] = currentClimb ? (arenaData.rank < currentRank ? arenaData.rank : currentClimb) : arenaData.rank;
         acc[config.rankKey] = arenaData.rank;
     }
-};
+}
+
+// Create and export a singleton instance
+const patreonFuncs = new PatreonFuncs();
+
+export default patreonFuncs;
+export { PatreonFuncs };

@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import cache from "../modules/cache.ts";
 import patreonInfo from "../data/patreon.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -78,7 +79,7 @@ export default class Patreon extends Command {
                 break;
             }
             case "cooldowns": {
-                const currentCooldowns = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id || null);
+                const currentCooldowns = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id || null);
                 return interaction.reply({
                     content: null,
                     embeds: [
@@ -98,7 +99,7 @@ export default class Patreon extends Command {
             case "set_server": {
                 // Grab the current server and set it to the user's selected server to support with their patreon subscription
                 //  - If they're not a subscriber, reply with an error
-                const pat = await Bot.getPatronUser(interaction.user.id);
+                const pat = await patreonFuncs.getPatronUser(interaction.user.id);
                 if (!pat) {
                     return super.error(
                         interaction,
@@ -145,7 +146,7 @@ export default class Patreon extends Command {
                 return super.success(interaction, "I've removed the server you'd set to share with.");
             }
             default: {
-                const pat = await Bot.getPatronUser(interaction.user.id);
+                const pat = await patreonFuncs.getPatronUser(interaction.user.id);
                 ephemeral = true;
 
                 if (!pat || pat.amount_cents < 100) {

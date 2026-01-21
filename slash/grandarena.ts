@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import { characters,ships } from "../data/constants/units.ts";
 import unitChecklist from "../data/unitChecklist.ts";
 import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -107,7 +108,7 @@ export default class GrandArena extends Command {
             }
         }
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let user1: SWAPIPlayer;
         let user2: SWAPIPlayer;
         if (!problemArr.length) {

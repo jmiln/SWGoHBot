@@ -2,7 +2,6 @@ import { readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
 import { MongoClient } from "mongodb";
-import Language from "./base/Language.ts";
 import config from "./config.js";
 import { characters, ships } from "./data/constants/units.ts";
 import help from "./data/help.ts";
@@ -74,9 +73,6 @@ processJourneyNames();
 // Load in stuff for the events command
 eventFuncs(Bot, client);
 
-// Load in stuff for patrons and such
-patreonFuncs(Bot, client);
-
 client.slashcmds = new Collection();
 
 const init = async () => {
@@ -91,8 +87,6 @@ const init = async () => {
     // Load the language files
     try {
         await reloadLanguages();
-        // Reference the static language registry in Bot for compatibility
-        Bot.languages = Language.getLanguages();
     } catch (err) {
         console.error(`[${myTime()}] Failed to load languages: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);
@@ -112,6 +106,9 @@ const init = async () => {
     } else {
         console.error(`[${myTime()}] Failed to load swapi: No swapiConfig found`);
     }
+
+    // Initialize patreon functions
+    patreonFuncs.init(client);
 
     Bot.omicrons = await sortOmicrons(cache);
 

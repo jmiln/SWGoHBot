@@ -1,10 +1,12 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import patreonInfo from "../data/patreon.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
@@ -114,7 +116,7 @@ export default class UserConf extends Command {
                             name: "bot_language",
                             description: "Set the language for the bot's text",
                             type: ApplicationCommandOptionType.String,
-                            choices: Object.keys(Bot.languages).map((lang) => {
+                            choices: Object.keys(Language.getLanguages()).map((lang) => {
                                 return {
                                     name: lang,
                                     value: lang,
@@ -143,12 +145,12 @@ export default class UserConf extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 
         const userID = interaction.user.id;
-        const cooldown = await Bot.getPlayerCooldown(userID, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(userID, interaction?.guild?.id);
 
         let user: UserConfig = await userReg.getUser(userID);
         if (!user) {
@@ -180,33 +182,32 @@ export default class UserConf extends Command {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
                     try {
-                        const playerRes = await swgohAPI.unitStats(allycode, cooldown);
+                        const playerRes = await swgohAPI.unitStats(Number(allycode), cooldown);
                         const player = playerRes?.[0] || null;
                         if (!player) {
-                            super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE"));
-                        } else {
-                            user.accounts.push({
-                                allyCode: allycode,
-                                name: player.name,
-                                primary: !user.accounts.length,
-                            });
-                            await userReg.updateUser(userID, user);
-                            return super.success(
-                                interaction,
-                                codeBlock(
-                                    "asciiDoc",
-                                    interaction.language.get(
-                                        "COMMAND_REGISTER_SUCCESS_DESC",
-                                        player,
-                                        player.allyCode.toString().match(/\d{3}/g).join("-"),
-                                        player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString(),
-                                    ),
-                                ),
-                                {
-                                    title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
-                                },
-                            );
+                            return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE"));
                         }
+                        user.accounts.push({
+                            allyCode: allycode,
+                            name: player.name,
+                            primary: !user.accounts.length,
+                        });
+                        await userReg.updateUser(userID, user);
+                        return super.success(
+                            interaction,
+                            codeBlock(
+                                "asciiDoc",
+                                interaction.language.get(
+                                    "COMMAND_REGISTER_SUCCESS_DESC",
+                                    player,
+                                    player.allyCode.toString().match(/\d{3}/g).join("-"),
+                                    player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString(),
+                                ),
+                            ),
+                            {
+                                title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
+                            },
+                        );
                     } catch (e) {
                         logger.error(`ERROR[UC AC ADD]: Incorrect Ally Code(${allycode}): ${e}`);
                         return super.error(
@@ -214,7 +215,6 @@ export default class UserConf extends Command {
                             `Something broke. Please make sure you've got the correct ally code${codeBlock(e.message)}`,
                         );
                     }
-                    break;
                 }
                 case "remove": {
                     // Remove specified ally code from the list,
@@ -240,13 +240,13 @@ export default class UserConf extends Command {
                 case "make_primary": {
                     // Set the specified ally code to be the primary one
                     const acc = user.accounts.find((a) => a.allyCode === allycode);
-                    const prim = user.accounts.find((a) => a.primary);
                     if (!acc) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
                     if (acc.primary) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
                     }
+                    const prim = user.accounts.find((a) => a.primary);
                     user.accounts = user.accounts.map((a) => {
                         if (a.primary) a.primary = false;
                         if (a.allyCode === allycode) a.primary = true;
@@ -255,14 +255,20 @@ export default class UserConf extends Command {
                     await userReg.updateUser(userID, user);
                     return super.success(
                         interaction,
-                        interaction.language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim.name, prim.allyCode, acc.name, acc.allyCode),
+                        interaction.language.get(
+                            "COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY",
+                            prim?.name,
+                            prim?.allyCode,
+                            acc.name,
+                            acc.allyCode,
+                        ),
                     );
                 }
             }
         } else {
             // They're not trying to work with the ally codes, so do other stuff
             switch (subCommand) {
-                case "arena_alert": {
+                case "arenaalert": {
                     // Work through enabledms, arena, payout result/ warning
                     const updateLog = [];
 
@@ -289,7 +295,7 @@ export default class UserConf extends Command {
 
                     // payoutWarning: int between 1 & 1440 (1 min to 1 day)
                     const payoutWarning = interaction.options.getInteger("payout_warning");
-                    if (payoutWarning < 0 || payoutWarning > 1440) {
+                    if (payoutWarning !== null && (payoutWarning < 0 || payoutWarning > 1440)) {
                         return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ARENA_INVALID_NUMBER"));
                     }
                     if (payoutWarning !== null) {
@@ -364,7 +370,7 @@ export default class UserConf extends Command {
                         ].join("\n"),
                     });
 
-                    const pat = await Bot.getPatronUser(interaction.user.id);
+                    const pat = await patreonFuncs.getPatronUser(interaction.user.id);
                     if (!pat || pat.amount_cents < 100) {
                         // If the user will not have any of the following settings, don't bother showing everything/ tell em what's available
                         const patreonValue = [

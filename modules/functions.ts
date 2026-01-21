@@ -1,5 +1,5 @@
 import { readdir } from "node:fs/promises";
-import { inspect, } from "node:util";
+import { inspect } from "node:util";
 import {
     type Client,
     type Embed,
@@ -808,7 +808,9 @@ export async function announceMsg({
     // If everything is ok, go ahead and try sending the message
     await chan.send(announceMessage).catch((err) => {
         // if (err.stack.toString().includes("user aborted a request")) return;
-        logger.error(`Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMessage}\n`);
+        logger.error(
+            `Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMessage}\n`,
+        );
     });
 }
 
@@ -835,34 +837,34 @@ export async function reloadLanguages(): Promise<Error | null> {
     return null;
 }
 
-    // Get the ally code of someone that's registered
-    export async function getAllyCode(interaction: BotInteraction, user: string | string[], useInteractionId = true) {
-        const otherCodeRegex = /^-\d{1,2}$/;
-        const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : user;
+// Get the ally code of someone that's registered
+export async function getAllyCode(interaction: BotInteraction, user: string | string[], useInteractionId = true) {
+    const otherCodeRegex = /^-\d{1,2}$/;
+    const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : user;
 
-        let userAcct: UserConfig | null = null;
-        if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {
-            // Grab the sender's primary code
-            userAcct = await userReg.getUser(interaction.user.id);
-        } else if (isUserID(userStr)) {
-            // Try to grab the primary code for the mentioned user
-            userAcct = await userReg.getUser(userStr.replace(/[^\d]*/g, ""));
-        } else if (isAllyCode(userStr)) {
-            // Otherwise, just scrap everything but numbers, and send it back
-            return userStr.replace(/[^\d]*/g, "");
-        }
-
-        if (userAcct?.accounts?.length) {
-            let account = null;
-            if (userStr?.match(otherCodeRegex)) {
-                // If it's a -1/ -2 code, try to grab the specified code
-                const index = Number.parseInt(userStr.replace("-", ""), 10) - 1;
-                account = userAcct.accounts[index];
-            } else {
-                // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
-                account = userAcct.accounts.find((a) => a.primary);
-            }
-            return account ? account.allyCode : null;
-        }
-        return null;
+    let userAcct: UserConfig | null = null;
+    if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {
+        // Grab the sender's primary code
+        userAcct = await userReg.getUser(interaction.user.id);
+    } else if (isUserID(userStr)) {
+        // Try to grab the primary code for the mentioned user
+        userAcct = await userReg.getUser(userStr.replace(/[^\d]*/g, ""));
+    } else if (isAllyCode(userStr)) {
+        // Otherwise, just scrap everything but numbers, and send it back
+        return userStr.replace(/[^\d]*/g, "");
     }
+
+    if (userAcct?.accounts?.length) {
+        let account = null;
+        if (userStr?.match(otherCodeRegex)) {
+            // If it's a -1/ -2 code, try to grab the specified code
+            const index = Number.parseInt(userStr.replace("-", ""), 10) - 1;
+            account = userAcct.accounts[index];
+        } else {
+            // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
+            account = userAcct.accounts.find((a) => a.primary);
+        }
+        return account ? account.allyCode : null;
+    }
+    return null;
+}

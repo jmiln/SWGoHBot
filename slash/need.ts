@@ -7,6 +7,7 @@ import cache from "../modules/cache.ts";
 import { getAllyCode,
 msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -103,7 +104,7 @@ export default class Need extends Command {
         }
         await interaction.reply({ content: "Please wait while I look up your data." });
 
-        const cooldown = await Bot.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let player: SWAPIPlayer;
         try {

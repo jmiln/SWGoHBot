@@ -62,6 +62,15 @@ class Cache implements BotCache {
             .toArray()) as T[];
     }
 
+    async getAggregate<T>(database: string, collection: string, aggregate: Document[]): Promise<T[]> {
+        if (!database) throw new Error("No database specified to get");
+        if (!collection) throw new Error("No collection specified to get");
+        if (!aggregate) throw new Error("No aggregate specified to get");
+
+        const dbo = this.mongo.db(database);
+        return (await dbo.collection(collection).aggregate(aggregate).toArray()) as T[];
+    }
+
     async getOne<T>(
         database: string,
         collection: string,
