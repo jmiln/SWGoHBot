@@ -1,5 +1,22 @@
-import type { AnyBulkWriteOperation, BulkWriteResult, DeleteResult, Document, Filter, ListIndexesCursor, MongoClient } from "mongodb";
+import type {
+    AnyBulkWriteOperation,
+    BulkWriteResult,
+    Collection,
+    DeleteResult,
+    Document,
+    Filter,
+    MatchKeysAndValues,
+    MongoClient,
+} from "mongodb";
 import type { BotCache } from "../types/cache_types.ts";
+
+// Define a common interface for things stored in cache
+interface Cacheable {
+    updated?: number;
+    updatedAt?: Date;
+    // biome-ignore lint/suspicious/noExplicitAny: Mongo's default ID
+    _id?: any;
+}
 
 class Cache implements BotCache {
     private mongo!: MongoClient;
@@ -11,124 +28,86 @@ class Cache implements BotCache {
         this.mongo = clientMongo;
     }
 
-    async put<T>(database: string, collection: string, matchCondition: Filter<T>, saveObject: T, autoUpdate = true): Promise<T> {
-        if (!database) throw new Error("No database specified to put");
-        if (!collection) throw new Error("No collection specified to put");
-        if (!matchCondition) throw new Error("No match condition specified to put");
-        if (!saveObject) throw new Error("No object provided to put");
+    private getCol<T extends Document>(dbName: string | undefined, collection: string): Collection<T> {
+        if (!dbName) throw new Error("Database name must be provided.");
+        return this.mongo.db(dbName).collection<T>(collection);
+    }
 
-        const dbo = this.mongo.db(database);
+    async put<T extends Cacheable>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        saveObject: T,
+        autoUpdate = true,
+    ): Promise<T> {
+        const col = this.getCol<T>(database, collection);
 
         if (autoUpdate) {
-            (saveObject as Document).updated = Date.now();
-            (saveObject as Document).updatedAt = new Date();
+            saveObject.updated = Date.now();
+            saveObject.updatedAt = new Date();
         }
 
-        // Remove _id from the update object to avoid "immutable field '_id'" error
-        const { _id, ...updateObject } = saveObject as Document;
+        // Destructure to ensure _id isn't sent in the $set payload
+        const { _id, ...updateData } = saveObject;
 
-        await dbo.collection(collection).updateOne(matchCondition, { $set: updateObject }, { upsert: true });
+        await col.updateOne(matchCondition, { $set: updateData as MatchKeysAndValues<T> }, { upsert: true });
 
         return saveObject;
     }
 
-    async putMany<T>(database: string, collection: string, saveObjectArray: readonly AnyBulkWriteOperation<T>[]): Promise<BulkWriteResult> {
-        if (!database) throw new Error("No database specified to putMany");
-        if (!collection) throw new Error("No collection specified to putMany");
-        if (!saveObjectArray?.length) throw new Error("Object array is empty or missing");
+    async putMany<T extends Document>(
+        database: string,
+        collection: string,
+        saveObjectArray: readonly AnyBulkWriteOperation<T>[],
+    ): Promise<BulkWriteResult> {
+        if (!saveObjectArray?.length) {
+            throw new Error("Object array is empty or missing");
+        }
 
-        const dbo = this.mongo.db(database);
-
-        return await dbo.collection(collection).bulkWrite(saveObjectArray as AnyBulkWriteOperation<Document>[]);
+        const col = this.getCol<T>(database, collection);
+        return await col.bulkWrite(saveObjectArray as AnyBulkWriteOperation<T>[]);
     }
 
-    async get<T>(
+    async get<T extends Document>(
         database: string,
         collection: string,
         matchCondition: Filter<T>,
-        projection?: Partial<Record<keyof T, 0 | 1>>,
+        projection?: Document,
         limit = 0,
     ): Promise<T[]> {
-        if (!database) throw new Error("No database specified to get");
-        if (!collection) throw new Error("No collection specified to get");
-        if (!matchCondition) throw new Error("No match condition specified to get");
-
-        const dbo = this.mongo.db(database);
-        return (await dbo
-            .collection(collection)
+        return (await this.getCol<T>(database, collection)
             .find(matchCondition)
             .limit(limit)
             .project(projection || {})
-            .toArray()) as T[];
+            .toArray()) as unknown as T[];
     }
 
-    async getAggregate<T>(database: string, collection: string, aggregate: Document[]): Promise<T[]> {
-        if (!database) throw new Error("No database specified to get");
-        if (!collection) throw new Error("No collection specified to get");
-        if (!aggregate) throw new Error("No aggregate specified to get");
-
-        const dbo = this.mongo.db(database);
-        return (await dbo.collection(collection).aggregate(aggregate).toArray()) as T[];
+    async getAggregate<T extends Document>(database: string, collection: string, aggregate: Document[]): Promise<T[]> {
+        const col = this.getCol<T>(database, collection);
+        return (await col.aggregate(aggregate).toArray()) as unknown as T[];
     }
 
-    async getOne<T>(
+    async getOne<T extends Document>(
         database: string,
         collection: string,
         matchCondition: Filter<T>,
-        projection?: Partial<Record<keyof T, 0 | 1>>,
-    ): Promise<T> {
-        if (!database) throw new Error("No database specified to get");
-        if (!collection) throw new Error("No collection specified to get");
-        if (!matchCondition) throw new Error("No match condition specified to get");
-
-        const dbo = this.mongo.db(database);
-        return (await dbo.collection<T>(collection).findOne(matchCondition, { projection: projection || {} })) as T;
+        projection?: Document,
+    ): Promise<T | null> {
+        return (await this.getCol<T>(database, collection).findOne(matchCondition, { projection })) as unknown as T;
     }
 
-    async remove<T>(database: string, collection: string, matchCondition: Filter<T>): Promise<DeleteResult> {
-        if (!database) throw new Error("No database specified to remove");
-        if (!collection) throw new Error("No collection specified to remove");
-        if (!matchCondition) throw new Error("No match condition specified to remove");
-
-        const dbo = this.mongo.db(database);
-        return await dbo.collection(collection).deleteOne(matchCondition);
-    }
-
-    async replace<T>(database: string, collection: string, matchCondition: Filter<T>, saveObject: T, autoUpdate = true): Promise<T> {
-        if (!database) throw new Error("No database specified to replace");
-        if (!collection) throw new Error("No collection specified to replace");
-        if (!saveObject) throw new Error("No object provided to replace");
-        if (!matchCondition) throw new Error("No match condition specified to replace");
-
-        const dbo = this.mongo.db(database);
-
-        if (autoUpdate) {
-            (saveObject as Document).updated = Date.now();
-            (saveObject as Document).updatedAt = new Date();
-        }
-
-        // Remove _id from the replacement object to avoid "immutable field '_id'" error
-        const { _id, ...replaceObject } = saveObject as Document;
-
-        await dbo.collection(collection).replaceOne(matchCondition, replaceObject, { upsert: true });
-
-        return saveObject;
+    async remove(database: string, collection: string, matchCondition: Filter<Document>): Promise<DeleteResult> {
+        return await this.getCol(database, collection).deleteOne(matchCondition);
     }
 
     async exists(database: string, collection: string, matchCondition: Filter<Document>): Promise<boolean> {
-        if (!database) throw new Error("No database specified to check the existence of");
-        if (!collection) throw new Error("No collection specified to check the existence of");
-        if (!matchCondition) throw new Error("No match condition specified to check the existence of");
-
-        const dbo = this.mongo.db(database);
-
-        const exists = await dbo.collection(collection).findOne(matchCondition);
-        return !!exists;
+        const count = await this.getCol(database, collection).countDocuments(matchCondition, { limit: 1 });
+        return count > 0;
     }
 
-    async checkIndexes(database: string, collection: string): Promise<ListIndexesCursor[]> {
-        const dbo = this.mongo.db(database);
-        return await dbo.collection(collection).listIndexes().toArray();
+    async checkIndexes(database: string, collection: string): Promise<Document[]> {
+        const col = this.getCol(database, collection);
+        return await col.listIndexes().toArray();
     }
 }
 
