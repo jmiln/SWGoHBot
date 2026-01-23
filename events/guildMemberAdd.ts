@@ -22,7 +22,7 @@ export default {
             .replace(/{{server}}/gi, member.guild.name);
 
         try {
-            await announceMsg({ client, guild: member.guild, announceMessage: welcomeMessage, guildConf });
+            await announceMsg({ client, guild: member.guild, announceMessage: welcomeMessage, channel: guildConf.announceChan, guildConf });
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
             logger.error(

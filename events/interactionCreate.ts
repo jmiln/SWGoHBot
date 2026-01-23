@@ -69,8 +69,8 @@ function filterAutocomplete(
 /**
  * Logs errors while filtering out common/expected Discord API errors
  */
-function logErr(Bot: BotType, errStr: string, useWebhook = false): void {
-    if (IGNORED_ERRORS.some((str) => errStr.includes(str))) return;
+function logErr(errStr: string, useWebhook = false): void {
+    // if (isIgnoredError(errStr)) return;
     logger.error(errStr, useWebhook);
 }
 
@@ -85,7 +85,7 @@ function isIgnoredError(err: unknown): boolean {
 /**
  * Sends an error reply to the user based on the interaction state
  */
-async function sendErrorReply(Bot: BotType, interaction: BotInteraction, commandName: string): Promise<void> {
+async function sendErrorReply(interaction: BotInteraction, commandName: string): Promise<void> {
     const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${constants.invite}`;
 
     try {
@@ -97,7 +97,7 @@ async function sendErrorReply(Bot: BotType, interaction: BotInteraction, command
             await interaction.reply({ content: replyContent, flags: MessageFlags.Ephemeral });
         }
     } catch (e) {
-        logErr(Bot, `[cmd:${commandName}] Error trying to send error message: ${String(e)}`);
+        logErr(`[cmd:${commandName}] Error trying to send error message: ${String(e)}`);
     }
 }
 
@@ -105,15 +105,15 @@ async function sendErrorReply(Bot: BotType, interaction: BotInteraction, command
  * Builds a unit list based on the option name (unit, character, or ship)
  */
 function buildUnitList(optionName: UnitOptionName, aliases: Array<{ isAlias: boolean; defId: string; alias: string }>) {
-    const aliasList = aliases?.map((al) => ({ ...al, isAlias: true })) || [];
+    const aliasList = aliases?.map((al) => ({ ...al, isAlias: true, aliases: [] })) || [];
 
     switch (optionName) {
         case "unit":
-            return [...aliasList, ...characterNameList, ...shipNameList];
+            return [...aliasList, ...characterNameList, ...shipNameList] as any;
         case "character":
-            return [...aliasList.filter((al) => characterNameList.some((cn) => cn.defId === al.defId)), ...characterNameList];
+            return [...aliasList.filter((al) => characterNameList.some((cn) => cn.defId === al.defId)), ...characterNameList] as any;
         case "ship":
-            return [...aliasList.filter((al) => shipNameList.some((sn) => sn.defId === al.defId)), ...shipNameList];
+            return [...aliasList.filter((al) => shipNameList.some((sn) => sn.defId === al.defId)), ...shipNameList] as any;
     }
 }
 
@@ -132,24 +132,21 @@ function formatUnitResults(units: Array<{ isAlias?: boolean; name: string; defId
 /**
  * Processes autocomplete for unit-related options
  */
-function processUnitAutocomplete(
-    focusedOption: { name: string; value: string },
-    aliases: Array<{ isAlias: boolean; defId: string; alias: string }>,
-) {
+function processUnitAutocomplete(focusedOption: { name: string; value: string }, aliases: any) {
     if (!UNIT_OPTION_NAMES.includes(focusedOption.name as UnitOptionName)) {
         return [];
     }
 
-    const unitList = buildUnitList(focusedOption.name as UnitOptionName, aliases);
-    const filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
-    return formatUnitResults(filtered);
+    const unitList = buildUnitList(focusedOption.name as UnitOptionName, aliases as any);
+    const filtered = filterAutocomplete(unitList as any, focusedOption.value?.toLowerCase());
+    return formatUnitResults(filtered as any);
 }
 
 /**
  * Handles autocomplete interactions
  */
 async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd: slashCommand): Promise<void> {
-    const focusedOption = interaction.options.getFocused(true);
+    const focusedOption = (interaction as any).options.getFocused(true);
 
     // If command has custom autocomplete handler, use it
     if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
@@ -165,7 +162,7 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
 
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
-            const journeyFiltered = filterAutocomplete(Bot.journeyNames, focusedOption.value?.toLowerCase());
+            const journeyFiltered = filterAutocomplete(Bot.journeyNames as any, focusedOption.value?.toLowerCase());
             filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
         } else if (focusedOption.name === "command") {
             // Process command name autocomplete
@@ -173,10 +170,10 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
             filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
         } else {
             // Process unit/character/ship autocomplete
-            filtered = processUnitAutocomplete(focusedOption, aliases);
+            filtered = processUnitAutocomplete(focusedOption, aliases as any);
         }
     } catch (err) {
-        logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);
+        logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);
         console.error("Autocomplete error details:", err);
     }
 
@@ -190,11 +187,11 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
         if (ignoredError) {
             // Only log non-silent errors
             if (!AUTOCOMPLETE_SILENT_ERRORS.includes(ignoredError)) {
-                logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Ignoring error: ${ignoredError}`);
+                logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Ignoring error: ${ignoredError}`);
             }
         } else {
             // Log unexpected errors
-            logErr(Bot, `[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unexpected error: ${String(err)}`);
+            logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unexpected error: ${String(err)}`);
             console.error("Autocomplete response error:", err);
         }
     }
@@ -229,6 +226,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
     try {
         await cmd.run(Bot, interaction, { level });
     } catch (err) {
+        console.error(err);
         // Special handling for test command
         if (cmd.commandData.name === "test") {
             console.log(
@@ -240,17 +238,16 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
         // Log the error
         if (isIgnoredError(err)) {
             const firstLine = err?.toString().split("\n")[0] || String(err);
-            logErr(Bot, `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${firstLine}`);
+            logErr(`ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${firstLine}`);
         } else {
             logErr(
-                Bot,
                 `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, { depth: 5 })} \n${inspect(err, { depth: 5 })}`,
                 true,
             );
         }
 
         // Send error reply to user
-        await sendErrorReply(Bot, interaction, cmd.commandData.name);
+        await sendErrorReply(interaction, cmd.commandData.name);
     }
 }
 
@@ -268,8 +265,8 @@ export default {
         // Route to appropriate handler
         if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(Bot, interaction, cmd);
-        } else if (interaction.isAutocomplete()) {
-            await handleAutocomplete(Bot, interaction, cmd);
+        } else if ((interaction as any).isAutocomplete()) {
+            await handleAutocomplete(Bot, interaction as any, cmd);
         }
     },
 };

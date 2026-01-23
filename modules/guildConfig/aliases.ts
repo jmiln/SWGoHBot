@@ -5,7 +5,7 @@ import type { GuildAlias } from "../../types/types.ts";
 export async function getGuildAliases({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildAlias[]> {
     if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
-    return resArr[0]?.aliases || [];
+    return (resArr[0]?.aliases || []) as GuildAlias[];
 }
 
 export async function setGuildAliases({

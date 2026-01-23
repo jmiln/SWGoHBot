@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
-import { characters,ships } from "../data/constants/units.ts";
+import { characters, journeyReqs, ships } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -50,7 +50,7 @@ export default class Panic extends Command {
 
         // Grab the player's info
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const playerArr = await swgohAPI.unitStats(allycode, cooldown);
+        const playerArr = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
 
         const player = playerArr[0];
         if (!player?.roster)

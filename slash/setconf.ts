@@ -272,7 +272,7 @@ export default class SetConf extends Command {
                 settingStr = interaction.options.getBoolean(optionKey);
                 if (["enable_part", "enable_welcome"].includes(key) && settingStr === true) {
                     // If they're trying to enable the welcome or part message, make sure there's an announcement channel set up
-                    if (!guildConf.announce_chan?.length) {
+                    if (!guildConf.announceChan?.length) {
                         await interaction.channel.send(
                             "The welcome and parting messages will not work without an announcement channel set.",
                         );

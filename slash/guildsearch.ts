@@ -411,7 +411,7 @@ export default class GuildSearch extends Command {
             const footerStr = updatedFooterStr(guild.updated, interaction);
             return super.error(interaction, desc, {
                 title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
-                description: footerStr,
+                footer: footerStr,
             });
         }
 

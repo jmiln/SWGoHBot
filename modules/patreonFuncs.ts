@@ -984,7 +984,7 @@ class PatreonFuncs {
 
         if (!arenaData?.rank) return;
 
-        if ([config.alertType, config.altType].includes(user.arenaAlert.arena)) {
+        if ([config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")) {
             const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
             const minTil = Math.floor(timeLeft / constants.minMS);
             const payoutTime = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;

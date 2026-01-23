@@ -4,7 +4,7 @@ import type { GuildConfigShardTimes } from "../../types/guildConfig_types.ts";
 
 export async function getGuildShardTimes({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigShardTimes[]> {
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { shardtimes: 1 });
-    return resArr[0]?.shardtimes || [];
+    return (resArr[0]?.shardtimes || []) as GuildConfigShardTimes[];
 }
 
 export async function setGuildShardTimes({ cache, guildId, stOut }: { cache: BotCache; guildId: string; stOut: GuildConfigShardTimes[] }) {

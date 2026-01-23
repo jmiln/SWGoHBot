@@ -181,7 +181,7 @@ export default class Charactergear extends Command {
             // Looking for a player's remaining needed gear
             const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
-            const playerArr = await swgohAPI.unitStats(allycode, cooldown);
+            const playerArr = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             if (Array.isArray(playerArr)) player = playerArr[0];
 
             if (!player?.roster) {
@@ -314,7 +314,7 @@ async function expandPieces(Bot: BotType, list: string[]) {
             },
         );
 
-        const pieces = await getParts(Bot, gr);
+        const pieces = await getParts(Bot, gr as any);
         end = end.concat(pieces);
     }
 
@@ -337,7 +337,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
     if (!gr) return [];
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {
-        const recArr: SWAPIRecipe = await cache.get(
+        const recArr = await cache.get(
             config.mongodb.swapidb,
             "recipes",
             {
@@ -349,7 +349,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
                 _id: 0,
             },
         );
-        const rec = recArr[0];
+        const rec = recArr[0] as SWAPIRecipe;
         if (!rec) return [];
         if (!Array.isArray(rec) && !rec?.ingredients) return [];
         const thisRec = rec.ingredients.filter((r: SWAPIIngredient) => r.id !== "GRIND");
@@ -367,7 +367,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
                     _id: 0,
                 },
             );
-            await getParts(Bot, gear, partList, amt * r.maxQuantity);
+            await getParts(Bot, gear as any, partList, amt * r.maxQuantity);
         }
     } else {
         let mk = gearPiece.nameKey.split(" ")[1];

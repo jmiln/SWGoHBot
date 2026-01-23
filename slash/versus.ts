@@ -218,7 +218,7 @@ export default class Versus extends Command {
             });
         }
 
-        const langChar = await swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId });
+        const langChar = await swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId }, interaction.swgohLanguage);
         const charName = langChar.nameKey;
         const statTable = makeTable(
             {

@@ -93,7 +93,7 @@ export default class Zetas extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);

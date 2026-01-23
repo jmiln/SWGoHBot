@@ -138,7 +138,7 @@ export default class TerritoryWar extends Command {
         await interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES");
+        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as { charGP: string; shipGP: string; zetas: string; twOmicrons: string; omicrons: string };
 
         // An array to stick all the fields in as we go.
         const fields = [];

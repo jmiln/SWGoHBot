@@ -693,7 +693,7 @@ export default class Guilds extends Command {
 
             let rawGuild: RawGuild;
             try {
-                rawGuild = await swgohAPI.getRawGuild(userAC);
+                rawGuild = (await swgohAPI.getRawGuild(userAC)) as any;
             } catch (err) {
                 return interaction.editReply({ content: err.toString() });
             }

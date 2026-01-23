@@ -1,22 +1,9 @@
-import type {
-    BaseInteraction,
-    ChatInputCommandInteraction,
-    Client,
-    Collection,
-    Guild,
-    GuildMember,
-    IntentsBitField,
-    Interaction,
-    Partials,
-    TextChannel,
-} from "discord.js";
+import type { BaseInteraction, ChatInputCommandInteraction, Client, Collection, Guild, IntentsBitField, Partials } from "discord.js";
 import type { MongoClient } from "mongodb";
-import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
-import type { BotCache } from "./cache_types.ts";
-import type { GuildConfigEvent,GuildConfigSettings } from "./guildConfig_types.ts";
-import type { ComlinkAbility, RawCharacter, RawGuild, SWAPIGuild, SWAPILang, SWAPIPlayer, SWAPIUnit } from "./swapi_types.ts";
+import type { GuildConfigEvent, GuildConfigSettings } from "./guildConfig_types.ts";
+import type { SWAPILang } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
     player: number;
@@ -39,19 +26,6 @@ export interface LangHelpStrs {
 // All the mess we cram into the Bot object
 // - Should probably just make em get imported as needed instead
 export interface BotType {
-    // Basic utility functions
-    getAllyCode: (message: Interaction, userId: string, useMessageId?: boolean) => Promise<string>;
-    isAllyCode: (allyCode: string | number) => boolean;
-    isUserMention: (userMention: string) => boolean;
-    getUserID: (userMention: string) => string;
-    isUserID: (userID: string) => boolean;
-    isChannelId: (channelId: string) => boolean;
-    isChannelMention: (mention: string) => boolean;
-    isRoleMention: (mention: string) => boolean;
-    isMain: () => boolean;
-    toProperCase(strIn: string): string;
-    deployCommands(force?: boolean): Promise<string>;
-
     // Scheduled events
     manageEvents: (eventsList: GuildConfigEvent[]) => void;
     sendWebhook: (webhookURL: string, data: object) => void;
@@ -62,58 +36,13 @@ export interface BotType {
     guildCount: () => Promise<number>;
     userCount: () => Promise<number>;
     shardId: number;
-    swgohLangList: SWAPILang[];
-
-    // Game strings
-    characters: BotUnit[];
-    ships: BotUnit[];
-    journeyNames: {
-        defId: string;
-        name: string;
-        aliases: string[];
-    }[];
-    journeyReqs: JourneyReqs[];
-    CharacterNames: {
-        name: string;
-        defId: string;
-        aliases: string[];
-    }[];
-    ShipNames: {
-        name: string;
-        defId: string;
-        aliases: string[];
-    }[];
-    acronyms: {
-        [key: string]: string;
-    };
-    arenaJumps: {
-        [key: string]: number;
-    };
-    charLocs: UnitLocation[];
-    shipLocs: {
-        name: string;
-        defId: string;
-        locations: {
-            type: string;
-            locId: string;
-            name?: string;
-            level?: string;
-        }[];
-    }[];
-    raidNames: {
-        [key: string]: {
-            [key: string]: string;
-            aat: string;
-            rancor: string;
-            rancor_challenge: string;
-            sith_raid: string;
-            kraytdragon: string;
-            heroic: string;
-            speederbike: string;
-            naboo: string;
-            order66: string;
-        };
-    };
+    socket: any;
+    journeyNames: any[];
+    journeyReqs: any;
+    deployCommands: (force?: boolean) => Promise<string>;
+    languages: any;
+    cache: any;
+    userReg: any;
 
     omicrons: {
         tw: string[];
@@ -134,97 +63,15 @@ export interface BotType {
         other: string[];
     }>;
 
-    // swapi functs
-    swgohAPI: {
-        unitStats: (
-            allyCodes: string | string[] | number | number[],
-            cooldown?: PlayerCooldown,
-            options?: { force?: boolean; defId?: string },
-        ) => Promise<SWAPIPlayer[]>;
-        guildUnitStats: (allyCodes: number[], defId: string, cooldown?: PlayerCooldown) => Promise<SWAPIUnit[]>;
-        getCharacter: (defId: string, lang?: SWAPILang) => Promise<RawCharacter>;
-        getPlayersArena: (allyCodes: number | number[]) => Promise<PlayerArenaRes[]>;
-        langChar: (char: Partial<SWAPIUnit>, lang?: SWAPILang) => Promise<Partial<SWAPIUnit>>;
-        units: (defId: string, lang?: SWAPILang) => Promise<SWAPIUnit>;
-        guild: (allycode: number | string, cooldown?: PlayerCooldown) => Promise<SWAPIGuild>;
-        getRawGuild: (allycode: number, cooldown?: PlayerCooldown, options?: { forceUpdate?: boolean }) => Promise<RawGuild>;
-        getPlayerUpdates: (allycodes: number | number[]) => Promise<PlayerUpdates>;
-        playerByName: (name: string, limit?: number) => Promise<SWAPIPlayer[]>;
-        abilities: (
-            skillArray: string | string[],
-            lang?: SWAPILang,
-            opts?: { min?: boolean },
-        ) => Promise<ComlinkAbility[] | { nameKey: string }[]>;
-    };
-    findChar: (searchName: string, charList: BotUnit[], isShip?: boolean) => BotUnit[];
-
-    findFaction: (fact: string) => string | string[] | null;
-    getSideColor: (side: UnitSide) => number;
-    summarizeCharLevels: (guildMembers: SWAPIPlayer[], type: string) => [{ [key: string]: number }, string];
-    getGearStr(charIn: SWAPIUnit, preStr: string): string;
-
     // Data files attached to the bot
     abilityCosts: Record<string, { [key: string]: number }>;
     missions: Record<string, { [key: string]: { [key: string]: string | number } }>;
     resources: Record<string, { [key: string]: string }>;
     factions: string[];
 
-    // util functions
-    wait: (ms?: number) => Promise<void>;
-    chunkArray: <T>(inArray: T[], chunkSize: number) => T[][];
-    msgArray: (arr: string | string[], join?: string, maxLen?: number) => string[];
-    getDivider: (count: number, divChar: string) => string;
-    makeTable: (
-        headers: {
-            [key: string]: {
-                value: string;
-                startWith?: string;
-                endWith?: string;
-                align?: string;
-            };
-        },
-        rows: { [key: string]: string | number }[],
-        options?: {
-            boldHeader?: boolean;
-            useHeader?: boolean;
-        },
-    ) => string[];
-    expandSpaces: (strIn: string) => string;
-    updatedFooterStr: (updated: number, interaction: BotInteraction) => string;
-    getSetTimeForTimezone: (mmddyyyy_HHmm: string, zone?: string) => number;
-    getStartOfDay: (timezone: string) => Date;
-    getEndOfDay: (timezone: string) => Date;
-    getUTCFromOffset: (offset: number) => number;
-    convertMS: (ms: number) => {
-        hour: number;
-        minute: number;
-        totalMin: number;
-        seconds: number;
-    };
-    formatCurrentTime: (timezone?: string) => string;
-    isValidZone: (timezone: string) => boolean;
-    getTimezoneOffset: (timezone: string) => number;
-    timezones: string[];
-    shortenNum: (number: number, trimTo?: number) => string;
-    duration: (time: number, interaciton: BotInteraction) => string;
-    formatDuration: (duration: number, lang?: Language) => string;
-    getBlankUnitImage: (defId: string) => Promise<Buffer>;
-    getUnitImage: (defId: string, unit?: Partial<SWAPIUnit>) => Promise<Buffer>;
-    myTime: () => string;
-
-    getCurrentWeekday: (timezone?: string) => string;
     help: HelpObject;
-    cache: BotCache;
-    permLevel: (interaction: BotInteraction) => Promise<number>;
-    hasViewAndSend: (channel: TextChannel, user: GuildMember) => Promise<boolean>;
     commandList: string[];
-    constants: BotConstants;
-    languages: {
-        [key: string]: Language;
-    };
-    config: BotConfig;
     getDefaultGuildSettings: () => GuildConfigSettings;
-    socket: Socket;
 }
 
 export interface JourneyReqs {
@@ -343,6 +190,7 @@ export interface BotInteraction extends ChatInputCommandInteraction {
     guildSettings: BotDefaultSettings;
     language: Language;
     swgohLanguage: SWAPILang;
+    respond?: (choices: { name: string; value: string }[]) => Promise<void>;
 }
 export interface BotBaseInteraction extends BaseInteraction {
     respond?: (args: { name: string; value: string }[]) => Promise<void>;
@@ -402,28 +250,6 @@ export interface BotDefaultSettings {
     language: BotLanguage;
     swgohLanguage: SWAPILang;
     shardtimeVertical: boolean;
-}
-
-interface BotConstants {
-    // Bot invite
-    invite: string;
-
-    // Time amounts in ms
-    dayMS: number;
-    hrMS: number;
-    minMS: number;
-    secMS: number;
-
-    // Zero width string
-    zws: string;
-
-    emotes: { [key: string]: string };
-
-    colors: { [key: string]: number };
-
-    permMap: { [key: string]: number };
-
-    OmicronMode: string[];
 }
 
 // User-scheduled events / alerts

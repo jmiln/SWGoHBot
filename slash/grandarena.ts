@@ -138,7 +138,7 @@ export default class GrandArena extends Command {
         const checkArr = {};
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as { [key: string]: string };
+        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as { [key: string]: string };
 
         // An array to stick all the fields in as we go.
         const fields = [];

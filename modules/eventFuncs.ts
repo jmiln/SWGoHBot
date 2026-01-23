@@ -1,3 +1,5 @@
+import Language from "../base/Language.ts";
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { BotClient, BotType } from "../types/types.ts";
@@ -46,7 +48,7 @@ export default (Bot: BotType, client: BotClient) => {
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
                         const targetGuild = client.guilds.cache.get(guildId);
                         if (targetGuild) {
-                            announceMsg({client, guild: targetGuild, announceMessage, channel: chan, guildConf});
+                            announceMsg({client: client as any, guild: targetGuild, announceMessage, channel: chan, guildConf});
                         }
                     },
                     {
@@ -92,9 +94,10 @@ export default (Bot: BotType, client: BotClient) => {
     Bot.countdownAnnounce = async (event): Promise<void> => {
         const guildConf = await getGuildSettings({ cache: cache, guildId: event.guildId });
         const diffNum = Math.abs(Date.now() - event.eventDT);
-        const timeToGo = formatDuration(diffNum, Bot.languages[guildConf.language]);
+        const language = Language.getLanguage(guildConf.language) || Language.getLanguage(defaultSettings.language);
+        const timeToGo = formatDuration(diffNum, language);
 
-        const announceMessage = Bot.languages[guildConf.language].get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
+        const announceMessage = language.get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
 
         await sendMsg(event, guildConf, event.guildId, announceMessage);
     };
@@ -102,6 +105,7 @@ export default (Bot: BotType, client: BotClient) => {
     Bot.eventAnnounce = async (event): Promise<void> => {
         // Parse out the eventName and guildName from the ID
         const guildConf = await getGuildSettings({ cache: cache, guildId: event.guildId });
+        const language = Language.getLanguage(guildConf.language) || Language.getLanguage(defaultSettings.language);
 
         let outMsg = event?.message || "";
 
@@ -119,7 +123,7 @@ export default (Bot: BotType, client: BotClient) => {
         let doRepeat = false;
         if ((event.repeat && (event.repeat.repeatDay || event.repeat.repeatHour || event.repeat.repeatMin)) || event.repeatDays?.length) {
             if (event.repeatDays?.length === 1) {
-                event.message += Bot.languages[guildConf.language].get("BASE_LAST_EVENT_NOTIFICATION");
+                event.message += language.get("BASE_LAST_EVENT_NOTIFICATION");
             }
 
             const tmpEv = await reCalc(event);

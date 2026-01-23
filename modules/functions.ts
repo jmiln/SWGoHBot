@@ -269,7 +269,7 @@ export function formatDuration(duration: number, lang: Language): string {
     return outArr.join(", ");
 }
 
-export function formatCurrentTime(zone: string): string {
+export function formatCurrentTime(zone?: string): string {
     // Format it with whatever zone the server is
     const tz = !zone || !isValidZone(zone) ? "UTC" : zone;
 
@@ -653,13 +653,13 @@ export function trimFloat(num: number, dec = 1): string {
 
 // Check the abilities table in the swapi db, and sort out what each omicron is good for
 export async function sortOmicrons(cache: BotCache): Promise<{
-    tw: number[];
-    ga3: number[];
-    ga: number[];
-    tb: number[];
-    raid: number[];
-    conquest: number[];
-    other: number[];
+    tw: string[];
+    ga3: string[];
+    ga: string[];
+    tb: string[];
+    raid: string[];
+    conquest: string[];
+    other: string[];
 }> {
     // Get all omicron abilities
     const abilityList = (await cache.get(
@@ -674,7 +674,7 @@ export async function sortOmicrons(cache: BotCache): Promise<{
             _id: 0,
             descKey: 1,
         },
-    )) as { skillId: number; descKey: string }[];
+    )) as { skillId: string; descKey: string }[];
 
     const omicronTypes = {
         tw: [],

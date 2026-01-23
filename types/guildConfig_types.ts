@@ -13,6 +13,7 @@ export interface GuildConfig {
     twList: GuildConfigTWList;
 }
 export interface GuildConfigSettings {
+    useEventPages?: boolean;
     adminRole: string[];
     enableWelcome: boolean;
     welcomeMessage: string;

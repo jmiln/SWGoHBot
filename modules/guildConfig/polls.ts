@@ -5,7 +5,7 @@ import type { GuildConfigPoll } from "../../types/guildConfig_types.ts";
 export async function getGuildPolls({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigPoll[]> {
     if (!guildId) return [];
     const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { polls: 1 });
-    return resArr[0]?.polls || [];
+    return (resArr[0]?.polls || []) as GuildConfigPoll[];
 }
 
 export async function setGuildPolls({ cache, guildId, pollsOut }: { cache: BotCache; guildId: string; pollsOut: GuildConfigPoll[] }) {

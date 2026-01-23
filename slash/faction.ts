@@ -147,7 +147,7 @@ export default class Faction extends Command {
             const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
             try {
-                const playerRes = await swgohAPI.unitStats(allycode, cooldown);
+                const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
                 if (Array.isArray(playerRes)) player = playerRes[0];
             } catch (e) {
                 return super.error(interaction, e.message);
@@ -159,7 +159,7 @@ export default class Faction extends Command {
             for (const c of charDefIds) {
                 const thisChar = player.roster.find((char) => char.defId === c);
                 if (thisChar) {
-                    const found = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+                    const found = (await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage)) as SWAPIUnit;
                     playerChars.push(found);
                 }
             }

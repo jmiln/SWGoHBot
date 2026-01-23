@@ -96,7 +96,7 @@ export default class Aliases extends Command {
         guildAliases.push({ alias, defId: unit.uniqueName, name: unit.name });
 
         await cache
-            .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: guildAliases }, false)
+            .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: guildAliases } as any, false)
             .then(() => {
                 super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
             })
@@ -112,7 +112,7 @@ export default class Aliases extends Command {
 
         const filteredAliases = guildAliases.filter((al) => al.alias !== alias).sort((a, b) => (a.alias > b.alias ? 1 : -1));
         await cache
-            .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: filteredAliases }, false)
+            .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: filteredAliases } as any, false)
             .then(() => {
                 super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
             })

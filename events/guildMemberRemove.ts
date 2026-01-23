@@ -1,5 +1,6 @@
 import { Events, type GuildMember } from "discord.js";
 import cache from "../modules/cache.ts";
+import { announceMsg } from "../modules/functions.ts";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
@@ -19,7 +20,7 @@ export default {
                 .replace(/{{server}}/gi, member.guild.name);
 
             try {
-                await announceMsg({ client, guild: member.guild, announceMessage: partMessage, guildConf});
+                await announceMsg({ client, guild: member.guild, announceMessage: partMessage, channel: guildConf.announceChan, guildConf });
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(

@@ -42,7 +42,7 @@ export default class Info extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         try {
-            const database = await Bot.mongo.db(config.mongodb.swapidb);
+            const database = Bot.mongo.db(config.mongodb.swapidb);
             const swgohPlayerCount = await database.collection("playerStats").estimatedDocumentCount();
             const swgohGuildCount = await database.collection("guilds").estimatedDocumentCount();
             const totalGuilds = await guildCount(interaction.client);

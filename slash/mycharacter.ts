@@ -91,7 +91,7 @@ export default class MyCharacter extends Command {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer = null;
         try {
-            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`[slash/mycharacter] Error: ${e}`);
@@ -138,7 +138,7 @@ export default class MyCharacter extends Command {
         if (searchType === "character") {
             gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
             for (const e of thisUnit.equipped) {
-                gearStr = gearStr.replace(e.slot, "X");
+                gearStr = gearStr.replace(e.slot.toString(), "X");
             }
             gearStr = gearStr.replace(/[0-9]/g, "  ");
             gearStr = expandSpaces(gearStr);

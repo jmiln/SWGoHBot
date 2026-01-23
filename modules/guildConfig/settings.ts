@@ -8,7 +8,7 @@ export async function getGuildSettings({ cache, guildId }: { cache: BotCache; gu
 
     const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
     if (!guildSettings?.length) return defaultSettings;
-    return { ...defaultSettings, ...guildSettings[0].settings };
+    return { ...defaultSettings, ...(guildSettings[0].settings as object) };
 }
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config

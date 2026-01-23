@@ -67,7 +67,7 @@ export default class Randomchar extends Command {
             const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer = null;
             try {
-                const playerRes = await swgohAPI.unitStats(allycode, cooldown);
+                const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
                 player = playerRes?.[0] || null;
             } catch (e) {
                 logger.error(`[slash/randomchar] Error fetching player: ${e}`);

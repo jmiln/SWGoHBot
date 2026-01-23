@@ -109,7 +109,7 @@ export default class Register extends Command {
         await interaction.reply({ content: interaction.language.get("COMMAND_REGISTER_PLEASE_WAIT") });
 
         try {
-            const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(allycode, cooldown);
+            const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             const player = playerRes?.[0] || null;
             if (!player) {
                 return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode);

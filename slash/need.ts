@@ -108,7 +108,7 @@ export default class Need extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const playerRes = await swgohAPI.unitStats(allycode, cooldown);
+            const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Broke getting player in myprofile: ${e}`);
@@ -180,7 +180,7 @@ export default class Need extends Command {
             }
             if (playerUnit.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[playerUnit.rarity];
-            playerUnit = await swgohAPI.langChar(playerUnit, interaction.guildSettings.swgohLanguage);
+            playerUnit = (await swgohAPI.langChar(playerUnit, interaction.guildSettings.swgohLanguage)) as SWAPIUnit;
             if (characters.find((c) => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({

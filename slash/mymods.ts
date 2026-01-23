@@ -7,7 +7,7 @@ import statEnums from "../data/statEnum.ts";
 import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
@@ -130,7 +130,7 @@ export default class MyMods extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const resPlayer = await swgohAPI.unitStats(allycode, cooldown);
+            const resPlayer = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             player = resPlayer[0];
         } catch (e) {
             return super.error(interaction, codeBlock(e.message), {
@@ -302,7 +302,7 @@ export default class MyMods extends Command {
             // Slice it down to a proper size, then grab the localized strings
             sortedCharList = sortedCharList.slice(0, 20);
             for (const charIx in sortedCharList) {
-                sortedCharList[charIx] = await swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage);
+                sortedCharList[charIx] = (await swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage)) as SWAPIUnit;
             }
 
             const out = sortedCharList.map((c) => {

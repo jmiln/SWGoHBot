@@ -31,7 +31,7 @@ export default class Time extends Command {
         if (guildConf?.timezone && isValidZone(guildConf.timezone)) {
             // If we got here because timezone above had issues, say so, but if it's just here because they left it empty, don'tcomplain
             if (timezone?.length) {
-                return super.error(interaction, interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime()));
+                return super.error(interaction, interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime(guildConf.timezone)));
             }
             return interaction.reply({
                 content: `Here's your guild's default time:\n${interaction.language.get(
@@ -47,7 +47,7 @@ export default class Time extends Command {
             interaction,
             `I couldn't find a valid timezone to match your request, so this is my default one:\n${interaction.language.get(
                 "COMMAND_TIME_INVALID_ZONE",
-                formatCurrentTime(),
+                formatCurrentTime("UTC"),
             )}`,
         );
     }
