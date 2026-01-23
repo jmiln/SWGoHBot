@@ -19,7 +19,7 @@ function getCommandFiles(): string[] {
  * Loads a single slash command
  */
 async function loadCommandFile(Bot: BotType, commandName: string, cacheBust = false): Promise<slashCommand | null> {
-    const path = cacheBust ? `${slashDir}${commandName}.ts?t=${Date.now()}` : `${slashDir}${commandName}.ts`;
+    const path = cacheBust ? `${slashDir}/${commandName}.ts?t=${Date.now()}` : `${slashDir}/${commandName}.ts`;
     const { default: command } = await import(path);
     const cmd = new command(Bot);
 

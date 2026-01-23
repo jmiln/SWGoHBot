@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import help from "../data/help.ts";
 import { msgArray, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -37,7 +38,7 @@ export default class Help extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const search = interaction.options.getString("command");
         const category = interaction.options.getString("category");
         const isDetailed = interaction.options.getBoolean("details");
@@ -46,12 +47,11 @@ export default class Help extends Command {
 
         if (!search) {
             const fields = [];
-            const helpList = Bot.help;
             const div = "`======================================`";
-            const helpKeys = Object.keys(helpList);
+            const helpKeys = Object.keys(help);
             for (const [ix, cat] of helpKeys.entries()) {
                 if (category && category !== cat) continue;
-                const thisCat = helpList[cat];
+                const thisCat = help[cat];
 
                 const outArr = [`__${thisCat.description}__`];
                 const catCmd = Object.keys(thisCat.commands);
@@ -99,9 +99,9 @@ export default class Help extends Command {
         } else {
             // Searching for info on a certain command
             const commands = {};
-            for (const cat of Object.keys(Bot.help)) {
-                for (const cmd of Object.keys(Bot.help[cat].commands)) {
-                    commands[cmd] = Bot.help[cat].commands[cmd];
+            for (const cat of Object.keys(help)) {
+                for (const cmd of Object.keys(help[cat].commands)) {
+                    commands[cmd] = help[cat].commands[cmd];
                 }
             }
 

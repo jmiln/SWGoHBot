@@ -4,7 +4,6 @@ import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, T
 import { MongoClient } from "mongodb";
 import config from "./config.js";
 import { characters, ships } from "./data/constants/units.ts";
-import help from "./data/help.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
@@ -47,8 +46,8 @@ const logErrorToChannel = (errorMsg: string) => {
     }
 };
 
-function processJourneyNames() {
-    const journeyKeys = Object.keys(Bot.journeyReqs);
+function processJourneyNames(journeyReqs) {
+    const journeyKeys = Object.keys(journeyReqs);
     Bot.journeyNames = [];
     for (const key of journeyKeys) {
         let unit = characters.find((ch) => ch.uniqueName === key);
@@ -64,11 +63,9 @@ function processJourneyNames() {
     }
 }
 
-Bot.help = help;
-
 // Load the journeyReqs and process the names for autocomplete
-Bot.journeyReqs = await jsonFromFile("./data/journeyReqs.json");
-processJourneyNames();
+const journeyReqs = await jsonFromFile("./data/journeyReqs.json");
+processJourneyNames(journeyReqs);
 
 // Load in stuff for the events command
 eventFuncs(Bot, client);
