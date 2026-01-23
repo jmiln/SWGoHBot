@@ -5,6 +5,8 @@
     ],
     "exclude": [
         "**/node_modules",
+        "**/wipCommands",
+        "**/scripts",
         "**/*.test.ts"
     ],
     "compilerOptions": {

@@ -1,13 +1,27 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-    "assist": { "actions": { "source": { "organizeImports": "on" } } },
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on"
+            }
+        }
+    },
     "formatter": {
         "enabled": true,
         "formatWithErrors": false,
         "indentStyle": "space",
         "indentWidth": 4,
         "lineWidth": 140,
-        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"]
+        "includes": [
+            "**",
+            "!**/node_modules",
+            "!scripts/**",
+            "!languages/**",
+            "!data/**",
+            "!wipCommands/**",
+            "!test/**"
+        ]
     },
     "javascript": {
         "formatter": {
@@ -22,7 +36,15 @@
     },
     "linter": {
         "enabled": true,
-        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"],
+        "includes": [
+            "**",
+            "!**/node_modules",
+            "!scripts/**",
+            "!languages/**",
+            "!data/**",
+            "!wipCommands/**",
+            "!test/**"
+        ],
         "rules": {
             "recommended": true,
             "style": {
