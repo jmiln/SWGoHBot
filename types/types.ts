@@ -2,7 +2,7 @@ import type { BaseInteraction, ChatInputCommandInteraction, Client, Collection, 
 import type { MongoClient } from "mongodb";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
-import type { GuildConfigEvent, GuildConfigSettings } from "./guildConfig_types.ts";
+import type { GuildConfigSettings } from "./guildConfig_types.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
@@ -26,11 +26,7 @@ export interface LangHelpStrs {
 // All the mess we cram into the Bot object
 // - Should probably just make em get imported as needed instead
 export interface BotType {
-    // Scheduled events
-    manageEvents: (eventsList: GuildConfigEvent[]) => void;
     sendWebhook: (webhookURL: string, data: object) => void;
-    countdownAnnounce: (event: GuildConfigEvent) => void;
-    eventAnnounce: (event: GuildConfigEvent) => void;
 
     mongo: MongoClient;
     guildCount: () => Promise<number>;

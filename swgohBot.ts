@@ -67,9 +67,6 @@ function processJourneyNames(journeyReqs) {
 const journeyReqs = await jsonFromFile("./data/journeyReqs.json");
 processJourneyNames(journeyReqs);
 
-// Load in stuff for the events command
-eventFuncs(Bot, client);
-
 client.slashcmds = new Collection();
 
 const init = async () => {
@@ -106,6 +103,9 @@ const init = async () => {
 
     // Initialize patreon functions
     patreonFuncs.init(client);
+
+    // Initialize event functions
+    eventFuncs.init(client);
 
     Bot.omicrons = await sortOmicrons(cache);
 

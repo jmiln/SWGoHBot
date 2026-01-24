@@ -1,6 +1,7 @@
 import { Events } from "discord.js";
 import { io } from "socket.io-client";
 import config from "../config.js";
+import eventFuncs from "../modules/eventFuncs.ts";
 import { isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -168,7 +169,7 @@ function setupEventChecking(Bot: BotType): void {
             consecutiveFailures = 0;
 
             if (eventsList.length > 0) {
-                Bot.manageEvents(eventsList);
+                eventFuncs.manageEvents(eventsList);
             }
         } catch (err) {
             consecutiveFailures++;
