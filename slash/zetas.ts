@@ -1,7 +1,9 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
+import cache from "../modules/cache.ts";
 import { chunkArray, findChar, getAllyCode, getBlankUnitImage, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -57,7 +59,7 @@ export default class Zetas extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         let allycode = interaction.options.getString("allycode");
         allycode = await getAllyCode(interaction, allycode);
         if (!allycode) {
@@ -152,8 +154,25 @@ export default class Zetas extends Command {
                 }
             } else {
                 // Loop through and get all of the applicable ones
+
+                // Get all the localiazed character names for the player's units
+                const unitDefIdList = player.roster.map((c) => c.defId);
+                const langCharNames = await cache.get(
+                    config.mongodb.swapidb,
+                    "units",
+                    { baseId: { $in: unitDefIdList }, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
+                    { baseId: 1, nameKey: 1, _id: 0 },
+                );
+
+                // Get all the zetas for each character
                 for (const char of player.roster) {
-                    await getCharInfo(char);
+                    if (!char?.skills?.length) continue;
+                    const zList = char.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier);
+                    if (!zList.length) continue;
+                    const charName = langCharNames.find((c) => c.baseId === char.defId)?.nameKey;
+                    zetas[charName] = zList;
+                    count += zList.length;
+                    if (char.defId === "MACEWINDU") console.log(zList);
                 }
                 const sorted = Object.keys(zetas).sort((p, c) => (p > c ? 1 : -1));
                 const formatted = sorted.map((character) => `\`(${zetas[character].length})\` ${character}`);
@@ -163,11 +182,14 @@ export default class Zetas extends Command {
                 desc.push("`------------------------------`");
                 for (const chunk of chunked) {
                     fields.push({
-                        name: "-",
+                        name: constants.zws,
                         value: chunk.join("\n"),
                     });
                 }
-                fields.push({ name: "-", value: interaction.language.get("COMMAND_ZETA_MORE_INFO") });
+                fields.push({
+                    name: constants.zws,
+                    value: interaction.language.get("COMMAND_ZETA_MORE_INFO"),
+                });
             }
 
             if (player.warnings) {
@@ -203,7 +225,32 @@ export default class Zetas extends Command {
                     ],
                 });
             }
-            return interaction.editReply({
+            if (fields.length > 5) {
+                await interaction.editReply({
+                    content: null,
+                    embeds: [
+                        {
+                            color: constants.colors.black,
+                            author: author,
+                            description: desc.join("\n"),
+                            fields: fields.slice(0, 5),
+                        },
+                    ],
+                });
+                await interaction.followUp({
+                    content: null,
+                    embeds: [
+                        {
+                            color: constants.colors.black,
+                            author: author,
+                            description: desc.join("\n"),
+                            fields: fields.slice(5),
+                        },
+                    ],
+                });
+                return;
+            }
+            interaction.editReply({
                 content: null,
                 embeds: [
                     {
@@ -214,6 +261,7 @@ export default class Zetas extends Command {
                     },
                 ],
             });
+            return;
         }
         if (subCommand === "guild") {
             // Display the zetas for the whole guild (Takes a while)

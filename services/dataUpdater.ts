@@ -18,7 +18,7 @@ import ComlinkStub from "@swgoh-utils/comlink";
 import type { BotCache } from "../types/cache_types.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
 import type { ComlinkAbility, SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotUnit, BotUnitMods, JourneyReqs, Location, UnitLocation, UnitSide,UserConfig } from "../types/types.ts";
+import type { BotUnit, BotUnitMods, JourneyReqs, Location, UnitLocation, UnitSide, UserConfig } from "../types/types.ts";
 
 interface Metadata {
     assetVersion: string;
@@ -1104,11 +1104,41 @@ function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: co
         };
     };
 
+    // tierList: [
+    //     'SKILLRECIPE_PASSIVE_T1',
+    //     SKILLRECIPE_PASSIVE_T2',
+    //     SKILLRECIPE_PASSIVE_T3',
+    //     SKILLRECIPE_PASSIVE_T4',
+    //     SKILLRECIPE_PASSIVE_T5',
+    //     SKILLRECIPE_PASSIVE_T6',
+    //     SKILLRECIPE_PASSIVE_T7_ZETA',
+    //     SKILLRECIPE_PASSIVE_T8_OMICRON'
+    // ]
+
     for (const ability of abilityIn) {
         const skill = skillIn.find((sk) => sk.abilityReference === ability.id);
         if (!skill) continue;
 
         const abTiers = ability.tier?.map((ti) => ti.descKey) || [];
+        const tierList = skill.tier.map((t) => t.recipeId);
+        let isZeta = false;
+        let zetaTier = null;
+        let omicronTier = null;
+        let isOmicron = false;
+        for (const [ix, tier] of tierList.entries()) {
+            const mod = tier.split("_").slice(-1)[0];
+            if (mod === "ZETA") {
+                isZeta = true;
+                zetaTier = ix + 1;
+                console.log(ability.id, mod, zetaTier);
+            }
+            if (mod === "OMICRON") {
+                isOmicron = true;
+                omicronTier = ix + 1;
+                console.log(ability.id, mod, omicronTier);
+            }
+        }
+
         abilitiesOut.push({
             id: ability.id,
             type: ability.abilityType as string,
@@ -1117,16 +1147,16 @@ function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: co
             cooldown: ability.cooldown,
             abilityTiers: abTiers,
             skillId: skill.id,
-            tierList: skill.tier.map((t) => t.recipeId),
-            isOmicron: skill.tier.some((t) => t.isOmicronTier),
-            omicronTier: skill.tier.filter((t) => t.isOmicronTier).length || null,
-            isZeta: skill.isZeta || false,
-            zetaTier: skill.isZeta ? skill.tier.length - (skill.tier.some((t) => t.isOmicronTier) ? 1 : 0) : null,
+            tierList,
+            isZeta,
+            zetaTier,
+            isOmicron,
+            omicronTier,
         });
 
         skillMap[skill.id] = {
             nameKey: ability.nameKey,
-            isZeta: skill.isZeta,
+            isZeta,
             tiers: skill.tier.length,
             abilityId: skill.abilityReference,
         };

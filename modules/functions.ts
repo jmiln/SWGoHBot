@@ -748,9 +748,9 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
         rarity,
         level,
         gear,
-        zetas: skills?.filter((s) => s.isZeta && (s.tier >= s?.zetaTier || (s.isOmicron && s.tier >= s.tiers - 1))).length || 0,
+        zetas: skills?.filter((s) => s.isZeta && s.tier >= s?.zetaTier).length || 0,
         relic: relic?.currentTier || 0,
-        omicron: skills?.filter((s) => s.isOmicron && s.tier === s.tiers).length || 0,
+        omicron: skills?.filter((s) => s.isOmicron && s.tier >= s.omicronTier).length || 0,
         side: thisChar.side,
     };
 
@@ -760,6 +760,12 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
             body: JSON.stringify(fetchBody),
             headers: { "Content-Type": "application/json" },
         });
+
+        if (!res.ok) {
+            logger.error(`[functions/getUnitImage] Image server returned error status: ${res.status} ${res.statusText}`);
+            return null;
+        }
+
         const resBuf = await res.arrayBuffer();
         return resBuf ? Buffer.from(resBuf) : null;
     } catch (e) {
