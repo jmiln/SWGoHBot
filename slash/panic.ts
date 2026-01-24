@@ -132,6 +132,10 @@ export default class Panic extends Command {
                 }),
                 headers: { "Content-Type": "application/json" },
             }).then(async (response) => {
+                if (!response.ok) {
+                    logger.error(`[slash/panic] Image server returned error status: ${response.status} ${response.statusText}`);
+                    return null;
+                }
                 const resBuf = await response.arrayBuffer();
                 if (!resBuf) return null;
                 return Buffer.from(resBuf);

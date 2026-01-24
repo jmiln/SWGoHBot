@@ -40,6 +40,6 @@
         "discord-api-types": "^0.38.37"
     },
     "overrides": {
-        "undici": "^7"
+        "undici": "^6.23"
     }
 }

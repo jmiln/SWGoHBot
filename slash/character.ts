@@ -26,7 +26,7 @@ export default class Character extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const searchName = interaction.options.getString("character");
 
         const abilityMatMK3 = emoteStrings.abilityMatMK3;
@@ -107,7 +107,11 @@ export default class Character extends Command {
                 ability.desc = ability.desc.replace(ability.zetaDesc, `**${ability.zetaDesc}**`);
             }
 
-            const msgArr = msgArray(expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "), " ", 1000);
+            const msgArr = msgArray(
+                expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "),
+                " ",
+                1000,
+            );
 
             msgArr.forEach((m, ix) => {
                 if (ix === 0) {
