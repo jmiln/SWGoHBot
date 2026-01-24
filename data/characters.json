@@ -17,13 +17,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_triplezero"
     },
@@ -47,13 +41,7 @@
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "crew": []
     },
@@ -76,13 +64,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_50rt"
     },
@@ -106,13 +88,7 @@
                 "Crit. Chance x2",
                 "Crit. Chance x2",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_aaylasecura"
     },
@@ -136,13 +112,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_ackbaradmiral"
     },
@@ -166,13 +136,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_piett"
     },
@@ -195,13 +159,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_admiralraddus"
     },
@@ -223,13 +181,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_admiraltrench"
     },
@@ -253,15 +205,9 @@
         ],
         "mods": {
             "sets": [
-                "Health x2",
+                "Defense x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -287,13 +233,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ahsoka"
     },
@@ -318,13 +258,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ahsokaadult"
     },
@@ -347,13 +281,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_holdo"
     },
@@ -376,13 +304,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_trooperclone_arc"
     },
@@ -409,13 +331,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ventress"
     },
@@ -457,13 +373,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_aurrasing"
     },
@@ -485,13 +395,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_b1"
     },
@@ -514,13 +418,7 @@
                 "Potency x2",
                 "Potency x2",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Critical Avoidance",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_b2"
     },
@@ -547,13 +445,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_barriss_light"
     },
@@ -577,13 +469,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_bastilashan"
     },
@@ -609,13 +495,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_bastilashan_dark"
     },
@@ -636,13 +516,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -665,13 +539,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -695,13 +563,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_bazemalbus"
     },
@@ -724,13 +586,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_bb8"
     },
@@ -751,13 +607,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_bensolo"
     },
@@ -779,13 +629,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_rebelpilot_biggs"
     },
@@ -809,13 +653,7 @@
                 "Potency x2",
                 "Potency x2",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_bistan"
     },
@@ -837,13 +675,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -867,13 +699,7 @@
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_bokatan"
     },
@@ -896,13 +722,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_bobafett"
     },
@@ -925,13 +745,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_bobafettold"
     },
@@ -954,13 +768,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_bodhi"
     },
@@ -982,13 +790,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         }
     },
     {
@@ -1011,13 +813,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_bossk"
     },
@@ -1041,13 +837,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_boushh"
     },
@@ -1070,13 +860,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -1098,13 +882,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_bt1"
     },
@@ -1131,13 +909,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_c3p0"
     },
@@ -1160,13 +932,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_cadbane"
     },
@@ -1188,13 +954,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_calkestis"
     },
@@ -1217,13 +977,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_canderous"
     },
@@ -1245,13 +999,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -1272,13 +1020,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -1302,13 +1044,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_hoth_han"
     },
@@ -1332,13 +1068,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -1360,13 +1090,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_phasma"
     },
@@ -1390,13 +1114,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         }
     },
     {
@@ -1420,13 +1138,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "crew": []
     },
@@ -1447,13 +1159,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -1476,13 +1182,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_caradune"
     },
@@ -1504,13 +1204,7 @@
             "sets": [
                 "Crit. Damage x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_carth"
     },
@@ -1533,13 +1227,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_cassian"
     },
@@ -1561,13 +1249,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -1591,13 +1273,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_trooperclone_cody"
     },
@@ -1621,13 +1297,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_cerejunda"
     },
@@ -1651,13 +1321,7 @@
                 "Tenacity x2",
                 "Tenacity x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_chewbacca_ot"
     },
@@ -1679,13 +1343,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_ewok_chirpa"
     },
@@ -1709,13 +1367,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_jawa_nebit"
     },
@@ -1739,13 +1391,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_chirrut"
     },
@@ -1768,13 +1414,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_chopper"
     },
@@ -1798,13 +1438,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_trooperclonegreen"
     },
@@ -1830,13 +1464,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_clonewarschewbacca"
     },
@@ -1860,13 +1488,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_colonel_stark"
     },
@@ -1890,13 +1512,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_commanderahsokatano"
     },
@@ -1923,13 +1539,7 @@
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_lukebespin"
     },
@@ -1951,13 +1561,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_coruscantpolice"
     },
@@ -1981,13 +1585,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_dooku"
     },
@@ -2008,13 +1606,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Accuracy",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -2040,13 +1632,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_trooperclone_echo"
     },
@@ -2073,13 +1659,7 @@
                 "Defense x2",
                 "Defense x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_trooperclone_fives"
     },
@@ -2104,13 +1684,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_trooperclone_rex"
     },
@@ -2132,13 +1706,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -2162,13 +1730,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_darktrooper"
     },
@@ -2192,13 +1754,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         }
     },
     {
@@ -2220,13 +1776,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         }
     },
     {
@@ -2248,13 +1798,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_darthmalak"
     },
@@ -2278,13 +1822,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_darthmalgus"
     },
@@ -2306,13 +1844,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_maul"
     },
@@ -2336,13 +1868,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_nihilus"
     },
@@ -2366,13 +1892,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_sithrevan"
     },
@@ -2397,13 +1917,7 @@
                 "Potency x2",
                 "Potency x2",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_sidious"
     },
@@ -2425,13 +1939,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_sion"
     },
@@ -2452,13 +1960,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_darthtalon"
     },
@@ -2482,13 +1984,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_traya"
     },
@@ -2513,13 +2009,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_vader"
     },
@@ -2559,13 +2049,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_dashrendar"
     },
@@ -2589,13 +2073,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_jawa_dathcha"
     },
@@ -2619,13 +2097,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_trooperdeath"
     },
@@ -2647,13 +2119,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -2676,13 +2142,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_dengar"
     },
@@ -2705,13 +2165,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -2735,13 +2189,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_krennic"
     },
@@ -2763,13 +2211,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -2792,13 +2234,7 @@
                 "Potency x2",
                 "Potency x2",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_doctoraphra"
     },
@@ -2820,13 +2256,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_droideka"
     },
@@ -2851,13 +2281,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_bb_echo"
     },
@@ -2881,13 +2305,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_eethkoth"
     },
@@ -2912,13 +2330,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_eighthbrother"
     },
@@ -2941,13 +2353,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_embo"
     },
@@ -2973,13 +2379,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_palpatineemperor"
     },
@@ -3002,13 +2402,7 @@
                 "Tenacity x2",
                 "Tenacity x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_enfys"
     },
@@ -3029,13 +2423,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_ewok_chief"
     },
@@ -3056,13 +2444,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ewok_scout"
     },
@@ -3085,13 +2467,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ezra_s3"
     },
@@ -3113,13 +2489,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -3143,13 +2513,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_fennec"
     },
@@ -3174,13 +2538,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_fifthbrother"
     },
@@ -3203,13 +2561,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_finnjakku"
     },
@@ -3233,13 +2585,7 @@
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_firstorder_executioner"
     },
@@ -3261,13 +2607,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_firstorderofficer"
     },
@@ -3290,13 +2630,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_firstorder_pilot"
     },
@@ -3319,13 +2653,7 @@
                 "Defense x2",
                 "Defense x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_firstordertrooper"
     },
@@ -3347,13 +2675,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_firstordertiepilot"
     },
@@ -3375,13 +2697,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_gamorreanguard"
     },
@@ -3405,13 +2721,7 @@
                 "Tenacity x2",
                 "Tenacity x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_gar_saxon"
     },
@@ -3434,13 +2744,7 @@
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_zeb_s3"
     },
@@ -3466,13 +2770,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_grievous"
     },
@@ -3495,13 +2793,7 @@
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_generalhux"
     },
@@ -3527,13 +2819,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_obiwangeneral"
     },
@@ -3558,13 +2844,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_generalanakin"
     },
@@ -3586,13 +2866,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "crew": []
     },
@@ -3615,13 +2889,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_veers"
     },
@@ -3645,13 +2913,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_geonosian_broodalpha"
     },
@@ -3673,13 +2935,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_geonosian_soldier"
     },
@@ -3701,13 +2957,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_geonosian_spy"
     },
@@ -3731,13 +2981,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_thrawn"
     },
@@ -3761,13 +3005,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_grandinquisitor"
     },
@@ -3792,13 +3030,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_yodagrandmaster"
     },
@@ -3822,13 +3054,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_tarkinadmiral"
     },
@@ -3850,13 +3076,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -3879,13 +3099,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_greedo"
     },
@@ -3908,13 +3122,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_greefkarga"
     },
@@ -3935,13 +3143,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -3962,13 +3164,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -3991,13 +3187,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_han"
     },
@@ -4020,13 +3210,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_hera_s3"
     },
@@ -4050,13 +3234,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_yodahermit"
     },
@@ -4081,13 +3259,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_hk47"
     },
@@ -4109,13 +3281,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_hondoohnaka"
     },
@@ -4139,13 +3305,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_rebelhothscout"
     },
@@ -4170,13 +3330,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_rebelhoth"
     },
@@ -4200,13 +3354,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_bb_hunter"
     },
@@ -4228,13 +3376,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "crew": []
     },
@@ -4256,13 +3398,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -4285,13 +3421,7 @@
             "sets": [
                 "Crit. Damage x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_idenversioempire"
     },
@@ -4316,13 +3446,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Critical Avoidance",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_magnaguard"
     },
@@ -4346,13 +3470,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_ig11_nurse"
     },
@@ -4373,13 +3491,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         }
     },
     {
@@ -4401,13 +3513,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ig86"
     },
@@ -4432,13 +3538,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_ig88"
     },
@@ -4483,13 +3583,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_imagundi"
     },
@@ -4513,13 +3607,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_probedroid"
     },
@@ -4542,13 +3630,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_imperial_super_commando"
     },
@@ -4592,13 +3674,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_jabbathehutt"
     },
@@ -4624,13 +3700,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_jangofett"
     },
@@ -4651,13 +3721,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "crew": []
     },
@@ -4679,13 +3743,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_jawa_jawa"
     },
@@ -4706,13 +3764,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_jawa_engineer"
     },
@@ -4734,13 +3786,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_jawa_scavenger"
     },
@@ -4763,13 +3809,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_jedi_consular_03"
     },
@@ -4795,13 +3835,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_anakinknight"
     },
@@ -4823,13 +3857,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -4852,13 +3880,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_jedi_guardian_01"
     },
@@ -4882,13 +3904,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_luke_jediknight"
     },
@@ -4913,13 +3929,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_jedirevan"
     },
@@ -4944,13 +3954,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_globiwan"
     },
@@ -4975,13 +3979,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_luke_jml"
     },
@@ -5005,13 +4003,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -5034,13 +4026,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -5064,13 +4050,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Critical Avoidance",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_joleebindo"
     },
@@ -5093,13 +4073,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_juhani"
     },
@@ -5123,13 +4097,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_jyn"
     },
@@ -5157,13 +4125,7 @@
                 "Tenacity x2",
                 "Tenacity x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_k2so"
     },
@@ -5187,13 +4149,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_kanan_s3"
     },
@@ -5217,13 +4173,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         }
     },
     {
@@ -5246,13 +4196,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_kiadimundi"
     },
@@ -5275,13 +4219,7 @@
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_kitfisto"
     },
@@ -5305,13 +4243,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -5336,13 +4268,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_krrsantan"
     },
@@ -5363,13 +4289,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_kuiil"
     },
@@ -5392,13 +4312,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_kylekatarn"
     },
@@ -5421,13 +4335,7 @@
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_kyloren"
     },
@@ -5454,13 +4362,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_kylo_unmasked"
     },
@@ -5485,13 +4387,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_l337"
     },
@@ -5515,13 +4411,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_landobespin"
     },
@@ -5544,13 +4434,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         }
     },
     {
@@ -5571,13 +4455,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_lobot"
     },
@@ -5598,13 +4476,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_ewok_logray"
     },
@@ -5629,13 +4501,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_lordvader"
     },
@@ -5661,13 +4527,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_luke_ep4"
     },
@@ -5691,13 +4551,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_luminara"
     },
@@ -5719,13 +4573,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "crew": []
     },
@@ -5750,13 +4598,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_macewindu"
     },
@@ -5778,13 +4620,7 @@
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_trooperstorm_magma"
     },
@@ -5806,13 +4642,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_marajade"
     },
@@ -5835,13 +4665,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -5863,13 +4687,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -5892,15 +4710,25 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_maul_cyborg"
+    },
+    {
+        "name": "Maul (Hate-Fueled)",
+        "uniqueName": "MAULHATEFUELED",
+        "aliases": [
+            "Maul (Hate-Fueled)"
+        ],
+        "avatarName": "charui_maulhatefueled",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_maulhatefueled.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Maz Kanata",
@@ -5924,13 +4752,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -5952,13 +4774,7 @@
                 "Tenacity x2",
                 "Tenacity x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_merrin"
     },
@@ -5980,13 +4796,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_mission"
     },
@@ -6008,13 +4818,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_mob_enforcer"
     },
@@ -6038,13 +4842,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_moffgideon"
     },
@@ -6066,13 +4864,7 @@
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_monmothma"
     },
@@ -6094,13 +4886,7 @@
                 "Health x2",
                 "Health x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -6123,13 +4909,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_nightsisters_talzin"
     },
@@ -6151,13 +4931,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -6178,13 +4952,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_nightsister_acolyte"
     },
@@ -6205,13 +4973,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_nightsister_initiate"
     },
@@ -6232,13 +4994,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_nightsisters_wraith"
     },
@@ -6259,13 +5015,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_nightsisters_zombie"
     },
@@ -6291,13 +5041,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_ninthsister"
     },
@@ -6320,13 +5064,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_nutegunray"
     },
@@ -6350,13 +5088,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_obiwanep4"
     },
@@ -6379,13 +5111,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_daka"
     },
@@ -6407,13 +5133,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_badbatchomega"
     },
@@ -6435,13 +5155,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Tenacity"
+            ]
         },
         "crew": []
     },
@@ -6463,13 +5177,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -6492,13 +5200,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -6522,13 +5224,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_padme_geonosis"
     },
@@ -6551,13 +5247,7 @@
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_pao"
     },
@@ -6579,13 +5269,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_ewok_paploo"
     },
@@ -6607,13 +5291,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         }
     },
     {
@@ -6638,13 +5316,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -6668,13 +5340,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_plokoon"
     },
@@ -6696,13 +5362,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_poe"
     },
@@ -6725,13 +5385,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_geonosian_poggle"
     },
@@ -6752,13 +5406,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -6779,13 +5427,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_leia_princess"
     },
@@ -6810,13 +5452,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_qira"
     },
@@ -6838,13 +5474,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         }
     },
     {
@@ -6868,13 +5498,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_quigon"
     },
@@ -6898,13 +5522,7 @@
                 "Health x2",
                 "Health x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -6930,13 +5548,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_astromech_r2d2"
     },
@@ -6958,13 +5570,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_trooperranger"
     },
@@ -6987,13 +5593,7 @@
                 "Health x2",
                 "Health x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -7016,13 +5616,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_leiahoth"
     },
@@ -7045,13 +5639,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_finn"
     },
@@ -7072,13 +5660,7 @@
             "sets": [
                 "Offense x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_poe_tros"
     },
@@ -7099,13 +5681,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_resistancepilot"
     },
@@ -7126,13 +5702,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_resistancetrooper"
     },
@@ -7156,13 +5726,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_rey_tros"
     },
@@ -7184,13 +5748,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "crew": []
     },
@@ -7217,13 +5775,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_rey_tlj"
     },
@@ -7247,13 +5799,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_reyjakku"
     },
@@ -7274,13 +5820,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_rose"
     },
@@ -7302,13 +5842,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_royalguard"
     },
@@ -7331,13 +5865,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_sabine_s3"
     },
@@ -7360,15 +5888,27 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_sanastarros"
+    },
+    {
+        "name": "Satele Shan",
+        "uniqueName": "SATELESHAN",
+        "aliases": [
+            "Satele Shan"
+        ],
+        "avatarName": "charui_sateleshan",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sateleshan.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_JEDI_DESC",
+            "CATEGORY_OLDREPUBLIC_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Savage Opress",
@@ -7389,13 +5929,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_savageopress"
     },
@@ -7418,13 +5952,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_sawgerrera"
     },
@@ -7449,13 +5977,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_rebel_scarif"
     },
@@ -7478,13 +6000,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         }
     },
     {
@@ -7508,13 +6024,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_secondsister"
     },
@@ -7539,13 +6049,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_seventhsister"
     },
@@ -7568,13 +6072,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_shaakti"
     },
@@ -7596,13 +6094,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -7625,13 +6117,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_troopershore"
     },
@@ -7654,13 +6140,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_sithassassin"
     },
@@ -7684,13 +6164,7 @@
                 "Defense x2",
                 "Defense x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_sithtrooper"
     },
@@ -7715,13 +6189,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_espalpatine_pre"
     },
@@ -7743,13 +6211,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_sithmarauder"
     },
@@ -7774,13 +6236,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_firstorder_sithtrooper"
     },
@@ -7803,13 +6259,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_undercoverlando"
     },
@@ -7832,13 +6282,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "crew": []
     },
@@ -7860,13 +6304,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_troopersnow"
     },
@@ -7888,13 +6326,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -7914,13 +6346,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_starkiller"
     },
@@ -7944,13 +6370,7 @@
                 "Defense x2",
                 "Defense x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_trooperstorm"
     },
@@ -7975,13 +6395,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_trooperstorm_han"
     },
@@ -8021,13 +6435,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_geonosian_sunfac"
     },
@@ -8054,13 +6462,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_kyloren_tros"
     },
@@ -8083,13 +6485,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_t3m4"
     },
@@ -8111,13 +6507,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_nightsister_talia"
     },
@@ -8140,13 +6530,7 @@
                 "Health x2",
                 "Health x2",
                 "Defense x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Defense",
-            "circle": "Health",
-            "cross": "Defense"
+            ]
         },
         "avatarName": "charui_tarfful"
     },
@@ -8167,13 +6551,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense"
+            ]
         }
     },
     {
@@ -8195,13 +6573,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_bb_tech"
     },
@@ -8224,13 +6596,7 @@
                 "Potency x2",
                 "Potency x2",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_ewok_teebo"
     },
@@ -8254,13 +6620,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -8282,13 +6642,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_armorer"
     },
@@ -8313,13 +6667,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_mandalorian"
     },
@@ -8343,13 +6691,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_mandobeskar"
     },
@@ -8367,7 +6709,12 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_SITH_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -8390,13 +6737,7 @@
             "sets": [
                 "Health x2",
                 "Offense x4"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_thirdsister"
     },
@@ -8421,13 +6762,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_chewbacca_c3po"
     },
@@ -8449,13 +6784,7 @@
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_tiepilot"
     },
@@ -8477,13 +6806,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_tuskenchieftain"
     },
@@ -8504,13 +6827,7 @@
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_tuskenraider"
     },
@@ -8531,13 +6848,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_tuskenshaman"
     },
@@ -8558,13 +6869,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_tuskenhuntress"
     },
@@ -8585,13 +6890,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Chance",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_ugnaught"
     },
@@ -8616,13 +6915,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_urorrurrr"
     },
@@ -8645,13 +6938,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_chewbacca_vandor"
     },
@@ -8674,14 +6961,8 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+                "Defense x2"
+            ]
         },
         "crew": []
     },
@@ -8704,13 +6985,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_tfa_chewbacca"
     },
@@ -8735,13 +7010,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Potency"
+            ]
         },
         "avatarName": "charui_tfa_han"
     },
@@ -8763,13 +7032,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_visas"
     },
@@ -8790,13 +7053,7 @@
                 "Health x2",
                 "Health x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Health",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Tenacity"
+            ]
         },
         "avatarName": "charui_wampa"
     },
@@ -8817,13 +7074,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health"
+            ]
         },
         "avatarName": "charui_wattambor"
     },
@@ -8846,13 +7097,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_rebelpilot_wedge"
     },
@@ -8873,13 +7118,7 @@
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_ewok_wicket"
     },
@@ -8903,13 +7142,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_bb_wrecker"
     },
@@ -8932,13 +7165,7 @@
                 "Health x2",
                 "Health x2",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     },
@@ -8979,13 +7206,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_han_young"
     },
@@ -9007,13 +7228,7 @@
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_younglando"
     },
@@ -9036,13 +7251,7 @@
                 "Health x2",
                 "Health x2",
                 "Health x2"
-            ],
-            "square": "Offense",
-            "arrow": "Protection",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_zaalbar"
     },
@@ -9065,13 +7274,7 @@
             "sets": [
                 "Speed x4",
                 "Potency x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Protection",
-            "cross": "Offense"
+            ]
         },
         "avatarName": "charui_zamwesell"
     },
@@ -9094,13 +7297,7 @@
             "sets": [
                 "Health x2",
                 "Speed x4"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "avatarName": "charui_zoriibliss"
     },
@@ -9124,13 +7321,7 @@
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
-            ],
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection"
+            ]
         },
         "crew": []
     }

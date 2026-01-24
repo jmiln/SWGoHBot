@@ -20,6 +20,11 @@
         "defId": "4LOM",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "2-F",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_4LOM_NAME",
                 "name": "Mist Hunters I Special Marquee Event"
@@ -2243,11 +2248,6 @@
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/10"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "2-F",
-                "locId": "HARD_DARK"
             }
         ]
     },
@@ -2499,7 +2499,13 @@
     {
         "name": "Jocasta Nu",
         "defId": "JOCASTANU",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Jolee Bindo",
@@ -2957,6 +2963,11 @@
         ]
     },
     {
+        "name": "Maul (Hate-Fueled)",
+        "defId": "MAULHATEFUELED",
+        "locations": []
+    },
+    {
         "name": "Maz Kanata",
         "defId": "MAZKANATA",
         "locations": []
@@ -3351,9 +3362,9 @@
                 "cost": "400 Fleet Arena Tokens/10"
             },
             {
-                "type": "Hard Modes (L)",
-                "level": "7-B",
-                "locId": "HARD_LIGHT"
+                "type": "Hard Modes (Fleet)",
+                "level": "3-A",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -3708,6 +3719,11 @@
                 "name": "Partner In Crime Marquee Event"
             }
         ]
+    },
+    {
+        "name": "Satele Shan",
+        "defId": "SATELESHAN",
+        "locations": []
     },
     {
         "name": "Savage Opress",
@@ -4603,6 +4619,11 @@
         "name": "Zuckuss",
         "defId": "ZUCKUSS",
         "locations": [
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "4-B",
+                "locId": "HARD_FLEET"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_ZUCKUSS_NAME",

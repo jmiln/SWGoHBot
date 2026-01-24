@@ -696,6 +696,11 @@
         "defId": "BWINGREBEL",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "6-F",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
                 "name": "Sky Saber Special Marquee Event"
@@ -770,6 +775,11 @@
         "name": "Rogue One",
         "defId": "ROGUEONESHIP",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "7-B",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_ROGUEONESHIP_NAME",
@@ -883,11 +893,6 @@
             {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
-            },
-            {
-                "type": "Hard Modes (Fleet)",
-                "level": "4-B",
-                "locId": "HARD_FLEET"
             }
         ]
     },
