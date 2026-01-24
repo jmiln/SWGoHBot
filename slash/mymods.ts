@@ -302,7 +302,10 @@ export default class MyMods extends Command {
             // Slice it down to a proper size, then grab the localized strings
             sortedCharList = sortedCharList.slice(0, 20);
             for (const charIx in sortedCharList) {
-                sortedCharList[charIx] = (await swgohAPI.langChar(sortedCharList[charIx], interaction.guildSettings.swgohLanguage)) as SWAPIUnit;
+                sortedCharList[charIx] = (await swgohAPI.langChar(
+                    sortedCharList[charIx],
+                    interaction.guildSettings.swgohLanguage,
+                )) as SWAPIUnit;
             }
 
             const out = sortedCharList.map((c) => {
@@ -423,9 +426,8 @@ export default class MyMods extends Command {
             if (!outArr.length) return super.success(interaction, "It looks like your characters all have well leveled mods!");
 
             const topDesc = "`[x]: Number of mods missing     `\n`[▼]: Number of mods below lvl 15`";
-            return super.success(interaction, `${topDesc}\n\n__**\`[x][▼]\` Name**__\n${outArr.join("\n")}`, {
+            return super.success(interaction, `${topDesc}\n\n__**\`[x][▼]\` Name**__\n${outArr.join("\n")}\n${footerStr}`, {
                 title: `${player.name || interaction.user.username}'s mod issues for gear 10+`,
-                footer: footerStr,
             });
         }
     }

@@ -1,4 +1,4 @@
-import { type AutocompleteFocusedOption, type ChatInputCommandInteraction, codeBlock, EmbedBuilder } from "discord.js";
+import { type AutocompleteFocusedOption, type ChatInputCommandInteraction, codeBlock, EmbedBuilder, MessageFlags } from "discord.js";
 import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
@@ -70,8 +70,11 @@ export default abstract class slashCommand {
 
         const embedObj = {
             embeds: [embed],
-            ephemeral: ephemeral,
+            flags: [],
         };
+        if (ephemeral) {
+            embedObj.flags = [MessageFlags.Ephemeral];
+        }
 
         // If the interaction has been replied to or deferred, edit the reply
         try {

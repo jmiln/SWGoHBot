@@ -1,6 +1,6 @@
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
+import cache from "../modules/cache.ts";
 import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -16,7 +16,7 @@ export default class Showconf extends Command {
         });
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const guildConf = await getGuildSettings({ cache: cache, guildId: interaction.guild.id });
 
         const outArr = [];
@@ -57,7 +57,7 @@ export default class Showconf extends Command {
                         const channel = interaction.guild.channels.cache.get(guildConf.announceChan);
                         let channelName = guildConf.announceChan;
                         if (channel?.name) channelName = `#${channel?.name} (${channel?.id})`;
-                        outArr.push(`* ${key}: ${`${channelName} (${channel?.id})` || guildConf.announceChan}`);
+                        outArr.push(`* ${key}: ${channelName || guildConf.announceChan}`);
                     } else {
                         outArr.push(`* ${key}: N/A`);
                     }
