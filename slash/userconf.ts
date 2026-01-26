@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
 import Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
@@ -47,6 +47,7 @@ export default class UserConf extends Command {
                                     description: "The ally code of the user you want to see",
                                     type: ApplicationCommandOptionType.String,
                                     required: true,
+                                    autocomplete: true,
                                 },
                             ],
                         },
@@ -60,8 +61,7 @@ export default class UserConf extends Command {
                                     description: "The ally code of the user you want to see",
                                     type: ApplicationCommandOptionType.String,
                                     required: true,
-
-                                    // TODO: Make this autocomplete with any registered codes
+                                    autocomplete: true,
                                 },
                             ],
                         },
@@ -485,6 +485,38 @@ export default class UserConf extends Command {
                     });
                 }
             }
+        }
+    }
+
+    async autocomplete(_Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) {
+        const subCommandGroup = interaction.options.getSubcommandGroup(false);
+        const subCommand = interaction.options.getSubcommand();
+
+        // Only handle autocomplete for the make_primary or remove subcommand's allycode option
+        if (subCommandGroup === "allycodes" && ["make_primary", "remove"].includes(subCommand) && focusedOption.name === "allycode") {
+            const searchKey = focusedOption.value?.trim().toLowerCase() || "";
+
+            // Fetch the user's registered accounts
+            const user = await userReg.getUser(interaction.user.id);
+            if (!user || !user.accounts || user.accounts.length === 0) {
+                // No registered accounts, return empty array
+                return await interaction.respond([]);
+            }
+
+            // Filter accounts based on search term (match both name and allycode)
+            const outArr = user.accounts
+                .filter((account) => {
+                    const nameMatch = account.name.toLowerCase().includes(searchKey);
+                    const codeMatch = account.allyCode.includes(searchKey);
+                    return nameMatch || codeMatch;
+                })
+                .map((account) => ({
+                    name: `${account.name} - ${account.allyCode}`,
+                    value: account.allyCode,
+                }))
+                .slice(0, 24); // Discord's autocomplete limit
+
+            await interaction.respond(outArr);
         }
     }
 }
