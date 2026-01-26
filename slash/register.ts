@@ -11,27 +11,28 @@ import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
 export default class Register extends Command {
+    static readonly metadata = {
+        name: "register",
+        guildOnly: false,
+        options: [
+            {
+                name: "allycode",
+                description: "The ally code for the user you want to look up",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: "user",
+                description: "The user you want to link to an ally code. (You must have mod/ admin perms for this)",
+                type: ApplicationCommandOptionType.User,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "register",
-            guildOnly: false,
-            options: [
-                {
-                    name: "allycode",
-                    description: "The ally code for the user you want to look up",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-                {
-                    name: "user",
-                    description: "The user you want to link to an ally code. (You must have mod/ admin perms for this)",
-                    type: ApplicationCommandOptionType.User,
-                },
-            ],
-        });
+        super(Bot, Register.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         // eslint-disable-line no-unused-vars
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 

@@ -10,25 +10,26 @@ import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class TerritoryWar extends Command {
+    static readonly metadata = {
+        name: "territorywar",
+        guildOnly: false,
+        options: [
+            {
+                name: "allycode_1",
+                type: ApplicationCommandOptionType.String,
+                description: "Ally code for player 1",
+                required: true,
+            },
+            {
+                name: "allycode_2",
+                type: ApplicationCommandOptionType.String,
+                description: "Ally code for player 2",
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "territorywar",
-            guildOnly: false,
-            options: [
-                {
-                    name: "allycode_1",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Ally code for player 1",
-                    required: true,
-                },
-                {
-                    name: "allycode_2",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Ally code for player 2",
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, TerritoryWar.metadata);
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
@@ -138,7 +139,13 @@ export default class TerritoryWar extends Command {
         await interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as { charGP: string; shipGP: string; zetas: string; twOmicrons: string; omicrons: string };
+        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as {
+            charGP: string;
+            shipGP: string;
+            zetas: string;
+            twOmicrons: string;
+            omicrons: string;
+        };
 
         // An array to stick all the fields in as we go.
         const fields = [];

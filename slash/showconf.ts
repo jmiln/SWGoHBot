@@ -8,12 +8,13 @@ import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Showconf extends Command {
+    static readonly metadata = {
+        name: "showconf",
+        guildOnly: false,
+        permLevel: 3,
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "showconf",
-            guildOnly: false,
-            permLevel: 3,
-        });
+        super(Bot, Showconf.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

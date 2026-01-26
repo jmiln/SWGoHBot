@@ -1,8 +1,17 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { characters,ships } from "../data/constants/units.ts";
-import { expandSpaces, findChar, getAllyCode, getGearStr, makeTable, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { characters, ships } from "../data/constants/units.ts";
+import {
+    expandSpaces,
+    findChar,
+    getAllyCode,
+    getGearStr,
+    makeTable,
+    msgArray,
+    toProperCase,
+    updatedFooterStr,
+} from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -10,146 +19,147 @@ import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.t
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 export default class GuildSearch extends Command {
+    static readonly metadata = {
+        name: "guildsearch",
+        guildOnly: false,
+        options: [
+            {
+                name: "character",
+                description: "Look for your guild's stats on a character.",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "character",
+                        autocomplete: true,
+                        description: "The character you want to display",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                    {
+                        name: "allycode",
+                        description: "An ally code to determine which guild you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "sort",
+                        description: "Choose what to sort by",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "Gear", value: "gear" },
+                            { name: "GP", value: "gp" },
+                            { name: "Name", value: "name" },
+                        ],
+                    },
+                    {
+                        name: "stat",
+                        description: "Which stat you want it to show",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "Health", value: "Health" },
+                            { name: "Protection", value: "Protection" },
+                            { name: "Speed", value: "Speed" },
+                            { name: "Potency", value: "Potency" },
+                            { name: "Physical Critical Chance", value: "Physical Critical Chance" },
+                            { name: "Physical Damage", value: "Physical Damage" },
+                            { name: "Special Critical Chance", value: "Special Critical Chance" },
+                            { name: "Special Damage", value: "Special Damage" },
+                            { name: "Critical Damage", value: "Critical Damage" },
+                            { name: "Tenacity", value: "Tenacity" },
+                            { name: "Accuracy", value: "Accuracy" },
+                            { name: "Armor", value: "Armor" },
+                            { name: "Resistance", value: "Resistance" },
+                        ],
+                    },
+                    // INTEGER: top, rarity/ stars
+                    {
+                        name: "top",
+                        description: "View only the top x in the list (1-50)",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 0,
+                        maxValue: 50,
+                    },
+                    {
+                        name: "rarity",
+                        description: "View only X rarity (Star lvl) and above. (1-7)",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 0,
+                        maxValue: 7,
+                    },
+                    // BOOL: reverse, zetas
+                    {
+                        name: "reverse",
+                        description: "Reverse the sort order",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "omicrons",
+                        description: "Show only results that have omicron'd abilities",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "zetas",
+                        description: "Show only results that have zeta'd abilities",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                ],
+            },
+            {
+                name: "ship",
+                description: "Look for your guild's stats on a ship.",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "ship",
+                        autocomplete: true,
+                        description: "The ship you want to display",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                    {
+                        name: "allycode",
+                        description: "An ally code to determine which guild you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "sort",
+                        description: "Choose what to sort by",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "GP", value: "gp" },
+                            { name: "Name", value: "name" },
+                            { name: "Rarity", value: "rarity" },
+                        ],
+                    },
+                    // INTEGER: top, rarity/ stars
+                    {
+                        name: "top",
+                        description: "View only the top x in the list (1-50)",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 0,
+                        maxValue: 50,
+                    },
+                    {
+                        name: "rarity",
+                        description: "View only X rarity (Star lvl) and above. (1-7)",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 0,
+                        maxValue: 7,
+                    },
+                    // BOOL: reverse
+                    {
+                        name: "reverse",
+                        description: "Reverse the sort order",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "guildsearch",
-            guildOnly: false,
-            options: [
-                {
-                    name: "character",
-                    description: "Look for your guild's stats on a character.",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "character",
-                            autocomplete: true,
-                            description: "The character you want to display",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                        {
-                            name: "allycode",
-                            description: "An ally code to determine which guild you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "sort",
-                            description: "Choose what to sort by",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "Gear", value: "gear" },
-                                { name: "GP", value: "gp" },
-                                { name: "Name", value: "name" },
-                            ],
-                        },
-                        {
-                            name: "stat",
-                            description: "Which stat you want it to show",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "Health", value: "Health" },
-                                { name: "Protection", value: "Protection" },
-                                { name: "Speed", value: "Speed" },
-                                { name: "Potency", value: "Potency" },
-                                { name: "Physical Critical Chance", value: "Physical Critical Chance" },
-                                { name: "Physical Damage", value: "Physical Damage" },
-                                { name: "Special Critical Chance", value: "Special Critical Chance" },
-                                { name: "Special Damage", value: "Special Damage" },
-                                { name: "Critical Damage", value: "Critical Damage" },
-                                { name: "Tenacity", value: "Tenacity" },
-                                { name: "Accuracy", value: "Accuracy" },
-                                { name: "Armor", value: "Armor" },
-                                { name: "Resistance", value: "Resistance" },
-                            ],
-                        },
-                        // INTEGER: top, rarity/ stars
-                        {
-                            name: "top",
-                            description: "View only the top x in the list (1-50)",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 0,
-                            maxValue: 50,
-                        },
-                        {
-                            name: "rarity",
-                            description: "View only X rarity (Star lvl) and above. (1-7)",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 0,
-                            maxValue: 7,
-                        },
-                        // BOOL: reverse, zetas
-                        {
-                            name: "reverse",
-                            description: "Reverse the sort order",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "omicrons",
-                            description: "Show only results that have omicron'd abilities",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "zetas",
-                            description: "Show only results that have zeta'd abilities",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                    ],
-                },
-                {
-                    name: "ship",
-                    description: "Look for your guild's stats on a ship.",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "ship",
-                            autocomplete: true,
-                            description: "The ship you want to display",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                        {
-                            name: "allycode",
-                            description: "An ally code to determine which guild you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "sort",
-                            description: "Choose what to sort by",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "GP", value: "gp" },
-                                { name: "Name", value: "name" },
-                                { name: "Rarity", value: "rarity" },
-                            ],
-                        },
-                        // INTEGER: top, rarity/ stars
-                        {
-                            name: "top",
-                            description: "View only the top x in the list (1-50)",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 0,
-                            maxValue: 50,
-                        },
-                        {
-                            name: "rarity",
-                            description: "View only X rarity (Star lvl) and above. (1-7)",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 0,
-                            maxValue: 7,
-                        },
-                        // BOOL: reverse
-                        {
-                            name: "reverse",
-                            description: "Reverse the sort order",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, GuildSearch.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options

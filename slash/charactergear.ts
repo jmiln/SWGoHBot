@@ -7,45 +7,47 @@ import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
+import type { RawCharacter, SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 export default class Charactergear extends Command {
+    static readonly metadata = {
+        name: "charactergear",
+        description: "Show the gear required for a specified character",
+        guildOnly: false,
+        options: [
+            {
+                name: "character",
+                autocomplete: true,
+                type: ApplicationCommandOptionType.String,
+                description: "The character you want to see the gear of",
+                required: true,
+            },
+            {
+                name: "allycode",
+                type: ApplicationCommandOptionType.String,
+                description: "An ally code to check the character against",
+            },
+            {
+                name: "expand",
+                type: ApplicationCommandOptionType.Boolean,
+                description: "Expand the gear pieces to show their parts instead of the whole",
+            },
+            {
+                name: "gearlevel",
+                type: ApplicationCommandOptionType.Integer,
+                description: "The gear level you want to see the requirements for",
+                minValue: 1,
+                maxValue: 13,
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "charactergear",
-            description: "Show the gear required for a specified character",
-            guildOnly: false,
-            options: [
-                {
-                    name: "character",
-                    autocomplete: true,
-                    type: ApplicationCommandOptionType.String,
-                    description: "The character you want to see the gear of",
-                    required: true,
-                },
-                {
-                    name: "allycode",
-                    type: ApplicationCommandOptionType.String,
-                    description: "An ally code to check the character against",
-                },
-                {
-                    name: "expand",
-                    type: ApplicationCommandOptionType.Boolean,
-                    description: "Expand the gear pieces to show their parts instead of the whole",
-                },
-                {
-                    name: "gearlevel",
-                    type: ApplicationCommandOptionType.Integer,
-                    description: "The gear level you want to see the requirements for",
-                    minValue: 1,
-                    maxValue: 13,
-                },
-            ],
-        });
+        super(Bot, Charactergear.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         // Grab the various options
         const doExpand = interaction.options.getBoolean("expand");
         const gearLvl = interaction.options.getInteger("gearlevel") || 0;
@@ -79,10 +81,10 @@ export default class Charactergear extends Command {
         }
         character = chars[0];
 
-        let char;
+        let char: RawCharacter;
         try {
             char = await swgohAPI.getCharacter(character.uniqueName);
-        } catch (err) {
+        } catch (_) {
             return super.error(interaction, "There was an error fetching character data. Please try again later.");
         }
 
@@ -110,7 +112,7 @@ export default class Charactergear extends Command {
                 let gearString = "";
                 if (doExpand) {
                     allGearList = allGearList.filter((g) => g !== "???????");
-                    const out = await expandPieces(Bot, allGearList);
+                    const out = await expandPieces(allGearList);
                     const outK = Object.keys(out).sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10));
                     gearString = expandSpaces(
                         outK.map((g) => `*${" ".repeat(3 - out[g].count.toString().length)}${out[g].count}x${g}`).join("\n"),
@@ -143,7 +145,7 @@ export default class Charactergear extends Command {
                 for (const g of gearList) {
                     let f: { name: string; value: string };
                     if (doExpand) {
-                        const out = await expandPieces(Bot, g.equipmentSetList);
+                        const out = await expandPieces(g.equipmentSetList);
                         const outK = Object.keys(out).sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10));
 
                         f = {
@@ -229,7 +231,7 @@ export default class Charactergear extends Command {
                 } else {
                     if (doExpand) {
                         // If they want all the pieces, work on that
-                        const out = await expandPieces(Bot, g.equipmentSetList);
+                        const out = await expandPieces(g.equipmentSetList);
                         const outK = Object.keys(out).sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10));
 
                         fields.push({
@@ -297,7 +299,7 @@ export default class Charactergear extends Command {
     }
 }
 
-async function expandPieces(Bot: BotType, list: string[]) {
+async function expandPieces(list: string[]) {
     let end = [];
     for (const piece of list) {
         const gr = await cache.get(
@@ -314,7 +316,7 @@ async function expandPieces(Bot: BotType, list: string[]) {
             },
         );
 
-        const pieces = await getParts(Bot, gr as any);
+        const pieces = await getParts(gr);
         end = end.concat(pieces);
     }
 
@@ -333,7 +335,7 @@ async function expandPieces(Bot: BotType, list: string[]) {
 }
 
 // gr is gear recipe?
-async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: string; count: number; mark: string }[] = [], amt = 1) {
+async function getParts(gr: SWAPIGearRecipe, partList: { name: string; count: number; mark: string }[] = [], amt = 1) {
     if (!gr) return [];
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {
@@ -367,7 +369,7 @@ async function getParts(Bot: BotType, gr: SWAPIGearRecipe, partList: { name: str
                     _id: 0,
                 },
             );
-            await getParts(Bot, gear as any, partList, amt * r.maxQuantity);
+            await getParts(gear, partList, amt * r.maxQuantity);
         }
     } else {
         let mk = gearPiece.nameKey.split(" ")[1];

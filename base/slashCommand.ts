@@ -13,16 +13,19 @@ const defCmdData = {
     enabled: true,
     permLevel: 0,
 };
+
+export type CommandMetadata = typeof defCmdData;
+
 export default abstract class slashCommand {
     abstract run(_Bot: BotType, _interaction: BotInteraction, _opts: { level: number });
     Bot: BotType;
-    commandData: typeof defCmdData;
+    commandData: CommandMetadata;
     guildOnly: boolean;
 
     // Only really in setconf
     async autocomplete?(Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
 
-    constructor(Bot: BotType, commandData = {}) {
+    constructor(Bot: BotType, commandData: Partial<CommandMetadata> = {}) {
         this.Bot = Bot;
         this.commandData = {
             ...defCmdData,

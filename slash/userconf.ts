@@ -13,138 +13,139 @@ import type { SWAPILang } from "../types/swapi_types.ts";
 import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
 
 export default class UserConf extends Command {
+    static readonly metadata = {
+        name: "userconf",
+        guildOnly: false,
+        options: [
+            {
+                name: "allycodes",
+                description: "The ally code of the user you want to see",
+                type: ApplicationCommandOptionType.SubcommandGroup,
+                // Need add, remove, makeprimary
+                options: [
+                    {
+                        name: "add",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Add an allycode",
+                        options: [
+                            {
+                                name: "allycode",
+                                description: "The ally code of the user you want to see",
+                                type: ApplicationCommandOptionType.String,
+                                required: true,
+                            },
+                        ],
+                    },
+                    {
+                        name: "remove",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Remove an allycode",
+                        options: [
+                            {
+                                name: "allycode",
+                                description: "The ally code of the user you want to see",
+                                type: ApplicationCommandOptionType.String,
+                                required: true,
+                                autocomplete: true,
+                            },
+                        ],
+                    },
+                    {
+                        name: "make_primary",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Set this ally code as the primary one",
+                        options: [
+                            {
+                                name: "allycode",
+                                description: "The ally code of the user you want to see",
+                                type: ApplicationCommandOptionType.String,
+                                required: true,
+                                autocomplete: true,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "arenaalert",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Set up your arena alerts",
+                options: [
+                    // Need enabledms, arena, payoutresult, payoutwarning
+                    {
+                        name: "enable_dms",
+                        description: "Set it to send DMs for various alerts",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "all", value: "all" },
+                            { name: "primary", value: "primary" },
+                            { name: "off", value: "off" },
+                        ],
+                    },
+                    {
+                        name: "arena",
+                        description: "Choose which arena to watch",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "char", value: "char" },
+                            { name: "fleet", value: "fleet" },
+                            { name: "both", value: "both" },
+                            { name: "none", value: "none" },
+                        ],
+                    },
+                    {
+                        name: "payout_result",
+                        description: "Set it to send you the final rank at your payout",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "payout_warning",
+                        description: "Set it to warn you before your payout, 1-1440min, 0 to disable",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 0,
+                        maxValue: 1440,
+                    },
+                ],
+            },
+            {
+                name: "lang",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Change your language settings",
+                // Need language & swgohlanguage, with the appropriate choices for each
+                options: [
+                    {
+                        name: "bot_language",
+                        description: "Set the language for the bot's text",
+                        type: ApplicationCommandOptionType.String,
+                        choices: Object.keys(Language.getLanguages()).map((lang) => {
+                            return {
+                                name: lang,
+                                value: lang,
+                            };
+                        }),
+                    },
+                    {
+                        name: "swgoh_language",
+                        description: "Set the language for the game's text",
+                        type: ApplicationCommandOptionType.String,
+                        choices: constants.swgohLangList.map((lang) => {
+                            return {
+                                name: lang,
+                                value: lang,
+                            };
+                        }),
+                    },
+                ],
+            },
+            {
+                name: "view",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "View your current settings",
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "userconf",
-            guildOnly: false,
-            options: [
-                {
-                    name: "allycodes",
-                    description: "The ally code of the user you want to see",
-                    type: ApplicationCommandOptionType.SubcommandGroup,
-                    // Need add, remove, makeprimary
-                    options: [
-                        {
-                            name: "add",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Add an allycode",
-                            options: [
-                                {
-                                    name: "allycode",
-                                    description: "The ally code of the user you want to see",
-                                    type: ApplicationCommandOptionType.String,
-                                    required: true,
-                                },
-                            ],
-                        },
-                        {
-                            name: "remove",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Remove an allycode",
-                            options: [
-                                {
-                                    name: "allycode",
-                                    description: "The ally code of the user you want to see",
-                                    type: ApplicationCommandOptionType.String,
-                                    required: true,
-                                    autocomplete: true,
-                                },
-                            ],
-                        },
-                        {
-                            name: "make_primary",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Set this ally code as the primary one",
-                            options: [
-                                {
-                                    name: "allycode",
-                                    description: "The ally code of the user you want to see",
-                                    type: ApplicationCommandOptionType.String,
-                                    required: true,
-                                    autocomplete: true,
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "arenaalert",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Set up your arena alerts",
-                    options: [
-                        // Need enabledms, arena, payoutresult, payoutwarning
-                        {
-                            name: "enable_dms",
-                            description: "Set it to send DMs for various alerts",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "all", value: "all" },
-                                { name: "primary", value: "primary" },
-                                { name: "off", value: "off" },
-                            ],
-                        },
-                        {
-                            name: "arena",
-                            description: "Choose which arena to watch",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "char", value: "char" },
-                                { name: "fleet", value: "fleet" },
-                                { name: "both", value: "both" },
-                                { name: "none", value: "none" },
-                            ],
-                        },
-                        {
-                            name: "payout_result",
-                            description: "Set it to send you the final rank at your payout",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "payout_warning",
-                            description: "Set it to warn you before your payout, 1-1440min, 0 to disable",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 0,
-                            maxValue: 1440,
-                        },
-                    ],
-                },
-                {
-                    name: "lang",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Change your language settings",
-                    // Need language & swgohlanguage, with the appropriate choices for each
-                    options: [
-                        {
-                            name: "bot_language",
-                            description: "Set the language for the bot's text",
-                            type: ApplicationCommandOptionType.String,
-                            choices: Object.keys(Language.getLanguages()).map((lang) => {
-                                return {
-                                    name: lang,
-                                    value: lang,
-                                };
-                            }),
-                        },
-                        {
-                            name: "swgoh_language",
-                            description: "Set the language for the game's text",
-                            type: ApplicationCommandOptionType.String,
-                            choices: constants.swgohLangList.map((lang) => {
-                                return {
-                                    name: lang,
-                                    value: lang,
-                                };
-                            }),
-                        },
-                    ],
-                },
-                {
-                    name: "view",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "View your current settings",
-                },
-            ],
-        });
+        super(Bot, UserConf.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

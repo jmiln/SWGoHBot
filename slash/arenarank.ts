@@ -8,24 +8,26 @@ import { arenaJumps } from "../data/constants/units.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Arenarank extends Command {
+    static readonly metadata = {
+        name: "arenarank",
+        guildOnly: false,
+        options: [
+            {
+                name: "rank",
+                type: ApplicationCommandOptionType.Integer,
+                description: "The rank to calculate the drops from",
+                required: true,
+            },
+            {
+                name: "hops",
+                type: ApplicationCommandOptionType.Integer,
+                description: "How many more ranks to calculate",
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "arenarank",
-            guildOnly: false,
-            options: [
-                {
-                    name: "rank",
-                    type: ApplicationCommandOptionType.Integer,
-                    description: "The rank to calculate the drops from",
-                    required: true,
-                },
-                {
-                    name: "hops",
-                    type: ApplicationCommandOptionType.Integer,
-                    description: "How many more ranks to calculate",
-                },
-            ],
-        });
+        super(Bot, Arenarank.metadata);
     }
 
     run(_Bot: BotType, interaction: BotInteraction) {

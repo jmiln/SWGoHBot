@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { getAllyCode,
-updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
@@ -19,21 +18,22 @@ interface PlayerQuality {
 }
 
 export default class GuildQuality extends Command {
+    static readonly metadata = {
+        name: "guildquality",
+        guildOnly: false,
+        options: [
+            {
+                name: "allycode",
+                description: "The ally code of the guild you want to check.",
+                type: ApplicationCommandOptionType.String,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "guildquality",
-            guildOnly: false,
-            options: [
-                {
-                    name: "allycode",
-                    description: "The ally code of the guild you want to check.",
-                    type: ApplicationCommandOptionType.String,
-                },
-            ],
-        });
+        super(Bot, GuildQuality.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const allycode = interaction.options.getString("allycode");

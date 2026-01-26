@@ -1,28 +1,29 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
+import { characters } from "../data/constants/units.ts";
 import { findChar, getSideColor } from "../modules/functions.ts";
 import type { BotInteraction, BotType, BotUnitMods } from "../types/types.ts";
-import { characters } from "../data/constants/units.ts";
 
 export default class Mods extends Command {
+    static readonly metadata = {
+        name: "mods",
+        guildOnly: false,
+        description: "Display some suggested mod loadouts based on the most common loadouts by players in top 100 guilds.",
+        options: [
+            {
+                name: "character",
+                required: true,
+                autocomplete: true,
+                description: "The character you want to see the mods for",
+                type: ApplicationCommandOptionType.String,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "mods",
-            guildOnly: false,
-            description: "Display some suggested mod loadouts based on the most common loadouts by players in top 100 guilds.",
-            options: [
-                {
-                    name: "character",
-                    required: true,
-                    autocomplete: true,
-                    description: "The character you want to see the mods for",
-                    type: ApplicationCommandOptionType.String,
-                },
-            ],
-        });
+        super(Bot, Mods.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         await interaction.deferReply();
 
         const getLocalizedModString = (key: string) => {

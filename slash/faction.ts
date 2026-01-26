@@ -5,51 +5,52 @@ import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
-import { getAllyCode,
-msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Faction extends Command {
+    static readonly metadata = {
+        name: "faction",
+        guildOnly: false,
+        options: [
+            {
+                name: "faction_group_1",
+                description: "The faction you want to look up",
+                type: ApplicationCommandOptionType.String,
+                choices: factionMap.slice(0, 20),
+            },
+            {
+                name: "faction_group_2",
+                description: "The faction you want to look up",
+                type: ApplicationCommandOptionType.String,
+                choices: factionMap.slice(20, 40),
+            },
+            {
+                name: "allycode",
+                description: "Ally code to look up the info for.",
+                type: ApplicationCommandOptionType.String,
+            },
+            {
+                name: "leader",
+                description: "Limit results to characters with the leader tag.",
+                type: ApplicationCommandOptionType.Boolean,
+            },
+            {
+                name: "zeta",
+                description: "Limit results to characters with abilities that can be zeta'd.",
+                type: ApplicationCommandOptionType.Boolean,
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "faction",
-            guildOnly: false,
-            options: [
-                {
-                    name: "faction_group_1",
-                    description: "The faction you want to look up",
-                    type: ApplicationCommandOptionType.String,
-                    choices: factionMap.slice(0, 20),
-                },
-                {
-                    name: "faction_group_2",
-                    description: "The faction you want to look up",
-                    type: ApplicationCommandOptionType.String,
-                    choices: factionMap.slice(20, 40),
-                },
-                {
-                    name: "allycode",
-                    description: "Ally code to look up the info for.",
-                    type: ApplicationCommandOptionType.String,
-                },
-                {
-                    name: "leader",
-                    description: "Limit results to characters with the leader tag.",
-                    type: ApplicationCommandOptionType.Boolean,
-                },
-                {
-                    name: "zeta",
-                    description: "Limit results to characters with abilities that can be zeta'd.",
-                    type: ApplicationCommandOptionType.Boolean,
-                },
-            ],
-        });
+        super(Bot, Faction.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const faction1 = interaction.options.getString("faction_group_1");
         const faction2 = interaction.options.getString("faction_group_2");
 

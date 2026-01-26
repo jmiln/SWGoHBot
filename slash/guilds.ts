@@ -24,204 +24,205 @@ import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../typ
 import type { BotInteraction, BotType, TWList } from "../types/types.ts";
 
 export default class Guilds extends Command {
+    static readonly metadata = {
+        name: "guilds",
+        guildOnly: false,
+        options: [
+            {
+                name: "gear",
+                description: "Show an overview of the guild's gear levels",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "sort",
+                        description: "Which gear level you'd like it sorted by (9-13)",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 9,
+                        maxValue: 13,
+                    },
+                ],
+            },
+            {
+                name: "mods",
+                description: "Show an overview of the guild's mod stats",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "sort",
+                        description: "Choose how you want the results sorted",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            {
+                                name: "name",
+                                value: "name",
+                            },
+                            {
+                                name: "offense",
+                                value: "offense",
+                            },
+                            {
+                                name: "six pip/ 6*",
+                                value: "6",
+                            },
+                            {
+                                name: "speed",
+                                value: "speed",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "relics",
+                description: "Show an overview of the guild's relic counts",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+            {
+                name: "roster",
+                description: "View the guild's roster, showing ally codes, gp, etc.",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "registered",
+                        description: "Show the discord names of anyone registered & on the server next to their name.",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "show_allycode",
+                        description: "Show user's ally codes instead of their gp",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "sort",
+                        description: "Choose what the list is sorted by.",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            {
+                                name: "name",
+                                value: "name",
+                            },
+                            {
+                                name: "rank",
+                                value: "rank",
+                            },
+                            {
+                                name: "gp",
+                                value: "gp",
+                            },
+                        ],
+                    },
+                    {
+                        name: "show_side",
+                        description: "Display just light side or dark side GP",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            {
+                                name: "Light Side",
+                                value: "light",
+                            },
+                            {
+                                name: "Dark Side",
+                                value: "dark",
+                            },
+                        ],
+                    },
+                    {
+                        name: "split_types",
+                        description: "Display chacters and ships as different columns",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                ],
+            },
+            {
+                name: "tickets",
+                description: "Show how many event tickets each guild member has aquired for the day",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "sort",
+                        description: "Choose what the list is sorted by.",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            {
+                                name: "tickets",
+                                value: "tickets",
+                            },
+                            {
+                                name: "name",
+                                value: "name",
+                            },
+                        ],
+                    },
+                    {
+                        name: "show_all",
+                        description: "Show all members, or just the ones that need more tickets",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                ],
+            },
+            {
+                name: "tw_summary",
+                description: "Show an overview of stats for your guild that could be useful for territory wars",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "expand",
+                        description: "Expand some of the fields to show all options",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                ],
+            },
+            {
+                name: "view",
+                description: "Show an overview of the guild's stats",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "allycode",
+                        description: "The ally code of the guild you want to check.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "guilds",
-            guildOnly: false,
-            options: [
-                {
-                    name: "gear",
-                    description: "Show an overview of the guild's gear levels",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "sort",
-                            description: "Which gear level you'd like it sorted by (9-13)",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 9,
-                            maxValue: 13,
-                        },
-                    ],
-                },
-                {
-                    name: "mods",
-                    description: "Show an overview of the guild's mod stats",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "sort",
-                            description: "Choose how you want the results sorted",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                {
-                                    name: "name",
-                                    value: "name",
-                                },
-                                {
-                                    name: "offense",
-                                    value: "offense",
-                                },
-                                {
-                                    name: "six pip/ 6*",
-                                    value: "6",
-                                },
-                                {
-                                    name: "speed",
-                                    value: "speed",
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "relics",
-                    description: "Show an overview of the guild's relic counts",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-                {
-                    name: "roster",
-                    description: "View the guild's roster, showing ally codes, gp, etc.",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "registered",
-                            description: "Show the discord names of anyone registered & on the server next to their name.",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "show_allycode",
-                            description: "Show user's ally codes instead of their gp",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "sort",
-                            description: "Choose what the list is sorted by.",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                {
-                                    name: "name",
-                                    value: "name",
-                                },
-                                {
-                                    name: "rank",
-                                    value: "rank",
-                                },
-                                {
-                                    name: "gp",
-                                    value: "gp",
-                                },
-                            ],
-                        },
-                        {
-                            name: "show_side",
-                            description: "Display just light side or dark side GP",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                {
-                                    name: "Light Side",
-                                    value: "light",
-                                },
-                                {
-                                    name: "Dark Side",
-                                    value: "dark",
-                                },
-                            ],
-                        },
-                        {
-                            name: "split_types",
-                            description: "Display chacters and ships as different columns",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                    ],
-                },
-                {
-                    name: "tickets",
-                    description: "Show how many event tickets each guild member has aquired for the day",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "sort",
-                            description: "Choose what the list is sorted by.",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                {
-                                    name: "tickets",
-                                    value: "tickets",
-                                },
-                                {
-                                    name: "name",
-                                    value: "name",
-                                },
-                            ],
-                        },
-                        {
-                            name: "show_all",
-                            description: "Show all members, or just the ones that need more tickets",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                    ],
-                },
-                {
-                    name: "tw_summary",
-                    description: "Show an overview of stats for your guild that could be useful for territory wars",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "expand",
-                            description: "Expand some of the fields to show all options",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                    ],
-                },
-                {
-                    name: "view",
-                    description: "Show an overview of the guild's stats",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "allycode",
-                            description: "The ally code of the guild you want to check.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Guilds.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const subCommand = interaction.options.getSubcommand();

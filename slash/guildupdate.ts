@@ -1,53 +1,53 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getAllyCode,
-isAllyCode } from "../modules/functions.ts";
+import { getAllyCode, isAllyCode } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class GuildUpdate extends Command {
+    static readonly metadata = {
+        name: "guildupdate",
+        // category: "Patreon",
+        guildOnly: false,
+        aliases: ["gu"],
+        description: "Set up the guild watcher to alert you for changes in guild member's rosters",
+        options: [
+            {
+                name: "set",
+                description: "Change the settings",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "enabled",
+                        description: "Turn the updates on or off",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "channel",
+                        description: "Set which channel to log updates to",
+                        type: ApplicationCommandOptionType.Channel,
+                    },
+                    {
+                        name: "allycode",
+                        description: "Set what ally code to get the guild's info from",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+            {
+                name: "view",
+                description: "View the settings for your guild updates",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "guildupdate",
-            // category: "Patreon",
-            guildOnly: false,
-            aliases: ["gu"],
-            description: "Set up the guild watcher to alert you for changes in guild member's rosters",
-            options: [
-                {
-                    name: "set",
-                    description: "Change the settings",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "enabled",
-                            description: "Turn the updates on or off",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "channel",
-                            description: "Set which channel to log updates to",
-                            type: ApplicationCommandOptionType.Channel,
-                        },
-                        {
-                            name: "allycode",
-                            description: "Set what ally code to get the guild's info from",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-                {
-                    name: "view",
-                    description: "View the settings for your guild updates",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-            ],
-        });
+        super(Bot, GuildUpdate.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const userID = interaction.user.id;
         const user = await userReg.getUser(userID);
 

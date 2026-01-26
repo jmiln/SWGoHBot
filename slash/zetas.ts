@@ -12,51 +12,52 @@ import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Zetas extends Command {
+    static readonly metadata = {
+        name: "zetas",
+        guildOnly: false,
+        options: [
+            {
+                name: "guild",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "See a list of zetas for your whole guild",
+                options: [
+                    {
+                        name: "allycode",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                        description: "The ally code of a player in the guild you want to see",
+                    },
+                    {
+                        name: "character",
+                        autocomplete: true,
+                        type: ApplicationCommandOptionType.String,
+                        description: "Just show the zeta'd abilities for a specific character",
+                    },
+                ],
+            },
+            {
+                name: "player",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "See a player's zetas",
+                options: [
+                    {
+                        name: "allycode",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                        description: "The ally code of the player you want to see.",
+                    },
+                    {
+                        name: "character",
+                        autocomplete: true,
+                        type: ApplicationCommandOptionType.String,
+                        description: "Just show the zeta'd abilities for a specific character",
+                    },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "zetas",
-            guildOnly: false,
-            options: [
-                {
-                    name: "guild",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "See a list of zetas for your whole guild",
-                    options: [
-                        {
-                            name: "allycode",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                            description: "The ally code of a player in the guild you want to see",
-                        },
-                        {
-                            name: "character",
-                            autocomplete: true,
-                            type: ApplicationCommandOptionType.String,
-                            description: "Just show the zeta'd abilities for a specific character",
-                        },
-                    ],
-                },
-                {
-                    name: "player",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "See a player's zetas",
-                    options: [
-                        {
-                            name: "allycode",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                            description: "The ally code of the player you want to see.",
-                        },
-                        {
-                            name: "character",
-                            autocomplete: true,
-                            type: ApplicationCommandOptionType.String,
-                            description: "Just show the zeta'd abilities for a specific character",
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Zetas.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

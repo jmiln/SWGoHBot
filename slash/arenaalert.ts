@@ -6,77 +6,79 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
+    static readonly metadata = {
+        name: "arenaalert",
+        description: "Change settings for your arena alerts",
+        guildOnly: false,
+        options: [
+            {
+                name: "enabledms",
+                type: ApplicationCommandOptionType.String,
+                description: "Set if it's going to DM you for jumps",
+                choices: [
+                    {
+                        name: "All",
+                        value: "all",
+                    },
+                    {
+                        name: "Primary",
+                        value: "primary",
+                    },
+                    {
+                        name: "Off",
+                        value: "off",
+                    },
+                ],
+            },
+            {
+                name: "arena",
+                type: ApplicationCommandOptionType.String,
+                description: "Set which arena it will watch.",
+                choices: [
+                    {
+                        name: "Char",
+                        value: "char",
+                    },
+                    {
+                        name: "Fleet",
+                        value: "fleet",
+                    },
+                    {
+                        name: "Both",
+                        value: "both",
+                    },
+                ],
+            },
+            {
+                name: "payout_result",
+                type: ApplicationCommandOptionType.String,
+                description: "Send you a DM with your final payout result",
+                choices: [
+                    {
+                        name: "On",
+                        value: "on",
+                    },
+                    {
+                        name: "Off",
+                        value: "off",
+                    },
+                ],
+            },
+            {
+                name: "payout_warning",
+                type: ApplicationCommandOptionType.Integer,
+                description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
+                minValue: 0,
+                maxValue: 1440,
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "arenaalert",
-            description: "Change settings for your arena alerts",
-            guildOnly: false,
-            options: [
-                {
-                    name: "enabledms",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Set if it's going to DM you for jumps",
-                    choices: [
-                        {
-                            name: "All",
-                            value: "all",
-                        },
-                        {
-                            name: "Primary",
-                            value: "primary",
-                        },
-                        {
-                            name: "Off",
-                            value: "off",
-                        },
-                    ],
-                },
-                {
-                    name: "arena",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Set which arena it will watch.",
-                    choices: [
-                        {
-                            name: "Char",
-                            value: "char",
-                        },
-                        {
-                            name: "Fleet",
-                            value: "fleet",
-                        },
-                        {
-                            name: "Both",
-                            value: "both",
-                        },
-                    ],
-                },
-                {
-                    name: "payout_result",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Send you a DM with your final payout result",
-                    choices: [
-                        {
-                            name: "On",
-                            value: "on",
-                        },
-                        {
-                            name: "Off",
-                            value: "off",
-                        },
-                    ],
-                },
-                {
-                    name: "payout_warning",
-                    type: ApplicationCommandOptionType.Integer,
-                    description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
-                    minValue: 0,
-                    maxValue: 1440,
-                },
-            ],
-        });
+        super(Bot, ArenaAlert.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");

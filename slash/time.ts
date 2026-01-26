@@ -4,21 +4,22 @@ import { formatCurrentTime, isValidZone } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Time extends Command {
+    static readonly metadata = {
+        name: "time",
+        guildOnly: false,
+        options: [
+            {
+                name: "timezone",
+                type: ApplicationCommandOptionType.String,
+                description: "A valid timezone to view",
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "time",
-            guildOnly: false,
-            options: [
-                {
-                    name: "timezone",
-                    type: ApplicationCommandOptionType.String,
-                    description: "A valid timezone to view",
-                },
-            ],
-        });
+        super(Bot, Time.metadata);
     }
 
-    run(Bot: BotType, interaction: BotInteraction) {
+    run(_Bot: BotType, interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
         const timezone = interaction.options.getString("timezone");
 
@@ -31,7 +32,10 @@ export default class Time extends Command {
         if (guildConf?.timezone && isValidZone(guildConf.timezone)) {
             // If we got here because timezone above had issues, say so, but if it's just here because they left it empty, don'tcomplain
             if (timezone?.length) {
-                return super.error(interaction, interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime(guildConf.timezone)));
+                return super.error(
+                    interaction,
+                    interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime(guildConf.timezone)),
+                );
             }
             return interaction.reply({
                 content: `Here's your guild's default time:\n${interaction.language.get(

@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { characters,ships } from "../data/constants/units.ts";
+import { characters, ships } from "../data/constants/units.ts";
 import unitChecklist from "../data/unitChecklist.ts";
 import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -26,36 +26,37 @@ const gpMap = {
 };
 
 export default class GrandArena extends Command {
+    static readonly metadata = {
+        name: "grandarena",
+        guildOnly: false,
+        description: "Compare two players' rosters for Grand Arena",
+        options: [
+            {
+                name: "allycode_1",
+                type: ApplicationCommandOptionType.String,
+                description: "Ally code for player 1",
+                required: true,
+            },
+            {
+                name: "allycode_2",
+                type: ApplicationCommandOptionType.String,
+                description: "Ally code for player 2",
+                required: true,
+            },
+            {
+                name: "characters",
+                type: ApplicationCommandOptionType.String,
+                description: "Characters to compare, comma seperated",
+            },
+            {
+                name: "faction",
+                type: ApplicationCommandOptionType.String,
+                description: "A faction to compare for the two players",
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "grandarena",
-            guildOnly: false,
-            description: "Compare two players' rosters for Grand Arena",
-            options: [
-                {
-                    name: "allycode_1",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Ally code for player 1",
-                    required: true,
-                },
-                {
-                    name: "allycode_2",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Ally code for player 2",
-                    required: true,
-                },
-                {
-                    name: "characters",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Characters to compare, comma seperated",
-                },
-                {
-                    name: "faction",
-                    type: ApplicationCommandOptionType.String,
-                    description: "A faction to compare for the two players",
-                },
-            ],
-        });
+        super(Bot, GrandArena.metadata);
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {
@@ -461,16 +462,8 @@ export default class GrandArena extends Command {
 
                 checkArr[thisCharName].push({
                     check: labels.zetas,
-                    user1: user1Char
-                        ? user1Char.skills
-                              .filter((s) => s.isZeta && s.tier === s.tiers)
-                              .length.toString()
-                        : "N/A",
-                    user2: user2Char
-                        ? user2Char.skills
-                              .filter((s) => s.isZeta && s.tier === s.tiers)
-                              .length.toString()
-                        : "N/A",
+                    user1: user1Char ? user1Char.skills.filter((s) => s.isZeta && s.tier === s.tiers).length.toString() : "N/A",
+                    user2: user2Char ? user2Char.skills.filter((s) => s.isZeta && s.tier === s.tiers).length.toString() : "N/A",
                 });
                 checkArr[thisCharName].push({
                     check: "Omicrons",
@@ -562,7 +555,7 @@ function getModStats(user: SWAPIPlayer) {
     return userMods;
 }
 
-function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: string]: string }) {
+function getOverview(_Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: string]: string }) {
     const overview = [];
 
     // Arena stats
@@ -584,14 +577,8 @@ function getOverview(Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, label
     }
     overview.push({
         check: labels.zetas,
-        user1: user1.roster.reduce(
-            (a, b) => a + b.skills.filter((s) => s.isZeta && s.tier === s.tiers).length,
-            0,
-        ),
-        user2: user2.roster.reduce(
-            (a, b) => a + b.skills.filter((s) => s.isZeta && s.tier === s.tiers).length,
-            0,
-        ),
+        user1: user1.roster.reduce((a, b) => a + b.skills.filter((s) => s.isZeta && s.tier === s.tiers).length, 0),
+        user2: user2.roster.reduce((a, b) => a + b.skills.filter((s) => s.isZeta && s.tier === s.tiers).length, 0),
     });
     overview.push({
         check: "Omicrons",

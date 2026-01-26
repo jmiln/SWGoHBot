@@ -9,47 +9,48 @@ import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Randomchar extends Command {
+    static readonly metadata = {
+        name: "randomchar",
+        guildOnly: false,
+        options: [
+            {
+                name: "allycode",
+                description: "The ally code for the user you want to look up",
+                type: ApplicationCommandOptionType.String,
+            },
+            {
+                name: "rarity",
+                description: "Choose a minimum rarity (Star level) to filter by",
+                type: ApplicationCommandOptionType.Integer,
+                choices: [
+                    { name: "1*", value: 1 },
+                    { name: "2*", value: 2 },
+                    { name: "3*", value: 3 },
+                    { name: "4*", value: 4 },
+                    { name: "5*", value: 5 },
+                    { name: "6*", value: 6 },
+                    { name: "7*", value: 7 },
+                ],
+            },
+            {
+                name: "count",
+                description: "The number of characters to grab",
+                type: ApplicationCommandOptionType.Integer,
+                choices: [
+                    { name: "1", value: 1 },
+                    { name: "2", value: 2 },
+                    { name: "3", value: 3 },
+                    { name: "4", value: 4 },
+                    { name: "5", value: 5 },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "randomchar",
-            guildOnly: false,
-            options: [
-                {
-                    name: "allycode",
-                    description: "The ally code for the user you want to look up",
-                    type: ApplicationCommandOptionType.String,
-                },
-                {
-                    name: "rarity",
-                    description: "Choose a minimum rarity (Star level) to filter by",
-                    type: ApplicationCommandOptionType.Integer,
-                    choices: [
-                        { name: "1*", value: 1 },
-                        { name: "2*", value: 2 },
-                        { name: "3*", value: 3 },
-                        { name: "4*", value: 4 },
-                        { name: "5*", value: 5 },
-                        { name: "6*", value: 6 },
-                        { name: "7*", value: 7 },
-                    ],
-                },
-                {
-                    name: "count",
-                    description: "The number of characters to grab",
-                    type: ApplicationCommandOptionType.Integer,
-                    choices: [
-                        { name: "1", value: 1 },
-                        { name: "2", value: 2 },
-                        { name: "3", value: 3 },
-                        { name: "4", value: 4 },
-                        { name: "5", value: 5 },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Randomchar.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         let chars: SWAPIUnit[] | any[] = [];
         const MAX_CHARACTERS = 5;
 

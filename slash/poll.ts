@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
+import cache from "../modules/cache.ts";
 import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
 import logger from "../modules/Logger.ts";
@@ -9,74 +9,75 @@ import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Poll extends Command {
+    static readonly metadata = {
+        name: "poll",
+        guildOnly: false,
+        options: [
+            // Subcommands for create, view, end, cancel, vote
+            {
+                name: "create",
+                description: "Create a poll",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "question",
+                        required: true,
+                        description: "The question you want people to vote on",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "options",
+                        required: true,
+                        description: "Options for the poll, separated by a pipe symbol `|`",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "anonymous",
+                        description: "If enabled, current votes will not be shown until the poll is closed. ",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                ],
+            },
+            {
+                name: "end",
+                description: "End a poll, and show the final results",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [],
+            },
+            {
+                name: "cancel",
+                description: "Cancel a poll, don't bother with the results",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [],
+            },
+            {
+                name: "view",
+                description: "View the status of a poll with the current results",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [],
+            },
+            {
+                name: "vote",
+                description: "Vote on a poll (your vote will be hidden)",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "option",
+                        required: true,
+                        description: "The poll option you want to vote for",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 0,
+                        maxValue: 10,
+                    },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "poll",
-            guildOnly: false,
-            options: [
-                // Subcommands for create, view, end, cancel, vote
-                {
-                    name: "create",
-                    description: "Create a poll",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "question",
-                            required: true,
-                            description: "The question you want people to vote on",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "options",
-                            required: true,
-                            description: "Options for the poll, separated by a pipe symbol `|`",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "anonymous",
-                            description: "If enabled, current votes will not be shown until the poll is closed. ",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                    ],
-                },
-                {
-                    name: "end",
-                    description: "End a poll, and show the final results",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [],
-                },
-                {
-                    name: "cancel",
-                    description: "Cancel a poll, don't bother with the results",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [],
-                },
-                {
-                    name: "view",
-                    description: "View the status of a poll with the current results",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [],
-                },
-                {
-                    name: "vote",
-                    description: "Vote on a poll (your vote will be hidden)",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "option",
-                            required: true,
-                            description: "The poll option you want to vote for",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 0,
-                            maxValue: 10,
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Poll.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const action = interaction.options.getSubcommand();
 
         const poll = {

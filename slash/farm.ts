@@ -8,23 +8,24 @@ import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Farm extends Command {
+    static readonly metadata = {
+        name: "farm",
+        guildOnly: false,
+        options: [
+            {
+                name: "character",
+                autocomplete: true,
+                description: "The character or ship you want to search for",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "farm",
-            guildOnly: false,
-            options: [
-                {
-                    name: "character",
-                    autocomplete: true,
-                    description: "The character or ship you want to search for",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, Farm.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
         let isChar = true;

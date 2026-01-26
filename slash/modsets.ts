@@ -3,12 +3,13 @@ import Command from "../base/slashCommand.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Modsets extends Command {
+    static readonly metadata = {
+        name: "modsets",
+        guildOnly: false,
+        description: "Displays how many mods you need per type for a full set",
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "modsets",
-            guildOnly: false,
-            description: "Displays how many mods you need per type for a full set",
-        });
+        super(Bot, Modsets.metadata);
     }
 
     run(_Bot: BotType, interaction: BotInteraction) {

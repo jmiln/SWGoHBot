@@ -1,11 +1,10 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
-import { characters,charLocs,shipLocs,ships } from "../data/constants/units.ts";
+import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
-import { getAllyCode,
-msgArray, toProperCase } from "../modules/functions.ts";
+import { getAllyCode, msgArray, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -34,57 +33,58 @@ const battleMap = [
 ];
 
 export default class Need extends Command {
+    static readonly metadata = {
+        name: "need",
+        description: "Shows your progress towards 7* characters from a faction or shop.",
+        enabled: true,
+        guildOnly: false,
+        options: [
+            // Allycode (Of course)
+            {
+                name: "allycode",
+                description: "The ally code for the user you want to look up",
+                type: ApplicationCommandOptionType.String,
+            },
+            // Put in faction|shop|battle|keyword on their own
+            {
+                name: "battle",
+                description: "Which section of battles you want to check on",
+                type: ApplicationCommandOptionType.String,
+                choices: battleMap,
+            },
+            {
+                name: "keyword",
+                description: "Choose all of a section",
+                type: ApplicationCommandOptionType.String,
+                choices: kwMap,
+            },
+            {
+                name: "shop",
+                description: "Which shop you want to check the progress on",
+                type: ApplicationCommandOptionType.String,
+                choices: shopMap,
+            },
+            // The faction tags listed as in game, but needed to be split up into multiple lists because of
+            // how many there are (Choices are limited to 20 choices...)
+            {
+                name: "faction_group_1",
+                description: "Which faction you want to check the progress on",
+                type: ApplicationCommandOptionType.String,
+                choices: factionMap.slice(0, 20),
+            },
+            {
+                name: "faction_group_2",
+                description: "Which faction you want to check the progress on",
+                type: ApplicationCommandOptionType.String,
+                choices: factionMap.slice(20, 40),
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "need",
-            description: "Shows your progress towards 7* characters from a faction or shop.",
-            enabled: true,
-            guildOnly: false,
-            options: [
-                // Allycode (Of course)
-                {
-                    name: "allycode",
-                    description: "The ally code for the user you want to look up",
-                    type: ApplicationCommandOptionType.String,
-                },
-                // Put in faction|shop|battle|keyword on their own
-                {
-                    name: "battle",
-                    description: "Which section of battles you want to check on",
-                    type: ApplicationCommandOptionType.String,
-                    choices: battleMap,
-                },
-                {
-                    name: "keyword",
-                    description: "Choose all of a section",
-                    type: ApplicationCommandOptionType.String,
-                    choices: kwMap,
-                },
-                {
-                    name: "shop",
-                    description: "Which shop you want to check the progress on",
-                    type: ApplicationCommandOptionType.String,
-                    choices: shopMap,
-                },
-                // The faction tags listed as in game, but needed to be split up into multiple lists because of
-                // how many there are (Choices are limited to 20 choices...)
-                {
-                    name: "faction_group_1",
-                    description: "Which faction you want to check the progress on",
-                    type: ApplicationCommandOptionType.String,
-                    choices: factionMap.slice(0, 20),
-                },
-                {
-                    name: "faction_group_2",
-                    description: "Which faction you want to check the progress on",
-                    type: ApplicationCommandOptionType.String,
-                    choices: factionMap.slice(20, 40),
-                },
-            ],
-        });
+        super(Bot, Need.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");

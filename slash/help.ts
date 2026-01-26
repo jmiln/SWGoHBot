@@ -6,36 +6,37 @@ import { msgArray, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Help extends Command {
+    static readonly metadata = {
+        name: "help",
+        guildOnly: false,
+        description: "Displays a list of the available commands.",
+        options: [
+            {
+                name: "details",
+                description: "Show details about each command's argument",
+                type: ApplicationCommandOptionType.Boolean,
+            },
+            {
+                name: "category",
+                description: "Show a list of commands in a given category",
+                type: ApplicationCommandOptionType.String,
+                choices: ["Admin", "Gamedata", "General", "Patreon"].map((choice) => {
+                    return {
+                        name: choice,
+                        value: choice,
+                    };
+                }),
+            },
+            {
+                name: "command",
+                description: "Show a specific command's details",
+                autocomplete: true,
+                type: ApplicationCommandOptionType.String,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "help",
-            guildOnly: false,
-            description: "Displays a list of the available commands.",
-            options: [
-                {
-                    name: "details",
-                    description: "Show details about each command's argument",
-                    type: ApplicationCommandOptionType.Boolean,
-                },
-                {
-                    name: "category",
-                    description: "Show a list of commands in a given category",
-                    type: ApplicationCommandOptionType.String,
-                    choices: ["Admin", "Gamedata", "General", "Patreon"].map((choice) => {
-                        return {
-                            name: choice,
-                            value: choice,
-                        };
-                    }),
-                },
-                {
-                    name: "command",
-                    description: "Show a specific command's details",
-                    autocomplete: true,
-                    type: ApplicationCommandOptionType.String,
-                },
-            ],
-        });
+        super(Bot, Help.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

@@ -5,24 +5,25 @@ import logger from "../modules/Logger.ts";
 import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
 
 export default class Reload extends Command {
+    static readonly metadata = {
+        name: "reload",
+        guildOnly: true,
+        permLevel: 10,
+        options: [
+            {
+                name: "command",
+                autocomplete: true,
+                type: ApplicationCommandOptionType.String,
+                description: "The command to reload",
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "reload",
-            guildOnly: true,
-            permLevel: 10,
-            options: [
-                {
-                    name: "command",
-                    autocomplete: true,
-                    type: ApplicationCommandOptionType.String,
-                    description: "The command to reload",
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, Reload.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         let command: slashCommand;
         const commandName = interaction.options.getString("command");
         const client: BotClient = interaction.client;

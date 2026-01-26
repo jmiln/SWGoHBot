@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { characters,ships } from "../data/constants/units.ts";
+import { characters, ships } from "../data/constants/units.ts";
 import { findChar, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -9,36 +9,37 @@ import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Versus extends Command {
+    static readonly metadata = {
+        name: "versus",
+        guildOnly: false,
+        enabled: true,
+        options: [
+            {
+                name: "allycode_1",
+                description: "The ally code of the first user you want to compare",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: "allycode_2",
+                description: "The ally code of the second user you want to compare",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: "character",
+                autocomplete: true,
+                description: "A character you want to compare the stats of",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "versus",
-            guildOnly: false,
-            enabled: true,
-            options: [
-                {
-                    name: "allycode_1",
-                    description: "The ally code of the first user you want to compare",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-                {
-                    name: "allycode_2",
-                    description: "The ally code of the second user you want to compare",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-                {
-                    name: "character",
-                    autocomplete: true,
-                    description: "A character you want to compare the stats of",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, Versus.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const statList = [
             { stat: "Health", short: "Health" },
             { stat: "Protection", short: "Prot" },

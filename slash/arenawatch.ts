@@ -36,403 +36,405 @@ interface AwChangeRes {
 }
 
 export default class ArenaWatch extends Command {
+    static readonly metadata = {
+        name: "arenawatch",
+        guildOnly: false,
+        options: [
+            {
+                name: "allycode",
+                type: ApplicationCommandOptionType.SubcommandGroup,
+                description: "Any ally codes you want to put in (9 digit numbers, don't need the dashes)",
+                options: [
+                    {
+                        name: "add",
+                        description: "Add ally codes in",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        options: [
+                            {
+                                name: "allycodes",
+                                description: "AllyCodes or allycode:mention, comma seperated",
+                                type: ApplicationCommandOptionType.String,
+                                required: true,
+                            },
+                            {
+                                name: "mark",
+                                type: ApplicationCommandOptionType.String,
+                                description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
+                            },
+                        ],
+                    },
+                    {
+                        name: "remove",
+                        description: "Remove ally codes",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        options: [
+                            {
+                                name: "allycodes",
+                                description: "AllyCodes, comma seperated",
+                                type: ApplicationCommandOptionType.String,
+                                required: true,
+                            },
+                        ],
+                    },
+                    {
+                        name: "edit",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
+                        options: [
+                            {
+                                name: "old_allycode",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Ally code of the person you want to modify",
+                                required: true,
+                            },
+                            {
+                                name: "new_allycode",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
+                                required: true,
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "arena",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Choose between the arena types",
+                options: [
+                    {
+                        name: "enabled",
+                        type: ApplicationCommandOptionType.Boolean,
+                        description: "Set whether it's enabled or not",
+                        required: true,
+                    },
+                    {
+                        name: "arena",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Choose which arena to toggle",
+                        required: true,
+                        choices: [
+                            {
+                                name: "Char",
+                                value: "char",
+                            },
+                            {
+                                name: "Fleet",
+                                value: "fleet",
+                            },
+                            {
+                                name: "Both",
+                                value: "both",
+                            },
+                            {
+                                name: "None",
+                                value: "none",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "channel",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "The channel to put the logs in",
+                options: [
+                    {
+                        name: "target_channel",
+                        type: ApplicationCommandOptionType.Channel,
+                        required: true,
+                        description: "The channel to put the logs in",
+                    },
+                    {
+                        name: "arena",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                        description: "The arena to watch",
+                        choices: [
+                            {
+                                name: "Char",
+                                value: "char",
+                            },
+                            {
+                                name: "Fleet",
+                                value: "fleet",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "enabled",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Enable/ Disable arenawatch",
+                options: [
+                    {
+                        name: "toggle",
+                        description: "Enable/ Disable arenawatch",
+                        type: ApplicationCommandOptionType.Boolean,
+                        required: true,
+                    },
+                ],
+            },
+            {
+                name: "report",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Choose whether you want it to report on climbs, drops, or both",
+                options: [
+                    {
+                        name: "arena",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Choose whether you want it to report on climbs, drops, or both",
+                        required: true,
+                        choices: [
+                            { name: "climb", value: "climb" },
+                            { name: "drop", value: "drop" },
+                            { name: "both", value: "both" },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "showvs",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Enable or disable showing when one person hits another",
+                options: [
+                    {
+                        name: "enable",
+                        description: "True/ False",
+                        type: ApplicationCommandOptionType.Boolean,
+                        required: true,
+                    },
+                ],
+            },
+            {
+                name: "warn",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Set when to warn who, and about which arena",
+                options: [
+                    {
+                        name: "allycode",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The user's ally code",
+                        required: true,
+                    },
+                    {
+                        name: "mins",
+                        type: ApplicationCommandOptionType.Integer,
+                        description: "(0-1439) Minutes before payout to warn (0 to disable)",
+                        required: true,
+                        minValue: 0,
+                        maxValue: 1439,
+                    },
+                    {
+                        name: "arena",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Set which arena it will watch.",
+                        required: true,
+                        choices: [
+                            {
+                                name: "Char",
+                                value: "char",
+                            },
+                            {
+                                name: "Fleet",
+                                value: "fleet",
+                            },
+                            {
+                                name: "None",
+                                value: "none",
+                            },
+                            {
+                                name: "Both",
+                                value: "both",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "payout",
+                type: ApplicationCommandOptionType.SubcommandGroup,
+                description: "Set to spit out the payout result of a user",
+                options: [
+                    {
+                        name: "enable",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Choose between the arena types",
+                        options: [
+                            {
+                                name: "enabled",
+                                type: ApplicationCommandOptionType.Boolean,
+                                description: "Set whether it's enabled or not",
+                                required: true,
+                            },
+                            {
+                                name: "arena",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Choose which arena to toggle",
+                                required: true,
+                                choices: [
+                                    {
+                                        name: "Char",
+                                        value: "char",
+                                    },
+                                    {
+                                        name: "Fleet",
+                                        value: "fleet",
+                                    },
+                                    {
+                                        name: "Both",
+                                        value: "both",
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        name: "channel",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Set an arena's logs to a specified channel",
+                        options: [
+                            {
+                                name: "target_channel",
+                                type: ApplicationCommandOptionType.Channel,
+                                description: "The channel to send to",
+                                required: true,
+                            },
+                            {
+                                name: "arena",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Set which arena it will log to this channel",
+                                required: true,
+                                choices: [
+                                    {
+                                        name: "Char",
+                                        value: "char",
+                                    },
+                                    {
+                                        name: "Fleet",
+                                        value: "fleet",
+                                    },
+                                    {
+                                        name: "Both",
+                                        value: "both",
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    {
+                        name: "mark",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Set a mark for a player",
+                        options: [
+                            {
+                                name: "allycode",
+                                type: ApplicationCommandOptionType.String,
+                                description: "The ally code of the player to mark",
+                                required: true,
+                            },
+                            {
+                                name: "mark",
+                                type: ApplicationCommandOptionType.String,
+                                required: false,
+                                description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
+                            },
+                            {
+                                name: "remove_mark",
+                                type: ApplicationCommandOptionType.Boolean,
+                                required: false,
+                                description: "Choose this to delete the mark on a selected user",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "result",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Set to spit out the payout result of a user",
+                options: [
+                    {
+                        name: "allycode",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The user's ally code",
+                        required: true,
+                    },
+                    {
+                        name: "arena",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Set which arena it will give the results of.",
+                        required: true,
+                        choices: [
+                            {
+                                name: "Char",
+                                value: "char",
+                            },
+                            {
+                                name: "Fleet",
+                                value: "fleet",
+                            },
+                            {
+                                name: "None",
+                                value: "none",
+                            },
+                            {
+                                name: "Both",
+                                value: "both",
+                            },
+                        ],
+                    },
+                ],
+            },
+            {
+                name: "use_marks_in_log",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Toggle showing players' marks in the arena log",
+                options: [
+                    {
+                        name: "enable",
+                        type: ApplicationCommandOptionType.Boolean,
+                        required: true,
+                        description: "Show marks in arena log?",
+                    },
+                ],
+            },
+            {
+                name: "view",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "View your arenaWatch settings",
+                options: [
+                    {
+                        name: "allycode",
+                        type: ApplicationCommandOptionType.String,
+                        description: "An allycode to check the specific settings for",
+                    },
+                    {
+                        name: "view_by",
+                        type: ApplicationCommandOptionType.String,
+                        description: "View the list sorted by char or fleet ranks",
+                        choices: [
+                            {
+                                name: "Fleet Rank",
+                                value: "fleet_rank",
+                            },
+                            {
+                                name: "Char Rank",
+                                value: "char_rank",
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "arenawatch",
-            guildOnly: false,
-            options: [
-                {
-                    name: "allycode",
-                    type: ApplicationCommandOptionType.SubcommandGroup,
-                    description: "Any ally codes you want to put in (9 digit numbers, don't need the dashes)",
-                    options: [
-                        {
-                            name: "add",
-                            description: "Add ally codes in",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            options: [
-                                {
-                                    name: "allycodes",
-                                    description: "AllyCodes or allycode:mention, comma seperated",
-                                    type: ApplicationCommandOptionType.String,
-                                    required: true,
-                                },
-                                {
-                                    name: "mark",
-                                    type: ApplicationCommandOptionType.String,
-                                    description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
-                                },
-                            ],
-                        },
-                        {
-                            name: "remove",
-                            description: "Remove ally codes",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            options: [
-                                {
-                                    name: "allycodes",
-                                    description: "AllyCodes, comma seperated",
-                                    type: ApplicationCommandOptionType.String,
-                                    required: true,
-                                },
-                            ],
-                        },
-                        {
-                            name: "edit",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
-                            options: [
-                                {
-                                    name: "old_allycode",
-                                    type: ApplicationCommandOptionType.String,
-                                    description: "Ally code of the person you want to modify",
-                                    required: true,
-                                },
-                                {
-                                    name: "new_allycode",
-                                    type: ApplicationCommandOptionType.String,
-                                    description: "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
-                                    required: true,
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "arena",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Choose between the arena types",
-                    options: [
-                        {
-                            name: "enabled",
-                            type: ApplicationCommandOptionType.Boolean,
-                            description: "Set whether it's enabled or not",
-                            required: true,
-                        },
-                        {
-                            name: "arena",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Choose which arena to toggle",
-                            required: true,
-                            choices: [
-                                {
-                                    name: "Char",
-                                    value: "char",
-                                },
-                                {
-                                    name: "Fleet",
-                                    value: "fleet",
-                                },
-                                {
-                                    name: "Both",
-                                    value: "both",
-                                },
-                                {
-                                    name: "None",
-                                    value: "none",
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "channel",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "The channel to put the logs in",
-                    options: [
-                        {
-                            name: "target_channel",
-                            type: ApplicationCommandOptionType.Channel,
-                            required: true,
-                            description: "The channel to put the logs in",
-                        },
-                        {
-                            name: "arena",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                            description: "The arena to watch",
-                            choices: [
-                                {
-                                    name: "Char",
-                                    value: "char",
-                                },
-                                {
-                                    name: "Fleet",
-                                    value: "fleet",
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "enabled",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Enable/ Disable arenawatch",
-                    options: [
-                        {
-                            name: "toggle",
-                            description: "Enable/ Disable arenawatch",
-                            type: ApplicationCommandOptionType.Boolean,
-                            required: true,
-                        },
-                    ],
-                },
-                {
-                    name: "report",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Choose whether you want it to report on climbs, drops, or both",
-                    options: [
-                        {
-                            name: "arena",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Choose whether you want it to report on climbs, drops, or both",
-                            required: true,
-                            choices: [
-                                { name: "climb", value: "climb" },
-                                { name: "drop", value: "drop" },
-                                { name: "both", value: "both" },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "showvs",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Enable or disable showing when one person hits another",
-                    options: [
-                        {
-                            name: "enable",
-                            description: "True/ False",
-                            type: ApplicationCommandOptionType.Boolean,
-                            required: true,
-                        },
-                    ],
-                },
-                {
-                    name: "warn",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Set when to warn who, and about which arena",
-                    options: [
-                        {
-                            name: "allycode",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The user's ally code",
-                            required: true,
-                        },
-                        {
-                            name: "mins",
-                            type: ApplicationCommandOptionType.Integer,
-                            description: "(0-1439) Minutes before payout to warn (0 to disable)",
-                            required: true,
-                            minValue: 0,
-                            maxValue: 1439,
-                        },
-                        {
-                            name: "arena",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Set which arena it will watch.",
-                            required: true,
-                            choices: [
-                                {
-                                    name: "Char",
-                                    value: "char",
-                                },
-                                {
-                                    name: "Fleet",
-                                    value: "fleet",
-                                },
-                                {
-                                    name: "None",
-                                    value: "none",
-                                },
-                                {
-                                    name: "Both",
-                                    value: "both",
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "payout",
-                    type: ApplicationCommandOptionType.SubcommandGroup,
-                    description: "Set to spit out the payout result of a user",
-                    options: [
-                        {
-                            name: "enable",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Choose between the arena types",
-                            options: [
-                                {
-                                    name: "enabled",
-                                    type: ApplicationCommandOptionType.Boolean,
-                                    description: "Set whether it's enabled or not",
-                                    required: true,
-                                },
-                                {
-                                    name: "arena",
-                                    type: ApplicationCommandOptionType.String,
-                                    description: "Choose which arena to toggle",
-                                    required: true,
-                                    choices: [
-                                        {
-                                            name: "Char",
-                                            value: "char",
-                                        },
-                                        {
-                                            name: "Fleet",
-                                            value: "fleet",
-                                        },
-                                        {
-                                            name: "Both",
-                                            value: "both",
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        {
-                            name: "channel",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Set an arena's logs to a specified channel",
-                            options: [
-                                {
-                                    name: "target_channel",
-                                    type: ApplicationCommandOptionType.Channel,
-                                    description: "The channel to send to",
-                                    required: true,
-                                },
-                                {
-                                    name: "arena",
-                                    type: ApplicationCommandOptionType.String,
-                                    description: "Set which arena it will log to this channel",
-                                    required: true,
-                                    choices: [
-                                        {
-                                            name: "Char",
-                                            value: "char",
-                                        },
-                                        {
-                                            name: "Fleet",
-                                            value: "fleet",
-                                        },
-                                        {
-                                            name: "Both",
-                                            value: "both",
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                        {
-                            name: "mark",
-                            type: ApplicationCommandOptionType.Subcommand,
-                            description: "Set a mark for a player",
-                            options: [
-                                {
-                                    name: "allycode",
-                                    type: ApplicationCommandOptionType.String,
-                                    description: "The ally code of the player to mark",
-                                    required: true,
-                                },
-                                {
-                                    name: "mark",
-                                    type: ApplicationCommandOptionType.String,
-                                    required: false,
-                                    description: "The emote or symbol to mark them with. Leaving this empty will remove it if available",
-                                },
-                                {
-                                    name: "remove_mark",
-                                    type: ApplicationCommandOptionType.Boolean,
-                                    required: false,
-                                    description: "Choose this to delete the mark on a selected user",
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "result",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Set to spit out the payout result of a user",
-                    options: [
-                        {
-                            name: "allycode",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The user's ally code",
-                            required: true,
-                        },
-                        {
-                            name: "arena",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Set which arena it will give the results of.",
-                            required: true,
-                            choices: [
-                                {
-                                    name: "Char",
-                                    value: "char",
-                                },
-                                {
-                                    name: "Fleet",
-                                    value: "fleet",
-                                },
-                                {
-                                    name: "None",
-                                    value: "none",
-                                },
-                                {
-                                    name: "Both",
-                                    value: "both",
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    name: "use_marks_in_log",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Toggle showing players' marks in the arena log",
-                    options: [
-                        {
-                            name: "enable",
-                            type: ApplicationCommandOptionType.Boolean,
-                            required: true,
-                            description: "Show marks in arena log?",
-                        },
-                    ],
-                },
-                {
-                    name: "view",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "View your arenaWatch settings",
-                    options: [
-                        {
-                            name: "allycode",
-                            type: ApplicationCommandOptionType.String,
-                            description: "An allycode to check the specific settings for",
-                        },
-                        {
-                            name: "view_by",
-                            type: ApplicationCommandOptionType.String,
-                            description: "View the list sorted by char or fleet ranks",
-                            choices: [
-                                {
-                                    name: "Fleet Rank",
-                                    value: "fleet_rank",
-                                },
-                                {
-                                    name: "Char Rank",
-                                    value: "char_rank",
-                                },
-                            ],
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, ArenaWatch.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const subCommand = interaction.options.getSubcommand();
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const target = subCommandGroup || subCommand;
@@ -462,8 +464,8 @@ export default class ArenaWatch extends Command {
             subCommandGroup: interaction.options.getSubcommandGroup(),
 
             // The settings to change
-            allycode: interaction.options.getString("allycode"),    // When they can only reference one at a time
-            allycodes: interaction.options.getString("allycodes"),  // When they're able to enter multiple ally codes
+            allycode: interaction.options.getString("allycode"), // When they can only reference one at a time
+            allycodes: interaction.options.getString("allycodes"), // When they're able to enter multiple ally codes
             arena: interaction.options.getString("arena"),
             channel: channelIn,
             enabled: interaction.options.getBoolean("enabled"),
@@ -501,7 +503,7 @@ export default class ArenaWatch extends Command {
         if (result.embed) {
             await interaction.editReply({
                 content: null,
-                embeds: [result.embed] as any,
+                embeds: [result.embed],
             });
             return;
         }

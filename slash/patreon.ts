@@ -1,54 +1,55 @@
 import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import patreonInfo from "../data/patreon.ts";
+import cache from "../modules/cache.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import userReg from "../modules/users.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Patreon extends Command {
+    static readonly metadata = {
+        name: "patreon",
+        enabled: true,
+        guildOnly: false,
+        options: [
+            {
+                name: "commands",
+                description: "Show the available Patreon related commands.",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+            {
+                name: "cooldowns",
+                description: "Show your current gamedata cooldowns",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+            {
+                name: "benefits",
+                description: "Show the various benefits from supporting through Patreon.",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+            {
+                name: "my_info",
+                description: "Show what benefits your currently have available to you",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+            {
+                name: "set_server",
+                description: "Select this server to share your patreon benefits with",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+            {
+                name: "unset_server",
+                description: "Unset your selected server",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "patreon",
-            enabled: true,
-            guildOnly: false,
-            options: [
-                {
-                    name: "commands",
-                    description: "Show the available Patreon related commands.",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-                {
-                    name: "cooldowns",
-                    description: "Show your current gamedata cooldowns",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-                {
-                    name: "benefits",
-                    description: "Show the various benefits from supporting through Patreon.",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-                {
-                    name: "my_info",
-                    description: "Show what benefits your currently have available to you",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-                {
-                    name: "set_server",
-                    description: "Select this server to share your patreon benefits with",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-                {
-                    name: "unset_server",
-                    description: "Unset your selected server",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-            ],
-        });
+        super(Bot, Patreon.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const subCom = interaction.options.getSubcommand() || "none";
         const fields = [];
         let description = null;

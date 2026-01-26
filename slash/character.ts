@@ -9,21 +9,23 @@ import type { RawCharacter } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Character extends Command {
+    static readonly metadata = {
+        name: "character",
+        guildOnly: false,
+        description: "Show overall info for the given character",
+        options: [
+            {
+                name: "character",
+                autocomplete: true,
+                type: ApplicationCommandOptionType.String,
+                description: "The character you want to see the gear of",
+                required: true,
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "character",
-            guildOnly: false,
-            description: "Show overall info for the given character",
-            options: [
-                {
-                    name: "character",
-                    autocomplete: true,
-                    type: ApplicationCommandOptionType.String,
-                    description: "The character you want to see the gear of",
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, Character.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

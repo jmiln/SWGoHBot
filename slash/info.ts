@@ -32,12 +32,13 @@ const TABLE_CONFIG = {
 } as const;
 
 export default class Info extends Command {
+    static readonly metadata = {
+        name: "info",
+        guildOnly: false,
+        description: "Displays general stats & info about the bot",
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "info",
-            guildOnly: false,
-            description: "Displays general stats & info about the bot",
-        });
+        super(Bot, Info.metadata);
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {

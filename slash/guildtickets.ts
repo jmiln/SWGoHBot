@@ -1,7 +1,6 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getAllyCode,
-isAllyCode, toProperCase } from "../modules/functions.ts";
+import { getAllyCode, isAllyCode, toProperCase } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
@@ -13,86 +12,87 @@ const updateTypeStrings = {
 };
 
 export default class GuildTickets extends Command {
+    static readonly metadata = {
+        name: "guildtickets",
+        guildOnly: false,
+        description: "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
+        options: [
+            {
+                name: "set",
+                description: "Change the settings",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "enabled",
+                        description: "Turn the updates on or off",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "channel",
+                        description: "Set which channel to log updates to",
+                        type: ApplicationCommandOptionType.Channel,
+                    },
+                    {
+                        name: "show_max",
+                        description: "Show players who have all of their tickets",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "sortby",
+                        description: "Choose how to sort the list",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            {
+                                name: "Tickets",
+                                value: "tickets",
+                            },
+                            {
+                                name: "Name",
+                                value: "name",
+                            },
+                        ],
+                    },
+                    {
+                        name: "updates",
+                        description: "Choose how updates are displayed",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            {
+                                name: "Update every 5min",
+                                value: "update",
+                            },
+                            {
+                                name: "Send a message near reset",
+                                value: "msg",
+                            },
+                        ],
+                    },
+                    {
+                        name: "tickets",
+                        description: "Set the max expected tickets",
+                        type: ApplicationCommandOptionType.Integer,
+                        minValue: 1,
+                        maxValue: 600,
+                    },
+                    {
+                        name: "allycode",
+                        description: "Set what ally code to get the guild's info from",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+            {
+                name: "view",
+                description: "View the settings for your guild updates",
+                type: ApplicationCommandOptionType.Subcommand,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "guildtickets",
-            guildOnly: false,
-            description: "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
-            options: [
-                {
-                    name: "set",
-                    description: "Change the settings",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "enabled",
-                            description: "Turn the updates on or off",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "channel",
-                            description: "Set which channel to log updates to",
-                            type: ApplicationCommandOptionType.Channel,
-                        },
-                        {
-                            name: "show_max",
-                            description: "Show players who have all of their tickets",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "sortby",
-                            description: "Choose how to sort the list",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                {
-                                    name: "Tickets",
-                                    value: "tickets",
-                                },
-                                {
-                                    name: "Name",
-                                    value: "name",
-                                },
-                            ],
-                        },
-                        {
-                            name: "updates",
-                            description: "Choose how updates are displayed",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                {
-                                    name: "Update every 5min",
-                                    value: "update",
-                                },
-                                {
-                                    name: "Send a message near reset",
-                                    value: "msg",
-                                },
-                            ],
-                        },
-                        {
-                            name: "tickets",
-                            description: "Set the max expected tickets",
-                            type: ApplicationCommandOptionType.Integer,
-                            minValue: 1,
-                            maxValue: 600,
-                        },
-                        {
-                            name: "allycode",
-                            description: "Set what ally code to get the guild's info from",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-                {
-                    name: "view",
-                    description: "View the settings for your guild updates",
-                    type: ApplicationCommandOptionType.Subcommand,
-                },
-            ],
-        });
+        super(Bot, GuildTickets.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         const userID = interaction.user.id;
         const user = await userReg.getUser(userID);
 

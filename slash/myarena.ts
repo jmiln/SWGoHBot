@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { getAllyCode,
-makeTable, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -11,27 +10,28 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class MyArena extends Command {
+    static readonly metadata = {
+        name: "myarena",
+        guildOnly: false,
+        description: "Show your current ranking in the character & fleet arenas",
+        options: [
+            {
+                name: "allycode",
+                description: "The ally code of the user you want to see",
+                type: ApplicationCommandOptionType.String,
+            },
+            {
+                name: "stats",
+                type: ApplicationCommandOptionType.Boolean,
+                description: "Show some general stats for your arena team",
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "myarena",
-            guildOnly: false,
-            description: "Show your current ranking in the character & fleet arenas",
-            options: [
-                {
-                    name: "allycode",
-                    description: "The ally code of the user you want to see",
-                    type: ApplicationCommandOptionType.String,
-                },
-                {
-                    name: "stats",
-                    type: ApplicationCommandOptionType.Boolean,
-                    description: "Show some general stats for your arena team",
-                },
-            ],
-        });
+        super(Bot, MyArena.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         // eslint-disable-line no-unused-vars
         const ac = interaction.options.getString("allycode");
         const showStats = interaction.options.getBoolean("stats");

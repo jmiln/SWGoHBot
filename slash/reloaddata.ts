@@ -1,39 +1,38 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
-import { reloadLanguages } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class ReloadData extends Command {
+    static readonly metadata = {
+        name: "reloaddata",
+        enabled: true,
+        guildOnly: true,
+        permLevel: 10,
+        options: [
+            {
+                name: "target",
+                description: "What to reload",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+                choices: [
+                    { name: "Data", value: "Data" },
+                    { name: "Debug", value: "Debug" },
+                    { name: "Deploy Commands", value: "Deploy" },
+                    { name: "Events", value: "Events" },
+                    { name: "Functions", value: "Functions" },
+                    { name: "Languages", value: "Languages" },
+                    { name: "Slash Commands", value: "SlashCommands" },
+                    { name: "SWAPI", value: "SWAPI" },
+                    { name: "SWLang", value: "SWLang" },
+                    { name: "Users", value: "Users" },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "reloaddata",
-            enabled: true,
-            guildOnly: true,
-            permLevel: 10,
-            options: [
-                {
-                    name: "target",
-                    description: "What to reload",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    choices: [
-                        { name: "Data", value: "Data" },
-                        { name: "Debug", value: "Debug" },
-                        { name: "Deploy Commands", value: "Deploy" },
-                        { name: "Events", value: "Events" },
-                        { name: "Functions", value: "Functions" },
-                        { name: "Languages", value: "Languages" },
-                        { name: "Slash Commands", value: "SlashCommands" },
-                        { name: "SWAPI", value: "SWAPI" },
-                        { name: "SWLang", value: "SWLang" },
-                        { name: "Users", value: "Users" },
-                    ],
-                },
-            ],
-        });
+        super(Bot, ReloadData.metadata);
     }
 
     async run(Bot: BotType, interaction: BotInteraction) {

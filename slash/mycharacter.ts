@@ -11,56 +11,57 @@ import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
+    static readonly metadata = {
+        name: "mycharacter",
+        description: "Display overall stats & mod info for the selected character",
+        guildOnly: false,
+        enabled: true,
+        options: [
+            {
+                name: "character",
+                description: "Show the stats for a specified character",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "character",
+                        autocomplete: true,
+                        required: true,
+                        type: ApplicationCommandOptionType.String,
+                        description: "The character you want to show the stats of",
+                    },
+                    {
+                        name: "allycode",
+                        description: "The ally code for whoever you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+            {
+                name: "ship",
+                description: "Show the stats for a specified ship",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "ship",
+                        autocomplete: true,
+                        required: true,
+                        type: ApplicationCommandOptionType.String,
+                        description: "The ship you want to show the stats of",
+                    },
+                    {
+                        name: "allycode",
+                        description: "The ally code for whoever you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "mycharacter",
-            description: "Display overall stats & mod info for the selected character",
-            guildOnly: false,
-            enabled: true,
-            options: [
-                {
-                    name: "character",
-                    description: "Show the stats for a specified character",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "character",
-                            autocomplete: true,
-                            required: true,
-                            type: ApplicationCommandOptionType.String,
-                            description: "The character you want to show the stats of",
-                        },
-                        {
-                            name: "allycode",
-                            description: "The ally code for whoever you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-                {
-                    name: "ship",
-                    description: "Show the stats for a specified ship",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "ship",
-                            autocomplete: true,
-                            required: true,
-                            type: ApplicationCommandOptionType.String,
-                            description: "The ship you want to show the stats of",
-                        },
-                        {
-                            name: "allycode",
-                            description: "The ally code for whoever you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, MyCharacter.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const searchType = interaction.options.getSubcommand();
         const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
         let allycode = interaction.options.getString("allycode");

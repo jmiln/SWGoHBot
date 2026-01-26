@@ -1,8 +1,7 @@
 import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts"
-import { characterNameList,
-characters,shipNameList,ships } from "../data/constants/units.ts";
+import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
+import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
@@ -108,16 +107,17 @@ for (const [key, value] of Object.entries(typedDefaultSettings)) {
 }
 
 export default class SetConf extends Command {
+    static readonly metadata = {
+        guildOnly: false,
+        name: "setconf",
+        permLevel: 3,
+        options: Object.values(options),
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            guildOnly: false,
-            name: "setconf",
-            permLevel: 3,
-            options: Object.values(options),
-        });
+        super(Bot, SetConf.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
@@ -370,8 +370,7 @@ export default class SetConf extends Command {
                         guildTWList.Blacklist.filter((defId) => {
                             if (!searchKey?.length) return true;
                             const thisUnit =
-                                characterNameList.find((char) => char.defId === defId) ||
-                                shipNameList.find((ship) => ship.defId === defId);
+                                characterNameList.find((char) => char.defId === defId) || shipNameList.find((ship) => ship.defId === defId);
                             return thisUnit.name.toLowerCase().includes(searchKey);
                         })
                             .map((defId) => {
@@ -399,8 +398,7 @@ export default class SetConf extends Command {
                             })
                             .map((key) => {
                                 const thisUnit =
-                                    characterNameList.find((char) => char.defId === key) ||
-                                    shipNameList.find((ship) => ship.defId === key);
+                                    characterNameList.find((char) => char.defId === key) || shipNameList.find((ship) => ship.defId === key);
                                 return { name: thisUnit.name, value: thisUnit.defId };
                             })
                             .slice(0, 24) || [];

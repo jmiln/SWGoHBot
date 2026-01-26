@@ -9,22 +9,23 @@ import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class MyProfile extends Command {
+    static readonly metadata = {
+        name: "myprofile",
+        guildOnly: false,
+        description: "Show some general stats about your game profile",
+        options: [
+            {
+                name: "allycode",
+                description: "The ally code for the profile you want view",
+                type: ApplicationCommandOptionType.String,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "myprofile",
-            guildOnly: false,
-            description: "Show some general stats about your game profile",
-            options: [
-                {
-                    name: "allycode",
-                    description: "The ally code for the profile you want view",
-                    type: ApplicationCommandOptionType.String,
-                },
-            ],
-        });
+        super(Bot, MyProfile.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const allycodeIn = interaction.options.getString("allycode");
         const allycode = await getAllyCode(interaction, allycodeIn);
         if (!allycode) {

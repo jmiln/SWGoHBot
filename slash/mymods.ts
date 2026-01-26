@@ -13,110 +13,111 @@ import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
 export default class MyMods extends Command {
+    static readonly metadata = {
+        name: "mymods",
+        guildOnly: false,
+        description: "Show the current mods for a given character",
+        options: [
+            {
+                name: "character",
+                description: "Show the mod stat for the specified character",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "character",
+                        autocomplete: true,
+                        required: true,
+                        type: ApplicationCommandOptionType.String,
+                        description: "The character you want to check",
+                    },
+                    {
+                        name: "allycode",
+                        description: "The ally code for whoever you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+            {
+                name: "best",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Show the characters that have the best of a stat",
+                options: [
+                    {
+                        name: "stat",
+                        required: true,
+                        description: "Which stat you want it to show",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "Accuracy", value: "Accuracy" },
+                            { name: "Armor", value: "Armor" },
+                            { name: "Critical Damage", value: "Critical Damage" },
+                            { name: "Health", value: "Health" },
+                            { name: "Physical Critical Chance", value: "Physical Critical Chance" },
+                            { name: "Physical Damage", value: "Physical Damage" },
+                            { name: "Potency", value: "Potency" },
+                            { name: "Protection", value: "Protection" },
+                            { name: "Resistance", value: "Resistance" },
+                            { name: "Special Critical Chance", value: "Special Critical Chance" },
+                            { name: "Special Damage", value: "Special Damage" },
+                            { name: "Speed", value: "Speed" },
+                            { name: "Tenacity", value: "Tenacity" },
+                        ],
+                    },
+                    {
+                        name: "allycode",
+                        description: "The ally code for whoever you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "total",
+                        type: ApplicationCommandOptionType.Boolean,
+                        description: "Show the total stat, instead of just what the mods add on",
+                    },
+                ],
+            },
+            {
+                name: "bestmods",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Show the mods that have the best of a stat",
+                options: [
+                    {
+                        name: "stat",
+                        required: true,
+                        description: "Which stat you want it to show",
+                        type: ApplicationCommandOptionType.String,
+                        choices: [
+                            { name: "Crit Chance %", value: "Critical Chance" }, // Crit Chance, 53
+                            { name: "Defense", value: "Defense" }, // Defense, 42
+                            { name: "Health %", value: "Health %" }, // Health %, 55
+                            { name: "Health", value: "Health" }, // Health flat value, 1
+                            { name: "Offense %", value: "Offense %" }, // Offense %, 48
+                            { name: "Offense", value: "Offense" }, // Offense flat value, 41
+                            { name: "Potency %", value: "Potency" }, // Potency %, 17
+                            { name: "Protection %", value: "Protection %" }, // Protection %, 56
+                            { name: "Protection", value: "Protection" }, // Protection flat value, 28
+                            { name: "Speed", value: "Speed" }, // Speed, 5
+                            { name: "Tenacity %", value: "Tenacity" }, // Tenacity %, 18
+                        ],
+                    },
+                    {
+                        name: "allycode",
+                        description: "The ally code for whoever you're wanting to look up",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+            {
+                name: "missing",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Show which characters have missing or underleveled mods.",
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "mymods",
-            guildOnly: false,
-            description: "Show the current mods for a given character",
-            options: [
-                {
-                    name: "character",
-                    description: "Show the mod stat for the specified character",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "character",
-                            autocomplete: true,
-                            required: true,
-                            type: ApplicationCommandOptionType.String,
-                            description: "The character you want to check",
-                        },
-                        {
-                            name: "allycode",
-                            description: "The ally code for whoever you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-                {
-                    name: "best",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Show the characters that have the best of a stat",
-                    options: [
-                        {
-                            name: "stat",
-                            required: true,
-                            description: "Which stat you want it to show",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "Accuracy", value: "Accuracy" },
-                                { name: "Armor", value: "Armor" },
-                                { name: "Critical Damage", value: "Critical Damage" },
-                                { name: "Health", value: "Health" },
-                                { name: "Physical Critical Chance", value: "Physical Critical Chance" },
-                                { name: "Physical Damage", value: "Physical Damage" },
-                                { name: "Potency", value: "Potency" },
-                                { name: "Protection", value: "Protection" },
-                                { name: "Resistance", value: "Resistance" },
-                                { name: "Special Critical Chance", value: "Special Critical Chance" },
-                                { name: "Special Damage", value: "Special Damage" },
-                                { name: "Speed", value: "Speed" },
-                                { name: "Tenacity", value: "Tenacity" },
-                            ],
-                        },
-                        {
-                            name: "allycode",
-                            description: "The ally code for whoever you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "total",
-                            type: ApplicationCommandOptionType.Boolean,
-                            description: "Show the total stat, instead of just what the mods add on",
-                        },
-                    ],
-                },
-                {
-                    name: "bestmods",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Show the mods that have the best of a stat",
-                    options: [
-                        {
-                            name: "stat",
-                            required: true,
-                            description: "Which stat you want it to show",
-                            type: ApplicationCommandOptionType.String,
-                            choices: [
-                                { name: "Crit Chance %", value: "Critical Chance" }, // Crit Chance, 53
-                                { name: "Defense", value: "Defense" }, // Defense, 42
-                                { name: "Health %", value: "Health %" }, // Health %, 55
-                                { name: "Health", value: "Health" }, // Health flat value, 1
-                                { name: "Offense %", value: "Offense %" }, // Offense %, 48
-                                { name: "Offense", value: "Offense" }, // Offense flat value, 41
-                                { name: "Potency %", value: "Potency" }, // Potency %, 17
-                                { name: "Protection %", value: "Protection %" }, // Protection %, 56
-                                { name: "Protection", value: "Protection" }, // Protection flat value, 28
-                                { name: "Speed", value: "Speed" }, // Speed, 5
-                                { name: "Tenacity %", value: "Tenacity" }, // Tenacity %, 18
-                            ],
-                        },
-                        {
-                            name: "allycode",
-                            description: "The ally code for whoever you're wanting to look up",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-                {
-                    name: "missing",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Show which characters have missing or underleveled mods.",
-                },
-            ],
-        });
+        super(Bot, MyMods.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         const subCommand = interaction.options.getSubcommand();

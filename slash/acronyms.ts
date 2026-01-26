@@ -10,20 +10,22 @@ const usageExample = "/acronyms acronym:CLS";
  * //https://forums.galaxy-of-heroes.starwars.ea.com/discussion/154048/guide-to-the-acronyms-and-terms-of-star-wars-galaxy-of-heroes-swgoh
  */
 export default class Acronyms extends Command {
+    static readonly metadata = {
+        name: "acronyms",
+        description: "Show what common acronyms mean",
+        guildOnly: false,
+        options: [
+            {
+                name: "acronym",
+                type: ApplicationCommandOptionType.String,
+                description: "The acronym to look for",
+                required: true,
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "acronyms",
-            description: "Show what common acronyms mean",
-            guildOnly: false,
-            options: [
-                {
-                    name: "acronym",
-                    type: ApplicationCommandOptionType.String,
-                    description: "The acronym to look for",
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, Acronyms.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

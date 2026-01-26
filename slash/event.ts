@@ -1,8 +1,8 @@
 import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
 
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
+import cache from "../modules/cache.ts";
 import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray, toProperCase } from "../modules/functions.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -15,186 +15,187 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 const EVENTS_PER_PAGE = 5;
 
 export default class Event extends Command {
+    static readonly metadata = {
+        name: "event",
+        guildOnly: false,
+        options: [
+            {
+                name: "create",
+                description: "Make a new event",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "name",
+                        description: "The name of the event, no spaces allowed.",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                    {
+                        name: "day",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The date (DD/MM/YYYY) that you want it to go off",
+                        required: true,
+                    },
+                    {
+                        name: "time",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
+                        required: true,
+                    },
+                    {
+                        name: "message",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The message that you want the event to spit back out",
+                    },
+                    {
+                        name: "repeat",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
+                    },
+                    {
+                        name: "repeatday",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
+                    },
+                    {
+                        name: "channel",
+                        type: ApplicationCommandOptionType.Channel,
+                        description: "Set which channel the event will announce on",
+                    },
+                    {
+                        name: "countdown",
+                        type: ApplicationCommandOptionType.Boolean,
+                        description: "Set to use the countdown or not (Configured in setconf)",
+                    },
+                ],
+            },
+            {
+                name: "createjson",
+                description: "Create new event(s), inputted as a json code block",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "json",
+                        description: "The json formatted text.",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                ],
+            },
+            {
+                name: "delete",
+                description: "Delete an event",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "name",
+                        description: "The unique name of the event you want to delete",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                ],
+            },
+            {
+                name: "edit",
+                description: "Create new event(s), inputted as a json code block",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "event_name",
+                        description: "The name of the event you want to edit",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                    {
+                        name: "name",
+                        description: "The new name of the event, no spaces allowed.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "day",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The date (DD/MM/YYYY) that you want it to go off",
+                    },
+                    {
+                        name: "time",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
+                    },
+                    {
+                        name: "message",
+                        type: ApplicationCommandOptionType.String,
+                        description: "The message that you want the event to spit back out",
+                    },
+                    {
+                        name: "repeat",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Lets you set a duration with the format of 00d00h00m. (Not compatible with repeatday)",
+                    },
+                    {
+                        name: "repeatday",
+                        type: ApplicationCommandOptionType.String,
+                        description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with reapeat)",
+                    },
+                    {
+                        name: "channel",
+                        type: ApplicationCommandOptionType.Channel,
+                        description: "Set which channel the event will announce on",
+                    },
+                    {
+                        name: "countdown",
+                        type: ApplicationCommandOptionType.Boolean,
+                        description: "Set to use the countdown or not (Configured in setconf)",
+                    },
+                ],
+            },
+            {
+                // TODO Possibly work this in to have the dropdowns / autocomplete?
+                //  - This should be doable since we get the guild's config for each interaction
+                //  - Should do so for view, delete, and any others that reference a specific event
+                name: "trigger",
+                description: "Trigger the selected event",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "name",
+                        description: "The unique name of the event you want to trigger",
+                        type: ApplicationCommandOptionType.String,
+                        required: true,
+                    },
+                ],
+            },
+            {
+                name: "view",
+                description: "View your event(s)",
+                type: ApplicationCommandOptionType.Subcommand,
+                options: [
+                    {
+                        name: "name",
+                        description: "The unique name of the event you want to see.",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                    {
+                        name: "minimal",
+                        description: "Show the event(s), but without the message.",
+                        type: ApplicationCommandOptionType.Boolean,
+                    },
+                    {
+                        name: "page_num",
+                        description: `Set it to paginate the events, showing ${EVENTS_PER_PAGE} events at a time.`,
+                        type: ApplicationCommandOptionType.Integer,
+                    },
+                    {
+                        name: "filter",
+                        description: "Show only events that match the filter",
+                        type: ApplicationCommandOptionType.String,
+                    },
+                ],
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "event",
-            guildOnly: false,
-            options: [
-                {
-                    name: "create",
-                    description: "Make a new event",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "name",
-                            description: "The name of the event, no spaces allowed.",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                        {
-                            name: "day",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The date (DD/MM/YYYY) that you want it to go off",
-                            required: true,
-                        },
-                        {
-                            name: "time",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
-                            required: true,
-                        },
-                        {
-                            name: "message",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The message that you want the event to spit back out",
-                        },
-                        {
-                            name: "repeat",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed.",
-                        },
-                        {
-                            name: "repeatday",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0.",
-                        },
-                        {
-                            name: "channel",
-                            type: ApplicationCommandOptionType.Channel,
-                            description: "Set which channel the event will announce on",
-                        },
-                        {
-                            name: "countdown",
-                            type: ApplicationCommandOptionType.Boolean,
-                            description: "Set to use the countdown or not (Configured in setconf)",
-                        },
-                    ],
-                },
-                {
-                    name: "createjson",
-                    description: "Create new event(s), inputted as a json code block",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "json",
-                            description: "The json formatted text.",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                    ],
-                },
-                {
-                    name: "delete",
-                    description: "Delete an event",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "name",
-                            description: "The unique name of the event you want to delete",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                    ],
-                },
-                {
-                    name: "edit",
-                    description: "Create new event(s), inputted as a json code block",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "event_name",
-                            description: "The name of the event you want to edit",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                        {
-                            name: "name",
-                            description: "The new name of the event, no spaces allowed.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "day",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The date (DD/MM/YYYY) that you want it to go off",
-                        },
-                        {
-                            name: "time",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
-                        },
-                        {
-                            name: "message",
-                            type: ApplicationCommandOptionType.String,
-                            description: "The message that you want the event to spit back out",
-                        },
-                        {
-                            name: "repeat",
-                            type: ApplicationCommandOptionType.String,
-                            description: "Lets you set a duration with the format of 00d00h00m. (Not compatible with repeatday)",
-                        },
-                        {
-                            name: "repeatday",
-                            type: ApplicationCommandOptionType.String,
-                            description:
-                                "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with reapeat)",
-                        },
-                        {
-                            name: "channel",
-                            type: ApplicationCommandOptionType.Channel,
-                            description: "Set which channel the event will announce on",
-                        },
-                        {
-                            name: "countdown",
-                            type: ApplicationCommandOptionType.Boolean,
-                            description: "Set to use the countdown or not (Configured in setconf)",
-                        },
-                    ],
-                },
-                {
-                    // TODO Possibly work this in to have the dropdowns / autocomplete?
-                    //  - This should be doable since we get the guild's config for each interaction
-                    //  - Should do so for view, delete, and any others that reference a specific event
-                    name: "trigger",
-                    description: "Trigger the selected event",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "name",
-                            description: "The unique name of the event you want to trigger",
-                            type: ApplicationCommandOptionType.String,
-                            required: true,
-                        },
-                    ],
-                },
-                {
-                    name: "view",
-                    description: "View your event(s)",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    options: [
-                        {
-                            name: "name",
-                            description: "The unique name of the event you want to see.",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                        {
-                            name: "minimal",
-                            description: "Show the event(s), but without the message.",
-                            type: ApplicationCommandOptionType.Boolean,
-                        },
-                        {
-                            name: "page_num",
-                            description: `Set it to paginate the events, showing ${EVENTS_PER_PAGE} events at a time.`,
-                            type: ApplicationCommandOptionType.Integer,
-                        },
-                        {
-                            name: "filter",
-                            description: "Show only events that match the filter",
-                            type: ApplicationCommandOptionType.String,
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Event.metadata);
     }
 
     async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
@@ -413,8 +414,7 @@ export default class Event extends Command {
                     const eventIn = await socketHelper.getEventByName(interaction.guild.id, eventName);
 
                     // If it doesn't find the event, say so
-                    if (!eventIn)
-                        return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
+                    if (!eventIn) return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
 
                     let eventString = interaction.language.get(
                         "COMMAND_EVENT_TIME",

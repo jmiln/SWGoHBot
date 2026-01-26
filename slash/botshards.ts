@@ -24,12 +24,14 @@ export function formatShardInfo(results: ShardData[], shardCount: number): strin
 }
 
 export default class BotShards extends Command {
+    static readonly metadata = {
+        name: "botshards",
+        guildOnly: false,
+        options: [],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "botshards",
-            guildOnly: false,
-            options: [],
-        });
+        super(Bot, BotShards.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

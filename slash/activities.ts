@@ -4,28 +4,30 @@ import { getCurrentWeekday } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Activites extends Command {
+    static readonly metadata = {
+        name: "activities",
+        description: "Shows daily guild activities",
+        guildOnly: false,
+        options: [
+            {
+                name: "day",
+                type: ApplicationCommandOptionType.String,
+                description: "Day of the week",
+                choices: [
+                    { name: "Sunday", value: "day_Sunday" },
+                    { name: "Monday", value: "day_Monday" },
+                    { name: "Tuesday", value: "day_Tuesday" },
+                    { name: "Wednesday", value: "day_Wednesday" },
+                    { name: "Thursday", value: "day_Thursday" },
+                    { name: "Friday", value: "day_Friday" },
+                    { name: "Saturday", value: "day_Saturday" },
+                ],
+            },
+        ],
+    };
+
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "activities",
-            description: "Shows daily guild activities",
-            guildOnly: false,
-            options: [
-                {
-                    name: "day",
-                    type: ApplicationCommandOptionType.String,
-                    description: "Day of the week",
-                    choices: [
-                        { name: "Sunday", value: "day_Sunday" },
-                        { name: "Monday", value: "day_Monday" },
-                        { name: "Tuesday", value: "day_Tuesday" },
-                        { name: "Wednesday", value: "day_Wednesday" },
-                        { name: "Thursday", value: "day_Thursday" },
-                        { name: "Friday", value: "day_Friday" },
-                        { name: "Saturday", value: "day_Saturday" },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Activites.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

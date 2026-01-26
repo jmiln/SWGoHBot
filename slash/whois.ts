@@ -5,19 +5,20 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class WhoIs extends Command {
+    static readonly metadata = {
+        name: "whois",
+        guildOnly: false,
+        options: [
+            {
+                name: "name",
+                type: ApplicationCommandOptionType.String,
+                description: "The player that you're looking for",
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "whois",
-            guildOnly: false,
-            options: [
-                {
-                    name: "name",
-                    type: ApplicationCommandOptionType.String,
-                    description: "The player that you're looking for",
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, WhoIs.metadata);
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {

@@ -1,104 +1,105 @@
 import { ApplicationCommandOptionType, type TextChannel } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import cache from "../modules/cache.ts";
 import constants from "../data/constants/constants.ts";
+import cache from "../modules/cache.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Shardtimes extends Command {
+    static readonly metadata = {
+        name: "shardtimes",
+        guildOnly: false,
+        options: [
+            // Add
+            //  - UserID, name, me
+            //  - Timezone, how long until
+            //  - Flag, emote, symbol
+            {
+                name: "add",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Add a new name/ user to be shown",
+                options: [
+                    {
+                        name: "user",
+                        type: ApplicationCommandOptionType.String,
+                        description: "A name or mention/ userID",
+                        required: true,
+                    },
+                    {
+                        name: "timezone",
+                        type: ApplicationCommandOptionType.String,
+                        description: "A timezone identifyer (Ex: US/Pacific)",
+                    },
+                    {
+                        name: "time_until",
+                        type: ApplicationCommandOptionType.String,
+                        description: "How long (hh:mm) until the payout",
+                    },
+                    {
+                        name: "flag",
+                        type: ApplicationCommandOptionType.String,
+                        description: "An emote to show next to the name",
+                    },
+                ],
+            },
+            // Remove
+            //  - UserID, name, etc
+            {
+                name: "remove",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Remove a name/ user from the list",
+                options: [
+                    {
+                        name: "user",
+                        type: ApplicationCommandOptionType.String,
+                        description: "A name or mention/ userID",
+                        required: true,
+                    },
+                ],
+            },
+            // Copy (Make sure they have the correct perms for this, to avoid overwriting stuff in other channels?)
+            //  - destinationChannel
+            {
+                name: "copy",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Copy the shard times from this channel to the target channel",
+                options: [
+                    {
+                        name: "dest_channel",
+                        type: ApplicationCommandOptionType.Channel,
+                        description: "The channel you want it to be copied to",
+                        required: true,
+                    },
+                ],
+            },
+            // View
+            //  - Ships
+            {
+                name: "view",
+                type: ApplicationCommandOptionType.Subcommand,
+                description: "Copy the shard times from this channel to the target channel",
+                options: [
+                    {
+                        name: "ships",
+                        type: ApplicationCommandOptionType.Boolean,
+                        description: "Show the ship arena payout times instead",
+                    },
+                ],
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "shardtimes",
-            guildOnly: false,
-            options: [
-                // Add
-                //  - UserID, name, me
-                //  - Timezone, how long until
-                //  - Flag, emote, symbol
-                {
-                    name: "add",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Add a new name/ user to be shown",
-                    options: [
-                        {
-                            name: "user",
-                            type: ApplicationCommandOptionType.String,
-                            description: "A name or mention/ userID",
-                            required: true,
-                        },
-                        {
-                            name: "timezone",
-                            type: ApplicationCommandOptionType.String,
-                            description: "A timezone identifyer (Ex: US/Pacific)",
-                        },
-                        {
-                            name: "time_until",
-                            type: ApplicationCommandOptionType.String,
-                            description: "How long (hh:mm) until the payout",
-                        },
-                        {
-                            name: "flag",
-                            type: ApplicationCommandOptionType.String,
-                            description: "An emote to show next to the name",
-                        },
-                    ],
-                },
-                // Remove
-                //  - UserID, name, etc
-                {
-                    name: "remove",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Remove a name/ user from the list",
-                    options: [
-                        {
-                            name: "user",
-                            type: ApplicationCommandOptionType.String,
-                            description: "A name or mention/ userID",
-                            required: true,
-                        },
-                    ],
-                },
-                // Copy (Make sure they have the correct perms for this, to avoid overwriting stuff in other channels?)
-                //  - destinationChannel
-                {
-                    name: "copy",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Copy the shard times from this channel to the target channel",
-                    options: [
-                        {
-                            name: "dest_channel",
-                            type: ApplicationCommandOptionType.Channel,
-                            description: "The channel you want it to be copied to",
-                            required: true,
-                        },
-                    ],
-                },
-                // View
-                //  - Ships
-                {
-                    name: "view",
-                    type: ApplicationCommandOptionType.Subcommand,
-                    description: "Copy the shard times from this channel to the target channel",
-                    options: [
-                        {
-                            name: "ships",
-                            type: ApplicationCommandOptionType.Boolean,
-                            description: "Show the ship arena payout times instead",
-                        },
-                    ],
-                },
-            ],
-        });
+        super(Bot, Shardtimes.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         // Shard ID will be guild.id-channel.id
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
         const shardArr = await getGuildShardTimes({ cache: cache, guildId: interaction.guild.id });
-        const targetIndex = await shardArr.findIndex((sh) => sh.channelId === interaction.channel.id);
+        const targetIndex = shardArr.findIndex((sh) => sh.channelId === interaction.channel.id);
         const shardTimes =
             targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : { channelId: interaction.channel.id, times: {} };
 
@@ -127,10 +128,7 @@ export default class Shardtimes extends Command {
             let tempZone = timezone ? timezone : null;
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if (
-                [interaction.user.id, interaction.user.username, "me"].includes(userID) &&
-                options.level < constants.permMap.GUILD_ADMIN
-            ) {
+            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
@@ -244,10 +242,7 @@ export default class Shardtimes extends Command {
             }
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if (
-                [interaction.user.id, interaction.user.username, "me"].includes(userID) &&
-                options.level < constants.permMap.GUILD_ADMIN
-            ) {
+            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
@@ -401,7 +396,8 @@ export default class Shardtimes extends Command {
                 const target = getStartOfDay(zone).getTime() + hrMS * timeToAdd;
                 targetTime = target + nowTime > target ? target : target + dayMS;
             } else {
-                const target = type === "hhmm" && typeof zone === "string" ? getUTCAtTime(zone) : getUTCFromOffset(zone as number) + hrMS * timeToAdd;
+                const target =
+                    type === "hhmm" && typeof zone === "string" ? getUTCAtTime(zone) : getUTCFromOffset(zone as number) + hrMS * timeToAdd;
 
                 // If it's already passed, add a day to grab the next one
                 targetTime = target + (target < nowTime ? dayMS : 0);

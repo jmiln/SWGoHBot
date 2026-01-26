@@ -5,71 +5,72 @@ import { toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class RaidDamage extends Command {
+    static readonly metadata = {
+        name: "raiddamage",
+        enabled: true,
+        guildOnly: false,
+        options: [
+            {
+                name: "raid",
+                description: "The raid you want to calculate for",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+                choices: [
+                    {
+                        name: "Rancor",
+                        value: "Rancor",
+                    },
+                    {
+                        name: "Challenge Rancor",
+                        value: "cRancor",
+                    },
+                    {
+                        name: "HAAT",
+                        value: "HAAT",
+                    },
+                    {
+                        name: "Heroic Sith",
+                        value: "Sith",
+                    },
+                ],
+            },
+            {
+                name: "phase",
+                description: "Which of the 4 phases you want to calculate",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+                choices: [
+                    {
+                        name: "Phase 1",
+                        value: "1",
+                    },
+                    {
+                        name: "Phase 2",
+                        value: "2",
+                    },
+                    {
+                        name: "Phase 3",
+                        value: "3",
+                    },
+                    {
+                        name: "Phase 4",
+                        value: "4",
+                    },
+                ],
+            },
+            {
+                name: "amount",
+                description: "What amount of the damage you want to calculate, damage number or percentage",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "raiddamage",
-            enabled: true,
-            guildOnly: false,
-            options: [
-                {
-                    name: "raid",
-                    description: "The raid you want to calculate for",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    choices: [
-                        {
-                            name: "Rancor",
-                            value: "Rancor",
-                        },
-                        {
-                            name: "Challenge Rancor",
-                            value: "cRancor",
-                        },
-                        {
-                            name: "HAAT",
-                            value: "HAAT",
-                        },
-                        {
-                            name: "Heroic Sith",
-                            value: "Sith",
-                        },
-                    ],
-                },
-                {
-                    name: "phase",
-                    description: "Which of the 4 phases you want to calculate",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                    choices: [
-                        {
-                            name: "Phase 1",
-                            value: "1",
-                        },
-                        {
-                            name: "Phase 2",
-                            value: "2",
-                        },
-                        {
-                            name: "Phase 3",
-                            value: "3",
-                        },
-                        {
-                            name: "Phase 4",
-                            value: "4",
-                        },
-                    ],
-                },
-                {
-                    name: "amount",
-                    description: "What amount of the damage you want to calculate, damage number or percentage",
-                    type: ApplicationCommandOptionType.String,
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, RaidDamage.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const raid = interaction.options.getString("raid");
         const phase = interaction.options.getString("phase");
         let amount = interaction.options.getString("amount");

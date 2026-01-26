@@ -6,23 +6,24 @@ import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Ships extends Command {
+    static readonly metadata = {
+        name: "ships",
+        guildOnly: false,
+        options: [
+            {
+                name: "ship",
+                autocomplete: true,
+                type: ApplicationCommandOptionType.String,
+                description: "The ship to look up",
+                required: true,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "ships",
-            guildOnly: false,
-            options: [
-                {
-                    name: "ship",
-                    autocomplete: true,
-                    type: ApplicationCommandOptionType.String,
-                    description: "The ship to look up",
-                    required: true,
-                },
-            ],
-        });
+        super(Bot, Ships.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const searchName = interaction.options.getString("ship");
 
         // Find any characters that match that

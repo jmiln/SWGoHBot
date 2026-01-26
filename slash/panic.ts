@@ -9,29 +9,30 @@ import swgohAPI from "../modules/swapi.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Panic extends Command {
+    static readonly metadata = {
+        name: "panic",
+        description: "Show how close you are to being ready for character events",
+        guildOnly: false,
+        options: [
+            {
+                name: "unit",
+                autocomplete: true,
+                required: true,
+                type: ApplicationCommandOptionType.String,
+                description: "The character you want to show the reqs of",
+            },
+            {
+                name: "allycode",
+                description: "The ally code for whoever you're wanting to look up",
+                type: ApplicationCommandOptionType.String,
+            },
+        ],
+    };
     constructor(Bot: BotType) {
-        super(Bot, {
-            name: "panic",
-            description: "Show how close you are to being ready for character events",
-            guildOnly: false,
-            options: [
-                {
-                    name: "unit",
-                    autocomplete: true,
-                    required: true,
-                    type: ApplicationCommandOptionType.String,
-                    description: "The character you want to show the reqs of",
-                },
-                {
-                    name: "allycode",
-                    description: "The ally code for whoever you're wanting to look up",
-                    type: ApplicationCommandOptionType.String,
-                },
-            ],
-        });
+        super(Bot, Panic.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
         const allycode = await getAllyCode(interaction, ac);
@@ -44,7 +45,8 @@ export default class Panic extends Command {
         if (!thisReq) {
             return super.error(interaction, `Please select one of the autocompleted options, I couldn't find a match for ${searchUnit}`);
         }
-        const targetUnit = characters.find((unit) => unit.uniqueName === searchUnit) || ships.find((unit) => unit.uniqueName === searchUnit);
+        const targetUnit =
+            characters.find((unit) => unit.uniqueName === searchUnit) || ships.find((unit) => unit.uniqueName === searchUnit);
 
         await interaction.reply({ content: "Please wait while I process your request." });
 
