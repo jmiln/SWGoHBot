@@ -60,6 +60,8 @@ export default class UserConf extends Command {
                                     description: "The ally code of the user you want to see",
                                     type: ApplicationCommandOptionType.String,
                                     required: true,
+
+                                    // TODO: Make this autocomplete with any registered codes
                                 },
                             ],
                         },

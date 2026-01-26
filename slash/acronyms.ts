@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
 import { acronyms } from "../data/constants/units.ts";
+import type { BotInteraction, BotType } from "../types/types.ts";
 
 const usageExample = "/acronyms acronym:CLS";
 
@@ -87,6 +87,6 @@ export default class Acronyms extends Command {
 
     private async handleError(interaction: BotInteraction, errorKey: string) {
         const errorMessage = interaction.language.get(errorKey);
-        return super.error(interaction, errorMessage, { example: usageExample });
+        return super.error(interaction, errorMessage, { title: "Error", example: usageExample });
     }
 }

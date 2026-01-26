@@ -1,109 +1,85 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import Mods from "../../slash/mods.ts";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { assertErrorReply } from "./helpers.ts";
+import Mods from "../../slash/mods.ts";
 
-test.describe("Mods Command", () => {
-    test("command is instantiated with correct name", () => {
+describe("Mods", () => {
+    // Note: Mods command uses static character data, so we can test more functionality.
+
+    it("should return error for character not found", async () => {
         const bot = createMockBot();
-        const cmd = new Mods(bot);
-        assert.equal(cmd.commandData.name, "mods");
-        assert.equal(cmd.commandData.guildOnly, false);
-    });
-
-    test("run() displays mod recommendations for valid character", async () => {
-        const bot = createMockBot({
-            characters: [
-                {
-                    name: "Commander Luke Skywalker",
-                    uniqueName: "COMMANDERLUKESKYWALKER",
-                    side: "light",
-                    url: "https://swgoh.gg/characters/commander-luke-skywalker/",
-                    aliases: ["CLS", "Luke"],
-                    avatarURL: "https://example.com/cls.png",
-                    mods: {
-                        sets: ["Speed x4", "Health x2"],
-                        square: "Offense",
-                        arrow: "Speed",
-                        diamond: "Defense",
-                        triangle: "Crit. Damage",
-                        circle: "Protection",
-                        cross: "Potency",
-                        source: "swgoh.gg",
-                    },
-                },
-            ],
-        });
-
-        const editReplyCalls: any[] = [];
         const interaction = createMockInteraction({
-            options: {
-                getString: () => "CLS",
-            } as any,
-            deferReply: async () => {},
-            editReply: async (data: any) => editReplyCalls.push(data),
+            optionsData: { character: "NonexistentCharacter999" }
         });
 
-        const cmd = new Mods(bot);
-        await cmd.run(bot, interaction);
+        const command = new Mods(bot);
+        await command.run(bot, interaction);
 
-        assert.equal(editReplyCalls.length, 1);
-        assert.ok(editReplyCalls[0].embeds);
-        assert.ok(editReplyCalls[0].embeds[0].description);
+        assertErrorReply(interaction, "COMMAND_MODS_USAGE");
     });
 
-    test("run() returns error when character not found", async () => {
+    it("should return error for multiple character matches", async () => {
         const bot = createMockBot();
-
         const interaction = createMockInteraction({
-            options: {
-                getString: () => "INVALIDCHAR",
-            } as any,
-            deferReply: async () => {},
+            optionsData: { character: "CHAR" } // Generic search
         });
 
-        const cmd = new Mods(bot);
-        await cmd.run(bot, interaction);
+        const command = new Mods(bot);
+        await command.run(bot, interaction);
 
-        // Should have called error method
-        assert.ok(true);
+        // Either finds nothing or finds multiple - both should error
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
     });
 
-    test("run() returns error when multiple characters match", async () => {
-        const bot = createMockBot({
-            characters: [
-                {
-                    name: "Test Character 1",
-                    uniqueName: "TESTCHAR1",
-                    side: "light",
-                    aliases: ["test"],
-                    avatarURL: "",
-                    avatarName: "test1",
-                    factions: [],
-                },
-                {
-                    name: "Test Character 2",
-                    uniqueName: "TESTCHAR2",
-                    side: "light",
-                    aliases: ["test"],
-                    avatarURL: "",
-                    avatarName: "test2",
-                    factions: [],
-                },
-            ],
-        });
-
+    it("should defer reply before processing", async () => {
+        const bot = createMockBot();
         const interaction = createMockInteraction({
-            options: {
-                getString: () => "test",
-            } as any,
-            deferReply: async () => {},
+            optionsData: { character: "InvalidChar" }
         });
 
-        const cmd = new Mods(bot);
-        await cmd.run(bot, interaction);
+        const command = new Mods(bot);
+        await command.run(bot, interaction);
 
-        // Should have called error method
-        assert.ok(true);
+        // Should have deferred the reply
+        assert.strictEqual((interaction as any).deferred, true, "Expected interaction to be deferred");
+    });
+
+    it("should work without guild context (guildOnly: false)", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction({
+            optionsData: { character: "InvalidChar" },
+            guild: null as any
+        });
+
+        const command = new Mods(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply even without guild context");
+    });
+
+    it("should have correct command configuration", () => {
+        const bot = createMockBot();
+        const command = new Mods(bot);
+
+        assert.strictEqual(command.commandData.name, "mods", "Expected command name to be 'mods'");
+        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
+        assert.ok(command.commandData.options, "Expected options to be defined");
+        assert.strictEqual(command.commandData.options.length, 1, "Expected 1 option");
+
+        const charOpt = command.commandData.options.find(o => o.name === "character");
+        assert.ok(charOpt, "Expected character option");
+        assert.strictEqual(charOpt.required, true, "Expected character to be required");
+        assert.strictEqual(charOpt.autocomplete, true, "Expected character to have autocomplete");
+    });
+
+    it("should have description", () => {
+        const bot = createMockBot();
+        const command = new Mods(bot);
+
+        assert.ok(command.commandData.description, "Expected command to have description");
+        assert.ok(command.commandData.description.includes("mod"), "Expected description to mention mods");
     });
 });

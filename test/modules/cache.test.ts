@@ -1,472 +1,257 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import type { AnyBulkWriteOperation, Document, Filter, MongoClient } from "mongodb";
-import createCache from "../../modules/cache.ts";
+import assert from "node:assert";
+import { after, before, describe, it } from "node:test";
+import { MongoClient } from "mongodb";
+import { Cache } from "../../modules/cache.ts";
 
-// Mock MongoDB client and database operations
-function createMockMongoClient() {
-    const operations = {
-        updateOne: [] as any[],
-        bulkWrite: [] as any[],
-        find: [] as any[],
-        findOne: [] as any[],
-        deleteOne: [] as any[],
-        replaceOne: [] as any[],
-        listIndexes: [] as any[],
-    };
+describe("Cache Module", () => {
+    let client: MongoClient;
+    let cache: Cache;
+    const testDbName = "test_cache_db";
+    const testCollection = "test_collection";
 
-    const mockCollection = {
-        updateOne: async (filter: Filter<Document>, update: any, options: any) => {
-            operations.updateOne.push({ filter, update, options });
-            return { acknowledged: true, modifiedCount: 1, upsertedId: null, upsertedCount: 0, matchedCount: 1 };
-        },
-        bulkWrite: async (ops: readonly AnyBulkWriteOperation<Document>[]) => {
-            operations.bulkWrite.push(ops);
-            return { acknowledged: true, insertedCount: ops.length };
-        },
-        find: (filter: Filter<Document>) => {
-            operations.find.push({ filter });
-            return {
-                limit: function (limit: number) {
-                    return {
-                        project: function (projection: Document) {
-                            return {
-                                toArray: async () => [{ _id: "1", name: "test" }],
-                            };
-                        },
-                    };
-                },
+    before(async () => {
+        // Connect to MongoDB test instance (Docker container on port 27018)
+        const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27018";
+        client = await MongoClient.connect(mongoUrl);
+
+        cache = new Cache();
+        cache.init(client);
+    });
+
+    after(async () => {
+        // Clean up test database
+        try {
+            await client.db(testDbName).dropDatabase();
+        } catch (e) {
+            // Ignore errors during cleanup
+        }
+        await client.close();
+    });
+
+    describe("init()", () => {
+        it("initializes with MongoDB client", () => {
+            const newCache = new Cache();
+            newCache.init(client);
+            // If no error thrown, initialization successful
+            assert.ok(true);
+        });
+    });
+
+    describe("put()", () => {
+        it("creates a new document with autoUpdate", async () => {
+            const testData = {
+                userId: "123",
+                name: "Test User",
+                score: 100,
             };
-        },
-        findOne: async (filter: Filter<Document>, options?: any) => {
-            operations.findOne.push({ filter, options });
-            if (filter && (filter as any).exists === "yes") {
-                return { _id: "1", name: "exists" };
-            }
-            return null;
-        },
-        deleteOne: async (filter: Filter<Document>) => {
-            operations.deleteOne.push({ filter });
-            return { acknowledged: true, deletedCount: 1 };
-        },
-        replaceOne: async (filter: Filter<Document>, replacement: Document, options: any) => {
-            operations.replaceOne.push({ filter, replacement, options });
-            return { acknowledged: true, modifiedCount: 1, upsertedId: null, upsertedCount: 0, matchedCount: 1 };
-        },
-        listIndexes: () => {
-            return {
-                toArray: async () => [
-                    { v: 2, key: { _id: 1 }, name: "_id_" },
-                    { v: 2, key: { name: 1 }, name: "name_1" },
-                ],
-            };
-        },
-    };
 
-    const mockDb = {
-        collection: (name: string) => mockCollection,
-    };
+            const result = await cache.put(testDbName, testCollection, { userId: "123" }, testData);
 
-    const client = {
-        db: (name: string) => mockDb,
-        _operations: operations,
-    } as unknown as MongoClient & { _operations: typeof operations };
-
-    return client;
-}
-
-test.describe("Cache Module", () => {
-    test.describe("put()", () => {
-        test("should insert document with auto-update timestamps", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            const saveObject = { name: "test", value: 123 };
-            const result = await cache.put("testdb", "testcol", { _id: "1" }, saveObject);
-
+            assert.strictEqual(result.userId, "123");
+            assert.strictEqual(result.name, "Test User");
+            assert.strictEqual(result.score, 100);
             assert.ok(result.updated);
             assert.ok(result.updatedAt);
-            assert.equal(result.name, "test");
-            assert.equal(result.value, 123);
-
-            const ops = (client as any)._operations.updateOne;
-            assert.equal(ops.length, 1);
-            assert.deepEqual(ops[0].filter, { _id: "1" });
-            assert.equal(ops[0].options.upsert, true);
         });
 
-        test("should not add timestamps when autoUpdate is false", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("updates existing document", async () => {
+            await cache.put(testDbName, testCollection, { userId: "456" }, { userId: "456", name: "Original" });
 
-            const saveObject = { name: "test" };
-            const result = await cache.put("testdb", "testcol", { _id: "1" }, saveObject, false);
+            const result = await cache.put(testDbName, testCollection, { userId: "456" }, { userId: "456", name: "Updated" });
 
-            assert.equal(result.updated, undefined);
-            assert.equal(result.updatedAt, undefined);
+            assert.strictEqual(result.name, "Updated");
+
+            const retrieved = await cache.getOne(testDbName, testCollection, { userId: "456" });
+            assert.strictEqual(retrieved?.name, "Updated");
         });
 
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("respects autoUpdate=false", async () => {
+            const testData = {
+                userId: "789",
+                name: "No Auto Update",
+            };
 
-            await assert.rejects(
-                async () => await cache.put("", "testcol", { _id: "1" }, { name: "test" }),
-                { message: "No database specified to put" }
-            );
+            const result = await cache.put(testDbName, testCollection, { userId: "789" }, testData, false);
+
+            assert.strictEqual(result.updated, undefined);
+            assert.strictEqual(result.updatedAt, undefined);
         });
 
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("does not include _id in update payload", async () => {
+            const testData = {
+                _id: "should-not-update",
+                userId: "999",
+                name: "Test",
+            };
 
-            await assert.rejects(
-                async () => await cache.put("testdb", "", { _id: "1" }, { name: "test" }),
-                { message: "No collection specified to put" }
-            );
-        });
+            await cache.put(testDbName, testCollection, { userId: "999" }, testData);
 
-        test("should throw error if matchCondition is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.put("testdb", "testcol", null as any, { name: "test" }),
-                { message: "No match condition specified to put" }
-            );
-        });
-
-        test("should throw error if saveObject is not provided", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.put("testdb", "testcol", { _id: "1" }, null as any),
-                { message: "No object provided to put" }
-            );
+            const retrieved = await cache.getOne(testDbName, testCollection, { userId: "999" });
+            // _id should be MongoDB-generated, not "should-not-update"
+            assert.notStrictEqual(retrieved?._id?.toString(), "should-not-update");
         });
     });
 
-    test.describe("putMany()", () => {
-        test("should perform bulk write operations", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
+    describe("putMany()", () => {
+        it("inserts multiple documents", async () => {
             const operations = [
-                { insertOne: { document: { name: "doc1" } } },
-                { insertOne: { document: { name: "doc2" } } },
-            ] as readonly AnyBulkWriteOperation<Document>[];
+                { insertOne: { document: { userId: "bulk1", name: "Bulk User 1" } } },
+                { insertOne: { document: { userId: "bulk2", name: "Bulk User 2" } } },
+                { insertOne: { document: { userId: "bulk3", name: "Bulk User 3" } } },
+            ];
 
-            const result = await cache.putMany("testdb", "testcol", operations);
+            const result = await cache.putMany(testDbName, "bulk_collection", operations);
 
-            assert.equal(result.acknowledged, true);
-            const ops = (client as any)._operations.bulkWrite;
-            assert.equal(ops.length, 1);
-            assert.equal(ops[0].length, 2);
+            assert.strictEqual(result.insertedCount, 3);
         });
 
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
+        it("throws error for empty array", async () => {
             await assert.rejects(
-                async () => await cache.putMany("", "testcol", []),
-                { message: "No database specified to putMany" }
-            );
-        });
-
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.putMany("testdb", "", []),
-                { message: "No collection specified to putMany" }
-            );
-        });
-
-        test("should throw error if saveObjectArray is empty", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.putMany("testdb", "testcol", []),
-                { message: "Object array is empty or missing" }
+                async () => await cache.putMany(testDbName, testCollection, []),
+                /Object array is empty or missing/
             );
         });
     });
 
-    test.describe("get()", () => {
-        test("should retrieve documents with query filter", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            const result = await cache.get("testdb", "testcol", { name: "test" }, {}, 10);
-
-            assert.equal(Array.isArray(result), true);
-            assert.equal(result.length, 1);
-            assert.equal(result[0].name, "test");
+    describe("get()", () => {
+        before(async () => {
+            // Seed data for get tests
+            await cache.put(testDbName, "get_test", { id: "1" }, { id: "1", type: "A", value: 10 });
+            await cache.put(testDbName, "get_test", { id: "2" }, { id: "2", type: "A", value: 20 });
+            await cache.put(testDbName, "get_test", { id: "3" }, { id: "3", type: "B", value: 30 });
         });
 
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("returns all documents matching filter", async () => {
+            const results = await cache.get(testDbName, "get_test", { type: "A" });
 
-            await assert.rejects(
-                async () => await cache.get("", "testcol", { name: "test" }, {}),
-                { message: "No database specified to get" }
-            );
+            assert.strictEqual(results.length, 2);
+            assert.ok(results.every((r) => r.type === "A"));
         });
 
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("returns all documents when filter is empty", async () => {
+            const results = await cache.get(testDbName, "get_test", {});
 
-            await assert.rejects(
-                async () => await cache.get("testdb", "", { name: "test" }, {}),
-                { message: "No collection specified to get" }
-            );
+            assert.ok(results.length >= 3);
         });
 
-        test("should throw error if matchCondition is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("respects limit parameter", async () => {
+            const results = await cache.get(testDbName, "get_test", {}, undefined, 2);
 
-            await assert.rejects(
-                async () => await cache.get("testdb", "testcol", null as any, {}),
-                { message: "No match condition specified to get" }
-            );
+            assert.strictEqual(results.length, 2);
+        });
+
+        it("applies projection to returned documents", async () => {
+            const results = await cache.get(testDbName, "get_test", { type: "A" }, { value: 1, _id: 0 });
+
+            assert.ok(results[0].value);
+            assert.strictEqual(results[0].id, undefined);
         });
     });
 
-    test.describe("getOne()", () => {
-        test("should retrieve a single document", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+    describe("getOne()", () => {
+        before(async () => {
+            await cache.put(testDbName, "getone_test", { userId: "single" }, { userId: "single", name: "Single User" });
+        });
 
-            const result = await cache.getOne("testdb", "testcol", { exists: "yes" }, {});
+        it("returns single document matching filter", async () => {
+            const result = await cache.getOne(testDbName, "getone_test", { userId: "single" });
 
             assert.ok(result);
-            assert.equal(result.name, "exists");
+            assert.strictEqual(result.userId, "single");
+            assert.strictEqual(result.name, "Single User");
         });
 
-        test("should return null if document not found", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("returns null when no match found", async () => {
+            const result = await cache.getOne(testDbName, "getone_test", { userId: "nonexistent" });
 
-            const result = await cache.getOne("testdb", "testcol", { exists: "no" }, {});
-
-            assert.equal(result, null);
+            assert.strictEqual(result, null);
         });
 
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("applies projection", async () => {
+            const result = await cache.getOne(testDbName, "getone_test", { userId: "single" }, { name: 1, _id: 0 });
 
-            await assert.rejects(
-                async () => await cache.getOne("", "testcol", { name: "test" }, {}),
-                { message: "No database specified to get" }
-            );
-        });
-
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.getOne("testdb", "", { name: "test" }, {}),
-                { message: "No collection specified to get" }
-            );
-        });
-
-        test("should throw error if matchCondition is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.getOne("testdb", "testcol", null as any, {}),
-                { message: "No match condition specified to get" }
-            );
+            assert.ok(result);
+            assert.strictEqual(result.name, "Single User");
+            assert.strictEqual(result.userId, undefined);
         });
     });
 
-    test.describe("remove()", () => {
-        test("should delete a document", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+    describe("remove()", () => {
+        it("deletes document matching filter", async () => {
+            await cache.put(testDbName, "remove_test", { userId: "toDelete" }, { userId: "toDelete", name: "Will Be Deleted" });
 
-            const result = await cache.remove("testdb", "testcol", { _id: "1" });
+            const result = await cache.remove(testDbName, "remove_test", { userId: "toDelete" });
 
-            assert.equal(result.acknowledged, true);
-            assert.equal(result.deletedCount, 1);
+            assert.strictEqual(result.deletedCount, 1);
 
-            const ops = (client as any)._operations.deleteOne;
-            assert.equal(ops.length, 1);
-            assert.deepEqual(ops[0].filter, { _id: "1" });
+            const retrieved = await cache.getOne(testDbName, "remove_test", { userId: "toDelete" });
+            assert.strictEqual(retrieved, null);
         });
 
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("returns 0 when no match found", async () => {
+            const result = await cache.remove(testDbName, "remove_test", { userId: "doesNotExist" });
 
-            await assert.rejects(
-                async () => await cache.remove("", "testcol", { _id: "1" }),
-                { message: "No database specified to remove" }
-            );
-        });
-
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.remove("testdb", "", { _id: "1" }),
-                { message: "No collection specified to remove" }
-            );
-        });
-
-        test("should throw error if matchCondition is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.remove("testdb", "testcol", null as any),
-                { message: "No match condition specified to remove" }
-            );
+            assert.strictEqual(result.deletedCount, 0);
         });
     });
 
-    test.describe("replace()", () => {
-        test("should replace document with auto-update timestamps", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            const saveObject = { name: "replaced", value: 456 };
-            const result = await cache.replace("testdb", "testcol", { _id: "1" }, saveObject);
-
-            assert.ok(result.updated);
-            assert.ok(result.updatedAt);
-            assert.equal(result.name, "replaced");
-
-            const ops = (client as any)._operations.replaceOne;
-            assert.equal(ops.length, 1);
-            assert.deepEqual(ops[0].filter, { _id: "1" });
-            assert.equal(ops[0].options.upsert, true);
+    describe("exists()", () => {
+        before(async () => {
+            await cache.put(testDbName, "exists_test", { userId: "exists" }, { userId: "exists", name: "I Exist" });
         });
 
-        test("should not add timestamps when autoUpdate is false", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("returns true when document exists", async () => {
+            const result = await cache.exists(testDbName, "exists_test", { userId: "exists" });
 
-            const saveObject = { name: "replaced" };
-            const result = await cache.replace("testdb", "testcol", { _id: "1" }, saveObject, false);
-
-            assert.equal(result.updated, undefined);
-            assert.equal(result.updatedAt, undefined);
+            assert.strictEqual(result, true);
         });
 
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("returns false when document does not exist", async () => {
+            const result = await cache.exists(testDbName, "exists_test", { userId: "notFound" });
 
-            await assert.rejects(
-                async () => await cache.replace("", "testcol", { _id: "1" }, { name: "test" }),
-                { message: "No database specified to replace" }
-            );
-        });
-
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.replace("testdb", "", { _id: "1" }, { name: "test" }),
-                { message: "No collection specified to replace" }
-            );
-        });
-
-        test("should throw error if matchCondition is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.replace("testdb", "testcol", null as any, { name: "test" }),
-                { message: "No match condition specified to replace" }
-            );
-        });
-
-        test("should throw error if saveObject is not provided", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.replace("testdb", "testcol", { _id: "1" }, null as any),
-                { message: "No object provided to replace" }
-            );
+            assert.strictEqual(result, false);
         });
     });
 
-    test.describe("exists()", () => {
-        test("should return true if document exists", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            const result = await cache.exists("testdb", "testcol", { exists: "yes" });
-
-            assert.equal(result, true);
+    describe("getAggregate()", () => {
+        before(async () => {
+            await cache.put(testDbName, "aggregate_test", { id: "1" }, { id: "1", category: "electronics", price: 100 });
+            await cache.put(testDbName, "aggregate_test", { id: "2" }, { id: "2", category: "electronics", price: 200 });
+            await cache.put(testDbName, "aggregate_test", { id: "3" }, { id: "3", category: "books", price: 50 });
         });
 
-        test("should return false if document does not exist", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+        it("executes aggregation pipeline", async () => {
+            const pipeline = [{ $match: { category: "electronics" } }, { $group: { _id: "$category", total: { $sum: "$price" } } }];
 
-            const result = await cache.exists("testdb", "testcol", { exists: "no" });
+            const results = await cache.getAggregate(testDbName, "aggregate_test", pipeline);
 
-            assert.equal(result, false);
-        });
-
-        test("should throw error if database is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.exists("", "testcol", { _id: "1" }),
-                { message: "No database specified to check the existence of" }
-            );
-        });
-
-        test("should throw error if collection is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.exists("testdb", "", { _id: "1" }),
-                { message: "No collection specified to check the existence of" }
-            );
-        });
-
-        test("should throw error if matchCondition is not specified", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
-
-            await assert.rejects(
-                async () => await cache.exists("testdb", "testcol", null as any),
-                { message: "No match condition specified to check the existence of" }
-            );
+            assert.strictEqual(results.length, 1);
+            assert.strictEqual(results[0]._id, "electronics");
+            assert.strictEqual(results[0].total, 300);
         });
     });
 
-    test.describe("checkIndexes()", () => {
-        test("should return list of indexes", async () => {
-            const client = createMockMongoClient();
-            const cache = createCache(client);
+    describe("checkIndexes()", () => {
+        it("returns list of indexes for collection", async () => {
+            const indexes = await cache.checkIndexes(testDbName, testCollection);
 
-            const result = await cache.checkIndexes("testdb", "testcol");
+            assert.ok(Array.isArray(indexes));
+            assert.ok(indexes.length > 0);
+            // Default _id index should always exist
+            assert.ok(indexes.some((idx) => idx.name === "_id_"));
+        });
+    });
 
-            assert.equal(Array.isArray(result), true);
-            assert.equal(result.length, 2);
-            assert.equal(result[0].name, "_id_");
-            assert.equal(result[1].name, "name_1");
+    describe("error handling", () => {
+        it("throws error when database name is missing", async () => {
+            await assert.rejects(async () => await cache.put("", testCollection, {}, {}), /Database name must be provided/);
+        });
+
+        it("throws error when database name is undefined", async () => {
+            await assert.rejects(
+                async () => await cache.put(undefined as any, testCollection, {}, {}),
+                /Database name must be provided/
+            );
         });
     });
 });

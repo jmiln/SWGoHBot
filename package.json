@@ -9,7 +9,13 @@
         "pm2_start": "pm2 start ecosystem.config.cjs --only 'eventServe,swgohBot'",
         "lint": "biome check --no-errors-on-unmatched .",
         "lint:write": "biome check --write --no-errors-on-unmatched .",
-        "test": "node --experimental-strip-types --test ./test/**/*.test.js"
+        "test": "node --experimental-strip-types --test ./test/**/*.test.js",
+        "test:modules": "MONGO_URL=mongodb://localhost:27018 node --experimental-strip-types --test ./test/modules/*.test.ts",
+        "test:modules:cache": "MONGO_URL=mongodb://localhost:27018 node --experimental-strip-types --test ./test/modules/cache.test.ts",
+        "test:modules:patreon": "MONGO_URL=mongodb://localhost:27018 node --experimental-strip-types --test ./test/modules/patreonFuncs.test.ts",
+        "test:db:start": "bash test/modules/start-test-db.sh",
+        "test:db:stop": "bash test/modules/stop-test-db.sh",
+        "test:db:clean": "cd test/modules && docker-compose down -v"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

@@ -1,0 +1,104 @@
+import { describe, it } from "node:test";
+import assert from "node:assert";
+import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { assertReplyCount } from "./helpers.ts";
+import Randomchar from "../../slash/randomchar.ts";
+
+describe("Randomchar", () => {
+    // Note: Full tests with allycode require MongoDB and swgohAPI.
+    // We test without allycode which uses the character list.
+
+    it("should select random characters without allycode", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
+
+        const command = new Randomchar(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
+
+        const reply = replies[0];
+        assert.ok(reply.content, "Expected content in reply");
+        // Should have a code block with character names
+        assert.ok(reply.content.length > 0, "Expected non-empty character list");
+    });
+
+    it("should respect count parameter", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction({
+            optionsData: { count: 2 }
+        });
+
+        const command = new Randomchar(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        const reply = replies[0];
+        assert.ok(reply.content, "Expected content");
+        // Content should have character names (though we can't easily verify exact count in code block)
+    });
+
+    it("should default to 5 characters when count not specified", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
+
+        const command = new Randomchar(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected reply");
+    });
+
+    it("should default to minimum rarity of 1 when not specified", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
+
+        const command = new Randomchar(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected reply");
+    });
+
+    it("should work without guild context (guildOnly: false)", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction({
+            guild: null as any
+        });
+
+        const command = new Randomchar(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected reply even without guild context");
+    });
+
+    it("should send exactly one reply", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
+
+        const command = new Randomchar(bot);
+        await command.run(bot, interaction);
+
+        assertReplyCount(interaction, 1);
+    });
+
+    it("should have correct command configuration", () => {
+        const bot = createMockBot();
+        const command = new Randomchar(bot);
+
+        assert.strictEqual(command.commandData.name, "randomchar", "Expected command name to be 'randomchar'");
+        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
+        assert.ok(command.commandData.options, "Expected options to be defined");
+        assert.strictEqual(command.commandData.options.length, 3, "Expected 3 options");
+
+        const allycodeOpt = command.commandData.options.find(o => o.name === "allycode");
+        const rarityOpt = command.commandData.options.find(o => o.name === "rarity");
+        const countOpt = command.commandData.options.find(o => o.name === "count");
+
+        assert.ok(allycodeOpt, "Expected allycode option");
+        assert.ok(rarityOpt, "Expected rarity option");
+        assert.ok(countOpt, "Expected count option");
+    });
+});

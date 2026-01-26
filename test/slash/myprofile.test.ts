@@ -1,36 +1,38 @@
 import { describe, it } from "node:test";
 import assert from "node:assert";
 import { createMockBot } from "../mocks/index.ts";
-import GuildQuality from "../../slash/guildquality.ts";
+import MyProfile from "../../slash/myprofile.ts";
 
-describe("GuildQuality", () => {
-    // Note: Full guildquality tests require MongoDB, guild data, and swgohAPI.
+describe("MyProfile", () => {
+    // Note: Full myprofile tests require MongoDB, user registration, and swgohAPI.
     // We test command configuration only.
 
     it("should work without guild context (guildOnly: false)", () => {
         const bot = createMockBot();
-        const command = new GuildQuality(bot);
+        const command = new MyProfile(bot);
 
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
     it("should have correct command configuration", () => {
         const bot = createMockBot();
-        const command = new GuildQuality(bot);
+        const command = new MyProfile(bot);
 
-        assert.strictEqual(command.commandData.name, "guildquality", "Expected command name to be 'guildquality'");
+        assert.strictEqual(command.commandData.name, "myprofile", "Expected command name to be 'myprofile'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
         assert.ok(command.commandData.options, "Expected options to be defined");
         assert.strictEqual(command.commandData.options.length, 1, "Expected 1 option");
-    });
-
-    it("should have optional allycode option", () => {
-        const bot = createMockBot();
-        const command = new GuildQuality(bot);
 
         const allycodeOpt = command.commandData.options.find(o => o.name === "allycode");
         assert.ok(allycodeOpt, "Expected allycode option");
         assert.strictEqual(allycodeOpt.required, undefined, "Expected allycode to be optional");
-        assert.strictEqual(allycodeOpt.type, 3, "Expected String type (3)");
+    });
+
+    it("should have description", () => {
+        const bot = createMockBot();
+        const command = new MyProfile(bot);
+
+        assert.ok(command.commandData.description, "Expected command to have description");
+        assert.ok(command.commandData.description.length > 0, "Expected non-empty description");
     });
 });

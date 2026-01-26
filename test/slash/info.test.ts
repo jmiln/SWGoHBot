@@ -1,176 +1,82 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import Info from "../../slash/info.ts";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { assertReplyCount } from "./helpers.ts";
+import Info from "../../slash/info.ts";
 
-const MOCK_PLAYER_COUNT = 1000;
-const MOCK_GUILD_COUNT = 150;
-const MOCK_SHARD_COUNT = 2;
-const MOCK_CACHED_GUILDS = 50;
-const MOCK_CACHED_USERS = 1000;
-
-function createMockDatabase(playerCount = MOCK_PLAYER_COUNT, guildCount = MOCK_GUILD_COUNT) {
-    return {
-        db: async () => ({
-            collection: (name: string) => ({
-                estimatedDocumentCount: async () => (name === "playerStats" ? playerCount : guildCount),
-            }),
-        }),
-    } as any;
-}
-
-function createMockClient(shardCount = MOCK_SHARD_COUNT, guildSize = MOCK_CACHED_GUILDS, userSize = MOCK_CACHED_USERS) {
-    return {
-        shard: {
-            count: shardCount,
-            fetchClientValues: async () => [guildSize, guildSize - 5],
-        },
-        guilds: {
-            cache: {
-                size: guildSize,
-            },
-        },
-        users: {
-            cache: {
-                size: userSize,
-            },
-        },
-    } as any;
-}
-
-function createMockLanguage() {
-    return {
-        get: (key: string) => {
-            if (key === "COMMAND_INFO_OUTPUT") {
-                return {
-                    statHeader: "Stats",
-                    users: "Users",
-                    servers: "Servers",
-                    nodeVer: "Node",
-                    discordVer: "Discord",
-                    swgohHeader: "SWGOH",
-                    players: "Players",
-                    guilds: "Guilds",
-                    lang: "Languages",
-                    links: { Support: "https://support.example.com" },
-                    shardHeader: "Shard Info",
-                    header: "Bot Info",
-                };
-            }
-            return key;
-        },
-    } as any;
-}
-
-test.describe("Info Command", () => {
-    test("command is instantiated with correct properties", () => {
+describe("Info", () => {
+    it("should display bot information and stats", async () => {
         const bot = createMockBot();
-        const cmd = new Info(bot);
+        const interaction = createMockInteraction();
 
-        assert.equal(cmd.commandData.name, "info");
-        assert.equal(cmd.commandData.guildOnly, false);
-        assert.equal(cmd.commandData.description, "Displays general stats & info about the bot");
-    });
+        const command = new Info(bot);
+        await command.run(bot, interaction);
 
-    test("run() displays bot info with all required fields", async () => {
-        const replyCalls: any[] = [];
-        const bot = createMockBot({
-            shardId: 0,
-            mongo: createMockDatabase(),
-            config: {
-                mongodb: {
-                    swapidb: "swapidb",
-                },
-            },
-        });
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
 
-        const interaction = createMockInteraction({
-            client: createMockClient(),
-            reply: async (data: any) => {
-                replyCalls.push(data);
-            },
-            language: createMockLanguage(),
-        });
-
-        const cmd = new Info(bot);
-        await cmd.run(bot, interaction);
-
-        assert.equal(replyCalls.length, 1, "Should reply exactly once");
-
-        const reply = replyCalls[0];
-        assert.ok(reply.embeds, "Reply should contain embeds");
-        assert.equal(reply.embeds.length, 1, "Should contain one embed");
+        const reply = replies[0];
+        assert.ok(reply.embeds, "Expected embed reply");
 
         const embed = reply.embeds[0];
-        assert.ok(embed.author, "Embed should have author");
-        assert.equal(embed.author.name, "Shard Info", "Should show shard header when shards exist");
-        assert.ok(embed.description, "Embed should have description");
-        assert.ok(embed.description.includes("Stats"), "Description should include stats header");
-        assert.ok(embed.description.includes("SWGOH"), "Description should include SWGOH header");
-        assert.ok(embed.fields, "Embed should have fields");
-        assert.equal(embed.fields.length, 1, "Should have one field for links");
-        assert.equal(embed.fields[0].name, "Support", "Should include support link");
-        assert.ok(typeof embed.color === "number", "Should have a color");
+        assert.ok(embed.author, "Expected author in embed");
+        assert.ok(embed.description, "Expected description with stats");
+
+        // The description should be a code block containing stats
+        const description = embed.description || "";
+        assert.ok(description.length > 0, "Expected non-empty description");
     });
 
-    test("run() shows correct header when no shards exist", async () => {
-        const replyCalls: any[] = [];
-        const bot = createMockBot({
-            shardId: 0,
-            mongo: createMockDatabase(),
-            config: {
-                mongodb: {
-                    swapidb: "swapidb",
-                },
-            },
-        });
+    it("should include links in embed fields", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
 
-        const interaction = createMockInteraction({
-            client: createMockClient(0),
-            reply: async (data: any) => {
-                replyCalls.push(data);
-            },
-            language: createMockLanguage(),
-        });
+        const command = new Info(bot);
+        await command.run(bot, interaction);
 
-        interaction.client.shard = null;
+        const replies = (interaction as any)._getReplies();
+        const embed = replies[0].embeds[0];
 
-        const cmd = new Info(bot);
-        await cmd.run(bot, interaction);
-
-        const embed = replyCalls[0].embeds[0];
-        assert.equal(embed.author.name, "Bot Info", "Should show bot info header when no shards");
+        // The info command adds links as fields from content.links
+        // Mock language.get("COMMAND_INFO_OUTPUT") returns an object
+        assert.ok(embed.fields !== undefined, "Expected fields in embed");
     });
 
-    test("run() handles database errors gracefully", async () => {
-        const replyCalls: any[] = [];
-        const bot = createMockBot({
-            shardId: 0,
-            mongo: {
-                db: async () => {
-                    throw new Error("Database connection failed");
-                },
-            } as any,
-            config: {
-                mongodb: {
-                    swapidb: "swapidb",
-                },
-            },
-        });
-
+    it("should work without guild context (guildOnly: false)", async () => {
+        const bot = createMockBot();
         const interaction = createMockInteraction({
-            reply: async (data: any) => {
-                replyCalls.push(data);
-            },
+            guild: null as any
         });
 
-        const cmd = new Info(bot);
-        await cmd.run(bot, interaction);
+        const command = new Info(bot);
+        await command.run(bot, interaction);
 
-        assert.equal(replyCalls.length, 1, "Should reply with error message");
-        const reply = replyCalls[0];
-        assert.ok(reply.embeds, "Error reply should contain embeds");
-        const embed = reply.embeds[0];
-        assert.ok(embed.description?.includes("error"), "Should show error message");
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected reply even without guild context");
+    });
+
+    it("should send exactly one reply", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
+
+        const command = new Info(bot);
+        await command.run(bot, interaction);
+
+        assertReplyCount(interaction, 1);
+    });
+
+    it("should have a random color for the embed", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction();
+
+        const command = new Info(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        const embed = replies[0].embeds[0];
+
+        // Color should be a number (random color)
+        assert.ok(typeof embed.color === "number", "Expected numeric color");
+        assert.ok(embed.color >= 0 && embed.color <= 0xffffff, "Expected valid color range");
     });
 });

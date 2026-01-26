@@ -1,36 +1,51 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import Modsets from "../../slash/modsets.ts";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { assertReplyCount } from "./helpers.ts";
+import Modsets from "../../slash/modsets.ts";
 
-test.describe("Modsets Command", () => {
-    test("command is instantiated with correct name", () => {
+describe("Modsets", () => {
+    it("should display mod set information", async () => {
         const bot = createMockBot();
-        const cmd = new Modsets(bot);
-        assert.equal(cmd.commandData.name, "modsets");
-        assert.equal(cmd.commandData.guildOnly, false);
+        const interaction = createMockInteraction();
+
+        const command = new Modsets(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
+
+        const reply = replies[0];
+        assert.ok(reply.content, "Expected content in reply");
+
+        // The modsets command uses language.get("COMMAND_MODSETS_OUTPUT")
+        // which returns the key itself in mock
+        assert.ok(
+            reply.content.includes("COMMAND_MODSETS_OUTPUT"),
+            "Expected mod sets output in reply"
+        );
     });
 
-    test("run() displays modset information", async () => {
+    it("should send exactly one reply", async () => {
         const bot = createMockBot();
+        const interaction = createMockInteraction();
 
-        const replyCalls: any[] = [];
+        const command = new Modsets(bot);
+        await command.run(bot, interaction);
+
+        assertReplyCount(interaction, 1);
+    });
+
+    it("should work without guild context (guildOnly: false)", async () => {
+        const bot = createMockBot();
         const interaction = createMockInteraction({
-            reply: async (data: any) => replyCalls.push(data),
-            language: {
-                get: (key: string) => {
-                    if (key === "COMMAND_MODSETS_OUTPUT") {
-                        return "Modset information here";
-                    }
-                    return key;
-                },
-            } as any,
+            guild: null as any
         });
 
-        const cmd = new Modsets(bot);
-        await cmd.run(bot, interaction);
+        const command = new Modsets(bot);
+        await command.run(bot, interaction);
 
-        assert.equal(replyCalls.length, 1);
-        assert.ok(replyCalls[0].content.includes("Modset information"));
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected reply even without guild context");
     });
 });

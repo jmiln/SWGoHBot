@@ -1,75 +1,98 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-import type { InteractionReplyOptions } from "discord.js";
-import Acronyms from "../../slash/acronyms.ts"; // adjust the import path
+import assert from "node:assert";
+import { describe, it } from "node:test";
+import Acronyms from "../../slash/acronyms.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { assertEmbedField, assertErrorReply, getLastReply } from "./helpers.ts";
 
-test.describe("Acronyms Command", () => {
-    test("parseAcronymInput() splits and lowercases input", () => {
-        const cmd = new Acronyms(createMockBot());
-        const result = cmd["parseAcronymInput"]("CLS TB SlKr");
-        assert.deepEqual(result, ["cls", "tb", "slkr"]);
-    });
-
-    test("formatAcronymMessage() correctly formats output", () => {
+describe("Acronyms", () => {
+    it("should return definition for a single valid acronym", async () => {
         const bot = createMockBot();
-        const cmd = new Acronyms(bot);
-        const result = cmd["formatAcronymMessage"](["CLS", "TB"], bot.acronyms);
-        assert.equal(result, "**CLS**: Commander Luke Skywalker\n**TB**: Territory Battle");
-    });
-
-    test("findMatchingAcronyms() finds existing acronyms", () => {
-        const bot = createMockBot();
-        const cmd = new Acronyms(bot);
-        const result = cmd["findMatchingAcronyms"]("CLS TB", bot.acronyms);
-        assert.deepEqual(result, ["CLS", "TB"]);
-    });
-
-    test("run() replies with correct embed for a valid acronym", async () => {
-        const bot = createMockBot();
-        const replyCalls: any[] = [];
-
         const interaction = createMockInteraction({
-            options: { getString: () => "CLS" } as any,
-            reply: async (data) => replyCalls.push(data),
+            optionsData: { acronym: "CLS" }
         });
 
-        const cmd = new Acronyms(bot);
-        await cmd.run(bot, interaction);
+        const command = new Acronyms(bot);
+        await command.run(bot, interaction);
 
-        assert.equal(replyCalls.length, 1);
-        const embed = replyCalls[0].embeds[0];
-        assert.equal(embed.description, "**Acronyms for:**\n- CLS");
-        assert.equal(embed.fields[0].value, "**CLS**: Commander Luke Skywalker");
+        const reply = getLastReply(interaction);
+        assert.ok(reply.embeds, "Expected embed reply");
+
+        const embed = reply.embeds[0];
+        assert.ok(embed.description?.includes("CLS"), "Expected description to include acronym");
+
+        // Check that the Results field exists and contains the definition
+        assertEmbedField(interaction, "Results", "Commander Luke Skywalker");
     });
 
-    test("run() returns error if acronym input is empty", async () => {
+    it("should return definitions for multiple acronyms", async () => {
         const bot = createMockBot();
-        let errorMessage: string | undefined;
-
-        const cmd = new Acronyms(bot);
-        (cmd as any).handleError = async (_i: any, msg: string) => (errorMessage = msg);
-
         const interaction = createMockInteraction({
-            options: { getString: () => "" } as any,
+            optionsData: { acronym: "CLS JKR TB" }
         });
 
-        await cmd.run(bot, interaction);
-        assert.equal(errorMessage, "COMMAND_ACRONYMS_INVALID");
+        const command = new Acronyms(bot);
+        await command.run(bot, interaction);
+
+        const reply = getLastReply(interaction);
+        assert.ok(reply.embeds, "Expected embed reply");
+
+        const embed = reply.embeds[0];
+        const resultsField = embed.fields.find((f: any) => f.name === "Results");
+        assert.ok(resultsField, "Expected Results field");
+
+        // All three acronyms should be in the results
+        assert.ok(resultsField.value.includes("Commander Luke Skywalker"), "Expected CLS definition");
+        assert.ok(resultsField.value.includes("Jedi Knight Revan"), "Expected JKR definition");
+        assert.ok(resultsField.value.includes("Territory Battle"), "Expected TB definition");
     });
 
-    test("run() returns error if acronym not found", async () => {
+    it("should return error for unknown acronym", async () => {
         const bot = createMockBot();
-        let errorMessage: string | undefined;
-
-        const cmd = new Acronyms(bot);
-        (cmd as any).handleError = async (_i: any, msg: string) => (errorMessage = msg);
-
         const interaction = createMockInteraction({
-            options: { getString: () => "XYZ" } as any,
+            optionsData: { acronym: "UNKNOWN" }
         });
 
-        await cmd.run(bot, interaction);
-        assert.equal(errorMessage, "COMMAND_ACRONYMS_NOT_FOUND");
+        const command = new Acronyms(bot);
+        await command.run(bot, interaction);
+
+        assertErrorReply(interaction, "COMMAND_ACRONYMS_NOT_FOUND");
+    });
+
+    it("should handle case-insensitive acronym lookup", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "cls" }
+        });
+
+        const command = new Acronyms(bot);
+        await command.run(bot, interaction);
+
+        const reply = getLastReply(interaction);
+        assert.ok(reply.embeds, "Expected embed reply");
+
+        // Should still find CLS even with lowercase input
+        assertEmbedField(interaction, "Results", "Commander Luke Skywalker");
+    });
+
+    it("should handle partial matches in multi-acronym input", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "CLS UNKNOWN JKR" }
+        });
+
+        const command = new Acronyms(bot);
+        await command.run(bot, interaction);
+
+        const reply = getLastReply(interaction);
+        assert.ok(reply.embeds, "Expected embed reply");
+
+        const embed = reply.embeds[0];
+        const resultsField = embed.fields.find((f: any) => f.name === "Results");
+        assert.ok(resultsField, "Expected Results field");
+
+        // Should include valid acronyms, exclude unknown ones
+        assert.ok(resultsField.value.includes("Commander Luke Skywalker"), "Expected CLS definition");
+        assert.ok(resultsField.value.includes("Jedi Knight Revan"), "Expected JKR definition");
+        assert.ok(!resultsField.value.includes("UNKNOWN"), "Should not include unknown acronym");
     });
 });

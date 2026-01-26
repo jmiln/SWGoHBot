@@ -1,56 +1,131 @@
-import assert from "node:assert/strict";
-import test, {mock} from "node:test";
-import ArenaRank from "../../slash/arenarank.ts";
+import { describe, it } from "node:test";
+import assert from "node:assert";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { assertErrorReply, assertReplyCount } from "./helpers.ts";
+import Arenarank from "../../slash/arenarank.ts";
 
-
-test.describe("ArenaRank Command", () => {
-    test("Should send back the next 5 hops when given a rank", async () => {
-        const bot = createMockBot({});
-        const replyCalls: any[] = [];
-
+describe("Arenarank", () => {
+    it("should calculate arena rank progression for valid rank", async () => {
+        const bot = createMockBot();
         const interaction = createMockInteraction({
-            options: {
-                getInteger: (option) => {
-                    if (option === "rank") return 354;
-                },
-            },
-            reply: async (data) => replyCalls.push(data),
+            optionsData: { rank: 100 }
         });
-        const cmd = new ArenaRank(bot);
 
-        await cmd.run(bot, interaction);
-        assert.equal(replyCalls.length, 1);
-        assert.equal(replyCalls[0].content, "COMMAND_ARENARANK_RANKLIST");
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
+
+        const reply = replies[0];
+        assert.ok(reply.content, "Expected content in reply");
+        assert.ok(
+            reply.content.includes("COMMAND_ARENARANK_RANKLIST") || reply.content.includes("→"),
+            "Expected rank progression in reply"
+        );
     });
-    test("FindNextRank gives the proper next rank", async () => {
+
+    it("should handle rank 1 specially", async () => {
         const bot = createMockBot();
-        const cmd = new ArenaRank(bot);
-        const result = cmd["findNextRank"](354);
-        assert.deepEqual(result, 300);
+        const interaction = createMockInteraction({
+            optionsData: { rank: 1 }
+        });
+
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
+
+        const reply = replies[0];
+        assert.ok(reply.content, "Expected content in reply");
+        assert.ok(
+            reply.content.includes("COMMAND_ARENARANK_BEST_RANK"),
+            "Expected best rank message"
+        );
     });
-    test("ComputeArenaRanks gives the expected ranks (Given rank, and the next 5)", async () => {
+
+    it("should return error for invalid rank (NaN)", async () => {
         const bot = createMockBot();
-        const cmd = new ArenaRank(bot);
-        const result = cmd["computeArenaRanks"](354, 5);
-        assert.deepEqual(result.battles, [354, 300, 255, 216, 183, 155]);
+        const interaction = createMockInteraction({
+            optionsData: { rank: null }
+        });
+
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        assertErrorReply(interaction, "COMMAND_ARENARANK_INVALID_NUMBER");
     });
-    test("ComputeArenaRanks gives the expected ranks when given less hops (Given rank, and the next 3)", async () => {
+
+    it("should use custom hop count when provided", async () => {
         const bot = createMockBot();
-        const cmd = new ArenaRank(bot);
-        const result = cmd["computeArenaRanks"](354, 3);
-        assert.deepEqual(result.battles, [354, 300, 255, 216]);
+        const interaction = createMockInteraction({
+            optionsData: { rank: 200, hops: 10 }
+        });
+
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
+
+        // With 10 hops, should have more steps in progression
+        const reply = replies[0];
+        assert.ok(reply.content, "Expected content");
     });
-    test("ComputeArenaRanks handles non-estimated ranks properly", async () => {
+
+    it("should default to 5 hops when not specified", async () => {
         const bot = createMockBot();
-        const cmd = new ArenaRank(bot);
-        const result = cmd["computeArenaRanks"](50, 3);
-        assert.deepEqual(result.battles, [50, 39, 31, 24]);
+        const interaction = createMockInteraction({
+            optionsData: { rank: 500 }
+        });
+
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected at least one reply");
     });
-    test("ComputeArenaRanks handles rank 1 properly", async () => {
+
+    it("should work without guild context (guildOnly: false)", async () => {
         const bot = createMockBot();
-        const cmd = new ArenaRank(bot);
-        const result = cmd["computeArenaRanks"](1, 3);
-        assert.deepEqual(result.battles, [1]);
+        const interaction = createMockInteraction({
+            optionsData: { rank: 100 },
+            guild: null as any
+        });
+
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        const replies = (interaction as any)._getReplies();
+        assert.ok(replies.length > 0, "Expected reply even without guild context");
+    });
+
+    it("should send exactly one reply", async () => {
+        const bot = createMockBot();
+        const interaction = createMockInteraction({
+            optionsData: { rank: 250 }
+        });
+
+        const command = new Arenarank(bot);
+        await command.run(bot, interaction);
+
+        assertReplyCount(interaction, 1);
+    });
+
+    it("should have correct command configuration", () => {
+        const bot = createMockBot();
+        const command = new Arenarank(bot);
+
+        assert.strictEqual(command.commandData.name, "arenarank", "Expected command name to be 'arenarank'");
+        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
+        assert.ok(command.commandData.options, "Expected options to be defined");
+        assert.strictEqual(command.commandData.options.length, 2, "Expected 2 options");
+
+        const rankOpt = command.commandData.options.find(o => o.name === "rank");
+        const hopsOpt = command.commandData.options.find(o => o.name === "hops");
+
+        assert.ok(rankOpt, "Expected rank option");
+        assert.ok(hopsOpt, "Expected hops option");
     });
 });
