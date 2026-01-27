@@ -35,7 +35,7 @@ export default class Time extends Command {
             if (timezone?.length) {
                 return super.error(
                     interaction,
-                    interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime(guildConf.timezone)),
+                    interaction.language.get("COMMAND_TIME_INVALID_ZONE", formatCurrentTime(guildConf.timezone), guildConf.timezone),
                 );
             }
             return interaction.reply({
