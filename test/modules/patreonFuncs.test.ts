@@ -9,7 +9,7 @@ describe("PatreonFuncs Module", () => {
     let client: MongoClient;
     let patreonFuncs: PatreonFuncs;
     let mockClient: BotClient;
-    const testDbName = "swgohbot";
+    const testDbName = "test_patreon_db";
 
     before(async () => {
         // Connect to MongoDB test instance (Docker container on port 27018)
