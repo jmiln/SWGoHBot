@@ -71,7 +71,7 @@ export default class Farm extends Command {
             if (loc.cost) {
                 // This will be anything in a store
                 outList.push(
-                    `${loc.type} \n * ${loc.cost
+                    ` - ${loc.type} \n * ${loc.cost
                         .split("\n")
                         .map((cost: string) => cost.replace("/", " per "))
                         .join(" shards\n * ")} shards`,
