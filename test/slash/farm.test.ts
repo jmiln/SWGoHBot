@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Farm from "../../slash/farm.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
-import Farm from "../../slash/farm.ts";
 
 describe("Farm", () => {
     // Note: Full farm location tests require MongoDB and the swgohAPI module,

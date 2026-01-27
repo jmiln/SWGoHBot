@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import WhoIs from "../../slash/whois.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("WhoIs", () => {
     // Note: Full whois tests require swgohAPI and database.

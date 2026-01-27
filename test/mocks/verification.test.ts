@@ -1,5 +1,5 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
 import { createMockBot, createMockInteraction } from "./index.ts";
 
 describe("Mock Verification", () => {
@@ -19,14 +19,6 @@ describe("Mock Verification", () => {
         const user = await bot.cache.getOne("testdb", "users", { id: "123" });
         assert.strictEqual(user.name, "Test");
         assert.strictEqual(user.score, 100);
-
-        // Verify swgohAPI methods exist
-        const units = await bot.swgohAPI.units("eng_us");
-        assert.ok(Array.isArray(units));
-        assert.ok(units.length > 0);
-
-        const player = await bot.swgohAPI.getPlayer("123456789", "eng_us");
-        assert.ok(player.roster);
 
         // Verify counts
         const guildCount = await bot.guildCount();

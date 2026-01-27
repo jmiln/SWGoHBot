@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Challenges from "../../slash/challenges.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
-import Challenges from "../../slash/challenges.ts";
 
 describe("Challenges", () => {
     it("should display challenges for current day when no day specified", async () => {

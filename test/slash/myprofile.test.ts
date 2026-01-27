@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import MyProfile from "../../slash/myprofile.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("MyProfile", () => {
     // Note: Full myprofile tests require MongoDB, user registration, and swgohAPI.

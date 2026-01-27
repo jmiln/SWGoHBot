@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Info from "../../slash/info.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
-import Info from "../../slash/info.ts";
 
 describe("Info", () => {
     it("should display bot information and stats", async () => {

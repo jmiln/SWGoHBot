@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import UserConf from "../../slash/userconf.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("UserConf", () => {
     // Note: Full userconf tests require MongoDB and user registration.

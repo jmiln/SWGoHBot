@@ -1,7 +1,7 @@
 import { Events, type Guild } from "discord.js";
 import cache from "../modules/cache.ts";
-import logger from "../modules/Logger.ts";
 import { deleteGuildConfig } from "../modules/guildConfig/settings.ts";
+import logger from "../modules/Logger.ts";
 import type { BotType } from "../types/types.ts";
 
 export default {

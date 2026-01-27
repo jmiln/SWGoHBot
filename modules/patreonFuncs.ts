@@ -1,4 +1,5 @@
 import { type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
+import Language from "../base/Language.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
@@ -14,7 +15,6 @@ import type {
     UserConfig,
 } from "../types/types.ts";
 import cache from "./cache.ts";
-import Language from "../base/Language.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
@@ -226,7 +226,11 @@ class PatreonFuncs {
             if (aw.payout?.fleet?.enabled && aw.payout.fleet.channel) {
                 const playerTimes = this.getPayoutTimes(players, "fleet");
                 const formattedEmbed = this.formatPayouts(playerTimes, "fleet");
-                const sentMessage = (await this.sendBroadcastMsg(aw.payout.fleet.msgID, aw.payout.fleet.channel, formattedEmbed)) as Message;
+                const sentMessage = (await this.sendBroadcastMsg(
+                    aw.payout.fleet.msgID,
+                    aw.payout.fleet.channel,
+                    formattedEmbed,
+                )) as Message;
                 if (sentMessage) {
                     user.arenaWatch.payout.fleet.msgID = sentMessage.id;
                 }

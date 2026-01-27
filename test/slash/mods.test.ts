@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Mods from "../../slash/mods.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
-import Mods from "../../slash/mods.ts";
 
 describe("Mods", () => {
     // Note: Mods command uses static character data, so we can test more functionality.

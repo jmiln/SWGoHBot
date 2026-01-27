@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Panic from "../../slash/panic.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Panic", () => {
     // Note: Full panic tests require MongoDB, user registration, swgohAPI, and image service.

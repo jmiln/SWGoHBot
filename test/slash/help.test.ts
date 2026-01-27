@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Help from "../../slash/help.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
-import Help from "../../slash/help.ts";
 
 describe("Help", () => {
     it("should display all commands when no options provided", async () => {

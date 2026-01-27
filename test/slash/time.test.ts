@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Time from "../../slash/time.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
-import Time from "../../slash/time.ts";
 
 describe("Time", () => {
     it("should display time for valid timezone", async () => {

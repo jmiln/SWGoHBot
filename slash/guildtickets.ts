@@ -194,7 +194,8 @@ export default class GuildTickets extends Command {
                 });
             }
             return super.error(interaction, "No options provided. Please specify at least one setting to update.");
-        } else if (subCommand === "view") {
+        }
+        if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
             return interaction.reply({
                 embeds: [

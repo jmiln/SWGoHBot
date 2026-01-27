@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import GuildQuality from "../../slash/guildquality.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("GuildQuality", () => {
     // Note: Full guildquality tests require MongoDB, guild data, and swgohAPI.

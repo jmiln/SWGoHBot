@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Event from "../../slash/event.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Event", () => {
     // Note: Full event tests require MongoDB and guild configuration.

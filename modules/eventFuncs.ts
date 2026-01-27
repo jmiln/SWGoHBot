@@ -57,7 +57,7 @@ class EventFuncs {
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
                         const targetGuild = client.guilds.cache.get(guildId);
                         if (targetGuild) {
-                            announceMsg({client: client as any, guild: targetGuild, announceMessage, channel: chan, guildConf});
+                            announceMsg({ client: client as any, guild: targetGuild, announceMessage, channel: chan, guildConf });
                         }
                     },
                     {
@@ -93,7 +93,8 @@ class EventFuncs {
             // 0d0h0m
             // Else it's using basic repeat
             while (nowTime >= ev.eventDT) {
-                ev.eventDT = ev.eventDT + ev.repeat.repeatDay * this.dayMS + ev.repeat.repeatHour * this.hourMS + ev.repeat.repeatMin * this.minMS;
+                ev.eventDT =
+                    ev.eventDT + ev.repeat.repeatDay * this.dayMS + ev.repeat.repeatHour * this.hourMS + ev.repeat.repeatMin * this.minMS;
             }
         }
         return ev;

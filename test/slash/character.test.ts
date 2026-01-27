@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Character from "../../slash/character.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
-import Character from "../../slash/character.ts";
 
 describe("Character", () => {
     // Note: Full character tests require MongoDB and swgohAPI.

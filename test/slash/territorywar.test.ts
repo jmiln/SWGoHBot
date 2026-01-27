@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import TerritoryWar from "../../slash/territorywar.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("TerritoryWar", () => {
     // Note: Full territorywar tests require MongoDB and swgohAPI.

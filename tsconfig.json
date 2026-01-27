@@ -1,14 +1,6 @@
 {
-    "include": [
-        "**/*.ts",
-        "**/*.js"
-    ],
-    "exclude": [
-        "**/node_modules",
-        "**/wipCommands",
-        "**/scripts",
-        "**/*.test.ts"
-    ],
+    "include": ["**/*.ts", "**/*.js"],
+    "exclude": ["**/node_modules", "**/wipCommands", "**/scripts", "**/*.test.ts"],
     "compilerOptions": {
         "allowImportingTsExtensions": true,
         "erasableSyntaxOnly": true,

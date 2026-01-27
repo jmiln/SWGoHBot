@@ -692,12 +692,10 @@ class SWAPI {
                 { nameKey: 1, _id: 0 },
             )) as { nameKey: string }[];
         }
-        return (await cache.get(
-            config.mongodb.swapidb,
-            "abilities",
-            { skillId: { $in: skillArr }, language: lang.toLowerCase() } as any,
-            { _id: 0, updated: 0 },
-        )) as ComlinkAbility[];
+        return (await cache.get(config.mongodb.swapidb, "abilities", { skillId: { $in: skillArr }, language: lang.toLowerCase() } as any, {
+            _id: 0,
+            updated: 0,
+        })) as ComlinkAbility[];
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
@@ -775,12 +773,10 @@ class SWAPI {
         const gearArr = Array.isArray(gearArray) ? gearArray : [gearArray];
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(
-            config.mongodb.swapidb,
-            "gear",
-            { id: { $in: gearArr }, language: thisLang.toLowerCase() } as any,
-            { _id: 0, updated: 0 },
-        );
+        return await cache.get(config.mongodb.swapidb, "gear", { id: { $in: gearArr }, language: thisLang.toLowerCase() } as any, {
+            _id: 0,
+            updated: 0,
+        });
     }
 
     // Used by farm, randomchar, and reloaddata
@@ -789,12 +785,10 @@ class SWAPI {
         if (!defId) throw new Error("You need to specify a defId");
 
         // All the skills should be loaded, so just get em from the cache
-        const uOut: any = await cache.get(
-            config.mongodb.swapidb,
-            "units",
-            { baseId: defId, language: thisLang.toLowerCase() } as any,
-            { _id: 0, updated: 0 },
-        );
+        const uOut: any = await cache.get(config.mongodb.swapidb, "units", { baseId: defId, language: thisLang.toLowerCase() } as any, {
+            _id: 0,
+            updated: 0,
+        });
         return uOut?.[0] || uOut;
     }
 
@@ -807,7 +801,10 @@ class SWAPI {
         const recArr = Array.isArray(recArray) ? recArray : [recArray];
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(config.mongodb.swapidb, "recipes", { id: { $in: recArr as any }, language: thisLang } as any, { _id: 0, updated: 0 });
+        return await cache.get(config.mongodb.swapidb, "recipes", { id: { $in: recArr as any }, language: thisLang } as any, {
+            _id: 0,
+            updated: 0,
+        });
     }
 
     async getRawGuild(

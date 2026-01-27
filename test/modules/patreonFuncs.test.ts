@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
+import config from "../../config.js";
 import cache from "../../modules/cache.ts";
 import { PatreonFuncs } from "../../modules/patreonFuncs.ts";
 import type { BotClient, PatronUser } from "../../types/types.ts";
@@ -9,7 +10,9 @@ describe("PatreonFuncs Module", () => {
     let client: MongoClient;
     let patreonFuncs: PatreonFuncs;
     let mockClient: BotClient;
-    const testDbName = "test_patreon_db";
+
+    // This has to use the same database as name as the main bot, since that's what the patreonFuncs module uses
+    const testDbName = config.mongodb.swgohbotdb;
 
     before(async () => {
         // Connect to MongoDB test instance (Docker container on port 27018)

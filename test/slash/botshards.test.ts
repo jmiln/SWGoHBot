@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import BotShards, { formatShardInfo, type ShardData } from "../../slash/botshards.ts";
+import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 
 describe("BotShards", () => {
     // Note: Full botshards tests require Discord sharding API.

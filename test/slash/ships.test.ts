@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Ships from "../../slash/ships.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
-import Ships from "../../slash/ships.ts";
 
 describe("Ships", () => {
     // Note: Full ship tests require MongoDB and swgohAPI.

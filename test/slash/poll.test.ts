@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Poll from "../../slash/poll.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Poll", () => {
     // Note: Full poll tests require MongoDB and guild configuration.

@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Showconf from "../../slash/showconf.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
-import Showconf from "../../slash/showconf.ts";
 
 describe("Showconf", () => {
     // Note: Full showconf tests require MongoDB for guild settings.

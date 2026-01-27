@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Faction from "../../slash/faction.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
-import Faction from "../../slash/faction.ts";
 
 describe("Faction", () => {
     // Note: Full faction tests require MongoDB and the swgohAPI module.

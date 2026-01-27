@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Versus from "../../slash/versus.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Versus", () => {
     // Note: Full versus tests require MongoDB, user registration, and swgohAPI.

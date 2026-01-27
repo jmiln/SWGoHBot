@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Modsets from "../../slash/modsets.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
-import Modsets from "../../slash/modsets.ts";
 
 describe("Modsets", () => {
     it("should display mod set information", async () => {

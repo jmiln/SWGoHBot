@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Charactergear from "../../slash/charactergear.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
-import Charactergear from "../../slash/charactergear.ts";
 
 describe("Charactergear", () => {
     // Note: Full charactergear tests require MongoDB and swgohAPI.

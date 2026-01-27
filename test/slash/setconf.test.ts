@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import SetConf from "../../slash/setconf.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("SetConf", () => {
     // Note: Full setconf tests require MongoDB and guild configuration.

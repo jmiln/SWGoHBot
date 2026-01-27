@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import GuildTickets from "../../slash/guildtickets.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("GuildTickets", () => {
     // Note: Full guildtickets tests require MongoDB and Patreon verification.

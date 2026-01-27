@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Randomchar from "../../slash/randomchar.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
-import Randomchar from "../../slash/randomchar.ts";
 
 describe("Randomchar", () => {
     // Note: Full tests with allycode require MongoDB and swgohAPI.

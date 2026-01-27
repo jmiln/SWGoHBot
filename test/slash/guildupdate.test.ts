@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import GuildUpdate from "../../slash/guildupdate.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("GuildUpdate", () => {
     // Note: Full guildupdate tests require MongoDB and Patreon verification.

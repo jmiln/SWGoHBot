@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Aliases from "../../slash/aliases.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Aliases", () => {
     // Note: Full aliases tests require MongoDB and guild configuration.

@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import RaidDamage from "../../slash/raiddamage.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("RaidDamage", () => {
     // Note: Full raiddamage tests require raid data.

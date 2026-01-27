@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Shardtimes from "../../slash/shardtimes.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Shardtimes", () => {
     // Note: Full shardtimes tests require MongoDB and guild configuration.

@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import MyArena from "../../slash/myarena.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("MyArena", () => {
     // Note: Full myarena tests require MongoDB, user registration, and swgohAPI.

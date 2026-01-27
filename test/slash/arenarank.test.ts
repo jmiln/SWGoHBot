@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Arenarank from "../../slash/arenarank.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
-import Arenarank from "../../slash/arenarank.ts";
 
 describe("Arenarank", () => {
     it("should calculate arena rank progression for valid rank", async () => {

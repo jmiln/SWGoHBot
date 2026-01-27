@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import ArenaAlert from "../../slash/arenaalert.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("ArenaAlert", () => {
     // Note: Full arenaalert tests require MongoDB and Patreon verification.

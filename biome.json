@@ -13,15 +13,7 @@
         "indentStyle": "space",
         "indentWidth": 4,
         "lineWidth": 140,
-        "includes": [
-            "**",
-            "!**/node_modules",
-            "!scripts/**",
-            "!languages/**",
-            "!data/**",
-            "!wipCommands/**",
-            "!test/**"
-        ]
+        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"]
     },
     "javascript": {
         "formatter": {
@@ -36,15 +28,7 @@
     },
     "linter": {
         "enabled": true,
-        "includes": [
-            "**",
-            "!**/node_modules",
-            "!scripts/**",
-            "!languages/**",
-            "!data/**",
-            "!wipCommands/**",
-            "!test/**"
-        ],
+        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"],
         "rules": {
             "recommended": true,
             "style": {

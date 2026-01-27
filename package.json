@@ -8,7 +8,7 @@
         "start": "node --experimental-strip-types swgohBotShard.ts",
         "lint": "biome check --no-errors-on-unmatched .",
         "lint:write": "biome check --write --no-errors-on-unmatched .",
-        "test": "MONGO_URL=mongodb://localhost:27018 node --experimental-strip-types --test ./test/**/*.test.js",
+        "test": "MONGO_URL=mongodb://localhost:27018 node --experimental-strip-types --test ./test/**/*.test.ts",
         "deploy": "node --experimental-strip-types ./modules/deployCommands.ts",
         "test:db:start": "bash test/modules/start-test-db.sh",
         "test:db:stop": "bash test/modules/stop-test-db.sh",

@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import GrandArena from "../../slash/grandarena.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("GrandArena", () => {
     // Note: Full grandarena tests require MongoDB and swgohAPI.

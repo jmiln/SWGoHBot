@@ -1,7 +1,7 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot } from "../mocks/index.ts";
+import { describe, it } from "node:test";
 import Register from "../../slash/register.ts";
+import { createMockBot } from "../mocks/index.ts";
 
 describe("Register", () => {
     // Note: Full register tests require MongoDB and swgohAPI.

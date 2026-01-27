@@ -1,8 +1,8 @@
-import { describe, it } from "node:test";
 import assert from "node:assert";
+import { describe, it } from "node:test";
+import Patreon from "../../slash/patreon.ts";
 import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
-import Patreon from "../../slash/patreon.ts";
 
 describe("Patreon", () => {
     // Note: Full patreon tests require MongoDB and patreon API.
