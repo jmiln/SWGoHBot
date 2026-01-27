@@ -10,6 +10,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Showconf extends Command {
     static readonly metadata = {
         name: "showconf",
+        description: "Show the current guild configuration",
         guildOnly: false,
         permLevel: 3,
     };

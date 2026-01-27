@@ -8,6 +8,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Ships extends Command {
     static readonly metadata = {
         name: "ships",
+        description: "Get information about a ship",
         guildOnly: false,
         options: [
             {

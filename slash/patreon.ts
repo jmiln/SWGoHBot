@@ -10,6 +10,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Patreon extends Command {
     static readonly metadata = {
         name: "patreon",
+        description: "View your Patreon benefits and commands.",
         enabled: true,
         guildOnly: false,
         options: [

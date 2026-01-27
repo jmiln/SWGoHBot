@@ -2,16 +2,7 @@ import { ApplicationCommandOptionType, codeBlock } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import {
-    expandSpaces,
-    findChar,
-    getAllyCode,
-    getGearStr,
-    makeTable,
-    msgArray,
-    toProperCase,
-    updatedFooterStr,
-} from "../modules/functions.ts";
+import { expandSpaces, findChar, getAllyCode, getGearStr, makeTable, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -21,6 +12,7 @@ import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 export default class GuildSearch extends Command {
     static readonly metadata = {
         name: "guildsearch",
+        description: "Search for stats on your guild's units",
         guildOnly: false,
         options: [
             {

@@ -1,0 +1,125 @@
+import { readdirSync } from "node:fs";
+import { join } from "node:path";
+import { REST, Routes } from "discord.js";
+import type { CommandMetadata } from "../base/slashCommand.ts";
+import config from "../config.js";
+import logger from "./Logger.ts";
+
+const slashDir = join(import.meta.dirname, "..", "slash");
+
+/**
+ * Loads all command metadata from slash directory
+ */
+async function loadCommandMetadata(): Promise<CommandMetadata[]> {
+    const commandFiles = readdirSync(slashDir).filter((file) => file.endsWith(".ts"));
+    const commands: CommandMetadata[] = [];
+
+    for (const file of commandFiles) {
+        const commandName = file.split(".")[0];
+        try {
+            const path = `${slashDir}/${file}`;
+            const { default: CommandClass } = await import(path);
+
+            if (!CommandClass.metadata) {
+                logger.error(`${commandName}: No static metadata found`);
+                continue;
+            }
+
+            if (CommandClass.metadata.enabled === false) {
+                logger.log(`${commandName}: Skipped (disabled)`);
+                continue;
+            }
+
+            if (!CommandClass.metadata.description) {
+                logger.error(`${commandName}: No description found in metadata`);
+                continue;
+            }
+
+            commands.push(CommandClass.metadata);
+            // logger.log(`[${CommandClass.metadata.guildOnly ? "Guild" : "Global"}] ${commandName}: Loaded`);
+        } catch (err) {
+            logger.error(`${commandName}: Failed to load - ${err}`);
+        }
+    }
+
+    return commands;
+}
+
+/**
+ * Deploys commands to Discord API
+ */
+async function deployCommands(commands: CommandMetadata[]) {
+    const rest = new REST().setToken(config.token);
+
+    const globalCommands = commands
+        .filter((cmd) => !cmd.guildOnly)
+        .map((cmd) => {
+            const { guildOnly, permLevel, ...other } = cmd;
+            return other;
+        });
+    const guildCommands = commands
+        .filter((cmd) => cmd.guildOnly)
+        .map((cmd) => {
+            const { guildOnly, permLevel, ...other } = cmd;
+            return other;
+        });
+
+    logger.log("Deploying commands...\n");
+
+    try {
+        // Deploy global commands if enabled
+        if (config.enableGlobalCmds && globalCommands.length) {
+            logger.log(`Deploying ${globalCommands.length} global commands...`);
+            // logger.log(inspect(globalCommands, { depth: 5 }));
+            await rest.put(Routes.applicationCommands(config.clientId), {
+                body: globalCommands,
+            });
+            logger.log(`Deployed ${globalCommands.length} global commands`);
+        } else if (!config.enableGlobalCmds) {
+            logger.log(" Global commands disabled in config");
+        }
+
+        // Deploy guild commands if dev_server is set
+        if (config.dev_server && guildCommands.length) {
+            logger.log(`Deploying ${guildCommands.length} guild commands to ${config.dev_server}...`);
+            await rest.put(Routes.applicationGuildCommands(config.clientId, config.dev_server), {
+                body: guildCommands,
+            });
+            logger.log(`Deployed ${guildCommands.length} guild commands`);
+        } else if (!config.dev_server && guildCommands.length) {
+            logger.log(`${guildCommands.length} guild commands found but no dev_server configured`);
+        }
+
+        logger.log("Deployment complete!\n");
+    } catch (error) {
+        logger.error("Deployment failed:", error);
+        process.exit(1);
+    }
+}
+
+/**
+ * Main execution
+ */
+async function main() {
+    logger.log("SWGoHBot Command Deployment\n");
+    logger.log("Loading commands from slash/...\n");
+
+    const commands = await loadCommandMetadata();
+
+    logger.log(`Summary: ${commands.length} commands loaded`);
+    logger.log(`   Global: ${commands.filter((c) => !c.guildOnly).length}`);
+    logger.log(`   Guild: ${commands.filter((c) => c.guildOnly).length}`);
+
+    if (commands.length === 0) {
+        logger.error("No commands to deploy!");
+        process.exit(1);
+    }
+
+    await deployCommands(commands);
+}
+
+main().catch((err) => {
+    logger.init(-1);
+    logger.error("Fatal error:", err);
+    process.exit(1);
+});

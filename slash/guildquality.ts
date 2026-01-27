@@ -20,6 +20,7 @@ interface PlayerQuality {
 export default class GuildQuality extends Command {
     static readonly metadata = {
         name: "guildquality",
+        description: "Check a guild's overall quality",
         guildOnly: false,
         options: [
             {

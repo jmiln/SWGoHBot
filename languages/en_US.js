@@ -1756,7 +1756,7 @@ export default class extends Language {
             COMMAND_USERCONF_ALLYCODE_TOO_MANY: "Sorry, but you cannot have more than 10 accounts registered.",
             COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED: "You do not have this ally code registered",
             COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY: "That ally code is already marked as the primary one.",
-            COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Changed your primary from **${oldName}**(${oldAC}) to **${newName}**(${newAC})`,
+            COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY: (oldName, oldAC, newName, newAC) => `Changed your primary from **${oldName}** (${oldAC}) to **${newName}** (${newAC})`,
             COMMAND_USERCONF_DEFAULTS_CMD_NO_FLAGS: (name) => `${name} does not have any flags to set the defaults for.`,
             COMMAND_USERCONF_DEFAULTS_INVALID_CMD: (name) => `Sorry, but ${name} is not currently supported for this.`,
             COMMAND_USERCONF_DEFAULTS_SET_DEFAULTS: (name, flags) => `Set the default flags for ${name} to \`${flags}\``,

@@ -9,6 +9,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Shardtimes extends Command {
     static readonly metadata = {
         name: "shardtimes",
+        description: "Manage shard times",
         guildOnly: false,
         options: [
             // Add

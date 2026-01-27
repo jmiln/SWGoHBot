@@ -26,6 +26,7 @@ import type { BotInteraction, BotType, TWList } from "../types/types.ts";
 export default class Guilds extends Command {
     static readonly metadata = {
         name: "guilds",
+        description: "View information about a specified guild",
         guildOnly: false,
         options: [
             {

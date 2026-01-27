@@ -17,6 +17,7 @@ const EVENTS_PER_PAGE = 5;
 export default class Event extends Command {
     static readonly metadata = {
         name: "event",
+        description: "Configure and view events.",
         guildOnly: false,
         options: [
             {
@@ -134,7 +135,7 @@ export default class Event extends Command {
                     {
                         name: "repeatday",
                         type: ApplicationCommandOptionType.String,
-                        description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with reapeat)",
+                        description: "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with repeat)",
                     },
                     {
                         name: "channel",

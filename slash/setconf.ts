@@ -108,8 +108,9 @@ for (const [key, value] of Object.entries(typedDefaultSettings)) {
 
 export default class SetConf extends Command {
     static readonly metadata = {
-        guildOnly: false,
         name: "setconf",
+        description: "Change settings for your guild",
+        guildOnly: false,
         permLevel: 3,
         options: Object.values(options),
     };

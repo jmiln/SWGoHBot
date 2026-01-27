@@ -11,6 +11,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Poll extends Command {
     static readonly metadata = {
         name: "poll",
+        description: "Create and vote on polls",
         guildOnly: false,
         options: [
             // Subcommands for create, view, end, cancel, vote

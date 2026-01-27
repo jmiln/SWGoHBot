@@ -14,6 +14,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Zetas extends Command {
     static readonly metadata = {
         name: "zetas",
+        description: "See a player's zetas",
         guildOnly: false,
         options: [
             {

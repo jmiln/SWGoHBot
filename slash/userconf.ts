@@ -15,6 +15,7 @@ import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/
 export default class UserConf extends Command {
     static readonly metadata = {
         name: "userconf",
+        description: "Change your personal settings with the bot (allycode, view alerts, etc.)",
         guildOnly: false,
         options: [
             {

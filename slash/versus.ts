@@ -11,6 +11,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Versus extends Command {
     static readonly metadata = {
         name: "versus",
+        description: "Compare the stats of two users",
         guildOnly: false,
         enabled: true,
         options: [

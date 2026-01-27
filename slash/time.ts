@@ -6,6 +6,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Time extends Command {
     static readonly metadata = {
         name: "time",
+        description: "Get the current time in a timezone",
         guildOnly: false,
         options: [
             {

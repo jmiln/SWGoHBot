@@ -10,6 +10,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Farm extends Command {
     static readonly metadata = {
         name: "farm",
+        description: "Finds the farming locations for units",
         guildOnly: false,
         options: [
             {

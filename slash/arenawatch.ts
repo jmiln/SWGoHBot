@@ -38,6 +38,7 @@ interface AwChangeRes {
 export default class ArenaWatch extends Command {
     static readonly metadata = {
         name: "arenawatch",
+        description: "Configurations for ArenaWatch",
         guildOnly: false,
         options: [
             {

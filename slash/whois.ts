@@ -7,6 +7,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class WhoIs extends Command {
     static readonly metadata = {
         name: "whois",
+        description: "Find a player by name",
         guildOnly: false,
         options: [
             {

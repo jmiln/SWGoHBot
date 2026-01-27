@@ -13,6 +13,7 @@ import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
 export default class Register extends Command {
     static readonly metadata = {
         name: "register",
+        description: "Link an ally code to your account",
         guildOnly: false,
         options: [
             {

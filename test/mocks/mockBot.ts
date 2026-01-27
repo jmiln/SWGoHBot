@@ -271,7 +271,7 @@ export function createMockBot(overrides: Partial<BotType> = {}): BotType {
         },
         config: {
            mongodb: {
-                swgohbotdb: "swgohbotdb",
+                swgohbotdb: "test_swgohbotdb",
             }
         },
         constants: constants,

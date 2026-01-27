@@ -11,6 +11,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Randomchar extends Command {
     static readonly metadata = {
         name: "randomchar",
+        description: "Grabs a random squad",
         guildOnly: false,
         options: [
             {

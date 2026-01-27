@@ -26,8 +26,8 @@ export function formatShardInfo(results: ShardData[], shardCount: number): strin
 export default class BotShards extends Command {
     static readonly metadata = {
         name: "botshards",
+        description: "Display availability and ping info for each shard.",
         guildOnly: false,
-        options: [],
     };
 
     constructor(Bot: BotType) {

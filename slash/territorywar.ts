@@ -12,6 +12,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class TerritoryWar extends Command {
     static readonly metadata = {
         name: "territorywar",
+        description: "Compare the stats of two guilds",
         guildOnly: false,
         options: [
             {

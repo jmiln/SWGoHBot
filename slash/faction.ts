@@ -14,6 +14,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Faction extends Command {
     static readonly metadata = {
         name: "faction",
+        description: "Lookup characters from a faction",
         guildOnly: false,
         options: [
             {

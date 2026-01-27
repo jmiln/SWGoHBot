@@ -7,6 +7,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class RaidDamage extends Command {
     static readonly metadata = {
         name: "raiddamage",
+        description: "Calculate the damage amounts per raid (Legacy raids)",
         enabled: true,
         guildOnly: false,
         options: [

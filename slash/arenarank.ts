@@ -10,6 +10,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Arenarank extends Command {
     static readonly metadata = {
         name: "arenarank",
+        description: "Calculates the arena rank range for a given rank",
         guildOnly: false,
         options: [
             {
