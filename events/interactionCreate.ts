@@ -70,7 +70,7 @@ function filterAutocomplete(
  * Logs errors while filtering out common/expected Discord API errors
  */
 function logErr(errStr: string, useWebhook = false): void {
-    // if (isIgnoredError(errStr)) return;
+    if (isIgnoredError(errStr)) return;
     logger.error(errStr, useWebhook);
 }
 

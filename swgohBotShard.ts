@@ -3,6 +3,7 @@ import config from "./config.js";
 
 const Manager = new ShardingManager("./swgohBot.ts", {
     totalShards: config.shardCount, // Tell it how many shards we want (Approx. 1100 servers per shard)
+    execArgv: ["--trace-warnings"],
 });
 
 // Give it a large timeout since it refuses to work otherwise

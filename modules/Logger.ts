@@ -1,4 +1,5 @@
 import { EmbedBuilder } from "discord.js";
+import pino, { type Logger as PinoInstance } from "pino";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { sendWebhook, toProperCase } from "./functions.ts";
@@ -7,135 +8,85 @@ type LogType = "log" | "warn" | "error" | "debug" | "cmd" | "ready" | "info";
 
 interface LogConfig {
     color: number;
-    shouldLog: (debugLogsEnabled: boolean) => boolean;
+    pinoLevel: string;
 }
 
 class Logger {
     private shardId: number;
     private readonly logConfigs: Record<LogType, LogConfig>;
-    private readonly timezone: string;
+    private pino: PinoInstance;
 
-    constructor(timezone = "America/Los_Angeles", shardId = -1) {
-        this.timezone = timezone;
+    constructor(shardId = -1) {
         this.shardId = shardId;
 
-        // Configuration for each log type
+        // Map your custom types to Pino levels and Discord colors
         this.logConfigs = {
-            log: {
-                color: constants.colors.blue,
-                shouldLog: () => true,
-            },
-            info: {
-                color: constants.colors.blue,
-                shouldLog: () => true,
-            },
-            warn: {
-                color: constants.colors.yellow,
-                shouldLog: () => true,
-            },
-            error: {
-                color: constants.colors.red,
-                shouldLog: () => true,
-            },
-            debug: {
-                color: constants.colors.green,
-                shouldLog: (debugLogsEnabled) => debugLogsEnabled,
-            },
-            cmd: {
-                color: constants.colors.white,
-                shouldLog: () => true,
-            },
-            ready: {
-                color: constants.colors.green,
-                shouldLog: () => true,
-            },
+            cmd: { color: constants.colors.white, pinoLevel: "info" },
+            debug: { color: constants.colors.green, pinoLevel: "debug" },
+            error: { color: constants.colors.red, pinoLevel: "error" },
+            info: { color: constants.colors.blue, pinoLevel: "info" },
+            log: { color: constants.colors.blue, pinoLevel: "info" },
+            ready: { color: constants.colors.green, pinoLevel: "info" },
+            warn: { color: constants.colors.yellow, pinoLevel: "warn" },
         };
+
+        this.pino = pino({
+            level: config.debugLogs ? "debug" : "info",
+            base: { shardId: this.shardId > -1 ? this.shardId : undefined },
+            timestamp: pino.stdTimeFunctions.isoTime,
+        });
     }
 
     /**
-     * Initialize or update the logger's shard ID
+     * Update shard ID and recreate the pino child instance with the new context
      */
     init(shardId: number): void {
         this.shardId = shardId;
     }
 
-    /**
-     * Get formatted time string for the configured timezone
-     */
-    private getFormattedTime(): string {
-        return Intl.DateTimeFormat("en", {
-            day: "numeric",
-            month: "numeric",
-            year: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            timeZone: this.timezone,
-        }).format(new Date());
-    }
-
-    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
+    // biome-ignore lint/suspicious/noExplicitAny: Let it log anything
     log(content: any, type: LogType = "log", webhook = false): void {
-        // Check if this log type should be printed (handles debug logs)
-        if (!this.logConfigs[type].shouldLog(!!config.debugLogs)) return;
+        const { pinoLevel, color } = this.logConfigs[type];
 
-        const shard = this.shardId > -1 ? ` (${this.shardId})` : "";
-        const myTimeStr = this.getFormattedTime();
-        const time = myTimeStr.replace(" 0", "  ");
-        const timestamp = `[${time
-            .split(",")
-            .map((t) => t.padStart(9, " "))
-            .join(",")}]${shard}`;
+        this.pino[pinoLevel as pino.Level](content);
 
-        const out = `${timestamp} ${type.toUpperCase()} ${content}`;
-
-        if (webhook) {
-            // If it's set to, send it to the webhook too
-            if (config.logs.logToChannel && config.webhookURL) {
-                const embed = new EmbedBuilder()
-                    .setTitle(type ? toProperCase(type) + shard : null)
-                    .setDescription(content)
-                    .setColor(this.logConfigs[type].color)
-                    .setFooter({ text: time });
-                sendWebhook(config.webhookURL, embed as never);
-            }
+        if (webhook || (type === "error" && typeof content === "string" && content.includes("Unable to authenticate"))) {
+            this.sendDiscordWebhook(content, type, color);
         }
-
-        type === "error" ? console.error(out) : console.log(out);
     }
 
-    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
+    // biome-ignore lint/suspicious/noExplicitAny: Let it log anything
+    private sendDiscordWebhook(content: any, type: LogType, color: number): void {
+        if (!config.logs.logToChannel || !config.webhookURL) return;
+
+        const shardStr = this.shardId > -1 ? ` (${this.shardId})` : "";
+        const embed = new EmbedBuilder()
+            .setTitle(toProperCase(type) + shardStr)
+            .setDescription(typeof content === "string" ? content : `\`\`\`json\n${JSON.stringify(content, null, 2)}\n\`\`\``)
+            .setColor(color)
+            .setTimestamp();
+
+        sendWebhook(config.webhookURL, embed as never);
+    }
+
+    // biome-ignore-start lint/suspicious/noExplicitAny: It should be able to log anything I need it to
     error(content: any, webhook = false): void {
-        // Special case: Authentication errors are always sent to webhook for monitoring
-        if (typeof content === "string" && content?.includes("Unable to authenticate")) {
-            this.log(content, "error", true);
-            return;
-        }
         this.log(content, "error", webhook);
     }
-
-    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
     warn(content: any, webhook = false): void {
         this.log(content, "warn", webhook);
     }
-
-    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
     debug(content: any, webhook = false): void {
         this.log(content, "debug", webhook);
     }
-
-    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
     cmd(content: any, webhook = false): void {
         this.log(content, "cmd", webhook);
     }
-
-    // biome-ignore lint/suspicious/noExplicitAny: It should be able to log anything I need it to
     info(content: any, webhook = false): void {
         this.log(content, "info", webhook);
     }
+    // biome-ignore-end lint/suspicious/noExplicitAny: It should be able to log anything I need it to
 }
 
-// Create and export a singleton instance
-const logger = new Logger(config.timezone || "America/Los_Angeles");
-
+const logger = new Logger();
 export default logger;
-export { Logger };
