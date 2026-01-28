@@ -1,27 +1,167 @@
 # SWGoHBot
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a237e06cc77e473180b810d307763402)](https://app.codacy.com/gh/jmiln/SWGoHBot/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## About
-This is a bot I made to make looking up recommended setups for the game more convenient, since so many people use Discord to communicate.
-It has since become so much more than I'd initially planned, and should become much more in time.
+A Discord bot for Star Wars Galaxy of Heroes that provides slash commands for character info, guild data, arena tracking, and event management. Built with Discord.js v14, featuring sharding support, MongoDB persistence, and native TypeScript.
+
+## Features
+
+- **Character & Ship Info**: Detailed information about units, abilities, and recommended builds
+- **Guild Management**: Track guild member data, tickets, and Territory War/Battle info
+- **Arena Tracking**: Monitor arena ranks and receive payout alerts
+- **Event Calendar**: Schedule and track in-game events with customizable countdowns
+- **Player Profiles**: Link Discord accounts to ally codes for quick data access
+- **Localization**: Multi-language support for bot and game data
+- **Patreon Integration**: Premium features for supporters
+
+## Prerequisites
+
+- **Node.js** >= 25.2 (uses native TypeScript support)
+- **MongoDB** instance (local or remote)
+- **Discord Bot Token** from [Discord Developer Portal](https://discord.com/developers/applications)
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/jmiln/SWGoHBot.git
+cd SWGoHBot
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure the bot:
+```bash
+cp example_config.js config.js
+```
+Edit `config.js` and add:
+- Your Discord bot token
+- Bot client ID and owner ID
+- MongoDB connection URL
+- Optional: webhook URLs, premium features
+
+4. Deploy slash commands to Discord:
+```bash
+npm run deploy
+```
+
+5. Start the bot:
+```bash
+npm start
+```
+
+## Development Commands
+
+```bash
+# Run bot (development with type stripping)
+npm start
+
+# Lint code with Biome
+npm run lint
+
+# Lint and auto-fix issues
+npm run lint:write
+
+# Run all tests
+npm test
+
+# Deploy slash commands to Discord
+npm run deploy
+
+# Manage test database (Docker required)
+npm run test:db:start
+npm run test:db:stop
+npm run test:db:clean
+```
+
+## Architecture
+
+### Core Structure
+- **Entry Points**:
+  - `swgohBotShard.ts` - Shard manager for scaling across multiple instances
+  - `swgohBot.ts` - Main bot initialization and client setup
+
+- **Slash Commands**: `slash/*.ts` - Each extends base command class from `base/slashCommand.ts`
+- **Event System**: `events/*.ts` - Discord event handlers auto-loaded by `handlers/eventHandler.ts`
+- **Modules**: Core utilities in `modules/` including caching, API clients, and helper functions
+- **Database**: MongoDB collections managed via `modules/guildConfig/` for settings, events, polls, aliases
+- **Workers**: Heavy processing offloaded to worker threads in `modules/workers/`
+
+### Technology Stack
+- **Discord.js v14** with sharding support
+- **Native TypeScript** using Node.js `--experimental-strip-types` (no compilation step)
+- **MongoDB v7** for data persistence
+- **Socket.io** for cross-shard communication
+- **Piscina** for worker thread management
+- **Biome** for linting and formatting
+
+### Code Style
+- **Formatter**: Biome (4 spaces, 140 char width, double quotes, semicolons required)
+- **TypeScript**: No `any` types, import with `.ts` extensions, ESM modules
+- **Testing**: Node.js native test runner
+
+## Configuration
+
+Key settings in `config.js`:
+
+- **Discord**: `token`, `clientId`, `ownerid`, `dev_server`
+- **MongoDB**: Connection URL and database names
+- **Sharding**: `shardCount` for horizontal scaling
+- **Intents**: Guild, member, message, and DM access
+- **Optional**: Webhook URLs, Patreon integration, image server, arena watch tiers
+
+See `example_config.js` for full configuration template.
 
 ## Links
 
-### Support me on
-- **[Patreon](https://www.patreon.com/swgohbot)**
+### Support the Bot
+- **[Patreon](https://www.patreon.com/swgohbot)** - Unlock premium features
 
-### Check out the bot
-- **[Official Server](http://www.swgohbot.com/server)**
-- **[Invite SWGoHBot](http://www.swgohbot.com/invite)**
+### Community
+- **[Official Discord Server](http://www.swgohbot.com/server)** - Get help and suggest features
+- **[Invite SWGoHBot](http://www.swgohbot.com/invite)** - Add to your Discord server
 
-If you have an idea for what could be useful to add (New command or feature), come by **[SWGoHBot HQ](http://www.swgohbot.com/server)** and let me know
+### Premium Features (Patreon)
+- More frequent in-game data updates
+- Arena rank change alerts via DM
+- Channel logging for player rank changes
+- Auto-updating payout countdown messages
+- Guild ticket tracker with auto-updates
+- Character unlock/upgrade notifications
 
-If you want to support me and this bot through [Patreon](https://www.patreon.com/swgohbot), you can unlock additional functionality such as:
-- Your in-game data can be updated more often
-- Alerts you if/ when your rank in either or both arena changes
-- Logs in a Discord channel when anyone in a list of players (Based on in-game ally codes, manually added) changes rank
-- An updated message in a given channel that updates every 5 minutes and shows how long until each player's arena payouts
-- An updated message in a given channel that updates every 5 minutes and shows how long until guild challenge reset, and each guild members' ticket count
-- Can let you know when a member of your guild unlocks or upgrades a character
+## Contributing
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Follow the code style (run `npm run lint:write`)
+4. Write tests for new features
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### Development Guidelines
+- Use Biome for code formatting and linting
+- Add tests in `test/` directory
+- Update documentation for new features
+- Follow existing patterns for slash commands and events
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Jeffrey Milner
+
+## Support & Bug Reports
+
+- **Issues**: [GitHub Issues](https://github.com/jmiln/SWGoHBot/issues)
+- **Community**: Join the [Official Discord Server](http://www.swgohbot.com/server)
 
