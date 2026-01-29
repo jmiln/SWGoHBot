@@ -3,59 +3,81 @@
 First, you will need to create a **[GitHub Account](https://github.com/join)**
 
 ## Translating
-If you're interested in helping translate this bot into a language other than English, either download this repository or the file from `/languages/en-US`.
+If you're interested in helping translate this bot into a language other than English, download this repository or get the file from `/languages/en_US.js`.
 
-**Firstly, please do NOT use a translator like Google Translate, native speakers will notice. (They're not perfect)**
+**Important: Please do NOT use automated translators like Google Translate. Native speakers will notice the quality issues.**
 
-I know it may be hard to know what to translate, so here's an example.
-How you'd find the translations for the `help` command in the file, in English:
-```js
-    // Help Command
-    COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
-    COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
-    COMMAND_HELP_HELP: {
-        description: "Displays info about available commands.",
-        actions: [
-            {
-                action: "",
-                actionDesc: '',
-                usage: ';help [command]',
-                args: {
-                    "command": "The command you want to look up info on."
-                }
-            }
-        ]
-    },
-```
-And here's how it looks after it's been translated to German:
-```js
-    // Help Command
-    COMMAND_HELP_HEADER: (prefix) => `= Kommandoliste =\n\n[Benutze ${prefix}Help <Kommandoname> fuer Details]\n`,
-    COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\n Befehl:: ${prefix}${command.help.usage}`,
-    COMMAND_HELP_HELP: {
-        description: "Zeigt die verfuegbaren Kommandos an.",
-        actions: [
-            {
-                action: "",
-                actionDesc: '',
-                usage: ';help [Kommando]',
-                args: {
-                    "Kommando": "Das Kommando, zu dem Du die Hilfe aufrufen willst."
-                }
-            }
-        ]
-    },
-```
+Available languages to contribute to:
+- `en_US.js` - English (base language)
+- `de_DE.js` - German
+- `es_SP.js` - Spanish
+- `ko_KR.js` - Korean
+- `pt_BR.js` - Portuguese (Brazilian)
+
+If you're fluent in another language and would like to add it, feel free to create a new language file based on `en_US.js` and submit it via pull request.
+
+### Translation Guidelines
+
+Language files contain translation keys used throughout the bot for slash command responses, error messages, and other user-facing text. Here's how to translate them:
+
 #### What to change and what not to
-- Anything fully capitalized like `COMMAND_HELP_HEADER` is the key/name I use to get the translated text to use elsewhere, and needs to stay as-is.
-- The `(prefix) => ` needs to be left alone, as that's how I pass vairables through to the strings.
-- In the strings, anything inside `${stuff}` is a variable and needs to be left alone as well. From the example above, in COMMAND_HELP_HEADER, the `prefix` is being passed into the header so it knows wht to put there, so since the default prefix is `;`, **Use ${prefix}help** would show as **Use ;help**
-- Other than that, anything inside the various quotes, be it `` ` ` ``, `''`, or `""`, should be safe to change.
-- In the `COMMAND_HELP_HELP`, anything before the `:` needs to stay the same, so the description, actions, etc.
+- **Keys (ALL_CAPS)**: Like `BASE_SWGOH_LAST_UPDATED` must stay exactly as-is - these are identifiers
+- **Arrow functions**: Keep syntax like `(prefix) =>` or `(num, val) =>` unchanged - these pass variables
+- **Template variables**: Anything inside `${variable}` must not be translated - these are placeholders
+- **Object properties**: Before the `:` stays the same (e.g., `description:`, `usage:`)
+- **Quoted strings**: Text inside `` ` ` ``, `''`, or `""` should be translated
 
-## Making a new command or updates to anything
-- If you are wanting to make a new command, there is a template at `/templates/command.js` for you to start off of.
-- If you're wanting to make changes to something, go for it, then upload them as described below. If you need help understanding something, feel free to stop by the support server and I'll do what I can to help
+Example (English):
+```js
+BASE_SWGOH_LAST_UPDATED: (date) => `Game data last updated: ${date}`,
+```
+
+Example (German):
+```js
+BASE_SWGOH_LAST_UPDATED: (date) => `Spieldaten zuletzt aktualisiert: ${date}`,
+```
+
+## Making a new slash command or updates to anything
+
+### Creating a New Slash Command
+All commands are TypeScript files in the `/slash/` directory that extend the base `Command` class from `/base/slashCommand.ts`.
+
+Basic command structure:
+```typescript
+import { ApplicationCommandOptionType } from "discord.js";
+import type { BotType, BotInteraction } from "../types/types.ts";
+import Command from "../base/slashCommand.ts";
+
+export default class MyCommand extends Command {
+    static readonly metadata = {
+        name: "mycommand",
+        guildOnly: false,
+        description: "Description of what this command does",
+        options: [
+            {
+                name: "argument",
+                description: "Example argument",
+                type: ApplicationCommandOptionType.String,
+                required: false,
+            },
+        ],
+    };
+
+    constructor(Bot: BotType) {
+        super(Bot, MyCommand.metadata);
+    }
+
+    async run(_Bot: BotType, interaction: BotInteraction) {
+        // Your command logic here
+        await interaction.reply("Command output");
+    }
+}
+```
+
+Look at existing commands in `/slash/` for more examples and patterns.
+
+### Making Changes
+If you're wanting to make changes to existing code, go ahead and make your edits, then submit them as described below. If you need help understanding something, feel free to stop by the support server for assistance.
 
 ## Uploading the changes
 
@@ -68,28 +90,30 @@ If you find something that's breaking or needs to be fixed (Bad translation, com
 
 
 # Self-Hosting
-While I'd recommend just using the one that I host, you can run a copy yourself, though it will not have all the features (Namely the Patreon unlockable ones
+While I'd recommend just using the one that I host, you can run a copy yourself, though it will not have all the features (namely the Patreon unlockable ones).
 
 ## Requirements
 - `git` command line ([Windows](https://git-scm.com/download/win)|[Linux](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)|[MacOS](https://git-scm.com/download/mac)) installed
-- `Node` [Version 18.x or higher](https://nodejs.org)
-- `MongoDB` [I use version 7.0.23 currently](https://www.mongodb.com/download-center/community)
+- `Node.js` [Version 25.2 or higher](https://nodejs.org) (requires native TypeScript support)
+- `MongoDB` [Version 7.0 or higher](https://www.mongodb.com/download-center/community)
 - `A machine` to host it on. Want it to be online 24/7? Get a VPS.
-  * My copy of the bot is hosted on a machine from [Hyperexpert](p.hyper.expert/aff.php?aff=127). (Affiliate link)
-- `Some knowledge of Node/ JavaScript` if you want to modify it.
+- `Some knowledge of Node.js/TypeScript` if you want to modify it.
 
 ## Setup
 
-Firstly, you'll need to set up the bot account, so you can get the token and such.
-https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
+Firstly, you'll need to set up the bot account to get the token and client ID.
+https://discord.com/developers/applications
 
 In a command prompt in your projects folder (wherever that may be) run the following:
-`git clone https://github.com/jmiln/SWGoHBot.git`
+```bash
+git clone https://github.com/jmiln/SWGoHBot.git
+cd SWGoHBot
+npm install
+```
 
 Once finished:
-- In the folder from where you ran the git command, run `cd SWGoHBot` and then run `npm install`
-- Rename `config_example.json` to `config.json`
-- Edit `config.json` and enter your bot's token and other details as indicated.
+- Copy `example_config.js` to `config.js`
+- Edit `config.js` and enter your bot's token, client ID, owner ID, and MongoDB connection URL as indicated.
 
 In order to get game data, you'll need to set up and use Comlink and SWGoH-Stats.
 These can be run as docker instances, with the setup described in each repo
@@ -105,16 +129,26 @@ If you want character images, you'll want to check out my image server to run al
   * This is a container that gets the various unit images from the game
 
 ## Starting the bot
-Before starting the bot itself, you currently need to run the event service 
-- This is used to schedule and tell the bot to send any events created by the ./slash/events.js command
-- Run with: `node services/eventServe.js`
 
-To start the bot, in the command prompt, run the following command:
-`node swgohbotShard.js`
-> If at any point it says "cannot find module X" just run `npm install X` and try again.
+Deploy slash commands to Discord first (only needed once, or when commands change):
+```bash
+npm run deploy
+```
 
-If you are using PM2 to keep the bot running, you can run it like this:
-`pm2 start services/eventServe.js swgohBotShard.js`
+To start the bot, run:
+```bash
+npm start
+```
+
+This runs `node swgohBotShard.ts` which spawns the shard manager and starts the bot instances.
+
+> If at any point it says "cannot find module X" just run `npm install` to ensure all dependencies are installed.
+
+### Using PM2
+If you are using PM2 to keep the bot running:
+```bash
+pm2 start swgohBotShard.ts --name swgohbot
+```
 
 
 # Contributing to the website (swgohbot.com)

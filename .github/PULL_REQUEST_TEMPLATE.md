@@ -21,9 +21,9 @@
 -->
 
 #### Checklist
-<!-- 
+<!--
     For completed items, change [ ] to [x].
 -->
-- [ ] Code passes biome linting check/ is valid
+- [ ] Code passes Biome linting (`npm run lint`)
 - [ ] Code is commented and readable
 
