@@ -1,3 +1,4 @@
+import { InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import cache from "../modules/cache.ts";
@@ -10,6 +11,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Showconf extends Command {
     static readonly metadata = {
         name: "showconf",
+        contexts: [InteractionContextType.Guild],
         description: "Show the current guild configuration",
         guildOnly: false,
         permLevel: 3,

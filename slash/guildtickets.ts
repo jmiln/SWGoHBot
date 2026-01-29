@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getAllyCode, isAllyCode, toProperCase } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -15,6 +15,7 @@ export default class GuildTickets extends Command {
     static readonly metadata = {
         name: "guildtickets",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild],
         description: "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
         options: [
             {

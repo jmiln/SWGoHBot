@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, type TextChannel } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType, type TextChannel } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
@@ -9,6 +9,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Shardtimes extends Command {
     static readonly metadata = {
         name: "shardtimes",
+        contexts: [InteractionContextType.Guild],
         description: "Manage shard times",
         guildOnly: false,
         options: [

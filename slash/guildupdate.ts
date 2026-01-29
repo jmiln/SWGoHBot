@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getAllyCode, isAllyCode } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -11,6 +11,7 @@ export default class GuildUpdate extends Command {
         name: "guildupdate",
         // category: "Patreon",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild],
         description: "Set up the guild watcher to alert you for changes in guild member's rosters",
         options: [
             {

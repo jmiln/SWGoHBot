@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, MessageFlags } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType, MessageFlags } from "discord.js";
 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -18,6 +18,7 @@ export default class Event extends Command {
     static readonly metadata = {
         name: "event",
         description: "Configure and view events.",
+        contexts: [InteractionContextType.Guild],
         guildOnly: false,
         options: [
             {

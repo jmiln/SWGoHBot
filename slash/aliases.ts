@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from "discord.js";
+import { ApplicationCommandOptionType, type ChatInputCommandInteraction, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { characters, ships } from "../data/constants/units.ts";
@@ -10,6 +10,7 @@ export default class Aliases extends Command {
         name: "aliases",
         description: "Set custom aliases for your guild to use",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild],
         permLevel: 3,
         options: [
             {

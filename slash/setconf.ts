@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
@@ -110,6 +110,7 @@ export default class SetConf extends Command {
     static readonly metadata = {
         name: "setconf",
         description: "Change settings for your guild",
+        contexts: [InteractionContextType.Guild],
         guildOnly: false,
         permLevel: 3,
         options: Object.values(options),

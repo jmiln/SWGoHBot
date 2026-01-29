@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
@@ -11,6 +11,7 @@ import type { BotInteraction, BotType } from "../types/types.ts";
 export default class Poll extends Command {
     static readonly metadata = {
         name: "poll",
+        contexts: [InteractionContextType.Guild],
         description: "Create and vote on polls",
         guildOnly: false,
         options: [
