@@ -1,4 +1,4 @@
-import { GatewayIntentBits, Partials, ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, GatewayIntentBits, Partials } from "discord.js";
 
 const config = {
     // The Discord ID for the bot owner (Gets max perms/ can use Dev commands)

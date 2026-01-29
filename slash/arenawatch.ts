@@ -504,7 +504,7 @@ export default class ArenaWatch extends Command {
         if (result.embed) {
             await interaction.editReply({
                 content: null,
-                embeds: [result.embed],
+                embeds: [result.embed] as never,
             });
             return;
         }

@@ -54,7 +54,7 @@ const MAX_CONCURRENT = 20;
 
 class SWAPI {
     private specialAbilityList: SWAPIUnitAbility[] | null = null;
-    private reloadInterval: NodeJS.Timeout | null = null;
+    private reloadInterval?: NodeJS.Timeout;
 
     // Set the max cooldowns (In minutes)
     private readonly playerMinCooldown = 1; // 1 min

@@ -6,7 +6,7 @@ import type { BotType } from "../types/types.ts";
 
 export default {
     name: Events.GuildDelete,
-    execute: async (Bot: BotType, guild: Guild) => {
+    execute: async (_Bot: BotType, guild: Guild) => {
         // Make sure it's not a server outage that's causing it to show as leaving/ re-joining
         if (!guild.available) return;
 

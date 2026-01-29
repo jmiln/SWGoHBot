@@ -41,12 +41,8 @@ export class SocketHelper {
      * Check for events that need to be triggered
      */
     async checkEvents(): Promise<GuildConfigEvent[]> {
-        try {
-            const events = await this.emit<GuildConfigEvent[]>("checkEvents");
-            return Array.isArray(events) ? events : [];
-        } catch (error) {
-            throw error; // Let caller handle logging
-        }
+        const events = await this.emit<GuildConfigEvent[]>("checkEvents");
+        return Array.isArray(events) ? events : [];
     }
 
     /**
@@ -98,7 +94,7 @@ export class SocketHelper {
         try {
             const response = await this.emit<GuildConfigEvent>("getEventByName", { guildId, evName });
             return response || null;
-        } catch (error) {
+        } catch (_error) {
             return null;
         }
     }
@@ -131,7 +127,7 @@ export class SocketHelper {
         try {
             const response = await this.emit<GuildConfigEvent[]>("getEventsByGuild", guildId);
             return Array.isArray(response) ? response : [];
-        } catch (error) {
+        } catch (_error) {
             return [];
         }
     }

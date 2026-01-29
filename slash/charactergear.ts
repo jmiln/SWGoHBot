@@ -316,7 +316,7 @@ async function expandPieces(list: string[]) {
             },
         );
 
-        const pieces = await getParts(gr);
+        const pieces = await getParts(gr as never);
         end = end.concat(pieces);
     }
 
@@ -369,7 +369,7 @@ async function getParts(gr: SWAPIGearRecipe, partList: { name: string; count: nu
                     _id: 0,
                 },
             );
-            await getParts(gear, partList, amt * r.maxQuantity);
+            await getParts(gear as never, partList, amt * r.maxQuantity);
         }
     } else {
         let mk = gearPiece.nameKey.split(" ")[1];

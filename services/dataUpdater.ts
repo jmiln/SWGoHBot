@@ -618,7 +618,7 @@ async function updateLocs(unitListFile: string, currentLocFile: string, locales:
     ])) as [BotUnit[], UnitLocation[]];
 
     const shardNameMap = currentUnits.map((unit) => `unitshard_${unit.uniqueName}`);
-    const shardNameRes = await cache.get(config.mongodb.swapidb, "materials", { id: { $in: shardNameMap } });
+    const shardNameRes = await cache.get<{ id: string }>(config.mongodb.swapidb, "materials", { id: { $in: shardNameMap } });
 
     const matArr = [];
     for (const unit of currentUnits) {

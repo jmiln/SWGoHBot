@@ -3,7 +3,6 @@ import config from "../../config.js";
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
 import type { BotCache } from "../../types/cache_types.ts";
-import type { GuildConfig } from "../../types/guildConfig_types.ts";
 
 export async function getPatreonSettings({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return {};

@@ -345,7 +345,7 @@ export default class SetConf extends Command {
         return super.error(interaction, "It looks like nothing needed to be updated");
     }
 
-    async autocomplete(Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(_Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 
