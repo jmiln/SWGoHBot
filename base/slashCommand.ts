@@ -9,7 +9,7 @@ const defCmdData = {
     description: "No description provided.",
     options: [],
     defaultPermissions: true,
-    guildOnly: true, // false = global, true = guild.
+    guildOnly: false, // false = global, true = dev_server only
     enabled: true,
     permLevel: 0,
 };
