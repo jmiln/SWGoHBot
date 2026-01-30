@@ -2,6 +2,7 @@ import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
 import { Cache } from "../../modules/cache.ts";
+import { getMongoClient, closeMongoClient } from "../helpers/mongodb.ts";
 
 describe("Cache Module", () => {
     let client: MongoClient;
@@ -10,9 +11,8 @@ describe("Cache Module", () => {
     const testCollection = "test_collection";
 
     before(async () => {
-        // Connect to MongoDB test instance (Docker container on port 27018)
-        const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27018";
-        client = await MongoClient.connect(mongoUrl);
+        // Get shared MongoDB client from testcontainer
+        client = await getMongoClient();
 
         cache = new Cache();
         cache.init(client);
@@ -25,7 +25,7 @@ describe("Cache Module", () => {
         } catch (e) {
             // Ignore errors during cleanup
         }
-        await client.close();
+        await closeMongoClient();
     });
 
     describe("init()", () => {

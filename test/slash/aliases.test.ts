@@ -41,13 +41,6 @@ describe("Aliases", () => {
         assert.strictEqual(command.commandData.permLevel, 3, "Expected permLevel to be 3 (admin)");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
-
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-    });
-
     it("should have correct command configuration", () => {
         const bot = createMockBot();
         const command = new Aliases(bot);

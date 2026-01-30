@@ -4,77 +4,51 @@ Tests for core SWGoHBot modules.
 
 ## Prerequisites
 
-### Docker (Recommended)
+### Docker
 
-**IMPORTANT**: These tests use Docker to run an isolated MongoDB instance on port 27018, completely separate from your production database (port 27017).
-
-Install Docker:
+Testcontainers requires Docker to be running. Install Docker:
 - **macOS**: [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- **Linux**: `sudo apt-get install docker.io docker-compose` or `brew install docker docker-compose`
+- **Linux**: `sudo apt-get install docker.io` or `brew install docker`
 - **Windows**: [Docker Desktop](https://www.docker.com/products/docker-desktop)
 
-### Alternative: MongoDB Memory Server (For CI)
-
-For continuous integration, you can use MongoDB Memory Server:
+Ensure Docker is running before running tests:
 
 ```bash
-npm install --save-dev mongodb-memory-server
+docker ps
 ```
 
-Update test files to use memory server instead of Docker.
+If Docker is not running, start it via Docker Desktop or `sudo systemctl start docker` (Linux).
 
 ## Running Tests
 
-### Quick Start (Docker)
+### Quick Start
 
-**Step 1**: Start the test database (one time):
+**Run all module tests:**
 ```bash
-npm run test:db:start
-```
-
-This starts an isolated MongoDB container on port 27018 (your production database on 27017 is safe).
-
-**Step 2**: Run the tests:
-```bash
-# All module tests
 npm run test:modules
-
-# Just cache tests
-npm run test:modules:cache
-
-# Just patreon tests
-npm run test:modules:patreon
 ```
 
-**Step 3**: Stop the test database when done:
+**Run all tests (modules + slash commands):**
 ```bash
-npm run test:db:stop
+npm test
 ```
 
-### Manual Commands
+Testcontainers will automatically:
+1. Start MongoDB container on port 27018 before tests
+2. Run all tests
+3. Stop and cleanup container after tests
 
-If you prefer running commands directly:
+**No manual setup required!**
 
-```bash
-# Start test database
-bash test/modules/start-test-db.sh
+### What Happens Behind the Scenes
 
-# Run tests
-MONGO_URL=mongodb://localhost:27018 node --experimental-strip-types --test test/modules/*.test.ts
+When you run tests:
 
-# Stop test database
-bash test/modules/stop-test-db.sh
-```
-
-### Clean Up Test Data
-
-To completely remove the test database and all data:
-
-```bash
-npm run test:db:clean
-```
-
-This removes the Docker volume, giving you a fresh start.
+1. **Global setup** (`test/setup/mongodb.ts`) starts MongoDB testcontainer
+2. **Tests connect** via shared connection helper (`test/helpers/mongodb.ts`)
+3. **Container mapped** to port 27018 (your production DB on 27017 is safe)
+4. **Global teardown** stops container when tests finish
+5. **Auto-cleanup** removes container even if tests crash
 
 ## Test Coverage
 
@@ -139,14 +113,17 @@ describe("My Module", () => {
 ### MongoDB Test Pattern
 
 ```typescript
+import { getMongoClient, closeMongoClient } from "../helpers/mongodb.ts";
+
 describe("MongoDB Module", () => {
     let client: MongoClient;
     let module: MyModule;
     const testDbName = "test_db";
 
     before(async () => {
-        const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27017";
-        client = await MongoClient.connect(mongoUrl);
+        // Get shared MongoDB client from testcontainer
+        client = await getMongoClient();
+
         module = new MyModule();
         module.init(client);
     });
@@ -157,7 +134,7 @@ describe("MongoDB Module", () => {
         } catch (e) {
             // Ignore
         }
-        await client.close();
+        await closeMongoClient();
     });
 
     beforeEach(async () => {
@@ -172,68 +149,43 @@ describe("MongoDB Module", () => {
 });
 ```
 
-## CI/CD Configuration
-
-### GitHub Actions Example
-
-```yaml
-name: Module Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    services:
-      mongodb:
-        image: mongo:7.0
-        ports:
-          - 27017:27017
-
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - run: npm install
-      - run: npm test test/modules/
-        env:
-          MONGO_URL: mongodb://localhost:27017
-```
-
 ## Troubleshooting
 
-### Connection Refused
+### Docker Not Running
 
 ```
-Error: connect ECONNREFUSED 127.0.0.1:27017
+Error: Docker is not running
 ```
 
-**Solution**: Ensure MongoDB is running:
+**Solution**: Start Docker Desktop or Docker daemon:
 
 ```bash
-# Check if MongoDB is running
-ps aux | grep mongod
-
-# macOS
-brew services list
+# macOS/Windows
+# Start Docker Desktop app
 
 # Linux
-sudo systemctl status mongodb
+sudo systemctl start docker
+
+# Verify
+docker ps
 ```
 
-### Database Permission Issues
+### Port 27018 Already in Use
 
 ```
-Error: MongoServerError: not authorized
+Error: port is already allocated
 ```
 
-**Solution**: Ensure your MongoDB instance doesn't require authentication, or provide credentials:
+**Solution**: Stop any services using port 27018:
 
 ```bash
-MONGO_URL=mongodb://user:password@localhost:27017 npm test
+# Find process using port 27018
+lsof -i :27018
+
+# Kill old Docker containers
+docker ps -a | grep mongo
+docker stop <container-id>
+docker rm <container-id>
 ```
 
 ### Tests Hanging
@@ -243,12 +195,24 @@ MONGO_URL=mongodb://user:password@localhost:27017 npm test
 - Async operations not awaited
 - Missing `after()` hooks
 
-**Solution**: Check that all `after()` hooks properly close connections:
+**Solution**: Ensure `closeMongoClient()` is called in `after()` hook:
 
 ```typescript
 after(async () => {
-    await client.close();  // Essential!
+    await closeMongoClient();  // Essential!
 });
+```
+
+### Testcontainer Cleanup Issues
+
+If containers aren't cleaning up:
+
+```bash
+# List all testcontainers
+docker ps -a | grep testcontainers
+
+# Remove them manually
+docker rm -f $(docker ps -aq --filter "label=org.testcontainers=true")
 ```
 
 ## Best Practices
@@ -289,12 +253,13 @@ Both test files use realistic test data:
 
 ## Future Improvements
 
-- [ ] Add MongoDB Memory Server integration
+- [ ] Add GitHub Actions CI/CD integration
 - [ ] Add test coverage reporting
 - [ ] Add performance benchmarks
 - [ ] Mock external API calls (swgohAPI)
 - [ ] Add integration tests for module interactions
 - [ ] Add tests for getRanks(), shardTimes(), etc. (complex methods)
+- [ ] Explore parallel test execution with isolated containers
 
 ---
 

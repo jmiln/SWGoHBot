@@ -5,6 +5,7 @@ import config from "../../config.js";
 import cache from "../../modules/cache.ts";
 import { PatreonFuncs } from "../../modules/patreonFuncs.ts";
 import type { BotClient, PatronUser } from "../../types/types.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
 describe("PatreonFuncs Module", () => {
     let client: MongoClient;
@@ -15,9 +16,8 @@ describe("PatreonFuncs Module", () => {
     const testDbName = config.mongodb.swgohbotdb;
 
     before(async () => {
-        // Connect to MongoDB test instance (Docker container on port 27018)
-        const mongoUrl = process.env.MONGO_URL || "mongodb://localhost:27018";
-        client = await MongoClient.connect(mongoUrl);
+        // Get shared MongoDB client from testcontainer
+        client = await getMongoClient();
 
         cache.init(client);
 
@@ -37,7 +37,7 @@ describe("PatreonFuncs Module", () => {
         } catch (e) {
             // Ignore cleanup errors
         }
-        await client.close();
+        await closeMongoClient();
     });
 
     beforeEach(async () => {
