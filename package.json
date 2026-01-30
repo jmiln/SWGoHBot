@@ -9,9 +9,10 @@
         "lint": "biome check --no-errors-on-unmatched .",
         "lint:write": "biome check --write --no-errors-on-unmatched .",
         "deploy": "node ./modules/deployCommands.ts",
-        "test": "npm run test:modules && npm run test:slash",
+        "test": "npm run test:modules && npm run test:slash && npm run test:cleanup",
         "test:modules": "node --test --test-reporter spec --import ./test/setup/mongodb.ts ./test/modules/*.test.ts",
-        "test:slash": "node --test --test-reporter spec ./test/slash/*.test.ts"
+        "test:slash": "node --test --test-reporter spec --import ./test/setup/mongodb.ts ./test/slash/*.test.ts",
+        "test:cleanup": "rm -f /tmp/swgohbot-testcontainer.* && docker stop $(docker ps -q --filter 'ancestor=mongo:7.0') 2>/dev/null || true"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

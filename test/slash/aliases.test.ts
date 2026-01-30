@@ -1,71 +1,396 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { after, before, describe, it } from "node:test";
+import { MongoClient } from "mongodb";
 import Aliases from "../../slash/aliases.ts";
-import { createMockBot } from "../mocks/index.ts";
+import config from "../../config.js";
+import cache from "../../modules/cache.ts";
+import { getMongoClient, closeMongoClient } from "../helpers/mongodb.ts";
+import { createMockBot, createMockInteraction } from "../mocks/index.ts";
 
-describe("Aliases", () => {
-    // Note: Full aliases tests require MongoDB and guild configuration.
-    // We test command configuration and subcommands only.
+/**
+ * Helper function to extract description from a reply embed.
+ * Handles EmbedBuilder objects which store data in a 'data' property.
+ */
+function getReplyDescription(reply: any): string | undefined {
+    return reply?.embeds?.[0]?.data?.description || reply?.embeds?.[0]?.description;
+}
 
-    it("should have add subcommand", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
+describe("Aliases Command Functionality", () => {
+    let mongoClient: MongoClient;
+    const testDbName = config.mongodb.swgohbotdb;
 
-        const addSubcmd = command.commandData.options.find(o => o.name === "add");
-        assert.ok(addSubcmd, "Expected add subcommand");
-        assert.strictEqual(addSubcmd.type, 1, "Expected Subcommand type (1)");
+    before(async () => {
+        // Get MongoDB client from testcontainer and initialize the cache module
+        mongoClient = await getMongoClient();
+        cache.init(mongoClient);
     });
 
-    it("should have remove subcommand", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
-
-        const removeSubcmd = command.commandData.options.find(o => o.name === "remove");
-        assert.ok(removeSubcmd, "Expected remove subcommand");
-        assert.strictEqual(removeSubcmd.type, 1, "Expected Subcommand type (1)");
+    after(async () => {
+        // Clean up test database
+        try {
+            await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({});
+        } catch (e) {
+            // Ignore cleanup errors
+        }
+        await closeMongoClient();
     });
 
-    it("should have view subcommand", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
+    describe("add subcommand", () => {
+        it("should successfully add an alias for a valid character", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
 
-        const viewSubcmd = command.commandData.options.find(o => o.name === "view");
-        assert.ok(viewSubcmd, "Expected view subcommand");
-        assert.strictEqual(viewSubcmd.type, 1, "Expected Subcommand type (1)");
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "TRIPLEZERO",  // Using actual character from data file
+                    alias: "000",
+                },
+            });
+
+            await command.run(bot, interaction);
+
+            // Verify the alias was saved to MongoDB
+            const savedData = await cache.get(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id }
+            );
+
+            assert.strictEqual(savedData.length, 1, "Expected one guild config to be saved");
+            assert.ok(savedData[0].aliases, "Expected aliases array to exist");
+            assert.strictEqual(savedData[0].aliases.length, 1, "Expected one alias");
+            assert.strictEqual(savedData[0].aliases[0].alias, "000");
+            assert.strictEqual(savedData[0].aliases[0].defId, "TRIPLEZERO");
+
+            // Verify success message was sent
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            const description = getReplyDescription(replies[0]);
+            assert.ok(
+                description?.includes("successfully submitted"),
+                "Expected success message"
+            );
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
+
+        it("should successfully add an alias for a valid ship", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
+
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "HOUNDSTOOTH",
+                    alias: "HT",
+                },
+            });
+
+            await command.run(bot, interaction);
+
+            // Verify the alias was saved to MongoDB
+            const savedData = await cache.get(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id }
+            );
+
+            assert.strictEqual(savedData[0].aliases.length, 1, "Expected one alias");
+            assert.strictEqual(savedData[0].aliases[0].alias, "HT");
+            assert.strictEqual(savedData[0].aliases[0].defId, "HOUNDSTOOTH");
+            assert.strictEqual(savedData[0].aliases[0].name, "Hound's Tooth");
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
+
+        it("should return an error when unit does not exist", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
+
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "NONEXISTENTUNIT",
+                    alias: "NEU",
+                },
+            });
+
+            await command.run(bot, interaction);
+
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            // Check if embeds exist and extract description from EmbedBuilder
+            assert.ok(replies[0].embeds, "Expected embeds in reply");
+            assert.ok(replies[0].embeds[0], "Expected at least one embed");
+            const description = replies[0].embeds[0].data?.description || replies[0].embeds[0].description;
+            assert.ok(
+                description?.includes("couldn't find a matching unit"),
+                "Expected error message about unit not found"
+            );
+        });
+
+        it("should return an error when alias is already in use", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
+
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "COMMANDERLUKESKYWALKER",
+                    alias: "DV",
+                },
+            });
+
+            // Pre-populate database with an existing alias
+            await cache.put(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id },
+                {
+                    aliases: [
+                        { alias: "DV", defId: "DARTHVADER", name: "Darth Vader" },
+                    ],
+                } as never,
+                false
+            );
+
+            await command.run(bot, interaction);
+
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            const description1 = getReplyDescription(replies[0]);
+            assert.ok(
+                description1?.includes("alias is already in use"),
+                "Expected error message about duplicate alias"
+            );
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
     });
 
-    it("should require admin permissions (permLevel: 3)", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
+    describe("remove subcommand", () => {
+        it("should successfully remove an existing alias", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
 
-        assert.strictEqual(command.commandData.permLevel, 3, "Expected permLevel to be 3 (admin)");
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "remove",
+                    alias: "DV",
+                },
+            });
+
+            // Pre-populate database with aliases
+            await cache.put(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id },
+                {
+                    aliases: [
+                        { alias: "DV", defId: "DARTHVADER", name: "Darth Vader" },
+                        { alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" },
+                    ],
+                } as never,
+                false
+            );
+
+            await command.run(bot, interaction);
+
+            // Verify the alias was removed
+            const savedData = await cache.get(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id }
+            );
+
+            assert.strictEqual(savedData[0].aliases.length, 1, "Expected one alias remaining");
+            assert.strictEqual(savedData[0].aliases[0].alias, "CLS");
+            assert.strictEqual(savedData[0].aliases[0].defId, "COMMANDERLUKESKYWALKER");
+
+            // Verify success message
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            const description2 = getReplyDescription(replies[0]);
+            assert.ok(
+                description2?.includes("successfully removed"),
+                "Expected success message"
+            );
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
+
+        it("should return an error when trying to remove non-existent alias", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
+
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "remove",
+                    alias: "NONEXISTENT",
+                },
+            });
+
+            // Pre-populate database with aliases (not including the one we'll try to remove)
+            await cache.put(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id },
+                {
+                    aliases: [
+                        { alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" },
+                    ],
+                } as never,
+                false
+            );
+
+            await command.run(bot, interaction);
+
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            const description3 = getReplyDescription(replies[0]);
+            assert.ok(
+                description3?.includes("isn't a current alias"),
+                "Expected error message about alias not existing"
+            );
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
+
+        it("should remove alias and sort remaining aliases alphabetically", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
+
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "remove",
+                    alias: "MMM",
+                },
+            });
+
+            // Pre-populate database with aliases in non-alphabetical order
+            await cache.put(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id },
+                {
+                    aliases: [
+                        { alias: "ZZZ", defId: "UNIT3", name: "Unit 3" },
+                        { alias: "AAA", defId: "UNIT1", name: "Unit 1" },
+                        { alias: "MMM", defId: "UNIT2", name: "Unit 2" },
+                    ],
+                } as never,
+                false
+            );
+
+            await command.run(bot, interaction);
+
+            // Verify aliases are sorted after removal
+            const savedData = await cache.get(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id }
+            );
+
+            assert.strictEqual(savedData[0].aliases.length, 2, "Expected two aliases remaining");
+            assert.strictEqual(savedData[0].aliases[0].alias, "AAA", "Expected AAA to be first");
+            assert.strictEqual(savedData[0].aliases[1].alias, "ZZZ", "Expected ZZZ to be second");
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
+    describe("view subcommand", () => {
+        it("should display all aliases when they exist", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
 
-        assert.strictEqual(command.commandData.name, "aliases", "Expected command name to be 'aliases'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 3, "Expected 3 subcommands");
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "view",
+                },
+            });
+
+            // Pre-populate database with aliases
+            await cache.put(
+                testDbName,
+                "guildConfigs",
+                { guildId: interaction.guild?.id },
+                {
+                    aliases: [
+                        { alias: "DV", defId: "DARTHVADER", name: "Darth Vader" },
+                        { alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" },
+                    ],
+                } as never,
+                false
+            );
+
+            await command.run(bot, interaction);
+
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            assert.ok(replies[0].content, "Expected content in reply");
+            assert.ok(
+                replies[0].content.includes("DV - Darth Vader"),
+                "Expected DV alias in view"
+            );
+            assert.ok(
+                replies[0].content.includes("CLS - Commander Luke Skywalker"),
+                "Expected CLS alias in view"
+            );
+
+            // Clean up
+            await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
+        });
+
+        it("should handle viewing when no aliases exist", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
+
+            const interaction = createMockInteraction({
+                optionsData: {
+                    _subcommand: "view",
+                },
+            });
+
+            await command.run(bot, interaction);
+
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            // With no aliases, it will show ">>> - " (the formatting with an empty array)
+            assert.ok(replies[0].content, "Expected content in reply");
+        });
     });
 
-    it("should have required fields in add subcommand", () => {
-        const bot = createMockBot();
-        const command = new Aliases(bot);
+    describe("guild-only behavior", () => {
+        it("should return error when used outside of a guild", async () => {
+            const bot = createMockBot();
+            const command = new Aliases(bot);
 
-        const addSubcmd = command.commandData.options.find(o => o.name === "add");
-        assert.ok(addSubcmd.options, "Expected add subcommand to have options");
+            const interaction = createMockInteraction({
+                guild: null,
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "DARTHVADER",
+                    alias: "DV",
+                },
+            });
 
-        const unitOpt = addSubcmd.options.find(o => o.name === "unit");
-        const aliasOpt = addSubcmd.options.find(o => o.name === "alias");
+            await command.run(bot, interaction);
 
-        assert.ok(unitOpt, "Expected unit option");
-        assert.strictEqual(unitOpt.required, true, "Expected unit to be required");
-        assert.strictEqual(unitOpt.autocomplete, true, "Expected unit to have autocomplete");
-
-        assert.ok(aliasOpt, "Expected alias option");
-        assert.strictEqual(aliasOpt.required, true, "Expected alias to be required");
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            const description4 = getReplyDescription(replies[0]);
+            assert.ok(
+                description4?.includes("only usable in servers"),
+                "Expected error about guild-only command"
+            );
+        });
     });
 });
