@@ -54,7 +54,6 @@ const MAX_CONCURRENT = 20;
 
 class SWAPI {
     private specialAbilityList: SWAPIUnitAbility[] | null = null;
-    private reloadInterval?: NodeJS.Timeout;
 
     // Set the max cooldowns (In minutes)
     private readonly playerMinCooldown = 1; // 1 min
@@ -67,7 +66,7 @@ class SWAPI {
      */
     init(): void {
         // Reload the api map files every 6 minutes
-        this.reloadInterval = setInterval(() => {
+        setInterval(() => {
             modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
             unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
             skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
@@ -584,13 +583,13 @@ class SWAPI {
 
         if (char.factions) {
             for (const [factionIx, thisFaction] of char.factions.entries()) {
-                let factionName: any = await cache.get(
+                const factionNameRes: { nameKey: string }[] = await cache.get(
                     config.mongodb.swapidb,
                     "categories",
                     { id: thisFaction, language: thisLang },
                     { nameKey: 1, _id: 0 },
                 );
-                if (Array.isArray(factionName)) factionName = factionName[0];
+                const factionName = factionNameRes?.[0];
                 if (!factionName) throw new Error(`Cannot find factionName for ${thisFaction}`);
                 char.factions[factionIx] = (factionName as unknown as { nameKey: string }).nameKey;
             }
@@ -618,13 +617,13 @@ class SWAPI {
         // In case it doesn't
         if (char.skills) {
             for (const skill of char.skills) {
-                let skillName: any = await cache.get(
+                const skillNameRes: { nameKey: string }[] = await cache.get(
                     config.mongodb.swapidb,
                     "abilities",
                     { skillId: skill.id, language: thisLang },
                     { nameKey: 1, _id: 0 },
                 );
-                if (Array.isArray(skillName)) skillName = skillName[0];
+                const skillName = skillNameRes?.[0];
                 if (!skillName) {
                     logger.error(`[swapi langChar] Cannot find skillName for ${skill.id}`);
                     skill.nameKey = "N/A";
@@ -677,7 +676,7 @@ class SWAPI {
         return outStats;
     }
 
-    async abilities(skillArray: string | string[], lang = "eng_us", opts = { min: false }) {
+    async abilities(skillArray: string | string[], lang: SWAPILang = "eng_us", opts = { min: false }) {
         if (!skillArray) {
             throw new Error("You need to have a list of abilities here");
         }
@@ -692,10 +691,19 @@ class SWAPI {
                 { nameKey: 1, _id: 0 },
             )) as { nameKey: string }[];
         }
-        return (await cache.get(config.mongodb.swapidb, "abilities", { skillId: { $in: skillArr }, language: lang.toLowerCase() } as any, {
-            _id: 0,
-            updated: 0,
-        })) as ComlinkAbility[];
+        const cacheRes = (await cache.get(
+            config.mongodb.swapidb,
+            "abilities",
+            {
+                skillId: { $in: skillArr },
+                language: lang.toLowerCase() as never,
+            },
+            {
+                _id: 0,
+                updated: 0,
+            },
+        )) as ComlinkAbility[];
+        return cacheRes;
     }
 
     // Grab all of a character's info in the given language (Name, Abilities, Equipment)
@@ -760,8 +768,8 @@ class SWAPI {
 
     // Function for updating all the stored character data from the game
     async character(defId: string): Promise<RawCharacter> {
-        const outChar: any = await cache.get(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 });
-        return outChar?.[0] || outChar;
+        const outChar: RawCharacter[] = await cache.get(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 });
+        return outChar?.[0];
     }
 
     // Get the gear for a given character
@@ -773,10 +781,18 @@ class SWAPI {
         const gearArr = Array.isArray(gearArray) ? gearArray : [gearArray];
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(config.mongodb.swapidb, "gear", { id: { $in: gearArr }, language: thisLang.toLowerCase() } as any, {
-            _id: 0,
-            updated: 0,
-        });
+        return await cache.get(
+            config.mongodb.swapidb,
+            "gear",
+            {
+                id: { $in: gearArr },
+                language: thisLang.toLowerCase() as never,
+            },
+            {
+                _id: 0,
+                updated: 0,
+            },
+        );
     }
 
     // Used by farm, randomchar, and reloaddata
@@ -785,11 +801,16 @@ class SWAPI {
         if (!defId) throw new Error("You need to specify a defId");
 
         // All the skills should be loaded, so just get em from the cache
-        const uOut: any = await cache.get(config.mongodb.swapidb, "units", { baseId: defId, language: thisLang.toLowerCase() } as any, {
-            _id: 0,
-            updated: 0,
-        });
-        return uOut?.[0] || uOut;
+        const uOut: SWAPIUnit[] = await cache.get(
+            config.mongodb.swapidb,
+            "units",
+            { baseId: defId, language: thisLang.toLowerCase() as never },
+            {
+                _id: 0,
+                updated: 0,
+            },
+        );
+        return uOut?.[0];
     }
 
     // Get gear recipes
@@ -798,13 +819,21 @@ class SWAPI {
         if (!recArray) {
             throw new Error("You need to have a list of gear here");
         }
-        const recArr = Array.isArray(recArray) ? recArray : [recArray];
+        const recArr = (Array.isArray(recArray) ? recArray : [recArray]).map((r) => r.toString());
 
         // All the skills should be loaded, so just get em from the cache
-        return await cache.get(config.mongodb.swapidb, "recipes", { id: { $in: recArr as any }, language: thisLang } as any, {
-            _id: 0,
-            updated: 0,
-        });
+        return await cache.get(
+            config.mongodb.swapidb,
+            "recipes",
+            {
+                id: { $in: recArr },
+                language: thisLang as never,
+            },
+            {
+                _id: 0,
+                updated: 0,
+            },
+        );
     }
 
     async getRawGuild(
@@ -823,11 +852,13 @@ class SWAPI {
 
         if (!player.guildId) throw new Error("This player is not in a guild");
 
-        let rawGuild: any = await cache.get(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
-        if (forceUpdate || !rawGuild || !rawGuild[0] || this.isExpired(rawGuild[0].updated, cooldown, true)) {
+        let rawGuild: RawGuild = await cache.getOne(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
+        if (forceUpdate || !rawGuild || this.isExpired(rawGuild.updated, cooldown, true)) {
             rawGuild = await comlinkStub.getGuild(player.guildId, true);
 
-            rawGuild = rawGuild.guild;
+            // TODO: I have no idea what this is supposed to do??? Comlink wiki doesn't think it exists
+            // https://github.com/swgoh-utils/swgoh-comlink/wiki/Guild-Data
+            // rawGuild = rawGuild.guild;
             const ignoreArr = [
                 "inviteStatus",
                 "raidStatus",
@@ -891,10 +922,10 @@ class SWAPI {
         }
         if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
 
-        let guild: any = await cache.get(config.mongodb.swapidb, "guilds", { id: player.guildId });
+        let guild: SWAPIGuild = await cache.getOne(config.mongodb.swapidb, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
-        if (!guild || !guild[0] || this.isExpired(guild[0].updated, cooldown, true)) {
+        if (!guild || this.isExpired(guild.updated, cooldown, true)) {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild: SWAPIGuild;
             try {

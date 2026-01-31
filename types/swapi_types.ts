@@ -285,6 +285,7 @@ export interface RawGuild {
     };
     progress: null;
     roster: RawGuildMember[];
+    member: RawComlinkGuildMember[]; // This is what the game sense back, but it's processed and moved into roster
     updated: number;
     updatedAt: Date;
 }
@@ -297,6 +298,17 @@ export interface RawGuildMember {
     playerName: string;
     lastActivityTime: string;
     playerId: string;
+}
+interface RawComlinkGuildMember {
+    memberContribution: {
+        type: number;
+        currentValue: string;
+        lifetimeValue: string;
+    }[];
+    playerName: string;
+    lastActivityTime: string;
+    playerId: string;
+    // Plus others that aren't used
 }
 
 export interface ComlinkUnit {

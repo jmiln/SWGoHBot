@@ -4,6 +4,7 @@ import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
+import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
 import type {
     ActivePatron,
     ArenaWatchAcct,
@@ -296,12 +297,17 @@ class PatreonFuncs {
             if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) continue;
             const aw = user.arenaWatch;
 
-            // If they don't want any alerts
-            if (
-                !aw?.enabled ||
-                (!aw.arena?.fleet?.channel && !aw.arena?.char?.channel) ||
-                (!aw.arena?.fleet?.enabled && !aw.arena?.char?.enabled)
-            ) {
+            // Check if they have either alerts or payouts enabled
+            const hasAlerts =
+                aw?.enabled &&
+                (aw.arena?.fleet?.channel || aw.arena?.char?.channel) &&
+                (aw.arena?.fleet?.enabled || aw.arena?.char?.enabled);
+            const hasPayouts =
+                aw?.payout &&
+                ((aw.payout?.char?.enabled && aw.payout?.char?.channel) || (aw.payout?.fleet?.enabled && aw.payout?.fleet?.channel));
+
+            // If they don't want any alerts or payouts, skip
+            if (!hasAlerts && !hasPayouts) {
                 continue;
             }
 
@@ -401,16 +407,18 @@ class PatreonFuncs {
                 shipFields.push("**Fleet Arena:**");
                 shipFields.push(shipOut.map((c) => `- ${c}`).join("\n"));
             }
-            if (charFields.length || shipFields.length) {
-                // If something has changed, update the user & let them know
-                user.arenaWatch.allycodes = accountsToCheck;
-                await userReg.updateUser(patron.discordID, user);
 
+            // Update the player so shardTimes always has the latest info
+            user.arenaWatch.allycodes = accountsToCheck;
+            await userReg.updateUser(patron.discordID, user);
+
+            // Only send the alerts if there have been rank changes, and the user has alerts enabled
+            if ((charFields.length || shipFields.length) && hasAlerts) {
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
                     // If they're both set to the same channel, send it all
                     const fields = charFields.concat(shipFields);
-                    this.client.shard.broadcastEval(
-                        (client, { aw, fields }) => {
+                    await this.client.shard.broadcastEval(
+                        async (client, { aw, fields }) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (
                                 chan instanceof TextChannel &&
@@ -418,7 +426,7 @@ class PatreonFuncs {
                                     ?.permissionsFor(client.user)
                                     .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                             ) {
-                                chan.send(`>>> ${fields.join("\n")}`);
+                                await chan.send(`>>> ${fields.join("\n")}`);
                             }
                         },
                         { context: { aw: aw, fields: fields } },
@@ -426,8 +434,8 @@ class PatreonFuncs {
                 } else {
                     // Else they each have their own channels, so send em there
                     if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
-                        this.client.shard.broadcastEval(
-                            (client, { aw, charFields }) => {
+                        await this.client.shard.broadcastEval(
+                            async (client, { aw, charFields }) => {
                                 const chan = client.channels.cache.get(aw.arena.char.channel);
                                 if (
                                     chan instanceof TextChannel &&
@@ -435,15 +443,15 @@ class PatreonFuncs {
                                         ?.permissionsFor(client.user)
                                         .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                                 ) {
-                                    chan.send(`>>> ${charFields.join("\n")}`);
+                                    await chan.send(`>>> ${charFields.join("\n")}`);
                                 }
                             },
                             { context: { aw: aw, charFields: charFields } },
                         );
                     }
                     if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
-                        this.client.shard.broadcastEval(
-                            (client, { aw, shipFields }) => {
+                        await this.client.shard.broadcastEval(
+                            async (client, { aw, shipFields }) => {
                                 const chan = client.channels.cache.get(aw.arena.fleet.channel);
                                 if (
                                     chan instanceof TextChannel &&
@@ -451,7 +459,7 @@ class PatreonFuncs {
                                         ?.permissionsFor(client.user)
                                         .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                                 ) {
-                                    chan.send(`>>> ${shipFields.join("\n")}`);
+                                    await chan.send(`>>> ${shipFields.join("\n")}`);
                                 }
                             },
                             { context: { aw: aw, shipFields: shipFields } },
@@ -491,7 +499,7 @@ class PatreonFuncs {
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            let guild = null;
+            let guild: SWAPIGuild = null;
             try {
                 guild = await swgohAPI.guild(gu.allycode);
             } catch (err) {
@@ -627,7 +635,7 @@ class PatreonFuncs {
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            let rawGuild = null;
+            let rawGuild: RawGuild = null;
             try {
                 rawGuild = await swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
             } catch (err) {
