@@ -319,6 +319,7 @@ export function createMockBot(overrides: Partial<BotType> = {}): BotType {
             init: (client: any) => {},
             getPatronUser: async (userId: string) => ({ discordID: userId, amount_cents: 0 }),
             getUserLevel: async (userId: string) => 0,
+            getPlayerCooldown: async (userId: string, guildId?: string) => ({ player: 60000, guild: 3600000 }),
         },
         swgohAPI: {
             getCharacter: async (uniqueName: string, language: string) => {
