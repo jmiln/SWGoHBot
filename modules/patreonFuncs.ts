@@ -146,7 +146,7 @@ class PatreonFuncs {
                     // Wait since it won't happen later when something breaks
                     await wait(750);
                     logger.error(`Broke in getRanks: ${e}`);
-                    return;
+                    continue;
                 }
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;
@@ -325,11 +325,11 @@ class PatreonFuncs {
             // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
             let charOut = [];
             let shipOut = [];
-            accountsToCheck.forEach((player, ix) => {
+            for (const [ix, player] of accountsToCheck.entries()) {
                 const newPlayer = newPlayers.find((p) => p.allyCode === player.allyCode);
                 if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
                     // Both, since low level players can have just char arena I believe
-                    return;
+                    continue;
                 }
                 if (!player.name) {
                     player.name = newPlayer.name;
@@ -388,7 +388,7 @@ class PatreonFuncs {
                     }
                 }
                 accountsToCheck[ix] = player;
-            });
+            }
 
             if (compChar.length && aw.arena?.char.enabled) {
                 charOut = charOut.concat(this.checkRanks(compChar, aw));
@@ -1011,9 +1011,7 @@ class PatreonFuncs {
                                 embeds: [
                                     {
                                         author: { name: "Arena Payout Alert" },
-                                        description: `${player.name}'s ${config.displayName} arena payout is in **${minTil}** minutes!${
-                                            arenaType === "char" ? `\nYour current rank is ${arenaData.rank}` : ""
-                                        }`,
+                                        description: `${player.name}'s ${config.displayName} arena payout is in **${minTil}** minutes!${`\nYour current rank is ${arenaData.rank}`}`,
                                         color: constants.colors.green,
                                     },
                                 ],
@@ -1039,7 +1037,7 @@ class PatreonFuncs {
                     // Rank drop alert
                     const lastRank = acc[config.rankKey];
                     const lastClimb = acc[config.climbKey];
-                    if (arenaData.rank > lastRank) {
+                    if (arenaData.rank > lastRank && lastRank > 0) {
                         await pUser
                             .send({
                                 embeds: [
