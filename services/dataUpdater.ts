@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { readFile, writeFile, readdir, unlink } from "node:fs/promises";
 import path from "node:path";
 
 import { inspect } from "node:util";
@@ -87,24 +88,74 @@ const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationB
 // The max players to grab at the same time
 const MAX_CONCURRENT = 80;
 
+// Track resources for cleanup
+let mongoClient: MongoClient | null = null;
+let updatersTimeout: NodeJS.Timeout | null = null;
+let patronsInterval: NodeJS.Timeout | null = null;
+
 console.log("Starting data updater");
+
+// Centralized cleanup function
+async function cleanup() {
+    console.log("Cleaning up resources...");
+
+    // Clear timers
+    if (updatersTimeout) {
+        clearTimeout(updatersTimeout);
+        updatersTimeout = null;
+    }
+    if (patronsInterval) {
+        clearInterval(patronsInterval);
+        patronsInterval = null;
+    }
+
+    // Close MongoDB connection
+    if (mongoClient) {
+        await mongoClient.close();
+        mongoClient = null;
+    }
+
+    console.log("Cleanup complete");
+}
 
 // Run the updater when it's started, only if we're not running tests
 if (!process.env.TESTING_ENV) {
     init();
 
     // catch ctrl+c event and exit normally
-    process.on("SIGINT", () => {
-        if (piscina) piscina.close();
-        console.log("Forcefully exiting.");
-        process.exit(2);
+    process.on("SIGINT", async () => {
+        console.log("Received SIGINT, shutting down gracefully...");
+        await cleanup();
+        console.log("Exiting.");
+        process.exit(0);
+    });
+
+    // Handle SIGTERM (common in Docker/cloud environments)
+    process.on("SIGTERM", async () => {
+        console.log("Received SIGTERM, shutting down gracefully...");
+        await cleanup();
+        console.log("Exiting.");
+        process.exit(0);
+    });
+
+    // Handle uncaught errors
+    process.on("unhandledRejection", async (reason, promise) => {
+        console.error("Unhandled Rejection at:", promise, "reason:", reason);
+        await cleanup();
+        process.exit(1);
     });
 }
 
 async function init() {
     try {
-        const mongo = await MongoClient.connect(config.mongodb.url);
-        cache.init(mongo);
+        // Prevent double initialization
+        if (mongoClient) {
+            console.log("Data updater already initialized");
+            return;
+        }
+
+        mongoClient = await MongoClient.connect(config.mongodb.url);
+        cache.init(mongoClient);
         const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
 
         if (!FORCE_UPDATE) {
@@ -135,12 +186,12 @@ async function init() {
                 await runModUpdaters(comlinkStub);
                 debugLog("Finished running mod updater");
 
-                // Run it again each 24 hours
-                setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
+                // Run it again each 24 hours - store timeout reference
+                updatersTimeout = setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
             })();
 
-            // Run the Patreon updater every 15 minutes
-            setInterval(async () => await updatePatrons(cache), 15 * 60 * 1000);
+            // Run the Patreon updater every 15 minutes - store interval reference
+            patronsInterval = setInterval(async () => await updatePatrons(cache), 15 * 60 * 1000);
         } else {
             // If we're forcing an update, just run the bits we want then exit
             console.log("Forcing update, running updaters");
@@ -151,10 +202,13 @@ async function init() {
             };
             await runGameDataUpdaters(newMetadata, cache, comlinkStub);
             // await updatePatrons(cache);
+            await cleanup();
             process.exit(0);
         }
     } catch (error) {
         console.error(`[${myTime()}] Failed to start the data updater:`, error);
+        await cleanup();
+        throw error;
     }
 }
 
@@ -166,7 +220,7 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
     const metadataOut = {};
     let oldMetadata = {};
     try {
-        const fileData = await fs.promises.readFile(META_FILE, "utf-8");
+        const fileData = await readFile(META_FILE, "utf-8");
         oldMetadata = JSON.parse(fileData);
     } catch (_) {
         debugLog("No existing metadata or failed to parse. Creating new metadata.");
@@ -201,7 +255,7 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
 
     // Grab the defId and needed mod info for each of those players' units
     debugTime("Getting playerRosters");
-    const modMap = await fs.promises.readFile(path.join(DATA_DIR_PATH, "modMap.json"), "utf-8").then(JSON.parse);
+    const modMap = await readFile(path.join(DATA_DIR_PATH, "modMap.json"), "utf-8").then(JSON.parse);
     const playerUnits = await getPlayerRosters(playerIds, modMap);
     debugTimeEnd("Getting playerRosters");
 
@@ -231,8 +285,8 @@ async function runGameDataUpdaters(metadata: Metadata, cache: BotCache, comlinkS
     const locales = await getLocalizationData(comlinkStub, metadata.latestLocalizationBundleVersion);
 
     // Load the files of char/ship locations
-    const currentCharLocs = await fs.promises.readFile(CHAR_LOCATIONS_FILE_PATH, "utf-8").then(JSON.parse);
-    const currentShipLocs = await fs.promises.readFile(SHIP_LOCATIONS_FILE_PATH, "utf-8").then(JSON.parse);
+    const currentCharLocs = await readFile(CHAR_LOCATIONS_FILE_PATH, "utf-8").then(JSON.parse);
+    const currentShipLocs = await readFile(SHIP_LOCATIONS_FILE_PATH, "utf-8").then(JSON.parse);
 
     // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
     await updateGameData(locales, metadata, cache, comlinkStub); // Run the stuff to grab all new game data, and update listings in the db
@@ -262,7 +316,7 @@ async function runGameDataUpdaters(metadata: Metadata, cache: BotCache, comlinkS
 async function saveFile(filePath: string, jsonData: [] | object, doPretty = true) {
     try {
         const content = doPretty ? JSON.stringify(jsonData, null, 4) : JSON.stringify(jsonData);
-        await fs.promises.writeFile(filePath, content);
+        await writeFile(filePath, content);
     } catch (error) {
         console.log(`[dataUpdater/saveFile] ERROR while saving file ${filePath}: ${error.message}`);
     }
@@ -359,30 +413,38 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
 }
 
 // Stick all of the characters from each player's rosters into an array ot be processed later
-const piscina = new Piscina({
-    filename: path.resolve(import.meta.dirname, "../modules/workers/getStrippedModsWorker.ts"),
-    taskQueue: new FixedQueue(),
-});
 async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
     debugLog(`Getting rosters for ${playerIds.length} players`);
     const rosterArr = [];
 
     let playerCount = 0;
 
-    await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
-        try {
-            playerCount++;
-            const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.swapiConfig.clientStub });
-            rosterArr.push(...(strippedUnits || []));
-        } catch (err) {
-            console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] There was an error: `, err);
-        }
+    // Create pool locally for this operation
+    const piscina = new Piscina({
+        filename: path.resolve(import.meta.dirname, "../modules/workers/getStrippedModsWorker.ts"),
+        taskQueue: new FixedQueue(),
     });
 
-    if (playerCount !== playerIds.length) {
-        console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
+    try {
+        await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
+            try {
+                playerCount++;
+                const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.swapiConfig.clientStub });
+                rosterArr.push(...(strippedUnits || []));
+            } catch (err) {
+                console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] There was an error: `, err);
+            }
+        });
+
+        if (playerCount !== playerIds.length) {
+            console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
+        }
+    } finally {
+        // Always close, even if errors occurred
+        await piscina.close();
+        debugLog("Closed worker pool");
     }
-    await piscina.close();
+
     return rosterArr;
 }
 
@@ -493,7 +555,7 @@ function processModResults(unitsIn: {
 }
 
 async function mergeModsToCharacters(modsIn: { [defId: string]: { mods: BotUnitMods } }) {
-    const characters = (await fs.promises.readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse)) as BotUnit[];
+    const characters = (await readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse)) as BotUnit[];
 
     for (const defId of Object.keys(modsIn)) {
         const thisChar = characters.find((ch) => ch.uniqueName === defId);
@@ -511,26 +573,54 @@ async function updatePatrons(cache: BotCache) {
     try {
         // Use the given patId to get all of the supporters
         // https://docs.patreon.com/#get-api-oauth2-v2-campaigns
-        const { data, included } = await fetch(
+        const response = await fetch(
             `https://www.patreon.com/api/oauth2/v2/campaigns/${patreon.campaignId}/members?include=user&fields%5Bmember%5D=full_name,currently_entitled_amount_cents,patron_status,email&fields%5Buser%5D=social_connections&page%5Bcount%5D=200`,
             {
                 headers: {
                     Authorization: `Bearer ${patreon.creatorAccessToken}`,
                 },
             },
-        )
-            .then((res) => res.json())
-            .catch((err) => console.error(`[${myTime()}] [dataUpdater/updatePatrons] ${myTime()}Error fetching patrons`, err));
+        );
+
+        // Check response status
+        if (!response.ok) {
+            console.error(
+                `[${myTime()}] [dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}`,
+            );
+            return;
+        }
+
+        // Parse JSON with error handling
+        let jsonData;
+        try {
+            jsonData = await response.json();
+        } catch (parseError) {
+            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Failed to parse Patreon response as JSON:`, parseError);
+            return;
+        }
+
+        // Validate response structure
+        if (!jsonData.data || !Array.isArray(jsonData.data)) {
+            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Invalid response structure - missing data array`);
+            return;
+        }
+
+        const { data, included = [] } = jsonData;
+
+        // Validate included array
+        if (!Array.isArray(included)) {
+            console.warn(`[${myTime()}] [dataUpdater/updatePatrons] Invalid included field, using empty array`);
+        }
 
         const members = data.filter((data) => data.type === "member" && data.attributes.patron_status === "active_patron");
-        const users = included.filter((inc) => inc.type === "user");
+        const users = Array.isArray(included) ? included.filter((inc) => inc.type === "user") : [];
 
         for (const member of members) {
-            const user = users.find((user) => user.id === member.relationships.user.data.id);
+            const user = users.find((user) => user.id === member.relationships?.user?.data?.id);
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
             if (!user) {
-                console.log(`Patreon user ${user.attributes.full_name} vanished`);
+                console.log(`Patreon user not found for member: ${member.attributes?.full_name} (ID: ${member.relationships?.user?.data?.id})`);
                 continue;
             }
 
@@ -613,8 +703,8 @@ async function updatePatrons(cache: BotCache) {
 async function updateLocs(unitListFile: string, currentLocFile: string, locales: Locales, cache: BotCache) {
     debugLog(`Updating unit locations for ${unitListFile}`);
     const [currentUnits, currentLocs] = (await Promise.all([
-        fs.promises.readFile(unitListFile, "utf-8").then(JSON.parse),
-        fs.promises.readFile(currentLocFile, "utf-8").then(JSON.parse),
+        readFile(unitListFile, "utf-8").then(JSON.parse),
+        readFile(currentLocFile, "utf-8").then(JSON.parse),
     ])) as [BotUnit[], UnitLocation[]];
 
     const shardNameMap = currentUnits.map((unit) => `unitshard_${unit.uniqueName}`);
@@ -658,9 +748,11 @@ async function updateLocs(unitListFile: string, currentLocFile: string, locales:
     }
     await cache.putMany(config.mongodb.swapidb, "locations", bulkLocPut);
 
-    const campaignMapNames = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNames.json"), "utf-8"))[0];
-    const campaignMapNodes = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNodes.json"), "utf-8"))[0];
-    const featureStoreList = JSON.parse(fs.readFileSync(path.join(DATA_DIR_PATH, "swgoh-json-files/featureStoreList.json"), "utf-8"));
+    const [campaignMapNames, campaignMapNodes, featureStoreList] = await Promise.all([
+        readFile(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNames.json"), "utf-8").then((data) => JSON.parse(data)[0]),
+        readFile(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNodes.json"), "utf-8").then((data) => JSON.parse(data)[0]),
+        readFile(path.join(DATA_DIR_PATH, "swgoh-json-files/featureStoreList.json"), "utf-8").then(JSON.parse),
+    ]);
 
     const outArr = [];
     for (const mat of matArr) {
@@ -909,21 +1001,20 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string) 
         debugLog(`Found gameData for ${version}`);
 
         // Load up our local gameData file and send it back
-        gameData = await fs.readFileSync(filePath);
-        return JSON.parse(gameData);
+        const gameDataStr = await readFile(filePath, "utf-8");
+        return JSON.parse(gameDataStr);
     }
 
     // If we don't have the most recent version locally, grab a new copy of the gameData from CG
     gameData = (await comlinkStub.getGameData(version, false)) as operations["getGameData"]["responses"];
 
     // This is going to be a new version, so we can just delete the old files
-    const oldFiles = fs.readdirSync(GAMEDATA_DIR_PATH).filter((fileName) => fileName.startsWith("gameData_") && fileName !== dataFile);
-    for (const f of oldFiles) {
-        fs.unlinkSync(path.join(GAMEDATA_DIR_PATH, f));
-    }
+    const allFiles = await readdir(GAMEDATA_DIR_PATH);
+    const oldFiles = allFiles.filter((fileName) => fileName.startsWith("gameData_") && fileName !== dataFile);
+    await Promise.all(oldFiles.map((f) => unlink(path.join(GAMEDATA_DIR_PATH, f))));
 
     // Then save it
-    await fs.writeFileSync(filePath, JSON.stringify(gameData));
+    await writeFile(filePath, JSON.stringify(gameData));
 
     // Then return the gameData
     return gameData;
@@ -996,7 +1087,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
 
         // Update & save the character/ship.json files (Not being tested, because it mashes so many bits together to make it work)
         const clonedProcessedUnitList = structuredClone(processedUnitList);
-        const { charactersOut, shipsOut } = unitsToUnitFiles(
+        const { charactersOut, shipsOut } = await unitsToUnitFiles(
             clonedProcessedUnitList,
             locales,
             catMapOut,
@@ -1272,7 +1363,7 @@ function processUnits(unitsIn: comlinkComponents["UnitDef"][]): ProcessedUnit[] 
         });
 }
 
-function unitsToUnitFiles(
+async function unitsToUnitFiles(
     filteredList: ProcessedUnit[],
     locales: Locales,
     catMap: { id: string; descKey: string }[],
@@ -1280,8 +1371,10 @@ function unitsToUnitFiles(
     unitRecipeList: { id: string; unitShard: string }[],
     unitShardList: { id: string; iconKey: string }[],
 ) {
-    const oldCharFile: BotUnit[] = JSON.parse(fs.readFileSync(CHAR_FILE_PATH, "utf-8"));
-    const oldShipFile: BotUnit[] = JSON.parse(fs.readFileSync(SHIP_FILE_PATH, "utf-8"));
+    const [oldCharFile, oldShipFile] = await Promise.all([
+        readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse),
+        readFile(SHIP_FILE_PATH, "utf-8").then(JSON.parse),
+    ]);
     const engStringMap = locales.eng_us;
 
     const charactersOut = [];
@@ -1482,7 +1575,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
         debugLog(`Found localeData for ${bundleVersion}`);
 
         // Load up our local gameData file and send it back
-        const localeData = await fs.promises.readFile(filePath, "utf-8");
+        const localeData = await readFile(filePath, "utf-8");
         return JSON.parse(localeData);
     }
 
@@ -1526,16 +1619,13 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
             localeOut[langKey] = out;
         }
         // This is going to be a new version, so we can just delete the old files
-        const dataFiles = fs
-            .readdirSync(GAMEDATA_DIR_PATH)
-            .filter((fileName) => fileName.startsWith("localizationBundle_") && fileName !== dataFile);
-        for (const f of dataFiles) {
-            fs.unlinkSync(path.join(GAMEDATA_DIR_PATH, f));
-        }
+        const allDataFiles = await readdir(GAMEDATA_DIR_PATH);
+        const dataFiles = allDataFiles.filter((fileName) => fileName.startsWith("localizationBundle_") && fileName !== dataFile);
+        await Promise.all(dataFiles.map((f) => unlink(path.join(GAMEDATA_DIR_PATH, f))));
 
         // Then save it
         console.log(`Saving localeData for ${bundleVersion}`);
-        await fs.writeFileSync(filePath, JSON.stringify(localeOut));
+        await writeFile(filePath, JSON.stringify(localeOut));
 
         // Then finally, return it
         return localeOut;
@@ -1557,12 +1647,12 @@ function processLocalizationLine(line: string) {
 }
 
 async function processJourneyReqs(gameData: GameData) {
-    const characters: BotUnit[] = await fs.promises.readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse);
-    const ships: BotUnit[] = await fs.promises.readFile(SHIP_FILE_PATH, "utf-8").then(JSON.parse);
+    const characters: BotUnit[] = await readFile(CHAR_FILE_PATH, "utf-8").then(JSON.parse);
+    const ships: BotUnit[] = await readFile(SHIP_FILE_PATH, "utf-8").then(JSON.parse);
     let oldReqs = {} as JourneyReqs;
     // Grab the existing saved data if available
     if (fs.existsSync(JOURNEY_FILE_PATH)) {
-        oldReqs = JSON.parse(fs.readFileSync(JOURNEY_FILE_PATH, "utf-8")) as JourneyReqs;
+        oldReqs = (await readFile(JOURNEY_FILE_PATH, "utf-8").then(JSON.parse)) as JourneyReqs;
     }
 
     // Grab all the units that have activation requirements to process
@@ -1680,7 +1770,7 @@ async function processJourneyReqs(gameData: GameData) {
     );
 
     // Combine the old stuff with the new automated data
-    fs.writeFileSync(
+    await writeFile(
         JOURNEY_FILE_PATH,
         JSON.stringify(
             {
