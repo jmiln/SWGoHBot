@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { characters, journeyReqs, ships } from "../data/constants/units.ts";
@@ -13,6 +13,7 @@ export default class Panic extends Command {
         name: "panic",
         description: "Show how close you are to being ready for character events",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "unit",

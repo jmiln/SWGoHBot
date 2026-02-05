@@ -2,7 +2,7 @@
 // And from community feedback on changes
 // Formula from https://www.reddit.com/r/SWGalaxyOfHeroes/comments/49kbrq/arena_rank_range/d0sr
 
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { arenaJumps } from "../data/constants/units.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -12,6 +12,7 @@ export default class Arenarank extends Command {
         name: "arenarank",
         description: "Calculates the arena rank range for a given rank",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "rank",

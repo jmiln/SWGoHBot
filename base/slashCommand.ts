@@ -4,6 +4,7 @@ import {
     type ChatInputCommandInteraction,
     codeBlock,
     EmbedBuilder,
+    InteractionContextType,
     MessageFlags,
 } from "discord.js";
 import constants from "../data/constants/constants.ts";
@@ -19,6 +20,7 @@ const defCmdData = {
     guildOnly: false, // false = global, true = dev_server only
     enabled: true,
     permLevel: 0,
+    contexts: undefined as InteractionContextType[] | undefined,
 };
 
 export type CommandMetadata = typeof defCmdData;

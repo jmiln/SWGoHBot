@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { findChar, getSideColor } from "../modules/functions.ts";
@@ -8,6 +8,7 @@ export default class Mods extends Command {
     static readonly metadata = {
         name: "mods",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Display some suggested mod loadouts based on the most common loadouts by players in top 100 guilds.",
         options: [
             {

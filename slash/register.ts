@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
@@ -15,6 +15,7 @@ export default class Register extends Command {
         name: "register",
         description: "Link an ally code to your account",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "allycode",

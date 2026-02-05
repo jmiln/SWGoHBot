@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import help from "../data/help.ts";
@@ -9,6 +9,7 @@ export default class Help extends Command {
     static readonly metadata = {
         name: "help",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays a list of the available commands.",
         options: [
             {

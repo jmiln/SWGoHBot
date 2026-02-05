@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ChannelType, type Embed, type GuildChannel } from "discord.js";
+import { ApplicationCommandOptionType, ChannelType, type Embed, type GuildChannel, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
@@ -41,6 +41,7 @@ export default class ArenaWatch extends Command {
         name: "arenawatch",
         description: "Configurations for ArenaWatch",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "allycode",

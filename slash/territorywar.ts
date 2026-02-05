@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
@@ -15,6 +15,7 @@ export default class TerritoryWar extends Command {
         name: "territorywar",
         description: "Compare the stats of two guilds",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "allycode_1",

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, type AutocompleteInteraction, type AutocompleteFocusedOption, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, type AutocompleteInteraction, type AutocompleteFocusedOption, codeBlock, InteractionContextType } from "discord.js";
 import Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
@@ -17,6 +17,7 @@ export default class UserConf extends Command {
         name: "userconf",
         description: "Change your personal settings with the bot (allycode, view alerts, etc.)",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "allycodes",

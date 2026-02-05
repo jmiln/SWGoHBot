@@ -54,13 +54,13 @@ async function deployCommands(commands: CommandMetadata[]) {
     const globalCommands = commands
         .filter((cmd) => !cmd.guildOnly)
         .map((cmd) => {
-            const { guildOnly, permLevel, ...other } = cmd;
+            const { guildOnly, permLevel, enabled, ...other } = cmd;
             return other;
         });
     const guildCommands = commands
         .filter((cmd) => cmd.guildOnly)
         .map((cmd) => {
-            const { guildOnly, permLevel, ...other } = cmd;
+            const { guildOnly, permLevel, enabled, ...other } = cmd;
             return other;
         });
 

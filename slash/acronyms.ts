@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { acronyms } from "../data/constants/units.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -14,6 +14,7 @@ export default class Acronyms extends Command {
         name: "acronyms",
         description: "Show what common acronyms mean",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "acronym",

@@ -1,4 +1,4 @@
-import { codeBlock, Status } from "discord.js";
+import { codeBlock, InteractionContextType, Status } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -28,6 +28,7 @@ export default class BotShards extends Command {
         name: "botshards",
         description: "Display availability and ping info for each shard.",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
     };
 
     constructor(Bot: BotType) {

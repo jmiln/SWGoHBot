@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getCurrentWeekday, toProperCase } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -8,6 +8,7 @@ export default class Challenges extends Command {
         name: "challenges",
         description: "Show daily guild challenges",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "day",

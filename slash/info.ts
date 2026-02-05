@@ -1,4 +1,4 @@
-import { codeBlock, version } from "discord.js";
+import { codeBlock, InteractionContextType, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
@@ -35,6 +35,7 @@ export default class Info extends Command {
     static readonly metadata = {
         name: "info",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays general stats & info about the bot",
     };
     constructor(Bot: BotType) {

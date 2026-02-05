@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
@@ -12,6 +12,7 @@ export default class Farm extends Command {
         name: "farm",
         description: "Finds the farming locations for units",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "character",

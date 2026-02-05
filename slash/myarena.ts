@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
@@ -13,6 +13,7 @@ export default class MyArena extends Command {
     static readonly metadata = {
         name: "myarena",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show your current ranking in the character & fleet arenas",
         options: [
             {

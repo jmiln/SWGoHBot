@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { formatCurrentTime, isValidZone } from "../modules/functions.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -8,6 +8,7 @@ export default class Time extends Command {
         name: "time",
         description: "Get the current time in a timezone",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "timezone",

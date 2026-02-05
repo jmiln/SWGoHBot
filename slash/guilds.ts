@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, raidNames, ships } from "../data/constants/units.ts";
@@ -28,6 +28,7 @@ export default class Guilds extends Command {
         name: "guilds",
         description: "View information about a specified guild",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "gear",

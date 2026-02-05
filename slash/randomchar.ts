@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
@@ -13,6 +13,7 @@ export default class Randomchar extends Command {
         name: "randomchar",
         description: "Grabs a random squad",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "allycode",

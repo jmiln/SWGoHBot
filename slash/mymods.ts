@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, PermissionsBitField } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType, PermissionsBitField } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
@@ -16,6 +16,7 @@ export default class MyMods extends Command {
     static readonly metadata = {
         name: "mymods",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show the current mods for a given character",
         options: [
             {

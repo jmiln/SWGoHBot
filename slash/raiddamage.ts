@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import raids from "../data/raiddmg.ts";
 import { toProperCase } from "../modules/functions.ts";
@@ -10,6 +10,7 @@ export default class RaidDamage extends Command {
         description: "Calculate the damage amounts per raid (Legacy raids)",
         enabled: true,
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "raid",

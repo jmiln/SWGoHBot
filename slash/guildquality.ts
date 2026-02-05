@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, updatedFooterStr } from "../modules/functions.ts";
@@ -22,6 +22,7 @@ export default class GuildQuality extends Command {
         name: "guildquality",
         description: "Check a guild's overall quality",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "allycode",

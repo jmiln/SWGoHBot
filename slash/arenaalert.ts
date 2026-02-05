@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
@@ -10,6 +10,7 @@ export default class ArenaAlert extends Command {
         name: "arenaalert",
         description: "Change settings for your arena alerts",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "enabledms",

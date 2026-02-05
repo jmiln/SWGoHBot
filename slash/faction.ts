@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
@@ -16,6 +16,7 @@ export default class Faction extends Command {
         name: "faction",
         description: "Lookup characters from a faction",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "faction_group_1",

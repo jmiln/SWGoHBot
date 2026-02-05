@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, MessageFlags } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
 import cache from "../modules/cache.ts";
@@ -13,6 +13,7 @@ export default class Patreon extends Command {
         description: "View your Patreon benefits and commands.",
         enabled: true,
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "commands",

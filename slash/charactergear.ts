@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
@@ -15,6 +15,7 @@ export default class Charactergear extends Command {
         name: "charactergear",
         description: "Show the gear required for a specified character",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
                 name: "character",

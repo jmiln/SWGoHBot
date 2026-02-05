@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
@@ -12,6 +12,7 @@ export default class Character extends Command {
     static readonly metadata = {
         name: "character",
         guildOnly: false,
+        contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show overall info for the given character",
         options: [
             {
