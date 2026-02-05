@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
+import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
 export default class Shardtimes extends Command {
@@ -351,7 +352,11 @@ export default class Shardtimes extends Command {
 
                     let uName = "";
                     if (!shardTimes.times[user].type || shardTimes.times[user].type === "id") {
-                        const thisUser = await interaction.guild.members.fetch(user).catch(() => {});
+                        const thisUser = await interaction.guild.members.fetch(user).catch((err: unknown) => {
+                            const message = err instanceof Error ? err.message : String(err);
+                            logger.error(`Failed to fetch member ${user} in guild ${interaction.guild.id}: ${message}`);
+                            return null;
+                        });
                         const userName = thisUser ? thisUser.displayName : user;
                         uName = `**${userName.length > maxLen ? userName.substring(0, maxLen) : userName}**`;
                     } else {

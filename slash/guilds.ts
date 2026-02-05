@@ -1000,7 +1000,12 @@ export default class Guilds extends Command {
                 if (!codes?.length) continue;
                 for (const c of codes) {
                     // Make sure they're in the same server
-                    const mem = await interaction.guild?.members.fetch(c.id).catch(() => {});
+                    const mem = await interaction.guild?.members.fetch(c.id).catch((err: unknown) => {
+                        // Member might have left guild or permissions issue
+                        const message = err instanceof Error ? err.message : String(err);
+                        logger.error(`Failed to fetch member ${c.id} in guild ${interaction.guild?.id}: ${message}`);
+                        return null;
+                    });
                     if (interaction.guild && mem) {
                         p.inGuild = true;
                         p.dID = c.id;
