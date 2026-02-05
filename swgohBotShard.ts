@@ -7,8 +7,16 @@ const Manager = new ShardingManager("./swgohBot.ts", {
 });
 
 // Give it a large timeout since it refuses to work otherwise
-Manager.spawn({ timeout: 60000 }).catch((err) => {
+Manager.spawn({ timeout: 60000 }).catch(async (err) => {
     console.error(`Failed to spawn shards: ${err instanceof Error ? err.message : String(err)}`);
+    try {
+        // Clean up spawned shards before exiting
+        await Manager.broadcastEval(() => {
+            process.exit(0);
+        });
+    } catch (cleanupErr) {
+        console.error(`Error during cleanup: ${cleanupErr instanceof Error ? cleanupErr.message : String(cleanupErr)}`);
+    }
     process.exit(1);
 });
 

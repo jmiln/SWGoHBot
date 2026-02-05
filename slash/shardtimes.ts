@@ -370,7 +370,7 @@ export default class Shardtimes extends Command {
                     });
                 }
                 const sortedTimes = times
-                    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0))
+                    .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
                     .map((t) => `${t.flag}${t.name}`);
                 let joiner = " - ";
                 if (interaction.guildSettings.shardtimeVertical) {

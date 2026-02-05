@@ -1,4 +1,11 @@
-import { type AutocompleteFocusedOption, type ChatInputCommandInteraction, codeBlock, EmbedBuilder, MessageFlags } from "discord.js";
+import {
+    type AutocompleteInteraction,
+    type AutocompleteFocusedOption,
+    type ChatInputCommandInteraction,
+    codeBlock,
+    EmbedBuilder,
+    MessageFlags,
+} from "discord.js";
 import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
@@ -23,7 +30,7 @@ export default abstract class slashCommand {
     guildOnly: boolean;
 
     // Only really in setconf
-    async autocomplete?(Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
+    async autocomplete?(Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
 
     constructor(Bot: BotType, commandData: Partial<CommandMetadata> = {}) {
         this.Bot = Bot;

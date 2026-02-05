@@ -14,7 +14,7 @@ import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
-import type { BotClient, BotType } from "./types/types.ts";
+import type { BotClient, BotType, JourneyReqs } from "./types/types.ts";
 
 const Bot = {} as BotType;
 
@@ -47,7 +47,7 @@ const logErrorToChannel = (errorMsg: string) => {
     }
 };
 
-function processJourneyNames(journeyReqs) {
+function processJourneyNames(journeyReqs: JourneyReqs): void {
     const journeyKeys = Object.keys(journeyReqs);
     Bot.journeyNames = [];
     for (const key of journeyKeys) {

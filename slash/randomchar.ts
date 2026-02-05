@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
 
 export default class Randomchar extends Command {
     static readonly metadata = {
@@ -52,7 +52,7 @@ export default class Randomchar extends Command {
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {
-        let chars: SWAPIUnit[] | any[] = [];
+        let chars: SWAPIUnit[] | BotUnit[] = [];
         const MAX_CHARACTERS = 5;
 
         let star = interaction.options.getInteger("rarity");
@@ -97,9 +97,11 @@ export default class Randomchar extends Command {
 
         const charOut: string[] = [];
         if (allycode && chars?.length) {
+            // chars is SWAPIUnit[] when allycode is provided
+            const swapiChars = chars as SWAPIUnit[];
             while (charOut.length < count) {
-                const newIndex = Math.floor(Math.random() * chars.length);
-                const newChar = chars[newIndex];
+                const newIndex = Math.floor(Math.random() * swapiChars.length);
+                const newChar = swapiChars[newIndex];
                 const playerChar = await swgohAPI.units(newChar.defId);
                 const name = playerChar.nameKey;
                 if (!charOut.includes(name)) charOut.push(name);
@@ -109,9 +111,11 @@ export default class Randomchar extends Command {
             if (!chars.length) {
                 return super.error(interaction, "No characters available to select from.");
             }
+            // chars is BotUnit[] when no allycode
+            const botChars = chars as BotUnit[];
             while (charOut.length < count) {
-                const newIndex = Math.floor(Math.random() * chars.length);
-                const newChar = chars[newIndex];
+                const newIndex = Math.floor(Math.random() * botChars.length);
+                const newChar = botChars[newIndex];
                 const name = newChar.name;
                 if (!charOut.includes(name)) charOut.push(name);
             }

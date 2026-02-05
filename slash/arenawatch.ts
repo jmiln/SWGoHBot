@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, ChannelType, type Embed, type GuildChanne
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
@@ -753,9 +754,9 @@ export async function processAWChanges({
                 let player = null;
                 try {
                     const players = await unitStats(ac);
-                    if (!players?.length) console.error(`[AW Edit] Missing players ${ac}`);
+                    if (!players?.length) logger.error(`[AW Edit] Missing players ${ac}`);
                     player = checkPlayer(aw, players, { code: ac }, interactionOptions.codeCap, true);
-                    if (!player) console.error(`[AW Edit] Missing player after check ${ac}`);
+                    if (!player) logger.error(`[AW Edit] Missing player after check ${ac}`);
                 } catch (e) {
                     result.error = `Error getting player info.\n${e}`;
                     break;
@@ -970,11 +971,11 @@ export function fillAWSkeleton(awIn: UserConfig["arenaWatch"] | null): UserConfi
 
 function getChannelStr(aw: UserConfig["arenaWatch"], alertType: string, arenaType: string) {
     if (!["arena", "payout"].includes(alertType)) {
-        console.error("Invalid alertType");
+        logger.error("Invalid alertType");
         return null;
     }
     if (!["char", "fleet"].includes(arenaType)) {
-        console.error("Invalid arenaType");
+        logger.error("Invalid arenaType");
         return null;
     }
     const thisAW = aw?.[alertType]?.[arenaType];

@@ -4,6 +4,7 @@ import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
+import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
@@ -464,7 +465,7 @@ export default class TerritoryWar extends Command {
         try {
             return interaction.editReply({ content: null, embeds: [embed] });
         } catch (err) {
-            console.error("[slash/territorywar] Couldn't edit the reply to send final results. Sending message instead.", err);
+            logger.error(`[slash/territorywar] Couldn't edit the reply to send final results. Sending message instead. ${String(err)}`);
             return interaction.channel.send({ content: null, embeds: [embed] });
         }
     }

@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { Events, MessageFlags } from "discord.js";
+import { type AutocompleteInteraction, Events, MessageFlags } from "discord.js";
 import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -11,7 +11,7 @@ import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
-import type { BotClient, BotInteraction, BotType } from "../types/types.ts";
+import type { AnyBotInteraction, BotClient, BotInteraction, BotType, GuildAlias } from "../types/types.ts";
 
 // Constants
 const IGNORED_ERRORS = [
@@ -35,16 +35,22 @@ const MAX_AUTOCOMPLETE_RESULTS = 24;
 const UNIT_OPTION_NAMES = ["unit", "character", "ship"] as const;
 type UnitOptionName = (typeof UNIT_OPTION_NAMES)[number];
 
+// Type for unit autocomplete items
+interface UnitAutocompleteItem {
+    name: string;
+    defId: string;
+    aliases: string[];
+    isAlias?: boolean;
+    alias?: string;
+}
+
 // Helper Functions
 
 /**
  * Filters autocomplete options based on search term
  * Searches by alias, name prefix, name contains, and then aliases array
  */
-function filterAutocomplete(
-    arrIn: { isAlias?: boolean; defId?: string; alias?: string; name: string; aliases: string[] }[],
-    search: string,
-) {
+function filterAutocomplete(arrIn: UnitAutocompleteItem[], search: string) {
     const searchTerm = search?.toLowerCase() || "";
 
     // Try prefix match first (most relevant)
@@ -104,23 +110,23 @@ async function sendErrorReply(interaction: BotInteraction, commandName: string):
 /**
  * Builds a unit list based on the option name (unit, character, or ship)
  */
-function buildUnitList(optionName: UnitOptionName, aliases: Array<{ isAlias: boolean; defId: string; alias: string }>) {
-    const aliasList = aliases?.map((al) => ({ ...al, isAlias: true, aliases: [] })) || [];
+function buildUnitList(optionName: UnitOptionName, aliases: GuildAlias[]): UnitAutocompleteItem[] {
+    const aliasList: UnitAutocompleteItem[] = aliases?.map((al) => ({ ...al, isAlias: true, aliases: [] })) || [];
 
     switch (optionName) {
         case "unit":
-            return [...aliasList, ...characterNameList, ...shipNameList] as any;
+            return [...aliasList, ...characterNameList, ...shipNameList];
         case "character":
-            return [...aliasList.filter((al) => characterNameList.some((cn) => cn.defId === al.defId)), ...characterNameList] as any;
+            return [...aliasList.filter((al) => characterNameList.some((cn) => cn.defId === al.defId)), ...characterNameList];
         case "ship":
-            return [...aliasList.filter((al) => shipNameList.some((sn) => sn.defId === al.defId)), ...shipNameList] as any;
+            return [...aliasList.filter((al) => shipNameList.some((sn) => sn.defId === al.defId)), ...shipNameList];
     }
 }
 
 /**
  * Formats unit autocomplete results
  */
-function formatUnitResults(units: Array<{ isAlias?: boolean; name: string; defId: string; alias?: string }>) {
+function formatUnitResults(units: UnitAutocompleteItem[]) {
     return units
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((unit) => ({
@@ -132,21 +138,21 @@ function formatUnitResults(units: Array<{ isAlias?: boolean; name: string; defId
 /**
  * Processes autocomplete for unit-related options
  */
-function processUnitAutocomplete(focusedOption: { name: string; value: string }, aliases: any) {
+function processUnitAutocomplete(focusedOption: { name: string; value: string }, aliases: GuildAlias[]) {
     if (!UNIT_OPTION_NAMES.includes(focusedOption.name as UnitOptionName)) {
         return [];
     }
 
-    const unitList = buildUnitList(focusedOption.name as UnitOptionName, aliases as any);
-    const filtered = filterAutocomplete(unitList as any, focusedOption.value?.toLowerCase());
-    return formatUnitResults(filtered as any);
+    const unitList = buildUnitList(focusedOption.name as UnitOptionName, aliases);
+    const filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
+    return formatUnitResults(filtered);
 }
 
 /**
  * Handles autocomplete interactions
  */
-async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd: slashCommand): Promise<void> {
-    const focusedOption = (interaction as any).options.getFocused(true);
+async function handleAutocomplete(Bot: BotType, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
+    const focusedOption = interaction.options.getFocused(true);
 
     // If command has custom autocomplete handler, use it
     if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
@@ -162,7 +168,7 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
 
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
-            const journeyFiltered = filterAutocomplete(Bot.journeyNames as any, focusedOption.value?.toLowerCase());
+            const journeyFiltered = filterAutocomplete(Bot.journeyNames as UnitAutocompleteItem[], focusedOption.value?.toLowerCase());
             filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
         } else if (focusedOption.name === "command") {
             // Process command name autocomplete
@@ -170,7 +176,7 @@ async function handleAutocomplete(Bot: BotType, interaction: BotInteraction, cmd
             filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
         } else {
             // Process unit/character/ship autocomplete
-            filtered = processUnitAutocomplete(focusedOption, aliases as any);
+            filtered = processUnitAutocomplete(focusedOption, aliases);
         }
     } catch (err) {
         logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);
@@ -253,7 +259,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
 
 export default {
     name: Events.InteractionCreate,
-    execute: async (Bot: BotType, client: BotClient, interaction: BotInteraction) => {
+    execute: async (Bot: BotType, client: BotClient, interaction: AnyBotInteraction) => {
         // Filter out non-command interactions and bot users
         if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
         if (interaction.user.bot) return;
@@ -265,8 +271,8 @@ export default {
         // Route to appropriate handler
         if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(Bot, interaction, cmd);
-        } else if ((interaction as any).isAutocomplete()) {
-            await handleAutocomplete(Bot, interaction as any, cmd);
+        } else if (interaction.isAutocomplete()) {
+            await handleAutocomplete(Bot, interaction, cmd);
         }
     },
 };

@@ -831,6 +831,7 @@ export async function announceMsg({
         logger.error(
             `Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMessage}\n`,
         );
+        throw err;
     });
 }
 

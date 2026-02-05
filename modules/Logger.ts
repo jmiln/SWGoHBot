@@ -44,19 +44,19 @@ class Logger {
         this.shardId = shardId;
     }
 
-    // biome-ignore lint/suspicious/noExplicitAny: Let it log anything
-    log(content: any, type: LogType = "log", webhook = false): void {
+    log(content: unknown, type: LogType = "log", webhook = false): void {
         const { pinoLevel, color } = this.logConfigs[type];
 
-        this.pino[pinoLevel as pino.Level](content);
+        // Convert content to string for logging
+        const logContent = typeof content === "string" ? content : JSON.stringify(content);
+        this.pino[pinoLevel as pino.Level](logContent);
 
         if (webhook || (type === "error" && typeof content === "string" && content.includes("Unable to authenticate"))) {
             this.sendDiscordWebhook(content, type, color);
         }
     }
 
-    // biome-ignore lint/suspicious/noExplicitAny: Let it log anything
-    private sendDiscordWebhook(content: any, type: LogType, color: number): void {
+    private sendDiscordWebhook(content: unknown, type: LogType, color: number): void {
         if (!config.logs.logToChannel || !config.webhookURL) return;
 
         const shardStr = this.shardId > -1 ? ` (${this.shardId})` : "";
@@ -69,23 +69,21 @@ class Logger {
         sendWebhook(config.webhookURL, embed as never);
     }
 
-    // biome-ignore-start lint/suspicious/noExplicitAny: It should be able to log anything I need it to
-    error(content: any, webhook = false): void {
+    error(content: unknown, webhook = false): void {
         this.log(content, "error", webhook);
     }
-    warn(content: any, webhook = false): void {
+    warn(content: unknown, webhook = false): void {
         this.log(content, "warn", webhook);
     }
-    debug(content: any, webhook = false): void {
+    debug(content: unknown, webhook = false): void {
         this.log(content, "debug", webhook);
     }
-    cmd(content: any, webhook = false): void {
+    cmd(content: unknown, webhook = false): void {
         this.log(content, "cmd", webhook);
     }
-    info(content: any, webhook = false): void {
+    info(content: unknown, webhook = false): void {
         this.log(content, "info", webhook);
     }
-    // biome-ignore-end lint/suspicious/noExplicitAny: It should be able to log anything I need it to
 }
 
 const logger = new Logger();
