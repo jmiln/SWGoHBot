@@ -1,5 +1,15 @@
-import type { BaseInteraction, ChatInputCommandInteraction, Client, Collection, Guild, IntentsBitField, Partials } from "discord.js";
+import type {
+    AutocompleteInteraction,
+    BaseInteraction,
+    ChatInputCommandInteraction,
+    Client,
+    Collection,
+    Guild,
+    IntentsBitField,
+    Partials,
+} from "discord.js";
 import type { MongoClient } from "mongodb";
+import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import type { GuildConfigSettings } from "./guildConfig_types.ts";
@@ -23,6 +33,12 @@ export interface LangHelpStrs {
     }[];
 }
 
+export interface JourneyName {
+    defId: string;
+    name: string;
+    aliases: string[];
+}
+
 // All the mess we cram into the Bot object
 // - Should probably just make em get imported as needed instead
 export interface BotType {
@@ -32,13 +48,13 @@ export interface BotType {
     guildCount: () => Promise<number>;
     userCount: () => Promise<number>;
     shardId: number;
-    socket: any;
-    journeyNames: any[];
-    journeyReqs: any;
+    socket: Socket | null;
+    journeyNames: JourneyName[];
+    journeyReqs: JourneyReqs;
     deployCommands: (force?: boolean) => Promise<string>;
-    languages: any;
-    cache: any;
-    userReg: any;
+    languages: Record<BotLanguage, Language>;
+    cache: typeof import("../modules/cache.ts").default;
+    userReg: typeof import("../modules/users.ts").default;
 
     omicrons: {
         tw: string[];
@@ -188,6 +204,10 @@ export interface BotInteraction extends ChatInputCommandInteraction {
     swgohLanguage: SWAPILang;
     respond?: (choices: { name: string; value: string }[]) => Promise<void>;
 }
+
+// Union type for event handlers that process both command and autocomplete interactions
+export type AnyBotInteraction = BotInteraction | AutocompleteInteraction;
+
 export interface BotBaseInteraction extends BaseInteraction {
     respond?: (args: { name: string; value: string }[]) => Promise<void>;
 }
