@@ -732,3 +732,13 @@ interface SWAPIGuildMemberSeasonStatus {
     remove: boolean;
     rank: number;
 }
+
+export interface FeatureStore {
+    storeId?: string;
+    rewards?: {
+        units?: Array<{
+            baseId: string;
+            purchaseList: Array<{ cost: number; currency: string; quantity: number }>;
+        }>;
+    };
+}

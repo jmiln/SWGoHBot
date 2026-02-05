@@ -411,3 +411,33 @@ export interface HelpObject {
         };
     };
 }
+
+// Patreon API response types
+export interface PatreonMember {
+    type: string;
+    attributes: {
+        full_name: string;
+        patron_status: string;
+        currently_entitled_amount_cents: number;
+        email?: string;
+    };
+    relationships?: {
+        user?: {
+            data?: {
+                id: string;
+            };
+        };
+    };
+}
+
+export interface PatreonUser {
+    type: string;
+    id: string;
+    attributes: {
+        social_connections?: {
+            discord?: {
+                user_id: string;
+            };
+        };
+    };
+}

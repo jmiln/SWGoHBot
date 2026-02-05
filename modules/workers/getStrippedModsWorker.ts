@@ -10,8 +10,20 @@ interface ModMap {
     };
 }
 
+// Cache stub instance per worker thread to avoid recreating for each player
+let cachedStub: ComlinkStub | null = null;
+let cachedClientStub: string | null = null;
+
+function getComlinkStub(clientStub: string): ComlinkStub {
+    if (!cachedStub || cachedClientStub !== clientStub) {
+        cachedStub = new ComlinkStub(clientStub);
+        cachedClientStub = clientStub;
+    }
+    return cachedStub;
+}
+
 export default async function ({ playerId, modMap, clientStub }: { playerId: number; modMap: ModMap; clientStub: string }) {
-    const comlinkStub = new ComlinkStub(clientStub);
+    const comlinkStub = getComlinkStub(clientStub);
     return await comlinkStub
         .getPlayer(null, playerId.toString())
         .then((res: ComlinkPlayer) => {
