@@ -24,6 +24,20 @@ const SOCKET_CONFIG = {
     timeout: 5000,
 };
 
+// Track intervals for cleanup
+const activeIntervals: NodeJS.Timeout[] = [];
+
+/**
+ * Clears all active intervals on shard shutdown
+ */
+function cleanupIntervals(): void {
+    logger.log(`[ClientReady] Cleaning up ${activeIntervals.length} active intervals`);
+    for (const intervalId of activeIntervals) {
+        clearInterval(intervalId);
+    }
+    activeIntervals.length = 0;
+}
+
 export default {
     name: Events.ClientReady,
     execute: async (Bot: BotType, client: BotClient) => {
@@ -119,7 +133,7 @@ function setupBackgroundTasks(Bot: BotType, client: BotClient): void {
  */
 function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
     setTimeout(() => {
-        setInterval(async () => {
+        const intervalId = setInterval(async () => {
             try {
                 // Run every minute
                 await patreonFuncs.getRanks();
@@ -145,6 +159,8 @@ function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
                 logger.error(`[${Bot.shardId}] Error in data update tasks: ${message}`);
             }
         }, MINUTE_MS);
+
+        activeIntervals.push(intervalId);
     }, STARTUP_DELAY_MS);
 }
 
@@ -155,7 +171,7 @@ function setupEventChecking(Bot: BotType): void {
     const socketHelper = new SocketHelper(Bot.socket);
     let consecutiveFailures = 0;
 
-    setInterval(async () => {
+    const intervalId = setInterval(async () => {
         if (!socketHelper.isConnected()) {
             consecutiveFailures++;
             if (consecutiveFailures === MAX_CONSECUTIVE_FAILURES) {
@@ -179,6 +195,8 @@ function setupEventChecking(Bot: BotType): void {
             }
         }
     }, MINUTE_MS);
+
+    activeIntervals.push(intervalId);
 }
 
 /**
@@ -210,3 +228,5 @@ function setPresence(client: BotClient): void {
         logger.error(`[Ready] Error setting presence: ${message}`);
     }
 }
+
+export { cleanupIntervals };

@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import os from "node:os";
 import { Worker } from "node:worker_threads";
 import ComlinkStub from "@swgoh-utils/comlink";
@@ -6,6 +5,7 @@ import { eachLimit } from "async";
 import config from "../config.js";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
+import { readJSON } from "../modules/functions.ts";
 import type {
     ComlinkAbility,
     ComlinkMod,
@@ -29,16 +29,16 @@ import type { PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
 
 const THREAD_COUNT = os.cpus().length;
-const abilityCosts = JSON.parse(readFileSync(`${import.meta.dirname}/../data/abilityCosts.json`, "utf-8"));
+const abilityCosts = await readJSON(`${import.meta.dirname}/../data/abilityCosts.json`);
 
 if (!config.swapiConfig?.clientStub) {
     throw new Error("Missing clientStub config info!");
 }
 const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
 
-let modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
-let unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
-let skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
+let modMap = await readJSON(`${import.meta.dirname}/../data/modMap.json`);
+let unitMap = await readJSON(`${import.meta.dirname}/../data/unitMap.json`);
+let skillMap = await readJSON(`${import.meta.dirname}/../data/skillMap.json`);
 
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
@@ -54,6 +54,7 @@ const MAX_CONCURRENT = 20;
 
 class SWAPI {
     private specialAbilityList: SWAPIUnitAbility[] | null = null;
+    private reloadIntervalId: NodeJS.Timeout | null = null;
 
     // Set the max cooldowns (In minutes)
     private readonly playerMinCooldown = 1; // 1 min
@@ -66,11 +67,35 @@ class SWAPI {
      */
     init(): void {
         // Reload the api map files every 6 minutes
-        setInterval(() => {
-            modMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/modMap.json`, "utf-8"));
-            unitMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/unitMap.json`, "utf-8"));
-            skillMap = JSON.parse(readFileSync(`${import.meta.dirname}/../data/skillMap.json`, "utf-8"));
+        this.reloadIntervalId = setInterval(async () => {
+            try {
+                const [modMapData, unitMapData, skillMapData] = await Promise.all([
+                    readJSON(`${import.meta.dirname}/../data/modMap.json`),
+                    readJSON(`${import.meta.dirname}/../data/unitMap.json`),
+                    readJSON(`${import.meta.dirname}/../data/skillMap.json`),
+                ]);
+
+                modMap = modMapData;
+                unitMap = unitMapData;
+                skillMap = skillMapData;
+
+                logger.log("[SWAPI] Reloaded API map files");
+            } catch (err) {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.error(`[SWAPI] Failed to reload map files: ${message}`);
+            }
         }, 360_000);
+    }
+
+    /**
+     * Cleanup resources for graceful shutdown
+     */
+    cleanup(): void {
+        if (this.reloadIntervalId) {
+            clearInterval(this.reloadIntervalId);
+            this.reloadIntervalId = null;
+            logger.log("[SWAPI] Cleanup: cleared reload interval");
+        }
     }
 
     // Grab the abilities that have Zeta / Omicron levels for future reference

@@ -4,6 +4,7 @@ import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, T
 import { MongoClient } from "mongodb";
 import config from "./config.js";
 import { characters, ships } from "./data/constants/units.ts";
+import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
@@ -69,6 +70,53 @@ processJourneyNames(journeyReqs);
 
 client.slashcmds = new Collection();
 
+// Prevent multiple simultaneous shutdown attempts
+let isShuttingDown = false;
+
+/**
+ * Gracefully shuts down the bot, cleaning up resources
+ */
+async function gracefulShutdown(signal: string): Promise<void> {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    console.log(`[${myTime()}] Received ${signal}, starting graceful shutdown...`);
+
+    try {
+        // Stop accepting new interactions
+        client.removeAllListeners();
+
+        // Clean up intervals from clientReady
+        cleanupIntervals();
+
+        // Clean up SWAPI reload interval
+        swgohAPI.cleanup();
+
+        // Disconnect socket.io connection
+        if (Bot.socket) {
+            Bot.socket.disconnect();
+            console.log(`[${myTime()}] Socket.io disconnected`);
+        }
+
+        // Destroy Discord client connection
+        await client.destroy();
+        console.log(`[${myTime()}] Discord client destroyed`);
+
+        // Close MongoDB connection
+        if (Bot.mongo) {
+            await Bot.mongo.close();
+            console.log(`[${myTime()}] MongoDB connection closed`);
+        }
+
+        console.log(`[${myTime()}] Graceful shutdown complete`);
+        process.exit(0);
+    } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : String(err);
+        console.error(`[${myTime()}] Error during shutdown: ${errorMsg}`);
+        process.exit(1);
+    }
+}
+
 const init = async () => {
     try {
         Bot.mongo = await MongoClient.connect(config.mongodb.url);
@@ -111,6 +159,10 @@ const init = async () => {
 
     slashHandler(Bot, client);
     eventHandler(Bot, client);
+
+    // Register graceful shutdown handlers
+    process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+    process.on("SIGINT", () => gracefulShutdown("SIGINT"));
 
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack?.replace(CWD_REGEX, ".") || String(err);

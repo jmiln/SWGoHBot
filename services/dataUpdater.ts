@@ -1,4 +1,4 @@
-import { readdir, readFile, unlink, writeFile } from "node:fs/promises";
+import { readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { inspect } from "node:util";
@@ -7,6 +7,7 @@ import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
+import { readJSON } from "../modules/functions.ts";
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
@@ -129,17 +130,6 @@ async function cleanup() {
     }
 
     console.log("Cleanup complete");
-}
-
-// Helper function to read and parse JSON files
-async function readJSON<T = unknown>(filePath: string): Promise<T> {
-    try {
-        const content = await readFile(filePath, "utf-8");
-        return JSON.parse(content) as T;
-    } catch (error) {
-        console.error(`[${myTime()}] [dataUpdater/readJSON] Failed to read/parse ${filePath}:`, error);
-        throw error;
-    }
 }
 
 // Helper function to add timeout to promises

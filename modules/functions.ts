@@ -1,4 +1,4 @@
-import { readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import {
     type Client,
@@ -23,6 +23,20 @@ import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotClient, BotInteraction, BotUnit, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
 import userReg from "./users.ts";
+
+/**
+ * Helper function to read and parse JSON files asynchronously
+ */
+export async function readJSON<T = unknown>(filePath: string): Promise<T> {
+    try {
+        const content = await readFile(filePath, "utf-8");
+        return JSON.parse(content) as T;
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        logger.error(`[readJSON] Failed to read/parse ${filePath}: ${message}`);
+        throw error;
+    }
+}
 
 export function isMain(client: Client): boolean {
     return client.user.id === "315739499932024834";
