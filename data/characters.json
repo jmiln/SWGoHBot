@@ -1232,6 +1232,24 @@
         "avatarName": "charui_cassian"
     },
     {
+        "name": "Cassian Andor (Undercover)",
+        "uniqueName": "CASSIANUNDERCOVER",
+        "aliases": [
+            "Cassian Andor (Undercover)"
+        ],
+        "avatarName": "charui_cassianundercover",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cassianundercover.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_REBELFIGHTER_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "CC-1119 \"Appo\"",
         "uniqueName": "APPO",
         "aliases": [
@@ -1417,6 +1435,23 @@
             ]
         },
         "avatarName": "charui_chopper"
+    },
+    {
+        "name": "Cinta Kaz",
+        "uniqueName": "CINTA",
+        "aliases": [
+            "Cinta Kaz"
+        ],
+        "avatarName": "charui_cinta",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cinta.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_REBELFIGHTER_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Clone Sergeant - Phase I",
@@ -1750,8 +1785,7 @@
         "mods": {
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ]
         }
     },
@@ -2119,6 +2153,23 @@
                 "Crit. Damage x4"
             ]
         },
+        "crew": []
+    },
+    {
+        "name": "Dedra Meero",
+        "uniqueName": "DEDRAMEERO",
+        "aliases": [
+            "Dedra Meero"
+        ],
+        "avatarName": "charui_dedrameero",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_dedrameero.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_IMPERIALSECURITYBUREAU",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
         "crew": []
     },
     {
@@ -4246,6 +4297,23 @@
         "crew": []
     },
     {
+        "name": "Kleya Marki",
+        "uniqueName": "KLEYA",
+        "aliases": [
+            "Kleya Marki"
+        ],
+        "avatarName": "charui_kleya",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kleya.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_REBELFIGHTER_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLEATTACKER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Krrsantan",
         "uniqueName": "KRRSANTAN",
         "aliases": [
@@ -4290,6 +4358,24 @@
             ]
         },
         "avatarName": "charui_kuiil"
+    },
+    {
+        "name": "KX Security Droid",
+        "uniqueName": "KXSECURITYDROID",
+        "aliases": [
+            "KX Security Droid"
+        ],
+        "avatarName": "charui_kxsecuritydroid",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kxsecuritydroid.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_IMPERIALSECURITYBUREAU",
+            "CATEGORY_ROLETANK_DESC",
+            "CATEGORY_SPECIESDROID_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Kyle Katarn",
@@ -4621,6 +4707,24 @@
             ]
         },
         "avatarName": "charui_trooperstorm_magma"
+    },
+    {
+        "name": "Major Partagaz",
+        "uniqueName": "MAJORPARTAGAZ",
+        "aliases": [
+            "Major Partagaz"
+        ],
+        "avatarName": "charui_majorpartagaz",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_majorpartagaz.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_IMPERIALSECURITYBUREAU",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
@@ -6965,6 +7069,23 @@
         "crew": []
     },
     {
+        "name": "Vel Sartha",
+        "uniqueName": "VEL",
+        "aliases": [
+            "Vel Sartha"
+        ],
+        "avatarName": "charui_vel",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vel.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_REBELFIGHTER_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Veteran Smuggler Chewbacca",
         "uniqueName": "SMUGGLERCHEWBACCA",
         "aliases": [
@@ -7324,4 +7445,3 @@
         "crew": []
     }
 ]
-

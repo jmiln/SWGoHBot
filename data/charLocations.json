@@ -787,6 +787,11 @@
         ]
     },
     {
+        "name": "Cassian Andor (Undercover)",
+        "defId": "CASSIANUNDERCOVER",
+        "locations": []
+    },
+    {
         "name": "CC-1119 \"Appo\"",
         "defId": "APPO",
         "locations": [
@@ -905,6 +910,17 @@
                 "type": "Hard Modes (D)",
                 "level": "1-D",
                 "locId": "HARD_DARK"
+            }
+        ]
+    },
+    {
+        "name": "Cinta Kaz",
+        "defId": "CINTA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CINTA_NAME",
+                "name": "Faith In The Dark Special Marquee Event"
             }
         ]
     },
@@ -1331,6 +1347,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_DEATHTROOPERPERIDEA_NAME",
                 "name": "Undying Legion Ii  Special Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Dedra Meero",
+        "defId": "DEDRAMEERO",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_DEDRAMEERO_NAME",
+                "name": "Cold Ambition Special Marquee Event"
             }
         ]
     },
@@ -2644,6 +2671,17 @@
         ]
     },
     {
+        "name": "Kleya Marki",
+        "defId": "KLEYA",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_KLEYA_NAME",
+                "name": "The Gallery Of Secrets Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Krrsantan",
         "defId": "KRRSANTAN",
         "locations": [
@@ -2664,6 +2702,11 @@
                 "locId": "HARD_DARK"
             }
         ]
+    },
+    {
+        "name": "KX Security Droid",
+        "defId": "KXSECURITYDROID",
+        "locations": []
     },
     {
         "name": "Kyle Katarn",
@@ -2898,6 +2941,11 @@
                 "cost": "400 Mk I Guild Event Tokens/10"
             }
         ]
+    },
+    {
+        "name": "Major Partagaz",
+        "defId": "MAJORPARTAGAZ",
+        "locations": []
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
@@ -4411,6 +4459,11 @@
                 "name": "Fortune Favors The Bold Ii Special Marquee Event"
             }
         ]
+    },
+    {
+        "name": "Vel Sartha",
+        "defId": "VEL",
+        "locations": []
     },
     {
         "name": "Veteran Smuggler Chewbacca",
