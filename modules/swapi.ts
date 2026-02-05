@@ -142,8 +142,9 @@ class SWAPI {
 
         const playersOut = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const p: SWAPIPlayerArenaProfile | null = await comlinkStub.getPlayerArenaProfile(ac.toString()).catch((err: Error) => {
-                logger.error(`Error fetching arena profile for ${ac}: ${err.message}`);
+            const p: SWAPIPlayerArenaProfile | null = await comlinkStub.getPlayerArenaProfile(ac.toString()).catch((err: unknown) => {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.error(`Error fetching arena profile for ${ac}: ${message}`);
                 return null;
             });
             if (p) {
@@ -181,11 +182,11 @@ class SWAPI {
 
         const updatedBare: SWAPIPlayer[] = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const tempBare: ComlinkPlayer | null = await comlinkStub.getPlayer(ac?.toString()).catch((err: Error) => {
-                logger.error(`Error in eachLimit getPlayer (${ac}): ${err.message}`);
+            const tempBare: ComlinkPlayer | null = await comlinkStub.getPlayer(ac?.toString()).catch((err: unknown) => {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.error(`Error in eachLimit getPlayer (${ac}): ${message}`);
                 return null;
             });
-
             if (!tempBare) {
                 logger.error(`[getPlayerUpdates] Failed to fetch player data for ally code ${ac}`);
             } else {
