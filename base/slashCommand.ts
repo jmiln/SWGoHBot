@@ -86,7 +86,20 @@ export default abstract class slashCommand {
             }
             return await interaction.reply(embedObj);
         } catch (e) {
-            logger.error(`[base/slashCommand Error: ${this.commandData.name}] ${e.message}`);
+            const errorMessage = e instanceof Error ? e.message : String(e);
+            logger.error(`[base/slashCommand Error: ${this.commandData.name}] ${errorMessage}`);
+
+            // Try to send error response to user if interaction hasn't been replied to
+            if (!interaction.replied && !interaction.deferred) {
+                await interaction
+                    .reply({
+                        content: "An error occurred while processing your command. Please try again later.",
+                        ephemeral: true,
+                    })
+                    .catch(() => {
+                        // If we can't reply, at least we tried
+                    });
+            }
         }
     }
 }
