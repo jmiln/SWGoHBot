@@ -443,7 +443,19 @@ class SWAPI {
                     await cache.putMany(config.mongodb.swapidb, "playerStats", bulkWrites);
                 }
             }
-            return playerStats;
+
+            // Sort results to match the order of input allycodes
+            // This ensures consistent ordering for comparison commands (e.g., grandarena, versus)
+            // Note: acArr may contain strings at runtime despite number[] type, so normalize to numbers for comparison
+            const sortedStats = acArr
+                .map((allycode) => {
+                    // Normalize to number for comparison (handles both string and number inputs)
+                    const normalizedAC = typeof allycode === "string" ? Number.parseInt(allycode, 10) : allycode;
+                    return playerStats.find((p) => p?.allyCode === normalizedAC);
+                })
+                .filter((p) => p !== undefined);
+
+            return sortedStats;
         } catch (error) {
             logger.error(`SWAPI Broke getting playerStats: ${error}`);
             throw error;
