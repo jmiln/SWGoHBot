@@ -79,7 +79,7 @@ export default class Farm extends Command {
             } else if (loc.level) {
                 // It's a node, fleet, cantina, light/ dark side
                 if (loc.locId) {
-                    const langLoc = await cache.getOne(
+                    const langLoc = (await cache.getOne(
                         config.mongodb.swapidb,
                         "locations",
                         {
@@ -87,7 +87,7 @@ export default class Farm extends Command {
                             language: interaction.swgohLanguage.toLowerCase(),
                         },
                         {},
-                    ) as { id: string; language: string; langKey: string } | null;
+                    )) as { id: string; language: string; langKey: string } | null;
 
                     if (!langLoc) continue;
 
@@ -114,7 +114,7 @@ export default class Farm extends Command {
                 outList.push(expandSpaces(`__${loc.type}__: ${loc.name}`));
             } else if (loc.locId) {
                 // Just has the location id, so probably a marquee
-                const langLoc = await cache.getOne(
+                const langLoc = (await cache.getOne(
                     config.mongodb.swapidb,
                     "locations",
                     {
@@ -122,7 +122,7 @@ export default class Farm extends Command {
                         language: interaction.swgohLanguage.toLowerCase(),
                     },
                     {},
-                ) as { id: string; language: string; langKey: string } | null;
+                )) as { id: string; language: string; langKey: string } | null;
                 if (!langLoc) continue;
                 outList.push(toProperCase(langLoc.langKey));
             }

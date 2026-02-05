@@ -57,7 +57,7 @@ class EventFuncs {
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
                         const targetGuild = client.guilds.cache.get(guildId);
                         if (targetGuild) {
-                            announceMsg({ client: client as any, guild: targetGuild, announceMessage, channel: chan, guildConf });
+                            announceMsg({ client: client as BotClient, guild: targetGuild, announceMessage, channel: chan, guildConf });
                         }
                     },
                     {

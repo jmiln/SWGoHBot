@@ -1,6 +1,6 @@
 import {
-    type AutocompleteInteraction,
     type AutocompleteFocusedOption,
+    type AutocompleteInteraction,
     type ChatInputCommandInteraction,
     codeBlock,
     EmbedBuilder,

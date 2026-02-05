@@ -1,4 +1,10 @@
-import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock, InteractionContextType } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type AutocompleteInteraction,
+    type AutocompleteFocusedOption,
+    codeBlock,
+    InteractionContextType,
+} from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
@@ -346,7 +352,7 @@ export default class SetConf extends Command {
         return super.error(interaction, "It looks like nothing needed to be updated");
     }
 
-    async autocomplete(_Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 

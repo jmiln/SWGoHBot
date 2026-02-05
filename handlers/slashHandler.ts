@@ -1,8 +1,6 @@
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { type APIApplicationCommand, type APIApplicationCommandOption, REST, Routes } from "discord.js";
 import type slashCommand from "../base/slashCommand.ts";
-import config from "../config.js";
 import logger from "../modules/Logger.ts";
 import type { BotClient, BotType } from "../types/types.ts";
 

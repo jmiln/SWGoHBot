@@ -1,3 +1,4 @@
+import type { Document } from "mongodb";
 import config from "../../config.js";
 
 // Grab the tiers data file for use later
@@ -67,7 +68,7 @@ export async function addServerSupporter({
         config.mongodb.swgohbotdb,
         "guildConfigs",
         { guildId },
-        { patreonSettings: 1, _id: 0 },
+        ({ patreonSettings: 1, _id: 0 }) as Document,
     );
     const patSettings = res?.patreonSettings || { supporters: [] };
 
@@ -126,7 +127,7 @@ export async function getServerSupporters({
         config.mongodb.swgohbotdb,
         "guildConfigs",
         { guildId },
-        { patreonSettings: 1, _id: 0 },
+        ({ patreonSettings: 1, _id: 0 }) as Document,
     );
     return res?.patreonSettings?.supporters || [];
 }
@@ -148,7 +149,7 @@ export async function removeServerSupporter({
         config.mongodb.swgohbotdb,
         "guildConfigs",
         { guildId },
-        { patreonSettings: 1, _id: 0 },
+        ({ patreonSettings: 1, _id: 0 }) as Document,
     );
     const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 0;
 
@@ -173,6 +174,9 @@ export async function removeServerSupporter({
 export async function clearSupporterInfo({
     cache,
     userId,
+}: {
+    cache: BotCache;
+    userId: string;
 }): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string } }> {
     const userConf = await cache.getOne<UserConfig>(config.mongodb.swgohbotdb, "users", { id: userId });
     const resOut = {
@@ -207,7 +211,7 @@ export async function ensureGuildSupporter({ cache }: { cache: BotCache }) {
         config.mongodb.swgohbotdb,
         "guildConfigs",
         { "patreonSettings.supporters": { $exists: true, $ne: [] } },
-        { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 },
+        ({ supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 }) as Document,
     );
 
     // Go through each of those, and check that each person listed in each of those has the given server selected, and if not, remove them from that guilds' list
@@ -287,7 +291,7 @@ export async function getGuildSupporterTier({ cache, guildId }: { cache: BotCach
         config.mongodb.swgohbotdb,
         "guildConfigs",
         { guildId },
-        { patreonSettings: 1, _id: 0 },
+        ({ patreonSettings: 1, _id: 0 }) as Document,
     );
 
     // Add up tiers from here, and return a higher tier if they add up to one

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, type AutocompleteFocusedOption, codeBlock } from "discord.js";
+import { ApplicationCommandOptionType, type AutocompleteInteraction, type AutocompleteFocusedOption, codeBlock } from "discord.js";
 import Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
@@ -490,7 +490,7 @@ export default class UserConf extends Command {
         }
     }
 
-    async autocomplete(_Bot: BotType, interaction: BotInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 

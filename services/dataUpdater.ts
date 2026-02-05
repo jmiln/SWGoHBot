@@ -747,7 +747,7 @@ async function updatePatrons(cache: BotCache) {
 
             if (newUser.patron_status !== "active_patron" || !newUser.amount_cents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
-                const userConf = await cache.getOne(config.mongodb.swgohbotdb, "users", { id: newUser.discordID }) as UserConfig | null;
+                const userConf = (await cache.getOne(config.mongodb.swgohbotdb, "users", { id: newUser.discordID })) as UserConfig | null;
 
                 // If they don't have bonusServer set (As it should be), move on
                 if (!userConf?.bonusServer?.length) continue;
@@ -809,7 +809,7 @@ async function updateLocs(
     const [currentUnits, currentLocs] = await Promise.all([readJSON<BotUnit[]>(unitListFile), readJSON<UnitLocation[]>(currentLocFile)]);
 
     const shardNameMap = currentUnits.map((unit) => `unitshard_${unit.uniqueName}`);
-    const shardNameRes = await cache.get(config.mongodb.swapidb, "materials", { id: { $in: shardNameMap } }) as { id: string }[];
+    const shardNameRes = (await cache.get(config.mongodb.swapidb, "materials", { id: { $in: shardNameMap } })) as { id: string }[];
 
     const matArr = [];
     for (const unit of currentUnits) {
