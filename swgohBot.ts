@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
-import { MongoClient } from "mongodb";
 import config from "./config.js";
 import { characters, ships } from "./data/constants/units.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
+import database from "./modules/database.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
 import { myTime, reloadLanguages, sortOmicrons } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
@@ -103,9 +103,8 @@ async function gracefulShutdown(signal: string): Promise<void> {
         console.log(`[${myTime()}] Discord client destroyed`);
 
         // Close MongoDB connection
-        if (Bot.mongo) {
-            await Bot.mongo.close();
-            console.log(`[${myTime()}] MongoDB connection closed`);
+        if (database.isConnected()) {
+            await database.close();
         }
 
         console.log(`[${myTime()}] Graceful shutdown complete`);
@@ -119,8 +118,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
 const init = async () => {
     try {
-        Bot.mongo = await MongoClient.connect(config.mongodb.url);
-        console.log(`[${myTime()}] Connected to MongoDB`);
+        await database.connect(config.mongodb.url);
     } catch (err) {
         console.error(`[${myTime()}] Failed to connect to MongoDB: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);
@@ -135,7 +133,7 @@ const init = async () => {
     }
 
     // Set up the caching
-    cache.init(Bot.mongo);
+    cache.init(database.getClient());
     userReg.init(cache);
 
     if (config.swapiConfig) {
@@ -172,8 +170,8 @@ const init = async () => {
         if (!errorMsg.includes("RSV2 and RSV3 must be clear")) {
             logErrorToChannel(errorMsg);
         }
-        if (Bot.mongo) {
-            Bot.mongo.close();
+        if (database.isConnected()) {
+            database.close();
         }
         process.exit(1);
     });

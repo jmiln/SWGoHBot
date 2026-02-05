@@ -8,7 +8,6 @@ import type {
     IntentsBitField,
     Partials,
 } from "discord.js";
-import type { MongoClient } from "mongodb";
 import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
@@ -44,7 +43,6 @@ export interface JourneyName {
 export interface BotType {
     sendWebhook: (webhookURL: string, data: object) => void;
 
-    mongo: MongoClient;
     guildCount: () => Promise<number>;
     userCount: () => Promise<number>;
     shardId: number;

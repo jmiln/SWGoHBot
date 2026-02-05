@@ -2,6 +2,7 @@ import { codeBlock, InteractionContextType, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
+import database from "../modules/database.ts";
 import { guildCount, makeTable, userCount } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
@@ -44,9 +45,9 @@ export default class Info extends Command {
 
     async run(Bot: BotType, interaction: BotInteraction) {
         try {
-            const database = Bot.mongo.db(config.mongodb.swapidb);
-            const swgohPlayerCount = await database.collection("playerStats").estimatedDocumentCount();
-            const swgohGuildCount = await database.collection("guilds").estimatedDocumentCount();
+            const db = database.getClient().db(config.mongodb.swapidb);
+            const swgohPlayerCount = await db.collection("playerStats").estimatedDocumentCount();
+            const swgohGuildCount = await db.collection("guilds").estimatedDocumentCount();
             const totalGuilds = await guildCount(interaction.client);
             const totalUsers = await userCount(interaction.client);
 
