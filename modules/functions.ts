@@ -41,6 +41,14 @@ export function isMain(client: Client): boolean {
     return client.user.id === "315739499932024834";
 }
 
+/**
+ * Get the shard ID from a Discord client
+ * @returns The shard ID, or -1 if not sharded
+ */
+export function getShardId(client: BotClient): number {
+    return client.shard?.ids[0] ?? -1;
+}
+
 // `await wait(1000);` to "pause" for 1 second.
 export async function wait(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));

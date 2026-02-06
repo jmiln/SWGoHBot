@@ -972,7 +972,7 @@ class SWAPI {
         }
         if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
 
-        let guild: SWAPIGuild = await cache.getOne(config.mongodb.swapidb, "guilds", { id: player.guildId });
+        const guild: SWAPIGuild = await cache.getOne(config.mongodb.swapidb, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
         if (!guild || this.isExpired(guild.updated, cooldown, true)) {
@@ -1007,10 +1007,9 @@ class SWAPI {
             }
             await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
             return tempGuild;
-        } else {
+        }
             /** If found and valid, serve from cache */
             return guild;
-        }
     }
 
     private async fetchGuild(guildId: string) {

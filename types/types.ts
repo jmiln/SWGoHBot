@@ -60,7 +60,6 @@ export interface BotType {
 
     guildCount: () => Promise<number>;
     userCount: () => Promise<number>;
-    shardId: number;
     socket: Socket | null;
     journeyNames: JourneyName[];
     journeyReqs: JourneyReqs;

@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import database from "../modules/database.ts";
-import { guildCount, makeTable, userCount } from "../modules/functions.ts";
+import { getShardId, guildCount, makeTable, userCount } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -50,8 +50,9 @@ export default class Info extends Command {
             const swgohGuildCount = await db.collection("guilds").estimatedDocumentCount();
             const totalGuilds = await guildCount(interaction.client);
             const totalUsers = await userCount(interaction.client);
+            const shardId = getShardId(interaction.client);
 
-            const content = interaction.language.get("COMMAND_INFO_OUTPUT", Bot.shardId) as unknown as InfoContent;
+            const content = interaction.language.get("COMMAND_INFO_OUTPUT", shardId) as unknown as InfoContent;
 
             const description = this.buildDescription(content, {
                 users: totalUsers,

@@ -2,7 +2,7 @@ import { Events } from "discord.js";
 import { io } from "socket.io-client";
 import config from "../config.js";
 import eventFuncs from "../modules/eventFuncs.ts";
-import { isMain } from "../modules/functions.ts";
+import { getShardId, isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import { SocketHelper } from "../modules/socketHelper.ts";
@@ -41,10 +41,10 @@ function cleanupIntervals(): void {
 export default {
     name: Events.ClientReady,
     execute: async (Bot: BotType, client: BotClient) => {
-        Bot.shardId = client.shard.ids[0];
+        const shardId = getShardId(client);
 
         // Initialize the logger with the shard ID
-        logger.init(Bot.shardId);
+        logger.init(shardId);
 
         // Validate bot configuration - must be private bot unless authorized
         const application = client.application;
@@ -68,10 +68,10 @@ export default {
         let readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers.`;
 
         if (client.shard) {
-            readyString += ` Shard #${Bot.shardId}`;
+            readyString += ` Shard #${shardId}`;
 
-            setupSocketConnection(Bot);
-            setupBackgroundTasks(Bot, client);
+            setupSocketConnection(Bot, shardId);
+            setupBackgroundTasks(Bot, client, shardId);
         }
 
         logger.log(readyString, "ready", true);
@@ -82,14 +82,14 @@ export default {
 /**
  * Sets up socket.io connection with error handling and throttling
  */
-function setupSocketConnection(Bot: BotType): void {
+function setupSocketConnection(Bot: BotType, shardId: number): void {
     let lastErrorTime = 0;
     let errorCount = 0;
 
     Bot.socket = io(`ws://localhost:${config.eventServe.port}`, SOCKET_CONFIG);
 
     Bot.socket.on("connect", () => {
-        console.log(`  [${Bot.shardId}] Connected to EventMgr socket!`);
+        console.log(`  [${shardId}] Connected to EventMgr socket!`);
         errorCount = 0;
     });
 
@@ -99,7 +99,7 @@ function setupSocketConnection(Bot: BotType): void {
 
         if (now - lastErrorTime > ERROR_THROTTLE_MS) {
             const message = err?.message || "Unknown error";
-            console.error(`  [${Bot.shardId}] EventMgr ${type}: ${message} (${errorCount} errors in last minute)`);
+            console.error(`  [${shardId}] EventMgr ${type}: ${message} (${errorCount} errors in last minute)`);
             lastErrorTime = now;
             errorCount = 0;
         }
@@ -109,29 +109,29 @@ function setupSocketConnection(Bot: BotType): void {
     Bot.socket.on("reconnect_error", (err) => logThrottledError("reconnect failed", err));
     Bot.socket.on("connect_failed", (err) => logThrottledError("connect failed", err));
     Bot.socket.on("disconnect", (reason) => {
-        console.log(`  [${Bot.shardId}] EventMgr disconnected: ${reason}`);
+        console.log(`  [${shardId}] EventMgr disconnected: ${reason}`);
     });
 }
 
 /**
  * Sets up background tasks for arena tracking, guild updates, and event checking
  */
-function setupBackgroundTasks(Bot: BotType, client: BotClient): void {
+function setupBackgroundTasks(Bot: BotType, client: BotClient, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
-    if (Bot.shardId === 0 && config.premium) {
-        setupDataUpdateTasks(Bot, client);
+    if (shardId === 0 && config.premium) {
+        setupDataUpdateTasks(client, shardId);
     }
 
     // Last shard handles event checking
-    if (Bot.shardId + 1 === client.shard.count) {
-        setupEventChecking(Bot);
+    if (shardId + 1 === client.shard.count) {
+        setupEventChecking(Bot, shardId);
     }
 }
 
 /**
  * Sets up periodic data update tasks (arena ranks, guild tickets, etc.)
  */
-function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
+function setupDataUpdateTasks(client: BotClient, shardId: number): void {
     setTimeout(() => {
         const intervalId = setInterval(async () => {
             try {
@@ -156,7 +156,7 @@ function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
                 reloadDataFiles(client);
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
-                logger.error(`[${Bot.shardId}] Error in data update tasks: ${message}`);
+                logger.error(`[${shardId}] Error in data update tasks: ${message}`);
             }
         }, MINUTE_MS);
 
@@ -167,7 +167,7 @@ function setupDataUpdateTasks(Bot: BotType, client: BotClient): void {
 /**
  * Sets up periodic event checking via socket connection
  */
-function setupEventChecking(Bot: BotType): void {
+function setupEventChecking(Bot: BotType, shardId: number): void {
     const socketHelper = new SocketHelper(Bot.socket);
     let consecutiveFailures = 0;
 
@@ -175,7 +175,7 @@ function setupEventChecking(Bot: BotType): void {
         if (!socketHelper.isConnected()) {
             consecutiveFailures++;
             if (consecutiveFailures === MAX_CONSECUTIVE_FAILURES) {
-                console.warn(`  [${Bot.shardId}] EventMgr not connected, skipping event checks (will retry silently)`);
+                console.warn(`  [${shardId}] EventMgr not connected, skipping event checks (will retry silently)`);
             }
             return;
         }
@@ -191,7 +191,7 @@ function setupEventChecking(Bot: BotType): void {
             consecutiveFailures++;
             if (consecutiveFailures <= MAX_CONSECUTIVE_FAILURES) {
                 const message = err instanceof Error ? err.message : String(err);
-                console.error(`  [${Bot.shardId}] Error checking events: ${message}`);
+                console.error(`  [${shardId}] Error checking events: ${message}`);
             }
         }
     }, MINUTE_MS);

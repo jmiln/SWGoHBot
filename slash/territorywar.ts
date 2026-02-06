@@ -36,7 +36,7 @@ export default class TerritoryWar extends Command {
         super(Bot, TerritoryWar.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(_Bot: BotType, interaction: BotInteraction) {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
