@@ -3,11 +3,11 @@ import cache from "../modules/cache.ts";
 import { announceMsg } from "../modules/functions.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import type { BotClient, BotType } from "../types/types.ts";
+import type { BotClient } from "../types/types.ts";
 
 export default {
     name: Events.GuildMemberAdd,
-    execute: async (_Bot: BotType, client: BotClient, member: GuildMember) => {
+    execute: async (client: BotClient, member: GuildMember) => {
         const guildConf = await getGuildSettings({ cache: cache, guildId: member.guild.id });
 
         // Check if welcome messages are enabled

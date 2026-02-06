@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
+import type { BotInteraction, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
     static readonly metadata = {
@@ -75,11 +75,11 @@ export default class ArenaAlert extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, ArenaAlert.metadata);
+    constructor() {
+        super( ArenaAlert.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");

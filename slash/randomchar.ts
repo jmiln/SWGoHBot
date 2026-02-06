@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import type { BotInteraction, BotUnit } from "../types/types.ts";
 
 export default class Randomchar extends Command {
     static readonly metadata = {
@@ -48,11 +48,11 @@ export default class Randomchar extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Randomchar.metadata);
+    constructor() {
+        super( Randomchar.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         let chars: SWAPIUnit[] | BotUnit[] = [];
         const MAX_CHARACTERS = 5;
 

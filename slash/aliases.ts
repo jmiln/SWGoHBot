@@ -9,7 +9,7 @@ import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { characters, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
-import type { BotInteraction, BotType, GuildAlias } from "../types/types.ts";
+import type { BotInteraction, GuildAlias } from "../types/types.ts";
 
 export default class Aliases extends Command {
     static readonly metadata = {
@@ -61,11 +61,11 @@ export default class Aliases extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Aliases.metadata);
+    constructor() {
+        super( Aliases.metadata);
     }
 
-    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommand = interaction.options.getSubcommand();
 
         // Only handle autocomplete for the remove subcommand's alias option
@@ -93,7 +93,7 @@ export default class Aliases extends Command {
         }
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         // Make sure this is running in a server, since it doesn't do any good in DMs
         if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
 

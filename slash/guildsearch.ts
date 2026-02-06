@@ -7,7 +7,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import type { BotInteraction, BotUnit } from "../types/types.ts";
 
 export default class GuildSearch extends Command {
     static readonly metadata = {
@@ -148,11 +148,11 @@ export default class GuildSearch extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, GuildSearch.metadata);
+    constructor() {
+        super( GuildSearch.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options

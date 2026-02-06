@@ -8,7 +8,7 @@ import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } f
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import type { BotInteraction, BotUnit } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
@@ -114,11 +114,11 @@ export default class MyMods extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, MyMods.metadata);
+    constructor() {
+        super( MyMods.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         const subCommand = interaction.options.getSubcommand();

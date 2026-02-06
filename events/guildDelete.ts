@@ -2,11 +2,10 @@ import { Events, type Guild } from "discord.js";
 import cache from "../modules/cache.ts";
 import { deleteGuildConfig } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import type { BotType } from "../types/types.ts";
 
 export default {
     name: Events.GuildDelete,
-    execute: async (_Bot: BotType, guild: Guild) => {
+    execute: async (guild: Guild) => {
         // Make sure it's not a server outage that's causing it to show as leaving/ re-joining
         if (!guild.available) return;
 

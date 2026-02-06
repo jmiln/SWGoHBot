@@ -5,7 +5,7 @@ import constants from "../data/constants/constants.ts";
 import database from "../modules/database.ts";
 import { getShardId, guildCount, makeTable, userCount } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 interface InfoContent {
     statHeader: string;
@@ -39,11 +39,11 @@ export default class Info extends Command {
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays general stats & info about the bot",
     };
-    constructor(Bot: BotType) {
-        super(Bot, Info.metadata);
+    constructor() {
+        super( Info.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         try {
             const db = database.getClient().db(config.mongodb.swapidb);
             const swgohPlayerCount = await db.collection("playerStats").estimatedDocumentCount();

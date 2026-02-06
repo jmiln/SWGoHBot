@@ -5,7 +5,7 @@ import cache from "../modules/cache.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import userReg from "../modules/users.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Patreon extends Command {
     static readonly metadata = {
@@ -47,11 +47,11 @@ export default class Patreon extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Patreon.metadata);
+    constructor() {
+        super( Patreon.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const subCom = interaction.options.getSubcommand() || "none";
         const fields = [];
         let description = null;

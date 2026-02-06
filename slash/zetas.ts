@@ -9,7 +9,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Zetas extends Command {
     static readonly metadata = {
@@ -58,11 +58,11 @@ export default class Zetas extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Zetas.metadata);
+    constructor() {
+        super( Zetas.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         let allycode = interaction.options.getString("allycode");
         allycode = await getAllyCode(interaction, allycode);
         if (!allycode) {

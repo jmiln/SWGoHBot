@@ -11,7 +11,7 @@ import cache from "../modules/cache.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Shardtimes extends Command {
     static readonly metadata = {
@@ -99,11 +99,11 @@ export default class Shardtimes extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Shardtimes.metadata);
+    constructor() {
+        super( Shardtimes.metadata);
     }
 
-    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommand = interaction.options.getSubcommand();
 
         // Only handle autocomplete for the remove subcommand's user option
@@ -150,7 +150,7 @@ export default class Shardtimes extends Command {
         }
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(interaction: BotInteraction, options: { level: number }) {
         // Shard ID will be guild.id-channel.id
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;

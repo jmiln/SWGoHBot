@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class MyArena extends Command {
@@ -28,11 +28,11 @@ export default class MyArena extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, MyArena.metadata);
+    constructor() {
+        super( MyArena.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         // eslint-disable-line no-unused-vars
         const ac = interaction.options.getString("allycode");
         const showStats = interaction.options.getBoolean("stats");

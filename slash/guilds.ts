@@ -21,7 +21,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, TWList } from "../types/types.ts";
+import type { BotInteraction, TWList } from "../types/types.ts";
 
 export default class Guilds extends Command {
     static readonly metadata = {
@@ -220,11 +220,11 @@ export default class Guilds extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Guilds.metadata);
+    constructor() {
+        super( Guilds.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const subCommand = interaction.options.getSubcommand();

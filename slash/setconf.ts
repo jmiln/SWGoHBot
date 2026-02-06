@@ -13,7 +13,7 @@ import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 // Set the base subargs up
 const options = {
@@ -121,11 +121,11 @@ export default class SetConf extends Command {
         permLevel: 3,
         options: Object.values(options),
     };
-    constructor(Bot: BotType) {
-        super(Bot, SetConf.metadata);
+    constructor() {
+        super( SetConf.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
@@ -352,7 +352,7 @@ export default class SetConf extends Command {
         return super.error(interaction, "It looks like nothing needed to be updated");
     }
 
-    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const subCommand = interaction.options.getSubcommand();
 

@@ -7,7 +7,7 @@ import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCha
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -57,11 +57,11 @@ export default class GrandArena extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, GrandArena.metadata);
+    constructor() {
+        super(GrandArena.metadata);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
@@ -179,7 +179,7 @@ export default class GrandArena extends Command {
         const user1ShipRoster = user1.roster.filter((ch) => ch.combatType === 2);
         const user2ShipRoster = user2.roster.filter((ch) => ch.combatType === 2);
 
-        const overview = getOverview(Bot, user1, user2, labels);
+        const overview = getOverview(user1, user2, labels);
         fields.push({
             name: "General Overview",
             value: overview,
@@ -557,7 +557,7 @@ function getModStats(user: SWAPIPlayer) {
     return userMods;
 }
 
-function getOverview(_Bot: BotType, user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: string]: string }) {
+function getOverview(user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: string]: string }) {
     const overview = [];
 
     // Arena stats

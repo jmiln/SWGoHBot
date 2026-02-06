@@ -4,7 +4,7 @@ import { getAllyCode, isAllyCode, toProperCase } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 const updateTypeStrings = {
     update: "Update every 5min",
@@ -89,11 +89,11 @@ export default class GuildTickets extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, GuildTickets.metadata);
+    constructor() {
+        super( GuildTickets.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(interaction: BotInteraction, options: { level: number }) {
         const userID = interaction.user.id;
         const user = await userReg.getUser(userID);
 

@@ -8,7 +8,7 @@ import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFoo
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, BotUnit } from "../types/types.ts";
+import type { BotInteraction, BotUnit } from "../types/types.ts";
 
 export default class Charactergear extends Command {
     static readonly metadata = {
@@ -44,11 +44,11 @@ export default class Charactergear extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Charactergear.metadata);
+    constructor() {
+        super( Charactergear.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         // Grab the various options
         const doExpand = interaction.options.getBoolean("expand");
         const gearLvl = interaction.options.getInteger("gearlevel") || 0;

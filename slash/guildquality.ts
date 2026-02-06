@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 interface PlayerQuality {
     name: string;
@@ -32,11 +32,11 @@ export default class GuildQuality extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, GuildQuality.metadata);
+    constructor() {
+        super( GuildQuality.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const allycode = interaction.options.getString("allycode");

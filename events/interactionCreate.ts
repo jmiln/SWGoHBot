@@ -12,7 +12,7 @@ import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
-import type { AnyBotInteraction, BotClient, BotInteraction, BotType, GuildAlias } from "../types/types.ts";
+import type { AnyBotInteraction, BotClient, BotInteraction, GuildAlias } from "../types/types.ts";
 
 // Constants
 const IGNORED_ERRORS = [
@@ -152,12 +152,12 @@ function processUnitAutocomplete(focusedOption: { name: string; value: string },
 /**
  * Handles autocomplete interactions
  */
-async function handleAutocomplete(Bot: BotType, client: BotClient, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
+async function handleAutocomplete(client: BotClient, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
     const focusedOption = interaction.options.getFocused(true);
 
     // If command has custom autocomplete handler, use it
     if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
-        await cmd.autocomplete(Bot, interaction, focusedOption);
+        await cmd.autocomplete(interaction, focusedOption);
         return;
     }
 
@@ -229,7 +229,7 @@ async function handleAutocomplete(Bot: BotType, client: BotClient, interaction: 
 /**
  * Handles chat input command interactions
  */
-async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction, cmd: slashCommand): Promise<void> {
+async function handleChatInputCommand(interaction: BotInteraction, cmd: slashCommand): Promise<void> {
     // Load guild settings
     interaction.guildSettings = await getGuildSettings({ cache: cache, guildId: interaction?.guild?.id });
 
@@ -253,7 +253,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
 
     // Execute command
     try {
-        await cmd.run(Bot, interaction, { level });
+        await cmd.run(interaction, { level });
     } catch (err) {
         console.error(err);
         // Special handling for test command
@@ -282,7 +282,7 @@ async function handleChatInputCommand(Bot: BotType, interaction: BotInteraction,
 
 export default {
     name: Events.InteractionCreate,
-    execute: async (Bot: BotType, client: BotClient, interaction: AnyBotInteraction) => {
+    execute: async (client: BotClient, interaction: AnyBotInteraction) => {
         // Filter out non-command interactions and bot users
         if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
         if (interaction.user.bot) return;
@@ -293,9 +293,9 @@ export default {
 
         // Route to appropriate handler
         if (interaction.isChatInputCommand()) {
-            await handleChatInputCommand(Bot, interaction, cmd);
+            await handleChatInputCommand(interaction, cmd);
         } else if (interaction.isAutocomplete()) {
-            await handleAutocomplete(Bot, client, interaction, cmd);
+            await handleAutocomplete(client, interaction, cmd);
         }
     },
 };

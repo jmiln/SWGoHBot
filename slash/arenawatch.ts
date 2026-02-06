@@ -7,7 +7,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
+import type { BotInteraction, UserConfig } from "../types/types.ts";
 
 interface InteractionOptions {
     subCommand: string;
@@ -433,11 +433,11 @@ export default class ArenaWatch extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, ArenaWatch.metadata);
+    constructor() {
+        super( ArenaWatch.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(interaction: BotInteraction, options: { level: number }) {
         const subCommand = interaction.options.getSubcommand();
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const target = subCommandGroup || subCommand;

@@ -1,4 +1,3 @@
-import { readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
 import config from "./config.js";
@@ -14,9 +13,7 @@ import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
-import type { BotClient, BotType } from "./types/types.ts";
-
-const Bot = {} as BotType;
+import type { BotClient } from "./types/types.ts";
 
 const client = new Client({
     intents: config.botIntents,
@@ -26,15 +23,6 @@ const client = new Client({
 
 // Regex to replace absolute paths with relative paths in error messages
 const CWD_REGEX = new RegExp(process.cwd(), "g");
-
-const jsonFromFile = async (file: string) => {
-    try {
-        return await readFile(file, { encoding: "utf-8" }).then(JSON.parse);
-    } catch (err) {
-        console.error(`[${myTime()}] Failed to load JSON from ${file}: ${err instanceof Error ? err.message : String(err)}`);
-        throw err;
-    }
-};
 
 const logErrorToChannel = (errorMsg: string) => {
     try {
@@ -46,9 +34,6 @@ const logErrorToChannel = (errorMsg: string) => {
         // Silently fail - we're already in error handling
     }
 };
-
-// Load the journeyReqs for Bot object
-const journeyReqs = await jsonFromFile("./data/journeyReqs.json");
 
 client.slashcmds = new Collection();
 
@@ -132,8 +117,8 @@ const init = async () => {
     // Initialize event functions
     eventFuncs.init(client);
 
-    slashHandler(Bot, client);
-    eventHandler(Bot, client);
+    slashHandler(client);
+    eventHandler(client);
 
     // Register graceful shutdown handlers
     process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));

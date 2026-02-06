@@ -10,7 +10,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
-import type { BotInteraction, BotLanguage, BotType, UserConfig } from "../types/types.ts";
+import type { BotInteraction, BotLanguage, UserConfig } from "../types/types.ts";
 
 export default class UserConf extends Command {
     static readonly metadata = {
@@ -146,11 +146,11 @@ export default class UserConf extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, UserConf.metadata);
+    constructor() {
+        super( UserConf.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 
@@ -491,7 +491,7 @@ export default class UserConf extends Command {
         }
     }
 
-    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 

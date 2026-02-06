@@ -5,7 +5,7 @@ import eventSocket from "../modules/eventSocket.ts";
 import { getShardId, isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import type { BotClient, BotType } from "../types/types.ts";
+import type { BotClient } from "../types/types.ts";
 
 // Constants
 const MAX_CONSECUTIVE_FAILURES = 5;
@@ -30,7 +30,7 @@ function cleanupIntervals(): void {
 
 export default {
     name: Events.ClientReady,
-    execute: async (Bot: BotType, client: BotClient) => {
+    execute: async (client: BotClient) => {
         const shardId = getShardId(client);
 
         // Initialize the logger with the shard ID
@@ -59,7 +59,7 @@ export default {
             readyString += ` Shard #${shardId}`;
 
             eventSocket.connect(shardId);
-            setupBackgroundTasks(Bot, client, shardId);
+            setupBackgroundTasks(client, shardId);
         }
 
         logger.log(readyString, "ready", true);
@@ -71,7 +71,7 @@ export default {
 /**
  * Sets up background tasks for arena tracking, guild updates, and event checking
  */
-function setupBackgroundTasks(Bot: BotType, client: BotClient, shardId: number): void {
+function setupBackgroundTasks(client: BotClient, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
     if (shardId === 0 && config.premium) {
         setupDataUpdateTasks(client, shardId);
@@ -79,7 +79,7 @@ function setupBackgroundTasks(Bot: BotType, client: BotClient, shardId: number):
 
     // Last shard handles event checking
     if (shardId + 1 === client.shard.count) {
-        setupEventChecking(Bot, shardId);
+        setupEventChecking(shardId);
     }
 }
 
@@ -122,7 +122,7 @@ function setupDataUpdateTasks(client: BotClient, shardId: number): void {
 /**
  * Sets up periodic event checking via socket connection
  */
-function setupEventChecking(_Bot: BotType, shardId: number): void {
+function setupEventChecking(shardId: number): void {
     let consecutiveFailures = 0;
 
     const intervalId = setInterval(async () => {

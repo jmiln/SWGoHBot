@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import raids from "../data/raiddmg.ts";
 import { toProperCase } from "../modules/functions.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class RaidDamage extends Command {
     static readonly metadata = {
@@ -68,11 +68,11 @@ export default class RaidDamage extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, RaidDamage.metadata);
+    constructor() {
+        super( RaidDamage.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const raid = interaction.options.getString("raid");
         const phase = interaction.options.getString("phase");
         let amount = interaction.options.getString("amount");

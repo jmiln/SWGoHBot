@@ -1,7 +1,7 @@
 import { codeBlock, InteractionContextType, Status } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export type ShardData = [number[], number, number, number]; // [ids, status, ping, guildCount]
 
@@ -31,11 +31,11 @@ export default class BotShards extends Command {
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, BotShards.metadata);
+    constructor() {
+        super( BotShards.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const shardCount = interaction.client.shard.count;
 
         try {

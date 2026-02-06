@@ -16,7 +16,7 @@ import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
@@ -204,11 +204,11 @@ export default class Event extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Event.metadata);
+    constructor() {
+        super( Event.metadata);
     }
 
-    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+    async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 
         const guildEvents = await getGuildEvents({
@@ -227,7 +227,7 @@ export default class Event extends Command {
         await interaction.respond(filteredEvents);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(interaction: BotInteraction, options: { level: number }) {
         if (!interaction?.guild) {
             return super.error(interaction, "Sorry, but this command is not available in DMs.");
         }

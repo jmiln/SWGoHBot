@@ -6,7 +6,7 @@ import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toPr
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Character extends Command {
     static readonly metadata = {
@@ -25,11 +25,11 @@ export default class Character extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Character.metadata);
+    constructor() {
+        super( Character.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const searchName = interaction.options.getString("character");
 
         const abilityMatMK3 = emoteStrings.abilityMatMK3;

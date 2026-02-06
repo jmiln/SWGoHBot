@@ -8,7 +8,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType, UserConfig } from "../types/types.ts";
+import type { BotInteraction, UserConfig } from "../types/types.ts";
 
 export default class Register extends Command {
     static readonly metadata = {
@@ -30,11 +30,11 @@ export default class Register extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Register.metadata);
+    constructor() {
+        super( Register.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(interaction: BotInteraction, options: { level: number }) {
         // eslint-disable-line no-unused-vars
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 

@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { formatCurrentTime, isValidZone } from "../modules/functions.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Time extends Command {
     static readonly metadata = {
@@ -17,11 +17,11 @@ export default class Time extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Time.metadata);
+    constructor() {
+        super( Time.metadata);
     }
 
-    run(_Bot: BotType, interaction: BotInteraction) {
+    run(interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
         const timezone = interaction.options.getString("timezone");
 

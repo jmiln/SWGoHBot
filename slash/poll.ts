@@ -6,7 +6,7 @@ import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Poll extends Command {
     static readonly metadata = {
@@ -75,11 +75,11 @@ export default class Poll extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Poll.metadata);
+    constructor() {
+        super( Poll.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(interaction: BotInteraction, options: { level: number }) {
         const action = interaction.options.getSubcommand();
 
         const poll = {

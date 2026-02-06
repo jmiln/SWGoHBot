@@ -10,7 +10,7 @@ import {
 import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 const defCmdData = {
     name: "",
@@ -26,16 +26,14 @@ const defCmdData = {
 export type CommandMetadata = typeof defCmdData;
 
 export default abstract class slashCommand {
-    abstract run(_Bot: BotType, _interaction: BotInteraction, _opts: { level: number });
-    Bot: BotType;
+    abstract run(_interaction: BotInteraction, _opts: { level: number });
     commandData: CommandMetadata;
     guildOnly: boolean;
 
     // Only really in setconf
-    async autocomplete?(Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
+    async autocomplete?(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
 
-    constructor(Bot: BotType, commandData: Partial<CommandMetadata> = {}) {
-        this.Bot = Bot;
+    constructor(commandData: Partial<CommandMetadata> = {}) {
         this.commandData = {
             ...defCmdData,
             ...commandData,

@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getCurrentWeekday, toProperCase } from "../modules/functions.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Challenges extends Command {
     static readonly metadata = {
@@ -27,11 +27,11 @@ export default class Challenges extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Challenges.metadata);
+    constructor() {
+        super( Challenges.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const guildConf = interaction.guildSettings;
 
         const challenges = {

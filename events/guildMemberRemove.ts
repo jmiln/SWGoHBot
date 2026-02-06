@@ -5,11 +5,11 @@ import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
-import type { BotClient, BotType } from "../types/types.ts";
+import type { BotClient } from "../types/types.ts";
 
 export default {
     name: Events.GuildMemberRemove,
-    async execute(_Bot: BotType, client: BotClient, member: GuildMember) {
+    async execute(client: BotClient, member: GuildMember) {
         const guildConf = await getGuildSettings({ cache: cache, guildId: member.guild.id });
 
         // Send departure message if enabled

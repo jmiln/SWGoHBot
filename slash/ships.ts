@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { characters, ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Ships extends Command {
     static readonly metadata = {
@@ -21,11 +21,11 @@ export default class Ships extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Ships.metadata);
+    constructor() {
+        super( Ships.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const searchName = interaction.options.getString("ship");
 
         // Find any characters that match that

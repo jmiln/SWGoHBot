@@ -52,28 +52,7 @@ export interface OmicronCategories {
     other: OmicronAbility[];
 }
 
-// All the mess we cram into the Bot object
-// - Should probably just make em get imported as needed instead
-export interface BotType {
-    sendWebhook: (webhookURL: string, data: object) => void;
-
-    guildCount: () => Promise<number>;
-    userCount: () => Promise<number>;
-    journeyReqs: JourneyReqs;
-    deployCommands: (force?: boolean) => Promise<string>;
-    languages: Record<BotLanguage, Language>;
-    cache: typeof import("../modules/cache.ts").default;
-    userReg: typeof import("../modules/users.ts").default;
-
-    // Data files attached to the bot
-    abilityCosts: Record<string, { [key: string]: number }>;
-    missions: Record<string, { [key: string]: { [key: string]: string | number } }>;
-    resources: Record<string, { [key: string]: string }>;
-    factions: string[];
-
-    help: HelpObject;
-    getDefaultGuildSettings: () => GuildConfigSettings;
-}
+// Bot object has been removed - all dependencies are now directly imported
 
 export interface JourneyReqs {
     [key: string]: {

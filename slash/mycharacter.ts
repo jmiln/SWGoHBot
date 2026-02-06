@@ -8,7 +8,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
     static readonly metadata = {
@@ -58,11 +58,11 @@ export default class MyCharacter extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, MyCharacter.metadata);
+    constructor() {
+        super( MyCharacter.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const searchType = interaction.options.getSubcommand();
         const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
         let allycode = interaction.options.getString("allycode");

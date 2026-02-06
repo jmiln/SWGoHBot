@@ -1,6 +1,6 @@
 import { codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Modsets extends Command {
     static readonly metadata = {
@@ -9,11 +9,11 @@ export default class Modsets extends Command {
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays how many mods you need per type for a full set",
     };
-    constructor(Bot: BotType) {
-        super(Bot, Modsets.metadata);
+    constructor() {
+        super( Modsets.metadata);
     }
 
-    run(_Bot: BotType, interaction: BotInteraction) {
+    run(interaction: BotInteraction) {
         return interaction.reply({ content: codeBlock("md", interaction.language.get("COMMAND_MODSETS_OUTPUT")) });
     }
 }

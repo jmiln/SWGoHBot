@@ -9,7 +9,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },
@@ -81,11 +81,11 @@ export default class Need extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Need.metadata);
+    constructor() {
+        super( Need.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");

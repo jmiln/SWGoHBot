@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import type slashCommand from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
-import type { BotClient, BotType } from "../types/types.ts";
+import type { BotClient } from "../types/types.ts";
 
 const slashDir = join(import.meta.dirname, "..", "slash");
 
@@ -16,10 +16,10 @@ function getCommandFiles(): string[] {
 /**
  * Loads a single slash command
  */
-async function loadCommandFile(Bot: BotType, commandName: string, cacheBust = false): Promise<slashCommand | null> {
+async function loadCommandFile(commandName: string, cacheBust = false): Promise<slashCommand | null> {
     const path = cacheBust ? `${slashDir}/${commandName}.ts?t=${Date.now()}` : `${slashDir}/${commandName}.ts`;
     const { default: command } = await import(path);
-    const cmd = new command(Bot);
+    const cmd = new command();
 
     if (!cmd.commandData.enabled) {
         logger.error(`Command ${commandName} is not enabled`);
@@ -29,14 +29,14 @@ async function loadCommandFile(Bot: BotType, commandName: string, cacheBust = fa
     return cmd;
 }
 
-export default async (Bot: BotType, client: BotClient) => {
+export default async (client: BotClient) => {
     const slashFiles = getCommandFiles();
     const slashError: string[] = [];
 
     for (const file of slashFiles) {
         const commandName = file.split(".")[0];
         try {
-            const cmd = await loadCommandFile(Bot, commandName);
+            const cmd = await loadCommandFile(commandName);
             if (cmd) {
                 client.slashcmds.set(cmd.commandData.name, cmd);
             }
@@ -60,7 +60,7 @@ export default async (Bot: BotType, client: BotClient) => {
 
     client.loadSlash = async (commandName) => {
         try {
-            const cmd = await loadCommandFile(Bot, commandName, true);
+            const cmd = await loadCommandFile(commandName, true);
             if (!cmd) {
                 return false;
             }

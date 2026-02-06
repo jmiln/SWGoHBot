@@ -9,7 +9,7 @@ import { getAllyCode, msgArray, toProperCase, updatedFooterStr } from "../module
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Faction extends Command {
     static readonly metadata = {
@@ -43,11 +43,11 @@ export default class Faction extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Faction.metadata);
+    constructor() {
+        super(Faction.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const query = interaction.options.getString("faction");
 
         if (!query) {

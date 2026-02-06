@@ -5,7 +5,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { arenaJumps } from "../data/constants/units.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Arenarank extends Command {
     static readonly metadata = {
@@ -28,11 +28,11 @@ export default class Arenarank extends Command {
         ],
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, Arenarank.metadata);
+    constructor() {
+        super( Arenarank.metadata);
     }
 
-    run(_Bot: BotType, interaction: BotInteraction) {
+    run(interaction: BotInteraction) {
         const currentRank = interaction.options.getInteger("rank");
         const rankHops = interaction.options.getInteger("hops") || 5;
 

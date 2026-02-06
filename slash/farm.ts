@@ -5,7 +5,7 @@ import { characters, charLocs, shipLocs, ships } from "../data/constants/units.t
 import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Farm extends Command {
     static readonly metadata = {
@@ -23,11 +23,11 @@ export default class Farm extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, Farm.metadata);
+    constructor() {
+        super( Farm.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
         let isChar = true;

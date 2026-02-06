@@ -6,7 +6,7 @@ import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class Showconf extends Command {
     static readonly metadata = {
@@ -16,11 +16,11 @@ export default class Showconf extends Command {
         guildOnly: false,
         permLevel: 3,
     };
-    constructor(Bot: BotType) {
-        super(Bot, Showconf.metadata);
+    constructor() {
+        super( Showconf.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const guildConf = await getGuildSettings({ cache: cache, guildId: interaction.guild.id });
 
         const outArr = [];

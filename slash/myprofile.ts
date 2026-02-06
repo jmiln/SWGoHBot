@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, BotType } from "../types/types.ts";
+import type { BotInteraction } from "../types/types.ts";
 
 export default class MyProfile extends Command {
     static readonly metadata = {
@@ -22,11 +22,11 @@ export default class MyProfile extends Command {
             },
         ],
     };
-    constructor(Bot: BotType) {
-        super(Bot, MyProfile.metadata);
+    constructor() {
+        super( MyProfile.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run(interaction: BotInteraction) {
         const allycodeIn = interaction.options.getString("allycode");
         const allycode = await getAllyCode(interaction, allycodeIn);
         if (!allycode) {
