@@ -1,4 +1,10 @@
-import { ApplicationCommandOptionType, InteractionContextType, type TextChannel } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type AutocompleteInteraction,
+    type AutocompleteFocusedOption,
+    InteractionContextType,
+    type TextChannel,
+} from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
@@ -58,6 +64,7 @@ export default class Shardtimes extends Command {
                         type: ApplicationCommandOptionType.String,
                         description: "A name or mention/ userID",
                         required: true,
+                        autocomplete: true,
                     },
                 ],
             },
@@ -94,6 +101,53 @@ export default class Shardtimes extends Command {
     };
     constructor(Bot: BotType) {
         super(Bot, Shardtimes.metadata);
+    }
+
+    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+        const subCommand = interaction.options.getSubcommand();
+
+        // Only handle autocomplete for the remove subcommand's user option
+        if (subCommand === "remove" && focusedOption.name === "user") {
+            if (!interaction?.guild || !interaction?.channel) {
+                return await interaction.respond([]);
+            }
+
+            const searchKey = focusedOption.value?.trim().toLowerCase() || "";
+
+            // Get shard times for this channel
+            const shardArr = await getGuildShardTimes({ cache: cache, guildId: interaction.guild.id });
+            const shardTimes = shardArr.find((sh) => sh.channelId === interaction.channel.id);
+
+            if (!shardTimes?.times) {
+                return await interaction.respond([]);
+            }
+
+            // Build list of users from shard times
+            const userList = Object.keys(shardTimes.times)
+                .map((userId) => {
+                    const userInfo = shardTimes.times[userId];
+                    const type = userInfo.type || "id";
+
+                    // Create display name based on type
+                    let displayName = userId;
+                    if (type === "name") {
+                        displayName = userId; // For names, userId is already the name
+                    } else {
+                        // For IDs, try to get the username
+                        const user = interaction.client.users.cache.get(userId);
+                        displayName = user ? `@${user.username}` : userId;
+                    }
+
+                    return {
+                        name: displayName,
+                        value: userId,
+                    };
+                })
+                .filter((user) => user.name.toLowerCase().includes(searchKey))
+                .slice(0, 25);
+
+            await interaction.respond(userList);
+        }
     }
 
     async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {

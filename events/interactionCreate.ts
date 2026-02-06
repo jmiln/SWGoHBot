@@ -4,7 +4,8 @@ import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
-import { characterNameList, shipNameList } from "../data/constants/units.ts";
+import { characterNameList, factions, shipNameList } from "../data/constants/units.ts";
+import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
@@ -174,6 +175,27 @@ async function handleAutocomplete(Bot: BotType, interaction: AutocompleteInterac
             // Process command name autocomplete
             const commands = Bot.commandList.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
             filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
+        } else if (focusedOption.name === "faction") {
+            // Process faction autocomplete
+            const searchKey = focusedOption.value?.trim().toLowerCase() || "";
+
+            if (interaction.commandName === "faction") {
+                // Use factionMap for /faction command (needs database query values)
+                filtered = factionMap
+                    .filter((faction) => faction.name.toLowerCase().includes(searchKey))
+                    .map((faction) => ({
+                        name: faction.name,
+                        value: faction.value,
+                    }));
+            } else {
+                // Use factions array for other commands (like grandarena)
+                filtered = factions
+                    .filter((faction) => faction.toLowerCase().includes(searchKey))
+                    .map((faction) => ({
+                        name: faction,
+                        value: faction.toLowerCase(),
+                    }));
+            }
         } else {
             // Process unit/character/ship autocomplete
             filtered = processUnitAutocomplete(focusedOption, aliases);

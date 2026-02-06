@@ -19,16 +19,11 @@ export default class Faction extends Command {
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
-                name: "faction_group_1",
+                name: "faction",
                 description: "The faction you want to look up",
                 type: ApplicationCommandOptionType.String,
-                choices: factionMap.slice(0, 20),
-            },
-            {
-                name: "faction_group_2",
-                description: "The faction you want to look up",
-                type: ApplicationCommandOptionType.String,
-                choices: factionMap.slice(20, 40),
+                autocomplete: true,
+                required: true,
             },
             {
                 name: "allycode",
@@ -53,16 +48,9 @@ export default class Faction extends Command {
     }
 
     async run(_Bot: BotType, interaction: BotInteraction) {
-        const faction1 = interaction.options.getString("faction_group_1");
-        const faction2 = interaction.options.getString("faction_group_2");
+        const query = interaction.options.getString("faction");
 
-        if (faction1 && faction2) {
-            return super.error(
-                interaction,
-                "This command only supports displaying one faction at a time, please don't choose more than that",
-            );
-        }
-        if (!faction1 && !faction2) {
+        if (!query) {
             return super.error(interaction, "You need to select a faction to search for");
         }
 
@@ -81,7 +69,6 @@ export default class Faction extends Command {
         }
 
         const factionChars = [];
-        const query = faction1 ? faction1 : faction2;
         let chars: RawCharacter[] = await cache.get(
             config.mongodb.swapidb,
             "units",

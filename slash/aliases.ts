@@ -1,4 +1,10 @@
-import { ApplicationCommandOptionType, type ChatInputCommandInteraction, InteractionContextType } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type AutocompleteInteraction,
+    type AutocompleteFocusedOption,
+    type ChatInputCommandInteraction,
+    InteractionContextType,
+} from "discord.js";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { characters, ships } from "../data/constants/units.ts";
@@ -43,6 +49,7 @@ export default class Aliases extends Command {
                         type: ApplicationCommandOptionType.String,
                         description: "The alias to remove",
                         required: true,
+                        autocomplete: true,
                     },
                 ],
             },
@@ -58,6 +65,34 @@ export default class Aliases extends Command {
         super(Bot, Aliases.metadata);
     }
 
+    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+        const subCommand = interaction.options.getSubcommand();
+
+        // Only handle autocomplete for the remove subcommand's alias option
+        if (subCommand === "remove" && focusedOption.name === "alias") {
+            if (!interaction?.guild?.id) {
+                return await interaction.respond([]);
+            }
+
+            const searchKey = focusedOption.value?.trim().toLowerCase() || "";
+
+            // Load guild aliases
+            const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: 1 });
+            const guildAliases: GuildAlias[] = res?.aliases || [];
+
+            // Filter and format aliases
+            const filtered = guildAliases
+                .filter((al) => al.alias.toLowerCase().includes(searchKey) || al.name.toLowerCase().includes(searchKey))
+                .map((al) => ({
+                    name: `${al.alias} - ${al.name}`,
+                    value: al.alias,
+                }))
+                .slice(0, 25);
+
+            await interaction.respond(filtered);
+        }
+    }
+
     async run(_Bot: BotType, interaction: BotInteraction) {
         // Make sure this is running in a server, since it doesn't do any good in DMs
         if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
@@ -68,8 +103,8 @@ export default class Aliases extends Command {
         const guildId = interaction.guild.id;
 
         // Load up all the guild's settings and such
-        const res = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
-        const guildAliases = res[0]?.aliases || [];
+        const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
+        const guildAliases = res?.aliases || [];
 
         if (action === "add") {
             // Make sure both fields were filled. They're both marked required so it shouldn't hit this, but just in case.

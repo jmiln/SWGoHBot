@@ -53,6 +53,7 @@ export default class GrandArena extends Command {
                 name: "faction",
                 type: ApplicationCommandOptionType.String,
                 description: "A faction to compare for the two players",
+                autocomplete: true,
             },
         ],
     };
