@@ -75,15 +75,38 @@ export default class TerritoryWar extends Command {
             guild1 = await swgohAPI.guild(user1, cooldown);
             if (!guild1?.roster?.length) {
                 problemArr.push(`The guild for ${user1} did not come back with anyone in it`);
+            } else {
+                // Filter out members with null allycodes (failed to fetch from API)
+                const oldLen = guild1.roster.length;
+                guild1.roster = guild1.roster.filter((m) => m.allyCode !== null);
+                if (!guild1.roster.length) {
+                    problemArr.push(`Could not get valid ally codes for any members in ${user1}'s guild`);
+                } else if (guild1.roster.length !== oldLen) {
+                    logger.log(`[TW] Filtered ${oldLen - guild1.roster.length} members with null allycodes from guild1`);
+                }
             }
-        } catch (_) {
+        } catch (err) {
+            logger.error(`[TW] Failed to get guild for ${user1}: ${err instanceof Error ? err.message : String(err)}`);
             problemArr.push(`I could not find a guild for "${user1}"`);
         }
 
         let guild2: SWAPIGuild = null;
         try {
             guild2 = await swgohAPI.guild(user2, cooldown);
-        } catch (_) {
+            if (!guild2?.roster?.length) {
+                problemArr.push(`The guild for ${user2} did not come back with anyone in it`);
+            } else {
+                // Filter out members with null allycodes (failed to fetch from API)
+                const oldLen = guild2.roster.length;
+                guild2.roster = guild2.roster.filter((m) => m.allyCode !== null);
+                if (!guild2.roster.length) {
+                    problemArr.push(`Could not get valid ally codes for any members in ${user2}'s guild`);
+                } else if (guild2.roster.length !== oldLen) {
+                    logger.log(`[TW] Filtered ${oldLen - guild2.roster.length} members with null allycodes from guild2`);
+                }
+            }
+        } catch (err) {
+            logger.error(`[TW] Failed to get guild for ${user2}: ${err instanceof Error ? err.message : String(err)}`);
             problemArr.push(`I could not find a guild for "${user2}"`);
         }
 
@@ -115,7 +138,8 @@ export default class TerritoryWar extends Command {
                     ).length;
                 }
             }
-        } catch (_) {
+        } catch (err) {
+            logger.error(`[TW] Failed to get stats for ${user1str}'s guild: ${err instanceof Error ? err.message : String(err)}`);
             problemArr.push(`I could not get stats for ${user1str}'s guild`);
         }
 
@@ -136,7 +160,8 @@ export default class TerritoryWar extends Command {
                     ).length;
                 }
             }
-        } catch (_) {
+        } catch (err) {
+            logger.error(`[TW] Failed to get stats for ${user2str}'s guild: ${err instanceof Error ? err.message : String(err)}`);
             problemArr.push(`I could not get stats for ${user2str}'s guild`);
         }
 

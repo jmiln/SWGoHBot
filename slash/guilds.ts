@@ -263,8 +263,16 @@ export default class Guilds extends Command {
 
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem: SWAPIGuildMember) => mem.guildMemberLevel > 1);
+
+            // Filter out members with null allycodes (failed to fetch from API)
+            const oldLen = guild.roster.length;
+            guild.roster = guild.roster.filter((m) => m.allyCode !== null);
+            if (guild.roster.length !== oldLen) {
+                logger.log(`[Guilds] Filtered ${oldLen - guild.roster.length} members with null allycodes`);
+            }
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
+            logger.error(`[Guilds] Failed to get guild: ${errorMessage}`);
             return super.error(interaction, codeBlock(`Issue getting guild: ${errorMessage}`));
         }
 

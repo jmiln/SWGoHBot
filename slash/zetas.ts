@@ -278,8 +278,20 @@ export default class Zetas extends Command {
                 // TODO  Lang this
                 if (!guild) return super.error(interaction, "Cannot find guild");
                 if (!guild.roster) return super.error(interaction, "Cannot find your guild's roster");
+
+                // Filter out members with null allycodes (failed to fetch from API)
+                const oldLen = guild.roster.length;
+                guild.roster = guild.roster.filter((m) => m.allyCode !== null);
+                if (!guild.roster.length) {
+                    return super.error(interaction, "Could not get valid ally codes for any members in the guild");
+                }
+                if (guild.roster.length !== oldLen) {
+                    logger.log(`[Zetas] Filtered ${oldLen - guild.roster.length} members with null allycodes`);
+                }
             } catch (e) {
-                return super.error(interaction, e.message);
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`[Zetas] Failed to get guild: ${errorMessage}`);
+                return super.error(interaction, errorMessage);
             }
             try {
                 guildGG = await swgohAPI.unitStats(
@@ -287,7 +299,9 @@ export default class Zetas extends Command {
                     cooldown,
                 );
             } catch (e) {
-                super.error(interaction, e.message);
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`[Zetas] Failed to get guild stats: ${errorMessage}`);
+                return super.error(interaction, errorMessage);
             }
 
             const zetas = {};

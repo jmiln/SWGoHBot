@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, updatedFooterStr } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
@@ -59,8 +60,17 @@ export default class GuildQuality extends Command {
 
             // Filter out any members that aren't in the guild
             guild.roster = guild.roster.filter((mem) => mem.guildMemberLevel > 1);
+
+            // Filter out members with null allycodes (failed to fetch from API)
+            const oldLen = guild.roster.length;
+            guild.roster = guild.roster.filter((m) => m.allyCode !== null);
+            if (guild.roster.length !== oldLen) {
+                logger.log(`[GuildQuality] Filtered ${oldLen - guild.roster.length} members with null allycodes`);
+            }
         } catch (e) {
-            return super.error(interaction, `Issue getting guild: ${codeBlock(e.message)}`);
+            const errorMessage = e instanceof Error ? e.message : String(e);
+            logger.error(`[GuildQuality] Failed to get guild: ${errorMessage}`);
+            return super.error(interaction, `Issue getting guild: ${codeBlock(errorMessage)}`);
         }
 
         if (!guild) {

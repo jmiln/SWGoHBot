@@ -974,7 +974,7 @@ class SWAPI {
                 tempGuild = await this.fetchGuild(player.guildId);
             } catch (err) {
                 // Probably API timeout
-                logger.log(`[SWAPI-guild] Couldn't update guild for: ${player.name}`);
+                logger.error(`[SWAPI-guild] Couldn't update guild for: ${player.name}: ${err instanceof Error ? err.message : String(err)}`);
                 throw err;
             }
             // logger.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
@@ -985,8 +985,10 @@ class SWAPI {
             }
 
             if (!tempGuild?.roster || !tempGuild.name) {
-                if (guild[0]?.roster) {
-                    return guild[0];
+                logger.error(`[SWAPI-guild] Fresh fetch returned empty roster or no name. roster: ${tempGuild?.roster?.length || 0}, name: ${tempGuild?.name || "none"}`);
+                if (guild?.roster) {
+                    logger.log(`[SWAPI-guild] Falling back to cached guild with ${guild.roster.length} members`);
+                    return guild;
                 }
                 // logger.log("Broke getting tempGuild: " + inspect(tempGuild.error));
                 // throw new Error("Could not find your guild. The API is likely overflowing.");
@@ -995,12 +997,12 @@ class SWAPI {
             if (tempGuild.roster?.length !== tempGuild.members) {
                 logger.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
-            guild = await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
+            await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
+            return tempGuild;
         } else {
             /** If found and valid, serve from cache */
-            guild = guild[0];
+            return guild;
         }
-        return guild;
     }
 
     private async fetchGuild(guildId: string) {
@@ -1057,35 +1059,39 @@ class SWAPI {
                 memberContribution: number;
             }) => {
                 // Grab each player and process their info
-                const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
+                try {
+                    const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
 
-                let gp: number;
-                let gpChar: number;
-                let gpShip: number;
-                for (const stat of profileStat) {
-                    if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
-                        gpShip = Number(stat.value);
-                    } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
-                        gp = Number(stat.value);
-                    } else if (stat.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
-                        gpChar = Number(stat.value);
+                    let gp: number;
+                    let gpChar: number;
+                    let gpShip: number;
+                    for (const stat of profileStat) {
+                        if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
+                            gpShip = Number(stat.value);
+                        } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
+                            gp = Number(stat.value);
+                        } else if (stat.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME") {
+                            gpChar = Number(stat.value);
+                        }
+                        if (gp && gpChar && gpShip) break;
                     }
-                    if (gp && gpChar && gpShip) break;
-                }
 
-                members.push({
-                    ...rest,
-                    id: playerId,
-                    guildMemberLevel: memberLevel,
-                    memberContribution,
-                    name,
-                    level,
-                    allyCode: Number(allyCode),
-                    gp,
-                    gpChar,
-                    gpShip,
-                    updated: Date.now(),
-                });
+                    members.push({
+                        ...rest,
+                        id: playerId,
+                        guildMemberLevel: memberLevel,
+                        memberContribution,
+                        name,
+                        level,
+                        allyCode: Number(allyCode),
+                        gp,
+                        gpChar,
+                        gpShip,
+                        updated: Date.now(),
+                    });
+                } catch (err) {
+                    logger.error(`[formatGuild] Failed to fetch player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
+                }
             },
         );
 
