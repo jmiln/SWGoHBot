@@ -31,6 +31,7 @@ import type {
     BotUnitMods,
     JourneyReqs,
     Location,
+    OmicronCategories,
     PatreonMember,
     PatreonUser,
     UnitLocation,
@@ -1177,6 +1178,7 @@ function validateGameData(gameData: GameData): void {
     if (missingKeys.length > 0) {
         throw new Error(`[validateGameData] Missing or invalid gameData keys: ${missingKeys.join(", ")}`);
     }
+    console.log("[validateGameData] Validated gameData");
 }
 
 async function updateGameData(locales: Locales, metadata: Metadata, cache: BotCache, comlinkStub: ComlinkStub) {
@@ -1202,10 +1204,16 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         // Validate gameData structure before processing
         validateGameData(gameData);
 
+        debugTime("Finished processing Abilities");
         const { abilitiesOut, skillMap } = processAbilities(gameData.ability, gameData.skill);
         await saveFile(path.join(DATA_DIR_PATH, "skillMap.json"), skillMap, false);
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales, cache);
-        debugLog("Finished processing Abilities");
+        debugTimeEnd("Finished processing Abilities");
+
+        debugTime("Finished processing Omicrons");
+        const omicrons = sortOmicrons(abilitiesOut, locales);
+        await saveFile(path.join(DATA_DIR_PATH, "omicrons.json"), omicrons, false);
+        debugTimeEnd("Finished processing Omicrons");
 
         debugTime("Finished processing Categories");
         const catMapOut = (await processCategories(gameData.category)) as { id: string; descKey: string }[];
@@ -1233,6 +1241,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", locales, cache, ["eng_us"]);
         debugTimeEnd("Finished processing Recipes");
 
+        debugTime("Finished processing Units");
         const processedUnitList = processUnits(gameData.units);
 
         // Put all the baseId and english names together for later use with the crew
@@ -1259,10 +1268,11 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         );
         await saveFile(CHAR_FILE_PATH, sortByName(charactersOut));
         await saveFile(SHIP_FILE_PATH, sortByName(shipsOut));
-        debugLog("Finished processing Units");
+        debugTimeEnd("Finished processing Units");
 
+        debugTime("Finished processing Journey Reqs");
         await processJourneyReqs(gameData);
-        debugLog("Finished processing Journey Reqs");
+        debugTimeEnd("Finished processing Journey Reqs");
 
         const raidNamesOut = saveRaidNames(locales);
         await saveFile(RAID_NAMES_FILE_PATH, raidNamesOut);
@@ -1426,6 +1436,51 @@ function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: co
         };
     }
     return { abilitiesOut, skillMap };
+}
+
+function sortOmicrons(abilitiesOut: ComlinkAbility[], locales: Locales): OmicronCategories {
+    const omicronTypes: OmicronCategories = {
+        tw: [],
+        ga3: [],
+        ga: [],
+        tb: [],
+        raid: [],
+        conquest: [],
+        other: [],
+    };
+
+    // Filter for omicron abilities only
+    const omicronAbilities = abilitiesOut.filter((ab) => ab.isOmicron);
+
+    for (const ab of omicronAbilities) {
+        // Get English description text for categorization
+        const descText = locales.eng_us[ab.descKey]?.toLowerCase() || "";
+
+        const omicronData = {
+            skillId: ab.skillId,
+            descKey: ab.descKey,
+        };
+
+        // Categorize by checking description keywords
+        // Check ga3 before ga to avoid false positives
+        if (descText.includes("3v3 grand arenas")) {
+            omicronTypes.ga3.push(omicronData);
+        } else if (descText.includes("grand arenas")) {
+            omicronTypes.ga.push(omicronData);
+        } else if (descText.includes("territory war")) {
+            omicronTypes.tw.push(omicronData);
+        } else if (descText.includes("territory battle")) {
+            omicronTypes.tb.push(omicronData);
+        } else if (descText.includes("conquest")) {
+            omicronTypes.conquest.push(omicronData);
+        } else if (descText.includes("raid")) {
+            omicronTypes.raid.push(omicronData);
+        } else {
+            omicronTypes.other.push(omicronData);
+        }
+    }
+
+    return omicronTypes;
 }
 
 function processCategories(catsIn: comlinkComponents["Category"][]) {
