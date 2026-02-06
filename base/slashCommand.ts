@@ -105,8 +105,9 @@ export default abstract class slashCommand {
                         content: "An error occurred while processing your command. Please try again later.",
                         ephemeral: true,
                     })
-                    .catch(() => {
-                        // If we can't reply, at least we tried
+                    .catch((replyErr: unknown) => {
+                        const replyErrMsg = replyErr instanceof Error ? replyErr.message : String(replyErr);
+                        logger.error(`[base/slashCommand ${this.commandData.name}] Failed to send error reply: ${replyErrMsg}`);
                     });
             }
         }

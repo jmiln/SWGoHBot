@@ -230,7 +230,9 @@ export default class Shardtimes extends Command {
                     }
                     return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_USER_ADDED") });
                 })
-                .catch(() => {
+                .catch((err: unknown) => {
+                    const message = err instanceof Error ? err.message : String(err);
+                    logger.error(`[shardtimes add] Failed to save shard times for guild ${interaction.guild.id}: ${message}`);
                     return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
                 });
         } else if (action === "remove") {
@@ -256,7 +258,9 @@ export default class Shardtimes extends Command {
                     .then(() => {
                         return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS") });
                     })
-                    .catch(() => {
+                    .catch((err: unknown) => {
+                        const message = err instanceof Error ? err.message : String(err);
+                        logger.error(`[shardtimes remove] Failed to save shard times for guild ${interaction.guild.id}: ${message}`);
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
                     });
             } else {
@@ -311,7 +315,9 @@ export default class Shardtimes extends Command {
                     .then(() => {
                         return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })
-                    .catch(() => {
+                    .catch((err: unknown) => {
+                        const message = err instanceof Error ? err.message : String(err);
+                        logger.error(`[shardtimes copy] Failed to save shard times for guild ${interaction.guild.id}: ${message}`);
                         return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
                     });
             }

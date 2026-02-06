@@ -358,7 +358,11 @@ class SWAPI {
                 let updatedBare: SWAPIPlayer[] = [];
                 try {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
-                        const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch(() => {});
+                        const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch((err: unknown) => {
+                            const message = err instanceof Error ? err.message : String(err);
+                            logger.error(`[swapi getPlayer] Failed to fetch player ${ac}: ${message}`);
+                            return null;
+                        });
                         if (tempBare) {
                             const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                             updatedBare.push(formattedComlinkPlayer);
@@ -370,7 +374,11 @@ class SWAPI {
                     if (missingRosters.length) {
                         updatedBare = updatedBare.filter((p) => p?.roster?.length);
                         for (const missing of missingRosters) {
-                            const tempBare = await comlinkStub.getPlayer(missing?.allyCode?.toString()).catch(() => {});
+                            const tempBare = await comlinkStub.getPlayer(missing?.allyCode?.toString()).catch((err: unknown) => {
+                                const message = err instanceof Error ? err.message : String(err);
+                                logger.error(`[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${message}`);
+                                return null;
+                            });
                             if (tempBare) {
                                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                                 updatedBare.push(formattedComlinkPlayer);
