@@ -152,7 +152,7 @@ function processUnitAutocomplete(focusedOption: { name: string; value: string },
 /**
  * Handles autocomplete interactions
  */
-async function handleAutocomplete(Bot: BotType, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
+async function handleAutocomplete(Bot: BotType, client: BotClient, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
     const focusedOption = interaction.options.getFocused(true);
 
     // If command has custom autocomplete handler, use it
@@ -173,7 +173,8 @@ async function handleAutocomplete(Bot: BotType, interaction: AutocompleteInterac
             filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
         } else if (focusedOption.name === "command") {
             // Process command name autocomplete
-            const commands = Bot.commandList.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
+            const commandNames = [...client.slashcmds.keys()];
+            const commands = commandNames.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
             filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
         } else if (focusedOption.name === "faction") {
             // Process faction autocomplete
@@ -294,7 +295,7 @@ export default {
         if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(Bot, interaction, cmd);
         } else if (interaction.isAutocomplete()) {
-            await handleAutocomplete(Bot, interaction, cmd);
+            await handleAutocomplete(Bot, client, interaction, cmd);
         }
     },
 };

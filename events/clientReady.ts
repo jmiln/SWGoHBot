@@ -53,8 +53,6 @@ export default {
             return null;
         }
 
-        Bot.commandList = [...client.slashcmds.keys()];
-
         let readyString = `${client.user.username} is ready to serve in ${client.guilds.cache.size} servers.`;
 
         if (client.shard) {

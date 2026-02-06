@@ -8,7 +8,6 @@ import type {
     IntentsBitField,
     Partials,
 } from "discord.js";
-import type { Socket } from "socket.io-client";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import type { GuildConfigSettings } from "./guildConfig_types.ts";
@@ -60,7 +59,6 @@ export interface BotType {
 
     guildCount: () => Promise<number>;
     userCount: () => Promise<number>;
-    socket: Socket | null;
     journeyNames: JourneyName[];
     journeyReqs: JourneyReqs;
     deployCommands: (force?: boolean) => Promise<string>;
@@ -75,7 +73,6 @@ export interface BotType {
     factions: string[];
 
     help: HelpObject;
-    commandList: string[];
     getDefaultGuildSettings: () => GuildConfigSettings;
 }
 
