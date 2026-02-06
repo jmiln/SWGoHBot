@@ -1,13 +1,85 @@
-import type { Socket } from "socket.io-client";
+import { io, type Socket } from "socket.io-client";
+import config from "../config.js";
+import logger from "./Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
-const DEFAULT_TIMEOUT = 5000; // 5 seconds
+const SOCKET_CONFIG = {
+    reconnection: true,
+    reconnectionAttempts: 10,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 30000,
+    timeout: 5000,
+};
 
-export class SocketHelper {
-    private socket: Socket;
+const ERROR_THROTTLE_MS = 60000;
+const DEFAULT_TIMEOUT = 5000;
 
-    constructor(socket: Socket) {
-        this.socket = socket;
+/**
+ * Singleton socket.io client for cross-shard event communication.
+ * Manages connection lifecycle and provides high-level API for event operations.
+ */
+class EventSocket {
+    private static instance: EventSocket;
+    private socket: Socket | null = null;
+    private shardId: number | null = null;
+    private lastErrorTime = 0;
+    private errorCount = 0;
+
+    private constructor() {
+        // Private constructor prevents direct instantiation
+    }
+
+    /**
+     * Get the singleton instance
+     */
+    static getInstance(): EventSocket {
+        if (!EventSocket.instance) {
+            EventSocket.instance = new EventSocket();
+        }
+        return EventSocket.instance;
+    }
+
+    /**
+     * Initialize the socket connection for this shard
+     */
+    connect(shardId: number): void {
+        if (this.socket?.connected) {
+            logger.log(`[EventSocket] Already connected on shard ${shardId}`);
+            return;
+        }
+
+        this.shardId = shardId;
+        this.socket = io(`ws://localhost:${config.eventServe.port}`, SOCKET_CONFIG);
+
+        this.socket.on("connect", () => {
+            console.log(`  [${this.shardId}] Connected to EventMgr socket!`);
+            this.errorCount = 0;
+        });
+
+        this.socket.on("connect_error", (err) => this.logThrottledError("connection failed", err));
+        this.socket.on("reconnect_error", (err) => this.logThrottledError("reconnect failed", err));
+        this.socket.on("connect_failed", (err) => this.logThrottledError("connect failed", err));
+        this.socket.on("disconnect", (reason) => {
+            console.log(`  [${this.shardId}] EventMgr disconnected: ${reason}`);
+        });
+    }
+
+    /**
+     * Disconnect and cleanup the socket
+     */
+    disconnect(): void {
+        if (this.socket) {
+            this.socket.disconnect();
+            this.socket = null;
+            console.log(`  [${this.shardId}] Socket.io disconnected`);
+        }
+    }
+
+    /**
+     * Check if socket is connected
+     */
+    isConnected(): boolean {
+        return this.socket?.connected ?? false;
     }
 
     /**
@@ -62,7 +134,7 @@ export class SocketHelper {
             const eventArr = Array.isArray(events) ? events : [events];
             return eventArr.map((event) => ({
                 success: false,
-                error: `EventMgr unavailable: ${error.message || "Connection failed"}`,
+                error: `EventMgr unavailable: ${error instanceof Error ? error.message : "Connection failed"}`,
                 event,
             }));
         }
@@ -81,7 +153,7 @@ export class SocketHelper {
         } catch (error) {
             return {
                 success: false,
-                error: `EventMgr unavailable: ${error.message || "Connection failed"}`,
+                error: `EventMgr unavailable: ${error instanceof Error ? error.message : "Connection failed"}`,
                 eventName,
             };
         }
@@ -132,10 +204,18 @@ export class SocketHelper {
         }
     }
 
-    /**
-     * Check if the socket is connected
-     */
-    isConnected(): boolean {
-        return this.socket?.connected ?? false;
+    private logThrottledError(type: string, err?: Error): void {
+        const now = Date.now();
+        this.errorCount++;
+
+        if (now - this.lastErrorTime > ERROR_THROTTLE_MS) {
+            const message = err?.message || "Unknown error";
+            console.error(`  [${this.shardId}] EventMgr ${type}: ${message} (${this.errorCount} errors in last minute)`);
+            this.lastErrorTime = now;
+            this.errorCount = 0;
+        }
     }
 }
+
+// Export singleton instance
+export default EventSocket.getInstance();

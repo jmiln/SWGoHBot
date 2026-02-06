@@ -10,11 +10,11 @@ import {
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
+import eventSocket from "../modules/eventSocket.ts";
 import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray, toProperCase } from "../modules/functions.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import { SocketHelper } from "../modules/socketHelper.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import type { BotInteraction, BotType } from "../types/types.ts";
 
@@ -227,7 +227,7 @@ export default class Event extends Command {
         await interaction.respond(filteredEvents);
     }
 
-    async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
+    async run(_Bot: BotType, interaction: BotInteraction, options: { level: number }) {
         if (!interaction?.guild) {
             return super.error(interaction, "Sorry, but this command is not available in DMs.");
         }
@@ -260,7 +260,6 @@ export default class Event extends Command {
         }
 
         const guildEvents: GuildConfigEvent[] = await getGuildEvents({ cache: cache, guildId: interaction.guild.id });
-        const socketHelper = new SocketHelper(Bot.socket);
 
         switch (action) {
             case "create": {
@@ -306,7 +305,7 @@ export default class Event extends Command {
                     return super.error(interaction, validEV.str);
                 }
 
-                const res = await socketHelper.addEvents(interaction.guild.id, [validEV.event]);
+                const res = await eventSocket.addEvents(interaction.guild.id, [validEV.event]);
                 const ev = res[0];
 
                 if (!ev.success) {
@@ -385,7 +384,7 @@ export default class Event extends Command {
                 }
 
                 // If there were no errors in the setup, go ahead and add all the events in, then tell em as such
-                const res = await socketHelper.addEvents(
+                const res = await eventSocket.addEvents(
                     interaction.guild.id,
                     result.map((e) => e.event),
                 );
@@ -440,7 +439,7 @@ export default class Event extends Command {
 
                 if (eventName) {
                     // If they are looking to show a specific event
-                    const eventIn = await socketHelper.getEventByName(interaction.guild.id, eventName);
+                    const eventIn = await eventSocket.getEventByName(interaction.guild.id, eventName);
 
                     // If it doesn't find the event, say so
                     if (!eventIn) return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
@@ -482,15 +481,15 @@ export default class Event extends Command {
                 }
                 if (evFilter?.length) {
                     const filterArr = evFilter.split(" ");
-                    const eventList = await socketHelper.getEventsByFilter(interaction.guild.id, filterArr);
+                    const eventList = await eventSocket.getEventsByFilter(interaction.guild.id, filterArr);
                     return await sendPaged({ eventList, minimal, page });
                 }
-                const eventList = await socketHelper.getEventsByGuild(interaction.guild.id);
+                const eventList = await eventSocket.getEventsByGuild(interaction.guild.id);
                 return await sendPaged({ eventList, minimal, page });
             }
             case "delete": {
                 const eventName = interaction.options.getString("name");
-                const result = await socketHelper.deleteEvent(interaction.guild.id, eventName);
+                const result = await eventSocket.deleteEvent(interaction.guild.id, eventName);
 
                 if (result.success) {
                     return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
@@ -501,7 +500,7 @@ export default class Event extends Command {
                 const eventName = interaction.options.getString("name");
 
                 // As long as it does exist, go ahead and try triggering it
-                const eventIn = await socketHelper.getEventByName(interaction.guild.id, eventName);
+                const eventIn = await eventSocket.getEventByName(interaction.guild.id, eventName);
 
                 let channel = null;
                 const announceMessage = `**${eventIn?.name || eventName}**\n${eventIn?.message || ""}`;

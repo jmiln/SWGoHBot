@@ -9,6 +9,7 @@ import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import database from "./modules/database.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
+import eventSocket from "./modules/eventSocket.ts";
 import { myTime, reloadLanguages } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
@@ -93,10 +94,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
         swgohAPI.cleanup();
 
         // Disconnect socket.io connection
-        if (Bot.socket) {
-            Bot.socket.disconnect();
-            console.log(`[${myTime()}] Socket.io disconnected`);
-        }
+        eventSocket.disconnect();
 
         // Destroy Discord client connection
         await client.destroy();
