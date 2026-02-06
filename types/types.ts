@@ -38,6 +38,21 @@ export interface JourneyName {
     aliases: string[];
 }
 
+export interface OmicronAbility {
+    skillId: string;
+    descKey: string;
+}
+
+export interface OmicronCategories {
+    tw: OmicronAbility[];
+    ga3: OmicronAbility[];
+    ga: OmicronAbility[];
+    tb: OmicronAbility[];
+    raid: OmicronAbility[];
+    conquest: OmicronAbility[];
+    other: OmicronAbility[];
+}
+
 // All the mess we cram into the Bot object
 // - Should probably just make em get imported as needed instead
 export interface BotType {
@@ -53,25 +68,6 @@ export interface BotType {
     languages: Record<BotLanguage, Language>;
     cache: typeof import("../modules/cache.ts").default;
     userReg: typeof import("../modules/users.ts").default;
-
-    omicrons: {
-        tw: string[];
-        ga3: string[];
-        ga: string[];
-        tb: string[];
-        raid: string[];
-        conquest: string[];
-        other: string[];
-    };
-    sortOmicrons: () => Promise<{
-        tw: string[];
-        ga3: string[];
-        ga: string[];
-        tb: string[];
-        raid: string[];
-        conquest: string[];
-        other: string[];
-    }>;
 
     // Data files attached to the bot
     abilityCosts: Record<string, { [key: string]: number }>;

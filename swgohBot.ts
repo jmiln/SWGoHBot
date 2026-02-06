@@ -9,7 +9,7 @@ import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import database from "./modules/database.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
-import { myTime, reloadLanguages, sortOmicrons } from "./modules/functions.ts";
+import { myTime, reloadLanguages } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
@@ -152,8 +152,6 @@ const init = async () => {
 
     // Initialize event functions
     eventFuncs.init(client);
-
-    Bot.omicrons = await sortOmicrons(cache);
 
     slashHandler(Bot, client);
     eventHandler(Bot, client);

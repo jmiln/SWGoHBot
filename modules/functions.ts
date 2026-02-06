@@ -17,7 +17,6 @@ import Language from "../base/Language.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { allUnitsList, factions } from "../data/constants/units.ts";
-import type { BotCache } from "../types/cache_types.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotClient, BotInteraction, BotUnit, UserConfig } from "../types/types.ts";
@@ -663,62 +662,6 @@ export function trimFloat(num: number, dec = 1): string {
         return num.toString();
     }
     return num.toFixed(dec);
-}
-
-// Check the abilities table in the swapi db, and sort out what each omicron is good for
-export async function sortOmicrons(cache: BotCache): Promise<{
-    tw: string[];
-    ga3: string[];
-    ga: string[];
-    tb: string[];
-    raid: string[];
-    conquest: string[];
-    other: string[];
-}> {
-    // Get all omicron abilities
-    const abilityList = (await cache.get(
-        config.mongodb.swapidb,
-        "abilities",
-        {
-            isOmicron: true,
-            language: "eng_us",
-        },
-        {
-            skillId: 1,
-            _id: 0,
-            descKey: 1,
-        },
-    )) as { skillId: string; descKey: string }[];
-
-    const omicronTypes = {
-        tw: [],
-        ga3: [],
-        ga: [],
-        tb: [],
-        raid: [],
-        conquest: [],
-        other: [],
-    };
-
-    for (const ab of abilityList) {
-        const key = ab.descKey.toLowerCase();
-        if (key.includes("3v3 grand arenas")) {
-            omicronTypes.ga3.push(ab.skillId);
-        } else if (key.includes("grand arenas")) {
-            omicronTypes.ga.push(ab.skillId);
-        } else if (key.includes("territory war")) {
-            omicronTypes.tw.push(ab.skillId);
-        } else if (key.includes("territory battle")) {
-            omicronTypes.tb.push(ab.skillId);
-        } else if (key.includes("conquest")) {
-            omicronTypes.conquest.push(ab.skillId);
-        } else if (key.includes("raid")) {
-            omicronTypes.raid.push(ab.skillId);
-        } else {
-            omicronTypes.other.push(ab.skillId);
-        }
-    }
-    return omicronTypes;
 }
 
 // Function to see if we have permission to see/ send messages in a given channel

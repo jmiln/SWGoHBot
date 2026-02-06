@@ -1,23 +1,22 @@
-import { readFile } from "fs/promises";
-import type { BotUnit,UnitLocation } from "../../types/types.ts";
-
-const jsonFromFile = async (file: string) => await readFile(file, "utf-8").then(JSON.parse);
+import { readJSON } from "../../modules/functions.ts";
+import type { BotUnit, OmicronCategories, UnitLocation } from "../../types/types.ts";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 const dataDir = __dirname + "/../../data";
 
-export const abilityCosts = await jsonFromFile(`${dataDir}/abilityCosts.json`);
-export const acronyms = await jsonFromFile(`${dataDir}/acronyms.json`);
-export const arenaJumps = await jsonFromFile(`${dataDir}/arenaJumps.json`);
-export const charLocs: UnitLocation[] = await jsonFromFile(`${dataDir}/charLocations.json`);
-export const characters: BotUnit[] = await jsonFromFile(`${dataDir}/characters.json`);
-export const journeyReqs = await jsonFromFile(`${dataDir}/journeyReqs.json`);
-export const missions = await jsonFromFile(`${dataDir}/missions.json`);
-export const raidNames = await jsonFromFile(`${dataDir}/raidNames.json`);
-export const resources = await jsonFromFile(`${dataDir}/resources.json`);
-export const shipLocs = await jsonFromFile(`${dataDir}/shipLocations.json`);
-export const ships: BotUnit[] = await jsonFromFile(`${dataDir}/ships.json`);
-export const timezones = await jsonFromFile(`${dataDir}/timezones.json`);
+export const abilityCosts = await readJSON(`${dataDir}/abilityCosts.json`);
+export const acronyms = await readJSON(`${dataDir}/acronyms.json`);
+export const arenaJumps = await readJSON(`${dataDir}/arenaJumps.json`);
+export const charLocs: UnitLocation[] = await readJSON(`${dataDir}/charLocations.json`);
+export const characters: BotUnit[] = await readJSON(`${dataDir}/characters.json`);
+export const journeyReqs = await readJSON(`${dataDir}/journeyReqs.json`);
+export const missions = await readJSON(`${dataDir}/missions.json`);
+export const omicrons: OmicronCategories = await readJSON(`${dataDir}/omicrons.json`);
+export const raidNames = await readJSON(`${dataDir}/raidNames.json`);
+export const resources = await readJSON(`${dataDir}/resources.json`);
+export const shipLocs = await readJSON(`${dataDir}/shipLocations.json`);
+export const ships: BotUnit[] = await readJSON(`${dataDir}/ships.json`);
+export const timezones = await readJSON(`${dataDir}/timezones.json`);
 
 export const factions: string[] = [...new Set(characters.reduce((a, b) => a.concat(b.factions), []))];
 

@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import { omicrons } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
@@ -93,6 +94,9 @@ export default class TerritoryWar extends Command {
 
         const unitChecklist = await getFullTWList({ cache: cache, guildId: interaction.guild?.id });
 
+        // Extract TW omicron skill IDs for filtering
+        const twOmicronIds = omicrons.tw.map((o) => o.skillId);
+
         // Run each of the players through to get the stats of each players' roster
         let guild1Stats: SWAPIPlayer[] = null;
         const guild1AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
@@ -107,7 +111,7 @@ export default class TerritoryWar extends Command {
                     guild1AbilityStats.zetas += unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier).length;
                     guild1AbilityStats.omicrons += unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier).length;
                     guild1AbilityStats.twOmicrons += unit.skills.filter(
-                        (s) => s.isOmicron && s.tier >= s.omicronTier && Bot.omicrons.tw.includes(s.id),
+                        (s) => s.isOmicron && s.tier >= s.omicronTier && twOmicronIds.includes(s.id),
                     ).length;
                 }
             }
@@ -128,7 +132,7 @@ export default class TerritoryWar extends Command {
                     guild2AbilityStats.zetas += unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier).length;
                     guild2AbilityStats.omicrons += unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier).length;
                     guild2AbilityStats.twOmicrons += unit.skills.filter(
-                        (s) => s.isOmicron && s.tier >= s.omicronTier && Bot.omicrons.tw.includes(s.id),
+                        (s) => s.isOmicron && s.tier >= s.omicronTier && twOmicronIds.includes(s.id),
                     ).length;
                 }
             }
