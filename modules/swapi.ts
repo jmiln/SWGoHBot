@@ -818,8 +818,8 @@ class SWAPI {
 
     // Function for updating all the stored character data from the game
     async character(defId: string): Promise<RawCharacter> {
-        const outChar: RawCharacter[] = await cache.get(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 });
-        return outChar?.[0];
+        const outChar = (await cache.getOne(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 })) as RawCharacter;
+        return outChar;
     }
 
     // Get the gear for a given character
@@ -851,7 +851,7 @@ class SWAPI {
         if (!defId) throw new Error("You need to specify a defId");
 
         // All the skills should be loaded, so just get em from the cache
-        const uOut: SWAPIUnit[] = await cache.get(
+        const uOut = (await cache.getOne(
             config.mongodb.swapidb,
             "units",
             { baseId: defId, language: thisLang.toLowerCase() as never },
@@ -859,8 +859,8 @@ class SWAPI {
                 _id: 0,
                 updated: 0,
             },
-        );
-        return uOut?.[0];
+        )) as SWAPIUnit;
+        return uOut;
     }
 
     // Get gear recipes
@@ -1127,23 +1127,10 @@ class SWAPI {
         };
     }
 
-    async guildByName(gName: string) {
-        try {
-            const guild = await cache.get(config.mongodb.swapidb, "guilds", { name: gName });
-
-            if (!guild || !guild[0]) {
-                return null;
-            }
-            return guild[0];
-        } catch (e) {
-            logger.error(`SWAPI(guild) Broke getting guild: ${e}`);
-            throw e;
-        }
-    }
 
     async zetaRec(lang = "ENG_US") {
-        const zetas = await cache.get(config.mongodb.swapidb, "zetaRec", { lang: lang });
-        return zetas[0].zetas;
+        const zetas = await cache.getOne(config.mongodb.swapidb, "zetaRec", { lang: lang });
+        return zetas?.zetas;
     }
 
     private isExpired(lastUpdated: number, cooldown: PlayerCooldown, guild = false): boolean {

@@ -6,9 +6,9 @@ import type { BotCache } from "../../types/cache_types.ts";
 export async function getGuildSettings({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return defaultSettings;
 
-    const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
-    if (!guildSettings?.length) return defaultSettings;
-    return { ...defaultSettings, ...(guildSettings[0].settings as object) };
+    const guildSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
+    if (!guildSettings) return defaultSettings;
+    return { ...defaultSettings, ...(guildSettings.settings as object) };
 }
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config
@@ -44,8 +44,8 @@ export async function setGuildSettings({
 
 // Check if there are settings for the guild
 export async function hasGuildSettings(cache: BotCache, guildId: string) {
-    const guildSettings = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
-    if (guildSettings?.length) {
+    const guildSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
+    if (guildSettings) {
         return true;
     }
     return false;

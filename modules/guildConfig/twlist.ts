@@ -14,18 +14,18 @@ const defaultTWList = {
 
 export async function getGuildTWList({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigTWList> {
     if (!guildId) return defaultTWList;
-    const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
     const outObj = {};
     for (const key of Object.keys(defaultTWList)) {
-        outObj[key] = resArr[0]?.twList?.[key] || [];
+        outObj[key] = res?.twList?.[key] || [];
     }
     return outObj || defaultTWList;
 }
 
 export async function getFullTWList({ cache, guildId }: { cache: BotCache; guildId: string }) {
     if (!guildId) return unitChecklist;
-    const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
-    const twList: GuildConfigTWList = resArr[0]?.twList || defaultTWList;
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
+    const twList: GuildConfigTWList = res?.twList || defaultTWList;
 
     const twListOut = {};
     for (const unitType of Object.keys(unitChecklist)) {

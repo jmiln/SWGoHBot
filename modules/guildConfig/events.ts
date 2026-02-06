@@ -28,8 +28,8 @@ export async function updateGuildEvent({ cache, guildId, evName, event }) {
 
 export async function getGuildEvents({ cache, guildId }: { cache: BotCache; guildId: string }): Promise<GuildConfigEvent[]> {
     if (!guildId) return [] as GuildConfigEvent[];
-    const resArr = await cache.get(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: 1 });
-    return (resArr[0]?.events || []) as GuildConfigEvent[];
+    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: 1 });
+    return (res?.events || []) as GuildConfigEvent[];
 }
 export async function addGuildEvent({ cache, guildId, newEvent }: { cache: BotCache; guildId: string; newEvent: GuildConfigEvent }) {
     const events = await getGuildEvents({ cache, guildId });
