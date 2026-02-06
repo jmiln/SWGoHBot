@@ -1,4 +1,11 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType, MessageFlags } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type AutocompleteInteraction,
+    type AutocompleteFocusedOption,
+    codeBlock,
+    InteractionContextType,
+    MessageFlags,
+} from "discord.js";
 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -94,6 +101,7 @@ export default class Event extends Command {
                         description: "The unique name of the event you want to delete",
                         type: ApplicationCommandOptionType.String,
                         required: true,
+                        autocomplete: true,
                     },
                 ],
             },
@@ -107,6 +115,7 @@ export default class Event extends Command {
                         description: "The name of the event you want to edit",
                         type: ApplicationCommandOptionType.String,
                         required: true,
+                        autocomplete: true,
                     },
                     {
                         name: "name",
@@ -151,9 +160,6 @@ export default class Event extends Command {
                 ],
             },
             {
-                // TODO Possibly work this in to have the dropdowns / autocomplete?
-                //  - This should be doable since we get the guild's config for each interaction
-                //  - Should do so for view, delete, and any others that reference a specific event
                 name: "trigger",
                 description: "Trigger the selected event",
                 type: ApplicationCommandOptionType.Subcommand,
@@ -163,6 +169,7 @@ export default class Event extends Command {
                         description: "The unique name of the event you want to trigger",
                         type: ApplicationCommandOptionType.String,
                         required: true,
+                        autocomplete: true,
                     },
                 ],
             },
@@ -175,6 +182,7 @@ export default class Event extends Command {
                         name: "name",
                         description: "The unique name of the event you want to see.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                     {
                         name: "minimal",
@@ -198,6 +206,25 @@ export default class Event extends Command {
 
     constructor(Bot: BotType) {
         super(Bot, Event.metadata);
+    }
+
+    async autocomplete(_Bot: BotType, interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
+        const searchKey = focusedOption.value?.trim().toLowerCase() || "";
+
+        const guildEvents = await getGuildEvents({
+            cache: cache,
+            guildId: interaction.guild?.id,
+        });
+
+        const filteredEvents = guildEvents
+            .filter((event) => event.name.toLowerCase().includes(searchKey))
+            .map((event) => ({
+                name: event.name,
+                value: event.name,
+            }))
+            .slice(0, 25);
+
+        await interaction.respond(filteredEvents);
     }
 
     async run(Bot: BotType, interaction: BotInteraction, options: { level: number }) {
