@@ -4,7 +4,7 @@ import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
-import { characterNameList, factions, shipNameList } from "../data/constants/units.ts";
+import { characterNameList, factions, journeyNames, shipNameList } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
 import { permLevel } from "../modules/functions.ts";
@@ -169,7 +169,7 @@ async function handleAutocomplete(Bot: BotType, client: BotClient, interaction: 
 
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
-            const journeyFiltered = filterAutocomplete(Bot.journeyNames as UnitAutocompleteItem[], focusedOption.value?.toLowerCase());
+            const journeyFiltered = filterAutocomplete(journeyNames as UnitAutocompleteItem[], focusedOption.value?.toLowerCase());
             filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
         } else if (focusedOption.name === "command") {
             // Process command name autocomplete

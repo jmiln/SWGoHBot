@@ -59,7 +59,6 @@ export interface BotType {
 
     guildCount: () => Promise<number>;
     userCount: () => Promise<number>;
-    journeyNames: JourneyName[];
     journeyReqs: JourneyReqs;
     deployCommands: (force?: boolean) => Promise<string>;
     languages: Record<BotLanguage, Language>;

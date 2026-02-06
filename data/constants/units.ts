@@ -1,5 +1,5 @@
 import { readJSON } from "../../modules/functions.ts";
-import type { BotUnit, OmicronCategories, UnitLocation } from "../../types/types.ts";
+import type { BotUnit, JourneyName, OmicronCategories, UnitLocation } from "../../types/types.ts";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 const dataDir = __dirname + "/../../data";
@@ -26,6 +26,22 @@ export const allUnitsList: BotUnit[] = [...characters, ...ships];
 // List of all the unit names to use for autocomplete
 export const characterNameList = mapUnitNames(characters, true);
 export const shipNameList = mapUnitNames(ships);
+
+// Journey character names for autocomplete (used by /panic command)
+export const journeyNames: JourneyName[] = Object.keys(journeyReqs)
+    .map((key) => {
+        let unit = characters.find((ch) => ch.uniqueName === key);
+        if (!unit) {
+            unit = ships.find((sh) => sh.uniqueName === key);
+        }
+        if (!unit) return null;
+        return {
+            defId: key,
+            name: unit.name,
+            aliases: unit?.aliases?.map((u) => u.toLowerCase()) || [],
+        };
+    })
+    .filter((item): item is JourneyName => item !== null);
 
 function mapUnitNames(units: BotUnit[], addGLSuffix = false) {
     return units.map((unit) => {

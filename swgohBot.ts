@@ -2,7 +2,6 @@ import { readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
 import config from "./config.js";
-import { characters, ships } from "./data/constants/units.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
@@ -15,7 +14,7 @@ import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
-import type { BotClient, BotType, JourneyReqs } from "./types/types.ts";
+import type { BotClient, BotType } from "./types/types.ts";
 
 const Bot = {} as BotType;
 
@@ -48,26 +47,8 @@ const logErrorToChannel = (errorMsg: string) => {
     }
 };
 
-function processJourneyNames(journeyReqs: JourneyReqs): void {
-    const journeyKeys = Object.keys(journeyReqs);
-    Bot.journeyNames = [];
-    for (const key of journeyKeys) {
-        let unit = characters.find((ch) => ch.uniqueName === key);
-        if (!unit) {
-            unit = ships.find((sh) => sh.uniqueName === key);
-        }
-        if (!unit) continue;
-        Bot.journeyNames.push({
-            defId: key,
-            name: unit.name,
-            aliases: unit?.aliases?.map((u) => u.toLowerCase()) || [],
-        });
-    }
-}
-
-// Load the journeyReqs and process the names for autocomplete
+// Load the journeyReqs for Bot object
 const journeyReqs = await jsonFromFile("./data/journeyReqs.json");
-processJourneyNames(journeyReqs);
 
 client.slashcmds = new Collection();
 
