@@ -1,9 +1,9 @@
 import config from "../../config.js";
 import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
-import type { BotCache } from "../../types/cache_types.ts";
+import cache from "../cache.ts";
 
 // Get the guildsettings from the mongo db
-export async function getGuildSettings({ cache, guildId }: { cache: BotCache; guildId: string }) {
+export async function getGuildSettings({ guildId }: { guildId: string }) {
     if (!guildId) return defaultSettings;
 
     const guildSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
@@ -13,11 +13,9 @@ export async function getGuildSettings({ cache, guildId }: { cache: BotCache; gu
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config
 export async function setGuildSettings({
-    cache,
     guildId,
     settings,
 }: {
-    cache: BotCache;
     guildId: string;
     settings: typeof defaultSettings;
 }) {
@@ -43,7 +41,7 @@ export async function setGuildSettings({
 }
 
 // Check if there are settings for the guild
-export async function hasGuildSettings(cache: BotCache, guildId: string) {
+export async function hasGuildSettings(guildId: string) {
     const guildSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
     if (guildSettings) {
         return true;
@@ -52,7 +50,7 @@ export async function hasGuildSettings(cache: BotCache, guildId: string) {
 }
 
 // Remove all settings, events, polls, etc for the given guild
-export async function deleteGuildConfig({ cache, guildId }: { cache: BotCache; guildId: string }) {
+export async function deleteGuildConfig({ guildId }: { guildId: string }) {
     return await cache.remove(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId });
 }
 

@@ -102,7 +102,7 @@ class EventFuncs {
 
     // Send out an alert based on the guild's countdown settings
     async countdownAnnounce(event: GuildConfigEvent): Promise<void> {
-        const guildConf = await getGuildSettings({ cache: cache, guildId: event.guildId });
+        const guildConf = await getGuildSettings({ guildId: event.guildId });
         const diffNum = Math.abs(Date.now() - event.eventDT);
         const language = Language.getLanguage(guildConf.language) || Language.getLanguage(defaultSettings.language);
         const timeToGo = formatDuration(diffNum, language);
@@ -114,7 +114,7 @@ class EventFuncs {
 
     async eventAnnounce(event: GuildConfigEvent): Promise<void> {
         // Parse out the eventName and guildName from the ID
-        const guildConf = await getGuildSettings({ cache: cache, guildId: event.guildId });
+        const guildConf = await getGuildSettings({ guildId: event.guildId });
         const language = Language.getLanguage(guildConf.language) || Language.getLanguage(defaultSettings.language);
 
         let outMsg = event?.message || "";
@@ -148,10 +148,10 @@ class EventFuncs {
 
         if (doRepeat) {
             // If it's set to repeat, just delete the old one, and save a new version of the event
-            const guildEvents = await getGuildEvents({ cache: cache, guildId: event.guildId });
+            const guildEvents = await getGuildEvents({ guildId: event.guildId });
             const evArrOut = guildEvents.filter((ev) => ev.name !== event.name);
             evArrOut.push(event);
-            await setEvents({ cache: cache, guildId: event.guildId, evArrOut })
+            await setEvents({ guildId: event.guildId, evArrOut })
                 .then(() => {
                     // console.log(`Updating repeating event ${event.name} (${event.channel}).`);
                 })
@@ -160,7 +160,7 @@ class EventFuncs {
                 });
         } else {
             // If it's not going to be repeating, just destroy it
-            await deleteGuildEvent({ cache: cache, guildId: event.guildId, evName: event.name })
+            await deleteGuildEvent({ guildId: event.guildId, evName: event.name })
                 .then(() => {
                     logger.debug(`Deleting non-repeating event ${event.name}`);
                 })

@@ -95,7 +95,7 @@ class PatreonFuncs {
         const patron = await this.getPatronUser(userId);
 
         // This will give the highest/ combined tier that anyone has set for the server, or 0 if none
-        const supporterTier = await getGuildSupporterTier({ cache: cache, guildId });
+        const supporterTier = await getGuildSupporterTier({ guildId });
 
         // Grab the best times available based on the supporterTier
         const supporterTimes: { playerTime: number; guildTime: number } = !tiers?.[supporterTier]?.sharePlayer

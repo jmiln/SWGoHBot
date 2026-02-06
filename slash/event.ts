@@ -234,7 +234,7 @@ export default class Event extends Command {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but I'm having trouble accessing your guild's info.");
         }
-        const guildConf = await getGuildSettings({ cache: cache, guildId: interaction.guild.id });
+        const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
         // const exampleEvent = {
         //     "name": "eventName",
@@ -259,7 +259,7 @@ export default class Event extends Command {
             return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
         }
 
-        const guildEvents: GuildConfigEvent[] = await getGuildEvents({ cache: cache, guildId: interaction.guild.id });
+        const guildEvents: GuildConfigEvent[] = await getGuildEvents({ guildId: interaction.guild.id });
 
         switch (action) {
             case "create": {
@@ -547,7 +547,7 @@ export default class Event extends Command {
                 const newChannel = interaction.options.getChannel("channel");
                 const newCountdown = interaction.options.getBoolean("countdown");
 
-                const eventRes: GuildConfigEvent[] = await getGuildEvents({ cache: cache, guildId: interaction.guild.id });
+                const eventRes: GuildConfigEvent[] = await getGuildEvents({ guildId: interaction.guild.id });
                 const event = eventRes?.find((ev) => ev.name === eventName);
 
                 // Check if that name/ event already exists

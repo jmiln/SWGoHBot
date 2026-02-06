@@ -130,7 +130,7 @@ export default class SetConf extends Command {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
 
-        const guildConf = await getGuildSettings({ cache: cache, guildId: interaction.guild.id });
+        const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
         if (!guildConf) {
             return super.error(
                 interaction,
@@ -150,7 +150,7 @@ export default class SetConf extends Command {
         }
 
         if (subCommandGroup === "twlist") {
-            const guildTWList = await getGuildTWList({ cache: cache, guildId: interaction.guild.id });
+            const guildTWList = await getGuildTWList({ guildId: interaction.guild.id });
 
             // View the available list
             if (subCommand === "view") {
@@ -200,7 +200,7 @@ export default class SetConf extends Command {
                     }
 
                     try {
-                        await setGuildTWList({ cache: cache, guildId: interaction.guild.id, twListOut: guildTWList });
+                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Added ${addUnitDefId} to your list`);
                     } catch (err) {
                         return super.error(interaction, `Broke while trying to add ${addUnitDefId}.\n${err.message}`);
@@ -212,7 +212,7 @@ export default class SetConf extends Command {
                     }
                     guildTWList.Blacklist.push(addUnitDefId);
                     try {
-                        await setGuildTWList({ cache: cache, guildId: interaction.guild.id, twListOut: guildTWList });
+                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Added ${addUnitDefId} to your blacklist`);
                     } catch (err) {
                         return super.error(interaction, `Broke while trying to add ${addUnitDefId} to the blacklist.\n${err.message}`);
@@ -229,7 +229,7 @@ export default class SetConf extends Command {
                         }
                     }
                     try {
-                        await setGuildTWList({ cache: cache, guildId: interaction.guild.id, twListOut: guildTWList });
+                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Removed ${removeUnitDefId} from your list`);
                     } catch (err) {
                         return super.error(interaction, `Broke while trying to remove ${removeUnitDefId}.\n${err.message}`);
@@ -240,7 +240,7 @@ export default class SetConf extends Command {
                     }
                     guildTWList.Blacklist = guildTWList.Blacklist.filter((u) => u !== removeUnitDefId);
                     try {
-                        await setGuildTWList({ cache: cache, guildId: interaction.guild.id, twListOut: guildTWList });
+                        await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Removed ${removeUnitDefId} from your blacklist`);
                     } catch (err) {
                         return super.error(
@@ -346,7 +346,7 @@ export default class SetConf extends Command {
             }
 
             // Actually change stuff in the db
-            await setGuildSettings({ cache: cache, guildId: interaction.guild.id, settings: guildConf });
+            await setGuildSettings({ guildId: interaction.guild.id, settings: guildConf });
             return super.success(interaction, codeBlock(changeLog.map((c) => `* ${c}`).join("\n")));
         }
         return super.error(interaction, "It looks like nothing needed to be updated");
@@ -359,7 +359,7 @@ export default class SetConf extends Command {
         if (subCommandGroup === "twlist") {
             const searchKey = focusedOption.value?.trim().toLowerCase();
             if (focusedOption.name === "add_unit") {
-                const aliases = await getGuildAliases({ cache: cache, guildId: interaction?.guild?.id });
+                const aliases = await getGuildAliases({ guildId: interaction?.guild?.id });
                 const unitList = [
                     ...aliases.map((alias) => ({ name: `${alias.name} (${alias.alias})`, defId: alias.defId })),
                     ...characterNameList,
@@ -372,7 +372,7 @@ export default class SetConf extends Command {
                         .slice(0, 24) || [];
                 await interaction.respond(outArr);
             } else if (focusedOption.name === "remove_unit") {
-                const guildTWList = await getGuildTWList({ cache: cache, guildId: interaction?.guild?.id });
+                const guildTWList = await getGuildTWList({ guildId: interaction?.guild?.id });
                 if (subCommand === "blacklist") {
                     const outArr =
                         guildTWList.Blacklist.filter((defId) => {

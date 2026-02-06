@@ -6,7 +6,6 @@ import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, factions, journeyNames, shipNameList } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
-import cache from "../modules/cache.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -165,7 +164,7 @@ async function handleAutocomplete(client: BotClient, interaction: AutocompleteIn
     let filtered: Array<{ name: string; value: string }> = [];
 
     try {
-        const aliases = await getGuildAliases({ cache: cache, guildId: interaction?.guild?.id });
+        const aliases = await getGuildAliases({ guildId: interaction?.guild?.id });
 
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
@@ -231,7 +230,7 @@ async function handleAutocomplete(client: BotClient, interaction: AutocompleteIn
  */
 async function handleChatInputCommand(interaction: BotInteraction, cmd: slashCommand): Promise<void> {
     // Load guild settings
-    interaction.guildSettings = await getGuildSettings({ cache: cache, guildId: interaction?.guild?.id });
+    interaction.guildSettings = await getGuildSettings({ guildId: interaction?.guild?.id });
 
     // Check permissions
     const level = await permLevel(interaction);

@@ -21,7 +21,7 @@ export default class Showconf extends Command {
     }
 
     async run(interaction: BotInteraction) {
-        const guildConf = await getGuildSettings({ cache: cache, guildId: interaction.guild.id });
+        const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
         const outArr = [];
         if (!guildConf) logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
@@ -82,8 +82,8 @@ export default class Showconf extends Command {
         }
 
         const supporterList = [];
-        const totalSuppTier = await getGuildSupporterTier({ cache: cache, guildId: interaction.guild.id });
-        const guildSupporters = await getServerSupporters({ cache: cache, guildId: interaction.guild.id });
+        const totalSuppTier = await getGuildSupporterTier({ guildId: interaction.guild.id });
+        const guildSupporters = await getServerSupporters({ guildId: interaction.guild.id });
         for (const supp of guildSupporters) {
             const user = interaction.guild.members.cache.get(supp.userId);
             if (!user?.displayName) continue;

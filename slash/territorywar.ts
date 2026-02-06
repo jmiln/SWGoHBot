@@ -115,7 +115,7 @@ export default class TerritoryWar extends Command {
         }
         await interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
 
-        const unitChecklist = await getFullTWList({ cache: cache, guildId: interaction.guild?.id });
+        const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id });
 
         // Extract TW omicron skill IDs for filtering
         const twOmicronIds = omicrons.tw.map((o) => o.skillId);
