@@ -149,11 +149,6 @@ export interface BotUnitMods {
 
 export interface BotClient extends Client {
     reloadAllEvents: () => Promise<{ succArr: string[]; errArr: string[] }>;
-    reloadDataFiles: () => Promise<{ err: string }>;
-    reloadFunctions: () => Promise<{ err: string }>;
-    reloadSwapi: () => Promise<void>;
-    reloadUserReg: () => Promise<void>;
-    reloadLanguages: () => Promise<undefined | Error>;
     slashcmds: Collection<string, slashCommand>;
     loadSlash: (commandName: string) => Promise<boolean>;
     reloadSlash: (commandName: string) => Promise<string>;

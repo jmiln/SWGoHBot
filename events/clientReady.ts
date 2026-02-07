@@ -106,9 +106,6 @@ function setupDataUpdateTasks(client: BotClient, shardId: number): void {
                 if (currentMinute === 0) {
                     await patreonFuncs.guildsUpdate();
                 }
-
-                // Reload data files across all shards
-                reloadDataFiles(client);
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[${shardId}] Error in data update tasks: ${message}`);
@@ -151,22 +148,6 @@ function setupEventChecking(shardId: number): void {
     }, MINUTE_MS);
 
     activeIntervals.push(intervalId);
-}
-
-/**
- * Reloads data files across all shards or just the current client
- */
-function reloadDataFiles(client: BotClient): void {
-    if (client.shard?.count > 0) {
-        client.shard
-            .broadcastEval((client: BotClient) => client.reloadDataFiles())
-            .catch((err) => {
-                const message = err instanceof Error ? err.message : String(err);
-                logger.error(`[Ready/ReloadData] Error reloading data files: ${message}`);
-            });
-    } else {
-        client.reloadDataFiles();
-    }
 }
 
 /**
