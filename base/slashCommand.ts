@@ -10,7 +10,7 @@ import {
 import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
 import type { SlashEmbedOptions } from "../types/base_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 const defCmdData = {
     name: "",
@@ -26,11 +26,14 @@ const defCmdData = {
 export type CommandMetadata = typeof defCmdData;
 
 export default abstract class slashCommand {
-    abstract run(_interaction: BotInteraction, _opts: { level: number });
+    // Commands must implement this with destructured parameters
+    // Using any for return type to allow commands to return InteractionResponse or void
+    // biome-ignore lint/suspicious/noExplicitAny: allow flexible return types
+    abstract run(context: CommandContext): Promise<any>;
+
     commandData: CommandMetadata;
     guildOnly: boolean;
 
-    // Only really in setconf
     async autocomplete?(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
 
     constructor(commandData: Partial<CommandMetadata> = {}) {
@@ -64,7 +67,10 @@ export default abstract class slashCommand {
         await this.embed(interaction, msgOut || "Success!", successOptions);
     }
 
-    async embed(interaction: ChatInputCommandInteraction | BotInteraction, msgIn: string, options: SlashEmbedOptions = {}) {
+    async embed(interactionOrContext: ChatInputCommandInteraction | CommandContext, msgIn: string, options: SlashEmbedOptions = {}) {
+        // Extract interaction from context if needed
+        const interaction = "interaction" in interactionOrContext ? interactionOrContext.interaction : interactionOrContext;
+
         const { title = "TITLE HERE", color = constants.colors.green, ephemeral = false, footer = "", iconURL = "" } = options;
 
         const description = msgIn?.length > 2000 ? `${msgIn.toString().substring(0, 2000)}...` : msgIn;

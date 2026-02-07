@@ -171,6 +171,15 @@ export interface BotInteraction extends ChatInputCommandInteraction {
 // Union type for event handlers that process both command and autocomplete interactions
 export type AnyBotInteraction = BotInteraction | AutocompleteInteraction;
 
+// CommandContext - new pattern for command execution without mutating Discord types
+export interface CommandContext {
+    interaction: ChatInputCommandInteraction;
+    guildSettings?: BotDefaultSettings;
+    language?: Language;
+    swgohLanguage?: SWAPILang;
+    permLevel?: number;
+}
+
 export interface BotBaseInteraction extends BaseInteraction {
     respond?: (args: { name: string; value: string }[]) => Promise<void>;
 }

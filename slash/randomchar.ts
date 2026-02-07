@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotUnit } from "../types/types.ts";
+import type { CommandContext, BotUnit } from "../types/types.ts";
 
 export default class Randomchar extends Command {
     static readonly metadata = {
@@ -49,10 +49,10 @@ export default class Randomchar extends Command {
         ],
     };
     constructor() {
-        super( Randomchar.metadata);
+        super(Randomchar.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         let chars: SWAPIUnit[] | BotUnit[] = [];
         const MAX_CHARACTERS = 5;
 
@@ -75,7 +75,7 @@ export default class Randomchar extends Command {
             } catch (e) {
                 logger.error(`[slash/randomchar] Error fetching player: ${e}`);
                 return super.error(interaction, codeBlock(e.message), {
-                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                    title: language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit.",
                 });
             }

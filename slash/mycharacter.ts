@@ -8,7 +8,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
     static readonly metadata = {
@@ -59,10 +59,10 @@ export default class MyCharacter extends Command {
         ],
     };
     constructor() {
-        super( MyCharacter.metadata);
+        super(MyCharacter.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const searchType = interaction.options.getSubcommand();
         const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
         let allycode = interaction.options.getString("allycode");
@@ -77,12 +77,12 @@ export default class MyCharacter extends Command {
 
         // If there are no results or too many results, let the user know
         if (units.length === 0) {
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchUnit));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchUnit));
         }
         if (units.length > 1) {
             const sortedUnitList = units.sort((p, c) => (p.name > c.name ? 1 : -1));
             const unitList = sortedUnitList.map((u) => u.name);
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", unitList.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", unitList.join("\n")));
         }
 
         // If there's nothing wrong above, grab the single unit and go from there
@@ -98,7 +98,7 @@ export default class MyCharacter extends Command {
         } catch (e) {
             logger.error(`[slash/mycharacter] Error: ${e}`);
             return super.error(interaction, codeBlock(e.message), {
-                title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                title: language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit.",
             });
         }
@@ -108,20 +108,20 @@ export default class MyCharacter extends Command {
         }
 
         const pName = player.name;
-        const footerStr = updatedFooterStr(player.updated, interaction);
+        const footerStr = updatedFooterStr(player.updated, language);
 
         const thisUnit = player.roster.find((c) => c.defId === unit.uniqueName);
 
         // The user doesn't have the unit unlocked, so let em know
         if (!thisUnit) {
-            const outStr = interaction.language.get("BASE_SWGOH_LOCKED_CHAR");
+            const outStr = language.get("BASE_SWGOH_LOCKED_CHAR");
             return super.error(interaction, outStr || "This character is locked.", {
                 title: `${pName}'s ${unit.name}`,
                 footer: footerStr,
             });
         }
 
-        const thisLangChar = await swgohAPI.langChar(thisUnit, interaction.guildSettings.swgohLanguage);
+        const thisLangChar = await swgohAPI.langChar(thisUnit, swgohLanguage);
 
         const stats = thisUnit.stats;
         const isShip = thisUnit.combatType === 2;
@@ -194,7 +194,7 @@ export default class MyCharacter extends Command {
             "Special Survivability": ["Resistance", "Deflection Chance", "Critical Avoidance"],
         };
 
-        const langStr = interaction.language.get("BASE_STAT_NAMES");
+        const langStr = language.get("BASE_STAT_NAMES");
         const langMap = {
             "Primary Attributes": "PRIMARY",
             Strength: "STRENGTH",
@@ -294,7 +294,7 @@ export default class MyCharacter extends Command {
         let gearOut = "";
         if (!isShip) {
             // If it's a character, go ahead and work out the gear
-            gearOut = `\n${[`${interaction.language.get("BASE_GEAR_SHORT")}: ${thisUnit.gear}`, `${gearStr}`].join("\n")}`;
+            gearOut = `\n${[`${language.get("BASE_GEAR_SHORT")}: ${thisUnit.gear}`, `${gearStr}`].join("\n")}`;
         }
 
         const unitImg = await getUnitImage(thisUnit.defId, thisUnit);
@@ -315,12 +315,12 @@ export default class MyCharacter extends Command {
                             url: unit.url || null,
                             icon_url: unit.avatarURL || null,
                         },
-                        description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
+                        description: `\`${language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
                             thisUnit.rarity
                         }* | ${thisUnit.gp} gp\`${gearOut}`,
                         fields: [
                             {
-                                name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                                name: language.get("COMMAND_MYCHARACTER_ABILITIES"),
                                 value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities",
                             },
                         ].concat(fields),
@@ -339,12 +339,12 @@ export default class MyCharacter extends Command {
                         url: unit.url,
                     },
                     thumbnail: { url: "attachment://image.png" },
-                    description: `\`${interaction.language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
+                    description: `\`${language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
                         thisUnit.rarity
                     }* | ${thisUnit.gp} gp\`${gearOut}`,
                     fields: [
                         {
-                            name: interaction.language.get("COMMAND_MYCHARACTER_ABILITIES"),
+                            name: language.get("COMMAND_MYCHARACTER_ABILITIES"),
                             value: abilitiesOut.length ? abilitiesOut.join("\n") : "Couldn't find abilities",
                         },
                     ].concat(fields),

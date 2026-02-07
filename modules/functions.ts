@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { inspect } from "node:util";
 import {
+    type ChatInputCommandInteraction,
     type Client,
     type Embed,
     type Guild,
@@ -19,7 +20,7 @@ import constants from "../data/constants/constants.ts";
 import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotClient, BotInteraction, BotUnit, UserConfig } from "../types/types.ts";
+import type { BotClient, BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
 import userReg from "./users.ts";
 
@@ -45,7 +46,7 @@ export function isMain(client: Client): boolean {
  * Get the shard ID from a Discord client
  * @returns The shard ID, or -1 if not sharded
  */
-export function getShardId(client: BotClient): number {
+export function getShardId(client: Client): number {
     return client.shard?.ids[0] ?? -1;
 }
 
@@ -144,7 +145,7 @@ export function getSideColor(side: string): number | null {
  *  NEVER GIVE ANYONE BUT OWNER THE LEVEL 10! By default this can run any
  *  command including the VERY DANGEROUS `eval` and `exec` commands!
  */
-export async function permLevel(interaction: BotInteraction) {
+export async function permLevel(interaction: ChatInputCommandInteraction, guildSettings: BotDefaultSettings) {
     // Depending on message or interaction, grab the ID of the user
     const permMap = constants.permMap;
     const authId = interaction.user.id;
@@ -176,14 +177,13 @@ export async function permLevel(interaction: BotInteraction) {
 
     // The rest of the perms rely on roles. If those roles are not found
     // in the settings, or the user does not have it, their level will be 0
-    const guildConf = interaction.guildSettings;
-    const hasAdminRole = guildConf?.adminRole?.some((roleId) => {
+    const hasAdminRole = guildSettings?.adminRole?.some((roleId) => {
         const adminRole = interaction.guild.roles.cache.find((r) => r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase());
         return adminRole && hasRole(interaction, adminRole.id);
     });
     return hasAdminRole ? permMap.GUILD_ADMIN : permMap.BASE_USER;
 }
-function hasRole(interaction: BotInteraction, roleId: string): boolean {
+function hasRole(interaction: ChatInputCommandInteraction, roleId: string): boolean {
     return (
         interaction.inGuild() &&
         interaction.member &&
@@ -266,11 +266,32 @@ export function sendWebhook(hookUrl: string, embed: Embed): void {
 }
 
 // Return a duration string
-export function duration(time: number, interaction: BotInteraction | null = null): string {
-    if (!interaction?.language) throw new Error("[functions/duration] Missing language setting");
-    const lang = interaction.language;
+// Accepts Language or CommandContext
+export function duration(time: number, languageOrContext: Language | CommandContext | null = null): string {
+    // Extract language from whatever was passed
+    let lang: Language;
+    if (languageOrContext === null) {
+        throw new Error("[functions/duration] Missing language setting");
+    }
 
-    if (!time) logger.error(`[functions/duration] Missing time value.\n${inspect(interaction?.options)}`);
+    // Check if it's a Language instance
+    if (languageOrContext instanceof Language) {
+        lang = languageOrContext;
+    } else if ("language" in languageOrContext && languageOrContext.language) {
+        // It's CommandContext
+        lang = languageOrContext.language;
+    } else {
+        throw new Error("[functions/duration] Invalid language parameter");
+    }
+
+    if (!time) {
+        let opts: unknown;
+        if ("interaction" in languageOrContext) {
+            // CommandContext
+            opts = languageOrContext.interaction.options;
+        }
+        logger.error(`[functions/duration] Missing time value.\n${inspect(opts)}`);
+    }
     const timeDiff = Math.abs(Date.now() - time);
     return formatDuration(timeDiff, lang);
 }
@@ -379,16 +400,31 @@ export function getEndOfDay(zone: string): Date {
 /*
  * LAST UPDATED FOOTER
  * Simple one to make the "Last updated ____ " footer strings and display them with Discord's timestamp format
+ * Accepts Language or CommandContext
  */
-export function updatedFooterStr(updated: number, interaction: BotInteraction | null = null): string {
+export function updatedFooterStr(updated: number, languageOrContext: Language | CommandContext | null = null): string {
     if (!updated) {
         logger.error("[functions/updatedFooterStr] Missing updated timestamp");
         return "";
     }
 
-    if (!interaction?.language) throw new Error("[functions/updatedFooterStr] Missing language setting");
+    // Extract language from whatever was passed
+    let lang: Language;
+    if (languageOrContext === null) {
+        throw new Error("[functions/updatedFooterStr] Missing language setting");
+    }
 
-    return interaction.language.get("BASE_SWGOH_LAST_UPDATED", time(Math.floor(updated / 1000)));
+    // Check if it's a Language instance
+    if (languageOrContext instanceof Language) {
+        lang = languageOrContext;
+    } else if ("language" in languageOrContext && languageOrContext.language) {
+        // It's CommandContext
+        lang = languageOrContext.language;
+    } else {
+        throw new Error("[functions/updatedFooterStr] Invalid language parameter");
+    }
+
+    return lang.get("BASE_SWGOH_LAST_UPDATED", time(Math.floor(updated / 1000)));
 }
 
 // Get the current user count
@@ -810,7 +846,7 @@ export async function reloadLanguages(): Promise<Error | null> {
 }
 
 // Get the ally code of someone that's registered
-export async function getAllyCode(interaction: BotInteraction, user: string | string[], useInteractionId = true) {
+export async function getAllyCode(interaction: ChatInputCommandInteraction, user: string | string[], useInteractionId = true) {
     const otherCodeRegex = /^-\d{1,2}$/;
     const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : user;
 

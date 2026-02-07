@@ -9,7 +9,7 @@ import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import { characters, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
-import type { BotInteraction, GuildAlias } from "../types/types.ts";
+import type { CommandContext, GuildAlias } from "../types/types.ts";
 
 export default class Aliases extends Command {
     static readonly metadata = {
@@ -62,7 +62,7 @@ export default class Aliases extends Command {
     };
 
     constructor() {
-        super( Aliases.metadata);
+        super(Aliases.metadata);
     }
 
     async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
@@ -93,7 +93,7 @@ export default class Aliases extends Command {
         }
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction }: CommandContext) {
         // Make sure this is running in a server, since it doesn't do any good in DMs
         if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
 
@@ -120,7 +120,7 @@ export default class Aliases extends Command {
         });
     }
 
-    private async handleAddAlias(interaction: BotInteraction, alias: string, unitKey: string, guildAliases: GuildAlias[]) {
+    private async handleAddAlias(interaction: ChatInputCommandInteraction, alias: string, unitKey: string, guildAliases: GuildAlias[]) {
         const unit = characters.find((c) => c.uniqueName === unitKey) || ships.find((s) => s.uniqueName === unitKey);
 
         if (!unit) {

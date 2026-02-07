@@ -4,7 +4,7 @@ import { getAllyCode, isAllyCode } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class GuildUpdate extends Command {
     static readonly metadata = {
@@ -44,10 +44,10 @@ export default class GuildUpdate extends Command {
         ],
     };
     constructor() {
-        super( GuildUpdate.metadata);
+        super(GuildUpdate.metadata);
     }
 
-    async run(interaction: BotInteraction, options: { level: number }) {
+    async run({ interaction, language, permLevel }: CommandContext) {
         const userID = interaction.user.id;
         const user = await userReg.getUser(userID);
 
@@ -68,7 +68,7 @@ export default class GuildUpdate extends Command {
         // GuildUpdate -> activate/ deactivate
         const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
-            return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
+            return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
         // Whether it's setting values or view
@@ -85,8 +85,8 @@ export default class GuildUpdate extends Command {
                 updatedArr.push(`Enabled: **${isEnabled}**`);
             }
             if (channel) {
-                if (options.level < 3) {
-                    return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                if (permLevel < 3) {
+                    return super.error(interaction, language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
                 }
                 // This would be at lease MANAGE_CHANNEL perms, or the adminrole under the guildconf
                 gu.channel = channel.id;
@@ -94,7 +94,7 @@ export default class GuildUpdate extends Command {
             }
             if (allycode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!isAllyCode(allycode)) return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!isAllyCode(allycode)) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allycode
                 allycode = await getAllyCode(interaction, allycode);

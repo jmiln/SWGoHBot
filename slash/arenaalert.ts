@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import type { BotInteraction, UserConfig } from "../types/types.ts";
+import type { CommandContext, UserConfig } from "../types/types.ts";
 
 export default class ArenaAlert extends Command {
     static readonly metadata = {
@@ -76,10 +76,10 @@ export default class ArenaAlert extends Command {
     };
 
     constructor() {
-        super( ArenaAlert.metadata);
+        super(ArenaAlert.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const enabledms = interaction.options.getString("enabledms");
         const arena = interaction.options.getString("arena");
         const payoutResult = interaction.options.getString("payout_result");
@@ -95,7 +95,7 @@ export default class ArenaAlert extends Command {
         // Make sure the user is a patreon
         const pat = await patreonFuncs.getPatronUser(userID);
         if (!pat || pat.amount_cents < 100) {
-            return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
+            return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
         if (!enabledms && !arena && !payoutResult && !payoutWarning && payoutWarning !== 0) {
@@ -103,18 +103,16 @@ export default class ArenaAlert extends Command {
             return interaction.reply({
                 embeds: [
                     {
-                        title: interaction.language.get("COMMAND_ARENAALERT_VIEW_HEADER"),
+                        title: language.get("COMMAND_ARENAALERT_VIEW_HEADER"),
                         description: [
-                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_DM")}: **${
+                            `${language.get("COMMAND_ARENAALERT_VIEW_DM")}: **${
                                 user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"
                             }**`,
-                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
-                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_WARNING")}: **${
+                            `${language.get("COMMAND_ARENAALERT_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
+                            `${language.get("COMMAND_ARENAALERT_VIEW_WARNING")}: **${
                                 user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"
                             }**`,
-                            `${interaction.language.get("COMMAND_ARENAALERT_VIEW_RESULT")}: **${
-                                user.arenaAlert.enablePayoutResult ? "ON" : "OFF"
-                            }**`,
+                            `${language.get("COMMAND_ARENAALERT_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`,
                         ].join("\n"),
                     },
                 ],

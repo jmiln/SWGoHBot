@@ -6,7 +6,7 @@ import { findChar, getAllyCode, makeTable, updatedFooterStr } from "../modules/f
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Versus extends Command {
     static readonly metadata = {
@@ -38,10 +38,10 @@ export default class Versus extends Command {
         ],
     };
     constructor() {
-        super( Versus.metadata);
+        super(Versus.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const statList = [
             { stat: "Health", short: "Health" },
             { stat: "Protection", short: "Prot" },
@@ -95,14 +95,11 @@ export default class Versus extends Command {
         }
         if (!charRes.length) {
             // Didn't find any matches
-            return super.error(interaction, interaction.language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
+            return super.error(interaction, language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
         }
         if (charRes.length > 1) {
             // If found more than 1 match
-            return super.error(
-                interaction,
-                interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charRes.map((c) => c.name).join("\n")),
-            );
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charRes.map((c) => c.name).join("\n")));
         }
         // It only found one match
         const char = charRes?.[0] || null;
@@ -221,7 +218,7 @@ export default class Versus extends Command {
             });
         }
 
-        const langChar = await swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId }, interaction.swgohLanguage);
+        const langChar = await swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId }, swgohLanguage);
         const charName = langChar.nameKey;
         const statTable = makeTable(
             {
@@ -233,7 +230,7 @@ export default class Versus extends Command {
             { boldHeader: false, useHeader: false },
         );
 
-        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
+        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), language);
         return interaction.editReply({
             content: null,
             embeds: [

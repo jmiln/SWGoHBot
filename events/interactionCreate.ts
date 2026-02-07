@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { type AutocompleteInteraction, Events, MessageFlags } from "discord.js";
+import { type AutocompleteInteraction, type ChatInputCommandInteraction, Events, MessageFlags } from "discord.js";
 import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -11,7 +11,7 @@ import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
-import type { AnyBotInteraction, BotClient, BotInteraction, GuildAlias } from "../types/types.ts";
+import type { AnyBotInteraction, BotClient, CommandContext, GuildAlias } from "../types/types.ts";
 
 // Constants
 const IGNORED_ERRORS = [
@@ -91,7 +91,7 @@ function isIgnoredError(err: unknown): boolean {
 /**
  * Sends an error reply to the user based on the interaction state
  */
-async function sendErrorReply(interaction: BotInteraction, commandName: string): Promise<void> {
+async function sendErrorReply(interaction: ChatInputCommandInteraction, commandName: string): Promise<void> {
     const replyContent = `It looks like something broke when trying to run that command. If this error continues, please report it here: ${constants.invite}`;
 
     try {
@@ -228,12 +228,22 @@ async function handleAutocomplete(client: BotClient, interaction: AutocompleteIn
 /**
  * Handles chat input command interactions
  */
-async function handleChatInputCommand(interaction: BotInteraction, cmd: slashCommand): Promise<void> {
+async function handleChatInputCommand(interaction: ChatInputCommandInteraction, cmd: slashCommand): Promise<void> {
     // Load guild settings
-    interaction.guildSettings = await getGuildSettings({ guildId: interaction?.guild?.id });
+    const guildSettings = await getGuildSettings({ guildId: interaction?.guild?.id });
+
+    // Load user language settings
+    const user = await userReg.getUser(interaction.user.id);
+    const selectedLanguage = user?.lang?.language || defaultSettings.language;
+    const swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
+
+    const language = Language.getLanguage(selectedLanguage) || Language.getLanguage(defaultSettings.language);
+
+    // Merge swgohLanguage into guildSettings
+    const mergedGuildSettings = { ...guildSettings, swgohLanguage };
 
     // Check permissions
-    const level = await permLevel(interaction);
+    const level = await permLevel(interaction, mergedGuildSettings);
     if (level < cmd.commandData.permLevel) {
         await interaction.reply({
             content: "Sorry, but you don't have permission to run that command.",
@@ -242,17 +252,18 @@ async function handleChatInputCommand(interaction: BotInteraction, cmd: slashCom
         return;
     }
 
-    // Load user language settings
-    const user = await userReg.getUser(interaction.user.id);
-    const selectedLanguage = user?.lang?.language || defaultSettings.language;
-    interaction.guildSettings.swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
-
-    interaction.language = Language.getLanguage(selectedLanguage) || Language.getLanguage(defaultSettings.language);
-    interaction.swgohLanguage = interaction.guildSettings.swgohLanguage || defaultSettings.swgohLanguage;
+    // Build CommandContext
+    const ctx: CommandContext = {
+        interaction,
+        guildSettings: mergedGuildSettings,
+        language,
+        swgohLanguage,
+        permLevel: level,
+    };
 
     // Execute command
     try {
-        await cmd.run(interaction, { level });
+        await cmd.run(ctx);
     } catch (err) {
         logger.error(String(err));
         // Special handling for test command

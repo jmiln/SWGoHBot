@@ -1,7 +1,8 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { ApplicationCommandOptionType, type ChatInputCommandInteraction, InteractionContextType } from "discord.js";
+import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import { acronyms } from "../data/constants/units.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 const usageExample = "/acronyms acronym:CLS";
 
@@ -26,23 +27,23 @@ export default class Acronyms extends Command {
     };
 
     constructor() {
-        super( Acronyms.metadata);
+        super(Acronyms.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         // Get whatever the user put in
         const acronym = interaction.options.getString("acronym");
 
         if (!acronym?.length) {
             // Apparently this should never happen because it's set as a required argument, but who knows/ just in case
-            return this.handleError(interaction, "COMMAND_ACRONYMS_INVALID");
+            return this.handleError(interaction, language, "COMMAND_ACRONYMS_INVALID");
         }
 
         const matchingItems = this.findMatchingAcronyms(acronym, acronyms);
 
         if (!matchingItems.length) {
             // If there were no matches, go ahead and let the user know
-            return this.handleError(interaction, "COMMAND_ACRONYMS_NOT_FOUND");
+            return this.handleError(interaction, language, "COMMAND_ACRONYMS_NOT_FOUND");
         }
 
         const acronymMeaningMessage = this.formatAcronymMessage(matchingItems, acronyms);
@@ -88,8 +89,8 @@ export default class Acronyms extends Command {
         return acronymMeaningMessage;
     }
 
-    private async handleError(interaction: BotInteraction, errorKey: string) {
-        const errorMessage = interaction.language.get(errorKey);
+    private async handleError(interaction: ChatInputCommandInteraction, language: Language, errorKey: string) {
+        const errorMessage = language.get(errorKey);
         return super.error(interaction, errorMessage, { title: "Error", example: usageExample });
     }
 }

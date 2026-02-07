@@ -4,7 +4,7 @@ import patreonInfo from "../data/patreon.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import userReg from "../modules/users.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Patreon extends Command {
     static readonly metadata = {
@@ -50,7 +50,7 @@ export default class Patreon extends Command {
         super(Patreon.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction }: CommandContext) {
         const subCom = interaction.options.getSubcommand() || "none";
         const fields = [];
         let description = null;

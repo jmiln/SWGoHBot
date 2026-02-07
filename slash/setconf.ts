@@ -12,7 +12,7 @@ import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 // Set the base subargs up
 const options = {
@@ -124,7 +124,7 @@ export default class SetConf extends Command {
         super(SetConf.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         if (!interaction?.guild?.id) {
             return super.error(interaction, "Sorry, but this command is only usable in servers");
         }
@@ -264,7 +264,7 @@ export default class SetConf extends Command {
                 if (!settingStr) continue;
                 if (key === "timezone" && !isValidZone(settingStr)) {
                     // If it's not a valid timezone, let em know
-                    errors.push(interaction.language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
+                    errors.push(language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
                     continue;
                 }
             } else if (keyType === ApplicationCommandOptionType.Integer) {

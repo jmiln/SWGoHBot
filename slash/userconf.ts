@@ -1,4 +1,10 @@
-import { ApplicationCommandOptionType, type AutocompleteInteraction, type AutocompleteFocusedOption, codeBlock, InteractionContextType } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type AutocompleteFocusedOption,
+    type AutocompleteInteraction,
+    codeBlock,
+    InteractionContextType,
+} from "discord.js";
 import Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import config from "../config.js";
@@ -10,7 +16,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
-import type { BotInteraction, BotLanguage, UserConfig } from "../types/types.ts";
+import type { BotLanguage, CommandContext, UserConfig } from "../types/types.ts";
 
 export default class UserConf extends Command {
     static readonly metadata = {
@@ -147,10 +153,10 @@ export default class UserConf extends Command {
         ],
     };
     constructor() {
-        super( UserConf.metadata);
+        super(UserConf.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 
@@ -180,17 +186,17 @@ export default class UserConf extends Command {
                     // Make sure it's not in there already, then stick it in.
                     if (user.accounts.map((a) => a.allyCode).includes(allycode)) {
                         // Make sure the specified code is not already registered
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
                     if (user.accounts.length >= 10) {
                         // Cap the personal codes to 10
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
                     try {
                         const playerRes = await swgohAPI.unitStats(Number(allycode), cooldown);
                         const player = playerRes?.[0] || null;
                         if (!player) {
-                            return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE"));
+                            return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE"));
                         }
                         user.accounts.push({
                             allyCode: allycode,
@@ -202,7 +208,7 @@ export default class UserConf extends Command {
                             interaction,
                             codeBlock(
                                 "asciiDoc",
-                                interaction.language.get(
+                                language.get(
                                     "COMMAND_REGISTER_SUCCESS_DESC",
                                     player,
                                     player.allyCode.toString().match(/\d{3}/g).join("-"),
@@ -210,7 +216,7 @@ export default class UserConf extends Command {
                                 ),
                             ),
                             {
-                                title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
+                                title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
                             },
                         );
                     } catch (e) {
@@ -227,7 +233,7 @@ export default class UserConf extends Command {
                     // - If the chosen one was the primary, set the 1st
                     const acc = user.accounts.find((a) => a.allyCode === allycode);
                     if (!acc) {
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
 
                     // Filter out the one(s) that match the specified allycode
@@ -237,19 +243,16 @@ export default class UserConf extends Command {
                         user.accounts[0].primary = true;
                     }
                     await userReg.updateUser(userID, user);
-                    return super.success(
-                        interaction,
-                        interaction.language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode),
-                    );
+                    return super.success(interaction, language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
                 }
                 case "make_primary": {
                     // Set the specified ally code to be the primary one
                     const acc = user.accounts.find((a) => a.allyCode === allycode);
                     if (!acc) {
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
                     if (acc.primary) {
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
                     }
                     const prim = user.accounts.find((a) => a.primary);
                     user.accounts = user.accounts.map((a) => {
@@ -260,13 +263,7 @@ export default class UserConf extends Command {
                     await userReg.updateUser(userID, user);
                     return super.success(
                         interaction,
-                        interaction.language.get(
-                            "COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY",
-                            prim?.name,
-                            prim?.allyCode,
-                            acc.name,
-                            acc.allyCode,
-                        ),
+                        language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim?.name, prim?.allyCode, acc.name, acc.allyCode),
                     );
                 }
             }
@@ -301,7 +298,7 @@ export default class UserConf extends Command {
                     // payoutWarning: int between 1 & 1440 (1 min to 1 day)
                     const payoutWarning = interaction.options.getInteger("payout_warning");
                     if (payoutWarning !== null && (payoutWarning < 0 || payoutWarning > 1440)) {
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_ARENA_INVALID_NUMBER"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_ARENA_INVALID_NUMBER"));
                     }
                     if (payoutWarning !== null) {
                         user.arenaAlert.payoutWarning = payoutWarning;
@@ -347,7 +344,7 @@ export default class UserConf extends Command {
                 case "view": {
                     // Just display all the valid info here
                     if (!user) {
-                        return super.error(interaction, interaction.language.get("COMMAND_USERCONF_VIEW_NO_CONFIG"));
+                        return super.error(interaction, language.get("COMMAND_USERCONF_VIEW_NO_CONFIG"));
                     }
                     const fields = [];
                     const MAX_ALLYCODES = 20;
@@ -358,15 +355,15 @@ export default class UserConf extends Command {
                     if (user.accounts.length > MAX_ALLYCODES)
                         codeTable += `\n* _Not displaying ${user.accounts.length - MAX_ALLYCODES} codes_`;
                     fields.push({
-                        name: interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_HEADER"),
+                        name: language.get("COMMAND_USERCONF_VIEW_ALLYCODES_HEADER"),
                         value: `>>> ${
                             user.accounts.length
-                                ? interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + codeTable
-                                : interaction.language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
+                                ? language.get("COMMAND_USERCONF_VIEW_ALLYCODES_PRIMARY") + codeTable
+                                : language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
                         }`,
                     });
                     fields.push({
-                        name: interaction.language.get("COMMAND_USERCONF_VIEW_LANG_HEADER"),
+                        name: language.get("COMMAND_USERCONF_VIEW_LANG_HEADER"),
                         value: [
                             `>>> Language: **${user.lang ? (user.lang.language ? user.lang.language : "N/A") : "N/A"}**`,
                             `swgohLanguage: **${
@@ -391,16 +388,16 @@ export default class UserConf extends Command {
                     } else {
                         // Arena Alert settings
                         fields.push({
-                            name: interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
+                            name: language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
                             value: [
-                                `>>> ${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${
+                                `>>> ${language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${
                                     user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"
                                 }**`,
-                                `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_SHOW")}: **${user.arenaAlert.arena}**`,
-                                `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_WARNING")}: **${
+                                `${language.get("COMMAND_USERCONF_VIEW_ARENA_SHOW")}: **${user.arenaAlert.arena}**`,
+                                `${language.get("COMMAND_USERCONF_VIEW_ARENA_WARNING")}: **${
                                     user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"
                                 }**`,
-                                `${interaction.language.get("COMMAND_USERCONF_VIEW_ARENA_RESULT")}: **${
+                                `${language.get("COMMAND_USERCONF_VIEW_ARENA_RESULT")}: **${
                                     user.arenaAlert.enablePayoutResult ? "ON" : "OFF"
                                 }**`,
                             ].join("\n"),

@@ -9,7 +9,7 @@ import { getAllyCode, msgArray, toProperCase, updatedFooterStr } from "../module
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Faction extends Command {
     static readonly metadata = {
@@ -47,7 +47,7 @@ export default class Faction extends Command {
         super(Faction.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const query = interaction.options.getString("faction");
 
         if (!query) {
@@ -72,7 +72,7 @@ export default class Faction extends Command {
         let chars: RawCharacter[] = await cache.get(
             config.mongodb.swapidb,
             "units",
-            { categoryIdList: query, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
+            { categoryIdList: query, language: swgohLanguage.toLowerCase() },
             { _id: 0, baseId: 1, nameKey: 1 },
         );
         const searchName = factionMap.find((f) => f.value === query)?.name;
@@ -81,8 +81,8 @@ export default class Faction extends Command {
         chars = chars.filter((c) => characters.find((char) => char.uniqueName === c.baseId));
 
         if (!chars.length) {
-            return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {
-                title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"),
+            return super.error(interaction, language.get("COMMAND_FACTION_USAGE"), {
+                title: language.get("COMMAND_FACTION_INVALID_FACTION"),
                 example: "faction sith",
             });
         }
@@ -96,7 +96,7 @@ export default class Faction extends Command {
             const units = [];
 
             for (const c of chars) {
-                const char: RawCharacter = await swgohAPI.getCharacter(c.baseId, interaction.guildSettings.swgohLanguage);
+                const char: RawCharacter = await swgohAPI.getCharacter(c.baseId, swgohLanguage);
                 const isLeader = char.skillReferenceList.some((s) => s.skillId.startsWith("leader"));
                 const hasZeta = char.skillReferenceList.some((s) => s.cost?.AbilityMatZeta > 0);
                 units.push({
@@ -149,7 +149,7 @@ export default class Faction extends Command {
             for (const c of charDefIds) {
                 const thisChar = player.roster.find((char) => char.defId === c);
                 if (thisChar) {
-                    const found = (await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage)) as SWAPIUnit;
+                    const found = (await swgohAPI.langChar(thisChar, swgohLanguage)) as SWAPIUnit;
                     playerChars.push(found);
                 }
             }
@@ -186,7 +186,7 @@ export default class Faction extends Command {
                 desc = msgArr[0];
             }
 
-            const footerStr = updatedFooterStr(player.updated, interaction);
+            const footerStr = updatedFooterStr(player.updated, language);
             return interaction.editReply({
                 content: null,
                 embeds: [
@@ -200,8 +200,8 @@ export default class Faction extends Command {
                 ],
             });
         }
-        return super.error(interaction, interaction.language.get("COMMAND_FACTION_USAGE"), {
-            title: interaction.language.get("COMMAND_FACTION_INVALID_FACTION"),
+        return super.error(interaction, language.get("COMMAND_FACTION_USAGE"), {
+            title: language.get("COMMAND_FACTION_INVALID_FACTION"),
             example: "faction sith",
         });
     }

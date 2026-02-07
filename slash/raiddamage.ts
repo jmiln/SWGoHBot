@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import raids from "../data/raiddmg.ts";
 import { toProperCase } from "../modules/functions.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class RaidDamage extends Command {
     static readonly metadata = {
@@ -69,10 +69,10 @@ export default class RaidDamage extends Command {
         ],
     };
     constructor() {
-        super( RaidDamage.metadata);
+        super(RaidDamage.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const raid = interaction.options.getString("raid");
         const phase = interaction.options.getString("phase");
         let amount = interaction.options.getString("amount");
@@ -83,8 +83,8 @@ export default class RaidDamage extends Command {
         const thisPhase = thisRaid.phases[phase];
 
         if (Number.isNaN(Number.parseInt(amount, 10))) {
-            return super.error(interaction, interaction.language.get("COMMAND_RAIDDAMAGE_AMOUNT_STR"), {
-                title: interaction.language.get("COMMAND_RAIDDAMAGE_INVALID_AMT"),
+            return super.error(interaction, language.get("COMMAND_RAIDDAMAGE_AMOUNT_STR"), {
+                title: language.get("COMMAND_RAIDDAMAGE_INVALID_AMT"),
             });
         }
         let outAmt = "";
@@ -94,7 +94,7 @@ export default class RaidDamage extends Command {
 
         if (percent) {
             amount = `${amount}%`;
-            outAmt = `${((tmpAmount * thisPhase.dmg) / 100).toLocaleString()} ${interaction.language.get("COMMAND_RAIDDAMAGE_DMG")}`;
+            outAmt = `${((tmpAmount * thisPhase.dmg) / 100).toLocaleString()} ${language.get("COMMAND_RAIDDAMAGE_DMG")}`;
         } else {
             outAmt = `${(100 * (tmpAmount / thisPhase.dmg)).toFixed(2).toLocaleString()}%`;
         }
@@ -103,15 +103,11 @@ export default class RaidDamage extends Command {
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get(
-                            "COMMAND_RAIDDAMAGE_OUT_HEADER",
-                            toProperCase(thisRaid.name),
-                            toProperCase(thisPhase.name),
-                        ),
+                        name: language.get("COMMAND_RAIDDAMAGE_OUT_HEADER", toProperCase(thisRaid.name), toProperCase(thisPhase.name)),
                     },
                     description: percent
-                        ? interaction.language.get("COMMAND_RAIDDAMAGE_OUT_PERCENT", amount, outAmt)
-                        : interaction.language.get("COMMAND_RAIDDAMAGE_OUT_DMG", amount, outAmt),
+                        ? language.get("COMMAND_RAIDDAMAGE_OUT_PERCENT", amount, outAmt)
+                        : language.get("COMMAND_RAIDDAMAGE_OUT_DMG", amount, outAmt),
                 },
             ],
         });

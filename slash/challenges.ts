@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getCurrentWeekday, toProperCase } from "../modules/functions.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Challenges extends Command {
     static readonly metadata = {
@@ -28,29 +28,27 @@ export default class Challenges extends Command {
     };
 
     constructor() {
-        super( Challenges.metadata);
+        super(Challenges.metadata);
     }
 
-    async run(interaction: BotInteraction) {
-        const guildConf = interaction.guildSettings;
-
+    async run({ interaction, language, guildSettings }: CommandContext) {
         const challenges = {
             // Normal Challenges
-            [interaction.language.get("COMMAND_CHALLENGES_TRAINING")]: ["Sunday", "Monday", "Saturday"],
-            [interaction.language.get("COMMAND_CHALLENGES_ABILITY")]: ["Sunday", "Wednesday", "Saturday"],
-            [interaction.language.get("COMMAND_CHALLENGES_BOUNTY")]: ["Sunday", "Tuesday", "Friday"],
-            [interaction.language.get("COMMAND_CHALLENGES_AGILITY")]: ["Sunday", "Tuesday", "Friday"],
-            [interaction.language.get("COMMAND_CHALLENGES_STRENGTH")]: ["Sunday", "Monday", "Thursday"],
-            [interaction.language.get("COMMAND_CHALLENGES_TACTICS")]: ["Sunday", "Wednesday", "Saturday"],
+            [language.get("COMMAND_CHALLENGES_TRAINING")]: ["Sunday", "Monday", "Saturday"],
+            [language.get("COMMAND_CHALLENGES_ABILITY")]: ["Sunday", "Wednesday", "Saturday"],
+            [language.get("COMMAND_CHALLENGES_BOUNTY")]: ["Sunday", "Tuesday", "Friday"],
+            [language.get("COMMAND_CHALLENGES_AGILITY")]: ["Sunday", "Tuesday", "Friday"],
+            [language.get("COMMAND_CHALLENGES_STRENGTH")]: ["Sunday", "Monday", "Thursday"],
+            [language.get("COMMAND_CHALLENGES_TACTICS")]: ["Sunday", "Wednesday", "Saturday"],
 
             // Ship Challenges
-            [interaction.language.get("COMMAND_CHALLENGES_SHIP_ENHANCEMENT")]: ["Monday", "Wednesday", "Saturday"],
-            [interaction.language.get("COMMAND_CHALLENGES_SHIP_BUILDING")]: ["Monday", "Tuesday", "Friday"],
-            [interaction.language.get("COMMAND_CHALLENGES_SHIP_ABILITY")]: ["Monday", "Thursday", "Sunday"],
+            [language.get("COMMAND_CHALLENGES_SHIP_ENHANCEMENT")]: ["Monday", "Wednesday", "Saturday"],
+            [language.get("COMMAND_CHALLENGES_SHIP_BUILDING")]: ["Monday", "Tuesday", "Friday"],
+            [language.get("COMMAND_CHALLENGES_SHIP_ABILITY")]: ["Monday", "Thursday", "Sunday"],
         };
 
         const dayString = (day: string) => {
-            let dayString = `== Challenges for ${toProperCase(interaction.language.getDay(day.toUpperCase(), "LONG"))} ==`;
+            let dayString = `== Challenges for ${toProperCase(language.getDay(day.toUpperCase(), "LONG"))} ==`;
             for (const challenge in challenges) {
                 if (challenges[challenge].includes(day)) {
                     dayString += `\n* ${challenge}`;
@@ -62,10 +60,10 @@ export default class Challenges extends Command {
         let day = interaction.options.getString("day");
 
         if (!day) {
-            if (!guildConf?.timezone) {
+            if (!guildSettings?.timezone) {
                 day = `day_${toProperCase(getCurrentWeekday())}`;
             } else {
-                day = `day_${toProperCase(getCurrentWeekday(guildConf.timezone))}`;
+                day = `day_${toProperCase(getCurrentWeekday(guildSettings.timezone))}`;
             }
         }
 

@@ -9,7 +9,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Zetas extends Command {
     static readonly metadata = {
@@ -62,14 +62,14 @@ export default class Zetas extends Command {
         super(Zetas.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         let allycode = interaction.options.getString("allycode");
         allycode = await getAllyCode(interaction, allycode);
         if (!allycode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
 
-        await interaction.reply({ content: interaction.language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
 
         const subCommand = interaction.options.getSubcommand(true);
 
@@ -81,7 +81,7 @@ export default class Zetas extends Command {
 
             if (!foundCharacters?.length) {
                 // No character found
-                return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+                return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
             if (foundCharacters.length > 1) {
                 const charL = [];
@@ -89,7 +89,7 @@ export default class Zetas extends Command {
                 for (const c of charS) {
                     charL.push(c.name);
                 }
-                return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
+                return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
             }
             character = foundCharacters[0];
         }
@@ -102,7 +102,7 @@ export default class Zetas extends Command {
             player = playerRes?.[0] || null;
         } catch (e) {
             logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_ACCT"));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_ACCT"));
         }
 
         if (!player?.roster) return super.error(interaction, "I cannot get this player's info right now. Please try again later");
@@ -117,7 +117,7 @@ export default class Zetas extends Command {
 
             // This will grab the character info for any entered character
             const getCharInfo = async (thisChar: SWAPIUnit) => {
-                const langedChar = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+                const langedChar = await swgohAPI.langChar(thisChar, swgohLanguage);
                 if (!langedChar.nameKey) {
                     const tmp = characters.filter((c) => c.uniqueName === langedChar.defId);
                     if (tmp.length) {
@@ -151,7 +151,7 @@ export default class Zetas extends Command {
 
                 author.name = `${player.name}'s ${character.name} (${count})`;
                 if (!zetas[sorted[0]] || zetas[sorted[0]].length === 0) {
-                    desc.push(interaction.language.get("COMMAND_ZETA_NO_ZETAS"));
+                    desc.push(language.get("COMMAND_ZETA_NO_ZETAS"));
                 } else {
                     desc.push(zetas[sorted[0]].join("\n"));
                 }
@@ -163,7 +163,7 @@ export default class Zetas extends Command {
                 const langCharNames = await cache.get(
                     config.mongodb.swapidb,
                     "units",
-                    { baseId: { $in: unitDefIdList }, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
+                    { baseId: { $in: unitDefIdList }, language: swgohLanguage.toLowerCase() },
                     { baseId: 1, nameKey: 1, _id: 0 },
                 );
 
@@ -180,7 +180,7 @@ export default class Zetas extends Command {
                 const formatted = sorted.map((character) => `\`(${zetas[character].length})\` ${character}`);
                 const chunked = chunkArray(formatted, 45);
 
-                author.name = interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
+                author.name = language.get("COMMAND_ZETA_ZETAS_HEADER", player.name, count);
                 desc.push("`------------------------------`");
                 for (const chunk of chunked) {
                     fields.push({
@@ -190,7 +190,7 @@ export default class Zetas extends Command {
                 }
                 fields.push({
                     name: constants.zws,
-                    value: interaction.language.get("COMMAND_ZETA_MORE_INFO"),
+                    value: language.get("COMMAND_ZETA_MORE_INFO"),
                 });
             }
 
@@ -201,7 +201,7 @@ export default class Zetas extends Command {
                 });
             }
 
-            const footerStr = updatedFooterStr(player.updated, interaction);
+            const footerStr = updatedFooterStr(player.updated, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -267,7 +267,7 @@ export default class Zetas extends Command {
         }
         if (subCommand === "guild") {
             // Display the zetas for the whole guild (Takes a while)
-            await interaction.editReply({ content: interaction.language.get("COMMAND_ZETA_WAIT_GUILD") });
+            await interaction.editReply({ content: language.get("COMMAND_ZETA_WAIT_GUILD") });
 
             let guild: SWAPIGuild = null;
             let guildGG: SWAPIPlayer[] = null;
@@ -349,7 +349,7 @@ export default class Zetas extends Command {
                     });
                 }
                 const fieldArrChunks = chunkArray(fields, MAX_FIELDS);
-                const footerStr = updatedFooterStr(guild.updated, interaction);
+                const footerStr = updatedFooterStr(guild.updated, language);
                 fields.push({
                     name: constants.zws,
                     value: footerStr,
@@ -362,7 +362,7 @@ export default class Zetas extends Command {
                             embeds: [
                                 {
                                     author: {
-                                        name: interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
+                                        name: language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
                                     },
                                     fields: fieldChunk,
                                 },
@@ -378,13 +378,13 @@ export default class Zetas extends Command {
                     });
                 }
             } else {
-                const footerStr = updatedFooterStr(guild.updated, interaction);
+                const footerStr = updatedFooterStr(guild.updated, language);
                 if (!zetas[character.uniqueName]?.length) {
                     return interaction.editReply({
                         embeds: [
                             {
                                 author: {
-                                    name: interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
+                                    name: language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
                                 },
                                 description: `It looks like nobody in your guild has any zetas for ${searchChar}.\n\n${footerStr}`,
                             },
@@ -406,7 +406,7 @@ export default class Zetas extends Command {
                     embeds: [
                         {
                             author: {
-                                name: interaction.language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
+                                name: language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
                             },
                             fields: fields,
                         },

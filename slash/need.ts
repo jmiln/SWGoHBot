@@ -9,7 +9,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },
@@ -82,10 +82,10 @@ export default class Need extends Command {
         ],
     };
     constructor() {
-        super( Need.metadata);
+        super(Need.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
         let allycode = interaction.options.getString("allycode");
@@ -181,7 +181,7 @@ export default class Need extends Command {
             }
             if (playerUnit.rarity === 7) continue;
             shardsLeft += shardsLeftAtStar[playerUnit.rarity];
-            playerUnit = (await swgohAPI.langChar(playerUnit, interaction.guildSettings.swgohLanguage)) as SWAPIUnit;
+            playerUnit = (await swgohAPI.langChar(playerUnit, swgohLanguage)) as SWAPIUnit;
             if (characters.find((c) => c.uniqueName === unit.baseId)) {
                 // It's a character
                 outChars.push({
@@ -207,7 +207,7 @@ export default class Need extends Command {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix + 1})`;
                 fields.push({
-                    name: interaction.language.get("COMMAND_NEED_CHAR_HEADER") + end,
+                    name: language.get("COMMAND_NEED_CHAR_HEADER") + end,
                     value: m,
                 });
             });
@@ -220,7 +220,7 @@ export default class Need extends Command {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix + 1})`;
                 fields.push({
-                    name: interaction.language.get("COMMAND_NEED_SHIP_HEADER") + end,
+                    name: language.get("COMMAND_NEED_SHIP_HEADER") + end,
                     value: m,
                 });
             });
@@ -228,9 +228,9 @@ export default class Need extends Command {
 
         let desc = "";
         if (shardsLeft === 0) {
-            desc = interaction.language.get("COMMAND_NEED_COMPLETE");
+            desc = language.get("COMMAND_NEED_COMPLETE");
         } else {
-            desc = interaction.language.get("COMMAND_NEED_PARTIAL", (((totalShards - shardsLeft) / totalShards) * 100).toFixed(1));
+            desc = language.get("COMMAND_NEED_PARTIAL", (((totalShards - shardsLeft) / totalShards) * 100).toFixed(1));
         }
 
         const headerNames = getHeaderNames(namesToSearch);
@@ -241,7 +241,7 @@ export default class Need extends Command {
                 embeds: [
                     {
                         author: {
-                            name: interaction.language.get("COMMAND_NEED_HEADER", player.name, toProperCase(headerNames.join(", "))),
+                            name: language.get("COMMAND_NEED_HEADER", player.name, toProperCase(headerNames.join(", "))),
                         },
                         description: desc,
                         fields: fields.slice(0, Math.floor(fields.length / 2)),
@@ -263,7 +263,7 @@ export default class Need extends Command {
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_NEED_HEADER", player.name, toProperCase(headerNames.join(", "))),
+                        name: language.get("COMMAND_NEED_HEADER", player.name, toProperCase(headerNames.join(", "))),
                     },
                     description: desc,
                     fields: fields,
@@ -328,7 +328,7 @@ export default class Need extends Command {
             const units = await cache.get(
                 config.mongodb.swapidb,
                 "units",
-                { categoryIdList: searchName, language: interaction.guildSettings.swgohLanguage.toLowerCase() },
+                { categoryIdList: searchName, language: swgohLanguage.toLowerCase() },
                 { _id: 0, baseId: 1, nameKey: 1 },
             );
             return units;

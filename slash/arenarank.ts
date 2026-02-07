@@ -5,7 +5,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { arenaJumps } from "../data/constants/units.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Arenarank extends Command {
     static readonly metadata = {
@@ -29,24 +29,24 @@ export default class Arenarank extends Command {
     };
 
     constructor() {
-        super( Arenarank.metadata);
+        super(Arenarank.metadata);
     }
 
-    run(interaction: BotInteraction) {
+    run({ interaction, language }: CommandContext) {
         const currentRank = interaction.options.getInteger("rank");
         const rankHops = interaction.options.getInteger("hops") || 5;
 
         if (Number.isNaN(currentRank) || !currentRank) {
-            return super.error(interaction, interaction.language.get("COMMAND_ARENARANK_INVALID_NUMBER"), { example: "arenarank 55" });
+            return super.error(interaction, language.get("COMMAND_ARENARANK_INVALID_NUMBER"), { example: "arenarank 55" });
         }
 
         // If they are rank 1, don't bother calculating anything
-        if (currentRank === 1) return interaction.reply({ content: interaction.language.get("COMMAND_ARENARANK_BEST_RANK") });
+        if (currentRank === 1) return interaction.reply({ content: language.get("COMMAND_ARENARANK_BEST_RANK") });
 
         const { battles, isEstimated } = this.computeArenaRanks(currentRank, rankHops);
 
         return interaction.reply({
-            content: interaction.language.get(
+            content: language.get(
                 "COMMAND_ARENARANK_RANKLIST",
                 currentRank,
                 battles.length - 1,

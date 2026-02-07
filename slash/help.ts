@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import help from "../data/help.ts";
 import { msgArray, toProperCase } from "../modules/functions.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Help extends Command {
     static readonly metadata = {
@@ -37,10 +37,10 @@ export default class Help extends Command {
         ],
     };
     constructor() {
-        super( Help.metadata);
+        super(Help.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction }: CommandContext) {
         const search = interaction.options.getString("command");
         const category = interaction.options.getString("category");
         const isDetailed = interaction.options.getBoolean("details");

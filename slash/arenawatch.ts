@@ -1,4 +1,11 @@
-import { ApplicationCommandOptionType, ChannelType, type Embed, type GuildChannel, InteractionContextType } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    ChannelType,
+    type ChatInputCommandInteraction,
+    type Embed,
+    type GuildChannel,
+    InteractionContextType,
+} from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
@@ -7,7 +14,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, UserConfig } from "../types/types.ts";
+import type { CommandContext, UserConfig } from "../types/types.ts";
 
 interface InteractionOptions {
     subCommand: string;
@@ -434,17 +441,17 @@ export default class ArenaWatch extends Command {
     };
 
     constructor() {
-        super( ArenaWatch.metadata);
+        super(ArenaWatch.metadata);
     }
 
-    async run(interaction: BotInteraction, options: { level: number }) {
+    async run({ interaction, language, permLevel }: CommandContext) {
         const subCommand = interaction.options.getSubcommand();
         const subCommandGroup = interaction.options.getSubcommandGroup();
         const target = subCommandGroup || subCommand;
 
         // Need to make sure that the user has the correct permissions to set this up
-        if (options.level < constants.permMap.GUILD_ADMIN) {
-            return super.error(interaction, interaction.language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+        if (permLevel < constants.permMap.GUILD_ADMIN) {
+            return super.error(interaction, language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
         }
 
         const user: UserConfig = await userReg.getUser(interaction.user.id);
@@ -452,7 +459,7 @@ export default class ArenaWatch extends Command {
 
         const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
-            return super.error(interaction, interaction.language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
+            return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
         const codeCap = pat?.awAccounts || 1;
@@ -495,7 +502,7 @@ export default class ArenaWatch extends Command {
         }
         if (result.errorKey) {
             const [key, ...args] = result.errorKey;
-            await super.error(interaction, interaction.language.get(key, ...args));
+            await super.error(interaction, language.get(key, ...args));
             return;
         }
 
@@ -1016,7 +1023,7 @@ function checkPlayer(
 }
 
 // Takes in a channel from the interaction.options.getChannel, but always whines about it
-function getChannelIdIfValid(interaction: BotInteraction, channel: GuildChannel): string | null {
+function getChannelIdIfValid(interaction: ChatInputCommandInteraction, channel: GuildChannel): string | null {
     if (!channel) return null;
     if (!("guild" in channel)) return null;
     if (channel?.type !== ChannelType.GuildText) return null;

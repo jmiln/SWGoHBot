@@ -5,7 +5,7 @@ import { characters, charLocs, shipLocs, ships } from "../data/constants/units.t
 import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Farm extends Command {
     static readonly metadata = {
@@ -24,10 +24,10 @@ export default class Farm extends Command {
         ],
     };
     constructor() {
-        super( Farm.metadata);
+        super(Farm.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
         let isChar = true;
@@ -42,17 +42,17 @@ export default class Farm extends Command {
         }
         if (!chars?.length) {
             // Didn't find one
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         }
         if (chars.length > 1) {
             // Found too many
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", chars.map((c) => c.name).join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", chars.map((c) => c.name).join("\n")));
         }
 
         // There was only one result, so lets use it
         const character = chars[0];
 
-        const unit = await swgohAPI.units(character.uniqueName, interaction.swgohLanguage);
+        const unit = await swgohAPI.units(character.uniqueName, swgohLanguage);
         if (!unit) {
             return super.error(interaction, "[FARM] Broke trying to get the unit.");
         }
@@ -85,7 +85,7 @@ export default class Farm extends Command {
                         "locations",
                         {
                             id: loc.locId,
-                            language: interaction.swgohLanguage.toLowerCase(),
+                            language: swgohLanguage.toLowerCase(),
                         },
                         {},
                     )) as { id: string; language: string; langKey: string } | null;
@@ -120,7 +120,7 @@ export default class Farm extends Command {
                     "locations",
                     {
                         id: loc.locId,
-                        language: interaction.swgohLanguage.toLowerCase(),
+                        language: swgohLanguage.toLowerCase(),
                     },
                     {},
                 )) as { id: string; language: string; langKey: string } | null;
@@ -129,13 +129,13 @@ export default class Farm extends Command {
             }
         }
         if (!outList.length) {
-            return super.error(interaction, interaction.language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
+            return super.error(interaction, language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
         }
         return interaction.reply({
             embeds: [
                 {
                     author: {
-                        name: character.name + interaction.language.get("COMMAND_FARM_LOCATIONS"),
+                        name: character.name + language.get("COMMAND_FARM_LOCATIONS"),
                     },
                     color: getSideColor(character.side),
                     description: `**${outList.map((f) => `* ${f}`).join("\n")}**`,

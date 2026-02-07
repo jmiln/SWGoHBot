@@ -7,7 +7,7 @@ import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCha
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 // Quick mapping of gp to how many teams are needed
 const gpMap = {
@@ -61,7 +61,7 @@ export default class GrandArena extends Command {
         super(GrandArena.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
@@ -71,9 +71,9 @@ export default class GrandArena extends Command {
         const user1AC = await getAllyCode(interaction, user1Str);
         if (!user1AC) {
             if (user1Str === "me") {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
             }
         }
 
@@ -82,9 +82,9 @@ export default class GrandArena extends Command {
         const user2AC = await getAllyCode(interaction, user2Str);
         if (!user2AC) {
             if (user2Str === "me") {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
             }
         }
 
@@ -101,7 +101,7 @@ export default class GrandArena extends Command {
                 }
                 if (!chars.length) {
                     // It could not find any matches, so let em know
-                    problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_CHAR", char));
+                    problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_CHAR", char));
                 } else {
                     // It found at least one matching character
                     for (const ch of chars) {
@@ -141,7 +141,7 @@ export default class GrandArena extends Command {
         const checkArr = {};
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as { [key: string]: string };
+        const labels = language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as { [key: string]: string };
 
         // An array to stick all the fields in as we go.
         const fields = [];
@@ -509,18 +509,18 @@ export default class GrandArena extends Command {
         });
         if (extra > 0) {
             fields.push({
-                name: interaction.language.get("COMMAND_GRANDARENA_EXTRAS_HEADER"),
-                value: interaction.language.get("COMMAND_GRANDARENA_EXTRAS", extra),
+                name: language.get("COMMAND_GRANDARENA_EXTRAS_HEADER"),
+                value: language.get("COMMAND_GRANDARENA_EXTRAS", extra),
             });
         }
 
-        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), interaction);
+        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), language);
         return interaction.editReply({
             content: null,
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name) as string,
+                        name: language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name) as string,
                     },
                     fields: [...fields, { name: constants.zws, value: footerStr }],
                 },

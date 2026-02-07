@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class MyArena extends Command {
@@ -29,10 +29,10 @@ export default class MyArena extends Command {
         ],
     };
     constructor() {
-        super( MyArena.metadata);
+        super(MyArena.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         // eslint-disable-line no-unused-vars
         const ac = interaction.options.getString("allycode");
         const showStats = interaction.options.getBoolean("stats");
@@ -83,7 +83,7 @@ export default class MyArena extends Command {
             } catch (e) {
                 logger.error(`[slash/myarena] Error: ${e}`);
                 return super.error(interaction, codeBlock(e.interaction), {
-                    title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                    title: language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit.",
                 });
             }
@@ -124,13 +124,13 @@ export default class MyArena extends Command {
             });
         }
 
-        const footerStr = updatedFooterStr(player.updated, interaction);
+        const footerStr = updatedFooterStr(player.updated, language);
         return interaction.editReply({
             content: null,
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_MYARENA_EMBED_HEADER", player.name),
+                        name: language.get("COMMAND_MYARENA_EMBED_HEADER", player.name),
                     },
                     description: desc,
                     fields: [...fields, { name: constants.zws, value: footerStr }],
@@ -147,7 +147,7 @@ export default class MyArena extends Command {
                 arenaArr.push(`\`${type === "char" ? positions[ix] : sPositions[ix]}\` ${unitName}`);
             }
             return {
-                name: interaction.language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA" : "FLEET"}`, player.arena[type].rank),
+                name: language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA" : "FLEET"}`, player.arena[type].rank),
                 value: `${arenaArr.join("\n")}\n\`------------------------------\``,
                 inline: true,
             };
@@ -159,7 +159,7 @@ export default class MyArena extends Command {
                 logger.error(`[slash/myarena] Missing ID for ${defId}`);
                 return `Missing ID for ${defId}`;
             }
-            const thisLangChar = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            const thisLangChar = await swgohAPI.langChar(thisChar, swgohLanguage);
             const thisZ = thisLangChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
             if (thisLangChar.name && !thisLangChar.nameKey) thisLangChar.nameKey = thisLangChar.name;
             return `${"z".repeat(thisZ.length)}${thisLangChar.nameKey}`;

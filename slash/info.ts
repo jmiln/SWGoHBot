@@ -5,7 +5,7 @@ import constants from "../data/constants/constants.ts";
 import database from "../modules/database.ts";
 import { getShardId, guildCount, makeTable, userCount } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 interface InfoContent {
     statHeader: string;
@@ -40,10 +40,10 @@ export default class Info extends Command {
         description: "Displays general stats & info about the bot",
     };
     constructor() {
-        super( Info.metadata);
+        super(Info.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         try {
             const db = database.getClient().db(config.mongodb.swapidb);
             const swgohPlayerCount = await db.collection("playerStats").estimatedDocumentCount();
@@ -52,7 +52,7 @@ export default class Info extends Command {
             const totalUsers = await userCount(interaction.client);
             const shardId = getShardId(interaction.client);
 
-            const content = interaction.language.get("COMMAND_INFO_OUTPUT", shardId) as unknown as InfoContent;
+            const content = language.get("COMMAND_INFO_OUTPUT", shardId) as unknown as InfoContent;
 
             const description = this.buildDescription(content, {
                 users: totalUsers,

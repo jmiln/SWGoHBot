@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { characters, ships } from "../data/constants/units.ts";
 import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Ships extends Command {
     static readonly metadata = {
@@ -22,10 +22,10 @@ export default class Ships extends Command {
         ],
     };
     constructor() {
-        super( Ships.metadata);
+        super(Ships.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const searchName = interaction.options.getString("ship");
 
         // Find any characters that match that
@@ -39,7 +39,7 @@ export default class Ships extends Command {
         if (foundShips.length > 1) {
             return super.error(
                 interaction,
-                interaction.language.get(
+                language.get(
                     "BASE_SWGOH_CHAR_LIST",
                     foundShips
                         .map((s) => {
@@ -54,7 +54,7 @@ export default class Ships extends Command {
         }
 
         const ship = foundShips[0];
-        const unit = await swgohAPI.getCharacter(ship.uniqueName, interaction.guildSettings.swgohLanguage);
+        const unit = await swgohAPI.getCharacter(ship.uniqueName, swgohLanguage);
 
         const shipAbilities = unit.skillReferenceList;
 
@@ -67,13 +67,13 @@ export default class Ships extends Command {
                 crew.push(crewName.name);
             }
             fields.push({
-                name: interaction.language.get("COMMAND_SHIPS_CREW"),
+                name: language.get("COMMAND_SHIPS_CREW"),
                 value: toProperCase(crew.join(", ")),
             });
         }
         if (unit.factions.length) {
             fields.push({
-                name: interaction.language.get("COMMAND_SHIPS_FACTIONS"),
+                name: language.get("COMMAND_SHIPS_FACTIONS"),
                 value: toProperCase(unit.factions.join(", ")),
             });
         }
@@ -85,7 +85,7 @@ export default class Ships extends Command {
                     abilityDesc: ability.desc,
                 };
 
-                const msgArr = msgArray(expandSpaces(interaction.language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
+                const msgArr = msgArray(expandSpaces(language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
 
                 msgArr.forEach((m, ix) => {
                     if (ix === 0) {

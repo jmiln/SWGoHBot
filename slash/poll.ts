@@ -5,7 +5,7 @@ import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigPoll } from "../types/guildConfig_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Poll extends Command {
     static readonly metadata = {
@@ -78,7 +78,7 @@ export default class Poll extends Command {
         super(Poll.metadata);
     }
 
-    async run(interaction: BotInteraction, options: { level: number }) {
+    async run({ interaction, language, permLevel }: CommandContext) {
         const action = interaction.options.getSubcommand();
 
         const poll = {
@@ -105,7 +105,7 @@ export default class Poll extends Command {
 
         if (oldPoll && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
-            return super.error(interaction, interaction.language.get("COMMAND_POLL_ALREADY_RUNNING"));
+            return super.error(interaction, language.get("COMMAND_POLL_ALREADY_RUNNING"));
         }
         if (!oldPoll && action !== "create") {
             // If they're tyring to use a poll that doesn't exist, let them know
@@ -114,8 +114,8 @@ export default class Poll extends Command {
 
         // Make sure it's a mod or someone with the appropriate perms trying to create it
         const restrictedActions = ["cancel", "create", "end"];
-        if (restrictedActions.includes(action) && options.level < constants.permMap.GUILD_ADMIN) {
-            return super.error(interaction, interaction.language.get("COMMAND_MISSING_PERMS"));
+        if (restrictedActions.includes(action) && permLevel < constants.permMap.GUILD_ADMIN) {
+            return super.error(interaction, language.get("COMMAND_MISSING_PERMS"));
         }
 
         switch (action) {
@@ -128,21 +128,21 @@ export default class Poll extends Command {
 
                 // Make sure the question is kept within a reasonable length (Not sure why I chose 256 at the time)
                 if (poll.question.length >= 256) {
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_TITLE_TOO_LONG"));
+                    return super.error(interaction, language.get("COMMAND_POLL_TITLE_TOO_LONG"));
                 }
 
                 // Keep the choices limited to between 2 & 10 options
                 if (poll.options.length < 2) {
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_FEW_OPT"));
+                    return super.error(interaction, language.get("COMMAND_POLL_TOO_FEW_OPT"));
                 }
                 if (poll.options.length > 10) {
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_TOO_MANY_OPT"));
+                    return super.error(interaction, language.get("COMMAND_POLL_TOO_MANY_OPT"));
                 }
 
                 pollsArr.push(poll);
                 await setGuildPolls({ guildId: interaction.guild.id, pollsOut: pollsArr });
                 return interaction.reply({
-                    content: interaction.language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
+                    content: language.get("COMMAND_POLL_CREATED_SLASH", interaction.user.tag),
                     embeds: [
                         {
                             author: {
@@ -163,7 +163,7 @@ export default class Poll extends Command {
                     await setGuildPolls({ guildId: interaction.guild.id, pollsOut: pollsArr });
                     return super.success(interaction, "> Poll deleted.");
                 } catch (_) {
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
+                    return super.error(interaction, language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                 }
             }
             case "end": {
@@ -177,14 +177,14 @@ export default class Poll extends Command {
                         embeds: [
                             {
                                 author: {
-                                    name: interaction.language.get("COMMAND_POLL_FINAL", ""),
+                                    name: language.get("COMMAND_POLL_FINAL", ""),
                                 },
                                 description: `**${oldPoll.question}**\n${pollCheck(oldPoll, true)}`,
                             },
                         ],
                     });
                 } catch (_) {
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
+                    return super.error(interaction, language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                 }
             }
             case "view": {
@@ -206,13 +206,13 @@ export default class Poll extends Command {
                 // Doesn't need to be usable in DMs anymore because of the ephemeral reqponses now
                 const opt = interaction.options.getInteger("option") - 1;
                 if (oldPoll.options.length <= opt || opt < 0) {
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_INVALID_OPTION"), { ephemeral: true });
+                    return super.error(interaction, language.get("COMMAND_POLL_INVALID_OPTION"), { ephemeral: true });
                 }
                 const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
                 let voted = null;
                 if (oldPoll.votes[interaction.user.id] === opt) {
                     // Warn em that they're voting for the same thing they already voted for, so it won't be registered
-                    return super.error(interaction, interaction.language.get("COMMAND_POLL_SAME_OPT", oldPoll.options[opt]), {
+                    return super.error(interaction, language.get("COMMAND_POLL_SAME_OPT", oldPoll.options[opt]), {
                         ephemeral: true,
                     });
                 }
@@ -227,12 +227,12 @@ export default class Poll extends Command {
                     await setGuildPolls({ guildId: interaction.guild.id, pollsOut: pollsArr });
                     if (voted !== null && voted !== undefined) {
                         return interaction.reply({
-                            content: interaction.language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),
+                            content: language.get("COMMAND_POLL_CHANGED_OPT", oldPoll.options[voted], oldPoll.options[opt]),
                             flags: MessageFlags.Ephemeral,
                         });
                     }
                     return interaction.reply({
-                        content: interaction.language.get("COMMAND_POLL_REGISTERED", oldPoll.options[opt]),
+                        content: language.get("COMMAND_POLL_REGISTERED", oldPoll.options[opt]),
                         flags: MessageFlags.Ephemeral,
                     });
                 } catch (err) {
@@ -266,9 +266,9 @@ export default class Poll extends Command {
         function getFooter() {
             const footer = { text: "" };
             if (interaction.guild) {
-                footer.text = expandSpaces(interaction.language.get("COMMAND_POLL_FOOTER"));
+                footer.text = expandSpaces(language.get("COMMAND_POLL_FOOTER"));
             } else {
-                footer.text = expandSpaces(interaction.language.get("COMMAND_POLL_DM_FOOTER"));
+                footer.text = expandSpaces(language.get("COMMAND_POLL_DM_FOOTER"));
             }
             return footer;
         }

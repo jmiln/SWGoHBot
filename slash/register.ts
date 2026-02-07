@@ -8,7 +8,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, UserConfig } from "../types/types.ts";
+import type { CommandContext, UserConfig } from "../types/types.ts";
 
 export default class Register extends Command {
     static readonly metadata = {
@@ -31,10 +31,10 @@ export default class Register extends Command {
         ],
     };
     constructor() {
-        super( Register.metadata);
+        super(Register.metadata);
     }
 
-    async run(interaction: BotInteraction, options: { level: number }) {
+    async run({ interaction, language, permLevel }: CommandContext) {
         // eslint-disable-line no-unused-vars
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
@@ -46,7 +46,7 @@ export default class Register extends Command {
                 interaction,
                 `**${allycode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`,
             );
-            // return super.error(interaction, interaction.language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
+            // return super.error(interaction, language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
         }
         // Wipe out any non-number characters just in case
         allycode = allycode.replace(/[^\d]*/g, "");
@@ -57,13 +57,13 @@ export default class Register extends Command {
         }
 
         // First off, make sure they're not trying to do something they shouldn't do...
-        if (user.id !== interaction.user.id && options.level < constants.permMap.GUILD_ADMIN) {
+        if (user.id !== interaction.user.id && permLevel < constants.permMap.GUILD_ADMIN) {
             // If they are trying to change someone else and they don't have the right permissions
-            return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
+            return super.error(interaction, language.get("COMMAND_SHARDTIMES_MISSING_ROLE"));
         }
         if (interaction.guild && !interaction.guild.members.cache.has(user.id)) {
             // If they are trying to change something for someone in a different server
-            return super.error(interaction, interaction.language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
+            return super.error(interaction, language.get("COMMAND_REGISTER_ADD_NO_SERVER"));
         }
 
         // Then, if not, move along
@@ -80,7 +80,7 @@ export default class Register extends Command {
             userConfig.id = user.id;
         } else if (userConfig.accounts.find((a) => a.allyCode === allycode && a.primary)) {
             // This ally code is already registered & primary
-            return super.error(interaction, interaction.language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
+            return super.error(interaction, language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
         } else if (userConfig.accounts.find((a) => a.allyCode === allycode && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
             userConfig.accounts = userConfig.accounts.map((a) => {
@@ -92,12 +92,9 @@ export default class Register extends Command {
             const u = userConfig.accounts.find((a) => a.primary);
             return super.success(
                 interaction,
-                codeBlock(
-                    "asciiDoc",
-                    interaction.language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g).join("-")),
-                ),
+                codeBlock("asciiDoc", language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g).join("-"))),
                 {
-                    title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
+                    title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
                 },
             );
         } else {
@@ -109,13 +106,13 @@ export default class Register extends Command {
         }
 
         // Tell em to wait because it could take a be to find their info
-        await interaction.reply({ content: interaction.language.get("COMMAND_REGISTER_PLEASE_WAIT") });
+        await interaction.reply({ content: language.get("COMMAND_REGISTER_PLEASE_WAIT") });
 
         try {
             const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
             const player = playerRes?.[0] || null;
             if (!player) {
-                return super.error(interaction, interaction.language.get("COMMAND_REGISTER_FAILURE") + allycode);
+                return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE") + allycode);
             }
             userConfig.accounts.push({
                 allyCode: allycode,
@@ -129,7 +126,7 @@ export default class Register extends Command {
                         interaction,
                         codeBlock(
                             "asciiDoc",
-                            interaction.language.get(
+                            language.get(
                                 "COMMAND_REGISTER_SUCCESS_DESC",
                                 player,
                                 player.allyCode?.toString().match(/\d{3}/g).join("-"),
@@ -137,14 +134,14 @@ export default class Register extends Command {
                             ),
                         ),
                         {
-                            title: interaction.language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
+                            title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
                         },
                     );
                 })
                 .catch((e: Error) => {
                     logger.error(`[REGISTER] Broke while trying to link new user: ${e}`);
                     return super.error(interaction, codeBlock(e.message), {
-                        title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                        title: language.get("BASE_SOMETHING_BROKE"),
                         footer: "Please try again in a bit.",
                     });
                 });

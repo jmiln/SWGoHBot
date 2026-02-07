@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 interface PlayerQuality {
     name: string;
@@ -33,11 +33,11 @@ export default class GuildQuality extends Command {
         ],
     };
     constructor() {
-        super( GuildQuality.metadata);
+        super(GuildQuality.metadata);
     }
 
-    async run(interaction: BotInteraction) {
-        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
+    async run({ interaction, language }: CommandContext) {
+        await interaction.reply({ content: language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const allycode = interaction.options.getString("allycode");
         const userAC = await getAllyCode(interaction, allycode, true);
@@ -74,13 +74,13 @@ export default class GuildQuality extends Command {
         }
 
         if (!guild) {
-            return super.error(interaction, `Couldn't get guild. ${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild. ${language.get("COMMAND_GUILDS_NO_GUILD")}`);
         }
 
         const rosterQualities = await getGuildRosterQualities(guild);
 
         if (!rosterQualities?.length) {
-            return super.error(interaction, `Couldn't get guild stats. ${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild stats. ${language.get("COMMAND_GUILDS_NO_GUILD")}`);
         }
 
         const outArr = ["`ModQ | GearQ | TotalQ | CharGP | Name  `"];
@@ -129,7 +129,7 @@ export default class GuildQuality extends Command {
 
         // Grab the most recently updated player's timestamp
         const maxUpdated = Math.max(...guild.roster.map((pl) => pl.updated));
-        const footerStr = updatedFooterStr(maxUpdated, interaction);
+        const footerStr = updatedFooterStr(maxUpdated, language);
         fields.push({
             name: constants.zws,
             value: footerStr,

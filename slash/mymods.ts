@@ -8,7 +8,7 @@ import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } f
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotUnit } from "../types/types.ts";
+import type { CommandContext, BotUnit } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 
@@ -115,10 +115,10 @@ export default class MyMods extends Command {
         ],
     };
     constructor() {
-        super( MyMods.metadata);
+        super(MyMods.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         const subCommand = interaction.options.getSubcommand();
@@ -128,7 +128,7 @@ export default class MyMods extends Command {
         if (!allycode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
-        await interaction.reply({ content: interaction.language.get("COMMAND_MYMODS_WAIT") });
+        await interaction.reply({ content: language.get("COMMAND_MYMODS_WAIT") });
 
         let player: SWAPIPlayer;
         try {
@@ -136,34 +136,34 @@ export default class MyMods extends Command {
             player = resPlayer[0];
         } catch (e) {
             return super.error(interaction, codeBlock(e.message), {
-                title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                title: language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit.",
             });
         }
         if (!player?.roster) {
             // If there's no characters, then there's nothing to show...
             return super.error(interaction, "Unable to retrieve roster.", {
-                title: interaction.language.get("BASE_SOMETHING_BROKE"),
+                title: language.get("BASE_SOMETHING_BROKE"),
                 footer: "Please try again in a bit.",
             });
         }
-        const footerStr = updatedFooterStr(player.updated, interaction) || "";
+        const footerStr = updatedFooterStr(player.updated, language) || "";
 
         if (subCommand === "character") {
             const searchChar = interaction.options.getString("character");
 
             let character: BotUnit;
             if (!searchChar) {
-                return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_MISSING_CHAR") });
+                return interaction.editReply({ content: language.get("BASE_SWGOH_MISSING_CHAR") });
             }
 
             const foundCharacters = findChar(searchChar, characters);
             if (foundCharacters.length === 0) {
-                return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
+                return interaction.editReply({ content: language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
             }
             if (foundCharacters.length > 1) {
                 const charList = foundCharacters.sort((p, c) => (p.name > c.name ? 1 : -1)).map((c) => c.name);
-                return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n")));
+                return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n")));
             }
             character = foundCharacters[0];
 
@@ -172,7 +172,7 @@ export default class MyMods extends Command {
                 return super.error(interaction, "Looks like you don't have that character activated yet.");
             }
 
-            const langChar = await swgohAPI.langChar(thisChar, interaction.guildSettings.swgohLanguage);
+            const langChar = await swgohAPI.langChar(thisChar, swgohLanguage);
             if (!langChar) {
                 return interaction.editReply({
                     content: null,
@@ -181,7 +181,7 @@ export default class MyMods extends Command {
                             author: {
                                 name: `${player.name}'s ${character.name}`,
                             },
-                            description: `${interaction.language.get("BASE_SWGOH_LOCKED_CHAR")}\n${footerStr}`,
+                            description: `${language.get("BASE_SWGOH_LOCKED_CHAR")}\n${footerStr}`,
                         },
                     ],
                 });
@@ -190,8 +190,8 @@ export default class MyMods extends Command {
             const charMods = langChar.mods;
             const slots = {};
 
-            const sets = interaction.language.get("BASE_MODSETS_FROM_GAME");
-            const stats = interaction.language.get("BASE_MODS_FROM_GAME");
+            const sets = language.get("BASE_MODSETS_FROM_GAME");
+            const stats = language.get("BASE_MODS_FROM_GAME");
 
             for (const mod of charMods) {
                 slots[mod.slot] = {
@@ -304,10 +304,7 @@ export default class MyMods extends Command {
             // Slice it down to a proper size, then grab the localized strings
             sortedCharList = sortedCharList.slice(0, 20);
             for (const charIx in sortedCharList) {
-                sortedCharList[charIx] = (await swgohAPI.langChar(
-                    sortedCharList[charIx],
-                    interaction.guildSettings.swgohLanguage,
-                )) as SWAPIUnit;
+                sortedCharList[charIx] = (await swgohAPI.langChar(sortedCharList[charIx], swgohLanguage)) as SWAPIUnit;
             }
 
             const out = sortedCharList.map((c) => {
@@ -342,11 +339,7 @@ export default class MyMods extends Command {
                 embeds: [
                     {
                         author: {
-                            name: interaction.language.get(
-                                `COMMAND_MYMODS_HEADER_${showTotal ? "TOTAL" : "MODS"}`,
-                                player.name,
-                                statToCheck,
-                            ),
+                            name: language.get(`COMMAND_MYMODS_HEADER_${showTotal ? "TOTAL" : "MODS"}`, player.name, statToCheck),
                         },
                         description: `==============================\n${outStr}==============================`,
                         fields: [...fields, { name: constants.zws, value: footerStr }],
@@ -421,7 +414,7 @@ export default class MyMods extends Command {
                 const lowerLvl = 6 - (character.mods?.filter((m) => !m || m.level >= 15).length || 0) - missingMods;
 
                 if (missingMods || lowerLvl) {
-                    const langChar = await swgohAPI.langChar(character, interaction.guildSettings.swgohLanguage);
+                    const langChar = await swgohAPI.langChar(character, swgohLanguage);
                     outArr.push(`\`[${missingMods}][${lowerLvl}]\` ${langChar.nameKey || langChar.defId}`);
                 }
             }

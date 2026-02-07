@@ -5,7 +5,7 @@ import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Showconf extends Command {
     static readonly metadata = {
@@ -19,7 +19,7 @@ export default class Showconf extends Command {
         super(Showconf.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
         const outArr = [];
@@ -96,7 +96,7 @@ export default class Showconf extends Command {
         );
 
         return interaction.reply({
-            content: interaction.language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || ""),
+            content: language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || ""),
         });
     }
 }

@@ -2,6 +2,7 @@ import {
     ApplicationCommandOptionType,
     type AutocompleteFocusedOption,
     type AutocompleteInteraction,
+    type ChatInputCommandInteraction,
     codeBlock,
     InteractionContextType,
     MessageFlags,
@@ -15,7 +16,7 @@ import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 // TODO Work out pagination with the fancy new buttons?
 const EVENTS_PER_PAGE = 5;
@@ -225,7 +226,7 @@ export default class Event extends Command {
         await interaction.respond(filteredEvents);
     }
 
-    async run(interaction: BotInteraction, options: { level: number }) {
+    async run({ interaction, language, permLevel }: CommandContext) {
         if (!interaction?.guild) {
             return super.error(interaction, "Sorry, but this command is not available in DMs.");
         }
@@ -252,9 +253,9 @@ export default class Event extends Command {
 
         if (
             ["create", "createjson", "delete", "edit", "trigger"].includes(action.toLowerCase()) &&
-            options.level < constants.permMap.GUILD_ADMIN
+            permLevel < constants.permMap.GUILD_ADMIN
         ) {
-            return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
+            return super.error(interaction, language.get("COMMAND_EVENT_INVALID_PERMS"));
         }
 
         const guildEvents: GuildConfigEvent[] = await getGuildEvents({ guildId: interaction.guild.id });
@@ -274,13 +275,13 @@ export default class Event extends Command {
                 // If they have too many events, stop here
                 if (evCount >= 50) {
                     // 50 should be fine, as at the time of making this, the most anyone has is 31
-                    return super.error(interaction, interaction.language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
+                    return super.error(interaction, language.get("COMMAND_EVENT_TOO_MANY_EVENTS"));
                 }
 
                 // Check if that name/ event already exists
                 const exists = guildEvents.findIndex((ev) => ev.name === evName);
                 if (exists > -1) {
-                    return super.error(interaction, interaction.language.get("COMMAND_EVENT_JSON_EXISTS"));
+                    return super.error(interaction, language.get("COMMAND_EVENT_JSON_EXISTS"));
                 }
 
                 const newEv = {
@@ -308,15 +309,11 @@ export default class Event extends Command {
 
                 if (!ev.success) {
                     return interaction.reply({
-                        content: `${interaction.language.get("COMMAND_EVENT_NO_CREATE")}\n\n**${evName}**\n${ev.error}`,
+                        content: `${language.get("COMMAND_EVENT_NO_CREATE")}\n\n**${evName}**\n${ev.error}`,
                     });
                 }
                 return interaction.reply({
-                    content: interaction.language.get(
-                        "COMMAND_EVENT_CREATED",
-                        evName,
-                        getDateTimeStr(validEV.event.eventDT, guildConf.timezone),
-                    ),
+                    content: language.get("COMMAND_EVENT_CREATED", evName, getDateTimeStr(validEV.event.eventDT, guildConf.timezone)),
                 });
             }
             case "createjson": {
@@ -331,7 +328,7 @@ export default class Event extends Command {
                 const regex = /(?<=[`]{3})(.*)(?=[`]{3})|(\[.*]$)|(\{[^}]*}$)/;
                 const match = jsonIn.match(regex);
 
-                if (!match) return super.error(interaction, interaction.language.get("COMMAND_EVENT_JSON_BAD_JSON"));
+                if (!match) return super.error(interaction, language.get("COMMAND_EVENT_JSON_BAD_JSON"));
 
                 // Make sure the event objects are in an array
                 const matchWhole = match[0].replace(/\n/g, "");
@@ -374,10 +371,7 @@ export default class Event extends Command {
                 const result = validateEvents(jsonWhole, guildEvents);
                 if (result.filter((e) => !e.valid).length) {
                     return interaction.reply({
-                        content: interaction.language.get(
-                            "COMMAND_EVENT_JSON_ERR_NOT_ADDED",
-                            codeBlock(result.map((e) => e.str).join("\n\n")),
-                        ),
+                        content: language.get("COMMAND_EVENT_JSON_ERR_NOT_ADDED", codeBlock(result.map((e) => e.str).join("\n\n"))),
                     });
                 }
 
@@ -394,14 +388,10 @@ export default class Event extends Command {
                     const thisEvent = ev.event;
                     if (ev.success) {
                         evAddLog.push(
-                            interaction.language.get(
-                                "COMMAND_EVENT_CREATED",
-                                thisEvent.name,
-                                getDateTimeStr(thisEvent.eventDT, guildConf.timezone),
-                            ),
+                            language.get("COMMAND_EVENT_CREATED", thisEvent.name, getDateTimeStr(thisEvent.eventDT, guildConf.timezone)),
                         );
                     } else {
-                        evFailLog.push(interaction.language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", thisEvent.name, ev.error));
+                        evFailLog.push(language.get("COMMAND_EVENT_JSON_EV_ADD_ERROR", thisEvent.name, ev.error));
                     }
                 }
                 return interaction.reply({
@@ -440,14 +430,10 @@ export default class Event extends Command {
                     const eventIn = await eventSocket.getEventByName(interaction.guild.id, eventName);
 
                     // If it doesn't find the event, say so
-                    if (!eventIn) return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
+                    if (!eventIn) return interaction.reply({ content: language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
 
-                    let eventString = interaction.language.get(
-                        "COMMAND_EVENT_TIME",
-                        eventIn.name,
-                        `<t:${Math.floor(eventIn.eventDT / 1000)}:f>`,
-                    );
-                    eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(eventIn.eventDT / 1000)}:R>`);
+                    let eventString = language.get("COMMAND_EVENT_TIME", eventIn.name, `<t:${Math.floor(eventIn.eventDT / 1000)}:f>`);
+                    eventString += language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(eventIn.eventDT / 1000)}:R>`);
                     if (eventIn.channel?.length) {
                         let chanName = null;
                         if (interaction.guild.channels.cache.has(eventIn.channel)) {
@@ -455,16 +441,16 @@ export default class Event extends Command {
                         } else {
                             chanName = eventIn.channel;
                         }
-                        eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
+                        eventString += language.get("COMMAND_EVENT_CHAN", chanName);
                     }
                     if (eventIn.repeatDays.length > 0) {
-                        eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", eventIn.repeatDays.join(", "));
+                        eventString += language.get("COMMAND_EVENT_SCHEDULE", eventIn.repeatDays.join(", "));
                     } else if (
                         eventIn.repeat &&
                         (eventIn.repeat.repeatDay !== 0 || eventIn.repeat.repeatHour !== 0 || eventIn.repeat.repeatMin !== 0)
                     ) {
                         // At least one of em is more than 0
-                        eventString += interaction.language.get(
+                        eventString += language.get(
                             "COMMAND_EVENT_REPEAT",
                             eventIn.repeat.repeatDay,
                             eventIn.repeat.repeatHour,
@@ -473,7 +459,7 @@ export default class Event extends Command {
                     }
                     if (!minimal && eventIn.message?.length) {
                         // If they want to show all available events without the message showing
-                        eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, eventIn.message));
+                        eventString += language.get("COMMAND_EVENT_MESSAGE", removeTags(interaction, eventIn.message));
                     }
                     return interaction.reply({ content: eventString });
                 }
@@ -490,7 +476,7 @@ export default class Event extends Command {
                 const result = await eventSocket.deleteEvent(interaction.guild.id, eventName);
 
                 if (result.success) {
-                    return super.success(interaction, interaction.language.get("COMMAND_EVENT_DELETED", eventName));
+                    return super.success(interaction, language.get("COMMAND_EVENT_DELETED", eventName));
                 }
                 return super.error(interaction, result.error);
             }
@@ -550,7 +536,7 @@ export default class Event extends Command {
 
                 // Check if that name/ event already exists
                 if (!event) {
-                    return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
+                    return interaction.reply({ content: language.get("COMMAND_EVENT_UNFOUND_EVENT", eventName) });
                 }
                 const [oldDate, oldTime] = new Date(event.eventDT)
                     .toLocaleString("en-GB", {
@@ -637,14 +623,14 @@ export default class Event extends Command {
                             { title: "Success", color: constants.colors.green },
                         );
                     }
-                    return super.error(interaction, `${interaction.language.get("COMMAND_EVENT_EDIT_BROKE")}\n${res.error}`);
+                    return super.error(interaction, `${language.get("COMMAND_EVENT_EDIT_BROKE")}\n${res.error}`);
                 } catch (e) {
                     return super.error(interaction, e.message);
                 }
             }
         }
 
-        function removeTags(interaction: BotInteraction, message: string) {
+        function removeTags(interaction: ChatInputCommandInteraction, message: string) {
             if (!message) return message;
             const userReg = /<@!?(1|\d{17,19})>/g;
             const roleReg = /<@&(1|\d{17,19})>/g;
@@ -714,10 +700,10 @@ export default class Event extends Command {
                 };
 
                 if (!thisEvent?.name?.length) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
+                    err.push(language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
                 } else {
                     if (nameArr.includes(thisEvent.name) || guildEvArray?.map((ev) => ev.name).includes(thisEvent.name)) {
-                        err.push(interaction.language.get("COMMAND_EVENT_JSON_DUPLICATE"));
+                        err.push(language.get("COMMAND_EVENT_JSON_DUPLICATE"));
                     } else {
                         nameArr.push(thisEvent.name);
                     }
@@ -726,14 +712,14 @@ export default class Event extends Command {
                 const dateSplit = thisEvent.day?.split("/");
                 const mmddyyyDate = `${dateSplit?.[1]}/${dateSplit?.[0]}/${dateSplit?.[2]}`;
                 if (!thisEvent.day) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
+                    err.push(language.get("COMMAND_EVENT_JSON_MISSING_DAY"));
                 } else if (!thisEvent.day?.match(/\d{1,2}\/\d{1,2}\/\d{4}/) || !Date.parse(mmddyyyDate)) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_DAY", thisEvent.day));
+                    err.push(language.get("COMMAND_EVENT_JSON_INVALID_DAY", thisEvent.day));
                 }
                 if (!thisEvent.time) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_MISSING_TIME"));
+                    err.push(language.get("COMMAND_EVENT_JSON_MISSING_TIME"));
                 } else if (!thisEvent.time.match(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_INVALID_TIME", thisEvent.time));
+                    err.push(language.get("COMMAND_EVENT_JSON_INVALID_TIME", thisEvent.time));
                 }
 
                 if (thisEvent.day && thisEvent.time) {
@@ -758,7 +744,7 @@ export default class Event extends Command {
                             minute: "numeric",
                         });
 
-                        err.push(interaction.language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
+                        err.push(language.get("COMMAND_EVENT_PAST_DATE", eventDATE, nowDATE));
                     }
                 }
 
@@ -780,11 +766,11 @@ export default class Event extends Command {
                         (c) => c.name === guildConf.announceChan || c.id === guildConf.announceChan,
                     );
                     if (!announceChannel) {
-                        err.push(interaction.language.get("COMMAND_EVENT_NEED_CHAN"));
+                        err.push(language.get("COMMAND_EVENT_NEED_CHAN"));
                     }
                 }
                 if (thisEvent.repeat && thisEvent.repeatDay) {
-                    err.push(interaction.language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
+                    err.push(language.get("COMMAND_EVENT_JSON_NO_2X_REPEAT"));
                 } else {
                     // If the repeat is set, try to parse it
                     const timeReg = /^\d{1,2}d\d{1,2}h\d{1,2}m/i;
@@ -799,7 +785,7 @@ export default class Event extends Command {
                             newEvent.repeat.repeatHour = Number.parseInt(hourMatch?.[1] || "0", 10);
                             newEvent.repeat.repeatMin = Number.parseInt(minMatch?.[1] || "0", 10);
                         } else {
-                            err.push(interaction.language.get("COMMAND_EVENT_INVALID_REPEAT"));
+                            err.push(language.get("COMMAND_EVENT_INVALID_REPEAT"));
                         }
                     } else if (thisEvent.repeatDay?.length) {
                         const dayReg = /^[0-9,]*$/gi;
@@ -812,7 +798,7 @@ export default class Event extends Command {
                         if (Array.isArray(jsonRepDay)) {
                             for (const r of jsonRepDay) {
                                 if (r <= 0) {
-                                    err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
+                                    err.push(language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                                 }
                             }
                             if (!err?.length) {
@@ -821,26 +807,20 @@ export default class Event extends Command {
                         } else if (thisEvent.repeatDay.toString().match(dayReg)) {
                             const dayList = thisEvent.repeatDay.toString().split(",");
                             if (dayList.find((d: string) => Number.parseInt(d, 10) <= 0)) {
-                                err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_NUM"));
+                                err.push(language.get("COMMAND_EVENT_JSON_BAD_NUM"));
                             }
                             newEvent.repeatDays = dayList.map((d: string) => Number.parseInt(d, 10));
                         } else {
-                            err.push(interaction.language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
+                            err.push(language.get("COMMAND_EVENT_JSON_BAD_FORMAT"));
                         }
                     }
                     newEvent.countdown = thisEvent.countdown;
                 }
                 let outStr: string;
                 if (err.length) {
-                    outStr = interaction.language.get("COMMAND_EVENT_JSON_ERROR_LIST", ix + 1, err.map((e) => `* ${e}`).join("\n"));
+                    outStr = language.get("COMMAND_EVENT_JSON_ERROR_LIST", ix + 1, err.map((e) => `* ${e}`).join("\n"));
                 } else {
-                    outStr = interaction.language.get(
-                        "COMMAND_EVENT_JSON_EVENT_VALID",
-                        ix + 1,
-                        newEvent.name,
-                        thisEvent.time,
-                        thisEvent.day,
-                    );
+                    outStr = language.get("COMMAND_EVENT_JSON_EVENT_VALID", ix + 1, newEvent.name, thisEvent.time, thisEvent.day);
                 }
                 const result = {
                     event: newEvent,
@@ -892,8 +872,8 @@ export default class Event extends Command {
                 }
             }
             for (const event of sortedEvents) {
-                let eventString = interaction.language.get("COMMAND_EVENT_TIME", event.name, `<t:${Math.floor(event.eventDT / 1000)}:f>`);
-                eventString += interaction.language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(event.eventDT / 1000)}:R>`);
+                let eventString = language.get("COMMAND_EVENT_TIME", event.name, `<t:${Math.floor(event.eventDT / 1000)}:f>`);
+                eventString += language.get("COMMAND_EVENT_TIME_LEFT", `<t:${Math.floor(event.eventDT / 1000)}:R>`);
                 if (event.channel && event.channel !== "") {
                     let chanName = "";
                     if (interaction.guild.channels.cache.has(event.channel)) {
@@ -901,16 +881,16 @@ export default class Event extends Command {
                     } else {
                         chanName = event.channel;
                     }
-                    eventString += interaction.language.get("COMMAND_EVENT_CHAN", chanName);
+                    eventString += language.get("COMMAND_EVENT_CHAN", chanName);
                 }
                 if (event.repeatDays?.length > 0) {
-                    eventString += interaction.language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
+                    eventString += language.get("COMMAND_EVENT_SCHEDULE", event.repeatDays.join(", "));
                 } else if (
                     event.repeat &&
                     (event.repeat.repeatDay !== 0 || event.repeat.repeatHour !== 0 || event.repeat.repeatMin !== 0)
                 ) {
                     // At least one of em is more than 0
-                    eventString += interaction.language.get(
+                    eventString += language.get(
                         "COMMAND_EVENT_REPEAT",
                         event.repeat.repeatDay,
                         event.repeat.repeatHour,
@@ -920,38 +900,32 @@ export default class Event extends Command {
                 if (!minimal && event.message?.length) {
                     // If they want to show all available events with the message showing
                     const msg = removeTags(interaction, event.message);
-                    eventString += interaction.language.get("COMMAND_EVENT_MESSAGE", msg);
+                    eventString += language.get("COMMAND_EVENT_MESSAGE", msg);
                 }
                 evOutArr.push(eventString);
             }
             const evArray = msgArray(evOutArr, "\n\n");
             try {
                 if (evArray.length === 0) {
-                    return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_NO_EVENT") });
+                    return interaction.reply({ content: language.get("COMMAND_EVENT_NO_EVENT") });
                 }
                 if (!evArray.length) {
                     if (guildConf.useEventPages) {
                         return interaction.reply({
-                            content: interaction.language.get(
-                                "COMMAND_EVENT_SHOW_PAGED",
-                                eventCount,
-                                PAGE_SELECTED,
-                                PAGES_NEEDED,
-                                evArray[0],
-                            ),
+                            content: language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]),
                         });
                     }
-                    return interaction.reply({ content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0]) });
+                    return interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0]) });
                 }
                 for (const [ix, evMsg] of evArray.entries()) {
                     if (guildConf.useEventPages) {
                         return interaction.reply({
-                            content: interaction.language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg),
+                            content: language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evMsg),
                         });
                     }
                     if (ix === 0) {
                         // If it's the first one, reply to the interaction
-                        interaction.reply({ content: interaction.language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
+                        interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
                     } else {
                         // After the first one, just send to the channel instead of replying
                         interaction.channel.send({ content: evMsg });

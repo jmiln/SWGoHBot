@@ -20,7 +20,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction, TWList } from "../types/types.ts";
+import type { CommandContext, TWList } from "../types/types.ts";
 
 export default class Guilds extends Command {
     static readonly metadata = {
@@ -223,8 +223,8 @@ export default class Guilds extends Command {
         super(Guilds.metadata);
     }
 
-    async run(interaction: BotInteraction) {
-        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
+    async run({ interaction, language }: CommandContext) {
+        await interaction.reply({ content: language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
         const subCommand = interaction.options.getSubcommand();
         if (!subCommand) {
@@ -276,7 +276,7 @@ export default class Guilds extends Command {
         }
 
         if (!guild) {
-            return super.error(interaction, `Couldn't get guild. ${interaction.language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild. ${language.get("COMMAND_GUILDS_NO_GUILD")}`);
         }
 
         // Switch out depending on the subcommand
@@ -348,7 +348,7 @@ export default class Guilds extends Command {
             const sortBy = interaction.options.getInteger("sort");
             if (sortBy && (sortBy > 13 || sortBy < 9)) {
                 return interaction.editReply({
-                    content: interaction.language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string,
+                    content: language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string,
                 });
             }
             const gRoster = guild.roster.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)).map((m) => m.allyCode);
@@ -420,13 +420,13 @@ export default class Guilds extends Command {
                 embeds: [
                     {
                         author: {
-                            name: `${guild.name} ${interaction.language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`,
+                            name: `${guild.name} ${language.get("COMMAND_GUILDSEARCH_GEAR_SUM")}`,
                         },
                         description: tableOut.length ? tableOut.join("\n") : "No users found in guild",
                         fields: [
                             {
                                 name: constants.zws,
-                                value: updatedFooterStr(guild.updated, interaction),
+                                value: updatedFooterStr(guild.updated, language),
                             },
                         ],
                     },
@@ -523,7 +523,7 @@ export default class Guilds extends Command {
 
             const embed = {
                 author: {
-                    name: interaction.language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name) as string,
+                    name: language.get("COMMAND_GUILDSEARCH_MODS_HEADER", guild.name) as string,
                 },
                 fields: fields,
             };
@@ -729,11 +729,11 @@ export default class Guilds extends Command {
             const nowTime = Date.now();
             if (chaTime > nowTime) {
                 // It's in the future
-                timeUntilReset = formatDuration(chaTime - nowTime, interaction.language);
+                timeUntilReset = formatDuration(chaTime - nowTime, language);
             } else {
                 // It's in the past, so calculate the next time
                 const dur = chaTime + dayMS - nowTime;
-                timeUntilReset = formatDuration(dur, interaction.language);
+                timeUntilReset = formatDuration(dur, language);
             }
 
             let maxed = 0;
@@ -751,7 +751,7 @@ export default class Guilds extends Command {
                 out.push("\n**__Members with full tickets:__**");
                 out.push(...fullOut);
             }
-            const footerStr = updatedFooterStr(rawGuild.updated, interaction);
+            const footerStr = updatedFooterStr(rawGuild.updated, language);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
             const maxedString = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
             return interaction.editReply({
@@ -769,10 +769,10 @@ export default class Guilds extends Command {
 
         async function baseGuild() {
             const fields = [];
-            let desc = guild.desc ? `**${interaction.language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
-            desc += guild.message?.length ? `**${interaction.language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
+            let desc = guild.desc ? `**${language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
+            desc += guild.message?.length ? `**${language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
 
-            const raidHeaderStr = interaction.language.get("COMMAND_GUILDS_RAID_STRINGS");
+            const raidHeaderStr = language.get("COMMAND_GUILDS_RAID_STRINGS");
             const raidArr = [];
             let raids = "";
 
@@ -810,7 +810,7 @@ export default class Guilds extends Command {
                 guildCharGP += mem.gpChar;
                 guildShipGP += mem.gpShip;
             }
-            const stats = interaction.language.get(
+            const stats = language.get(
                 "COMMAND_GUILDS_STAT_STRINGS",
                 guild.roster.length,
                 guild.required,
@@ -819,7 +819,7 @@ export default class Guilds extends Command {
                 guildShipGP.toLocaleString(),
             );
             fields.push({
-                name: interaction.language.get("COMMAND_GUILDS_STAT_HEADER"),
+                name: language.get("COMMAND_GUILDS_STAT_HEADER"),
                 value: codeBlock(stats) || "N/A",
                 inline: true,
             });
@@ -827,7 +827,7 @@ export default class Guilds extends Command {
             fields.push({
                 name: "-",
                 value:
-                    interaction.language.get("COMMAND_GUILDS_FOOTER") ||
+                    language.get("COMMAND_GUILDS_FOOTER") ||
                     "`/guilds roster` for a list of your guild members and their gp.\n`/guilds roster show_allycode: true` for a list with their ally codes instead.",
             });
 
@@ -838,7 +838,7 @@ export default class Guilds extends Command {
                 });
             }
 
-            const footerStr = updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -937,7 +937,7 @@ export default class Guilds extends Command {
             const msgArr = msgArray([header, ...users], "\n", 1000);
             msgArr.forEach((m, ix) => {
                 fields.push({
-                    name: interaction.language.get("COMMAND_GUILDS_ROSTER_HEADER", ix + 1, msgArr.length),
+                    name: language.get("COMMAND_GUILDS_ROSTER_HEADER", ix + 1, msgArr.length),
                     value: m,
                 });
             });
@@ -947,7 +947,7 @@ export default class Guilds extends Command {
                     value: guild.warnings.join("\n"),
                 });
             }
-            const footerStr = updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -1041,9 +1041,9 @@ export default class Guilds extends Command {
 
             const fields = [];
             fields.push({
-                name: interaction.language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
+                name: language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: codeBlock(
-                    interaction.language.get(
+                    language.get(
                         "COMMAND_GUILDS_GUILD_GP",
                         guild.gp.toLocaleString(),
                         Math.floor(guild.gp / users.length).toLocaleString(),
@@ -1060,7 +1060,7 @@ export default class Guilds extends Command {
                     value: guild.warnings.join("\n"),
                 });
             }
-            const footerStr = updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -1070,9 +1070,9 @@ export default class Guilds extends Command {
                 embeds: [
                     {
                         author: {
-                            name: interaction.language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name),
+                            name: language.get("COMMAND_GUILDS_USERS_IN_GUILD", users.length, guild.name),
                         },
-                        description: users?.length ? users.join("\n") : interaction.language.get("BASE_SWGOH_NO_GUILD"),
+                        description: users?.length ? users.join("\n") : language.get("BASE_SWGOH_NO_GUILD"),
                         fields: fields,
                     },
                 ],
@@ -1089,7 +1089,7 @@ export default class Guilds extends Command {
                     embeds: [
                         {
                             title: "Missing Guild",
-                            description: interaction.language.get("BASE_SWGOH_NO_GUILD"),
+                            description: language.get("BASE_SWGOH_NO_GUILD"),
                             color: constants.colors.brightred,
                         },
                     ],
@@ -1293,14 +1293,14 @@ export default class Guilds extends Command {
                 }),
             );
 
-            const footerStr = updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated)), interaction);
+            const footerStr = updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated)), language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
             });
             const embed = {
                 author: {
-                    name: interaction.language.get("COMMAND_GUILDS_TWS_HEADER", guild.name),
+                    name: language.get("COMMAND_GUILDS_TWS_HEADER", guild.name),
                 },
                 fields: fields,
             };

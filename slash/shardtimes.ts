@@ -10,7 +10,7 @@ import constants from "../data/constants/constants.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import logger from "../modules/Logger.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Shardtimes extends Command {
     static readonly metadata = {
@@ -149,7 +149,7 @@ export default class Shardtimes extends Command {
         }
     }
 
-    async run(interaction: BotInteraction, options: { level: number }) {
+    async run({ interaction, language, guildSettings, permLevel }: CommandContext) {
         // Shard ID will be guild.id-channel.id
         if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
@@ -184,8 +184,8 @@ export default class Shardtimes extends Command {
             let tempZone = timezone ? timezone : null;
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < constants.permMap.GUILD_ADMIN) {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
+            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
             if (timezone && timeTil) {
@@ -210,13 +210,13 @@ export default class Shardtimes extends Command {
                     timezone = Number.parseInt(`${match[1]}${Number.parseInt(match[2], 10) * 60 + Number.parseInt(match[3], 10)}`, 10);
                 } else {
                     // Grumble that it's an invalid tz
-                    return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
+                    return super.error(interaction, language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
                 }
             } else {
                 zoneType = "hhmm";
                 const match = timeTil.match(/(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
                 if (!match) {
-                    return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
+                    return super.error(interaction, language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
                 }
                 // Get the amount of time til, and split it into hr & min
                 const [hour, minute] = timeTil.split(":");
@@ -278,15 +278,15 @@ export default class Shardtimes extends Command {
                 .then(() => {
                     if (tempUser) {
                         return interaction.reply({
-                            content: interaction.language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone),
+                            content: language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone),
                         });
                     }
-                    return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_USER_ADDED") });
+                    return interaction.reply({ content: language.get("COMMAND_SHARDTIMES_USER_ADDED") });
                 })
                 .catch((err: unknown) => {
                     const message = err instanceof Error ? err.message : String(err);
                     logger.error(`[shardtimes add] Failed to save shard times for guild ${interaction.guild.id}: ${message}`);
-                    return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
+                    return super.error(interaction, language.get("COMMAND_SHARDTIMES_USER_NOT_ADDED"));
                 });
         } else if (action === "remove") {
             // Get the json object, remove the user if available, then resave if it changed
@@ -300,8 +300,8 @@ export default class Shardtimes extends Command {
             }
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && options.level < constants.permMap.GUILD_ADMIN) {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
+            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
             if (shardTimes.times[userID]) {
@@ -309,39 +309,39 @@ export default class Shardtimes extends Command {
                 shardArr[targetIndex] = shardTimes;
                 await setGuildShardTimes({ guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
-                        return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_REM_SUCCESS") });
+                        return interaction.reply({ content: language.get("COMMAND_SHARDTIMES_REM_SUCCESS") });
                     })
                     .catch((err: unknown) => {
                         const message = err instanceof Error ? err.message : String(err);
                         logger.error(`[shardtimes remove] Failed to save shard times for guild ${interaction.guild.id}: ${message}`);
-                        return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_FAIL"));
+                        return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_FAIL"));
                     });
             } else {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_REM_MISSING"));
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING"));
             }
         } else if (action === "copy") {
             // ;shardtimes copy destChannel
             const destChannel: TextChannel = interaction.options.getChannel("dest_channel");
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
-            if (options.level < constants.permMap.GUILD_ADMIN) {
+            if (permLevel < constants.permMap.GUILD_ADMIN) {
                 // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
-                return super.error(interaction, interaction.language.get("COMMAND_EVENT_INVALID_PERMS"));
+                return super.error(interaction, language.get("COMMAND_EVENT_INVALID_PERMS"));
             }
 
             // Make sure there are times to copy from
             if (!Object.keys(shardTimes).length) {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_SOURCE"));
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_NO_SOURCE"));
             }
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
             if (!hasViewAndSend(destChannel, interaction.guild.members.me)) {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 
             // Make sure the to/ from channels aren't the same
             if (interaction.channel.id === destChannel.id) {
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_SAME_CHAN"));
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_SAME_CHAN"));
             }
 
             const destTarget = shardArr.findIndex((sh) => sh.channelId === destChannel.id);
@@ -352,26 +352,26 @@ export default class Shardtimes extends Command {
                 shardArr.push(shardTimes);
                 await setGuildShardTimes({ guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
-                        return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
+                        return interaction.reply({ content: language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })
                     .catch((err) => {
                         return super.error(interaction, err.message);
                     });
             } else if (destTimes?.times && Object.keys(destTimes.times)?.length) {
                 // Or if there is shard info there with listings
-                return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_DEST_FULL"));
             } else {
                 // Or if there is shard info there, but no listings
                 destTimes.times = shardTimes.times;
                 shardArr[destTarget] = destTimes;
                 await setGuildShardTimes({ guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
-                        return interaction.reply({ content: interaction.language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
+                        return interaction.reply({ content: language.get("COMMAND_SHARDTIMES_COPY_SUCCESS", destChannel.id) });
                     })
                     .catch((err: unknown) => {
                         const message = err instanceof Error ? err.message : String(err);
                         logger.error(`[shardtimes copy] Failed to save shard times for guild ${interaction.guild.id}: ${message}`);
-                        return super.error(interaction, interaction.language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
+                        return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_BROKE"));
                     });
             }
             return;
@@ -432,7 +432,7 @@ export default class Shardtimes extends Command {
                     .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
                     .map((t) => `${t.flag}${t.name}`);
                 let joiner = " - ";
-                if (interaction.guildSettings.shardtimeVertical) {
+                if (guildSettings.shardtimeVertical) {
                     joiner = "\n";
                 }
                 fields.push({
@@ -444,7 +444,7 @@ export default class Shardtimes extends Command {
                 embeds: [
                     {
                         author: {
-                            name: interaction.language.get("COMMAND_SHARDTIMES_SHARD_HEADER"),
+                            name: language.get("COMMAND_SHARDTIMES_SHARD_HEADER"),
                         },
                         fields: fields,
                     },

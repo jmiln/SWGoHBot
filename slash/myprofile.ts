@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class MyProfile extends Command {
     static readonly metadata = {
@@ -23,10 +23,10 @@ export default class MyProfile extends Command {
         ],
     };
     constructor() {
-        super( MyProfile.metadata);
+        super(MyProfile.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const allycodeIn = interaction.options.getString("allycode");
         const allycode = await getAllyCode(interaction, allycodeIn);
         if (!allycode) {
@@ -103,7 +103,7 @@ export default class MyProfile extends Command {
             if (mods[k] === 0) mods[k] = "0";
         }
 
-        const modOut = interaction.language.get("COMMAND_MYPROFILE_MODS", mods) as unknown as { header: string; modStrs: string[] };
+        const modOut = language.get("COMMAND_MYPROFILE_MODS", mods) as unknown as { header: string; modStrs: string[] };
         fields.push({
             name: ` ${modOut.header}`,
             value: ["```asciidoc", modOut.modStrs, "```"].join("\n"),
@@ -153,7 +153,7 @@ export default class MyProfile extends Command {
                 }
             }
         }
-        const charOut = interaction.language.get(
+        const charOut = language.get(
             "COMMAND_MYPROFILE_CHARS",
             gpChar.toLocaleString(),
             charList,
@@ -172,7 +172,7 @@ export default class MyProfile extends Command {
             rarityCount[ship.rarity].s += 1;
         }
 
-        const shipOut = interaction.language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList) as unknown as {
+        const shipOut = language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList) as unknown as {
             header: string;
             stats: string[];
         };
@@ -199,7 +199,7 @@ export default class MyProfile extends Command {
                 .reduce((a, b) => a + b, 0) / totalShips
         ).toFixed(2);
         fields.push({
-            name: interaction.language.get("COMMAND_MYPROFILE_RARITY_HEADER"),
+            name: language.get("COMMAND_MYPROFILE_RARITY_HEADER"),
             value: [
                 "` * | Char | Ship `",
                 Object.keys(rarityCount)
@@ -221,7 +221,7 @@ export default class MyProfile extends Command {
         // Show the relic counts
         const relicOut = Object.keys(relicCount).map((r) => `\`  ${r}  |  ${relicCount[r].toString().padStart(3)} \``);
         fields.push({
-            name: interaction.language.get("COMMAND_MYPROFILE_RELIC_HEADER"),
+            name: language.get("COMMAND_MYPROFILE_RELIC_HEADER"),
             value: ["`Tier | Count`"].concat(relicOut).join("\n"),
         });
 
@@ -232,16 +232,16 @@ export default class MyProfile extends Command {
             });
         }
 
-        const footerStr = updatedFooterStr(player.updated, interaction);
+        const footerStr = updatedFooterStr(player.updated, language);
         return interaction.editReply({
             content: null,
             embeds: [
                 {
                     author: {
-                        name: interaction.language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),
+                        name: language.get("COMMAND_MYPROFILE_EMBED_HEADER", player.name, player.allyCode),
                     },
                     // Need 6*, 15/20 spd, and 100 off
-                    description: interaction.language.get(
+                    description: language.get(
                         "COMMAND_MYPROFILE_DESC",
                         player.guildName,
                         player.level,

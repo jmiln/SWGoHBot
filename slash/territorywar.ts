@@ -8,7 +8,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class TerritoryWar extends Command {
     static readonly metadata = {
@@ -35,7 +35,7 @@ export default class TerritoryWar extends Command {
         super(TerritoryWar.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
@@ -46,9 +46,9 @@ export default class TerritoryWar extends Command {
         const user1 = await getAllyCode(interaction, user1str);
         if (!user1) {
             if (user1str === "me") {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
             }
         }
 
@@ -57,9 +57,9 @@ export default class TerritoryWar extends Command {
         const user2 = await getAllyCode(interaction, user2str);
         if (!user2) {
             if (user2str === "me") {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
             } else {
-                problemArr.push(interaction.language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
             }
         }
 
@@ -170,7 +170,7 @@ export default class TerritoryWar extends Command {
         await interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
 
         // Localized labels for each row
-        const labels = interaction.language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as {
+        const labels = language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as {
             charGP: string;
             shipGP: string;
             zetas: string;
@@ -479,14 +479,14 @@ export default class TerritoryWar extends Command {
             )}`,
         });
 
-        const footerStr = updatedFooterStr(Math.min(guild1.updated, guild2.updated), interaction);
+        const footerStr = updatedFooterStr(Math.min(guild1.updated, guild2.updated), language);
         fields.push({
             name: constants.zws,
             value: footerStr,
         });
         const embed = {
             author: {
-                // name: interaction.language.get("COMMAND_GRANDARENA_OUT_HEADER", guild1.name, guild2.name)
+                // name: language.get("COMMAND_GRANDARENA_OUT_HEADER", guild1.name, guild2.name)
                 name: `Territory War, ${guild1.name} (${guild1.roster.length}) vs ${guild2.name} (${guild2.roster.length})`,
             },
             fields: fields,

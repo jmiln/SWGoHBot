@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { getCurrentWeekday } from "../modules/functions.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Activites extends Command {
     static readonly metadata = {
@@ -28,21 +28,19 @@ export default class Activites extends Command {
     };
 
     constructor() {
-        super( Activites.metadata);
+        super(Activites.metadata);
     }
 
-    async run(interaction: BotInteraction) {
-        const guildConf = interaction.guildSettings;
-
+    async run({ interaction, language, guildSettings }: CommandContext) {
         let day = interaction.options.getString("day");
 
         if (!day) {
-            const weekday = getCurrentWeekday(guildConf?.timezone || null);
+            const weekday = getCurrentWeekday(guildSettings?.timezone || null);
             day = `day_${weekday}`;
         }
 
         const langKey = `COMMAND_ACTIVITIES_${day?.split("_")[1].toUpperCase()}`;
-        const message = interaction.language.get(langKey);
+        const message = language.get(langKey);
         return interaction.reply({ content: codeBlock("asciiDoc", message) });
     }
 }

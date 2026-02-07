@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 // To get the player's arena info (Adapted from shittybill#3024's Scorpio)
 export default class WhoIs extends Command {
@@ -20,10 +20,10 @@ export default class WhoIs extends Command {
         ],
     };
     constructor() {
-        super( WhoIs.metadata);
+        super(WhoIs.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction }: CommandContext) {
         const PLAYER_LIMIT = 25;
         const name = interaction.options.getString("name");
         if (name.length > 50) return super.error(interaction, "Invalid name, max length is 50 characters");

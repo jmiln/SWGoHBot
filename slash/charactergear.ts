@@ -8,7 +8,7 @@ import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFoo
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
-import type { BotInteraction, BotUnit } from "../types/types.ts";
+import type { CommandContext, BotUnit } from "../types/types.ts";
 
 export default class Charactergear extends Command {
     static readonly metadata = {
@@ -45,10 +45,10 @@ export default class Charactergear extends Command {
     };
 
     constructor() {
-        super( Charactergear.metadata);
+        super(Charactergear.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         // Grab the various options
         const doExpand = interaction.options.getBoolean("expand");
         const gearLvl = interaction.options.getInteger("gearlevel") || 0;
@@ -70,7 +70,7 @@ export default class Charactergear extends Command {
 
         let character: BotUnit;
         if (!chars.length) {
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         }
         if (chars.length > 1) {
             const charL = [];
@@ -78,7 +78,7 @@ export default class Charactergear extends Command {
             for (const ch of charS) {
                 charL.push(ch.name);
             }
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
         character = chars[0];
 
@@ -131,7 +131,7 @@ export default class Charactergear extends Command {
                         gearString += `* ${allGear[key]}x ${key}\n`;
                     }
                 }
-                const msgArr = msgArray(interaction.language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
+                const msgArr = msgArray(language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
                 for (const [ix, msg] of msgArr.entries()) {
                     if (ix === 0) {
                         await interaction.reply({ content: codeBlock("md", msg) });
@@ -258,7 +258,7 @@ export default class Charactergear extends Command {
             const totalLen = fields.reduce((acc, cur) => {
                 return acc + cur.value.length;
             }, 0);
-            const footerStr = updatedFooterStr(player.updated, interaction);
+            const footerStr = updatedFooterStr(player.updated, language);
             if (totalLen < 5500) {
                 return interaction.reply({
                     embeds: [

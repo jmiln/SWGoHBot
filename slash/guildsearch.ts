@@ -7,7 +7,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotInteraction, BotUnit } from "../types/types.ts";
+import type { CommandContext, BotUnit } from "../types/types.ts";
 
 export default class GuildSearch extends Command {
     static readonly metadata = {
@@ -149,10 +149,10 @@ export default class GuildSearch extends Command {
         ],
     };
     constructor() {
-        super( GuildSearch.metadata);
+        super(GuildSearch.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         const searchType = interaction.options.getSubcommand();
 
         // Get all the string options
@@ -186,7 +186,7 @@ export default class GuildSearch extends Command {
 
         const starLvl = interaction.options.getInteger("rarity") || 0;
         if (starLvl < 0 || starLvl > 7) {
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
         }
 
         // Get the boolean options
@@ -194,7 +194,7 @@ export default class GuildSearch extends Command {
         const doZeta = interaction.options.getBoolean("zetas");
         const doOmicron = interaction.options.getBoolean("omicrons");
 
-        await interaction.reply({ content: interaction.language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT") });
+        await interaction.reply({ content: language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT") });
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         let unitList: BotUnit[] = null;
@@ -214,14 +214,14 @@ export default class GuildSearch extends Command {
 
         if (!unitList?.length) {
             // No character found, so error
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchStr));
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchStr));
         }
         if (unitList.length > 1) {
             // Too many characters found, give a list of possible matches
             const sortedUnits = unitList
                 .sort((p, c) => (p.name > c.name ? 1 : -1)) // Sort the characters by name
                 .map((c) => c.name); // Map it to just show the name strings
-            return super.error(interaction, interaction.language.get("COMMAND_GUILDSEARCH_CHAR_LIST", sortedUnits.join("\n")));
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", sortedUnits.join("\n")));
         }
 
         // If there's just one match, use it
@@ -240,7 +240,7 @@ export default class GuildSearch extends Command {
         }
 
         if (!guild?.roster?.length) {
-            return interaction.editReply({ content: interaction.language.get("BASE_SWGOH_NO_GUILD") });
+            return interaction.editReply({ content: language.get("BASE_SWGOH_NO_GUILD") });
         }
         await interaction.editReply({ content: `Found guild \`${guild.name}\`!\n*Processing...*` });
 
@@ -332,7 +332,7 @@ export default class GuildSearch extends Command {
             if (!outArr.length) {
                 fields.push({
                     name: foundUnit.name,
-                    value: interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER"),
+                    value: language.get("COMMAND_GUILDSEARCH_NO_CHARACTER"),
                 });
             } else {
                 const header = {
@@ -349,8 +349,8 @@ export default class GuildSearch extends Command {
                     outMsgArr.forEach((m, ix) => {
                         const name =
                             ix === 0
-                                ? interaction.language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse)
-                                : interaction.language.get("BASE_CONT_STRING");
+                                ? language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse)
+                                : language.get("BASE_CONT_STRING");
                         fields.push({
                             name: name,
                             value: m,
@@ -359,12 +359,12 @@ export default class GuildSearch extends Command {
                 } else {
                     fields.push({
                         name: "-",
-                        value: interaction.language.get("BASE_SWGOH_GUILD_LOCKED_CHAR"),
+                        value: language.get("BASE_SWGOH_GUILD_LOCKED_CHAR"),
                     });
                 }
             }
 
-            const footerStr = updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, language);
             const embed = {
                 author: {
                     name: guild.name,
@@ -401,19 +401,19 @@ export default class GuildSearch extends Command {
             let desc = "";
             // Go through, and if there's an error, spit it out
             if (doZeta && !guildChar.filter((c) => c.zetas.length > 0).length) {
-                desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
+                desc = language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
             } else if (isShip && starLvl > 0) {
-                desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
+                desc = language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
             } else if (starLvl > 0) {
-                desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER_STAR", starLvl);
+                desc = language.get("COMMAND_GUILDSEARCH_NO_CHARACTER_STAR", starLvl);
             } else if (isShip) {
-                desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_SHIP");
+                desc = language.get("COMMAND_GUILDSEARCH_NO_SHIP");
             } else {
-                desc = interaction.language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
+                desc = language.get("COMMAND_GUILDSEARCH_NO_CHARACTER");
             }
-            const footerStr = updatedFooterStr(guild.updated, interaction);
+            const footerStr = updatedFooterStr(guild.updated, language);
             return super.error(interaction, desc, {
-                title: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
+                title: language.get("BASE_SWGOH_NAMECHAR_HEADER", guild.name, foundUnit.name),
                 footer: footerStr,
             });
         }
@@ -544,8 +544,8 @@ export default class GuildSearch extends Command {
                 for (const [ix, msg] of msgArr.entries()) {
                     const name =
                         Number.parseInt(star, 10) === 0
-                            ? interaction.language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length)
-                            : interaction.language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
+                            ? language.get("COMMAND_GUILDSEARCH_NOT_ACTIVATED", charOut[star].length)
+                            : language.get("COMMAND_GUILDSEARCH_STAR_HEADER", star, charOut[star].length);
                     fields.push({
                         name: msgArr.length > 1 ? `${name} (${ix + 1}/${msgArr.length})` : name,
                         value: msg,
@@ -571,7 +571,7 @@ export default class GuildSearch extends Command {
         }
 
         const maxUpdated = Math.max(...guildChar.map((ch) => ch.updated));
-        const footerStr = updatedFooterStr(maxUpdated, interaction);
+        const footerStr = updatedFooterStr(maxUpdated, language);
         let description = null;
         if (doZeta || doOmicron) {
             if (doZeta && doOmicron) {
@@ -588,7 +588,7 @@ export default class GuildSearch extends Command {
                 embeds: [
                     {
                         author: {
-                            name: interaction.language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked),
+                            name: language.get("BASE_SWGOH_NAMECHAR_HEADER_NUM", guild.name, foundUnit.name, totalUnlocked),
                         },
                         description: description,
                         fields: [...fields, { name: constants.zws, value: footerStr }],

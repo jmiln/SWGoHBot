@@ -6,7 +6,7 @@ import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toPr
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Character extends Command {
     static readonly metadata = {
@@ -26,10 +26,10 @@ export default class Character extends Command {
     };
 
     constructor() {
-        super( Character.metadata);
+        super(Character.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage }: CommandContext) {
         const searchName = interaction.options.getString("character");
 
         const abilityMatMK3 = emoteStrings.abilityMatMK3;
@@ -40,7 +40,7 @@ export default class Character extends Command {
         // Find any characters that match what they're looking for
         const chars = findChar(searchName, characters);
         if (!chars?.length) {
-            const err = interaction.language.get("COMMAND_CHARACTER_INVALID_CHARACTER");
+            const err = language.get("COMMAND_CHARACTER_INVALID_CHARACTER");
             if (err.indexOf("\n") > -1) {
                 const [title, usage] = err.split("\n");
                 return super.error(interaction, usage, { title: title, example: "abilities Han Solo" });
@@ -53,13 +53,13 @@ export default class Character extends Command {
             for (const c of charS) {
                 charL.push(c.name);
             }
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
 
         const character = chars[0];
         let char: RawCharacter;
         try {
-            char = await swgohAPI.getCharacter(character.uniqueName, interaction.guildSettings.swgohLanguage);
+            char = await swgohAPI.getCharacter(character.uniqueName, swgohLanguage);
         } catch (err) {
             return super.error(interaction, err.toString());
         }
@@ -103,7 +103,7 @@ export default class Character extends Command {
 
             let cooldownString = "";
             if (ability.cooldown > 0) {
-                cooldownString = interaction.language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
+                cooldownString = language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
             }
 
             if (ability.desc && ability.zetaDesc) {
@@ -111,7 +111,7 @@ export default class Character extends Command {
             }
 
             const msgArr = msgArray(
-                expandSpaces(interaction.language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "),
+                expandSpaces(language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "),
                 " ",
                 1000,
             );

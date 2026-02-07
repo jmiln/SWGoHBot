@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { findChar, getSideColor } from "../modules/functions.ts";
-import type { BotInteraction, BotUnitMods } from "../types/types.ts";
+import type { CommandContext, BotUnitMods } from "../types/types.ts";
 
 export default class Mods extends Command {
     static readonly metadata = {
@@ -21,10 +21,10 @@ export default class Mods extends Command {
         ],
     };
     constructor() {
-        super( Mods.metadata);
+        super(Mods.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction, language }: CommandContext) {
         await interaction.deferReply();
 
         const getLocalizedModString = (key: string) => {
@@ -64,7 +64,7 @@ export default class Mods extends Command {
                     localizationKey = localizationKeyMap[key];
                 }
 
-                valueArray.push(interaction.language.get(localizationKey));
+                valueArray.push(language.get(localizationKey));
             }
 
             return valueArray.join("/ ");
@@ -97,13 +97,9 @@ export default class Mods extends Command {
         // Find any characters that match that
         const chars = findChar(searchName, characters);
         if (!chars?.length) {
-            return super.error(
-                interaction,
-                interaction.language.get("COMMAND_MODS_USAGE") || "Usage is `/mods character: <characterName>`",
-                {
-                    title: interaction.language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER") || "Invalid Character",
-                },
-            );
+            return super.error(interaction, language.get("COMMAND_MODS_USAGE") || "Usage is `/mods character: <characterName>`", {
+                title: language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER") || "Invalid Character",
+            });
         }
         if (chars.length > 1) {
             const charL = [];
@@ -111,20 +107,20 @@ export default class Mods extends Command {
             for (const c of charS) {
                 charL.push(c.name);
             }
-            return super.error(interaction, interaction.language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
         }
 
         const character = chars[0];
-        let description = interaction.language.get("COMMAND_NO_MODSETS");
+        let description = language.get("COMMAND_NO_MODSETS");
 
         if (character.mods && Object.keys(character.mods).length) {
             const mods = getLocalizedModAdvice(character.mods);
             const modSetString = `* ${mods.sets.join("\n* ")}`;
 
-            let modPrimaryString = interaction.language.get("COMMAND_MODS_EMBED_STRING1", mods.square, mods.arrow, mods.diamond);
-            modPrimaryString += interaction.language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
+            let modPrimaryString = language.get("COMMAND_MODS_EMBED_STRING1", mods.square, mods.arrow, mods.diamond);
+            modPrimaryString += language.get("COMMAND_MODS_EMBED_STRING2", mods.triangle, mods.circle, mods.cross);
 
-            description = interaction.language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString);
+            description = language.get("COMMAND_MODS_EMBED_OUTPUT", modSetString, modPrimaryString);
         }
         return interaction.editReply({
             embeds: [

@@ -6,7 +6,7 @@ import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { BotInteraction } from "../types/types.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class Panic extends Command {
     static readonly metadata = {
@@ -30,10 +30,10 @@ export default class Panic extends Command {
         ],
     };
     constructor() {
-        super( Panic.metadata);
+        super(Panic.metadata);
     }
 
-    async run(interaction: BotInteraction) {
+    async run({ interaction }: CommandContext) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
         const allycode = await getAllyCode(interaction, ac);
