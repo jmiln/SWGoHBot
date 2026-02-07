@@ -4,7 +4,6 @@ import type {
     ChatInputCommandInteraction,
     Client,
     Collection,
-    Guild,
     IntentsBitField,
     Partials,
 } from "discord.js";
@@ -50,8 +49,6 @@ export interface OmicronCategories {
     conquest: OmicronAbility[];
     other: OmicronAbility[];
 }
-
-// Bot object has been removed - all dependencies are now directly imported
 
 export interface JourneyReqs {
     [key: string]: {
@@ -151,7 +148,6 @@ export interface BotUnitMods {
 }
 
 export interface BotClient extends Client {
-    announceMsg: (guild: Guild, announceMsg: string, channel: string, guildConf: object) => void;
     reloadAllEvents: () => Promise<{ succArr: string[]; errArr: string[] }>;
     reloadDataFiles: () => Promise<{ err: string }>;
     reloadFunctions: () => Promise<{ err: string }>;
@@ -302,7 +298,6 @@ export interface PatreonTiers {
 export interface UserConfig {
     id: string;
     accounts: UserAcct[];
-    defaults: object;
     arenaAlert: {
         enableRankDMs: string;
         arena: string;
@@ -417,7 +412,7 @@ export interface PatreonMember {
     };
 }
 
-export interface PatreonUser {
+export interface PatreonAPIUser {
     type: string;
     id: string;
     attributes: {

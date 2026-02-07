@@ -34,7 +34,7 @@ import type {
     Location,
     OmicronCategories,
     PatreonMember,
-    PatreonUser,
+    PatreonAPIUser,
     UnitLocation,
     UnitSide,
     UserConfig,
@@ -700,7 +700,7 @@ async function updatePatrons(cache: BotCache) {
             return;
         }
 
-        const { data, included = [] } = jsonData as { data: PatreonMember[]; included?: PatreonUser[] };
+        const { data, included = [] } = jsonData as { data: PatreonMember[]; included?: PatreonAPIUser[] };
 
         // Validate included array
         if (!Array.isArray(included)) {
@@ -708,7 +708,7 @@ async function updatePatrons(cache: BotCache) {
         }
 
         const members = data.filter((item: PatreonMember) => item.type === "member" && item.attributes.patron_status === "active_patron");
-        const users = Array.isArray(included) ? included.filter((inc: PatreonUser) => inc.type === "user") : [];
+        const users = Array.isArray(included) ? included.filter((inc: PatreonAPIUser) => inc.type === "user") : [];
 
         for (const member of members) {
             const user = users.find((user) => user.id === member.relationships?.user?.data?.id);
