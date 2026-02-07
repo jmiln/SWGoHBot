@@ -16,6 +16,9 @@ interface Cacheable {
     updatedAt?: Date;
     // biome-ignore lint/suspicious/noExplicitAny: Mongo's default ID
     _id?: any;
+    // Allow any additional properties for MongoDB partial updates
+    // biome-ignore lint/suspicious/noExplicitAny: MongoDB documents can have any structure
+    [key: string]: any;
 }
 
 class Cache implements BotCache {

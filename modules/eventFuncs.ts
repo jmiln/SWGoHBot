@@ -1,4 +1,4 @@
-import { type Client } from "discord.js";
+import type { Client } from "discord.js";
 import Language from "../base/Language.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";

@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { type AutocompleteInteraction, type ChatInputCommandInteraction, type Client, Events, MessageFlags } from "discord.js";
+import { type AutocompleteInteraction, type ChatInputCommandInteraction, Events, MessageFlags } from "discord.js";
 import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -152,7 +152,7 @@ function processUnitAutocomplete(focusedOption: { name: string; value: string },
 /**
  * Handles autocomplete interactions
  */
-async function handleAutocomplete(client: Client<true>, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
+async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
     const focusedOption = interaction.options.getFocused(true);
 
     // If command has custom autocomplete handler, use it
@@ -293,7 +293,7 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
 
 export default {
     name: Events.InteractionCreate,
-    execute: async (client: Client<true>, interaction: AnyBotInteraction) => {
+    execute: async (interaction: AnyBotInteraction) => {
         // Filter out non-command interactions and bot users
         if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
         if (interaction.user.bot) return;
@@ -306,7 +306,7 @@ export default {
         if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(interaction, cmd);
         } else if (interaction.isAutocomplete()) {
-            await handleAutocomplete(client, interaction, cmd);
+            await handleAutocomplete(interaction, cmd);
         }
     },
 };

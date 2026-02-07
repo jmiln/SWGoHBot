@@ -1,8 +1,8 @@
-import { type Client } from "discord.js";
+import type { Client } from "discord.js";
 import { readdirSync } from "node:fs";
 import logger from "../modules/Logger.ts";
 
-const needsClient = ["error", "clientReady", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
+const needsClient = ["error", "clientReady", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${import.meta.dirname}/../events/`;
 
 /**

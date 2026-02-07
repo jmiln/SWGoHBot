@@ -1641,7 +1641,7 @@ async function unitsToUnitFiles(
         } else if (unit.combatType === SHIP_COMBAT_TYPE) {
             shipsOut.push(unitObj);
         } else {
-            logger.error(`[${myTime()}] Bad combatType for:`, unitObj);
+            logger.error({ message: `[${myTime()}] Bad combatType for`, unit: unitObj });
         }
     }
 

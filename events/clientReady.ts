@@ -73,7 +73,7 @@ export default {
 function setupBackgroundTasks(client: Client<true>, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
     if (shardId === 0 && config.premium) {
-        setupDataUpdateTasks(client, shardId);
+        setupDataUpdateTasks(shardId);
     }
 
     // Last shard handles event checking
@@ -85,7 +85,7 @@ function setupBackgroundTasks(client: Client<true>, shardId: number): void {
 /**
  * Sets up periodic data update tasks (arena ranks, guild tickets, etc.)
  */
-function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
+function setupDataUpdateTasks(shardId: number): void {
     setTimeout(() => {
         const intervalId = setInterval(async () => {
             try {
