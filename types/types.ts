@@ -10,7 +10,6 @@ import type {
 } from "discord.js";
 import type Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
-import type { GuildConfigSettings } from "./guildConfig_types.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 
 export interface PlayerCooldown {

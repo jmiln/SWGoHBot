@@ -8,6 +8,7 @@ import { FixedQueue, Piscina } from "piscina";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
 
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
@@ -108,11 +109,11 @@ let mongoClient: MongoClient | null = null;
 let updatersTimeout: NodeJS.Timeout | null = null;
 let patronsInterval: NodeJS.Timeout | null = null;
 
-console.log("Starting data updater");
+logger.log("Starting data updater");
 
 // Centralized cleanup function
 async function cleanup() {
-    console.log("Cleaning up resources...");
+    logger.log("Cleaning up resources...");
 
     // Clear timers
     if (updatersTimeout) {
@@ -130,7 +131,7 @@ async function cleanup() {
         mongoClient = null;
     }
 
-    console.log("Cleanup complete");
+    logger.log("Cleanup complete");
 }
 
 // Helper function to add timeout to promises
@@ -147,23 +148,23 @@ if (!process.env.TESTING_ENV) {
 
     // catch ctrl+c event and exit normally
     process.on("SIGINT", async () => {
-        console.log("Received SIGINT, shutting down gracefully...");
+        logger.log("Received SIGINT, shutting down gracefully...");
         await cleanup();
-        console.log("Exiting.");
+        logger.log("Exiting.");
         process.exit(0);
     });
 
     // Handle SIGTERM (common in Docker/cloud environments)
     process.on("SIGTERM", async () => {
-        console.log("Received SIGTERM, shutting down gracefully...");
+        logger.log("Received SIGTERM, shutting down gracefully...");
         await cleanup();
-        console.log("Exiting.");
+        logger.log("Exiting.");
         process.exit(0);
     });
 
     // Handle uncaught errors
     process.on("unhandledRejection", async (reason, promise) => {
-        console.error("Unhandled Rejection at:", promise, "reason:", reason);
+        logger.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
         await cleanup();
         process.exit(1);
     });
@@ -173,7 +174,7 @@ async function init() {
     try {
         // Prevent double initialization
         if (mongoClient) {
-            console.log("Data updater already initialized");
+            logger.log("Data updater already initialized");
             return;
         }
 
@@ -206,7 +207,7 @@ async function init() {
                     if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
                         log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
                     }
-                    if (log.length) console.log(["Found new metadata, running updaters", ...log].join("\n"));
+                    if (log.length) logger.log(["Found new metadata, running updaters", ...log].join("\n"));
 
                     debugTime("Running game data updaters");
                     await runGameDataUpdaters(newMetadata, cache, comlinkStub);
@@ -230,7 +231,7 @@ async function init() {
         } else {
             // TODO: Add a way to choose what's updated from the cmdline without having to manually change which bit we want updated
             // If we're forcing an update, just run the bits we want then exit
-            console.log("Forcing update, running updaters");
+            logger.log("Forcing update, running updaters");
             const { newMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
                 isMetadataUpdated: boolean;
                 newMetadata: Metadata;
@@ -352,8 +353,8 @@ async function runGameDataUpdaters(metadata: Metadata, cache: BotCache, comlinkS
     }
 
     if (log?.length) {
-        console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
-        console.log(log.join("\n"));
+        logger.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
+        logger.log(log.join("\n"));
     } else {
         // console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
     }
@@ -456,7 +457,7 @@ async function getGuildIds(comlinkStub: ComlinkStub) {
 
         return guildLeaderboardRes.leaderboard[0].guild.map((guild) => guild.id);
     } catch (error) {
-        console.error(`[${myTime()}] [dataUpdater/getGuildIds] Failed to fetch guild leaderboard:`, error);
+        logger.error(`[${myTime()}] [dataUpdater/getGuildIds] Failed to fetch guild leaderboard:`, error);
         throw error; // Re-throw to let caller handle
     }
 }
@@ -472,7 +473,7 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
 
             // Validate response structure
             if (!guild?.member) {
-                console.warn(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Invalid guild data for ${guildId}`);
+                logger.warn(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Invalid guild data for ${guildId}`);
                 failedGuilds++;
                 return;
             }
@@ -480,13 +481,13 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
             const playerIds = guild.member.map((player) => player.playerId);
             playerIdArr.push(...playerIds);
         } catch (error) {
-            console.error(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Failed to fetch guild ${guildId}:`, error);
+            logger.error(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Failed to fetch guild ${guildId}:`, error);
             failedGuilds++;
         }
     });
 
     if (failedGuilds > 0) {
-        console.warn(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Failed to fetch ${failedGuilds}/${guildIds.length} guilds`);
+        logger.warn(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Failed to fetch ${failedGuilds}/${guildIds.length} guilds`);
     }
 
     return playerIdArr;
@@ -512,12 +513,12 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
                 const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.swapiConfig.clientStub });
                 rosterArr.push(...(strippedUnits || []));
             } catch (err) {
-                console.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
+                logger.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
             }
         });
 
         if (playerCount !== playerIds.length) {
-            console.error(
+            logger.error(
                 `[${myTime()}] [dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`,
             );
         }
@@ -675,7 +676,7 @@ async function updatePatrons(cache: BotCache) {
 
         // Check response status
         if (!response.ok) {
-            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}`);
+            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}`);
             return;
         }
 
@@ -684,7 +685,7 @@ async function updatePatrons(cache: BotCache) {
         try {
             jsonData = await response.json();
         } catch (parseError) {
-            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Failed to parse Patreon response as JSON:`, parseError);
+            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Failed to parse Patreon response as JSON:`, parseError);
             return;
         }
 
@@ -695,7 +696,7 @@ async function updatePatrons(cache: BotCache) {
             !("data" in jsonData) ||
             !Array.isArray((jsonData as { data: unknown }).data)
         ) {
-            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Invalid response structure - missing data array`);
+            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Invalid response structure - missing data array`);
             return;
         }
 
@@ -703,7 +704,7 @@ async function updatePatrons(cache: BotCache) {
 
         // Validate included array
         if (!Array.isArray(included)) {
-            console.warn(`[${myTime()}] [dataUpdater/updatePatrons] Invalid included field, using empty array`);
+            logger.warn(`[${myTime()}] [dataUpdater/updatePatrons] Invalid included field, using empty array`);
         }
 
         const members = data.filter((item: PatreonMember) => item.type === "member" && item.attributes.patron_status === "active_patron");
@@ -714,7 +715,7 @@ async function updatePatrons(cache: BotCache) {
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
             if (!user) {
-                console.log(
+                logger.log(
                     `Patreon user not found for member: ${member.attributes?.full_name} (ID: ${member.relationships?.user?.data?.id})`,
                 );
                 continue;
@@ -725,7 +726,7 @@ async function updatePatrons(cache: BotCache) {
             if (discordID) {
                 const userConf = await cache.getOne(config.mongodb.swgohbotdb, "patrons", { discordID: discordID });
                 if (!userConf)
-                    console.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
+                    logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
             }
 
             // Save this user's info to the db
@@ -758,12 +759,12 @@ async function updatePatrons(cache: BotCache) {
 
                 // No issues, move on
                 if (!userRes?.error && !guildRes?.error) {
-                    console.log(`User ${newUser.discordID} has been ended their Patreon support`);
+                    logger.log(`User ${newUser.discordID} has been ended their Patreon support`);
                     continue;
                 }
 
                 // If it somehow got here / there are issues, log em
-                console.error(
+                logger.error(
                     `[${myTime()}] [dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${
                         guildRes?.error || "N/A"
                     }`,
@@ -780,7 +781,7 @@ async function updatePatrons(cache: BotCache) {
                 if (!userRes?.error && !guildRes?.error) continue;
 
                 // If there are issues, log em
-                console.error(
+                logger.error(
                     `[${myTime()}] [dataUpdater addServerSupporter] Issue adding info for user\n${userRes?.error || "N/A"} \nOr guild:\n${
                         guildRes?.error || "N/A"
                     }`,
@@ -792,9 +793,9 @@ async function updatePatrons(cache: BotCache) {
         await ensureGuildSupporter();
     } catch (e) {
         if (e.name === "AbortError" || e.name === "TimeoutError") {
-            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds`);
+            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds`);
         } else {
-            console.error(`[${myTime()}] [dataUpdater/updatePatrons] Error getting patrons:`, e);
+            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Error getting patrons:`, e);
         }
     }
 }
@@ -1145,7 +1146,7 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string) 
             } catch (error) {
                 // Ignore ENOENT (file already deleted), log other errors
                 if (error.code !== "ENOENT") {
-                    console.warn(`[${myTime()}] [getMostRecentGameData] Failed to delete old file ${f}:`, error);
+                    logger.warn(`[${myTime()}] [getMostRecentGameData] Failed to delete old file ${f}: ${error}`);
                 }
             }
         }),
@@ -1177,7 +1178,7 @@ function validateGameData(gameData: GameData): void {
     if (missingKeys.length > 0) {
         throw new Error(`[validateGameData] Missing or invalid gameData keys: ${missingKeys.join(", ")}`);
     }
-    console.log("[validateGameData] Validated gameData");
+    logger.log("[validateGameData] Validated gameData");
 }
 
 async function updateGameData(locales: Locales, metadata: Metadata, cache: BotCache, comlinkStub: ComlinkStub) {
@@ -1640,7 +1641,7 @@ async function unitsToUnitFiles(
         } else if (unit.combatType === SHIP_COMBAT_TYPE) {
             shipsOut.push(unitObj);
         } else {
-            console.error(`[${myTime()}] Bad combatType for:`, unitObj);
+            logger.error(`[${myTime()}] Bad combatType for:`, unitObj);
         }
     }
 
@@ -1732,7 +1733,7 @@ function unitsToCharacterDB(unitsIn: ProcessedUnit[]) {
         unit.creationRecipeReference = undefined;
 
         if (!unit.categoryIdList) {
-            console.error(`[${myTime()}] Missing baseCharacter abilities for ${unit.baseId}`);
+            logger.error(`[${myTime()}] Missing baseCharacter abilities for ${unit.baseId}`);
             continue;
         }
         for (const category of unit.categoryIdList) {
@@ -1832,7 +1833,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
             if (lang === "Loc_Key_Mapping.txt") continue;
             const langKey = lang.replace(/^Loc_|\.txt$/gi, "").toLowerCase();
             if (!content) {
-                console.warn(`[getLocalizationData] No content for ${langKey}`);
+                logger.warn(`[getLocalizationData] No content for ${langKey}`);
                 continue;
             }
 
@@ -1856,14 +1857,14 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
                 } catch (error) {
                     // Ignore ENOENT (file already deleted), log other errors
                     if (error.code !== "ENOENT") {
-                        console.warn(`[${myTime()}] [getLocalizationData] Failed to delete old file ${f}:`, error);
+                        logger.warn(`[${myTime()}] [getLocalizationData] Failed to delete old file ${f}: ${error}`);
                     }
                 }
             }),
         );
 
         // Then save it
-        console.log(`Saving localeData for ${bundleVersion}`);
+        logger.log(`Saving localeData for ${bundleVersion}`);
         await writeFile(filePath, JSON.stringify(localeOut));
 
         // Then finally, return it
@@ -2055,9 +2056,9 @@ function debugTimeEnd(name: string) {
 function debugLog(str: string | string[]) {
     if (!FORCE_UPDATE && !DEBUG_LOGS) return;
     if (typeof str === "string" && str.length) {
-        console.log(str);
+        logger.log(str);
     } else {
-        console.log(inspect(str, { depth: 5 }));
+        logger.log(inspect(str, { depth: 5 }));
     }
 }
 
@@ -2073,7 +2074,7 @@ function myTime() {
 }
 
 function logError(context: string, message: string, error?: unknown) {
-    console.error(`[${myTime()}] [${context}] ${message}`, error || "");
+    logger.error(`[${myTime()}] [${context}] ${message}${error ? `: ${error}` : ""}`);
 }
 
 export default {

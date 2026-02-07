@@ -3,6 +3,7 @@ import type { Socket } from "socket.io";
 import { Server } from "socket.io";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
+import logger from "../modules/Logger.ts";
 import {
     addGuildEvent,
     deleteGuildEvent,
@@ -23,26 +24,26 @@ async function init() {
         cache.init(mongo);
 
         io.on("connection", (socket) => {
-            console.log("EventMgr: Socket connected");
+            logger.log("EventMgr: Socket connected");
             setupEventHandlers(socket);
         });
 
-        console.log(`EventMgr: Service started on port ${config.eventServe.port}`);
+        logger.log(`EventMgr: Service started on port ${config.eventServe.port}`);
     } catch (error) {
-        console.error(`EventMgr: Failed to initialize - ${error.message}`);
+        logger.error(`EventMgr: Failed to initialize - ${error.message}`);
         process.exit(1);
     }
 }
 
 // Handle uncaught errors
 process.on("uncaughtException", (error) => {
-    console.error(`EventMgr: Uncaught exception - ${error.message}`);
-    console.error(error.stack);
+    logger.error(`EventMgr: Uncaught exception - ${error.message}`);
+    logger.error(String(error.stack));
 });
 
 process.on("unhandledRejection", (reason, promise) => {
-    console.error(`EventMgr: Unhandled rejection at ${promise}`);
-    console.error(`Reason: ${reason}`);
+    logger.error(`EventMgr: Unhandled rejection at ${promise}`);
+    logger.error(`Reason: ${reason}`);
 });
 
 function setupEventHandlers(socket: Socket) {
@@ -51,7 +52,7 @@ function setupEventHandlers(socket: Socket) {
             const eventsOut = await processEvents();
             callback(eventsOut);
         } catch (error) {
-            console.error("Failed to check events:", error);
+            logger.error(`Failed to check events: ${error}`);
             callback([]);
         }
     });
@@ -61,7 +62,7 @@ function setupEventHandlers(socket: Socket) {
             const results = await addEvents(guildId, events);
             callback(results);
         } catch (error) {
-            console.error("Failed to add events:", error);
+            logger.error(`Failed to add events: ${error}`);
             callback([]);
         }
     });
@@ -71,7 +72,7 @@ function setupEventHandlers(socket: Socket) {
             const result = await removeEvent(guildId, eventName);
             callback(result);
         } catch (error) {
-            console.error("Failed to delete event:", error);
+            logger.error(`Failed to delete event: ${error}`);
             callback({ eventName, success: false, error: error.message });
         }
     });
@@ -81,7 +82,7 @@ function setupEventHandlers(socket: Socket) {
             const events = await getGuildEvents({ guildId });
             callback(events.find((ev) => ev.name === evName));
         } catch (error) {
-            console.error("Failed to get event by name:", error);
+            logger.error(`Failed to get event by name: ${error}`);
             callback([]);
         }
     });
@@ -91,7 +92,7 @@ function setupEventHandlers(socket: Socket) {
             const events = await getEventsByFilter(guildId, filterArr);
             callback(events);
         } catch (error) {
-            console.error("Failed to get events by filter:", error);
+            logger.error(`Failed to get events by filter: ${error}`);
             callback([]);
         }
     });
@@ -101,7 +102,7 @@ function setupEventHandlers(socket: Socket) {
             const events = await getGuildEvents({ guildId });
             callback(events);
         } catch (error) {
-            console.error("Failed to get events by guild:", error);
+            logger.error(`Failed to get events by guild: ${error}`);
             callback([]);
         }
     });

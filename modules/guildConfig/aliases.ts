@@ -1,5 +1,6 @@
 import config from "../../config.js";
 import cache from "../cache.ts";
+import logger from "../Logger.ts";
 import type { GuildAlias } from "../../types/types.ts";
 
 export async function getGuildAliases({ guildId }: { guildId: string }): Promise<GuildAlias[]> {
@@ -24,7 +25,7 @@ export async function setGuildAliases({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            console.error(`[guildConfig/aliases/setGuildAliases] Error: ${error.message}`);
+            logger.error(`[guildConfig/aliases/setGuildAliases] Error: ${error.message}`);
             return { success: false, error: error.toString() };
         });
     return res;

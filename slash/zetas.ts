@@ -59,7 +59,7 @@ export default class Zetas extends Command {
         ],
     };
     constructor() {
-        super( Zetas.metadata);
+        super(Zetas.metadata);
     }
 
     async run(interaction: BotInteraction) {
@@ -175,7 +175,6 @@ export default class Zetas extends Command {
                     const charName = langCharNames.find((c) => c.baseId === char.defId)?.nameKey;
                     zetas[charName] = zList;
                     count += zList.length;
-                    if (char.defId === "MACEWINDU") console.log(zList);
                 }
                 const sorted = Object.keys(zetas).sort((p, c) => (p > c ? 1 : -1));
                 const formatted = sorted.map((character) => `\`(${zetas[character].length})\` ${character}`);

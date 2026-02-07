@@ -1,5 +1,6 @@
 import config from "../../config.js";
 import cache from "../cache.ts";
+import logger from "../Logger.ts";
 import unitChecklist from "../../data/unitChecklist.ts";
 import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
 
@@ -49,7 +50,7 @@ export async function setGuildTWList({ guildId, twListOut }: { guildId: string; 
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            console.error(`[guildConfig/twlist/setGuildTWList] Error: ${error.message}`);
+            logger.error(`[guildConfig/twlist/setGuildTWList] Error: ${error.message}`);
             return { success: false, error: error };
         });
     return res;

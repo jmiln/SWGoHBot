@@ -1,6 +1,7 @@
 import type { Document } from "mongodb";
 import config from "../../config.js";
 import cache from "../cache.ts";
+import logger from "../Logger.ts";
 
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
@@ -37,7 +38,7 @@ export async function setPatreonSettings({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            console.error(`[guildConfig/patreonSettings/setPatreonSettings] Error: ${error.message}`);
+            logger.error(`[guildConfig/patreonSettings/setPatreonSettings] Error: ${error.message}`);
             return { success: false, error: error };
         });
     return res;
@@ -86,7 +87,7 @@ export async function addServerSupporter({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            console.error(`[guildConfig/patreonSettings/addServerSupporter] Error updating guild: ${error.message}`);
+            logger.error(`[guildConfig/patreonSettings/addServerSupporter] Error updating guild: ${error.message}`);
             return { success: false, error: error };
         });
 
@@ -156,7 +157,7 @@ export async function removeServerSupporter({
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            console.error(`[guildConfig/patreonSettings/removeServerSupporter] Error: ${error.message}`);
+            logger.error(`[guildConfig/patreonSettings/removeServerSupporter] Error: ${error.message}`);
             return { success: false, error: error.message };
         });
 }
@@ -183,7 +184,7 @@ export async function clearSupporterInfo({
     try {
         await cache.put(config.mongodb.swgohbotdb, "users", { id: userId }, userConf);
     } catch (err) {
-        console.error(`[guildConfig/patreonSettings/clearSupporterInfo] Error updating user: ${err.toString()}`);
+        logger.error(`[guildConfig/patreonSettings/clearSupporterInfo] Error updating user: ${err.toString()}`);
         resOut.user = { success: false, error: err.toString() };
     }
 
@@ -236,7 +237,7 @@ export async function ensureGuildSupporter() {
                 return { success: true, error: null };
             })
             .catch((error: Error) => {
-                console.error(`[guildConfig/patreonSettings/ensureGuildSupporter] Error updating guild: ${error.message}`);
+                logger.error(`[guildConfig/patreonSettings/ensureGuildSupporter] Error updating guild: ${error.message}`);
                 return { success: false, error: error };
             });
     }

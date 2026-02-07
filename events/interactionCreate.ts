@@ -202,7 +202,7 @@ async function handleAutocomplete(client: BotClient, interaction: AutocompleteIn
         }
     } catch (err) {
         logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);
-        console.error("Autocomplete error details:", err);
+        logger.error(`Autocomplete error details: ${String(err)}`);
     }
 
     // Send autocomplete response
@@ -220,7 +220,7 @@ async function handleAutocomplete(client: BotClient, interaction: AutocompleteIn
         } else {
             // Log unexpected errors
             logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Unexpected error: ${String(err)}`);
-            console.error("Autocomplete response error:", err);
+            logger.error(`Autocomplete response error: ${String(err)}`);
         }
     }
 }
@@ -254,10 +254,10 @@ async function handleChatInputCommand(interaction: BotInteraction, cmd: slashCom
     try {
         await cmd.run(interaction, { level });
     } catch (err) {
-        console.error(err);
+        logger.error(String(err));
         // Special handling for test command
         if (cmd.commandData.name === "test") {
-            console.log(
+            logger.error(
                 `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, { depth: 5 })} \n${inspect(err, { depth: 5 })}`,
             );
             return;

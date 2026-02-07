@@ -52,7 +52,7 @@ class EventSocket {
         this.socket = io(`ws://localhost:${config.eventServe.port}`, SOCKET_CONFIG);
 
         this.socket.on("connect", () => {
-            console.log(`  [${this.shardId}] Connected to EventMgr socket!`);
+            logger.log(`  [${this.shardId}] Connected to EventMgr socket!`);
             this.errorCount = 0;
         });
 
@@ -60,7 +60,7 @@ class EventSocket {
         this.socket.on("reconnect_error", (err) => this.logThrottledError("reconnect failed", err));
         this.socket.on("connect_failed", (err) => this.logThrottledError("connect failed", err));
         this.socket.on("disconnect", (reason) => {
-            console.log(`  [${this.shardId}] EventMgr disconnected: ${reason}`);
+            logger.log(`  [${this.shardId}] EventMgr disconnected: ${reason}`);
         });
     }
 
@@ -71,7 +71,7 @@ class EventSocket {
         if (this.socket) {
             this.socket.disconnect();
             this.socket = null;
-            console.log(`  [${this.shardId}] Socket.io disconnected`);
+            logger.log(`  [${this.shardId}] Socket.io disconnected`);
         }
     }
 
@@ -210,7 +210,7 @@ class EventSocket {
 
         if (now - this.lastErrorTime > ERROR_THROTTLE_MS) {
             const message = err?.message || "Unknown error";
-            console.error(`  [${this.shardId}] EventMgr ${type}: ${message} (${this.errorCount} errors in last minute)`);
+            logger.error(`  [${this.shardId}] EventMgr ${type}: ${message} (${this.errorCount} errors in last minute)`);
             this.lastErrorTime = now;
             this.errorCount = 0;
         }

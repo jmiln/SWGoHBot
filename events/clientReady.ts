@@ -129,7 +129,7 @@ function setupEventChecking(shardId: number): void {
         if (!eventSocket.isConnected()) {
             consecutiveFailures++;
             if (consecutiveFailures === MAX_CONSECUTIVE_FAILURES) {
-                console.warn(`  [${shardId}] EventMgr not connected, skipping event checks (will retry silently)`);
+                logger.warn(`  [${shardId}] EventMgr not connected, skipping event checks (will retry silently)`);
             }
             return;
         }
@@ -145,7 +145,7 @@ function setupEventChecking(shardId: number): void {
             consecutiveFailures++;
             if (consecutiveFailures <= MAX_CONSECUTIVE_FAILURES) {
                 const message = err instanceof Error ? err.message : String(err);
-                console.error(`  [${shardId}] Error checking events: ${message}`);
+                logger.error(`  [${shardId}] Error checking events: ${message}`);
             }
         }
     }, MINUTE_MS);

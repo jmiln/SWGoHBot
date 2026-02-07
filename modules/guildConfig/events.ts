@@ -1,5 +1,6 @@
 import config from "../../config.js";
 import cache from "../cache.ts";
+import logger from "../Logger.ts";
 import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
 
 export async function setEvents({ guildId, evArrOut }: { guildId: string; evArrOut: GuildConfigEvent[] }) {
@@ -20,7 +21,7 @@ export async function updateGuildEvent({ guildId, evName, event }) {
             return { success: true, error: null };
         })
         .catch((error: Error) => {
-            console.error(`[guildConfig/events/updateGuildEvent] Error: ${error.message}`);
+            logger.error(`[guildConfig/events/updateGuildEvent] Error: ${error.message}`);
             return { success: false, error: error };
         });
     return out;
