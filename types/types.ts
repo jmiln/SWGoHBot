@@ -148,12 +148,7 @@ export interface BotUnitMods {
 }
 
 export interface BotClient extends Client {
-    reloadAllEvents: () => Promise<{ succArr: string[]; errArr: string[] }>;
     slashcmds: Collection<string, slashCommand>;
-    loadSlash: (commandName: string) => Promise<boolean>;
-    reloadSlash: (commandName: string) => Promise<string>;
-    reloadAllSlashCommands: () => Promise<{ succArr: string[]; errArr: string[] }>;
-    unloadSlash: (commandName: string) => boolean;
 }
 
 export interface BotInteraction extends ChatInputCommandInteraction {

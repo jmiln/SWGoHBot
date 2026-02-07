@@ -29,6 +29,36 @@ function getEventFiles(): string[] {
     return readdirSync(evDir).filter((file) => file.endsWith(".js") || file.endsWith(".ts"));
 }
 
+/**
+ * Reloads all event listeners
+ */
+export async function reloadAllEvents(client: BotClient): Promise<{ succArr: string[]; errArr: string[] }> {
+    const succArr: string[] = [];
+    const errArr: string[] = [];
+
+    // Remove all existing event listeners
+    client.removeAllListeners();
+
+    const evtFiles = getEventFiles();
+    for (const file of evtFiles) {
+        try {
+            const eventName = await loadEvent(client, file, true);
+            succArr.push(eventName);
+        } catch (e) {
+            logger.error(`Failed to reload event ${file}: ${e}`);
+            errArr.push(file);
+        }
+    }
+
+    return {
+        succArr,
+        errArr,
+    };
+}
+
+/**
+ * Initialize event handler - loads all events on startup
+ */
 export default async (client: BotClient) => {
     const evtFiles = getEventFiles();
 
@@ -39,29 +69,4 @@ export default async (client: BotClient) => {
             logger.error(`Failed to load event ${file}: ${e}`);
         }
     }
-
-    // Reload the events files (message, guildCreate, etc)
-    client.reloadAllEvents = async () => {
-        const succArr: string[] = [];
-        const errArr: string[] = [];
-
-        // Remove all existing event listeners
-        client.removeAllListeners();
-
-        const evtFiles = getEventFiles();
-        for (const file of evtFiles) {
-            try {
-                const eventName = await loadEvent(client, file, true);
-                succArr.push(eventName);
-            } catch (e) {
-                logger.error(`Failed to reload event ${file}: ${e}`);
-                errArr.push(file);
-            }
-        }
-
-        return {
-            succArr,
-            errArr,
-        };
-    };
 };

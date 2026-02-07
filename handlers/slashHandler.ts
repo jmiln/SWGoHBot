@@ -29,6 +29,90 @@ async function loadCommandFile(commandName: string, cacheBust = false): Promise<
     return cmd;
 }
 
+/**
+ * Unloads a single slash command from the client
+ */
+export function unloadSlash(client: BotClient, commandName: string): boolean {
+    if (client.slashcmds.has(commandName)) {
+        client.slashcmds.delete(commandName);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Loads a single slash command into the client
+ */
+export async function loadSlash(client: BotClient, commandName: string): Promise<boolean> {
+    try {
+        const cmd = await loadCommandFile(commandName, true);
+        if (!cmd) {
+            return false;
+        }
+        client.slashcmds.set(cmd.commandData.name, cmd);
+        return true;
+    } catch (err) {
+        logger.error(`Unable to load command ${commandName}: ${err}`);
+        logger.error(err);
+        return false;
+    }
+}
+
+/**
+ * Reloads a single slash command (unload + load)
+ */
+export async function reloadSlash(client: BotClient, commandName: string): Promise<string> {
+    const unloaded = unloadSlash(client, commandName);
+    if (!unloaded) {
+        throw new Error(`Failed to unload command: ${commandName}`);
+    }
+
+    const loaded = await loadSlash(client, commandName);
+    if (!loaded) {
+        throw new Error(`Failed to load command: ${commandName}`);
+    }
+
+    return commandName;
+}
+
+/**
+ * Reloads all slash commands (even if they were not loaded before)
+ * Will not remove a command if it's been loaded, but will load new commands if added
+ */
+export async function reloadAllSlashCommands(client: BotClient): Promise<{ succArr: string[]; errArr: string[] }> {
+    // Unload all existing commands
+    for (const commandName of [...client.slashcmds.keys()]) {
+        unloadSlash(client, commandName);
+    }
+
+    const cmdFiles = getCommandFiles();
+    const succArr: string[] = [];
+    const errArr: string[] = [];
+
+    for (const file of cmdFiles) {
+        const commandName = file.split(".")[0];
+        try {
+            const loaded = await loadSlash(client, commandName);
+            if (loaded) {
+                succArr.push(commandName);
+            } else {
+                errArr.push(file);
+            }
+        } catch (e) {
+            logger.error(`Failed to reload command ${commandName}: ${e}`);
+            errArr.push(file);
+        }
+    }
+
+    return {
+        succArr,
+        errArr,
+    };
+}
+
+/**
+ * Initialize slash command handler - loads all commands on startup
+ */
 export default async (client: BotClient) => {
     const slashFiles = getCommandFiles();
     const slashError: string[] = [];
@@ -49,76 +133,4 @@ export default async (client: BotClient) => {
     if (slashError.length) {
         logger.error(`slashLoad: ${slashError.join("\n")}`);
     }
-
-    client.unloadSlash = (commandName) => {
-        if (client.slashcmds.has(commandName)) {
-            client.slashcmds.delete(commandName);
-            return true;
-        }
-        return false;
-    };
-
-    client.loadSlash = async (commandName) => {
-        try {
-            const cmd = await loadCommandFile(commandName, true);
-            if (!cmd) {
-                return false;
-            }
-            client.slashcmds.set(cmd.commandData.name, cmd);
-            return true;
-        } catch (err) {
-            logger.error(`Unable to load command ${commandName}: ${err}`);
-            logger.error(err);
-            return false;
-        }
-    };
-
-    client.reloadSlash = async (commandName) => {
-        const unloaded = client.unloadSlash(commandName);
-        if (!unloaded) {
-            throw new Error(`Failed to unload command: ${commandName}`);
-        }
-
-        const loaded = await client.loadSlash(commandName);
-        if (!loaded) {
-            throw new Error(`Failed to load command: ${commandName}`);
-        }
-
-        return commandName;
-    };
-
-    /**
-     * Reloads all slash commands (even if they were not loaded before)
-     * Will not remove a command if it's been loaded, but will load new commands if added
-     */
-    client.reloadAllSlashCommands = async () => {
-        // Unload all existing commands
-        for (const commandName of [...client.slashcmds.keys()]) {
-            client.unloadSlash(commandName);
-        }
-
-        const cmdFiles = getCommandFiles();
-        const succArr: string[] = [];
-        const errArr: string[] = [];
-
-        for (const file of cmdFiles) {
-            const commandName = file.split(".")[0];
-            try {
-                const loaded = await client.loadSlash(commandName);
-                if (loaded) {
-                    succArr.push(commandName);
-                } else {
-                    errArr.push(file);
-                }
-            } catch (e) {
-                logger.error(`Failed to reload command ${commandName}: ${e}`);
-                errArr.push(file);
-            }
-        }
-
-        return {
-            succArr,
-            errArr,
-        };
-    };
 };
