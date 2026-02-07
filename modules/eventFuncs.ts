@@ -3,7 +3,6 @@ import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { BotClient } from "../types/types.ts";
-import cache from "./cache.ts";
 import { announceMsg, formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";

@@ -1,14 +1,13 @@
 import {
     ApplicationCommandOptionType,
-    type AutocompleteInteraction,
     type AutocompleteFocusedOption,
+    type AutocompleteInteraction,
     codeBlock,
     InteractionContextType,
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
-import cache from "../modules/cache.ts";
 import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings, setGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -122,7 +121,7 @@ export default class SetConf extends Command {
         options: Object.values(options),
     };
     constructor() {
-        super( SetConf.metadata);
+        super(SetConf.metadata);
     }
 
     async run(interaction: BotInteraction) {

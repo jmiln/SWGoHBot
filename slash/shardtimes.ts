@@ -1,13 +1,12 @@
 import {
     ApplicationCommandOptionType,
-    type AutocompleteInteraction,
     type AutocompleteFocusedOption,
+    type AutocompleteInteraction,
     InteractionContextType,
     type TextChannel,
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import cache from "../modules/cache.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import logger from "../modules/Logger.ts";
@@ -100,7 +99,7 @@ export default class Shardtimes extends Command {
         ],
     };
     constructor() {
-        super( Shardtimes.metadata);
+        super(Shardtimes.metadata);
     }
 
     async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {

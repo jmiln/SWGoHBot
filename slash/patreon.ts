@@ -1,7 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
-import cache from "../modules/cache.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import userReg from "../modules/users.ts";
@@ -48,7 +47,7 @@ export default class Patreon extends Command {
         ],
     };
     constructor() {
-        super( Patreon.metadata);
+        super(Patreon.metadata);
     }
 
     async run(interaction: BotInteraction) {
@@ -114,7 +113,7 @@ export default class Patreon extends Command {
                     userId: interaction.user.id,
                     tier: Math.floor(pat.amount_cents / 100),
                 };
-                const res = await addServerSupporter({ cache, guildId: interaction.guild.id, userInfo });
+                const res = await addServerSupporter({ guildId: interaction.guild.id, userInfo });
                 if (res.user?.error || res.guild?.error) {
                     return super.error(
                         interaction,
@@ -135,7 +134,7 @@ export default class Patreon extends Command {
                     return super.error(interaction, "Sorry, but it doesn't look like you have a bonus server set");
                 }
 
-                const clearRes = await clearSupporterInfo({ cache, userId: interaction.user.id });
+                const clearRes = await clearSupporterInfo({ userId: interaction.user.id });
 
                 if (clearRes.user.error || clearRes.guild.error) {
                     return super.error(

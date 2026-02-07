@@ -2,7 +2,6 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { omicrons } from "../data/constants/units.ts";
-import cache from "../modules/cache.ts";
 import { getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
@@ -33,7 +32,7 @@ export default class TerritoryWar extends Command {
         ],
     };
     constructor() {
-        super( TerritoryWar.metadata);
+        super(TerritoryWar.metadata);
     }
 
     async run(interaction: BotInteraction) {

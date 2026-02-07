@@ -1,7 +1,7 @@
 import { io, type Socket } from "socket.io-client";
 import config from "../config.js";
-import logger from "./Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
+import logger from "./Logger.ts";
 
 const SOCKET_CONFIG = {
     reconnection: true,

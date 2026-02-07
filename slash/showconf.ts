@@ -1,7 +1,6 @@
 import { InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
-import cache from "../modules/cache.ts";
 import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -17,7 +16,7 @@ export default class Showconf extends Command {
         permLevel: 3,
     };
     constructor() {
-        super( Showconf.metadata);
+        super(Showconf.metadata);
     }
 
     async run(interaction: BotInteraction) {

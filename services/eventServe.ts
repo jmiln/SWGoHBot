@@ -12,19 +12,19 @@ import {
     guildEventExists,
 } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
-import type { BotCache } from "../types/cache_types.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
 const io = new Server(config.eventServe.port);
 
 async function init() {
     try {
+        // Init this so it'll be ready for the event handlers
         const mongo = await MongoClient.connect(config.mongodb.url);
         cache.init(mongo);
 
         io.on("connection", (socket) => {
             console.log("EventMgr: Socket connected");
-            setupEventHandlers(socket, cache);
+            setupEventHandlers(socket);
         });
 
         console.log(`EventMgr: Service started on port ${config.eventServe.port}`);
@@ -45,10 +45,10 @@ process.on("unhandledRejection", (reason, promise) => {
     console.error(`Reason: ${reason}`);
 });
 
-function setupEventHandlers(socket: Socket, cache: BotCache) {
+function setupEventHandlers(socket: Socket) {
     socket.on("checkEvents", async (callback) => {
         try {
-            const eventsOut = await processEvents(cache);
+            const eventsOut = await processEvents();
             callback(eventsOut);
         } catch (error) {
             console.error("Failed to check events:", error);
@@ -58,7 +58,7 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
 
     socket.on("addEvents", async ({ guildId, events }, callback) => {
         try {
-            const results = await addEvents(cache, guildId, events);
+            const results = await addEvents(guildId, events);
             callback(results);
         } catch (error) {
             console.error("Failed to add events:", error);
@@ -68,7 +68,7 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
 
     socket.on("delEvent", async ({ guildId, eventName }, callback) => {
         try {
-            const result = await removeEvent(cache, guildId, eventName);
+            const result = await removeEvent(guildId, eventName);
             callback(result);
         } catch (error) {
             console.error("Failed to delete event:", error);
@@ -78,7 +78,7 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
 
     socket.on("getEventByName", async ({ guildId, evName }, callback) => {
         try {
-            const events = await getGuildEvents({ cache, guildId });
+            const events = await getGuildEvents({ guildId });
             callback(events.find((ev) => ev.name === evName));
         } catch (error) {
             console.error("Failed to get event by name:", error);
@@ -88,7 +88,7 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
 
     socket.on("getEventsByFilter", async (guildId, filterArr, callback) => {
         try {
-            const events = await getEventsByFilter(cache, guildId, filterArr);
+            const events = await getEventsByFilter(guildId, filterArr);
             callback(events);
         } catch (error) {
             console.error("Failed to get events by filter:", error);
@@ -98,7 +98,7 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
 
     socket.on("getEventsByGuild", async (guildId, callback) => {
         try {
-            const events = await getGuildEvents({ cache, guildId });
+            const events = await getGuildEvents({ guildId });
             callback(events);
         } catch (error) {
             console.error("Failed to get events by guild:", error);
@@ -107,19 +107,19 @@ function setupEventHandlers(socket: Socket, cache: BotCache) {
     });
 }
 
-async function processEvents(cache: BotCache) {
+async function processEvents() {
     const nowTime = Date.now();
 
     // Use database-level filtering to get triggered events
-    const triggeredEvents = await getTriggeredEvents({ cache, nowTime });
+    const triggeredEvents = await getTriggeredEvents({ nowTime });
     const eventsOut = [...triggeredEvents];
 
     // Get countdown events separately with database filtering
-    const countdownEvents = await getCountdownEvents({ cache, nowTime });
+    const countdownEvents = await getCountdownEvents({ nowTime });
 
     // Process countdown events to check if they match configured countdown times
     for (const ev of countdownEvents) {
-        const guildConf = await getGuildSettings({ cache, guildId: ev.guildId });
+        const guildConf = await getGuildSettings({ guildId: ev.guildId });
 
         if (!guildConf?.eventCountdown?.length) continue;
 
@@ -137,13 +137,13 @@ async function processEvents(cache: BotCache) {
     return eventsOut;
 }
 
-async function addEvents(cache: BotCache, guildId: string, events: GuildConfigEvent | GuildConfigEvent[]) {
+async function addEvents(guildId: string, events: GuildConfigEvent | GuildConfigEvent[]) {
     const eventArr = Array.isArray(events) ? events : [events];
     const results = [];
 
     for (const event of eventArr) {
         const evRes = { event, success: true, error: null };
-        const exists = await guildEventExists({ cache, guildId, evName: event.name });
+        const exists = await guildEventExists({ guildId, evName: event.name });
         if (exists) {
             evRes.success = false;
             evRes.error = `Event "${event.name}" already exists`;
@@ -152,7 +152,7 @@ async function addEvents(cache: BotCache, guildId: string, events: GuildConfigEv
         }
 
         try {
-            await addGuildEvent({ cache, guildId, newEvent: event });
+            await addGuildEvent({ guildId, newEvent: event });
             results.push(evRes);
         } catch (error) {
             evRes.success = false;
@@ -163,9 +163,9 @@ async function addEvents(cache: BotCache, guildId: string, events: GuildConfigEv
     return results;
 }
 
-async function removeEvent(cache: BotCache, guildId: string, eventName: string) {
+async function removeEvent(guildId: string, eventName: string) {
     const res = { eventName, success: true, error: null };
-    const exists = await guildEventExists({ cache, guildId, evName: eventName });
+    const exists = await guildEventExists({ guildId, evName: eventName });
 
     if (!exists) {
         res.success = false;
@@ -174,7 +174,7 @@ async function removeEvent(cache: BotCache, guildId: string, eventName: string) 
     }
 
     try {
-        await deleteGuildEvent({ cache, guildId, evName: eventName });
+        await deleteGuildEvent({ guildId, evName: eventName });
     } catch (error) {
         res.success = false;
         res.error = error.message;
@@ -182,9 +182,9 @@ async function removeEvent(cache: BotCache, guildId: string, eventName: string) 
     return res;
 }
 
-async function getEventsByFilter(cache: BotCache, guildId: string, filter: string | string[]) {
+async function getEventsByFilter(guildId: string, filter: string | string[]) {
     const filterArr = Array.isArray(filter) ? filter : [filter];
-    const events = await getGuildEvents({ cache, guildId });
+    const events = await getGuildEvents({ guildId });
     return events.filter((ev) => filterArr.every((e) => `${ev.message} ${ev.name}`.includes(e)));
 }
 

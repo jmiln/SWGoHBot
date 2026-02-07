@@ -1,7 +1,7 @@
 import {
     ApplicationCommandOptionType,
-    type AutocompleteInteraction,
     type AutocompleteFocusedOption,
+    type AutocompleteInteraction,
     codeBlock,
     InteractionContextType,
     MessageFlags,
@@ -9,7 +9,6 @@ import {
 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import cache from "../modules/cache.ts";
 import eventSocket from "../modules/eventSocket.ts";
 import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray, toProperCase } from "../modules/functions.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
@@ -205,14 +204,13 @@ export default class Event extends Command {
     };
 
     constructor() {
-        super( Event.metadata);
+        super(Event.metadata);
     }
 
     async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 
         const guildEvents = await getGuildEvents({
-            cache: cache,
             guildId: interaction.guild?.id,
         });
 
@@ -596,7 +594,6 @@ export default class Event extends Command {
 
                 try {
                     const res = await updateGuildEvent({
-                        cache: cache,
                         guildId: interaction.guild.id,
                         evName: eventName,
                         event: validEvent.event,

@@ -2,7 +2,6 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, raidNames, ships } from "../data/constants/units.ts";
-import cache from "../modules/cache.ts";
 import {
     expandSpaces,
     formatDuration,
@@ -221,7 +220,7 @@ export default class Guilds extends Command {
         ],
     };
     constructor() {
-        super( Guilds.metadata);
+        super(Guilds.metadata);
     }
 
     async run(interaction: BotInteraction) {
@@ -246,7 +245,7 @@ export default class Guilds extends Command {
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const guildConf = await getGuildSettings({ cache, guildId: interaction.guild?.id || null });
+        const guildConf = await getGuildSettings({ guildId: interaction.guild?.id || null });
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
@@ -1083,7 +1082,7 @@ export default class Guilds extends Command {
         async function twSummary() {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
-            const unitChecklist = await getFullTWList({ cache, guildId: interaction.guild?.id });
+            const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id });
             if (!guild || !guild.roster || !guild.roster.length) {
                 return interaction.editReply({
                     content: null,

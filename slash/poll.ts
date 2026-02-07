@@ -1,7 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import cache from "../modules/cache.ts";
 import { expandSpaces } from "../modules/functions.ts";
 import { getGuildPolls, setGuildPolls } from "../modules/guildConfig/polls.ts";
 import logger from "../modules/Logger.ts";
@@ -76,7 +75,7 @@ export default class Poll extends Command {
         ],
     };
     constructor() {
-        super( Poll.metadata);
+        super(Poll.metadata);
     }
 
     async run(interaction: BotInteraction, options: { level: number }) {

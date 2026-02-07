@@ -754,7 +754,7 @@ async function updatePatrons(cache: BotCache) {
                 if (!userConf?.bonusServer?.length) continue;
 
                 // If it is set, remove it
-                const { user: userRes, guild: guildRes } = await clearSupporterInfo({ cache, userId: newUser.discordID });
+                const { user: userRes, guild: guildRes } = await clearSupporterInfo({ userId: newUser.discordID });
 
                 // No issues, move on
                 if (!userRes?.error && !guildRes?.error) {
@@ -772,7 +772,6 @@ async function updatePatrons(cache: BotCache) {
                 // If the user exists, and they're active, make sure everything is set correctly
                 // Make sure that if they have a bonus server set in their user settings, it's set properly in the given guild
                 const { user: userRes, guild: guildRes } = (await ensureBonusServerSet({
-                    cache,
                     userId: newUser.discordID,
                     amount_cents: newUser.amount_cents,
                 })) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
@@ -790,7 +789,7 @@ async function updatePatrons(cache: BotCache) {
         }
 
         // Go through each of the guilds that have a supporter and make sure all of the lsited users are supposed to be there
-        await ensureGuildSupporter({ cache });
+        await ensureGuildSupporter();
     } catch (e) {
         if (e.name === "AbortError" || e.name === "TimeoutError") {
             console.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds`);

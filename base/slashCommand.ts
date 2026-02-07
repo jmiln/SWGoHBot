@@ -4,7 +4,7 @@ import {
     type ChatInputCommandInteraction,
     codeBlock,
     EmbedBuilder,
-    InteractionContextType,
+    type InteractionContextType,
     MessageFlags,
 } from "discord.js";
 import constants from "../data/constants/constants.ts";
