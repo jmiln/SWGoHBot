@@ -1,17 +1,18 @@
 import { inspect } from "node:util";
-import { type AutocompleteInteraction, type ChatInputCommandInteraction, Events, MessageFlags } from "discord.js";
+import { type AutocompleteInteraction, type ChatInputCommandInteraction, type Client, Events, MessageFlags } from "discord.js";
 import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, factions, journeyNames, shipNameList } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
+import { getCommand, getCommandNames } from "../handlers/slashHandler.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
-import type { AnyBotInteraction, BotClient, CommandContext, GuildAlias } from "../types/types.ts";
+import type { AnyBotInteraction, CommandContext, GuildAlias } from "../types/types.ts";
 
 // Constants
 const IGNORED_ERRORS = [
@@ -151,7 +152,7 @@ function processUnitAutocomplete(focusedOption: { name: string; value: string },
 /**
  * Handles autocomplete interactions
  */
-async function handleAutocomplete(client: BotClient, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
+async function handleAutocomplete(client: Client<true>, interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
     const focusedOption = interaction.options.getFocused(true);
 
     // If command has custom autocomplete handler, use it
@@ -172,7 +173,7 @@ async function handleAutocomplete(client: BotClient, interaction: AutocompleteIn
             filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
         } else if (focusedOption.name === "command") {
             // Process command name autocomplete
-            const commandNames = [...client.slashcmds.keys()];
+            const commandNames = getCommandNames();
             const commands = commandNames.filter((cmdName) => cmdName.toLowerCase().startsWith(focusedOption.value?.toLowerCase()));
             filtered = commands.map((cmd) => ({ name: cmd, value: cmd }));
         } else if (focusedOption.name === "faction") {
@@ -292,13 +293,13 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
 
 export default {
     name: Events.InteractionCreate,
-    execute: async (client: BotClient, interaction: AnyBotInteraction) => {
+    execute: async (client: Client<true>, interaction: AnyBotInteraction) => {
         // Filter out non-command interactions and bot users
         if (!interaction?.isChatInputCommand() && !interaction.isAutocomplete()) return;
         if (interaction.user.bot) return;
 
         // Get command
-        const cmd = client.slashcmds.get(interaction.commandName);
+        const cmd = getCommand(interaction.commandName);
         if (!cmd) return;
 
         // Route to appropriate handler

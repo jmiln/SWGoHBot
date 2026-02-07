@@ -1,10 +1,13 @@
+import { Collection } from "discord.js";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import type slashCommand from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
-import type { BotClient } from "../types/types.ts";
 
 const slashDir = join(import.meta.dirname, "..", "slash");
+
+// Module-level collection of loaded slash commands
+const slashcmds = new Collection<string, slashCommand>();
 
 /**
  * Gets all command files from the slash directory
@@ -30,26 +33,47 @@ async function loadCommandFile(commandName: string, cacheBust = false): Promise<
 }
 
 /**
- * Unloads a single slash command from the client
+ * Gets a command by name
  */
-export function unloadSlash(client: BotClient, commandName: string): boolean {
-    if (client.slashcmds.has(commandName)) {
-        client.slashcmds.delete(commandName);
+export function getCommand(commandName: string): slashCommand | undefined {
+    return slashcmds.get(commandName);
+}
+
+/**
+ * Gets all command names
+ */
+export function getCommandNames(): string[] {
+    return [...slashcmds.keys()];
+}
+
+/**
+ * Gets the full command collection (read-only access)
+ */
+export function getCommands(): ReadonlyMap<string, slashCommand> {
+    return slashcmds;
+}
+
+/**
+ * Unloads a single slash command
+ */
+export function unloadSlash(commandName: string): boolean {
+    if (slashcmds.has(commandName)) {
+        slashcmds.delete(commandName);
         return true;
     }
     return false;
 }
 
 /**
- * Loads a single slash command into the client
+ * Loads a single slash command
  */
-export async function loadSlash(client: BotClient, commandName: string): Promise<boolean> {
+export async function loadSlash(commandName: string): Promise<boolean> {
     try {
         const cmd = await loadCommandFile(commandName, true);
         if (!cmd) {
             return false;
         }
-        client.slashcmds.set(cmd.commandData.name, cmd);
+        slashcmds.set(cmd.commandData.name, cmd);
         return true;
     } catch (err) {
         logger.error(`Unable to load command ${commandName}: ${err}`);
@@ -61,13 +85,13 @@ export async function loadSlash(client: BotClient, commandName: string): Promise
 /**
  * Reloads a single slash command (unload + load)
  */
-export async function reloadSlash(client: BotClient, commandName: string): Promise<string> {
-    const unloaded = unloadSlash(client, commandName);
+export async function reloadSlash(commandName: string): Promise<string> {
+    const unloaded = unloadSlash(commandName);
     if (!unloaded) {
         throw new Error(`Failed to unload command: ${commandName}`);
     }
 
-    const loaded = await loadSlash(client, commandName);
+    const loaded = await loadSlash(commandName);
     if (!loaded) {
         throw new Error(`Failed to load command: ${commandName}`);
     }
@@ -79,10 +103,10 @@ export async function reloadSlash(client: BotClient, commandName: string): Promi
  * Reloads all slash commands (even if they were not loaded before)
  * Will not remove a command if it's been loaded, but will load new commands if added
  */
-export async function reloadAllSlashCommands(client: BotClient): Promise<{ succArr: string[]; errArr: string[] }> {
+export async function reloadAllSlashCommands(): Promise<{ succArr: string[]; errArr: string[] }> {
     // Unload all existing commands
-    for (const commandName of [...client.slashcmds.keys()]) {
-        unloadSlash(client, commandName);
+    for (const commandName of [...slashcmds.keys()]) {
+        unloadSlash(commandName);
     }
 
     const cmdFiles = getCommandFiles();
@@ -92,7 +116,7 @@ export async function reloadAllSlashCommands(client: BotClient): Promise<{ succA
     for (const file of cmdFiles) {
         const commandName = file.split(".")[0];
         try {
-            const loaded = await loadSlash(client, commandName);
+            const loaded = await loadSlash(commandName);
             if (loaded) {
                 succArr.push(commandName);
             } else {
@@ -113,7 +137,7 @@ export async function reloadAllSlashCommands(client: BotClient): Promise<{ succA
 /**
  * Initialize slash command handler - loads all commands on startup
  */
-export default async (client: BotClient) => {
+export default async () => {
     const slashFiles = getCommandFiles();
     const slashError: string[] = [];
 
@@ -122,7 +146,7 @@ export default async (client: BotClient) => {
         try {
             const cmd = await loadCommandFile(commandName);
             if (cmd) {
-                client.slashcmds.set(cmd.commandData.name, cmd);
+                slashcmds.set(cmd.commandData.name, cmd);
             }
         } catch (err) {
             slashError.push(`Unable to load command ${commandName}: ${err}`);

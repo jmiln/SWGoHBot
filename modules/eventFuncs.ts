@@ -1,14 +1,14 @@
+import { type Client } from "discord.js";
 import Language from "../base/Language.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
-import type { BotClient } from "../types/types.ts";
 import { announceMsg, formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";
 
 class EventFuncs {
-    private client!: BotClient;
+    private client!: Client<true>;
 
     // Time constants
     private readonly dayMS = 86400000;
@@ -19,7 +19,7 @@ class EventFuncs {
     /**
      * Initialize the EventFuncs module with Discord client dependency
      */
-    init(client: BotClient): void {
+    init(client: Client<true>): void {
         this.client = client;
     }
 
@@ -56,7 +56,7 @@ class EventFuncs {
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
                         const targetGuild = client.guilds.cache.get(guildId);
                         if (targetGuild) {
-                            announceMsg({ client: client as BotClient, guild: targetGuild, announceMessage, channel: chan, guildConf });
+                            announceMsg({ client: client as Client<true>, guild: targetGuild, announceMessage, channel: chan, guildConf });
                         }
                     },
                     {

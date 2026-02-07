@@ -20,7 +20,7 @@ import constants from "../data/constants/constants.ts";
 import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotClient, BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
+import type { BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
 import userReg from "./users.ts";
 
@@ -782,7 +782,7 @@ export async function announceMsg({
     channel,
     guildConf,
 }: {
-    client: BotClient;
+    client: Client<true>;
     guild: Guild;
     announceMessage: string;
     channel: string;

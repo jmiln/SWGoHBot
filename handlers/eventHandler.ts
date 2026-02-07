@@ -1,6 +1,6 @@
+import { type Client } from "discord.js";
 import { readdirSync } from "node:fs";
 import logger from "../modules/Logger.ts";
-import type { BotClient } from "../types/types.ts";
 
 const needsClient = ["error", "clientReady", "interactionCreate", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${import.meta.dirname}/../events/`;
@@ -8,7 +8,7 @@ const evDir = `${import.meta.dirname}/../events/`;
 /**
  * Loads an event file and binds it to the client
  */
-async function loadEvent(client: BotClient, file: string, cacheBust = false): Promise<string> {
+async function loadEvent(client: Client<true>, file: string, cacheBust = false): Promise<string> {
     const path = cacheBust ? `${evDir}${file}?t=${Date.now()}` : `${evDir}${file}`;
     const { default: event } = await import(path);
     const eventName = event.name;
@@ -32,7 +32,7 @@ function getEventFiles(): string[] {
 /**
  * Reloads all event listeners
  */
-export async function reloadAllEvents(client: BotClient): Promise<{ succArr: string[]; errArr: string[] }> {
+export async function reloadAllEvents(client: Client<true>): Promise<{ succArr: string[]; errArr: string[] }> {
     const succArr: string[] = [];
     const errArr: string[] = [];
 
@@ -59,7 +59,7 @@ export async function reloadAllEvents(client: BotClient): Promise<{ succArr: str
 /**
  * Initialize event handler - loads all events on startup
  */
-export default async (client: BotClient) => {
+export default async (client: Client<true>) => {
     const evtFiles = getEventFiles();
 
     for (const file of evtFiles) {

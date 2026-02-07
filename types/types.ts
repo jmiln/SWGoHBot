@@ -2,13 +2,10 @@ import type {
     AutocompleteInteraction,
     BaseInteraction,
     ChatInputCommandInteraction,
-    Client,
-    Collection,
     IntentsBitField,
     Partials,
 } from "discord.js";
 import type Language from "../base/Language.ts";
-import type slashCommand from "../base/slashCommand.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
@@ -145,10 +142,6 @@ export interface BotUnitMods {
     circle: string;
     cross: string;
     source?: string;
-}
-
-export interface BotClient extends Client {
-    slashcmds: Collection<string, slashCommand>;
 }
 
 export interface BotInteraction extends ChatInputCommandInteraction {

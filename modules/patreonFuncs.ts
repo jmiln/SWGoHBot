@@ -1,4 +1,4 @@
-import { type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
+import { type Client, type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
 import Language from "../base/Language.ts";
 import config from "../config.js";
 import constants from "../data/constants/constants.ts";
@@ -8,7 +8,6 @@ import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
 import type {
     ActivePatron,
     ArenaWatchAcct,
-    BotClient,
     PatronUser,
     PlayerArenaRes,
     PlayerUpdates,
@@ -36,12 +35,12 @@ const TIER_5_CENTS = 500; // $5
 const TIER_10_CENTS = 1000; // $10
 
 class PatreonFuncs {
-    private client!: BotClient;
+    private client!: Client<true>;
 
     /**
      * Initialize the PatreonFuncs module with Discord client dependency
      */
-    init(client: BotClient): void {
+    init(client: Client<true>): void {
         this.client = client;
     }
 

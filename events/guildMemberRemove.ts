@@ -1,14 +1,13 @@
-import { Events, type GuildMember } from "discord.js";
+import { type Client, Events, type GuildMember } from "discord.js";
 import { announceMsg } from "../modules/functions.ts";
 import { clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
-import type { BotClient } from "../types/types.ts";
 
 export default {
     name: Events.GuildMemberRemove,
-    async execute(client: BotClient, member: GuildMember) {
+    async execute(client: Client<true>, member: GuildMember) {
         const guildConf = await getGuildSettings({ guildId: member.guild.id });
 
         // Send departure message if enabled

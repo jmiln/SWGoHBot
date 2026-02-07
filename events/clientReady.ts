@@ -1,11 +1,10 @@
-import { Events } from "discord.js";
+import { type Client, Events } from "discord.js";
 import config from "../config.js";
 import eventFuncs from "../modules/eventFuncs.ts";
 import eventSocket from "../modules/eventSocket.ts";
 import { getShardId, isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import type { BotClient } from "../types/types.ts";
 
 // Constants
 const MAX_CONSECUTIVE_FAILURES = 5;
@@ -30,7 +29,7 @@ function cleanupIntervals(): void {
 
 export default {
     name: Events.ClientReady,
-    execute: async (client: BotClient) => {
+    execute: async (client: Client<true>) => {
         const shardId = getShardId(client);
 
         // Initialize the logger with the shard ID
@@ -71,7 +70,7 @@ export default {
 /**
  * Sets up background tasks for arena tracking, guild updates, and event checking
  */
-function setupBackgroundTasks(client: BotClient, shardId: number): void {
+function setupBackgroundTasks(client: Client<true>, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
     if (shardId === 0 && config.premium) {
         setupDataUpdateTasks(client, shardId);
@@ -86,7 +85,7 @@ function setupBackgroundTasks(client: BotClient, shardId: number): void {
 /**
  * Sets up periodic data update tasks (arena ranks, guild tickets, etc.)
  */
-function setupDataUpdateTasks(client: BotClient, shardId: number): void {
+function setupDataUpdateTasks(client: Client<true>, shardId: number): void {
     setTimeout(() => {
         const intervalId = setInterval(async () => {
             try {
@@ -153,7 +152,7 @@ function setupEventChecking(shardId: number): void {
 /**
  * Sets the bot's Discord presence/status
  */
-function setPresence(client: BotClient): void {
+function setPresence(client: Client<true>): void {
     try {
         client.user.setPresence({
             activities: [{ name: PRESENCE_NAME, type: 0 }],

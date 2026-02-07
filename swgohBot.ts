@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { RESTJSONErrorCodes as APIErrors, Client, Collection, DiscordAPIError, TextChannel } from "discord.js";
+import { RESTJSONErrorCodes as APIErrors, Client, DiscordAPIError, TextChannel } from "discord.js";
 import config from "./config.js";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
@@ -13,13 +13,12 @@ import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
-import type { BotClient } from "./types/types.ts";
 
 const client = new Client({
     intents: config.botIntents,
     partials: config.partials,
     closeTimeout: 30_000,
-}) as BotClient;
+}) as Client<true>;
 
 // Regex to replace absolute paths with relative paths in error messages
 const CWD_REGEX = new RegExp(process.cwd(), "g");
@@ -34,8 +33,6 @@ const logErrorToChannel = (errorMsg: string) => {
         // Silently fail - we're already in error handling
     }
 };
-
-client.slashcmds = new Collection();
 
 // Prevent multiple simultaneous shutdown attempts
 let isShuttingDown = false;
@@ -117,7 +114,7 @@ const init = async () => {
     // Initialize event functions
     eventFuncs.init(client);
 
-    slashHandler(client);
+    slashHandler();
     eventHandler(client);
 
     // Register graceful shutdown handlers
