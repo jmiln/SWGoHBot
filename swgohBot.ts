@@ -7,6 +7,7 @@ import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
 import commandStats from "./modules/commandStats.ts";
 import database from "./modules/database.ts";
+import databaseCleanup from "./modules/databaseCleanup.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
 import eventSocket from "./modules/eventSocket.ts";
 import { myTime, reloadLanguages } from "./modules/functions.ts";
@@ -66,6 +67,9 @@ async function gracefulShutdown(signal: string): Promise<void> {
         // Destroy Discord client connection
         await client.destroy();
         console.log(`[${myTime()}] Discord client destroyed`);
+
+        // Stop database cleanup scheduler
+        databaseCleanup.stop();
 
         // Close MongoDB connection
         if (database.isConnected()) {

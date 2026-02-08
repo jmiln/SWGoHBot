@@ -103,6 +103,14 @@ class Cache implements BotCache {
         return await this.getCol(database, collection).deleteOne(matchCondition);
     }
 
+    async delete(database: string, collection: string, matchCondition: Filter<Document>): Promise<DeleteResult> {
+        return await this.getCol(database, collection).deleteMany(matchCondition);
+    }
+
+    async count(database: string, collection: string, matchCondition: Filter<Document>): Promise<number> {
+        return await this.getCol(database, collection).countDocuments(matchCondition);
+    }
+
     async exists(database: string, collection: string, matchCondition: Filter<Document>): Promise<boolean> {
         const count = await this.getCol(database, collection).countDocuments(matchCondition, { limit: 1 });
         return count > 0;

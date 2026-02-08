@@ -1,5 +1,6 @@
 import { type Client, Events } from "discord.js";
 import config from "../config.js";
+import databaseCleanup from "../modules/databaseCleanup.ts";
 import eventFuncs from "../modules/eventFuncs.ts";
 import eventSocket from "../modules/eventSocket.ts";
 import { getShardId, isMain } from "../modules/functions.ts";
@@ -11,7 +12,6 @@ const MAX_CONSECUTIVE_FAILURES = 5;
 const MINUTE_MS = 60 * 1000;
 const STARTUP_DELAY_MS = 2 * MINUTE_MS;
 const PRESENCE_NAME = "swgohbot.com";
-
 
 // Track intervals for cleanup
 const activeIntervals: NodeJS.Timeout[] = [];
@@ -66,17 +66,19 @@ export default {
     },
 };
 
-
 /**
  * Sets up background tasks for arena tracking, guild updates, and event checking
  */
 function setupBackgroundTasks(client: Client<true>, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
-    if (shardId === 0 && config.premium) {
-        setupDataUpdateTasks(shardId);
+    if (shardId === 0) {
+        setupDatabaseCleanup(shardId);
+        if (config.premium) {
+            setupDataUpdateTasks(shardId);
+        }
     }
 
-    // Last shard handles event checking
+    // Last shard handles event checking so we can guarantee they're all loaded
     if (shardId + 1 === client.shard.count) {
         setupEventChecking(shardId);
     }
@@ -113,6 +115,16 @@ function setupDataUpdateTasks(shardId: number): void {
 
         activeIntervals.push(intervalId);
     }, STARTUP_DELAY_MS);
+}
+
+/**
+ * Sets up automated database cleanup (runs daily on shard 0)
+ */
+function setupDatabaseCleanup(shardId: number): void {
+    logger.log(`[${shardId}] Setting up automated database cleanup (24hr interval)`);
+
+    // Start the cleanup scheduler
+    databaseCleanup.start(24);
 }
 
 /**
