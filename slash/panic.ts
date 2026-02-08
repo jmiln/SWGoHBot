@@ -26,6 +26,7 @@ export default class Panic extends Command {
                 name: "allycode",
                 description: "The ally code for whoever you're wanting to look up",
                 type: ApplicationCommandOptionType.String,
+                autocomplete: true,
             },
         ],
     };

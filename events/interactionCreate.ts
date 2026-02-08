@@ -197,6 +197,23 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
                         value: faction.toLowerCase(),
                     }));
             }
+        } else if (focusedOption.name === "allycode" || focusedOption.name.startsWith("allycode_")) {
+            // Process allycode autocomplete - show user's registered allycodes
+            const searchKey = focusedOption.value?.trim().toLowerCase() || "";
+            const user = await userReg.getUser(interaction.user.id);
+
+            if (user?.accounts?.length) {
+                filtered = user.accounts
+                    .filter((account) => {
+                        const nameMatch = account.name.toLowerCase().includes(searchKey);
+                        const codeMatch = account.allyCode.includes(searchKey);
+                        return nameMatch || codeMatch;
+                    })
+                    .map((account) => ({
+                        name: `${account.name} - ${account.allyCode}`,
+                        value: account.allyCode,
+                    }));
+            }
         } else {
             // Process unit/character/ship autocomplete
             filtered = processUnitAutocomplete(focusedOption, aliases);

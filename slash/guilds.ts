@@ -38,6 +38,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                     {
                         name: "sort",
@@ -57,6 +58,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                     {
                         name: "sort",
@@ -92,6 +94,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                 ],
             },
@@ -104,6 +107,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                     {
                         name: "registered",
@@ -165,6 +169,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                     {
                         name: "sort",
@@ -197,6 +202,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                     {
                         name: "expand",
@@ -214,6 +220,7 @@ export default class Guilds extends Command {
                         name: "allycode",
                         description: "The ally code of the guild you want to check.",
                         type: ApplicationCommandOptionType.String,
+                        autocomplete: true,
                     },
                 ],
             },

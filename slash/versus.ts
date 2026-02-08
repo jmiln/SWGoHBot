@@ -21,12 +21,14 @@ export default class Versus extends Command {
                 description: "The ally code of the first user you want to compare",
                 type: ApplicationCommandOptionType.String,
                 required: true,
+                autocomplete: true,
             },
             {
                 name: "allycode_2",
                 description: "The ally code of the second user you want to compare",
                 type: ApplicationCommandOptionType.String,
                 required: true,
+                autocomplete: true,
             },
             {
                 name: "character",

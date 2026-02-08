@@ -29,6 +29,7 @@ export default class GuildQuality extends Command {
                 name: "allycode",
                 description: "The ally code of the guild you want to check.",
                 type: ApplicationCommandOptionType.String,
+                autocomplete: true,
             },
         ],
     };

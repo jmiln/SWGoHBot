@@ -37,11 +37,13 @@ export default class GrandArena extends Command {
                 type: ApplicationCommandOptionType.String,
                 description: "Ally code for player 1",
                 required: true,
+                autocomplete: true,
             },
             {
                 name: "allycode_2",
                 type: ApplicationCommandOptionType.String,
                 description: "Ally code for player 2",
+                autocomplete: true,
                 required: true,
             },
             {

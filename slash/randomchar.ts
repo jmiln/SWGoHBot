@@ -19,6 +19,7 @@ export default class Randomchar extends Command {
                 name: "allycode",
                 description: "The ally code for the user you want to look up",
                 type: ApplicationCommandOptionType.String,
+                autocomplete: true,
             },
             {
                 name: "rarity",

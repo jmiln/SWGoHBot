@@ -29,6 +29,7 @@ export default class Faction extends Command {
                 name: "allycode",
                 description: "Ally code to look up the info for.",
                 type: ApplicationCommandOptionType.String,
+                autocomplete: true,
             },
             {
                 name: "leader",

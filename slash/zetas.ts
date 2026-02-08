@@ -27,6 +27,7 @@ export default class Zetas extends Command {
                         name: "allycode",
                         type: ApplicationCommandOptionType.String,
                         required: true,
+                        autocomplete: true,
                         description: "The ally code of a player in the guild you want to see",
                     },
                     {
@@ -46,6 +47,7 @@ export default class Zetas extends Command {
                         name: "allycode",
                         type: ApplicationCommandOptionType.String,
                         required: true,
+                        autocomplete: true,
                         description: "The ally code of the player you want to see.",
                     },
                     {

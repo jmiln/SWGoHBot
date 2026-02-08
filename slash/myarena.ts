@@ -20,6 +20,7 @@ export default class MyArena extends Command {
                 name: "allycode",
                 description: "The ally code of the user you want to see",
                 type: ApplicationCommandOptionType.String,
+                autocomplete: true,
             },
             {
                 name: "stats",

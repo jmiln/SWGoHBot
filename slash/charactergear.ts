@@ -27,6 +27,7 @@ export default class Charactergear extends Command {
             {
                 name: "allycode",
                 type: ApplicationCommandOptionType.String,
+                autocomplete: true,
                 description: "An ally code to check the character against",
             },
             {
