@@ -97,6 +97,43 @@ export const indexConfig: DatabaseIndexes = {
                 },
             },
         ],
+
+        // Command usage statistics
+        commandStats: [
+            {
+                key: { timestamp: 1 },
+                options: {
+                    name: "idx_commandstats_timestamp",
+                },
+            },
+            {
+                key: { commandName: 1, timestamp: 1 },
+                options: {
+                    name: "idx_commandstats_command_timestamp",
+                },
+            },
+            {
+                key: { userId: 1, timestamp: 1 },
+                options: {
+                    name: "idx_commandstats_user_timestamp",
+                },
+            },
+            {
+                key: { guildId: 1, timestamp: 1 },
+                options: {
+                    name: "idx_commandstats_guild_timestamp",
+                    sparse: true,
+                },
+            },
+            {
+                // TTL index to auto-delete old stats after 90 days
+                key: { timestamp: 1 },
+                options: {
+                    name: "idx_commandstats_ttl",
+                    expireAfterSeconds: 7776000, // 90 days
+                },
+            },
+        ],
     },
 
     // swapidb database - Game data from SWAPI
