@@ -100,6 +100,7 @@ const JOURNEY_FILE_PATH = path.join(DATA_DIR_PATH, "journeyReqs.json");
 const RAID_NAMES_FILE_PATH = path.join(DATA_DIR_PATH, "raidNames.json");
 const SHIP_FILE_PATH = path.join(DATA_DIR_PATH, "ships.json");
 const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
+const UNIT_CHECKLIST_FILE_PATH = path.join(DATA_DIR_PATH, "unitChecklist.json");
 
 // The metadata keys we actually care about
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
@@ -1277,6 +1278,11 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         const raidNamesOut = saveRaidNames(locales);
         await saveFile(RAID_NAMES_FILE_PATH, raidNamesOut);
         debugLog("Finished processing Raid Names");
+
+        debugTime("Finished updating Unit Checklist");
+        await updateUnitChecklist(charactersOut, shipsOut);
+        debugTimeEnd("Finished updating Unit Checklist");
+
         debugTimeEnd("Finished processing all GameData");
     } catch (error) {
         logError("dataUpdater/processGameData", "Error processing game data chunks:", error);
@@ -2032,6 +2038,75 @@ async function processJourneyReqs(gameData: GameData) {
         ),
         { encoding: "utf-8" },
     );
+}
+
+async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
+    try {
+        // Read current checklist
+        let checklist: Record<string, [string, string][]>;
+        try {
+            checklist = await readJSON<Record<string, [string, string][]>>(UNIT_CHECKLIST_FILE_PATH);
+        } catch (error) {
+            logger.warn(`[${myTime()}] [updateUnitChecklist] Could not read checklist (${error.code || error.message}), creating new one`);
+            checklist = {
+                "Galactic Legends": [],
+                "Light Side": [],
+                "Dark Side": [],
+                "Capital Ships": [],
+            };
+        }
+
+        // Build sets of existing unit IDs for quick lookup
+        const existingGLs = new Set(checklist["Galactic Legends"]?.map((u) => u[0]) || []);
+        const existingCapitalShips = new Set(checklist["Capital Ships"]?.map((u) => u[0]) || []);
+
+        let hasChanges = false;
+
+        // Find new Galactic Legends
+        const newGLs = characters.filter((char) => char.factions?.includes("Galactic Legend") && !existingGLs.has(char.uniqueName));
+
+        if (newGLs.length > 0) {
+            for (const gl of newGLs) {
+                // Create a shortened name (use first word or abbreviation)
+                const shortName = gl.name || gl.uniqueName;
+                checklist["Galactic Legends"].push([gl.uniqueName, shortName]);
+                logger.log(`[${myTime()}] [updateUnitChecklist] Added new Galactic Legend: ${gl.name} (${gl.uniqueName})`);
+                hasChanges = true;
+            }
+
+            // Sort Galactic Legends alphabetically by short name
+            checklist["Galactic Legends"].sort((a, b) => a[1].toLowerCase().localeCompare(b[1].toLowerCase()));
+        }
+
+        // Find new Capital Ships
+        const newCapitalShips = ships.filter(
+            (ship) => ship.factions?.includes("Capital Ship") && ship.uniqueName.startsWith("CAPITAL") && !existingCapitalShips.has(ship.uniqueName),
+        );
+
+        if (newCapitalShips.length > 0) {
+            for (const ship of newCapitalShips) {
+                // Use the ship name without "Capital Ship" prefix if present
+                const shortName = ship.name.replace(/^Capital\s+/i, "").trim() || ship.uniqueName.replace(/^CAPITAL/, "");
+                checklist["Capital Ships"].push([ship.uniqueName, shortName]);
+                logger.log(`[${myTime()}] [updateUnitChecklist] Added new Capital Ship: ${ship.name} (${ship.uniqueName})`);
+                hasChanges = true;
+            }
+
+            // Sort Capital Ships alphabetically by short name
+            checklist["Capital Ships"].sort((a, b) => a[1].toLowerCase().localeCompare(b[1].toLowerCase()));
+        }
+
+        // Save if changes were made
+        if (hasChanges) {
+            await saveFile(UNIT_CHECKLIST_FILE_PATH, checklist);
+            logger.log(`[${myTime()}] [updateUnitChecklist] Updated unit checklist with ${newGLs.length} new GL(s) and ${newCapitalShips.length} new Capital Ship(s)`);
+        } else {
+            debugLog("[updateUnitChecklist] No new Galactic Legends or Capital Ships detected");
+        }
+    } catch (error) {
+        logError("dataUpdater/updateUnitChecklist", "Error updating unit checklist:", error);
+        // Don't throw - this shouldn't block the rest of the update process
+    }
 }
 
 const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;

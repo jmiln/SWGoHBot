@@ -1,7 +1,8 @@
+import path from "node:path";
 import config from "../../config.js";
 import cache from "../cache.ts";
+import { readJSON } from "../functions.ts";
 import logger from "../Logger.ts";
-import unitChecklist from "../../data/unitChecklist.ts";
 import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
 
 const defaultTWList = {
@@ -12,6 +13,28 @@ const defaultTWList = {
     "Capital Ships": [],
     Blacklist: [], // List of units to not show in the list output (Can't have units both here and one of the others)
 };
+
+// Cache for unit checklist to avoid reading file multiple times
+let unitChecklistCache: Record<string, [string, string][]> | null = null;
+
+export async function getUnitChecklist(): Promise<Record<string, [string, string][]>> {
+    if (unitChecklistCache) return unitChecklistCache;
+
+    try {
+        const filePath = path.resolve(import.meta.dirname, "../../data/unitChecklist.json");
+        unitChecklistCache = await readJSON<Record<string, [string, string][]>>(filePath);
+        return unitChecklistCache;
+    } catch (error) {
+        logger.error(`[twlist/getUnitChecklist] Error reading unit checklist: ${error}`);
+        // Return empty structure if file can't be read
+        return {
+            "Galactic Legends": [],
+            "Light Side": [],
+            "Dark Side": [],
+            "Capital Ships": [],
+        };
+    }
+}
 
 export async function getGuildTWList({ guildId }: { guildId: string }): Promise<GuildConfigTWList> {
     if (!guildId) return defaultTWList;
@@ -24,6 +47,8 @@ export async function getGuildTWList({ guildId }: { guildId: string }): Promise<
 }
 
 export async function getFullTWList({ guildId }: { guildId: string }) {
+    const unitChecklist = await getUnitChecklist();
+
     if (!guildId) return unitChecklist;
     const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { twList: 1 });
     const twList: GuildConfigTWList = res?.twList || defaultTWList;

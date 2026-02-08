@@ -2,8 +2,8 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import unitChecklist from "../data/unitChecklist.ts";
 import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import { getUnitChecklist } from "../modules/guildConfig/twlist.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
@@ -65,6 +65,9 @@ export default class GrandArena extends Command {
         const problemArr = [];
 
         await interaction.reply({ content: "> Please wait while I look up the info." });
+
+        // Load unit checklist
+        const unitChecklist = await getUnitChecklist();
 
         // Get the first user's ally code if possible
         const user1Str = interaction.options.getString("allycode_1");
