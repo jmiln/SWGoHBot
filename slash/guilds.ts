@@ -772,7 +772,7 @@ export default class Guilds extends Command {
             let desc = guild.desc ? `**${language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
             desc += guild.message?.length ? `**${language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
 
-            const raidHeaderStr = language.get("COMMAND_GUILDS_RAID_STRINGS");
+            const raidHeaderStr = language.get("COMMAND_GUILDS_RAID_HEADER");
             const raidArr = [];
             let raids = "";
 
@@ -784,10 +784,20 @@ export default class Guilds extends Command {
                         .map((r) => r.length),
                 );
                 for (const r in guild.raid) {
-                    if (!localRaidNames[r]) logger.warn(`[slash/guilds] Missing raid name: ${r}`);
-                    const thisRaidName = expandSpaces(toProperCase(localRaidNames[r]?.padEnd(maxRaidLen + 1, " ") || r));
+                    let thisRaidName: string;
+                    if (localRaidNames[r]) {
+                        // Use the localized name from raidNames.json
+                        thisRaidName = expandSpaces(toProperCase(localRaidNames[r].padEnd(maxRaidLen + 1, " ")));
+                    } else {
+                        // Raid not in raidNames.json - format the raw ID nicely as fallback
+                        logger.warn(`[slash/guilds] Unknown raid ID: ${r} (not in raidNames.json)`);
+                        // Format: "speederbike_v2" -> "Speederbike V2" or "newraid" -> "Newraid"
+                        const formatted = r.split("_").map((part) => toProperCase(part)).join(" ");
+                        thisRaidName = expandSpaces(`${formatted}`.padEnd(maxRaidLen + 1, " "));
+                    }
+
                     const raidTier = guild.raid[r]?.diffId.includes("HEROIC")
-                        ? toProperCase(localRaidNames.heroic)
+                        ? toProperCase(localRaidNames.heroic || "Heroic")
                         : guild.raid[r]?.diffId.replace("DIFF0", "T");
                     raidArr.push(`${thisRaidName} | ${raidTier}`);
                 }

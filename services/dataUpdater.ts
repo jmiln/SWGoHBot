@@ -8,10 +8,9 @@ import { FixedQueue, Piscina } from "piscina";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
-import logger from "../modules/Logger.ts";
-
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
+import logger from "../modules/Logger.ts";
 
 const FORCE_UPDATE = process.argv.includes("--force") || false;
 const DEBUG_LOGS = process.argv.includes("--debug") || false;
@@ -33,8 +32,8 @@ import type {
     JourneyReqs,
     Location,
     OmicronCategories,
-    PatreonMember,
     PatreonAPIUser,
+    PatreonMember,
     UnitLocation,
     UnitSide,
     UserConfig,
@@ -1217,13 +1216,13 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         debugTimeEnd("Finished processing Omicrons");
 
         debugTime("Finished processing Categories");
-        const catMapOut = (await processCategories(gameData.category)) as { id: string; descKey: string }[];
+        const catMapOut = processCategories(gameData.category) as { id: string; descKey: string }[];
         // await saveFile(dataDir + "catMap.json", catMapOut, false);
         await processLocalization(catMapOut, "categories", ["descKey"], "id", locales, cache);
         debugTimeEnd("Finished processing Categories");
 
         debugTime("Finished processing Equipment");
-        const mappedEquipmentList = await processEquipment(gameData.equipment);
+        const mappedEquipmentList = processEquipment(gameData.equipment);
         await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales, cache);
         debugTimeEnd("Finished processing Equipment");
 
@@ -1275,7 +1274,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         await processJourneyReqs(gameData);
         debugTimeEnd("Finished processing Journey Reqs");
 
-        const raidNamesOut = saveRaidNames(locales);
+        const raidNamesOut = await saveRaidNames(locales);
         await saveFile(RAID_NAMES_FILE_PATH, raidNamesOut);
         debugLog("Finished processing Raid Names");
 
@@ -1347,21 +1346,72 @@ async function processLocalization(
     // console.log(`Finished localizing ${dbTarget}`);
 }
 
-function saveRaidNames(locales: Locales) {
+async function saveRaidNames(locales: Locales) {
     const langList = Object.keys(locales);
 
-    // The keys that match in the lang files, and the keys that the guild raids give
-    const raidKeys = {
+    // Auto-discover raid keys from localization data
+    // This allows the bot to automatically pick up new raids without manual updates
+    const raidKeys: Record<string, string> = {};
+    const discoveredRaids: string[] = [];
+
+    // Known legacy mappings for special cases that don't follow standard patterns
+    const legacyMappings: Record<string, string> = {
         RAID_AAT_NAME: "aat",
         RAID_RANCOR_NAME: "rancor",
         RAID_RANCOR_CHALLENGE_NAME: "rancor_challenge",
         RAID_TRIUMVIRATE_NAME: "sith_raid",
-        MISSION_GUILDRAIDS_KRAYTDRAGON_NAME: "kraytdragon",
         MISSION_GUILDRAIDSLEGACY_HEROIC_NAME: "heroic",
-        MISSION_GUILDRAIDS_SPEEDERBIKE_NAME: "speederbike",
-        MISSION_GUILDRAIDS_NABOO_NAME: "naboo",
-        MISSION_GUILDRAIDS_ORDER66_NAME: "order66",
     };
+
+    // Load existing raidNames to compare and detect new raids
+    let existingRaids: Set<string> = new Set();
+    try {
+        const existingRaidNames = await readJSON<Record<string, Record<string, string>>>(RAID_NAMES_FILE_PATH);
+        if (existingRaidNames?.eng_us) {
+            existingRaids = new Set(Object.keys(existingRaidNames.eng_us));
+        }
+    } catch {
+        // File doesn't exist yet or can't be read - all raids will be "new"
+    }
+
+    // Search through English localization keys to find raid-related patterns
+    const englishKeys = Object.keys(locales.eng_us || {});
+    for (const key of englishKeys) {
+        let raidId: string | null = null;
+
+        // Check if this is a legacy mapping first
+        if (legacyMappings[key]) {
+            raidId = legacyMappings[key];
+        }
+        // Pattern: MISSION_GUILDRAIDS_*_NAME (e.g., MISSION_GUILDRAIDS_KRAYTDRAGON_NAME)
+        // This is the primary pattern for current guild raids
+        else if (key.startsWith("MISSION_GUILDRAIDS") && key.endsWith("_NAME") && !key.includes("GIFT") && !key.includes("PACK")) {
+            const match = key.match(/^MISSION_GUILDRAIDS(?:LEGACY)?_([A-Z0-9]+)_NAME$/);
+            if (match?.[1]) {
+                // Exclude generic strings that aren't specific raid IDs
+                const extracted = match[1];
+                if (extracted !== "NAME" && extracted !== "HEROIC") {
+                    raidId = extracted.toLowerCase();
+                }
+            }
+        }
+
+        // If we found a raid ID, add it to the mapping
+        if (raidId) {
+            raidKeys[key] = raidId;
+            discoveredRaids.push(raidId);
+        }
+    }
+
+    // Determine which raids are new by comparing with existing file
+    const newRaids = discoveredRaids.filter((raid) => !existingRaids.has(raid));
+    if (newRaids.length > 0) {
+        logger.log(`[saveRaidNames] Discovered ${newRaids.length} new raid(s): ${newRaids.join(", ")}`);
+    }
+
+    logger.log(`[saveRaidNames] Found ${discoveredRaids.length} total raids: ${discoveredRaids.sort().join(", ")}`);
+
+    // Build the output structure with all languages
     const raidNamesOut = {};
     for (const lang of langList) {
         raidNamesOut[lang] = {};
@@ -1491,7 +1541,6 @@ function sortOmicrons(abilitiesOut: ComlinkAbility[], locales: Locales): Omicron
 
 function processCategories(catsIn: comlinkComponents["Category"][]) {
     const catMapOut = catsIn.filter((cat) => cat.visible || cat.id.startsWith("alignment")).map(({ id, descKey }) => ({ id, descKey }));
-
     return catMapOut;
 }
 
@@ -2080,7 +2129,10 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
 
         // Find new Capital Ships
         const newCapitalShips = ships.filter(
-            (ship) => ship.factions?.includes("Capital Ship") && ship.uniqueName.startsWith("CAPITAL") && !existingCapitalShips.has(ship.uniqueName),
+            (ship) =>
+                ship.factions?.includes("Capital Ship") &&
+                ship.uniqueName.startsWith("CAPITAL") &&
+                !existingCapitalShips.has(ship.uniqueName),
         );
 
         if (newCapitalShips.length > 0) {
@@ -2099,7 +2151,9 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
         // Save if changes were made
         if (hasChanges) {
             await saveFile(UNIT_CHECKLIST_FILE_PATH, checklist);
-            logger.log(`[${myTime()}] [updateUnitChecklist] Updated unit checklist with ${newGLs.length} new GL(s) and ${newCapitalShips.length} new Capital Ship(s)`);
+            logger.log(
+                `[${myTime()}] [updateUnitChecklist] Updated unit checklist with ${newGLs.length} new GL(s) and ${newCapitalShips.length} new Capital Ship(s)`,
+            );
         } else {
             debugLog("[updateUnitChecklist] No new Galactic Legends or Capital Ships detected");
         }
