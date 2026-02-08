@@ -5,6 +5,7 @@ import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
 import cache from "./modules/cache.ts";
+import commandStats from "./modules/commandStats.ts";
 import database from "./modules/database.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
 import eventSocket from "./modules/eventSocket.ts";
@@ -55,6 +56,9 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
         // Clean up SWAPI reload interval
         swgohAPI.cleanup();
+
+        // Flush any pending command stats
+        await commandStats.shutdown();
 
         // Disconnect socket.io connection
         eventSocket.disconnect();

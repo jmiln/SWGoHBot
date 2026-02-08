@@ -7,6 +7,7 @@ import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, factions, journeyNames, shipNameList } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import { getCommand, getCommandNames } from "../handlers/slashHandler.ts";
+import commandStats from "../modules/commandStats.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -280,9 +281,12 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
     };
 
     // Execute command
+    const startTime = Date.now();
+    let commandError: Error | undefined;
     try {
         await cmd.run(ctx);
     } catch (err) {
+        commandError = err instanceof Error ? err : new Error(String(err));
         logger.error(String(err));
         // Special handling for test command
         if (cmd.commandData.name === "test") {
@@ -305,6 +309,10 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
 
         // Send error reply to user
         await sendErrorReply(interaction, cmd.commandData.name);
+    } finally {
+        // Record command usage (success or failure)
+        const executionTime = Date.now() - startTime;
+        await commandStats.recordCommandUsage(interaction, executionTime, commandError);
     }
 }
 
