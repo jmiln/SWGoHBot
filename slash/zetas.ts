@@ -1,9 +1,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
-import cache from "../modules/cache.ts";
 import { chunkArray, findChar, getAllyCode, getBlankUnitImage, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -160,21 +158,16 @@ export default class Zetas extends Command {
             } else {
                 // Loop through and get all of the applicable ones
 
-                // Get all the localiazed character names for the player's units
+                // Get all the localized character names for the player's units
                 const unitDefIdList = player.roster.map((c) => c.defId);
-                const langCharNames = await cache.get(
-                    config.mongodb.swapidb,
-                    "units",
-                    { baseId: { $in: unitDefIdList }, language: swgohLanguage.toLowerCase() },
-                    { baseId: 1, nameKey: 1, _id: 0 },
-                );
+                const langCharNames = await swgohAPI.unitNames(unitDefIdList, swgohLanguage);
 
                 // Get all the zetas for each character
                 for (const char of player.roster) {
                     if (!char?.skills?.length) continue;
                     const zList = char.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier);
                     if (!zList.length) continue;
-                    const charName = langCharNames.find((c) => c.baseId === char.defId)?.nameKey;
+                    const charName = langCharNames[char.defId];
                     zetas[charName] = zList;
                     count += zList.length;
                 }

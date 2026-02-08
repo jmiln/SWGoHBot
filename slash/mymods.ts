@@ -7,7 +7,7 @@ import statEnums from "../data/statEnum.ts";
 import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { CommandContext, BotUnit } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
@@ -306,9 +306,8 @@ export default class MyMods extends Command {
 
             // Slice it down to a proper size, then grab the localized strings
             sortedCharList = sortedCharList.slice(0, 20);
-            for (const charIx in sortedCharList) {
-                sortedCharList[charIx] = (await swgohAPI.langChar(sortedCharList[charIx], swgohLanguage)) as SWAPIUnit;
-            }
+            const charDefIds = sortedCharList.map((c) => c.defId);
+            const charNames = await swgohAPI.unitNames(charDefIds, swgohLanguage);
 
             const out = sortedCharList.map((c) => {
                 let finalStat = "0";
@@ -324,7 +323,7 @@ export default class MyMods extends Command {
 
                 return {
                     stat: `${finalStat}${modStat?.toString().length ? ` (${modStat})` : ""}`,
-                    name: c.nameKey,
+                    name: charNames[c.defId] || c.defId,
                 };
             });
             const longest = out.reduce((max, s) => Math.max(max, s.stat.length), 0);
@@ -410,15 +409,20 @@ export default class MyMods extends Command {
         }
         if (subCommand === "missing") {
             // Check all g10+ characters that have missing or mods that are under lvl 15 (Max lvl)
+            const g10PlusChars = player.roster.filter((unit) => unit.combatType !== 2 && unit.gear >= 10);
+
+            // Batch fetch all character names
+            const charDefIds = g10PlusChars.map((c) => c.defId);
+            const charNames = await swgohAPI.unitNames(charDefIds, swgohLanguage);
+
             const outArr = [];
-            for (const character of player.roster.filter((unit) => unit.combatType !== 2)) {
-                if (character?.gear < 10) continue;
+            for (const character of g10PlusChars) {
                 const missingMods = 6 - (character.mods?.length || 0);
                 const lowerLvl = 6 - (character.mods?.filter((m) => !m || m.level >= 15).length || 0) - missingMods;
 
                 if (missingMods || lowerLvl) {
-                    const langChar = await swgohAPI.langChar(character, swgohLanguage);
-                    outArr.push(`\`[${missingMods}][${lowerLvl}]\` ${langChar.nameKey || langChar.defId}`);
+                    const charName = charNames[character.defId] || character.defId;
+                    outArr.push(`\`[${missingMods}][${lowerLvl}]\` ${charName}`);
                 }
             }
             if (!outArr.length) return super.success(interaction, "It looks like your characters all have well leveled mods!");

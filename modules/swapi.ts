@@ -863,6 +863,34 @@ class SWAPI {
         return uOut;
     }
 
+    /**
+     * Batch fetch unit names for multiple defIds
+     * @param defIds - Array of unit defIds (or single defId)
+     * @param lang - Language code (default: eng_us)
+     * @returns Map of defId to nameKey
+     */
+    async unitNames(defIds: string | string[], lang: SWAPILang = "eng_us"): Promise<Record<string, string>> {
+        const thisLang = lang?.toLowerCase() || "eng_us";
+        const defIdArray = Array.isArray(defIds) ? defIds : [defIds];
+
+        if (!defIdArray.length) return {};
+
+        const units = (await cache.get(
+            config.mongodb.swapidb,
+            "units",
+            { baseId: { $in: defIdArray }, language: thisLang },
+            { baseId: 1, nameKey: 1, _id: 0 },
+        )) as { baseId: string; nameKey: string }[];
+
+        // Convert array to map for easy lookup
+        const nameMap: Record<string, string> = {};
+        for (const unit of units) {
+            nameMap[unit.baseId] = unit.nameKey;
+        }
+
+        return nameMap;
+    }
+
     // Get gear recipes
     async recipes(recArray: number | number[], lang: SWAPILang): Promise<SWAPIRecipe[]> {
         const thisLang = lang?.toLowerCase() || "eng_us";

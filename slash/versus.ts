@@ -220,8 +220,9 @@ export default class Versus extends Command {
             });
         }
 
-        const langChar = await swgohAPI.langChar({ defId: char1 ? char1.defId : char2.defId }, swgohLanguage);
-        const charName = langChar.nameKey;
+        const defId = char1 ? char1.defId : char2.defId;
+        const nameMap = await swgohAPI.unitNames(defId, swgohLanguage);
+        const charName = nameMap[defId];
         const statTable = makeTable(
             {
                 stat: { value: "Stat", align: "right", endWith: "::" },
