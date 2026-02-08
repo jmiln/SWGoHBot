@@ -799,7 +799,10 @@ export default class Guilds extends Command {
                         // Raid not in raidNames.json - format the raw ID nicely as fallback
                         logger.warn(`[slash/guilds] Unknown raid ID: ${r} (not in raidNames.json)`);
                         // Format: "speederbike_v2" -> "Speederbike V2" or "newraid" -> "Newraid"
-                        const formatted = r.split("_").map((part) => toProperCase(part)).join(" ");
+                        const formatted = r
+                            .split("_")
+                            .map((part) => toProperCase(part))
+                            .join(" ");
                         thisRaidName = expandSpaces(`${formatted}`.padEnd(maxRaidLen + 1, " "));
                     }
 

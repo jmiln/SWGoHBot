@@ -1,7 +1,7 @@
 import config from "../../config.js";
+import type { GuildAlias } from "../../types/types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
-import type { GuildAlias } from "../../types/types.ts";
 
 export async function getGuildAliases({ guildId }: { guildId: string }): Promise<GuildAlias[]> {
     if (!guildId) return [];

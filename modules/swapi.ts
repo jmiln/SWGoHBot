@@ -376,7 +376,9 @@ class SWAPI {
                         for (const missing of missingRosters) {
                             const tempBare = await comlinkStub.getPlayer(missing?.allyCode?.toString()).catch((err: unknown) => {
                                 const message = err instanceof Error ? err.message : String(err);
-                                logger.error(`[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${message}`);
+                                logger.error(
+                                    `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${message}`,
+                                );
                                 return null;
                             });
                             if (tempBare) {
@@ -818,7 +820,12 @@ class SWAPI {
 
     // Function for updating all the stored character data from the game
     async character(defId: string): Promise<RawCharacter> {
-        const outChar = (await cache.getOne(config.mongodb.swapidb, "characters", { baseId: defId }, { _id: 0, updated: 0 })) as RawCharacter;
+        const outChar = (await cache.getOne(
+            config.mongodb.swapidb,
+            "characters",
+            { baseId: defId },
+            { _id: 0, updated: 0 },
+        )) as RawCharacter;
         return outChar;
     }
 
@@ -1010,7 +1017,9 @@ class SWAPI {
                 tempGuild = await this.fetchGuild(player.guildId);
             } catch (err) {
                 // Probably API timeout
-                logger.error(`[SWAPI-guild] Couldn't update guild for: ${player.name}: ${err instanceof Error ? err.message : String(err)}`);
+                logger.error(
+                    `[SWAPI-guild] Couldn't update guild for: ${player.name}: ${err instanceof Error ? err.message : String(err)}`,
+                );
                 throw err;
             }
             // logger.log(`Updated ${player.name} from ${tempGuild[0] ? tempGuild[0].name + ", updated: " + tempGuild[0].updated : "????"}`);
@@ -1021,7 +1030,9 @@ class SWAPI {
             }
 
             if (!tempGuild?.roster || !tempGuild.name) {
-                logger.error(`[SWAPI-guild] Fresh fetch returned empty roster or no name. roster: ${tempGuild?.roster?.length || 0}, name: ${tempGuild?.name || "none"}`);
+                logger.error(
+                    `[SWAPI-guild] Fresh fetch returned empty roster or no name. roster: ${tempGuild?.roster?.length || 0}, name: ${tempGuild?.name || "none"}`,
+                );
                 if (guild?.roster) {
                     logger.log(`[SWAPI-guild] Falling back to cached guild with ${guild.roster.length} members`);
                     return guild;
@@ -1036,8 +1047,8 @@ class SWAPI {
             await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
             return tempGuild;
         }
-            /** If found and valid, serve from cache */
-            return guild;
+        /** If found and valid, serve from cache */
+        return guild;
     }
 
     private async fetchGuild(guildId: string) {
@@ -1153,7 +1164,6 @@ class SWAPI {
             raidLaunchConfig,
         };
     }
-
 
     async zetaRec(lang = "ENG_US") {
         const zetas = await cache.getOne(config.mongodb.swapidb, "zetaRec", { lang: lang });

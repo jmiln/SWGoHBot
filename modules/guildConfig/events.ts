@@ -1,7 +1,7 @@
 import config from "../../config.js";
+import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
-import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
 
 export async function setEvents({ guildId, evArrOut }: { guildId: string; evArrOut: GuildConfigEvent[] }) {
     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");

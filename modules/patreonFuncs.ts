@@ -5,15 +5,7 @@ import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
 import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
-import type {
-    ActivePatron,
-    ArenaWatchAcct,
-    PatronUser,
-    PlayerArenaRes,
-    PlayerUpdates,
-    UserAcct,
-    UserConfig,
-} from "../types/types.ts";
+import type { ActivePatron, ArenaWatchAcct, PatronUser, PlayerArenaRes, PlayerUpdates, UserAcct, UserConfig } from "../types/types.ts";
 import cache from "./cache.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";

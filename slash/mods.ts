@@ -2,7 +2,7 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { findChar, getSideColor } from "../modules/functions.ts";
-import type { CommandContext, BotUnitMods } from "../types/types.ts";
+import type { BotUnitMods, CommandContext } from "../types/types.ts";
 
 export default class Mods extends Command {
     static readonly metadata = {

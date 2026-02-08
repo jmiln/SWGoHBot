@@ -1,12 +1,11 @@
 import type { Document } from "mongodb";
 import config from "../../config.js";
-import cache from "../cache.ts";
-import logger from "../Logger.ts";
-
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
 import type { GuildConfigPatreonSettings } from "../../types/guildConfig_types.ts";
 import type { UserConfig } from "../../types/types.ts";
+import cache from "../cache.ts";
+import logger from "../Logger.ts";
 
 // MongoDB document types for cache queries
 interface PatreonSettingsProjection {
@@ -24,13 +23,7 @@ export async function getPatreonSettings({ guildId }: { guildId: string }) {
     return res?.patreonSettings || {};
 }
 
-export async function setPatreonSettings({
-    guildId,
-    patreonSettingsOut,
-}: {
-    guildId: string;
-    patreonSettingsOut: unknown;
-}) {
+export async function setPatreonSettings({ guildId, patreonSettingsOut }: { guildId: string; patreonSettingsOut: unknown }) {
     // Filter out any settings that are the same as the defaults
     const res = await cache
         .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { patreonSettings: patreonSettingsOut }, false)
@@ -61,12 +54,10 @@ export async function addServerSupporter({
 
     if (resOut.guild.error || resOut.user.error) return resOut;
 
-    const res = await cache.getOne<PatreonSettingsProjection>(
-        config.mongodb.swgohbotdb,
-        "guildConfigs",
-        { guildId },
-        ({ patreonSettings: 1, _id: 0 }) as Document,
-    );
+    const res = await cache.getOne<PatreonSettingsProjection>(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, {
+        patreonSettings: 1,
+        _id: 0,
+    } as Document);
     const patSettings = res?.patreonSettings || { supporters: [] };
 
     // If this guild doesn't have the supporters array, create it
@@ -112,18 +103,12 @@ export async function addServerSupporter({
 }
 
 //  - Get the users from the given guilds' supporters list if available
-export async function getServerSupporters({
-    guildId,
-}: {
-    guildId: string;
-}): Promise<{ userId: string; tier: number }[]> {
+export async function getServerSupporters({ guildId }: { guildId: string }): Promise<{ userId: string; tier: number }[]> {
     if (!guildId) return [];
-    const res = await cache.getOne<PatreonSettingsProjection>(
-        config.mongodb.swgohbotdb,
-        "guildConfigs",
-        { guildId },
-        ({ patreonSettings: 1, _id: 0 }) as Document,
-    );
+    const res = await cache.getOne<PatreonSettingsProjection>(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, {
+        patreonSettings: 1,
+        _id: 0,
+    } as Document);
     return res?.patreonSettings?.supporters || [];
 }
 
@@ -138,12 +123,10 @@ export async function removeServerSupporter({
     if (!guildId) return { success: false, error: "Missing guild ID." };
     if (!userId) return { success: false, error: "Missing userId." };
 
-    const guildPatSettings = await cache.getOne<PatreonSettingsProjection>(
-        config.mongodb.swgohbotdb,
-        "guildConfigs",
-        { guildId },
-        ({ patreonSettings: 1, _id: 0 }) as Document,
-    );
+    const guildPatSettings = await cache.getOne<PatreonSettingsProjection>(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, {
+        patreonSettings: 1,
+        _id: 0,
+    } as Document);
     const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 0;
 
     // If the user isn't in the supporters arr, say so
@@ -202,7 +185,7 @@ export async function ensureGuildSupporter() {
         config.mongodb.swgohbotdb,
         "guildConfigs",
         { "patreonSettings.supporters": { $exists: true, $ne: [] } },
-        ({ supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 }) as Document,
+        { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 } as Document,
     );
 
     // Go through each of those, and check that each person listed in each of those has the given server selected, and if not, remove them from that guilds' list
@@ -277,12 +260,10 @@ export async function getGuildSupporterTier({ guildId }: { guildId: string }) {
     if (!guildId) return 0;
 
     // Get the guild's patreon settings
-    const res = await cache.getOne<PatreonSettingsProjection>(
-        config.mongodb.swgohbotdb,
-        "guildConfigs",
-        { guildId },
-        ({ patreonSettings: 1, _id: 0 }) as Document,
-    );
+    const res = await cache.getOne<PatreonSettingsProjection>(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, {
+        patreonSettings: 1,
+        _id: 0,
+    } as Document);
 
     // Add up tiers from here, and return a higher tier if they add up to one
     const totalRes = res?.patreonSettings?.supporters?.reduce((curr, acc) => {

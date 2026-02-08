@@ -3,7 +3,6 @@ import type { Socket } from "socket.io";
 import { Server } from "socket.io";
 import config from "../config.js";
 import cache from "../modules/cache.ts";
-import logger from "../modules/Logger.ts";
 import {
     addGuildEvent,
     deleteGuildEvent,
@@ -13,6 +12,7 @@ import {
     guildEventExists,
 } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
+import logger from "../modules/Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
 const io = new Server(config.eventServe.port);

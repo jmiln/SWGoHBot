@@ -1,10 +1,4 @@
-import type {
-    AutocompleteInteraction,
-    BaseInteraction,
-    ChatInputCommandInteraction,
-    IntentsBitField,
-    Partials,
-} from "discord.js";
+import type { AutocompleteInteraction, BaseInteraction, ChatInputCommandInteraction, IntentsBitField, Partials } from "discord.js";
 import type Language from "../base/Language.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 

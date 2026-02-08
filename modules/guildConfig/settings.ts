@@ -12,13 +12,7 @@ export async function getGuildSettings({ guildId }: { guildId: string }) {
 }
 
 // Set any guildSettings that do not match the defaultSettings in the bot's config
-export async function setGuildSettings({
-    guildId,
-    settings,
-}: {
-    guildId: string;
-    settings: typeof defaultSettings;
-}) {
+export async function setGuildSettings({ guildId, settings }: { guildId: string; settings: typeof defaultSettings }) {
     // Filter out any settings that are the same as the defaults
     const diffObj = {};
 

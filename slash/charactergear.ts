@@ -8,7 +8,7 @@ import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFoo
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
-import type { CommandContext, BotUnit } from "../types/types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class Charactergear extends Command {
     static readonly metadata = {

@@ -1,6 +1,6 @@
 import config from "../../config.js";
-import cache from "../cache.ts";
 import type { GuildConfigPoll } from "../../types/guildConfig_types.ts";
+import cache from "../cache.ts";
 
 export async function getGuildPolls({ guildId }: { guildId: string }): Promise<GuildConfigPoll[]> {
     if (!guildId) return [];

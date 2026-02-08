@@ -1,6 +1,6 @@
-import { Collection } from "discord.js";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
+import { Collection } from "discord.js";
 import type slashCommand from "../base/slashCommand.ts";
 import logger from "../modules/Logger.ts";
 

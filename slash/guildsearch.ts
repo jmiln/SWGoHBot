@@ -7,7 +7,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
-import type { CommandContext, BotUnit } from "../types/types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class GuildSearch extends Command {
     static readonly metadata = {

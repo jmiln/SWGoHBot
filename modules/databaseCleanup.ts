@@ -66,11 +66,7 @@ class DatabaseCleanup {
         try {
             logger.log(`[${myTime()}] Starting database cleanup...`);
 
-            const results = await Promise.allSettled([
-                this.cleanOldPlayerStats(),
-                this.cleanOldGuilds(),
-                this.cleanEmptyRosters(),
-            ]);
+            const results = await Promise.allSettled([this.cleanOldPlayerStats(), this.cleanOldGuilds(), this.cleanEmptyRosters()]);
 
             // Log results
             let successCount = 0;

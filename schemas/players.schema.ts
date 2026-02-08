@@ -12,16 +12,22 @@ export const RawPlayerSchema = z.object({
     guildId: z.string().optional(),
     roster: z.array(z.any()), // Full roster schema would be very large
     updated: z.number(),
-    arena: z.object({
-        char: z.object({
-            rank: z.number(),
-            squad: z.array(z.any()),
-        }).optional(),
-        ship: z.object({
-            rank: z.number(),
-            squad: z.array(z.any()),
-        }).optional(),
-    }).optional(),
+    arena: z
+        .object({
+            char: z
+                .object({
+                    rank: z.number(),
+                    squad: z.array(z.any()),
+                })
+                .optional(),
+            ship: z
+                .object({
+                    rank: z.number(),
+                    squad: z.array(z.any()),
+                })
+                .optional(),
+        })
+        .optional(),
     stats: z.array(z.any()).optional(),
     grandArena: z.any().optional(),
     warnings: z.array(z.string()).optional(),

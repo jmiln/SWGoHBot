@@ -7,9 +7,9 @@
 
 import type { ChatInputCommandInteraction } from "discord.js";
 import config from "../config.js";
+import type { CommandStats } from "../schemas/index.ts";
 import database from "./database.ts";
 import logger from "./Logger.ts";
-import type { CommandStats } from "../schemas/index.ts";
 
 // Collection name
 const COLLECTION_NAME = "commandStats";
@@ -27,11 +27,7 @@ let flushTimeout: NodeJS.Timeout | null = null;
  * Records a command execution
  * Batches writes for performance
  */
-export async function recordCommandUsage(
-    interaction: ChatInputCommandInteraction,
-    executionTime?: number,
-    error?: Error,
-): Promise<void> {
+export async function recordCommandUsage(interaction: ChatInputCommandInteraction, executionTime?: number, error?: Error): Promise<void> {
     if (!ENABLE_TRACKING) return;
 
     try {
@@ -146,9 +142,7 @@ export async function getCommandStats(startTime: number, endTime: number): Promi
         // Build command path map
         const statsMap = new Map<string, number>();
         for (const result of results) {
-            const commandPath = result._id.subcommand
-                ? `${result._id.commandName}.${result._id.subcommand}`
-                : result._id.commandName;
+            const commandPath = result._id.subcommand ? `${result._id.commandName}.${result._id.subcommand}` : result._id.commandName;
             statsMap.set(commandPath, result.count);
         }
 

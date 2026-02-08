@@ -6,7 +6,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { CommandContext, BotUnit } from "../types/types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class Randomchar extends Command {
     static readonly metadata = {

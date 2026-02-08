@@ -8,7 +8,7 @@ import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } f
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { CommandContext, BotUnit } from "../types/types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
 

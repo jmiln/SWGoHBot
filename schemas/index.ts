@@ -21,20 +21,18 @@
 
 import type { z } from "zod";
 
-// Export all schemas
-export * from "./users.schema.ts";
+export * from "./commandStats.schema.ts";
 export * from "./guildConfigs.schema.ts";
+export * from "./guilds.schema.ts";
 export * from "./patrons.schema.ts";
 export * from "./players.schema.ts";
-export * from "./guilds.schema.ts";
-export * from "./commandStats.schema.ts";
+// Export all schemas
+export * from "./users.schema.ts";
 
 /**
  * Validation result type
  */
-export type ValidationResult<T> =
-    | { success: true; data: T }
-    | { success: false; error: z.ZodError };
+export type ValidationResult<T> = { success: true; data: T } | { success: false; error: z.ZodError };
 
 /**
  * Safely validate a document against a schema
