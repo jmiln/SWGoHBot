@@ -1,45 +1,31 @@
-import type { Client, Guild, GuildMember, InteractionReplyOptions, User } from "discord.js";
-import type {BotInteraction} from "../../types/types.ts";
+import type { ChatInputCommandInteraction, Client, Guild, GuildMember, InteractionReplyOptions, User } from "discord.js";
+import Language from "../../base/Language.ts";
+import type { SWAPILang } from "../../types/swapi_types.ts";
+import type { CommandContext } from "../../types/types.ts";
 
 interface MockInteractionOptions {
     optionsData?: Record<string, any>;
+    guild?: Guild | null;
+    user?: User;
+    member?: GuildMember;
+    client?: Client<true>;
 }
 
 /**
- * Creates a comprehensive mock Discord interaction for testing slash commands.
+ * Creates a mock Discord ChatInputCommandInteraction for testing.
+ * This is a plain Discord interaction with no bot-specific extensions.
  *
- * Includes realistic Discord properties (user, guild, member, client) and tracks
- * interaction state (deferred, replied). Options can be configured via optionsData.
- *
- * @param overrides - Partial BotInteraction properties and optionsData for command options
- * @returns Fully typed BotInteraction mock with state tracking
+ * @param overrides - Partial interaction properties and optionsData for command options
+ * @returns Mock ChatInputCommandInteraction with state tracking
  *
  * @example
- * // Basic usage
- * const interaction = createMockInteraction();
- *
- * @example
- * // With command options
  * const interaction = createMockInteraction({
- *   optionsData: {
- *     character: "vader",
- *     limit: 10,
- *     verbose: true
- *   }
+ *   optionsData: { character: "vader", limit: 10 }
  * });
- *
- * @example
- * // Override user and test state tracking
- * const interaction = createMockInteraction({
- *   user: { id: "999", username: "CustomUser" } as any,
- *   optionsData: { search: "test" }
- * });
- * await interaction.reply("Test");
- * const replies = (interaction as any)._getReplies(); // Access test helper
  */
 export function createMockInteraction(
-    overrides: Partial<BotInteraction> & MockInteractionOptions = {}
-): BotInteraction {
+    overrides: MockInteractionOptions & Record<string, any> = {}
+): ChatInputCommandInteraction {
     // State tracking
     let _deferred = false;
     let _replied = false;
@@ -47,26 +33,26 @@ export function createMockInteraction(
 
     // Options data storage
     const optionsData = new Map<string, any>(
-        Object.entries((overrides as any).optionsData || {})
+        Object.entries(overrides.optionsData || {})
     );
 
-    const interaction: BotInteraction = {
-        user: {
+    const interaction: any = {
+        user: overrides.user || {
             id: "123456789",
             username: "TestUser",
             discriminator: "0000",
             bot: false,
             avatar: null,
         } as unknown as User,
-        guild: {
+        guild: overrides.guild !== undefined ? overrides.guild : {
             id: "987654321",
             name: "Test Guild",
         } as unknown as Guild,
-        member: {
+        member: overrides.member || {
             id: "123456789",
             roles: { cache: new Map() },
         } as unknown as GuildMember,
-        client: {
+        client: overrides.client || {
             user: { id: "bot123", username: "BotUser" },
             shard: null,
             guilds: {
@@ -75,10 +61,10 @@ export function createMockInteraction(
             users: {
                 cache: { size: 50000 }
             },
-        } as unknown as Client,
-        channelId: "123",
-        commandName: "test",
-        createdTimestamp: Date.now(),
+        } as unknown as Client<true>,
+        channelId: overrides.channelId || "123",
+        commandName: overrides.commandName || "test",
+        createdTimestamp: overrides.createdTimestamp || Date.now(),
         get deferred() {
             return _deferred;
         },
@@ -142,16 +128,18 @@ export function createMockInteraction(
                 }
                 return val !== undefined ? val : null;
             },
-            _data: optionsData,
-        },
+            data: optionsData,
+        } as any,
         deferReply: async (options?: any) => {
             _deferred = true;
+            return {} as any;
         },
         reply: async (data: InteractionReplyOptions | string) => {
             _replied = true;
             _replies.push(data);
+            return {} as any;
         },
-        editReply: async (data: InteractionReplyOptions | string) => {
+        editReply: async (data: any) => {
             if (!_replied && !_deferred) {
                 throw new Error("Cannot edit reply before replying or deferring");
             }
@@ -160,79 +148,164 @@ export function createMockInteraction(
             } else {
                 _replies.push(data);
             }
-            return data;
+            return {} as any;
         },
         followUp: async (data: InteractionReplyOptions | string) => {
             if (!_replied) {
                 throw new Error("Cannot follow up before replying");
             }
             _replies.push(data);
+            return {} as any;
         },
         deleteReply: async () => {
             _replies.pop();
         },
-        update: async (data: InteractionReplyOptions | string) => {
-            _replied = true;
-            _replies.push(data);
-        },
         _getReplies: () => _replies,
-        language: {
-            get: (key: string, ...args: any[]) => {
-                // Check for object returns first
-                if (key === "COMMAND_INFO_OUTPUT") {
-                    return {
-                        statHeader: "Stats",
-                        users: "Users",
-                        servers: "Servers",
-                        nodeVer: "Node Version",
-                        discordVer: "Discord.js Version",
-                        swgohHeader: "SWGoH Data",
-                        players: "Players",
-                        guilds: "Guilds",
-                        lang: "Languages",
-                        links: {
-                            "Support Server": "https://discord.gg/example",
-                            "Invite Link": "https://discord.com/api/oauth2/authorize?client_id=example",
-                        },
-                        shardHeader: "Bot Info (Shard {{0}})",
-                        header: "Bot Info",
-                    };
-                }
+    };
 
-                // Template replacement - numeric {{0}}, {{1}}
-                let result = key;
-                for (let i = 0; i < args.length; i++) {
-                    result = result.replace(new RegExp(`\\{\\{${i}\\}\\}`, "g"), String(args[i]));
-                }
+    // Apply any additional overrides (excluding the special optionsData)
+    const { optionsData: _, ...restOverrides } = overrides;
+    Object.assign(interaction, restOverrides);
 
-                // Named placeholders {{user}}, {{count}} if args[0] is object
-                if (args[0] && typeof args[0] === "object" && !Array.isArray(args[0])) {
-                    for (const [k, v] of Object.entries(args[0])) {
-                        result = result.replace(new RegExp(`\\{\\{${k}\\}\\}`, "g"), String(v));
-                    }
-                }
+    return interaction as ChatInputCommandInteraction;
+}
 
-                return result;
-            },
-            getDay: (day: string, format: string) => {
-                const days: Record<string, string> = {
-                    sun: "Sunday",
-                    mon: "Monday",
-                    tue: "Tuesday",
-                    wed: "Wednesday",
-                    thu: "Thursday",
-                    fri: "Friday",
-                    sat: "Saturday",
-                };
-                return format === "short" ? day.slice(0, 3).toUpperCase() : days[day.toLowerCase()] || day;
-            },
-        },
-        guildSettings: {
-            aliases: [],
-            swgohLanguage: "eng_us",
-        },
+/**
+ * Mock Language object for testing.
+ * Provides get() and getDay() methods that match the Language class interface.
+ */
+/**
+ * Mock Language class for testing.
+ * Extends the real Language class to ensure instanceof checks work.
+ */
+class MockLanguage extends Language {
+    constructor() {
+        super();
+        // Initialize required properties
+        this.language = {};
+        this.DAYSOFWEEK = {};
+        this.TIMES = {};
+    }
 
+    override get(key: string, ...args: any[]): any {
+        // Check for object returns first
+        if (key === "COMMAND_INFO_OUTPUT") {
+            return {
+                statHeader: "Stats",
+                users: "Users",
+                servers: "Servers",
+                nodeVer: "Node Version",
+                discordVer: "Discord.js Version",
+                swgohHeader: "SWGoH Data",
+                players: "Players",
+                guilds: "Guilds",
+                lang: "Languages",
+                links: {
+                    "Support Server": "https://discord.gg/example",
+                    "Invite Link": "https://discord.com/api/oauth2/authorize?client_id=example",
+                },
+                shardHeader: "Bot Info (Shard {{0}})",
+                header: "Bot Info",
+            };
+        }
+
+        // Handle guild-specific keys with parameters
+        if (key === "COMMAND_GUILDS_STAT_STRINGS" && args.length >= 5) {
+            // Args: memberCount, required, totalGP, charGP, shipGP
+            return `Members: ${args[0]}${args[1] ? `/${args[1]}` : ""}\nGP: ${args[2]}\nChar GP: ${args[3]}\nShip GP: ${args[4]}`;
+        }
+
+        if (key === "COMMAND_GUILDS_USERS_IN_GUILD" && args.length >= 2) {
+            // Args: userCount, guildName
+            return `${args[0]} Users in ${args[1]}`;
+        }
+
+        if (key === "COMMAND_GUILDSEARCH_MODS_HEADER" && args.length >= 1) {
+            // Args: guildName
+            return `${args[0]} Mods`;
+        }
+
+        // Template replacement - numeric {{0}}, {{1}}
+        let result = key;
+        for (let i = 0; i < args.length; i++) {
+            result = result.replace(new RegExp(`\\{\\{${i}\\}\\}`, "g"), String(args[i]));
+        }
+
+        // Named placeholders {{user}}, {{count}} if args[0] is object
+        if (args[0] && typeof args[0] === "object" && !Array.isArray(args[0])) {
+            for (const [k, v] of Object.entries(args[0])) {
+                result = result.replace(new RegExp(`\\{\\{${k}\\}\\}`, "g"), String(v));
+            }
+        }
+
+        return result;
+    }
+
+    getDay(day: string, format: string): string {
+        const days: Record<string, string> = {
+            sun: "Sunday",
+            mon: "Monday",
+            tue: "Tuesday",
+            wed: "Wednesday",
+            thu: "Thursday",
+            fri: "Friday",
+            sat: "Saturday",
+        };
+        return format === "short" ? day.slice(0, 3).toUpperCase() : days[day.toLowerCase()] || day;
+    }
+}
+
+export function createMockLanguage(): Language {
+    return new MockLanguage();
+}
+
+/**
+ * Mock guild settings for testing.
+ * Returns default guild settings with optional overrides.
+ */
+export function createMockGuildSettings(overrides: Record<string, any> = {}) {
+    return {
+        swgohLanguage: "eng_us",
+        language: "eng_us",
+        timezone: "America/Los_Angeles",
+        announceChan: "",
+        useEmbeds: true,
         ...overrides,
     };
-    return interaction as BotInteraction;
+}
+
+/**
+ * Creates a CommandContext for testing.
+ * This is the object that gets passed to command.run() methods.
+ *
+ * @param options - Context options
+ * @returns CommandContext ready to pass to command.run()
+ *
+ * @example
+ * const interaction = createMockInteraction({ optionsData: { character: "vader" } });
+ * const ctx = createCommandContext({ interaction });
+ * await command.run(ctx);
+ *
+ * @example
+ * // With custom language and settings
+ * const ctx = createCommandContext({
+ *   interaction,
+ *   swgohLanguage: "eng_us",
+ *   guildSettings: { timezone: "Europe/London" }
+ * });
+ */
+export function createCommandContext(options: {
+    interaction: ChatInputCommandInteraction;
+    language?: any;
+    swgohLanguage?: SWAPILang;
+    guildSettings?: any;
+    permLevel?: number;
+}): CommandContext {
+    return {
+        interaction: options.interaction,
+        language: options.language || createMockLanguage(),
+        swgohLanguage: options.swgohLanguage || ("eng_us" as SWAPILang),
+        guildSettings: options.guildSettings || createMockGuildSettings(),
+        permLevel: options.permLevel || 0,
+    };
 }

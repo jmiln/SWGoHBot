@@ -1,17 +1,16 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Character from "../../slash/character.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 
 describe("Character", () => {
-    it("should respond to character requests with proper embed structure", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should respond to character requests with proper embed structure", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" } // Use uniqueName for reliable match
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.strictEqual(replies.length, 1, "Expected exactly one reply");
@@ -32,14 +31,13 @@ describe("Character", () => {
         assert.ok(embedData.color !== undefined, "Expected embed color");
     });
 
-    it("should include character URL in embed if available", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should include character URL in embed if available", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" }
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];
@@ -51,14 +49,13 @@ describe("Character", () => {
         }
     });
 
-    it("should set embed color based on character side", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should set embed color based on character side", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" }
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];
@@ -69,14 +66,13 @@ describe("Character", () => {
         assert.ok(typeof embedData.color === "number", "Expected embed color to be a number");
     });
 
-    it("should format factions as proper case", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should format factions as proper case", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" }
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];
@@ -89,14 +85,13 @@ describe("Character", () => {
         }
     });
 
-    it("should highlight zeta abilities with bold formatting", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should highlight zeta abilities with bold formatting", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" }
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];
@@ -110,14 +105,13 @@ describe("Character", () => {
         }
     });
 
-    it("should process character data from API", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should process character data from API", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" }
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -136,14 +130,13 @@ describe("Character", () => {
         }
     });
 
-    it("should return error for non-existent character", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should return error for non-existent character", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "NonexistentCharacterXYZ999" }
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -155,14 +148,13 @@ describe("Character", () => {
         assert.ok(reply.flags, "Expected flags in error reply");
     });
 
-    it("should handle ambiguous searches with multiple matches", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should handle ambiguous searches with multiple matches", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "Luke" } // Matches multiple Luke characters
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -172,15 +164,14 @@ describe("Character", () => {
         assert.ok(reply.embeds && reply.embeds.length > 0, "Expected embed in reply");
     });
 
-    it("should work in DMs (guild context not required)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should work in DMs (guild context not required)", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" },
             guild: null as any
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply even without guild context");
@@ -189,14 +180,13 @@ describe("Character", () => {
         assert.ok(reply.embeds && reply.embeds.length > 0, "Expected embed in reply");
     });
 
-    it("should handle character search by alias", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should handle character search by alias", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "CLS" } // Alias for Commander Luke
         });
 
-        const command = new Character(bot);
-        await command.run(bot, interaction);
+        const command = new Character();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply for alias search");

@@ -1,40 +1,31 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import MyCharacter from "../../slash/mycharacter.ts";
-import { createMockBot } from "../mocks/index.ts";
 
 describe("MyCharacter", () => {
     // Note: Full mycharacter tests require MongoDB, user registration, and swgohAPI.
     // We test command configuration only.
 
-    it("should have character subcommand", () => {
-        const bot = createMockBot();
-        const command = new MyCharacter(bot);
+    it("should have character subcommand", () => {        const command = new MyCharacter();
 
         const characterSubcmd = command.commandData.options.find(o => o.name === "character");
         assert.ok(characterSubcmd, "Expected character subcommand");
         assert.strictEqual(characterSubcmd.type, 1, "Expected Subcommand type (1)");
     });
 
-    it("should have ship subcommand", () => {
-        const bot = createMockBot();
-        const command = new MyCharacter(bot);
+    it("should have ship subcommand", () => {        const command = new MyCharacter();
 
         const shipSubcmd = command.commandData.options.find(o => o.name === "ship");
         assert.ok(shipSubcmd, "Expected ship subcommand");
         assert.strictEqual(shipSubcmd.type, 1, "Expected Subcommand type (1)");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const bot = createMockBot();
-        const command = new MyCharacter(bot);
+    it("should work without guild context (guildOnly: false)", () => {        const command = new MyCharacter();
 
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new MyCharacter(bot);
+    it("should have correct command configuration", () => {        const command = new MyCharacter();
 
         assert.strictEqual(command.commandData.name, "mycharacter", "Expected command name to be 'mycharacter'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");

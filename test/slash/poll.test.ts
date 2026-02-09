@@ -1,15 +1,13 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Poll from "../../slash/poll.ts";
-import { createMockBot } from "../mocks/index.ts";
 
 describe("Poll", () => {
     // Note: Full poll tests require MongoDB and guild configuration.
     // We test command configuration and subcommands only.
 
     it("should have create subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const createSubcmd = command.commandData.options.find(o => o.name === "create");
         assert.ok(createSubcmd, "Expected create subcommand");
@@ -17,8 +15,7 @@ describe("Poll", () => {
     });
 
     it("should have end subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const endSubcmd = command.commandData.options.find(o => o.name === "end");
         assert.ok(endSubcmd, "Expected end subcommand");
@@ -26,8 +23,7 @@ describe("Poll", () => {
     });
 
     it("should have cancel subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const cancelSubcmd = command.commandData.options.find(o => o.name === "cancel");
         assert.ok(cancelSubcmd, "Expected cancel subcommand");
@@ -35,8 +31,7 @@ describe("Poll", () => {
     });
 
     it("should have view subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const viewSubcmd = command.commandData.options.find(o => o.name === "view");
         assert.ok(viewSubcmd, "Expected view subcommand");
@@ -44,8 +39,7 @@ describe("Poll", () => {
     });
 
     it("should have vote subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const voteSubcmd = command.commandData.options.find(o => o.name === "vote");
         assert.ok(voteSubcmd, "Expected vote subcommand");
@@ -53,15 +47,13 @@ describe("Poll", () => {
     });
 
     it("should work without guild context (guildOnly: false)", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
     it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         assert.strictEqual(command.commandData.name, "poll", "Expected command name to be 'poll'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
@@ -70,8 +62,7 @@ describe("Poll", () => {
     });
 
     it("should have required fields in create subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const createSubcmd = command.commandData.options.find(o => o.name === "create");
         assert.ok(createSubcmd.options, "Expected create subcommand to have options");
@@ -87,8 +78,7 @@ describe("Poll", () => {
     });
 
     it("should have integer option with min/max in vote subcommand", () => {
-        const bot = createMockBot();
-        const command = new Poll(bot);
+        const command = new Poll();
 
         const voteSubcmd = command.commandData.options.find(o => o.name === "vote");
         const optionOpt = voteSubcmd.options.find(o => o.name === "option");

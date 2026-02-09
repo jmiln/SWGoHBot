@@ -1,16 +1,15 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Activities from "../../slash/activities.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
 
 describe("Activities", () => {
-    it("should display activities for current day when no day specified", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should display activities for current day when no day specified", async () => {        const interaction = createMockInteraction();
 
-        const command = new Activities(bot);
-        await command.run(bot, interaction);
+        const command = new Activities();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -25,14 +24,13 @@ describe("Activities", () => {
         );
     });
 
-    it("should display activities for specified day", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should display activities for specified day", async () => {        const interaction = createMockInteraction({
             optionsData: { day: "day_Monday" }
         });
 
-        const command = new Activities(bot);
-        await command.run(bot, interaction);
+        const command = new Activities();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -46,8 +44,6 @@ describe("Activities", () => {
     });
 
     it("should display activities for different days", async () => {
-        const bot = createMockBot();
-
         const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
         for (const day of days) {
@@ -55,8 +51,9 @@ describe("Activities", () => {
                 optionsData: { day: `day_${day}` }
             });
 
-            const command = new Activities(bot);
-            await command.run(bot, interaction);
+            const command = new Activities();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
 
             const replies = (interaction as any)._getReplies();
             const reply = replies[0];
@@ -68,35 +65,32 @@ describe("Activities", () => {
         }
     });
 
-    it("should send exactly one reply", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should send exactly one reply", async () => {        const interaction = createMockInteraction();
 
-        const command = new Activities(bot);
-        await command.run(bot, interaction);
+        const command = new Activities();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertReplyCount(interaction, 1);
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
             guild: null as any
         });
 
-        const command = new Activities(bot);
-        await command.run(bot, interaction);
+        const command = new Activities();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply even without guild context");
     });
 
-    it("should format response as code block", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should format response as code block", async () => {        const interaction = createMockInteraction();
 
-        const command = new Activities(bot);
-        await command.run(bot, interaction);
+        const command = new Activities();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const reply = replies[0];

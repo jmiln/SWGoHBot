@@ -1,16 +1,14 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Help from "../../slash/help.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
 
 describe("Help", () => {
-    it("should display all commands when no options provided", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should display all commands when no options provided", async () => {        const interaction = createMockInteraction();
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -25,14 +23,12 @@ describe("Help", () => {
         assert.ok(embed.fields.length > 0, "Expected at least one category");
     });
 
-    it("should filter commands by category", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should filter commands by category", async () => {        const interaction = createMockInteraction({
             optionsData: { category: "General" }
         });
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -46,14 +42,12 @@ describe("Help", () => {
         assert.ok(categoryField || embed.fields.length > 0, "Expected General category or filtered fields");
     });
 
-    it("should show specific command details", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should show specific command details", async () => {        const interaction = createMockInteraction({
             optionsData: { command: "info" }
         });
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -65,26 +59,22 @@ describe("Help", () => {
         assert.ok(embed.description?.includes("/info"), "Expected command in description");
     });
 
-    it("should return error for invalid command", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should return error for invalid command", async () => {        const interaction = createMockInteraction({
             optionsData: { command: "nonexistentcommand" }
         });
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         assertErrorReply(interaction, "couldn't find a match");
     });
 
-    it("should show detailed usage when details flag is true", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should show detailed usage when details flag is true", async () => {        const interaction = createMockInteraction({
             optionsData: { details: true }
         });
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply");
@@ -94,25 +84,21 @@ describe("Help", () => {
         assert.ok(reply.embeds, "Expected embed");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
             guild: null as any
         });
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply even without guild context");
     });
 
-    it("should have random color in embed", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should have random color in embed", async () => {        const interaction = createMockInteraction();
 
-        const command = new Help(bot);
-        await command.run(bot, interaction);
+        const command = new Help();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];

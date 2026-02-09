@@ -1,18 +1,17 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Arenarank from "../../slash/arenarank.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
 
 describe("Arenarank", () => {
-    it("should calculate arena rank progression for valid rank", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should calculate arena rank progression for valid rank", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 100 }
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -25,14 +24,13 @@ describe("Arenarank", () => {
         );
     });
 
-    it("should handle rank 1 specially", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should handle rank 1 specially", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 1 }
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -45,26 +43,24 @@ describe("Arenarank", () => {
         );
     });
 
-    it("should return error for invalid rank (NaN)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should return error for invalid rank (NaN)", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: null }
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertErrorReply(interaction, "COMMAND_ARENARANK_INVALID_NUMBER");
     });
 
-    it("should use custom hop count when provided", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should use custom hop count when provided", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 200, hops: 10 }
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -74,48 +70,43 @@ describe("Arenarank", () => {
         assert.ok(reply.content, "Expected content");
     });
 
-    it("should default to 5 hops when not specified", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should default to 5 hops when not specified", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 500 }
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 100 },
             guild: null as any
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply even without guild context");
     });
 
-    it("should send exactly one reply", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should send exactly one reply", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 250 }
         });
 
-        const command = new Arenarank(bot);
-        await command.run(bot, interaction);
+        const command = new Arenarank();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertReplyCount(interaction, 1);
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new Arenarank(bot);
+    it("should have correct command configuration", () => {        const command = new Arenarank();
 
         assert.strictEqual(command.commandData.name, "arenarank", "Expected command name to be 'arenarank'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");

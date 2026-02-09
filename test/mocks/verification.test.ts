@@ -1,45 +1,8 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { createMockBot, createMockInteraction } from "./index.ts";
+import { createMockInteraction } from "./index.ts";
 
 describe("Mock Verification", () => {
-    it("createMockBot returns comprehensive Bot object", async () => {
-        const bot = createMockBot();
-
-        // Verify core properties exist
-        assert.strictEqual(bot.shardId, 0);
-        assert.strictEqual(typeof bot.guildCount, "function");
-        assert.strictEqual(typeof bot.userCount, "function");
-        assert.ok(bot.journeyNames);
-        assert.ok(bot.omicrons);
-        assert.ok(bot.factions);
-
-        // Verify cache is stateful
-        await bot.cache.put("testdb", "users", { id: "123" }, { name: "Test", score: 100 });
-        const user = await bot.cache.getOne("testdb", "users", { id: "123" });
-        assert.strictEqual(user.name, "Test");
-        assert.strictEqual(user.score, 100);
-
-        // Verify counts
-        const guildCount = await bot.guildCount();
-        assert.strictEqual(guildCount, 150);
-
-        const userCount = await bot.userCount();
-        assert.strictEqual(userCount, 1000);
-    });
-
-    it("createMockBot supports deep merge overrides", () => {
-        const bot = createMockBot({
-            shardId: 5,
-            config: {
-                mongodb: { swgohbotdb: "customdb" }
-            }
-        });
-
-        assert.strictEqual(bot.shardId, 5);
-        assert.strictEqual(bot.config.mongodb.swgohbotdb, "customdb");
-    });
-
     it("createMockInteraction returns comprehensive Interaction object", async () => {
         const interaction = createMockInteraction({
             optionsData: {

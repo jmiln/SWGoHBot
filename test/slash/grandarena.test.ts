@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { beforeEach, describe, it, mock } from "node:test";
 import GrandArena from "../../slash/grandarena.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createMockInteraction } from "../mocks/index.ts";
 
 describe("GrandArena Functionality", () => {
     beforeEach(() => {
@@ -9,9 +9,7 @@ describe("GrandArena Functionality", () => {
         mock.restoreAll();
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new GrandArena(bot);
+    it("should have correct command configuration", () => {        const command = new GrandArena();
 
         assert.strictEqual(command.commandData.name, "grandarena", "Expected command name to be 'grandarena'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
@@ -19,9 +17,7 @@ describe("GrandArena Functionality", () => {
         assert.strictEqual(command.commandData.options.length, 4, "Expected 4 options");
     });
 
-    it("should have required allycode_1 and allycode_2 options", () => {
-        const bot = createMockBot();
-        const command = new GrandArena(bot);
+    it("should have required allycode_1 and allycode_2 options", () => {        const command = new GrandArena();
 
         const allycode1Opt = command.commandData.options.find(o => o.name === "allycode_1");
         assert.ok(allycode1Opt, "Expected allycode_1 option");
@@ -32,9 +28,7 @@ describe("GrandArena Functionality", () => {
         assert.strictEqual(allycode2Opt.required, true, "Expected allycode_2 to be required");
     });
 
-    it("should have optional characters and faction options", () => {
-        const bot = createMockBot();
-        const command = new GrandArena(bot);
+    it("should have optional characters and faction options", () => {        const command = new GrandArena();
 
         const charactersOpt = command.commandData.options.find(o => o.name === "characters");
         assert.ok(charactersOpt, "Expected characters option");
@@ -148,13 +142,6 @@ describe("GrandArena Functionality", () => {
                 },
             ],
         };
-
-        const bot = createMockBot({
-            swgohAPI: {
-                unitStats: async () => [mockPlayer1, mockPlayer2],
-            } as any,
-        });
-
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
@@ -166,8 +153,8 @@ describe("GrandArena Functionality", () => {
         const patreonFuncs = await import("../../modules/patreonFuncs.ts");
         mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
 
-        const command = new GrandArena(bot);
-        await command.run(bot, interaction);
+        const command = new GrandArena();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -246,13 +233,6 @@ describe("GrandArena Functionality", () => {
             updated: Date.now(),
             roster: mockRoster,
         };
-
-        const bot = createMockBot({
-            swgohAPI: {
-                unitStats: async () => [mockPlayer, mockPlayer],
-            } as any,
-        });
-
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
@@ -264,8 +244,8 @@ describe("GrandArena Functionality", () => {
         const patreonFuncs = await import("../../modules/patreonFuncs.ts");
         mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
 
-        const command = new GrandArena(bot);
-        await command.run(bot, interaction);
+        const command = new GrandArena();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         const finalReply = replies[replies.length - 1];
@@ -282,14 +262,6 @@ describe("GrandArena Functionality", () => {
     });
 
     it("should handle error when API call fails", async () => {
-        const bot = createMockBot({
-            swgohAPI: {
-                unitStats: async () => {
-                    throw new Error("API Error");
-                },
-            } as any,
-        });
-
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
@@ -300,8 +272,8 @@ describe("GrandArena Functionality", () => {
         const patreonFuncs = await import("../../modules/patreonFuncs.ts");
         mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
 
-        const command = new GrandArena(bot);
-        await command.run(bot, interaction);
+        const command = new GrandArena();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -328,13 +300,6 @@ describe("GrandArena Functionality", () => {
             updated: Date.now(),
             roster: [],
         };
-
-        const bot = createMockBot({
-            swgohAPI: {
-                unitStats: async () => [emptyPlayer, emptyPlayer],
-            } as any,
-        });
-
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
@@ -345,8 +310,8 @@ describe("GrandArena Functionality", () => {
         const patreonFuncs = await import("../../modules/patreonFuncs.ts");
         mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
 
-        const command = new GrandArena(bot);
-        await command.run(bot, interaction);
+        const command = new GrandArena();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");

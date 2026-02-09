@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import ArenaAlert from "../../slash/arenaalert.ts";
-import { createMockBot } from "../mocks/index.ts";
 import type { UserConfig } from "../../types/types.ts";
 
 describe("ArenaAlert", () => {
@@ -21,8 +20,7 @@ describe("ArenaAlert", () => {
 
     describe("Functionality Tests", () => {
         it("should update enabledms setting and generate changelog", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -37,8 +35,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should update arena setting and generate changelog", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -53,8 +50,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should update payout result setting and generate changelog", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -69,8 +65,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should update payout warning with valid value", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -85,8 +80,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should reject payout warning value that is too low", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -100,8 +94,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should reject payout warning value that is too high", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -115,8 +108,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should accept maximum valid payout warning value (1439)", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -130,8 +122,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should handle multiple changes at once", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
 
             const result = (command as any).computeArenaAlertChanges(user, {
@@ -149,8 +140,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should not generate changelog when no changes are made", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
             user.arenaAlert.enableRankDMs = "all";
             user.arenaAlert.arena = "fleet";
@@ -166,8 +156,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should not mutate the original user object", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
             const originalEnableDMs = user.arenaAlert.enableRankDMs;
 
@@ -179,8 +168,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should set payout warning to 0 to disable it", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
             const user = createBaseUser();
             user.arenaAlert.payoutWarning = 30;
 
@@ -198,29 +186,25 @@ describe("ArenaAlert", () => {
 
     describe("Command Configuration", () => {
         it("should work without guild context (guildOnly: false)", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             assert.strictEqual(command.commandData.guildOnly, false);
         });
 
         it("should be enabled", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             assert.strictEqual(command.commandData.enabled, true);
         });
 
         it("should have correct command name", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             assert.strictEqual(command.commandData.name, "arenaalert");
         });
 
         it("should have enabledms option with all, primary, and off choices", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             const enabledmsOpt = command.commandData.options.find((o) => o.name === "enabledms");
             assert.ok(enabledmsOpt);
@@ -233,8 +217,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should have arena option with char, fleet, and both choices", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             const arenaOpt = command.commandData.options.find((o) => o.name === "arena");
             assert.ok(arenaOpt);
@@ -247,8 +230,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should have payout_result option with on and off choices", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             const payoutResultOpt = command.commandData.options.find((o) => o.name === "payout_result");
             assert.ok(payoutResultOpt);
@@ -260,8 +242,7 @@ describe("ArenaAlert", () => {
         });
 
         it("should have payout_warning option with min/max values", () => {
-            const bot = createMockBot();
-            const command = new ArenaAlert(bot);
+            const command = new ArenaAlert();
 
             const payoutWarningOpt = command.commandData.options.find((o) => o.name === "payout_warning");
             assert.ok(payoutWarningOpt);

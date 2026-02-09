@@ -1,29 +1,22 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Versus from "../../slash/versus.ts";
-import { createMockBot } from "../mocks/index.ts";
 
 describe("Versus", () => {
     // Note: Full versus tests require MongoDB, user registration, and swgohAPI.
     // We test command configuration only.
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const bot = createMockBot();
-        const command = new Versus(bot);
+    it("should work without guild context (guildOnly: false)", () => {        const command = new Versus();
 
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
-    it("should be enabled", () => {
-        const bot = createMockBot();
-        const command = new Versus(bot);
+    it("should be enabled", () => {        const command = new Versus();
 
         assert.strictEqual(command.commandData.enabled, true, "Expected command to be enabled");
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new Versus(bot);
+    it("should have correct command configuration", () => {        const command = new Versus();
 
         assert.strictEqual(command.commandData.name, "versus", "Expected command name to be 'versus'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
@@ -31,9 +24,7 @@ describe("Versus", () => {
         assert.strictEqual(command.commandData.options.length, 3, "Expected 3 options");
     });
 
-    it("should have required allycode options", () => {
-        const bot = createMockBot();
-        const command = new Versus(bot);
+    it("should have required allycode options", () => {        const command = new Versus();
 
         const allycode1Opt = command.commandData.options.find(o => o.name === "allycode_1");
         const allycode2Opt = command.commandData.options.find(o => o.name === "allycode_2");
@@ -45,9 +36,7 @@ describe("Versus", () => {
         assert.strictEqual(allycode2Opt.required, true, "Expected allycode_2 to be required");
     });
 
-    it("should have required character option with autocomplete", () => {
-        const bot = createMockBot();
-        const command = new Versus(bot);
+    it("should have required character option with autocomplete", () => {        const command = new Versus();
 
         const characterOpt = command.commandData.options.find(o => o.name === "character");
         assert.ok(characterOpt, "Expected character option");

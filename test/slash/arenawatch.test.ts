@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import ArenaWatch, { fillAWSkeleton, processAWChanges } from "../../slash/arenawatch.ts";
-import { createMockBot } from "../mocks/index.ts";
 import type { UserConfig } from "../../types/types.ts";
 
 describe("ArenaWatch", () => {
@@ -416,29 +415,25 @@ describe("ArenaWatch", () => {
 
     describe("Command Configuration", () => {
         it("should work without guild context (guildOnly: false)", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             assert.strictEqual(command.commandData.guildOnly, false);
         });
 
         it("should be enabled", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             assert.strictEqual(command.commandData.enabled, true);
         });
 
         it("should have correct command name", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             assert.strictEqual(command.commandData.name, "arenawatch");
         });
 
         it("should have allycode subcommand group with add, remove, and edit", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             const allycodeGroup = command.commandData.options.find((o) => o.name === "allycode");
             assert.ok(allycodeGroup);
@@ -455,8 +450,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should have payout subcommand group with enable, channel, and mark", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             const payoutGroup = command.commandData.options.find((o) => o.name === "payout");
             assert.ok(payoutGroup);
@@ -472,8 +466,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should have all main subcommands", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             const subcommands = ["arena", "channel", "enabled", "report", "showvs", "warn", "result", "use_marks_in_log", "view"];
 
@@ -484,8 +477,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should have arena choices for arena subcommand", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             const arenaSubcmd = command.commandData.options.find((o) => o.name === "arena");
             const arenaOption = arenaSubcmd.options.find((o) => o.name === "arena");
@@ -499,8 +491,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should have report choices", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             const reportSubcmd = command.commandData.options.find((o) => o.name === "report");
             const arenaOption = reportSubcmd.options.find((o) => o.name === "arena");
@@ -513,8 +504,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should have warn subcommand with proper min/max values", () => {
-            const bot = createMockBot();
-            const command = new ArenaWatch(bot);
+            const command = new ArenaWatch();
 
             const warnSubcmd = command.commandData.options.find((o) => o.name === "warn");
             const minsOption = warnSubcmd.options.find((o) => o.name === "mins");

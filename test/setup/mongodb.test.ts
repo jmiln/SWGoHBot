@@ -1,7 +1,7 @@
-import { describe, it, before, after } from "node:test";
 import assert from "node:assert";
-import { setup, teardown } from "./mongodb.ts";
+import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
+import { setup, teardown } from "./mongodb.ts";
 
 describe("MongoDB Testcontainer Setup", () => {
     before(async () => {

@@ -1,16 +1,30 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { after, before, describe, it } from "node:test";
+import { MongoClient } from "mongodb";
+import "../setup/mongodb.ts";
+import database from "../../modules/database.ts";
 import Info from "../../slash/info.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
 
 describe("Info", () => {
-    it("should display bot information and stats", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    let mongoClient: MongoClient;
 
-        const command = new Info(bot);
-        await command.run(bot, interaction);
+    before(async () => {
+        mongoClient = await getMongoClient();
+        database.init(mongoClient);
+    });
+
+    after(async () => {
+        await closeMongoClient();
+    });
+
+    it("should display bot information and stats", async () => {        const interaction = createMockInteraction();
+
+        const command = new Info();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -27,12 +41,11 @@ describe("Info", () => {
         assert.ok(description.length > 0, "Expected non-empty description");
     });
 
-    it("should include links in embed fields", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should include links in embed fields", async () => {        const interaction = createMockInteraction();
 
-        const command = new Info(bot);
-        await command.run(bot, interaction);
+        const command = new Info();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];
@@ -42,35 +55,32 @@ describe("Info", () => {
         assert.ok(embed.fields !== undefined, "Expected fields in embed");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
             guild: null as any
         });
 
-        const command = new Info(bot);
-        await command.run(bot, interaction);
+        const command = new Info();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply even without guild context");
     });
 
-    it("should send exactly one reply", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should send exactly one reply", async () => {        const interaction = createMockInteraction();
 
-        const command = new Info(bot);
-        await command.run(bot, interaction);
+        const command = new Info();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertReplyCount(interaction, 1);
     });
 
-    it("should have a random color for the embed", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction();
+    it("should have a random color for the embed", async () => {        const interaction = createMockInteraction();
 
-        const command = new Info(bot);
-        await command.run(bot, interaction);
+        const command = new Info();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds[0];

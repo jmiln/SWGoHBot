@@ -1,18 +1,18 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Time from "../../slash/time.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockGuildSettings, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
 describe("Time", () => {
     it("should display time for valid timezone", async () => {
-        const bot = createMockBot();
         const interaction = createMockInteraction({
             optionsData: { timezone: "America/New_York" }
         });
 
-        const command = new Time(bot);
-        await command.run(bot, interaction);
+        const command = new Time();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -29,16 +29,14 @@ describe("Time", () => {
     });
 
     it("should use guild default timezone when no timezone provided", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
-            guildSettings: {
-                timezone: "Europe/London",
-                swgohLanguage: "eng_us"
-            }
+        const interaction = createMockInteraction();
+        const guildSettings = createMockGuildSettings({
+            timezone: "Europe/London"
         });
 
-        const command = new Time(bot);
-        await command.run(bot, interaction);
+        const command = new Time();
+        const ctx = createCommandContext({ interaction, guildSettings });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -52,32 +50,31 @@ describe("Time", () => {
     });
 
     it("should show error for invalid timezone but use guild default", async () => {
-        const bot = createMockBot();
         const interaction = createMockInteraction({
-            optionsData: { timezone: "Invalid/Timezone" },
-            guildSettings: {
-                timezone: "UTC",
-                swgohLanguage: "eng_us"
-            }
+            optionsData: { timezone: "Invalid/Timezone" }
+        });
+        const guildSettings = createMockGuildSettings({
+            timezone: "UTC"
         });
 
-        const command = new Time(bot);
-        await command.run(bot, interaction);
+        const command = new Time();
+        const ctx = createCommandContext({ interaction, guildSettings });
+        await command.run(ctx);
 
         assertErrorReply(interaction, "COMMAND_TIME_INVALID_ZONE");
     });
 
     it("should fallback to UTC when no valid timezone available", async () => {
-        const bot = createMockBot();
         const interaction = createMockInteraction({
-            optionsData: { timezone: "Invalid/Timezone" },
-            guildSettings: {
-                swgohLanguage: "eng_us"
-            }
+            optionsData: { timezone: "Invalid/Timezone" }
+        });
+        const guildSettings = createMockGuildSettings({
+            timezone: undefined as any  // No valid timezone in settings
         });
 
-        const command = new Time(bot);
-        await command.run(bot, interaction);
+        const command = new Time();
+        const ctx = createCommandContext({ interaction, guildSettings });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -94,14 +91,14 @@ describe("Time", () => {
     });
 
     it("should work without guild context (guildOnly: false)", async () => {
-        const bot = createMockBot();
         const interaction = createMockInteraction({
             optionsData: { timezone: "UTC" },
             guild: null as any
         });
 
-        const command = new Time(bot);
-        await command.run(bot, interaction);
+        const command = new Time();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected reply even without guild context");

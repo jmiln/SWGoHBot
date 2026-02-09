@@ -49,7 +49,6 @@
  * ### Override Bot Properties
  * ```typescript
  * const bot = createMockBot({
- *   shardId: 5,
  *   config: {
  *     mongodb: { swgohbotdb: "customdb" }
  *   }
@@ -139,3 +138,4 @@
 
 export * from "./mockBot.ts";
 export * from "./mockInteraction.ts";
+export * from "./mockSwapi.ts";

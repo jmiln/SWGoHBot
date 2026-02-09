@@ -1,21 +1,19 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Patreon from "../../slash/patreon.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount } from "./helpers.ts";
 
 describe("Patreon", () => {
     // Note: Full patreon tests require MongoDB and patreon API.
     // We test static data display and command configuration.
 
-    it("should display benefits for all tiers", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should display benefits for all tiers", async () => {        const interaction = createMockInteraction({
             optionsData: { _subcommand: "benefits" }
         });
 
-        const command = new Patreon(bot);
-        await command.run(bot, interaction);
+        const command = new Patreon();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -30,14 +28,12 @@ describe("Patreon", () => {
         assert.ok(tierFields.length > 0, "Expected tier fields with pricing");
     });
 
-    it("should display patreon commands", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should display patreon commands", async () => {        const interaction = createMockInteraction({
             optionsData: { _subcommand: "commands" }
         });
 
-        const command = new Patreon(bot);
-        await command.run(bot, interaction);
+        const command = new Patreon();
+        await command.run({ interaction, language: (interaction as any).language });
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -50,34 +46,28 @@ describe("Patreon", () => {
         assert.ok(commandField, "Expected 'Patreon Commands' field");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
             optionsData: { _subcommand: "benefits" },
             guild: null as any
         });
 
-        const command = new Patreon(bot);
-        await command.run(bot, interaction);
+        const command = new Patreon();
+        await command.run({ interaction, language: (interaction as any).language });
 
         assertReplyCount(interaction, 1);
     });
 
-    it("should send exactly one reply", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should send exactly one reply", async () => {        const interaction = createMockInteraction({
             optionsData: { _subcommand: "benefits" }
         });
 
-        const command = new Patreon(bot);
-        await command.run(bot, interaction);
+        const command = new Patreon();
+        await command.run({ interaction, language: (interaction as any).language });
 
         assertReplyCount(interaction, 1);
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new Patreon(bot);
+    it("should have correct command configuration", () => {        const command = new Patreon();
 
         assert.strictEqual(command.commandData.name, "patreon", "Expected command name to be 'patreon'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");

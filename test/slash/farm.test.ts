@@ -1,9 +1,9 @@
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
-import Farm from "../../slash/farm.ts";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import Farm from "../../slash/farm.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
 // Storage for mock location language data
@@ -80,34 +80,30 @@ describe("Farm", () => {
     });
 
     // Validation tests
-    it("should return error for character not found", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should return error for character not found", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "NonexistentCharacter123" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertErrorReply(interaction, "BASE_SWGOH_NO_CHAR_FOUND");
     });
 
-    it("should return error when multiple characters match", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should return error when multiple characters match", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "Luke" } // Matches multiple Luke characters
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertErrorReply(interaction, "BASE_SWGOH_CHAR_LIST");
     });
 
     // Functionality tests - character farm locations
-    it("should successfully find farm locations for a character", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should successfully find farm locations for a character", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -118,8 +114,9 @@ describe("Farm", () => {
             optionsData: { character: "VADER" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected a reply");
@@ -132,9 +129,7 @@ describe("Farm", () => {
         assert.ok(embedData.description, "Expected description with locations");
     });
 
-    it("should successfully find farm locations for a ship", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should successfully find farm locations for a ship", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -146,8 +141,9 @@ describe("Farm", () => {
         });
         (interaction as any).swgohLanguage = "eng_us";
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected a reply");
@@ -160,17 +156,16 @@ describe("Farm", () => {
     });
 
     // Location type tests
-    it("should display store locations with cost", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should display store locations with cost", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         const interaction = createMockInteraction({
             optionsData: { character: "VADER" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -182,9 +177,7 @@ describe("Farm", () => {
         assert.ok(description.includes("400 Fleet Arena Tokens"), "Expected cost information");
     });
 
-    it("should display cantina node locations with level", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should display cantina node locations with level", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -196,8 +189,9 @@ describe("Farm", () => {
         });
         (interaction as any).swgohLanguage = "eng_us";
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -209,9 +203,7 @@ describe("Farm", () => {
         assert.ok(description.includes("6-G"), "Expected level information");
     });
 
-    it("should display event locations with name", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should display event locations with name", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -222,8 +214,9 @@ describe("Farm", () => {
             optionsData: { character: "VADER" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -234,9 +227,7 @@ describe("Farm", () => {
         assert.ok(description.includes("Empire Assault"), "Expected event name");
     });
 
-    it("should display hard mode locations with proper formatting", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should display hard mode locations with proper formatting", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -248,8 +239,9 @@ describe("Farm", () => {
         });
         (interaction as any).swgohLanguage = "eng_us";
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -262,9 +254,7 @@ describe("Farm", () => {
     });
 
     // Output format tests
-    it("should return embed with proper structure", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should return embed with proper structure", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -275,8 +265,9 @@ describe("Farm", () => {
             optionsData: { character: "VADER" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -291,9 +282,7 @@ describe("Farm", () => {
         assert.ok(embedData.description, "Expected description in embed");
     });
 
-    it("should include character name in embed author", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should include character name in embed author", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -305,8 +294,9 @@ describe("Farm", () => {
         });
         (interaction as any).swgohLanguage = "eng_us";
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -315,9 +305,7 @@ describe("Farm", () => {
         assert.ok(embedData.author?.name?.includes("Count Dooku"), "Expected character name in author");
     });
 
-    it("should display multiple locations for a single character", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should display multiple locations for a single character", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         setMockLocationData({
@@ -328,8 +316,9 @@ describe("Farm", () => {
             optionsData: { character: "JEDISTARFIGHTERAHSOKATANO" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -342,17 +331,16 @@ describe("Farm", () => {
         assert.ok(description.includes("Guild Events Store"), "Expected Guild Events Store");
     });
 
-    it("should format cost with 'per' instead of slash", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should format cost with 'per' instead of slash", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         const interaction = createMockInteraction({
             optionsData: { character: "VADER" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[0].embeds?.[0];
@@ -364,9 +352,7 @@ describe("Farm", () => {
         assert.ok(description.includes("shards"), "Expected shards in cost");
     });
 
-    it("should return error when character has no farming locations", async () => {
-        const bot = createMockBot();
-        mockUnitsEnabled = true;
+    it("should return error when character has no farming locations", async () => {        mockUnitsEnabled = true;
         (swgohAPI as any).units = mockUnits;
 
         // Use a character that exists but has no locations
@@ -376,8 +362,9 @@ describe("Farm", () => {
             optionsData: { character: "COMMANDERLUKESKYWALKER" }
         });
 
-        const command = new Farm(bot);
-        await command.run(bot, interaction);
+        const command = new Farm();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected a reply");

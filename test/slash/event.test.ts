@@ -1,11 +1,11 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import Event from "../../slash/event.ts";
 import cache from "../../modules/cache.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
-import { getMongoClient, closeMongoClient } from "../helpers/mongodb.ts";
-import { SocketHelper } from "../../modules/socketHelper.ts";
+import eventSocket from "../../modules/eventSocket.ts";
+import Event from "../../slash/event.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 
 // Helper to create a mock guild with channels
 function createMockGuild(overrides = {}) {
@@ -73,9 +73,7 @@ describe("Event", () => {
         await closeMongoClient();
     });
 
-    it("should reject create command when missing required name field", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject create command when missing required name field", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -84,10 +82,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -95,9 +94,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for missing name");
     });
 
-    it("should reject create command when missing required day field", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject create command when missing required day field", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -106,10 +103,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -118,9 +116,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for missing day");
     });
 
-    it("should reject create command when missing required time field", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject create command when missing required time field", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -129,10 +125,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -141,9 +138,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for missing time");
     });
 
-    it("should reject invalid date format (MM/DD/YYYY instead of DD/MM/YYYY)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject invalid date format (MM/DD/YYYY instead of DD/MM/YYYY)", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -153,10 +148,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -165,9 +161,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for invalid date");
     });
 
-    it("should reject invalid time format (not HH:MM)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject invalid time format (not HH:MM)", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -177,10 +171,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -189,9 +184,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for invalid time");
     });
 
-    it("should reject event creation with date in the past", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject event creation with date in the past", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -201,10 +194,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -213,9 +207,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for past date");
     });
 
-    it("should enforce GUILD_ADMIN permission for create subcommand", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should enforce GUILD_ADMIN permission for create subcommand", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -225,8 +217,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 }); // Low permission level
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx); // Low permission level
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -235,9 +228,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected permission error");
     });
 
-    it("should enforce GUILD_ADMIN permission for delete subcommand", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should enforce GUILD_ADMIN permission for delete subcommand", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "delete",
@@ -245,8 +236,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 }); // Low permission level
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx); // Low permission level
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -255,9 +247,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected permission error");
     });
 
-    it("should enforce GUILD_ADMIN permission for edit subcommand", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should enforce GUILD_ADMIN permission for edit subcommand", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "edit",
@@ -266,8 +256,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 }); // Low permission level
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx); // Low permission level
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -276,9 +267,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected permission error");
     });
 
-    it("should enforce GUILD_ADMIN permission for trigger subcommand", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should enforce GUILD_ADMIN permission for trigger subcommand", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "trigger",
@@ -286,8 +275,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 }); // Low permission level
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx); // Low permission level
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -296,19 +286,18 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected permission error");
     });
 
-    it("should allow view subcommand without GUILD_ADMIN permission", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should allow view subcommand without GUILD_ADMIN permission", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "view",
             },
         });
 
-        SocketHelper.prototype.getEventsByGuild = async () => [];
+        eventSocket.getEventsByGuild = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 }); // Low permission level
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx); // Low permission level
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -319,9 +308,7 @@ describe("Event", () => {
         assert.ok(!content.includes("COMMAND_EVENT_INVALID_PERMS"), "View should not require GUILD_ADMIN");
     });
 
-    it("should reject createjson with invalid JSON", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject createjson with invalid JSON", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "createjson",
@@ -329,8 +316,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -339,9 +327,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for invalid JSON");
     });
 
-    it("should reject createjson JSON without array or object wrapper", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject createjson JSON without array or object wrapper", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "createjson",
@@ -349,8 +335,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -359,9 +346,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for JSON wrapper");
     });
 
-    it("should reject event with invalid repeat format", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject event with invalid repeat format", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -372,10 +357,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [];
+        eventSocket.addEvents = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -384,9 +370,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for invalid repeat format");
     });
 
-    it("should reject view with both name and filter specified", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject view with both name and filter specified", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "view",
@@ -395,8 +379,9 @@ describe("Event", () => {
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -405,17 +390,16 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for using both name and filter");
     });
 
-    it("should reject command when not in guild context", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should reject command when not in guild context", async () => {        const interaction = createMockInteraction({
             guild: null,
             optionsData: {
                 _subcommand: "view",
             },
         });
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -424,9 +408,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for DM usage");
     });
 
-    it("should accept valid repeat format (DDdHHhMMm)", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should accept valid repeat format (DDdHHhMMm)", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "create",
@@ -437,10 +419,11 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => [{ success: true, event: {} }];
+        eventSocket.addEvents = async () => [{ success: true, event: {} }];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const content = getReplyContent(replies[0]);
@@ -449,9 +432,7 @@ describe("Event", () => {
         assert.ok(!content.includes("COMMAND_EVENT_INVALID_REPEAT"), "Valid repeat format should be accepted");
     });
 
-    it("should accept valid time formats (HH:MM in 24hr)", async () => {
-        const bot = createMockBot();
-        const validTimes = ["00:00", "12:00", "23:59"];
+    it("should accept valid time formats (HH:MM in 24hr)", async () => {        const validTimes = ["00:00", "12:00", "23:59"];
 
         for (const time of validTimes) {
             const interaction = createMockInteraction({
@@ -464,10 +445,11 @@ describe("Event", () => {
                 },
             });
 
-            SocketHelper.prototype.addEvents = async () => [{ success: true, event: {} }];
+            eventSocket.addEvents = async () => [{ success: true, event: {} }];
 
-            const command = new Event(bot);
-            await command.run(bot, interaction, { level: 10 });
+            const command = new Event();
+            const ctx = createCommandContext({ interaction, permLevel: 10 });
+            await command.run(ctx);
 
             const replies = (interaction as any)._getReplies();
             const reply = replies[0];
@@ -478,9 +460,7 @@ describe("Event", () => {
         }
     });
 
-    it("should accept valid date formats (DD/MM/YYYY)", async () => {
-        const bot = createMockBot();
-        const validDates = ["01/01/2027", "31/12/2027", "15/06/2027"];
+    it("should accept valid date formats (DD/MM/YYYY)", async () => {        const validDates = ["01/01/2027", "31/12/2027", "15/06/2027"];
 
         for (const day of validDates) {
             const interaction = createMockInteraction({
@@ -493,10 +473,11 @@ describe("Event", () => {
                 },
             });
 
-            SocketHelper.prototype.addEvents = async () => [{ success: true, event: {} }];
+            eventSocket.addEvents = async () => [{ success: true, event: {} }];
 
-            const command = new Event(bot);
-            await command.run(bot, interaction, { level: 10 });
+            const command = new Event();
+            const ctx = createCommandContext({ interaction, permLevel: 10 });
+            await command.run(ctx);
 
             const replies = (interaction as any)._getReplies();
             const reply = replies[0];
@@ -507,19 +488,18 @@ describe("Event", () => {
         }
     });
 
-    it("should view events when no events exist", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should view events when no events exist", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "view",
             },
         });
 
-        SocketHelper.prototype.getEventsByGuild = async () => [];
+        eventSocket.getEventsByGuild = async () => [];
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 0 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 0 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -529,9 +509,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected message when no events exist");
     });
 
-    it("should handle successful event creation", async () => {
-        const bot = createMockBot();
-        const mockGuild = createMockGuild();
+    it("should handle successful event creation", async () => {        const mockGuild = createMockGuild();
         const interaction = createMockInteraction({
             guild: mockGuild as any,
             optionsData: {
@@ -544,7 +522,7 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async (guildId, events) => {
+        eventSocket.addEvents = async (guildId, events) => {
             return [{
                 success: true,
                 event: events[0],
@@ -552,8 +530,9 @@ describe("Event", () => {
             }];
         };
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -562,9 +541,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected success message for event creation");
     });
 
-    it("should handle failed event creation from SocketHelper", async () => {
-        const bot = createMockBot();
-        const mockGuild = createMockGuild();
+    it("should handle failed event creation from eventSocket", async () => {        const mockGuild = createMockGuild();
         const interaction = createMockInteraction({
             guild: mockGuild as any,
             optionsData: {
@@ -576,7 +553,7 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.addEvents = async () => {
+        eventSocket.addEvents = async () => {
             return [{
                 success: false,
                 event: null,
@@ -584,8 +561,9 @@ describe("Event", () => {
             }];
         };
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -594,9 +572,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for failed creation");
     });
 
-    it("should handle successful event deletion", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should handle successful event deletion", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "delete",
@@ -604,12 +580,13 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.deleteEvent = async () => {
+        eventSocket.deleteEvent = async () => {
             return { success: true, error: null };
         };
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -618,9 +595,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected success message for event deletion");
     });
 
-    it("should handle failed event deletion", async () => {
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+    it("should handle failed event deletion", async () => {        const interaction = createMockInteraction({
             guild: createMockGuild() as any,
             optionsData: {
                 _subcommand: "delete",
@@ -628,12 +603,13 @@ describe("Event", () => {
             },
         });
 
-        SocketHelper.prototype.deleteEvent = async () => {
+        eventSocket.deleteEvent = async () => {
             return { success: false, error: "Event not found" };
         };
 
-        const command = new Event(bot);
-        await command.run(bot, interaction, { level: 10 });
+        const command = new Event();
+        const ctx = createCommandContext({ interaction, permLevel: 10 });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -642,9 +618,7 @@ describe("Event", () => {
         assert.ok(content.length > 0, "Expected error message for failed deletion");
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new Event(bot);
+    it("should have correct command configuration", () => {        const command = new Event();
 
         assert.strictEqual(command.commandData.name, "event", "Expected command name to be 'event'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
@@ -652,9 +626,7 @@ describe("Event", () => {
         assert.strictEqual(command.commandData.options.length, 6, "Expected 6 subcommands");
     });
 
-    it("should have all expected subcommands", () => {
-        const bot = createMockBot();
-        const command = new Event(bot);
+    it("should have all expected subcommands", () => {        const command = new Event();
 
         const subcommandNames = command.commandData.options.map(o => o.name);
         assert.ok(subcommandNames.includes("create"), "Expected create subcommand");
@@ -665,9 +637,7 @@ describe("Event", () => {
         assert.ok(subcommandNames.includes("view"), "Expected view subcommand");
     });
 
-    it("should have required fields in create subcommand", () => {
-        const bot = createMockBot();
-        const command = new Event(bot);
+    it("should have required fields in create subcommand", () => {        const command = new Event();
 
         const createSubcmd = command.commandData.options.find(o => o.name === "create");
         assert.ok(createSubcmd.options, "Expected create subcommand to have options");
@@ -684,5 +654,24 @@ describe("Event", () => {
 
         assert.ok(timeOpt, "Expected time option");
         assert.strictEqual(timeOpt.required, true, "Expected time to be required");
+    });
+
+    it("should have autocomplete enabled on event name fields", () => {        const command = new Event();
+
+        const testCases = [
+            { subcommand: "delete", optionName: "name" },
+            { subcommand: "edit", optionName: "event_name" },
+            { subcommand: "trigger", optionName: "name" },
+            { subcommand: "view", optionName: "name" },
+        ];
+
+        for (const { subcommand, optionName } of testCases) {
+            const subcmd = command.commandData.options.find(o => o.name === subcommand);
+            assert.ok(subcmd?.options, `Expected ${subcommand} subcommand to have options`);
+
+            const nameOpt = subcmd.options.find(o => o.name === optionName);
+            assert.ok(nameOpt, `Expected ${optionName} option in ${subcommand}`);
+            assert.strictEqual(nameOpt.autocomplete, true, `Expected ${optionName} in ${subcommand} to have autocomplete`);
+        }
     });
 });

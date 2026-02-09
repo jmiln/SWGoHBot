@@ -1,11 +1,11 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import Aliases from "../../slash/aliases.ts";
 import config from "../../config.js";
 import cache from "../../modules/cache.ts";
-import { getMongoClient, closeMongoClient } from "../helpers/mongodb.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import Aliases from "../../slash/aliases.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { createMockInteraction } from "../mocks/index.ts";
 
 /**
  * Helper function to extract description from a reply embed.
@@ -36,9 +36,7 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("add subcommand", () => {
-        it("should successfully add an alias for a valid character", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should successfully add an alias for a valid character", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -48,7 +46,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             // Verify the alias was saved to MongoDB
             const savedData = await cache.get(
@@ -76,9 +74,7 @@ describe("Aliases Command Functionality", () => {
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should successfully add an alias for a valid ship", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should successfully add an alias for a valid ship", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -88,7 +84,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             // Verify the alias was saved to MongoDB
             const savedData = await cache.get(
@@ -106,9 +102,7 @@ describe("Aliases Command Functionality", () => {
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should return an error when unit does not exist", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should return an error when unit does not exist", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -118,7 +112,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -132,9 +126,7 @@ describe("Aliases Command Functionality", () => {
             );
         });
 
-        it("should return an error when alias is already in use", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should return an error when alias is already in use", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -157,7 +149,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -173,9 +165,7 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("remove subcommand", () => {
-        it("should successfully remove an existing alias", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should successfully remove an existing alias", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -198,7 +188,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             // Verify the alias was removed
             const savedData = await cache.get(
@@ -224,9 +214,7 @@ describe("Aliases Command Functionality", () => {
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should return an error when trying to remove non-existent alias", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should return an error when trying to remove non-existent alias", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -248,7 +236,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -262,9 +250,7 @@ describe("Aliases Command Functionality", () => {
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should remove alias and sort remaining aliases alphabetically", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should remove alias and sort remaining aliases alphabetically", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -288,7 +274,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             // Verify aliases are sorted after removal
             const savedData = await cache.get(
@@ -307,9 +293,7 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("view subcommand", () => {
-        it("should display all aliases when they exist", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should display all aliases when they exist", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -331,7 +315,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -349,9 +333,7 @@ describe("Aliases Command Functionality", () => {
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should handle viewing when no aliases exist", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should handle viewing when no aliases exist", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -359,7 +341,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -369,9 +351,7 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("guild-only behavior", () => {
-        it("should return error when used outside of a guild", async () => {
-            const bot = createMockBot();
-            const command = new Aliases(bot);
+        it("should return error when used outside of a guild", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: null,
@@ -382,7 +362,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run(bot, interaction);
+            await command.run({ interaction, language: (interaction as any).language });
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");

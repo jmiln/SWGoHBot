@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import BotShards, { formatShardInfo, type ShardData } from "../../slash/botshards.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createMockInteraction } from "../mocks/index.ts";
 
 describe("BotShards", () => {
     // Note: Full botshards tests require Discord sharding API.
@@ -43,16 +43,12 @@ describe("BotShards", () => {
         assert.ok(formatted.includes("Ready"), "Expected Ready status");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const bot = createMockBot();
-        const command = new BotShards(bot);
+    it("should work without guild context (guildOnly: false)", () => {        const command = new BotShards();
 
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new BotShards(bot);
+    it("should have correct command configuration", () => {        const command = new BotShards();
 
         assert.strictEqual(command.commandData.name, "botshards", "Expected command name to be 'botshards'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");

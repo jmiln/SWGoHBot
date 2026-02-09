@@ -1,33 +1,26 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import UserConf from "../../slash/userconf.ts";
-import { createMockBot } from "../mocks/index.ts";
 
 describe("UserConf", () => {
     // Note: Full userconf tests require MongoDB and user registration.
     // We test command configuration and subcommands only.
 
-    it("should have allycodes subcommand group", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should have allycodes subcommand group", () => {        const command = new UserConf();
 
         const allycodesGroup = command.commandData.options.find(o => o.name === "allycodes");
         assert.ok(allycodesGroup, "Expected allycodes subcommand group");
         assert.strictEqual(allycodesGroup.type, 2, "Expected SubcommandGroup type (2)");
     });
 
-    it("should have arenaalert subcommand", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should have arenaalert subcommand", () => {        const command = new UserConf();
 
         const arenaalertSubcmd = command.commandData.options.find(o => o.name === "arenaalert");
         assert.ok(arenaalertSubcmd, "Expected arenaalert subcommand");
         assert.strictEqual(arenaalertSubcmd.type, 1, "Expected Subcommand type (1)");
     });
 
-    it("should have add, remove, make_primary subcommands in allycodes group", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should have add, remove, make_primary subcommands in allycodes group", () => {        const command = new UserConf();
 
         const allycodesGroup = command.commandData.options.find(o => o.name === "allycodes");
         assert.ok(allycodesGroup.options, "Expected allycodes group to have options");
@@ -46,16 +39,12 @@ describe("UserConf", () => {
         assert.strictEqual(makePrimarySubcmd.type, 1, "Expected Subcommand type (1)");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should work without guild context (guildOnly: false)", () => {        const command = new UserConf();
 
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
-    it("should have correct command configuration", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should have correct command configuration", () => {        const command = new UserConf();
 
         assert.strictEqual(command.commandData.name, "userconf", "Expected command name to be 'userconf'");
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
@@ -63,9 +52,7 @@ describe("UserConf", () => {
         assert.ok(command.commandData.options.length >= 2, "Expected at least 2 options");
     });
 
-    it("should have required allycode field in add subcommand", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should have required allycode field in add subcommand", () => {        const command = new UserConf();
 
         const allycodesGroup = command.commandData.options.find(o => o.name === "allycodes");
         const addSubcmd = allycodesGroup.options.find(o => o.name === "add");
@@ -75,9 +62,7 @@ describe("UserConf", () => {
         assert.strictEqual(allycodeOpt.required, true, "Expected allycode to be required");
     });
 
-    it("should have choices in arenaalert subcommand options", () => {
-        const bot = createMockBot();
-        const command = new UserConf(bot);
+    it("should have choices in arenaalert subcommand options", () => {        const command = new UserConf();
 
         const arenaalertSubcmd = command.commandData.options.find(o => o.name === "arenaalert");
         assert.ok(arenaalertSubcmd.options, "Expected arenaalert to have options");
