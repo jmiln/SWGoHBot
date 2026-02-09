@@ -5,7 +5,7 @@
  */
 
 import assert from "node:assert";
-import type { BotInteraction, BotType } from "../../types/types.ts";
+import type { ChatInputCommandInteraction } from "discord.js";
 
 /**
  * Assert that the interaction received an error reply
@@ -13,7 +13,7 @@ import type { BotInteraction, BotType } from "../../types/types.ts";
  * @param interaction - The mock interaction
  * @param expectedKey - Optional expected language key or partial message
  */
-export function assertErrorReply(interaction: BotInteraction, expectedKey?: string) {
+export function assertErrorReply(interaction: ChatInputCommandInteraction, expectedKey?: string) {
     const replies = (interaction as any)._getReplies();
     assert.ok(replies.length > 0, "Expected at least one reply");
 
@@ -49,7 +49,7 @@ export function assertErrorReply(interaction: BotInteraction, expectedKey?: stri
  * @param interaction - The mock interaction
  * @param expectedMessage - Optional expected message content
  */
-export function assertSuccessReply(interaction: BotInteraction, expectedMessage?: string) {
+export function assertSuccessReply(interaction: ChatInputCommandInteraction, expectedMessage?: string) {
     const replies = (interaction as any)._getReplies();
     assert.ok(replies.length > 0, "Expected at least one reply");
 
@@ -86,7 +86,7 @@ export function assertSuccessReply(interaction: BotInteraction, expectedMessage?
  * @param fieldName - Name of the field to check
  * @param expectedValue - Optional expected field value (partial match)
  */
-export function assertEmbedField(interaction: BotInteraction, fieldName: string, expectedValue?: string) {
+export function assertEmbedField(interaction: ChatInputCommandInteraction, fieldName: string, expectedValue?: string) {
     const replies = (interaction as any)._getReplies();
     assert.ok(replies.length > 0, "Expected at least one reply");
 
@@ -113,7 +113,7 @@ export function assertEmbedField(interaction: BotInteraction, fieldName: string,
  * @param interaction - The mock interaction
  * @param expected - Expected number of replies
  */
-export function assertReplyCount(interaction: BotInteraction, expected: number) {
+export function assertReplyCount(interaction: ChatInputCommandInteraction, expected: number) {
     const replies = (interaction as any)._getReplies();
     assert.strictEqual(replies.length, expected, `Expected ${expected} replies, got ${replies.length}`);
 }
@@ -124,7 +124,7 @@ export function assertReplyCount(interaction: BotInteraction, expected: number) 
  * @param interaction - The mock interaction
  * @returns The last reply object
  */
-export function getLastReply(interaction: BotInteraction) {
+export function getLastReply(interaction: ChatInputCommandInteraction) {
     const replies = (interaction as any)._getReplies();
     assert.ok(replies.length > 0, "Expected at least one reply");
     return replies[replies.length - 1];
@@ -139,7 +139,8 @@ export function getLastReply(interaction: BotInteraction) {
  * @param name - Player name (optional)
  */
 export async function seedRegisteredUser(
-    bot: BotType,
+    // biome-ignore lint/suspicious/noExplicitAny: mockBot returns any
+    bot: any,
     userId: string,
     allyCode: string,
     name = "TestPlayer"
@@ -163,7 +164,8 @@ export async function seedRegisteredUser(
  * @param settings - Guild settings object
  */
 export async function seedGuildConfig(
-    bot: BotType,
+    // biome-ignore lint/suspicious/noExplicitAny: mockBot returns any
+    bot: any,
     guildId: string,
     settings: Record<string, any>
 ) {

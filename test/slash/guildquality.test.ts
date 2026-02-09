@@ -1,15 +1,15 @@
 import assert from "node:assert";
-import { describe, it, beforeEach, after } from "node:test";
-import GuildQuality from "../../slash/guildquality.ts";
+import { after, beforeEach, describe, it } from "node:test";
 import cache from "../../modules/cache.ts";
-import userReg from "../../modules/users.ts";
+import logger from "../../modules/Logger.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
 import swgohAPI from "../../modules/swapi.ts";
-import logger from "../../modules/Logger.ts";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
-import { assertErrorReply } from "./helpers.ts";
-import { getMongoClient, closeMongoClient } from "../helpers/mongodb.ts";
+import userReg from "../../modules/users.ts";
+import GuildQuality from "../../slash/guildquality.ts";
 import type { SWAPIGuild, SWAPIPlayer } from "../../types/swapi_types.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
+import { assertErrorReply } from "./helpers.ts";
 
 // Mock guild and player data helpers
 const createMockGuild = (overrides: Partial<SWAPIGuild> = {}): SWAPIGuild => {
@@ -163,13 +163,13 @@ describe("GuildQuality", () => {
 
     // Error handling tests
     it("should return error when no ally code found", async () => {
-        const bot = createMockBot();
         const interaction = createMockInteraction({
             optionsData: {},
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertErrorReply(interaction, "No valid ally code");
     });
@@ -177,14 +177,13 @@ describe("GuildQuality", () => {
     it("should return error when guild fetch fails", async () => {
         mockGuildEnabled = true;
         mockGuildData = null; // Will cause mockGuild to throw
-
-        const bot = createMockBot();
         const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         assertErrorReply(interaction, "Issue getting guild");
     });
@@ -194,14 +193,13 @@ describe("GuildQuality", () => {
         mockUnitStatsEnabled = true;
         mockGuildData = createMockGuild();
         mockPlayerData = []; // Empty array will cause error
-
-        const bot = createMockBot();
         const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected a reply");
@@ -221,15 +219,13 @@ describe("GuildQuality", () => {
         mockPlayerData = [
             createMockPlayer(111111111),
             createMockPlayer(222222222),
-        ];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        ];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -249,15 +245,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -277,15 +271,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -306,15 +298,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -397,15 +387,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player1, player2];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player1, player2];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -433,15 +421,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player1, player2];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player1, player2];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -465,15 +451,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
@@ -498,15 +482,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[replies.length - 1].embeds[0];
@@ -533,15 +515,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[replies.length - 1].embeds[0];
@@ -560,15 +540,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[replies.length - 1].embeds[0];
@@ -590,15 +568,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const embed = replies[replies.length - 1].embeds[0];
@@ -618,15 +594,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [player];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" }, // Provide ally code
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
@@ -664,15 +638,13 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [playerWithNamedStat];
-
-        const bot = createMockBot();
-        const interaction = createMockInteraction({
+        mockPlayerData = [playerWithNamedStat];        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
-        const command = new GuildQuality(bot);
-        await command.run(bot, interaction);
+        const command = new GuildQuality();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];

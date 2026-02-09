@@ -66,6 +66,14 @@ class Database {
     isConnected(): boolean {
         return this.client !== null;
     }
+
+    /**
+     * Initialize with an existing MongoDB client (for testing)
+     * @param client - Pre-configured MongoClient instance
+     */
+    init(client: MongoClient): void {
+        this.client = client;
+    }
 }
 
 // Export singleton instance

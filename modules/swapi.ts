@@ -79,7 +79,7 @@ class SWAPI {
                 unitMap = unitMapData;
                 skillMap = skillMapData;
 
-                logger.log("[SWAPI] Reloaded API map files");
+                // logger.log("[SWAPI] Reloaded API map files");
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[SWAPI] Failed to reload map files: ${message}`);

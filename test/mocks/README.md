@@ -162,11 +162,6 @@ const char = await bot.swgohAPI.getCharacter("COMMANDERLUKESKYWALKER", "eng_us")
 Use **deep merge** to override any property:
 
 ```typescript
-// Override shard ID
-const bot = createMockBot({
-    shardId: 5
-});
-
 // Override nested properties (deep merge)
 const bot = createMockBot({
     config: {

@@ -16,7 +16,6 @@ const bot = createMockBot();
 ### With Overrides
 ```typescript
 const bot = createMockBot({
-    shardId: 5,
     config: { mongodb: { swgohbotdb: "testdb" } }
 });
 ```
