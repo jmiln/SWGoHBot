@@ -116,12 +116,18 @@ class PatreonFuncs {
             // If they're not registered with anything or don't have any ally codes
             if (!user?.accounts?.length) continue;
 
+            // Check for missing values
+            if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
+            if (!user.arenaAlert.arena) {
+                user.arenaAlert.arena = "none";
+            }
+
             // If they don't want any alerts
-            if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off") continue;
+            if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off" || user.arenaAlert.arena === "none") continue;
+
             const accountsToCheck = structuredClone(user.accounts);
 
-            for (let ix = 0; ix < accountsToCheck.length; ix++) {
-                const acc = accountsToCheck[ix];
+            for (const [ix, acc] of accountsToCheck.entries()) {
                 // If the user only has em enabled for the primary ac, ignore the rest
                 if (
                     ((user.accounts.length > 1 && patron.amount_cents < TIER_5_CENTS) || user.arenaAlert.enableRankDMs === "primary") &&
@@ -129,6 +135,7 @@ class PatreonFuncs {
                 ) {
                     continue;
                 }
+
                 let player: PlayerArenaRes;
                 try {
                     const playerRes = await swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
@@ -147,8 +154,8 @@ class PatreonFuncs {
                     acc.lastShipRank = 0;
                     acc.lastShipClimb = 0;
                 }
-                if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
-                if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
+
+                // Log if the bot cannot get data for a player
                 if (!player) {
                     logger.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
                     continue;
@@ -169,11 +176,10 @@ class PatreonFuncs {
 
                 // Handle ship arena alerts
                 await this.handleArenaAlerts("ship", player, acc, user, patron);
-                if (patron.amount_cents < TIER_5_CENTS) {
-                    user.accounts[user.accounts.findIndex((a) => a.primary)] = acc;
-                } else {
-                    user.accounts[ix] = acc;
-                }
+
+                // Save this back to the user
+                user.accounts[ix] = acc;
+
                 // Wait here in case of extra accounts
                 await wait(750);
             }
