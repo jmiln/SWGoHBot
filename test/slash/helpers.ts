@@ -1,198 +1,68 @@
 /**
- * Shared test helpers for slash command tests
- *
- * Provides assertion helpers and mock data utilities for testing slash commands.
+ * Test helper functions for slash command tests
  */
 
 import assert from "node:assert";
-import type { ChatInputCommandInteraction } from "discord.js";
 
 /**
- * Assert that the interaction received an error reply
- *
- * @param interaction - The mock interaction
- * @param expectedKey - Optional expected language key or partial message
+ * Assert that the last reply was an error (ephemeral with embed)
  */
-export function assertErrorReply(interaction: ChatInputCommandInteraction, expectedKey?: string) {
-    const replies = (interaction as any)._getReplies();
+export function assertErrorReply(interaction: any, expectedMessage?: string): void {
+    const replies = interaction._getReplies();
     assert.ok(replies.length > 0, "Expected at least one reply");
 
     const lastReply = replies[replies.length - 1];
+    assert.ok(lastReply.embeds, "Expected error to have embeds");
+    assert.ok(lastReply.embeds.length > 0, "Expected at least one embed");
+    assert.ok(lastReply.flags, "Expected error to be ephemeral");
 
-    // Check if it's an embed with error characteristics
-    if (typeof lastReply === "object" && lastReply.embeds) {
+    if (expectedMessage) {
         const embed = lastReply.embeds[0];
-        assert.ok(embed, "Expected embed in reply");
-
-        // Error embeds typically have red color (from constants.colors.red)
-        // and are ephemeral (MessageFlags.Ephemeral)
-        if (lastReply.flags && lastReply.flags.length > 0) {
-            // Has ephemeral flag - likely an error
-            assert.ok(true, "Reply has ephemeral flag (expected for errors)");
-        }
-
-        if (expectedKey) {
-            const description = embed.description || embed.data?.description || "";
-            assert.ok(
-                description.includes(expectedKey),
-                `Expected description to include "${expectedKey}", got: ${description}`
-            );
-        }
-    } else {
-        assert.fail("Expected reply to be an embed object");
-    }
-}
-
-/**
- * Assert that the interaction received a success reply
- *
- * @param interaction - The mock interaction
- * @param expectedMessage - Optional expected message content
- */
-export function assertSuccessReply(interaction: ChatInputCommandInteraction, expectedMessage?: string) {
-    const replies = (interaction as any)._getReplies();
-    assert.ok(replies.length > 0, "Expected at least one reply");
-
-    const lastReply = replies[replies.length - 1];
-
-    if (typeof lastReply === "object" && lastReply.embeds) {
-        const embed = lastReply.embeds[0];
-        assert.ok(embed, "Expected embed in reply");
-
-        if (expectedMessage) {
-            const description = embed.description || embed.data?.description || "";
-            assert.ok(
-                description.includes(expectedMessage),
-                `Expected description to include "${expectedMessage}", got: ${description}`
-            );
-        }
-    } else if (typeof lastReply === "object" && lastReply.content) {
-        // Some commands use plain content replies
-        if (expectedMessage) {
-            assert.ok(
-                lastReply.content.includes(expectedMessage),
-                `Expected content to include "${expectedMessage}", got: ${lastReply.content}`
-            );
-        }
-    } else {
-        assert.fail("Expected reply to be an embed or content object");
-    }
-}
-
-/**
- * Assert that a reply contains an embed with a specific field
- *
- * @param interaction - The mock interaction
- * @param fieldName - Name of the field to check
- * @param expectedValue - Optional expected field value (partial match)
- */
-export function assertEmbedField(interaction: ChatInputCommandInteraction, fieldName: string, expectedValue?: string) {
-    const replies = (interaction as any)._getReplies();
-    assert.ok(replies.length > 0, "Expected at least one reply");
-
-    const lastReply = replies[replies.length - 1];
-    assert.ok(typeof lastReply === "object" && lastReply.embeds, "Expected embed reply");
-
-    const embed = lastReply.embeds[0];
-    assert.ok(embed.fields, "Expected embed to have fields");
-
-    const field = embed.fields.find((f: any) => f.name === fieldName);
-    assert.ok(field, `Expected to find field with name "${fieldName}"`);
-
-    if (expectedValue) {
+        const embedData = embed.data || embed;
+        const description = embedData.description || "";
         assert.ok(
-            field.value.includes(expectedValue),
-            `Expected field value to include "${expectedValue}", got: ${field.value}`
+            description.includes(expectedMessage),
+            `Expected error message to include "${expectedMessage}", got: ${description}`,
         );
     }
 }
 
 /**
- * Assert the number of replies sent
- *
- * @param interaction - The mock interaction
- * @param expected - Expected number of replies
+ * Assert that exactly N replies were sent
  */
-export function assertReplyCount(interaction: ChatInputCommandInteraction, expected: number) {
-    const replies = (interaction as any)._getReplies();
-    assert.strictEqual(replies.length, expected, `Expected ${expected} replies, got ${replies.length}`);
+export function assertReplyCount(interaction: any, expectedCount: number): void {
+    const replies = interaction._getReplies();
+    assert.strictEqual(replies.length, expectedCount, `Expected ${expectedCount} replies, got ${replies.length}`);
 }
 
 /**
  * Get the last reply from an interaction
- *
- * @param interaction - The mock interaction
- * @returns The last reply object
  */
-export function getLastReply(interaction: ChatInputCommandInteraction) {
-    const replies = (interaction as any)._getReplies();
+export function getLastReply(interaction: any): any {
+    const replies = interaction._getReplies();
     assert.ok(replies.length > 0, "Expected at least one reply");
     return replies[replies.length - 1];
 }
 
 /**
- * Seed a registered user in the bot's cache
- *
- * @param bot - The mock bot instance
- * @param userId - Discord user ID
- * @param allyCode - SWGOH ally code
- * @param name - Player name (optional)
+ * Assert that an embed has a specific field
  */
-export async function seedRegisteredUser(
-    // biome-ignore lint/suspicious/noExplicitAny: mockBot returns any
-    bot: any,
-    userId: string,
-    allyCode: string,
-    name = "TestPlayer"
-) {
-    await bot.cache.put(
-        (bot as any).config.mongodb.swgohbotdb,
-        "users",
-        { id: userId },
-        {
-            id: userId,
-            accounts: [{ allyCode, name, primary: true }]
-        }
-    );
-}
+export function assertEmbedField(interaction: any, fieldName: string, expectedValue?: string): void {
+    const reply = getLastReply(interaction);
+    assert.ok(reply.embeds, "Expected reply to have embeds");
+    assert.ok(reply.embeds.length > 0, "Expected at least one embed");
 
-/**
- * Seed guild configuration in the bot's cache
- *
- * @param bot - The mock bot instance
- * @param guildId - Discord guild ID
- * @param settings - Guild settings object
- */
-export async function seedGuildConfig(
-    // biome-ignore lint/suspicious/noExplicitAny: mockBot returns any
-    bot: any,
-    guildId: string,
-    settings: Record<string, any>
-) {
-    await bot.cache.put(
-        (bot as any).config.mongodb.swgohbotdb,
-        "settings",
-        { id: guildId },
-        {
-            id: guildId,
-            ...settings
-        }
-    );
-}
+    const embed = reply.embeds[0];
+    const embedData = embed.data || embed;
+    assert.ok(embedData.fields, "Expected embed to have fields");
 
-/**
- * Create a scenario with a registered user
- *
- * @param allyCode - Ally code for the user (default: "123456789")
- * @returns Object with bot and interaction configured for registered user
- */
-export async function createRegisteredUserScenario(allyCode = "123456789") {
-    const { createMockBot, createMockInteraction } = await import("../mocks/index.ts");
+    const field = embedData.fields.find((f: any) => f.name === fieldName);
+    assert.ok(field, `Expected embed to have field "${fieldName}"`);
 
-    const bot = createMockBot();
-    const interaction = createMockInteraction();
-
-    await seedRegisteredUser(bot, interaction.user.id, allyCode);
-
-    return { bot, interaction };
+    if (expectedValue !== undefined) {
+        assert.ok(
+            field.value.includes(expectedValue),
+            `Expected field "${fieldName}" to include "${expectedValue}", got: ${field.value}`,
+        );
+    }
 }

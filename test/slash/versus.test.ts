@@ -3,15 +3,12 @@ import Versus from "../../slash/versus.ts";
 
 describe("Versus", () => {
     // TODO: Add functionality tests
-    // Note: Full versus tests require MongoDB, user registration, and swgohAPI.
+    // Note: Full versus tests require complex mocking of getAllyCode, swgohAPI, and patreonFuncs.
     // Should test:
-    // - Compares a specific character between two players
-    // - Shows stats, mods, and gear differences
-    // - Displays relic levels and abilities
-    // - Error handling for invalid ally codes
-    // - Error handling for invalid character
-    // - Error handling for unregistered users
-    // - Proper formatting of comparison output
+    // - Character comparison between two players (gear, stats, zetas)
+    // - Relic level comparison
+    // - Ultimate ability comparison
+    // - Error handling when neither player has character
     // - Works without guild context (guildOnly: false)
 
     it("placeholder test", () => {
