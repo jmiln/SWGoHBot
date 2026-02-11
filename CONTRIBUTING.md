@@ -45,8 +45,8 @@ All commands are TypeScript files in the `/slash/` directory that extend the bas
 Basic command structure:
 ```typescript
 import { ApplicationCommandOptionType } from "discord.js";
-import type { BotType, BotInteraction } from "../types/types.ts";
 import Command from "../base/slashCommand.ts";
+import type { CommandContext } from "../types/types.ts";
 
 export default class MyCommand extends Command {
     static readonly metadata = {
@@ -61,17 +61,37 @@ export default class MyCommand extends Command {
                 required: false,
             },
         ],
+        permLevel: 0, // 0 = everyone, 1 = server admin, 10 = bot owner
     };
 
-    constructor(Bot: BotType) {
-        super(Bot, MyCommand.metadata);
+    constructor() {
+        super(MyCommand.metadata);
     }
 
-    async run(_Bot: BotType, interaction: BotInteraction) {
+    async run({ interaction, language, swgohLanguage, guildSettings }: CommandContext) {
         // Your command logic here
+        // CommandContext provides:
+        // - interaction: Discord ChatInputCommandInteraction
+        // - language: Language instance for localized strings
+        // - swgohLanguage: Game language setting
+        // - guildSettings: Guild configuration
+        // - permLevel: User's permission level
+
         await interaction.reply("Command output");
     }
 }
+```
+
+**Importing Data and Modules:**
+Commands use ES module imports to access bot functionality:
+```typescript
+// Import game data
+import { characters, ships } from "../data/constants/units.ts";
+
+// Import modules
+import swgohAPI from "../modules/swapi.ts";
+import { findChar, msgArray } from "../modules/functions.ts";
+import config from "../config.js";
 ```
 
 Look at existing commands in `/slash/` for more examples and patterns.
