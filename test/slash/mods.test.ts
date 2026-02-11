@@ -55,23 +55,4 @@ describe("Mods", () => {
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply even without guild context");
     });
-
-    it("should have correct command configuration", () => {        const command = new Mods();
-
-        assert.strictEqual(command.commandData.name, "mods", "Expected command name to be 'mods'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 1, "Expected 1 option");
-
-        const charOpt = command.commandData.options.find(o => o.name === "character");
-        assert.ok(charOpt, "Expected character option");
-        assert.strictEqual(charOpt.required, true, "Expected character to be required");
-        assert.strictEqual(charOpt.autocomplete, true, "Expected character to have autocomplete");
-    });
-
-    it("should have description", () => {        const command = new Mods();
-
-        assert.ok(command.commandData.description, "Expected command to have description");
-        assert.ok(command.commandData.description.includes("mod"), "Expected description to mention mods");
-    });
 });

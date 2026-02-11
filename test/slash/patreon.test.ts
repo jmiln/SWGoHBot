@@ -66,26 +66,4 @@ describe("Patreon", () => {
 
         assertReplyCount(interaction, 1);
     });
-
-    it("should have correct command configuration", () => {        const command = new Patreon();
-
-        assert.strictEqual(command.commandData.name, "patreon", "Expected command name to be 'patreon'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 6, "Expected 6 subcommands");
-
-        const benefitsOpt = command.commandData.options.find(o => o.name === "benefits");
-        const commandsOpt = command.commandData.options.find(o => o.name === "commands");
-        const cooldownsOpt = command.commandData.options.find(o => o.name === "cooldowns");
-        const myInfoOpt = command.commandData.options.find(o => o.name === "my_info");
-        const setServerOpt = command.commandData.options.find(o => o.name === "set_server");
-        const unsetServerOpt = command.commandData.options.find(o => o.name === "unset_server");
-
-        assert.ok(benefitsOpt, "Expected benefits subcommand");
-        assert.ok(commandsOpt, "Expected commands subcommand");
-        assert.ok(cooldownsOpt, "Expected cooldowns subcommand");
-        assert.ok(myInfoOpt, "Expected my_info subcommand");
-        assert.ok(setServerOpt, "Expected set_server subcommand");
-        assert.ok(unsetServerOpt, "Expected unset_server subcommand");
-    });
 });

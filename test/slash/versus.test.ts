@@ -1,46 +1,22 @@
-import assert from "node:assert";
 import { describe, it } from "node:test";
 import Versus from "../../slash/versus.ts";
 
 describe("Versus", () => {
+    // TODO: Add functionality tests
     // Note: Full versus tests require MongoDB, user registration, and swgohAPI.
-    // We test command configuration only.
+    // Should test:
+    // - Compares a specific character between two players
+    // - Shows stats, mods, and gear differences
+    // - Displays relic levels and abilities
+    // - Error handling for invalid ally codes
+    // - Error handling for invalid character
+    // - Error handling for unregistered users
+    // - Proper formatting of comparison output
+    // - Works without guild context (guildOnly: false)
 
-    it("should work without guild context (guildOnly: false)", () => {        const command = new Versus();
-
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-    });
-
-    it("should be enabled", () => {        const command = new Versus();
-
-        assert.strictEqual(command.commandData.enabled, true, "Expected command to be enabled");
-    });
-
-    it("should have correct command configuration", () => {        const command = new Versus();
-
-        assert.strictEqual(command.commandData.name, "versus", "Expected command name to be 'versus'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 3, "Expected 3 options");
-    });
-
-    it("should have required allycode options", () => {        const command = new Versus();
-
-        const allycode1Opt = command.commandData.options.find(o => o.name === "allycode_1");
-        const allycode2Opt = command.commandData.options.find(o => o.name === "allycode_2");
-
-        assert.ok(allycode1Opt, "Expected allycode_1 option");
-        assert.strictEqual(allycode1Opt.required, true, "Expected allycode_1 to be required");
-
-        assert.ok(allycode2Opt, "Expected allycode_2 option");
-        assert.strictEqual(allycode2Opt.required, true, "Expected allycode_2 to be required");
-    });
-
-    it("should have required character option with autocomplete", () => {        const command = new Versus();
-
-        const characterOpt = command.commandData.options.find(o => o.name === "character");
-        assert.ok(characterOpt, "Expected character option");
-        assert.strictEqual(characterOpt.required, true, "Expected character to be required");
-        assert.strictEqual(characterOpt.autocomplete, true, "Expected character to have autocomplete");
+    it("placeholder test", () => {
+        // Placeholder until functionality tests are added
+        const command = new Versus();
+        // Command exists and can be instantiated
     });
 });

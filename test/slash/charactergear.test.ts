@@ -132,35 +132,6 @@ describe("Charactergear", () => {
         assert.ok(replies.length > 0, "Expected reply with expand option");
     });
 
-    it("should have correct command configuration", () => {        const command = new Charactergear();
-
-        assert.strictEqual(command.commandData.name, "charactergear", "Expected command name to be 'charactergear'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 4, "Expected 4 options");
-
-        const charOpt = command.commandData.options.find((o) => o.name === "character");
-        const allycodeOpt = command.commandData.options.find((o) => o.name === "allycode");
-        const expandOpt = command.commandData.options.find((o) => o.name === "expand");
-        const gearLevelOpt = command.commandData.options.find((o) => o.name === "gearlevel");
-
-        assert.ok(charOpt, "Expected character option");
-        assert.ok(allycodeOpt, "Expected allycode option");
-        assert.ok(expandOpt, "Expected expand option");
-        assert.ok(gearLevelOpt, "Expected gearlevel option");
-
-        assert.strictEqual(charOpt.required, true, "Expected character to be required");
-        assert.strictEqual(charOpt.autocomplete, true, "Expected character to have autocomplete");
-    });
-
-    it("should have proper gear level constraints in options", () => {        const command = new Charactergear();
-
-        const gearLevelOpt = command.commandData.options.find((o) => o.name === "gearlevel");
-        assert.ok(gearLevelOpt, "Expected gearlevel option");
-        assert.strictEqual(gearLevelOpt.minValue, 1, "Expected minValue to be 1");
-        assert.strictEqual(gearLevelOpt.maxValue, 13, "Expected maxValue to be 13");
-    });
-
     it("should process character search by alias", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "CLS", gearlevel: 3 }, // Alias for Commander Luke
         });

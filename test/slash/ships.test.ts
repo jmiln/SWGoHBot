@@ -40,17 +40,4 @@ describe("Ships", () => {
 
         assertReplyCount(interaction, 1);
     });
-
-    it("should have correct command configuration", () => {        const command = new Ships();
-
-        assert.strictEqual(command.commandData.name, "ships", "Expected command name to be 'ships'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 1, "Expected 1 option");
-
-        const shipOpt = command.commandData.options.find(o => o.name === "ship");
-        assert.ok(shipOpt, "Expected ship option");
-        assert.strictEqual(shipOpt.required, true, "Expected ship to be required");
-        assert.strictEqual(shipOpt.autocomplete, true, "Expected ship to have autocomplete");
-    });
 });

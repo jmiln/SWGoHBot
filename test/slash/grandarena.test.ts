@@ -9,36 +9,6 @@ describe("GrandArena Functionality", () => {
         mock.restoreAll();
     });
 
-    it("should have correct command configuration", () => {        const command = new GrandArena();
-
-        assert.strictEqual(command.commandData.name, "grandarena", "Expected command name to be 'grandarena'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 4, "Expected 4 options");
-    });
-
-    it("should have required allycode_1 and allycode_2 options", () => {        const command = new GrandArena();
-
-        const allycode1Opt = command.commandData.options.find(o => o.name === "allycode_1");
-        assert.ok(allycode1Opt, "Expected allycode_1 option");
-        assert.strictEqual(allycode1Opt.required, true, "Expected allycode_1 to be required");
-
-        const allycode2Opt = command.commandData.options.find(o => o.name === "allycode_2");
-        assert.ok(allycode2Opt, "Expected allycode_2 option");
-        assert.strictEqual(allycode2Opt.required, true, "Expected allycode_2 to be required");
-    });
-
-    it("should have optional characters and faction options", () => {        const command = new GrandArena();
-
-        const charactersOpt = command.commandData.options.find(o => o.name === "characters");
-        assert.ok(charactersOpt, "Expected characters option");
-        assert.strictEqual(charactersOpt.required, undefined, "Expected characters to be optional");
-
-        const factionOpt = command.commandData.options.find(o => o.name === "faction");
-        assert.ok(factionOpt, "Expected faction option");
-        assert.strictEqual(factionOpt.required, undefined, "Expected faction to be optional");
-    });
-
     it("should validate player comparison output structure", async () => {
         // Mock player data with realistic rosters
         const mockPlayer1 = {

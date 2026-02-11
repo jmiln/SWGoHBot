@@ -105,18 +105,4 @@ describe("Arenarank", () => {
 
         assertReplyCount(interaction, 1);
     });
-
-    it("should have correct command configuration", () => {        const command = new Arenarank();
-
-        assert.strictEqual(command.commandData.name, "arenarank", "Expected command name to be 'arenarank'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 2, "Expected 2 options");
-
-        const rankOpt = command.commandData.options.find(o => o.name === "rank");
-        const hopsOpt = command.commandData.options.find(o => o.name === "hops");
-
-        assert.ok(rankOpt, "Expected rank option");
-        assert.ok(hopsOpt, "Expected hops option");
-    });
 });

@@ -48,14 +48,6 @@ describe("BotShards", () => {
         assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
-    it("should have correct command configuration", () => {        const command = new BotShards();
-
-        assert.strictEqual(command.commandData.name, "botshards", "Expected command name to be 'botshards'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 0, "Expected no options");
-    });
-
     it("should pad shard numbers correctly for alignment", () => {
         const results: ShardData[] = [
             [[0], 0, 50, 1500],

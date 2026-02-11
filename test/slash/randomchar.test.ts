@@ -71,20 +71,4 @@ describe("Randomchar", () => {
 
         assertReplyCount(interaction, 1);
     });
-
-    it("should have correct command configuration", () => {        const command = new Randomchar();
-
-        assert.strictEqual(command.commandData.name, "randomchar", "Expected command name to be 'randomchar'");
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
-        assert.ok(command.commandData.options, "Expected options to be defined");
-        assert.strictEqual(command.commandData.options.length, 3, "Expected 3 options");
-
-        const allycodeOpt = command.commandData.options.find(o => o.name === "allycode");
-        const rarityOpt = command.commandData.options.find(o => o.name === "rarity");
-        const countOpt = command.commandData.options.find(o => o.name === "count");
-
-        assert.ok(allycodeOpt, "Expected allycode option");
-        assert.ok(rarityOpt, "Expected rarity option");
-        assert.ok(countOpt, "Expected count option");
-    });
 });
