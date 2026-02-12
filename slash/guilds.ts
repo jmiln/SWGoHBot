@@ -279,7 +279,10 @@ export default class Guilds extends Command {
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
             logger.error(`[Guilds] Failed to get guild: ${errorMessage}`);
-            return super.error(interaction, codeBlock(`Issue getting guild: ${errorMessage}`));
+            return super.error(
+                interaction,
+                "Sorry, I couldn't fetch guild data right now. Please make sure you have a valid ally code and try again later.",
+            );
         }
 
         if (!guild) {
@@ -629,6 +632,18 @@ export default class Guilds extends Command {
 
             // See what the top 4 tiers of gear/ relic are available for these members
             let firstViableTier = null;
+            if (members.length === 0) {
+                return interaction.editReply({
+                    content: null,
+                    embeds: [
+                        {
+                            title: "Error",
+                            description: "No member data available to display gear/relic summary.",
+                            color: constants.colors.red,
+                        },
+                    ],
+                });
+            }
             const tierKeys = Object.keys(members[0]).reverse();
             for (const tier in tierKeys) {
                 if (members.filter((mem) => mem[tierKeys[tier]] > 0).length) {
@@ -1044,7 +1059,7 @@ export default class Guilds extends Command {
 
             const users = [];
             // Format the strings for each member
-            const maxLen = Math.max(...sortedGuild.map((mem) => mem.gp.toLocaleString().length));
+            const maxLen = sortedGuild.length > 0 ? Math.max(...sortedGuild.map((mem) => mem.gp.toLocaleString().length)) : 0;
             for (const p of sortedGuild) {
                 // The name, bold if they're in the server with the bot
                 const nameStr = p.inGuild ? `**${p.name}**` : p.name;
@@ -1056,7 +1071,7 @@ export default class Guilds extends Command {
                 const numStr = showAC ? p.allyCode : `${" ".repeat(maxLen - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP`;
 
                 // Finally, the output string with everything together
-                users.push(`\`[${numStr}]\` - \`[${p.memberLvl}]\` ${nameStr} ${regStr}`);
+                users.push(`\`[${numStr}]\` - \`[${p.memberLvl ?? "?"}]\` ${nameStr} ${regStr}`);
             }
 
             const fields = [];

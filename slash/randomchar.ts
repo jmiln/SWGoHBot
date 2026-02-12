@@ -104,9 +104,15 @@ export default class Randomchar extends Command {
             while (charOut.length < count) {
                 const newIndex = Math.floor(Math.random() * swapiChars.length);
                 const newChar = swapiChars[newIndex];
-                const playerChar = await swgohAPI.units(newChar.defId);
-                const name = playerChar.nameKey;
-                if (!charOut.includes(name)) charOut.push(name);
+                try {
+                    const playerChar = await swgohAPI.units(newChar.defId);
+                    const name = playerChar.nameKey;
+                    if (!charOut.includes(name)) charOut.push(name);
+                } catch (err) {
+                    const errorMessage = err instanceof Error ? err.message : String(err);
+                    logger.error(`[slash/randomchar] Failed to fetch unit ${newChar.defId}: ${errorMessage}`);
+                    // Skip this character and try another
+                }
             }
         } else {
             // No chars available or not using allycode

@@ -141,9 +141,10 @@ class PatreonFuncs {
                     const playerRes = await swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
                     player = playerRes?.[0] || null;
                 } catch (e) {
+                    const message = e instanceof Error ? e.message : String(e);
+                    logger.error(`[patreonFuncs/getRanks] Failed to fetch arena data for allycode ${acc.allyCode}: ${message}`);
                     // Wait since it won't happen later when something breaks
                     await wait(750);
-                    logger.error(`Broke in getRanks: ${e}`);
                     continue;
                 }
                 if (!acc.lastCharRank) {
@@ -509,19 +510,19 @@ class PatreonFuncs {
                 logger.error(
                     `[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${JSON.stringify(guild)}`,
                 );
-                return;
+                continue;
             }
 
             let guildLog: PlayerUpdates;
             try {
                 if (!guild?.roster?.length) {
                     logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
-                    return;
+                    continue;
                 }
                 guildLog = await swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
             } catch (err) {
                 logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
-                return;
+                continue;
             }
 
             // If there were not changes found, move along, not the changes we were looking for
@@ -652,7 +653,7 @@ class PatreonFuncs {
                 logger.error(
                     `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${JSON.stringify(rawGuild)}`,
                 );
-                return;
+                continue;
             }
 
             let roster = null;
@@ -943,8 +944,8 @@ class PatreonFuncs {
     private isWithinTime(targetTime: number, nowTime: number, min: number, max: number) {
         if (min >= max) throw new Error("[patreonFuncs / isWithinTime] Min MUST be less than max.");
         if (
-            targetTime - min * 60_000 < nowTime || // min minutes before targetTime is past
-            targetTime - max * 60_000 > nowTime
+            targetTime - min * constants.minMS < nowTime || // min minutes before targetTime is past
+            targetTime - max * constants.minMS > nowTime
         ) {
             // max minutes before targetTime is in the future
             return false;

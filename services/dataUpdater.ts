@@ -6,6 +6,7 @@ import { eachLimit } from "async";
 import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
 import config from "../config.ts";
+import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
@@ -227,7 +228,7 @@ async function init() {
             })();
 
             // Run the Patreon updater every 15 minutes - store interval reference
-            patronsInterval = setInterval(async () => await updatePatrons(cache), 15 * 60 * 1000);
+            patronsInterval = setInterval(async () => await updatePatrons(cache), 15 * constants.minMS);
         } else {
             // TODO: Add a way to choose what's updated from the cmdline without having to manually change which bit we want updated
             // If we're forcing an update, just run the bits we want then exit
@@ -356,7 +357,7 @@ async function runGameDataUpdaters(metadata: Metadata, cache: BotCache, comlinkS
         logger.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         logger.log(log.join("\n"));
     } else {
-        // console.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
+        debugLog(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
     }
     debugLog("Finished running gameData updaters");
 }
@@ -945,7 +946,7 @@ async function updateLocs(
 
                     charObj = { type: "Galactic Ascension", locId };
                 } else {
-                    // console.log(`[updateLocs] Unknown campaign: ${node.campaignId} - ${node.campaignMapId} - ${node.campaignNodeId}`);
+                    debugLog(`[updateLocs] Unknown campaign: ${node.campaignId} - ${node.campaignMapId} - ${node.campaignNodeId}`);
                     continue;
                 }
 
@@ -1330,7 +1331,7 @@ async function processLocalization(
                 },
             });
         }
-        // console.log(`Finished localizing ${dbTarget} for ${lang}`);
+        debugLog(`Finished localizing ${dbTarget} for ${lang}`);
     }
 
     // Batch operations to avoid MongoDB's 1000-operation limit
@@ -1343,7 +1344,7 @@ async function processLocalization(
     } else {
         await cache.putMany(config.mongodb.swapidb, dbTarget, bulkWriteArr);
     }
-    // console.log(`Finished localizing ${dbTarget}`);
+    debugLog(`Finished localizing ${dbTarget}`);
 }
 
 async function saveRaidNames(locales: Locales) {

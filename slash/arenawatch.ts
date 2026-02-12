@@ -14,7 +14,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { CommandContext, UserConfig } from "../types/types.ts";
+import type { CommandContext, PlayerCooldown, UserConfig } from "../types/types.ts";
 
 interface InteractionOptions {
     subCommand: string;
@@ -531,8 +531,11 @@ export async function processAWChanges({
     target: string;
     interactionOptions: InteractionOptions;
     aw: UserConfig["arenaWatch"];
-    // biome-ignore lint/complexity/noBannedTypes: "swgohAPI.unitStats"
-    unitStats: Function;
+    unitStats: (
+        allycodes: number | number[],
+        cooldown?: PlayerCooldown,
+        options?: { force?: boolean; defId?: string },
+    ) => Promise<SWAPIPlayer[]>;
 }): Promise<{ result: AwChangeRes; aw: UserConfig["arenaWatch"] }> {
     const result = {
         outLog: "", // Normal progress, just results of changing values
@@ -684,7 +687,8 @@ export async function processAWChanges({
                             continue;
                         }
                     } catch (e) {
-                        outLog.push(e);
+                        const errorMsg = e instanceof Error ? e.message : String(e);
+                        outLog.push(errorMsg);
                         continue;
                     }
 
@@ -695,6 +699,7 @@ export async function processAWChanges({
                 }
 
                 if (!codes.length) {
+                    logger.error("[slash/arenawatch] No valid ally codes provided");
                     result.error = "There were no valid ally codes entered.";
                     break;
                 }
@@ -702,8 +707,10 @@ export async function processAWChanges({
                 // There are more than one valid code, try adding them all
                 const players = await unitStats(codes.map((c) => c.code));
                 if (!players?.length) {
-                    result.error =
+                    const errorMsg =
                         "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.";
+                    logger.error(`[slash/arenawatch] No players found for ally codes: ${codes.map((c) => c.code).join(", ")}`);
+                    result.error = errorMsg;
                     break;
                 }
                 for (const c of codes) {
@@ -711,7 +718,8 @@ export async function processAWChanges({
                     try {
                         player = checkPlayer(aw, players, c, interactionOptions.codeCap);
                     } catch (e) {
-                        outLog.push(e);
+                        const errorMsg = e instanceof Error ? e.message : String(e);
+                        outLog.push(errorMsg);
                         continue;
                     }
 
@@ -746,7 +754,8 @@ export async function processAWChanges({
                 try {
                     [ac, mention] = getAcMention(newCode);
                 } catch (e) {
-                    outLog.push(e);
+                    const errorMsg = e instanceof Error ? e.message : String(e);
+                    outLog.push(errorMsg);
                 }
 
                 // Check if the specified code is available to edit

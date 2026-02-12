@@ -49,13 +49,17 @@ export default class MyProfile extends Command {
             return super.error(interaction, "Sorry, but I could not find that player right now.");
         }
 
-        const gpFull = player.stats.find((s) => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value;
-        const gpChar = player.stats.find(
+        const gpFullStat = player.stats.find((s) => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME");
+        const gpCharStat = player.stats.find(
             (s) => s.nameKey === "Galactic Power (Characters):" || s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME",
-        ).value;
-        const gpShip = player.stats.find(
+        );
+        const gpShipStat = player.stats.find(
             (s) => s.nameKey === "Galactic Power (Ships):" || s.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME",
-        ).value;
+        );
+
+        const gpFull = gpFullStat?.value ?? "N/A";
+        const gpChar = gpCharStat?.value ?? "N/A";
+        const gpShip = gpShipStat?.value ?? "N/A";
 
         const rarityMap = {
             ONESTAR: 1,
@@ -77,8 +81,9 @@ export default class MyProfile extends Command {
             off100: 0,
         };
         for (const c of player.roster) {
-            if (!c.rarity) {
-                c.rarity = rarityMap[c.rarity];
+            // Convert string rarity keys to numeric values
+            if (typeof c.rarity === "string") {
+                c.rarity = rarityMap[c.rarity] ?? 0;
             }
             if (c.mods) {
                 const six = c.mods.filter((p) => p.pips === 6);
@@ -156,7 +161,7 @@ export default class MyProfile extends Command {
         }
         const charOut = language.get(
             "COMMAND_MYPROFILE_CHARS",
-            gpChar.toLocaleString(),
+            typeof gpChar === "number" ? gpChar.toLocaleString() : gpChar,
             charList,
             zetaCount,
             relicCount,
@@ -173,7 +178,11 @@ export default class MyProfile extends Command {
             rarityCount[ship.rarity].s += 1;
         }
 
-        const shipOut = language.get("COMMAND_MYPROFILE_SHIPS", gpShip.toLocaleString(), shipList) as unknown as {
+        const shipOut = language.get(
+            "COMMAND_MYPROFILE_SHIPS",
+            typeof gpShip === "number" ? gpShip.toLocaleString() : gpShip,
+            shipList,
+        ) as unknown as {
             header: string;
             stats: string[];
         };
@@ -248,7 +257,7 @@ export default class MyProfile extends Command {
                         player.level,
                         player.arena.char.rank,
                         player.arena.ship.rank,
-                        gpFull.toLocaleString(),
+                        typeof gpFull === "number" ? gpFull.toLocaleString() : gpFull,
                         mods,
                     ),
                     fields: [...fields, { name: constants.zws, value: footerStr }],

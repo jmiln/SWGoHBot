@@ -155,7 +155,7 @@ class EventFuncs {
             evArrOut.push(event);
             await setEvents({ guildId: event.guildId, evArrOut })
                 .then(() => {
-                    // console.log(`Updating repeating event ${event.name} (${event.channel}).`);
+                    logger.debug(`Updating repeating event ${event.name} (${event.channel}).`);
                 })
                 .catch((error) => {
                     logger.error(`Broke trying to replace event: ${error}`);

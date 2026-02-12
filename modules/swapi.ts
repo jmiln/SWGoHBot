@@ -3,6 +3,7 @@ import { Worker } from "node:worker_threads";
 import ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
 import config from "../config.ts";
+import constants from "../data/constants/constants.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
@@ -84,7 +85,7 @@ class SWAPI {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[SWAPI] Failed to reload map files: ${message}`);
             }
-        }, 360_000);
+        }, 6 * constants.minMS); // 6 minutes
     }
 
     /**
@@ -227,11 +228,16 @@ class SWAPI {
                 const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.ts`, {
                     workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
                 });
-                worker.on("message", resolve);
-                worker.on("error", reject);
+                worker.on("message", (result) => {
+                    worker.terminate();
+                    resolve(result);
+                });
+                worker.on("error", (err) => {
+                    worker.terminate();
+                    reject(err);
+                });
                 worker.on("exit", (code) => {
                     if (code !== 0) logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
-                    worker.terminate();
                 });
             });
             return chunkRes;
@@ -244,6 +250,9 @@ class SWAPI {
             memberChunks.push(chunk);
         }
         const guildLog = {};
+        // Using Promise.all here is acceptable because workers offload CPU-intensive stat
+        // calculations to separate threads, preventing main thread blocking. The coordination
+        // itself is lightweight and allows parallel worker execution.
         await Promise.all(
             memberChunks.map(async (mChunk, ix) => {
                 const chunkRes: SWAPIWorkerOutput = await processMemberChunk(mChunk, ix + 1);
@@ -387,8 +396,10 @@ class SWAPI {
                             }
                         }
                     }
-                } catch (_) {
-                    // Couldn't get the data from the api, so send old stuff
+                } catch (err) {
+                    const message = err instanceof Error ? err.message : String(err);
+                    logger.error(`[swapi unitStats] Failed to fetch player updates: ${message}`);
+                    logger.log(`[swapi unitStats] Returning cached data for ${players?.length || 0} players`);
                     return players;
                 }
 
@@ -408,7 +419,9 @@ class SWAPI {
 
                             const statRosterRes = await statRoster.json();
                             bareP.roster = statRosterRes;
-                        } catch (_) {
+                        } catch (err) {
+                            const message = err instanceof Error ? err.message : String(err);
+                            logger.error(`[swapi unitStats] Stats calculation failed for player ${bareP.allyCode}: ${message}`);
                             continue;
                         }
 

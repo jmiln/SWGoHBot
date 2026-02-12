@@ -254,15 +254,37 @@ export function findChar(searchName: string, unitList: BotUnit[], isShip = false
 
 // Parse the webhook url, and get the id & token from the end
 export function parseWebhook(url: string): { id: string; token: string } {
-    const [id, token] = url.split("/").slice(-2);
+    if (!url || typeof url !== "string") {
+        throw new Error("Invalid webhook URL: URL must be a non-empty string");
+    }
+
+    // Validate Discord webhook URL format
+    const webhookPattern = /^https?:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/api\/webhooks\/(\d+)\/([a-zA-Z0-9_-]+)\/?$/;
+    const match = url.match(webhookPattern);
+
+    if (!match) {
+        throw new Error(`Invalid webhook URL format: ${url.slice(0, 50)}...`);
+    }
+
+    const [, id, token] = match;
     return { id, token };
 }
 
 // Send a message to a webhook url, takes the url & the embed to send
 export function sendWebhook(hookUrl: string, embed: Embed): void {
-    const { id, token } = parseWebhook(hookUrl);
-    const hook = new WebhookClient({ id, token });
-    hook.send({ embeds: [embed] }).catch(logger.error);
+    try {
+        const { id, token } = parseWebhook(hookUrl);
+        const hook = new WebhookClient({ id, token });
+        hook.send({ embeds: [embed] }).catch((err) => {
+            const message = err instanceof Error ? err.message : String(err);
+            logger.error(`[sendWebhook] Failed to send webhook message: ${message}`);
+            throw err;
+        });
+    } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logger.error(`[sendWebhook] ${message}`);
+        throw err;
+    }
 }
 
 // Return a duration string
@@ -815,8 +837,9 @@ export async function announceMsg({
     // If everything is ok, go ahead and try sending the message
     await chan.send(announceMessage).catch((err) => {
         // if (err.stack.toString().includes("user aborted a request")) return;
+        const errorDetails = err instanceof Error ? err.stack || err.message : String(err);
         logger.error(
-            `Broke sending announceMsg: ${err.stack} \nGuildID: ${guild.id} \nChannel: ${announceChan}\nMsg: ${announceMessage}\n`,
+            `[announceMsg] Failed to send message\nGuild: ${guild.name} (${guild.id})\nChannel: ${announceChan}\nError: ${errorDetails}\nMessage: ${announceMessage}`,
         );
         throw err;
     });

@@ -174,7 +174,7 @@ export default class SetConf extends Command {
                 if (subCommand === "manage_list") {
                     for (const key of Object.keys(guildTWList)) {
                         if (key === "Blacklist") continue;
-                        if (guildTWList[key].includes(removeUnitDefId)) {
+                        if (guildTWList[key].includes(addUnitDefId)) {
                             return super.error(interaction, `Trying to add ${addUnitDefId}. This unit is already in your list`);
                         }
                     }

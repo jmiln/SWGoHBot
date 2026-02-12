@@ -61,7 +61,12 @@ export default class Character extends Command {
         try {
             char = await swgohAPI.getCharacter(character.uniqueName, swgohLanguage);
         } catch (err) {
-            return super.error(interaction, err.toString());
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            logger.error(`[slash/character] Failed to get character ${character.uniqueName}: ${errorMessage}`);
+            return super.error(
+                interaction,
+                "Sorry, I couldn't fetch character data right now. Please try again later or contact support if this continues.",
+            );
         }
         const fields = [];
 

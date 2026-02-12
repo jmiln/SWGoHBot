@@ -82,8 +82,9 @@ export default class MyArena extends Command {
                 const playerStatsRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
                 playerStats = playerStatsRes?.[0] || null;
             } catch (e) {
-                logger.error(`[slash/myarena] Error: ${e}`);
-                return super.error(interaction, codeBlock(e.interaction), {
+                const errorMessage = e instanceof Error ? e.message : String(e);
+                logger.error(`[slash/myarena] Error fetching player stats: ${errorMessage}`);
+                return super.error(interaction, codeBlock(errorMessage), {
                     title: language.get("BASE_SOMETHING_BROKE"),
                     footer: "Please try again in a bit.",
                 });
@@ -95,9 +96,9 @@ export default class MyArena extends Command {
                 const unitName = await getUnitName(player, charId);
 
                 const thisChar = playerStats.roster.find((c) => c.defId === charId);
-                const speed = thisChar.stats.final.Speed?.toLocaleString() || 0;
-                const health = thisChar.stats.final.Health?.toLocaleString() || 0;
-                const prot = thisChar.stats.final.Protection?.toLocaleString() || 0;
+                const speed = thisChar?.stats?.final?.Speed?.toLocaleString() || 0;
+                const health = thisChar?.stats?.final?.Health?.toLocaleString() || 0;
+                const prot = thisChar?.stats?.final?.Protection?.toLocaleString() || 0;
                 chars.push({
                     pos: positions[ix],
                     speed: speed,

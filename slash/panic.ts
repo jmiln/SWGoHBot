@@ -145,8 +145,8 @@ export default class Panic extends Command {
                 return Buffer.from(resBuf);
             });
         } catch (err) {
-            logger.error(`[getUnitImage] Something broke while requesting image.\n${err}`);
-            logger.error(`[slash/panic] Error: ${err}`);
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            logger.error(`[slash/panic] Failed to generate image: ${errorMessage}`);
             return null;
         }
 

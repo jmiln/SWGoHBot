@@ -4,6 +4,7 @@ import config from "../config.ts";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
+import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { CommandContext } from "../types/types.ts";
 
@@ -90,7 +91,10 @@ export default class Farm extends Command {
                         {},
                     )) as { id: string; language: string; langKey: string } | null;
 
-                    if (!langLoc) continue;
+                    if (!langLoc) {
+                        logger.debug(`[slash/farm] Missing localized location for ${loc.locId} in language ${swgohLanguage}`);
+                        continue;
+                    }
 
                     // If it's a proving grounds event, stick the unit name after
                     if (loc.locId === "EVENT_CONQUEST_UNIT_TRIALS_NAME") {
@@ -108,6 +112,8 @@ export default class Farm extends Command {
                         outList.push(`Fleet Hard ${loc.level}`);
                     } else if (loc.type === "Cantina") {
                         outList.push(`Cantina ${loc.level}`);
+                    } else {
+                        logger.debug(`[slash/farm] Unknown location type: ${loc.type} for ${character.name}`);
                     }
                 }
             } else if (loc.name) {
@@ -124,8 +130,16 @@ export default class Farm extends Command {
                     },
                     {},
                 )) as { id: string; language: string; langKey: string } | null;
-                if (!langLoc) continue;
+                if (!langLoc) {
+                    logger.debug(`[slash/farm] Missing localized location for ${loc.locId} in language ${swgohLanguage}`);
+                    continue;
+                }
                 outList.push(toProperCase(langLoc.langKey));
+            } else {
+                // Location has no recognizable properties
+                logger.debug(
+                    `[slash/farm] Skipping location with no recognizable properties for ${character.name}: ${JSON.stringify(loc)}`,
+                );
             }
         }
         if (!outList.length) {

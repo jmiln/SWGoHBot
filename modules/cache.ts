@@ -14,10 +14,11 @@ import type { BotCache } from "../types/cache_types.ts";
 interface Cacheable {
     updated?: number;
     updatedAt?: Date;
-    // biome-ignore lint/suspicious/noExplicitAny: Mongo's default ID
-    _id?: any;
+    // MongoDB's ObjectId - type varies (string, ObjectId, etc.)
+    _id?: unknown;
     // Allow any additional properties for MongoDB partial updates
-    // biome-ignore lint/suspicious/noExplicitAny: MongoDB documents can have any structure
+    // Must use 'any' here to match MongoDB's Document type signature for compatibility
+    // biome-ignore lint/suspicious/noExplicitAny: Required for MongoDB Document compatibility
     [key: string]: any;
 }
 

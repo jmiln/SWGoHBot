@@ -166,7 +166,9 @@ class EventSocket {
         try {
             const response = await this.emit<GuildConfigEvent>("getEventByName", { guildId, evName });
             return response || null;
-        } catch (_error) {
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            logger.error(`[EventSocket/getEventByName] Failed for guild ${guildId}, event ${evName}: ${message}`);
             return null;
         }
     }
@@ -199,7 +201,9 @@ class EventSocket {
         try {
             const response = await this.emit<GuildConfigEvent[]>("getEventsByGuild", guildId);
             return Array.isArray(response) ? response : [];
-        } catch (_error) {
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            logger.error(`[EventSocket/getEventsByGuild] Failed for guild ${guildId}: ${message}`);
             return [];
         }
     }

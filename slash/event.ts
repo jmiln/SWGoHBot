@@ -502,7 +502,7 @@ export default class Event extends Command {
                 }
                 if (channel && hasViewAndSend(channel, interaction.guild.members.me)) {
                     try {
-                        channel.send({ content: announceMessage });
+                        await channel.send({ content: announceMessage });
                         return interaction.reply({
                             content: `Successfully triggered ${eventIn.name}`,
                             flags: MessageFlags.Ephemeral,
@@ -575,8 +575,8 @@ export default class Event extends Command {
 
                 const validEvent = validateEvents([newEvent], guildEvents)[0];
                 if (!validEvent.valid) {
-                    // console.log("Issue validating an event:");
-                    // console.log(validEvent);
+                    logger.debug("Issue validating an event:");
+                    logger.debug(validEvent);
                     return super.error(interaction, `There was an issue with that: ${validEvent.str}`);
                 }
 
@@ -647,30 +647,21 @@ export default class Event extends Command {
                 for (const user of userResult) {
                     const userID = user.replace(/\D/g, "");
                     const thisUser = interaction.guild.members.cache.get(userID);
-                    const userName = thisUser
-                        ? `${thisUser.displayName}`
-                        : `${
-                              interaction.client.users.cache.get(user) ? interaction.client.users.cache.get(user).username : "Unknown User"
-                          }`;
+                    const userName = thisUser?.displayName ?? interaction.client.users.cache.get(userID)?.username ?? "Unknown User";
                     messStr = messStr.replace(user, userName);
                 }
             }
             if (roleResult !== null) {
                 for (const role of roleResult) {
                     const roleID = role.replace(/\D/g, "");
-                    let roleName: string;
-                    try {
-                        roleName = interaction.guild.roles.cache.get(roleID).name;
-                    } catch (_) {
-                        roleName = roleID;
-                    }
+                    const roleName = interaction.guild.roles.cache.get(roleID)?.name ?? roleID;
                     messStr = messStr.replace(role, `@${roleName}`);
                 }
             }
             if (chanResult !== null) {
                 for (const chan of chanResult) {
                     const chanID = chan.replace(/\D/g, "");
-                    const chanName = interaction.guild.channels.cache.get(chanID).name;
+                    const chanName = interaction.guild.channels.cache.get(chanID)?.name ?? chanID;
                     messStr = messStr.replace(chan, `#${chanName}`);
                 }
             }
