@@ -16,11 +16,13 @@ import logger from "../modules/Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
 const io = new Server(config.eventServe.port);
+let mongo: MongoClient | null = null;
+let isShuttingDown = false;
 
 async function init() {
     try {
         // Init this so it'll be ready for the event handlers
-        const mongo = await MongoClient.connect(config.mongodb.url);
+        mongo = await MongoClient.connect(config.mongodb.url);
         cache.init(mongo);
 
         io.on("connection", (socket) => {
@@ -30,14 +32,48 @@ async function init() {
 
         logger.log(`EventMgr: Service started on port ${config.eventServe.port}`);
     } catch (error) {
-        logger.error(`EventMgr: Failed to initialize - ${error.message}`);
+        logger.error(`EventMgr: Failed to initialize - ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
     }
 }
 
+// Graceful shutdown handler
+async function gracefulShutdown(signal: string): Promise<void> {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
+    logger.log(`EventMgr: Received ${signal}, starting graceful shutdown`);
+
+    try {
+        // Close Socket.IO server
+        await new Promise<void>((resolve) => {
+            io.close(() => {
+                logger.log("EventMgr: Socket.IO server closed");
+                resolve();
+            });
+        });
+
+        // Close MongoDB connection
+        if (mongo) {
+            await mongo.close();
+            logger.log("EventMgr: MongoDB connection closed");
+        }
+
+        logger.log("EventMgr: Graceful shutdown complete");
+        process.exit(0);
+    } catch (error) {
+        logger.error(`EventMgr: Error during shutdown - ${error instanceof Error ? error.message : String(error)}`);
+        process.exit(1);
+    }
+}
+
+// Handle process signals
+process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+process.on("SIGINT", () => gracefulShutdown("SIGINT"));
+
 // Handle uncaught errors
 process.on("uncaughtException", (error) => {
-    logger.error(`EventMgr: Uncaught exception - ${error.message}`);
+    logger.error(`EventMgr: Uncaught exception - ${error instanceof Error ? error.message : String(error)}`);
     logger.error(String(error.stack));
 });
 
@@ -73,7 +109,7 @@ function setupEventHandlers(socket: Socket) {
             callback(result);
         } catch (error) {
             logger.error(`Failed to delete event: ${error}`);
-            callback({ eventName, success: false, error: error.message });
+            callback({ eventName, success: false, error: error instanceof Error ? error.message : String(error) });
         }
     });
 
@@ -157,7 +193,7 @@ async function addEvents(guildId: string, events: GuildConfigEvent | GuildConfig
             results.push(evRes);
         } catch (error) {
             evRes.success = false;
-            evRes.error = error.message;
+            evRes.error = error instanceof Error ? error.message : String(error);
             results.push(evRes);
         }
     }
@@ -178,7 +214,7 @@ async function removeEvent(guildId: string, eventName: string) {
         await deleteGuildEvent({ guildId, evName: eventName });
     } catch (error) {
         res.success = false;
-        res.error = error.message;
+        res.error = error instanceof Error ? error.message : String(error);
     }
     return res;
 }

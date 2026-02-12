@@ -507,8 +507,8 @@ export default class Event extends Command {
                             content: `Successfully triggered ${eventIn.name}`,
                             flags: MessageFlags.Ephemeral,
                         });
-                    } catch (_) {
-                        logger.error(`Event trigger Broke! ${announceMessage}`);
+                    } catch (err) {
+                        logger.error(`Event trigger Broke! ${announceMessage} - Error: ${err instanceof Error ? err.message : String(err)}`);
                         return interaction.reply({
                             content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
                             flags: MessageFlags.Ephemeral,
@@ -931,8 +931,8 @@ export default class Event extends Command {
                         interaction.channel.send({ content: evMsg });
                     }
                 }
-            } catch (_) {
-                logger.error(`Event View Broke! ${evArray}`);
+            } catch (err) {
+                logger.error(`Event View Broke! ${evArray} - Error: ${err instanceof Error ? err.message : String(err)}`);
             }
         }
     }

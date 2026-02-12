@@ -173,8 +173,8 @@ export default class MyCharacter extends Command {
                     abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(
                         `\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`,
                     );
-                } catch (_) {
-                    logger.error(`ERROR[MC]: bad ability type: ${inspect(a)}`);
+                } catch (err) {
+                    logger.error(`ERROR[MC]: bad ability type: ${inspect(a)} - Error: ${err instanceof Error ? err.message : String(err)}`);
                 }
             }
         }
