@@ -28,6 +28,7 @@ export default class Mods extends Command {
         await interaction.deferReply();
 
         const getLocalizedModString = (key: string) => {
+            if (!key) return " ";
             const localizationKeyMap = {
                 "Critical Chance x2": "COMMAND_MODS_CRIT_CHANCE_SET",
                 "Critical Damage x4": "COMMAND_MODS_CRIT_DAMAGE_SET",

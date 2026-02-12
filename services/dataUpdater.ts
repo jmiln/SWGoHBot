@@ -616,8 +616,6 @@ function processModResults(unitsIn: {
             primariesOut[slotNames[ix]] = statLang[stat];
         }
 
-        unitOut.mods = {} as BotUnitMods;
-
         const filteredSets = Object.entries(sets)
             .filter(([_, count]) => count === maxSetCount)
             .map(([set]) => set.split("_"));
@@ -636,7 +634,11 @@ function processModResults(unitsIn: {
             }
         }
 
-        unitOut.mods.sets = setsOut;
+        // Assign both primaries and sets to mods
+        unitOut.mods = {
+            ...primariesOut,
+            sets: setsOut,
+        } as BotUnitMods;
 
         unitsOut[defId] = unitOut;
     }
@@ -1066,7 +1068,7 @@ async function updateLocs(
         const newUnitData = {
             name: unitName,
             defId: unitLoc.defId,
-            locations: locations.sort((a, b) => (a.type?.toLowerCase() > b.type?.toLowerCase() ? 1 : -1)),
+            locations: locations.sort((a, b) => (a.type?.toLowerCase() || "").localeCompare(b.type?.toLowerCase() || "")),
         };
 
         // Detect changes as we build the output
@@ -1088,7 +1090,10 @@ async function updateLocs(
     const sortedOut = finalOut.sort((a, b) => {
         const nameA = a?.name?.toLowerCase() || "";
         const nameB = b?.name?.toLowerCase() || "";
-        return nameA > nameB ? 1 : -1 || a.defId.toLowerCase() > b.defId.toLowerCase() ? 1 : -1;
+        const nameComparison = nameA.localeCompare(nameB);
+        if (nameComparison !== 0) return nameComparison;
+        // Fallback to defId if names are equal
+        return a.defId.toLowerCase().localeCompare(b.defId.toLowerCase());
     });
 
     // Final check if we haven't detected changes yet
@@ -1686,7 +1691,7 @@ async function unitsToUnitFiles(
                 avatarName: charUIName,
                 avatarURL: `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`,
                 side,
-                factions: factions.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1)),
+                factions: factions.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
                 mods: unit.combatType === CHAR_COMBAT_TYPE ? ({} as BotUnitMods) : null,
                 crew: (unit.combatType === SHIP_COMBAT_TYPE && unit.crewList?.map((cr) => unitDefIdMap[cr.unitId])) || [],
             };
@@ -1720,10 +1725,16 @@ function getSide(factions: { id: string; descKey: string }[]): { side: UnitSide;
             };
         }
     }
+    // Fallback for units without alignment - shouldn't happen but prevents undefined
+    logger.warn(`[${myTime()}] Unit has no alignment faction, defaulting to neutral`);
+    return {
+        side: "neutral" as UnitSide,
+        factions: factions.map((fact) => fact.descKey),
+    };
 }
 
 function sortByName(list: { name: string }[]) {
-    return list.sort((a, b) => (a.name?.toLowerCase() > b.name?.toLowerCase() ? 1 : -1));
+    return list.sort((a, b) => (a.name?.toLowerCase() || "").localeCompare(b.name?.toLowerCase() || ""));
 }
 
 function unitsToCharacterDB(unitsIn: ProcessedUnit[]) {

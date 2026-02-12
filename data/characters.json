@@ -14,6 +14,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -38,6 +44,12 @@
             "CATEGORY_SPECIESDROID_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
@@ -61,6 +73,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -84,6 +102,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Chance x2",
@@ -109,6 +133,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -133,6 +163,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -156,6 +192,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -178,6 +220,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -204,6 +252,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Defense x2",
                 "Speed x4"
@@ -230,6 +284,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -255,6 +315,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -277,6 +343,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -301,6 +373,12 @@
             "Galactic Republic"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -328,6 +406,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -351,7 +435,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ]
+        },
         "crew": []
     },
     {
@@ -370,6 +465,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -392,6 +493,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -414,6 +521,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Critical Avoidance",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -441,6 +554,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -466,6 +585,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -492,6 +617,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -513,6 +644,12 @@
             "Attacker"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -536,6 +673,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -559,6 +702,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -583,6 +732,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -604,6 +759,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -626,6 +787,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -649,6 +816,12 @@
             "Rogue One"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -672,6 +845,12 @@
             "Mandalorian"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -696,6 +875,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -719,6 +904,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -742,6 +933,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -765,6 +962,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -787,6 +990,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -810,6 +1019,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -834,6 +1049,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -857,6 +1078,12 @@
             "CATEGORY_SCOUNDREL_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -879,6 +1106,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -906,6 +1139,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -929,6 +1168,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -950,6 +1195,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -974,6 +1225,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -996,6 +1253,12 @@
             "Rebel Fighter"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -1017,6 +1280,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1041,6 +1310,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1065,6 +1340,12 @@
             "CATEGORY_SCOUNDREL_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -1087,6 +1368,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1111,6 +1398,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1135,6 +1428,12 @@
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1156,6 +1455,12 @@
             "Gungan"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -1178,6 +1483,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1201,6 +1512,12 @@
             "Old Republic"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Damage x4",
                 "Potency x2"
@@ -1224,6 +1541,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -1264,6 +1587,12 @@
             "CATEGORY_ROLEATTACKER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -1288,6 +1617,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -1311,6 +1646,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1335,6 +1676,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
@@ -1358,6 +1705,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1381,6 +1734,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1406,6 +1765,12 @@
             "Rogue One"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1429,6 +1794,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1470,6 +1841,12 @@
             "Galactic Republic"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -1495,6 +1872,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1520,6 +1903,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1544,6 +1933,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1569,6 +1964,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
@@ -1591,6 +1992,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -1615,6 +2022,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -1636,6 +2049,12 @@
             "CATEGORY_ROLEATTACKER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Accuracy",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -1662,9 +2081,15 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
-                "Potency x2"
+                "Crit. Chance x2"
             ]
         },
         "avatarName": "charui_trooperclone_echo"
@@ -1688,10 +2113,16 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_trooperclone_fives"
@@ -1714,6 +2145,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1736,6 +2173,12 @@
             "CATEGORY_ROLESUPPORT_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1760,6 +2203,12 @@
             "Imperial Trooper"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -1783,9 +2232,16 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ]
         }
     },
@@ -1804,6 +2260,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1826,6 +2288,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1850,6 +2318,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -1873,6 +2347,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -1897,6 +2377,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1921,6 +2407,12 @@
             "Sith Empire"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1945,6 +2437,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -1968,6 +2466,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1989,6 +2493,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2013,6 +2523,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2038,6 +2554,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -2059,7 +2581,18 @@
             "CATEGORY_ROLEATTACKER_DESC",
             "CATEGORY_SITH_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -2078,6 +2611,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -2101,6 +2640,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2126,6 +2671,12 @@
             "Imperial Trooper"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2148,6 +2699,12 @@
             "Attacker"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2188,6 +2745,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2211,6 +2774,12 @@
             "CATEGORY_ROLEATTACKER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2235,6 +2804,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -2257,6 +2832,12 @@
             "CATEGORY_ROLESUPPORT_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2279,6 +2860,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -2302,6 +2889,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2327,6 +2920,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -2350,6 +2949,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2376,6 +2981,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2399,6 +3010,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2425,6 +3042,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -2447,6 +3070,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Tenacity",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
@@ -2469,6 +3098,12 @@
             "Healer"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2490,6 +3125,12 @@
             "Ewok"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2513,6 +3154,12 @@
             "Rebel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2535,6 +3182,12 @@
             "Spectre"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2559,6 +3212,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2584,6 +3243,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2606,6 +3271,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2631,6 +3302,12 @@
             "First Order"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -2653,6 +3330,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -2676,6 +3359,12 @@
             "First Order"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2698,6 +3387,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Defense x2",
                 "Defense x2",
@@ -2721,6 +3416,12 @@
             "First Order"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -2742,6 +3443,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2766,6 +3473,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
@@ -2790,6 +3503,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -2815,6 +3534,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2839,6 +3564,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
@@ -2864,6 +3595,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2890,6 +3627,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -2912,6 +3655,12 @@
             "Spectre"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2935,6 +3684,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2959,6 +3714,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2981,6 +3742,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3003,6 +3770,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3027,6 +3800,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3051,6 +3830,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -3076,6 +3861,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3100,6 +3891,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -3122,6 +3919,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3145,6 +3948,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3168,6 +3977,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3189,6 +4004,12 @@
             "Gungan"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -3209,6 +4030,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3233,6 +4060,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3256,6 +4089,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3280,6 +4119,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3305,6 +4150,12 @@
             "Sith Empire"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3327,6 +4178,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3351,6 +4208,12 @@
             "Rebel Fighter"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3375,6 +4238,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3400,6 +4269,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3422,6 +4297,12 @@
             "CATEGORY_ROLESUPPORT_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -3444,6 +4325,12 @@
             "Spectre"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -3467,6 +4354,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Damage x4",
                 "Potency x2"
@@ -3491,6 +4384,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Critical Avoidance",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3515,6 +4414,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3537,6 +4442,12 @@
             "Mandalorian"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3559,6 +4470,12 @@
             "Droid"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3584,6 +4501,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3607,7 +4530,18 @@
             "CATEGORY_SCOUNDREL_DESC",
             "CATEGORY_SPECIESDROID_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity",
+            "sets": [
+                "Speed x4",
+                "Crit. Chance x2"
+            ]
+        },
         "crew": []
     },
     {
@@ -3628,6 +4562,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3653,6 +4593,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -3676,6 +4622,12 @@
             "Mandalorian"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -3699,7 +4651,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -3720,6 +4683,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3746,6 +4715,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3767,6 +4742,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -3788,6 +4769,12 @@
             "Jawa"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3810,6 +4797,12 @@
             "Jawa"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3831,6 +4824,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3854,6 +4853,12 @@
             "Jedi"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3881,6 +4886,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3903,6 +4914,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -3925,6 +4942,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -3950,6 +4973,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -3975,6 +5004,12 @@
             "Old Republic"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4000,6 +5035,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4025,6 +5066,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4049,6 +5096,12 @@
             "CATEGORY_ROLELEADER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -4072,6 +5125,12 @@
             "CATEGORY_ROLEATTACKER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -4095,6 +5154,12 @@
             "Old Republic"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Critical Avoidance",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4118,6 +5183,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4143,6 +5214,12 @@
             "Rogue One"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -4170,6 +5247,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
@@ -4194,6 +5277,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4218,6 +5307,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4242,6 +5337,12 @@
             "Jedi"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -4265,6 +5366,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -4289,6 +5396,12 @@
             "CATEGORY_SCOUNDREL_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4330,6 +5443,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4352,6 +5471,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4393,6 +5518,12 @@
             "Rebel Fighter"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4416,6 +5547,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
@@ -4442,6 +5579,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4467,6 +5610,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4492,6 +5641,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -4515,6 +5670,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4536,6 +5697,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4557,6 +5724,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -4582,6 +5755,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4607,6 +5786,12 @@
             "Rebel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4631,6 +5816,12 @@
             "Leader"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4654,6 +5845,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4678,6 +5875,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -4701,6 +5904,12 @@
             "Imperial Trooper"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
@@ -4741,6 +5950,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -4764,6 +5979,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -4786,6 +6007,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4809,6 +6036,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -4829,7 +6062,19 @@
             "CATEGORY_ROLEATTACKER_DESC",
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Health x2"
+            ]
+        },
         "crew": []
     },
     {
@@ -4851,6 +6096,12 @@
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4872,6 +6123,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Tenacity x2",
                 "Tenacity x2",
@@ -4895,6 +6152,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -4917,6 +6180,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -4941,6 +6210,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4963,6 +6238,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
@@ -4984,6 +6265,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5008,6 +6295,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -5030,6 +6323,12 @@
             "Attacker"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -5051,6 +6350,12 @@
             "Nightsister"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5072,6 +6377,12 @@
             "Nightsister"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5093,6 +6404,12 @@
             "Nightsister"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -5114,6 +6431,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5139,6 +6462,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5163,6 +6492,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5187,6 +6522,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5209,6 +6550,12 @@
             "Nightsister"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5232,6 +6579,12 @@
             "Clone Trooper"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5254,6 +6607,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5276,6 +6635,12 @@
             "Attacker"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5299,6 +6664,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -5322,6 +6693,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5346,6 +6723,12 @@
             "Rogue One"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
@@ -5367,6 +6750,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5389,6 +6778,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5415,6 +6810,12 @@
             "CATEGORY_SMUGGLER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5438,6 +6839,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5461,6 +6868,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5484,6 +6897,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5505,6 +6924,12 @@
             "Ewok"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5526,6 +6951,12 @@
             "Rebel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5551,6 +6982,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -5573,6 +7010,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5597,6 +7040,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5620,6 +7069,12 @@
             "CATEGORY_SCOUNDREL_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5647,6 +7102,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5669,6 +7130,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5691,6 +7158,12 @@
             "CATEGORY_ROLETANK_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5715,6 +7188,12 @@
             "Rebel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5738,6 +7217,12 @@
             "Resistance"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5759,6 +7244,12 @@
             "Resistance"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -5780,6 +7271,12 @@
             "Resistance"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -5801,6 +7298,12 @@
             "Resistance"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5825,6 +7328,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5847,6 +7356,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5873,6 +7388,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5898,6 +7419,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5919,6 +7446,12 @@
             "Resistance"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5940,6 +7473,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -5964,6 +7503,12 @@
             "Rebel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -5987,6 +7532,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6027,6 +7578,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6051,6 +7608,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6075,6 +7638,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6099,6 +7668,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -6123,6 +7698,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -6148,6 +7729,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6171,6 +7758,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6193,6 +7786,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6215,6 +7814,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6239,6 +7844,12 @@
             "Sith Empire"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6262,6 +7873,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Defense x2",
                 "Defense x2",
@@ -6287,6 +7904,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6310,6 +7933,12 @@
             "Sith Empire"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -6335,6 +7964,12 @@
             "Sith"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6358,6 +7993,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -6381,6 +8022,12 @@
             "CATEGORY_SPECIESDROID_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6403,6 +8050,12 @@
             "Imperial Trooper"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -6425,6 +8078,12 @@
             "Separatist"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6445,6 +8104,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6468,6 +8133,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Defense x2",
                 "Defense x2",
@@ -6493,6 +8164,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6515,7 +8192,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -6533,6 +8221,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6561,6 +8255,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6584,6 +8284,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -6606,6 +8312,12 @@
             "Nightsister"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6628,6 +8340,12 @@
             "Wookiee"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Defense",
+            "circle": "Health",
+            "cross": "Defense",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6650,6 +8368,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6672,6 +8396,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -6694,6 +8424,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Potency x2",
                 "Potency x2",
@@ -6718,6 +8454,12 @@
             "CATEGORY_ROLETANK_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -6741,6 +8483,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6766,6 +8514,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -6790,6 +8544,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6812,6 +8572,12 @@
             "CATEGORY_SITH_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6836,6 +8602,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -6861,6 +8633,12 @@
             "Rebel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -6883,6 +8661,12 @@
             "Empire"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -6905,6 +8689,12 @@
             "Tusken"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -6926,6 +8716,12 @@
             "Tusken"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Tenacity x2"
@@ -6947,6 +8743,12 @@
             "Tusken"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -6968,6 +8770,12 @@
             "Tusken"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -6988,6 +8796,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Chance",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7014,6 +8828,12 @@
             "Tusken"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -7036,6 +8856,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7060,6 +8886,12 @@
             "CATEGORY_SCOUNDREL_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7101,6 +8933,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -7126,6 +8964,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -7147,6 +8991,12 @@
             "Unaligned Force User"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7168,6 +9018,12 @@
             "Attacker"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Health",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7190,6 +9046,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -7213,6 +9075,12 @@
             "Rebel Fighter"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -7234,6 +9102,12 @@
             "Ewok"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -7257,6 +9131,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7280,6 +9160,12 @@
             "CATEGORY_ROLETANK_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7303,7 +9189,19 @@
             "CATEGORY_ROLESUPPORT_DESC",
             "CATEGORY_WOOKIEE_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Protection",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ]
+        },
         "crew": []
     },
     {
@@ -7322,6 +9220,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -7344,6 +9248,12 @@
             "Smuggler"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Offense x4",
                 "Crit. Chance x2"
@@ -7366,6 +9276,12 @@
             "Tank"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -7390,6 +9306,12 @@
             "Scoundrel"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -7413,6 +9335,12 @@
             "Support"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -7437,6 +9365,12 @@
             "CATEGORY_UNALIGNEDFORCEUSER_DESC"
         ],
         "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Tenacity x2"
