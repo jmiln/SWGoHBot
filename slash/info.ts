@@ -1,6 +1,6 @@
 import { codeBlock, InteractionContextType, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config.js";
+import config from "../config.ts";
 import constants from "../data/constants/constants.ts";
 import database from "../modules/database.ts";
 import { getShardId, guildCount, makeTable, userCount } from "../modules/functions.ts";

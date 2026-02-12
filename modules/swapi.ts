@@ -2,7 +2,7 @@ import os from "node:os";
 import { Worker } from "node:worker_threads";
 import ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
-import config from "../config.js";
+import config from "../config.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";

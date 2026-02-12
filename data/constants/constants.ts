@@ -1,3 +1,5 @@
+import { GatewayIntentBits, Partials } from "discord.js";
+
 export default {
     // The main invite for the support server
     invite: "https://discord.com/invite/FfwGvhr",
@@ -84,5 +86,49 @@ export default {
         "IND_ID",
         "JPN_JP",
         "THA_TH",
-    ]
+    ],
+
+    // The timezone that the bot will mark any logs in
+    timezone: "America/Los_Angeles",
+
+    // Enable the various intents that are needed
+    botIntents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.DirectMessages,
+    ],
+
+    // Partials your bot may need should go here, CHANNEL is required for DM's
+    partials: [Partials.Channel],
+
+    // Let it register global commands or not
+    enableGlobalCmds: true,
+
+    // Default config for users (Leave these blank)
+    // Note: This is a partial config that gets extended with additional fields
+    defaultUserConf: {
+        // Discord userID
+        id: "",
+        // Array of allycode/ primary status pairs
+        accounts: [],
+        // Settings for the arena alerts
+        arenaAlert: {
+            enableRankDMs: "off", // all, primary, off
+            arena: "none", // both, char, fleet
+            payoutWarning: 0, // If higher than 0, send someone a DM that their payout is in x min
+            enablePayoutResult: false,
+        },
+        lang: {
+            language: null,
+            swgohLanguage: null,
+        },
+    },
+
+    // Default counts for arenawatch accounts per-tier
+    arenaWatchConfig: {
+        tier1: 1,
+        tier2: 20,
+        tier3: 50,
+    },
 };

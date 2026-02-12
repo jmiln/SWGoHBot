@@ -1,4 +1,4 @@
-import config from "../../config.js";
+import config from "../../config.ts";
 import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
 import cache from "../cache.ts";
 

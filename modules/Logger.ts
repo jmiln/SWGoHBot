@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 import pino, { type Logger as PinoInstance } from "pino";
-import config from "../config.js";
+import config from "../config.ts";
 import constants from "../data/constants/constants.ts";
 import { sendWebhook, toProperCase } from "./functions.ts";
 

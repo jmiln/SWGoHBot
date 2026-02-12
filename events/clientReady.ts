@@ -1,5 +1,5 @@
 import { type Client, Events } from "discord.js";
-import config from "../config.js";
+import config from "../config.ts";
 import databaseCleanup from "../modules/databaseCleanup.ts";
 import eventFuncs from "../modules/eventFuncs.ts";
 import eventSocket from "../modules/eventSocket.ts";

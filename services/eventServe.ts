@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import type { Socket } from "socket.io";
 import { Server } from "socket.io";
-import config from "../config.js";
+import config from "../config.ts";
 import cache from "../modules/cache.ts";
 import {
     addGuildEvent,

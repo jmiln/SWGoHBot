@@ -6,7 +6,7 @@ import {
     InteractionContextType,
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config.js";
+import config from "../config.ts";
 import { characters, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import type { CommandContext, GuildAlias } from "../types/types.ts";

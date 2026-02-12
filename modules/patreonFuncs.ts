@@ -1,6 +1,6 @@
 import { type Client, type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
 import Language from "../base/Language.ts";
-import config from "../config.js";
+import config from "../config.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
@@ -204,9 +204,9 @@ class PatreonFuncs {
 
             // Make a copy just in case, so nothing goes wonky
             let acctCount = 0;
-            if (patron.amount_cents < TIER_5_CENTS) acctCount = config.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < TIER_10_CENTS) acctCount = config.arenaWatchConfig.tier2;
-            else acctCount = config.arenaWatchConfig.tier3;
+            if (patron.amount_cents < TIER_5_CENTS) acctCount = constants.arenaWatchConfig.tier1;
+            else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
+            else acctCount = constants.arenaWatchConfig.tier3;
 
             const players = structuredClone(aw.allycodes.slice(0, acctCount));
             if (!players || !players.length) continue;
@@ -309,9 +309,9 @@ class PatreonFuncs {
             }
 
             let acctCount = 0;
-            if (patron.amount_cents < TIER_5_CENTS) acctCount = config.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < TIER_10_CENTS) acctCount = config.arenaWatchConfig.tier2;
-            else acctCount = config.arenaWatchConfig.tier3;
+            if (patron.amount_cents < TIER_5_CENTS) acctCount = constants.arenaWatchConfig.tier1;
+            else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
+            else acctCount = constants.arenaWatchConfig.tier3;
 
             const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allycodes.slice(0, acctCount));
             const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);

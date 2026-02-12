@@ -1,6 +1,7 @@
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, DiscordAPIError, TextChannel } from "discord.js";
-import config from "./config.js";
+import config from "./config.ts";
+import constants from "./data/constants/constants.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
@@ -17,8 +18,8 @@ import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
 
 const client = new Client({
-    intents: config.botIntents,
-    partials: config.partials,
+    intents: constants.botIntents,
+    partials: constants.partials,
     closeTimeout: 30_000,
 }) as Client<true>;
 

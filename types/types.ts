@@ -182,11 +182,6 @@ export interface BotConfig {
         logToChannel: boolean;
         channel: string;
     };
-    arenaWatchConfig: {
-        tier1: number;
-        tier2: number;
-        tier3: number;
-    };
     swapiConfig?: {
         statCalc: {
             url: string;

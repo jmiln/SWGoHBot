@@ -7,7 +7,6 @@ import {
 } from "discord.js";
 import Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
-import config from "../config.js";
 import constants from "../data/constants/constants.ts";
 import patreonInfo from "../data/patreon.ts";
 import { isAllyCode } from "../modules/functions.ts";
@@ -167,7 +166,7 @@ export default class UserConf extends Command {
         if (!user) {
             // If the user doesn't have a config available, set the default one for embeds
             // This has id, accounts, arenaAlert, and lang
-            user = structuredClone(config.defaultUserConf);
+            user = structuredClone(constants.defaultUserConf) as Partial<UserConfig> as UserConfig;
             user.id = userID;
         }
 

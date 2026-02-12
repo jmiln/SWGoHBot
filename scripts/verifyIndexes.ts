@@ -20,7 +20,7 @@
 
 import type { Db, IndexDescription, IndexDirection, MongoClient } from "mongodb";
 import indexConfig, { type IndexDefinition } from "../config/indexes.ts";
-import config from "../config.js";
+import config from "../config.ts";
 import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
 

@@ -2,7 +2,8 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { REST, Routes } from "discord.js";
 import type { CommandMetadata } from "../base/slashCommand.ts";
-import config from "../config.js";
+import config from "../config.ts";
+import constants from "../data/constants/constants.ts";
 import logger from "./Logger.ts";
 
 const slashDir = join(import.meta.dirname, "..", "slash");
@@ -68,14 +69,14 @@ async function deployCommands(commands: CommandMetadata[]) {
 
     try {
         // Deploy global commands if enabled
-        if (config.enableGlobalCmds && globalCommands.length) {
+        if (constants.enableGlobalCmds && globalCommands.length) {
             logger.log(`Deploying ${globalCommands.length} global commands...`);
             // logger.log(inspect(globalCommands, { depth: 5 }));
             await rest.put(Routes.applicationCommands(config.clientId), {
                 body: globalCommands,
             });
             logger.log(`Deployed ${globalCommands.length} global commands`);
-        } else if (!config.enableGlobalCmds) {
+        } else if (!constants.enableGlobalCmds) {
             logger.log(" Global commands disabled in config");
         }
 

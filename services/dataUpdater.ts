@@ -5,7 +5,7 @@ import { inspect } from "node:util";
 import { eachLimit } from "async";
 import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
-import config from "../config.js";
+import config from "../config.ts";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info

@@ -1,4 +1,4 @@
-import config from "../../config.js";
+import config from "../../config.ts";
 import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
