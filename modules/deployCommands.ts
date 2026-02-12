@@ -11,9 +11,10 @@ const slashDir = join(import.meta.dirname, "..", "slash");
 /**
  * Loads all command metadata from slash directory
  */
-async function loadCommandMetadata(): Promise<CommandMetadata[]> {
+async function loadCommandMetadata(): Promise<{ commands: CommandMetadata[]; failed: string[] }> {
     const commandFiles = readdirSync(slashDir).filter((file) => file.endsWith(".ts"));
     const commands: CommandMetadata[] = [];
+    const failed: string[] = [];
 
     for (const file of commandFiles) {
         const commandName = file.split(".")[0];
@@ -23,6 +24,7 @@ async function loadCommandMetadata(): Promise<CommandMetadata[]> {
 
             if (!CommandClass.metadata) {
                 logger.error(`${commandName}: No static metadata found`);
+                failed.push(`${commandName} (no metadata)`);
                 continue;
             }
 
@@ -33,17 +35,20 @@ async function loadCommandMetadata(): Promise<CommandMetadata[]> {
 
             if (!CommandClass.metadata.description) {
                 logger.error(`${commandName}: No description found in metadata`);
+                failed.push(`${commandName} (no description)`);
                 continue;
             }
 
             commands.push(CommandClass.metadata);
             // logger.log(`[${CommandClass.metadata.guildOnly ? "Guild" : "Global"}] ${commandName}: Loaded`);
         } catch (err) {
-            logger.error(`${commandName}: Failed to load - ${err}`);
+            const errorMsg = err instanceof Error ? err.message : String(err);
+            logger.error(`${commandName}: Failed to load - ${errorMsg}`);
+            failed.push(`${commandName} (${errorMsg})`);
         }
     }
 
-    return commands;
+    return { commands, failed };
 }
 
 /**
@@ -105,11 +110,19 @@ async function main() {
     logger.log("SWGoHBot Command Deployment\n");
     logger.log("Loading commands from slash/...\n");
 
-    const commands = await loadCommandMetadata();
+    const { commands, failed } = await loadCommandMetadata();
 
     logger.log(`Summary: ${commands.length} commands loaded`);
     logger.log(`   Global: ${commands.filter((c) => !c.guildOnly).length}`);
     logger.log(`   Guild: ${commands.filter((c) => c.guildOnly).length}`);
+
+    if (failed.length > 0) {
+        logger.error(`\nWARNING: ${failed.length} command(s) failed to load:`);
+        for (const failedCmd of failed) {
+            logger.error(`  - ${failedCmd}`);
+        }
+        logger.error("");
+    }
 
     if (commands.length === 0) {
         logger.error("No commands to deploy!");

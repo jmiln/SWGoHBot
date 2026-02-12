@@ -202,7 +202,10 @@ export default class SetConf extends Command {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Added ${addUnitDefId} to your list`);
                     } catch (err) {
-                        return super.error(interaction, `Broke while trying to add ${addUnitDefId}.\n${err instanceof Error ? err.message : String(err)}`);
+                        return super.error(
+                            interaction,
+                            `Broke while trying to add ${addUnitDefId}.\n${err instanceof Error ? err.message : String(err)}`,
+                        );
                     }
                 } else if (subCommand === "blacklist") {
                     if (!guildTWList.Blacklist) guildTWList.Blacklist = [];
@@ -214,7 +217,10 @@ export default class SetConf extends Command {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Added ${addUnitDefId} to your blacklist`);
                     } catch (err) {
-                        return super.error(interaction, `Broke while trying to add ${addUnitDefId} to the blacklist.\n${err instanceof Error ? err.message : String(err)}`);
+                        return super.error(
+                            interaction,
+                            `Broke while trying to add ${addUnitDefId} to the blacklist.\n${err instanceof Error ? err.message : String(err)}`,
+                        );
                     }
                 }
             }
@@ -231,7 +237,10 @@ export default class SetConf extends Command {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, `Removed ${removeUnitDefId} from your list`);
                     } catch (err) {
-                        return super.error(interaction, `Broke while trying to remove ${removeUnitDefId}.\n${err instanceof Error ? err.message : String(err)}`);
+                        return super.error(
+                            interaction,
+                            `Broke while trying to remove ${removeUnitDefId}.\n${err instanceof Error ? err.message : String(err)}`,
+                        );
                     }
                 } else if (subCommand === "blacklist") {
                     if (!guildTWList.Blacklist.includes(removeUnitDefId)) {

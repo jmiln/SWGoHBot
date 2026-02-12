@@ -69,7 +69,10 @@ class EventFuncs {
                     },
                 );
             } catch (e) {
-                logger.error(`Broke trying to announce event with name/channel: ${event.name} (${event.channel}) \n${e.stack}`);
+                logger.error(
+                    `Broke trying to announce event with name/channel: ${event.name} (${event.channel}) \n${e instanceof Error ? e.stack : String(e)}`,
+                );
+                throw e;
             }
         }
     }

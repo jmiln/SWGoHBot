@@ -76,8 +76,7 @@ export async function loadSlash(commandName: string): Promise<boolean> {
         slashcmds.set(cmd.commandData.name, cmd);
         return true;
     } catch (err) {
-        logger.error(`Unable to load command ${commandName}: ${err}`);
-        logger.error(err);
+        logger.error(`Unable to load command ${commandName}: ${err instanceof Error ? err.message : String(err)}`);
         return false;
     }
 }
@@ -149,8 +148,8 @@ export default async () => {
                 slashcmds.set(cmd.commandData.name, cmd);
             }
         } catch (err) {
-            slashError.push(`Unable to load command ${commandName}: ${err}`);
-            logger.error(err);
+            const errorMsg = `Unable to load command ${commandName}: ${err instanceof Error ? err.message : String(err)}`;
+            slashError.push(errorMsg);
         }
     }
 

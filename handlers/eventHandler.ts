@@ -61,12 +61,18 @@ export async function reloadAllEvents(client: Client<true>): Promise<{ succArr: 
  */
 export default async (client: Client<true>) => {
     const evtFiles = getEventFiles();
+    const loadErrors: string[] = [];
 
     for (const file of evtFiles) {
         try {
             await loadEvent(client, file);
         } catch (e) {
-            logger.error(`Failed to load event ${file}: ${e}`);
+            const errorMsg = `Failed to load event ${file}: ${e instanceof Error ? e.message : String(e)}`;
+            loadErrors.push(errorMsg);
         }
+    }
+
+    if (loadErrors.length) {
+        logger.error(`eventLoad: ${loadErrors.join("\n")}`);
     }
 };

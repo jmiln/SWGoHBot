@@ -1,6 +1,7 @@
 import ComlinkStub from "@swgoh-utils/comlink";
 import type { ComlinkPlayer } from "../../types/swapi_types.ts";
 import { myTime } from "../functions.ts";
+import logger from "../Logger.ts";
 
 interface ModMap {
     [key: string]: {
@@ -45,6 +46,6 @@ export default async function ({ playerId, modMap, clientStub }: { playerId: num
                 }));
         })
         .catch((err: Error) => {
-            console.error(`[${myTime()}] [getStrippedModsWorker] Error: ${err}`);
+            logger.error(`[${myTime()}] [getStrippedModsWorker] Error: ${err instanceof Error ? err.message : String(err)}`);
         });
 }

@@ -508,7 +508,9 @@ export default class Event extends Command {
                             flags: MessageFlags.Ephemeral,
                         });
                     } catch (err) {
-                        logger.error(`Event trigger Broke! ${announceMessage} - Error: ${err instanceof Error ? err.message : String(err)}`);
+                        logger.error(
+                            `Event trigger Broke! ${announceMessage} - Error: ${err instanceof Error ? err.message : String(err)}`,
+                        );
                         return interaction.reply({
                             content: `Broke when trying to trigger *${eventIn.name}*.\nIf this continues, please report it.`,
                             flags: MessageFlags.Ephemeral,

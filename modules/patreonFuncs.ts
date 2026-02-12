@@ -500,8 +500,9 @@ class PatreonFuncs {
             try {
                 guild = await swgohAPI.guild(gu.allycode);
             } catch (err) {
-                if (err.toString().includes("not in a guild")) continue;
-                logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${err}`);
+                const errStr = err instanceof Error ? err.message : String(err);
+                if (errStr.includes("not in a guild")) continue;
+                logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${errStr}`);
                 continue;
             }
             if (!guild?.roster) {
@@ -636,8 +637,9 @@ class PatreonFuncs {
             try {
                 rawGuild = await swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
             } catch (err) {
-                if (err.toString().includes("not in a guild")) continue;
-                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${err}`);
+                const errStr = err instanceof Error ? err.message : String(err);
+                if (errStr.includes("not in a guild")) continue;
+                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${errStr}`);
                 continue;
             }
 
