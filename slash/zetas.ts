@@ -13,6 +13,8 @@ export default class Zetas extends Command {
     static readonly metadata = {
         name: "zetas",
         description: "See a player's zetas",
+        category: "Gamedata",
+        usage: ["**guild** <allycode> [character]", "**player** <allycode> [character]"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

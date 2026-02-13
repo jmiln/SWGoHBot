@@ -14,6 +14,12 @@ const updateTypeStrings = {
 export default class GuildTickets extends Command {
     static readonly metadata = {
         name: "guildtickets",
+        category: "Gamedata",
+        usage: [
+            "**/guildtickets set** [enabled] [channel] [show_max]",
+            "  [sortby] [updates] [tickets] [allycode]",
+            "**/guildtickets view**",
+        ],
         guildOnly: false,
         contexts: [InteractionContextType.Guild],
         description: "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",

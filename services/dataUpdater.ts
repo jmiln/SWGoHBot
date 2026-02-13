@@ -11,6 +11,7 @@ import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
+import { getCommands } from "../handlers/slashHandler.ts";
 import logger from "../modules/Logger.ts";
 
 const FORCE_UPDATE = process.argv.includes("--force") || false;
@@ -26,6 +27,7 @@ const MAX_CONCURRENT = process.argv.includes("--max-concurrent")
 import ComlinkStub from "@swgoh-utils/comlink";
 import type { BotCache } from "../types/cache_types.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
+import type { HelpJSON } from "../types/help_types.ts";
 import type { ComlinkAbility, FeatureStore, SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
 import type {
     BotUnit,
@@ -101,6 +103,7 @@ const RAID_NAMES_FILE_PATH = path.join(DATA_DIR_PATH, "raidNames.json");
 const SHIP_FILE_PATH = path.join(DATA_DIR_PATH, "ships.json");
 const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
 const UNIT_CHECKLIST_FILE_PATH = path.join(DATA_DIR_PATH, "unitChecklist.json");
+const HELP_JSON_PATH = path.join(DATA_DIR_PATH, "help.json");
 
 // The metadata keys we actually care about
 const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
@@ -2218,6 +2221,90 @@ function logError(context: string, message: string, error?: unknown) {
     logger.error(`[${myTime()}] [${context}] ${message}${error ? `: ${error}` : ""}`);
 }
 
+function getCategoryDescription(category: string): string {
+    const descriptions: Record<string, string> = {
+        Admin: "Commands with limited access",
+        Gamedata: "Commands that pull data from the game",
+        General: "General commands",
+        Patreon: "Supporter-only commands",
+    };
+    return descriptions[category] || "Miscellaneous commands";
+}
+
+interface CommandDocEntry {
+    name: string;
+    description: string;
+    usage: string[];
+    options: unknown[];
+    permLevel: number;
+    guildOnly: boolean;
+    contexts: unknown;
+    enabled: boolean;
+}
+
+async function exportCommandDocs() {
+    try {
+        logger.log(`[${myTime()}] [exportCommandDocs] Starting command documentation export`);
+
+        const commands = getCommands();
+        const categoryMap: Record<string, { description: string; commands: CommandDocEntry[] }> = {};
+        let totalCommands = 0;
+
+        // Group commands by category
+        for (const [name, cmd] of commands) {
+            if (!cmd.commandData.enabled) {
+                debugLog(`[exportCommandDocs] Skipping disabled command: ${name}`);
+                continue;
+            }
+
+            const category = cmd.commandData.category || "General";
+
+            if (!categoryMap[category]) {
+                categoryMap[category] = {
+                    description: getCategoryDescription(category),
+                    commands: [],
+                };
+            }
+
+            categoryMap[category].commands.push({
+                name: cmd.commandData.name,
+                description: cmd.commandData.description,
+                usage: cmd.commandData.usage || [],
+                options: cmd.commandData.options,
+                permLevel: cmd.commandData.permLevel,
+                guildOnly: cmd.commandData.guildOnly,
+                contexts: cmd.commandData.contexts,
+                enabled: cmd.commandData.enabled,
+            });
+
+            totalCommands++;
+        }
+
+        // Sort commands within each category alphabetically
+        for (const category of Object.keys(categoryMap)) {
+            categoryMap[category].commands.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+        }
+
+        const output: HelpJSON = {
+            metadata: {
+                generatedAt: new Date().toISOString(),
+                totalCommands,
+                categories: Object.keys(categoryMap).length,
+            },
+            ...categoryMap,
+        };
+
+        await saveFile(HELP_JSON_PATH, output);
+
+        logger.log(
+            `[${myTime()}] [exportCommandDocs] Exported ${totalCommands} commands across ${Object.keys(categoryMap).length} categories`,
+        );
+    } catch (error) {
+        logError("dataUpdater/exportCommandDocs", "Error exporting command docs", error);
+        // Don't throw - this shouldn't block other updates
+    }
+}
+
 export default {
     processAbilities,
     processCategories,
@@ -2237,4 +2324,5 @@ export default {
 
     saveFile,
     processLocalization,
+    exportCommandDocs,
 };

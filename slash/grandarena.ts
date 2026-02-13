@@ -28,9 +28,11 @@ const gpMap = {
 export default class GrandArena extends Command {
     static readonly metadata = {
         name: "grandarena",
+        category: "Gamedata",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Compare two players' rosters for Grand Arena",
+        usage: ["**/grandarena** <allycode_1> <allycode_2>", "  [characters] [faction]"],
         options: [
             {
                 name: "allycode_1",

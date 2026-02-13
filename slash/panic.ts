@@ -12,6 +12,8 @@ export default class Panic extends Command {
     static readonly metadata = {
         name: "panic",
         description: "Show how close you are to being ready for character events",
+        category: "Gamedata",
+        usage: ["**/panic** [allycode] <unit>"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

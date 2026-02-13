@@ -5,6 +5,8 @@ import type { CommandContext } from "../types/types.ts";
 export default class Modsets extends Command {
     static readonly metadata = {
         name: "modsets",
+        category: "General",
+        usage: ["**/modsets**"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays how many mods you need per type for a full set",

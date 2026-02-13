@@ -9,6 +9,8 @@ export default class Ships extends Command {
     static readonly metadata = {
         name: "ships",
         description: "Get information about a ship",
+        category: "General",
+        usage: ["**/ships** <ship>"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

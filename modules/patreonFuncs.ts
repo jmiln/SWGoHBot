@@ -1,4 +1,4 @@
-import { type Client, type Embed, type Message, PermissionsBitField, TextChannel } from "discord.js";
+import { type Client, type Embed, type Message, PermissionsBitField } from "discord.js";
 import Language from "../base/Language.ts";
 import config from "../config.ts";
 import constants from "../data/constants/constants.ts";
@@ -419,7 +419,7 @@ class PatreonFuncs {
                         async (client, { aw, fields }) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (
-                                chan instanceof TextChannel &&
+                                chan?.type === 0 && // 0 = GUILD_TEXT
                                 chan
                                     ?.permissionsFor(client.user)
                                     .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
@@ -436,7 +436,7 @@ class PatreonFuncs {
                             async (client, { aw, charFields }) => {
                                 const chan = client.channels.cache.get(aw.arena.char.channel);
                                 if (
-                                    chan instanceof TextChannel &&
+                                    chan?.type === 0 && // 0 = GUILD_TEXT
                                     chan
                                         ?.permissionsFor(client.user)
                                         .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
@@ -452,7 +452,7 @@ class PatreonFuncs {
                             async (client, { aw, shipFields }) => {
                                 const chan = client.channels.cache.get(aw.arena.fleet.channel);
                                 if (
-                                    chan instanceof TextChannel &&
+                                    chan?.type === 0 && // 0 = GUILD_TEXT
                                     chan
                                         ?.permissionsFor(client.user)
                                         .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
@@ -559,7 +559,7 @@ class PatreonFuncs {
                     async (client, { guChan, fieldChunk }) => {
                         const channel = client.channels.cache.get(guChan);
                         if (
-                            channel instanceof TextChannel &&
+                            channel?.type === 0 && // 0 = GUILD_TEXT
                             channel?.guild &&
                             channel
                                 .permissionsFor(client.user)
@@ -767,7 +767,7 @@ class PatreonFuncs {
             async (client, { chanId }) => {
                 const channel = client.channels.cache.get(chanId);
                 if (
-                    channel instanceof TextChannel &&
+                    channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                 ) {
@@ -897,12 +897,12 @@ class PatreonFuncs {
         if (!channelId) return;
         const messages = await this.client.shard.broadcastEval(
             async (client, { msgIdIn, chanIn, outEmbed }) => {
-                const channel = client.channels.cache.find((chan: TextChannel) => chan.id === chanIn || chan.name === chanIn);
+                const channel = client.channels.cache.find((chan) => chan.id === chanIn || ("name" in chan && chan.name === chanIn));
 
                 let msg: Message;
                 let targetMsg: Message;
                 if (
-                    channel instanceof TextChannel &&
+                    channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
                 ) {

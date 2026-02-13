@@ -10,6 +10,15 @@ export default class Patreon extends Command {
     static readonly metadata = {
         name: "patreon",
         description: "View your Patreon benefits and commands.",
+        category: "Patreon",
+        usage: [
+            "**/patreon commands**",
+            "**/patreon cooldowns**",
+            "**/patreon benefits**",
+            "**/patreon my_info**",
+            "**/patreon set_server**",
+            "**/patreon unset_server**",
+        ],
         enabled: true,
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],

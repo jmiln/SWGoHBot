@@ -27,6 +27,8 @@ export default class BotShards extends Command {
     static readonly metadata = {
         name: "botshards",
         description: "Display availability and ping info for each shard.",
+        category: "General",
+        usage: ["**/botshards**"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
     };

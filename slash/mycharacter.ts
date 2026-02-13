@@ -14,6 +14,8 @@ export default class MyCharacter extends Command {
     static readonly metadata = {
         name: "mycharacter",
         description: "Display overall stats & mod info for the selected character",
+        category: "Gamedata",
+        usage: ["**/mycharacter character** <character> [allycode]", "**/mycharacter ship** <ship> [allycode]"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         enabled: true,

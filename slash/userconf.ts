@@ -21,6 +21,16 @@ export default class UserConf extends Command {
     static readonly metadata = {
         name: "userconf",
         description: "Change your personal settings with the bot (allycode, view alerts, etc.)",
+        category: "General",
+        usage: [
+            "**allycodes add** <allycode>",
+            "**allycodes make_primary** <allycode>",
+            "**allycodes remove** <allycode>",
+            "**arenaalert** [enable_dms] [arena]",
+            "  [payout_result] [payout_warning]",
+            "**lang** [bot_language] [swgoh_language]",
+            "**view**",
+        ],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

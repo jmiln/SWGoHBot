@@ -14,6 +14,8 @@ export default class Acronyms extends Command {
     static readonly metadata = {
         name: "acronyms",
         description: "Show what common acronyms mean",
+        category: "General",
+        usage: ["**acronyms** <acronym>"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

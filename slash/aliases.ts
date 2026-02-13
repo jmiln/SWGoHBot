@@ -59,6 +59,8 @@ export default class Aliases extends Command {
                 description: "View your current aliases",
             },
         ],
+        category: "Admin",
+        usage: ["**aliases** <add> <unit> <alias>", "**aliases** <remove> <alias>", "**aliases** <view>"],
     };
 
     constructor() {

@@ -12,9 +12,17 @@ import type { BotUnit, CommandContext } from "../types/types.ts";
 export default class GuildSearch extends Command {
     static readonly metadata = {
         name: "guildsearch",
+        category: "Gamedata",
         description: "Search for stats on your guild's units",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
+        usage: [
+            "**character** <character> [allycode]",
+            "  [sort] [stat] [top] [rarity] [reverse]",
+            "  [omicrons] [zetas]",
+            "**ship** <ship> [allycode] [sort]",
+            "  [top] [rarity] [reverse]",
+        ],
         options: [
             {
                 name: "character",

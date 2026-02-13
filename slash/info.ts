@@ -35,6 +35,8 @@ const TABLE_CONFIG = {
 export default class Info extends Command {
     static readonly metadata = {
         name: "info",
+        category: "General",
+        usage: ["**/info**"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays general stats & info about the bot",

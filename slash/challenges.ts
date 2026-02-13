@@ -7,6 +7,8 @@ export default class Challenges extends Command {
     static readonly metadata = {
         name: "challenges",
         description: "Show daily guild challenges",
+        category: "General",
+        usage: ["**challenges** [day]"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

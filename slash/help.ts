@@ -1,13 +1,16 @@
+import path from "node:path";
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import help from "../data/help.ts";
-import { msgArray, toProperCase } from "../modules/functions.ts";
+import { msgArray, readJSON, toProperCase } from "../modules/functions.ts";
+import type { HelpJSON } from "../types/help_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Help extends Command {
     static readonly metadata = {
         name: "help",
+        category: "General",
+        usage: ["**/help**"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays a list of the available commands.",
@@ -47,34 +50,40 @@ export default class Help extends Command {
 
         const color = Math.floor(Math.random() * 16777215);
 
+        // Load help.json
+        const helpJsonPath = path.resolve(import.meta.dirname, "../data/help.json");
+        const help = await readJSON<HelpJSON>(helpJsonPath);
+        const helpKeys = Object.keys(help).filter((key) => key !== "metadata");
+
         if (!search) {
             const fields = [];
             const div = "`======================================`";
-            const helpKeys = Object.keys(help);
             for (const [ix, cat] of helpKeys.entries()) {
                 if (category && category !== cat) continue;
                 const thisCat = help[cat];
 
-                const outArr = [`__${thisCat.description}__`];
-                const catCmd = Object.keys(thisCat.commands);
+                // Skip if not a category (metadata key)
+                if (typeof thisCat === "object" && "commands" in thisCat) {
+                    const outArr = [`__${thisCat.description}__`];
 
-                for (const cmd of catCmd) {
-                    const cmdArr = formatCmdHelp(thisCat.commands[cmd].usage, cmd, thisCat.commands[cmd].desc, isDetailed);
-                    outArr.push(cmdArr.join("\n"));
-                }
+                    for (const cmd of thisCat.commands) {
+                        const cmdArr = formatCmdHelp(cmd.usage, cmd.name, cmd.description, isDetailed);
+                        outArr.push(cmdArr.join("\n"));
+                    }
 
-                // Put a divider after this section / before the next
-                if (ix < helpKeys.length - 1) {
-                    outArr.push(div);
-                }
+                    // Put a divider after this section / before the next
+                    if (ix < helpKeys.length - 1) {
+                        outArr.push(div);
+                    }
 
-                // TODO Put the patreon logo at the start of the patreon section
-                const chunks = msgArray(outArr, "\n\n", 1000);
-                for (const [ix, chunk] of chunks.entries()) {
-                    fields.push({
-                        name: ix > 0 ? constants.zws : cat.toUpperCase(),
-                        value: chunk,
-                    });
+                    // TODO Put the patreon logo at the start of the patreon section
+                    const chunks = msgArray(outArr, "\n\n", 1000);
+                    for (const [ix, chunk] of chunks.entries()) {
+                        fields.push({
+                            name: ix > 0 ? constants.zws : cat.toUpperCase(),
+                            value: chunk,
+                        });
+                    }
                 }
             }
 
@@ -100,17 +109,18 @@ export default class Help extends Command {
             }
         } else {
             // Searching for info on a certain command
-            const commands = {};
-            for (const cat of Object.keys(help)) {
-                for (const cmd of Object.keys(help[cat].commands)) {
-                    commands[cmd] = help[cat].commands[cmd];
+            let foundCommand = null;
+            for (const cat of helpKeys) {
+                const thisCat = help[cat];
+                if (typeof thisCat === "object" && "commands" in thisCat) {
+                    foundCommand = thisCat.commands.find((cmd) => cmd.name.toLowerCase() === search.toLowerCase());
+                    if (foundCommand) break;
                 }
             }
 
-            const thisCom = commands[search.toLowerCase()];
-            if (!thisCom) return super.error(interaction, "I couldn't find a match for that command name.");
+            if (!foundCommand) return super.error(interaction, "I couldn't find a match for that command name.");
 
-            const cmdArr = formatCmdHelp(thisCom.usage, search, thisCom.desc);
+            const cmdArr = formatCmdHelp(foundCommand.usage, foundCommand.name, foundCommand.description);
 
             await interaction.reply({
                 embeds: [

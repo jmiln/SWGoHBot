@@ -10,6 +10,14 @@ import type { CommandContext } from "../types/types.ts";
 export default class Poll extends Command {
     static readonly metadata = {
         name: "poll",
+        category: "Admin",
+        usage: [
+            "**/poll create** <question> <options> [anonymous]",
+            "**/poll end**",
+            "**/poll cancel**",
+            "**/poll view**",
+            "**/poll vote** <option>",
+        ],
         contexts: [InteractionContextType.Guild],
         description: "Create and vote on polls",
         guildOnly: false,

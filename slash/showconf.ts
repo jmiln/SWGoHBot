@@ -14,6 +14,8 @@ export default class Showconf extends Command {
         description: "Show the current guild configuration",
         guildOnly: false,
         permLevel: 3,
+        category: "Admin",
+        usage: ["**/showconf**"],
     };
     constructor() {
         super(Showconf.metadata);

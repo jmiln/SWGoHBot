@@ -11,6 +11,8 @@ import type { CommandContext } from "../types/types.ts";
 export default class MyProfile extends Command {
     static readonly metadata = {
         name: "myprofile",
+        category: "Gamedata",
+        usage: ["**/myprofile**"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show some general stats about your game profile",

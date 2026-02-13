@@ -15,6 +15,8 @@ import type { CommandContext } from "../types/types.ts";
 export default class Shardtimes extends Command {
     static readonly metadata = {
         name: "shardtimes",
+        category: "General",
+        usage: ["**add** <user> [timezone]", "  [time_until] [flag]", "**copy** <dest_channel>", "**remove** <user>", "**view** [ships]"],
         contexts: [InteractionContextType.Guild],
         description: "Manage shard times",
         guildOnly: false,

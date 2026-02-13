@@ -8,6 +8,8 @@ export default class WhoIs extends Command {
     static readonly metadata = {
         name: "whois",
         description: "Find a player by name",
+        category: "General",
+        usage: ["**/whois** <name>"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

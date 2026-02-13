@@ -12,9 +12,11 @@ import type { CommandContext } from "../types/types.ts";
 export default class MyArena extends Command {
     static readonly metadata = {
         name: "myarena",
+        category: "Gamedata",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show your current ranking in the character & fleet arenas",
+        usage: ["**/myarena** [allycode] [stats]"],
         options: [
             {
                 name: "allycode",

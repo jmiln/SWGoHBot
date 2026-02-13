@@ -7,6 +7,8 @@ export default class Activites extends Command {
     static readonly metadata = {
         name: "activities",
         description: "Shows daily guild activities",
+        category: "General",
+        usage: ["**activities** [day]"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

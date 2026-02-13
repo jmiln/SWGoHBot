@@ -9,6 +9,8 @@ export default class ArenaAlert extends Command {
     static readonly metadata = {
         name: "arenaalert",
         description: "Change settings for your arena alerts",
+        category: "Gamedata",
+        usage: ["**/arenaalert** [enabledms] [arena] [payout_result] [payout_warning]"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

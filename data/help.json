@@ -1,0 +1,3442 @@
+{
+    "metadata": {
+        "generatedAt": "2026-02-13T06:03:29.124Z",
+        "totalCommands": 44,
+        "categories": 4
+    },
+    "General": {
+        "description": "General commands",
+        "commands": [
+            {
+                "name": "acronyms",
+                "description": "Show what common acronyms mean",
+                "usage": [
+                    "**acronyms** <acronym>"
+                ],
+                "options": [
+                    {
+                        "name": "acronym",
+                        "type": 3,
+                        "description": "The acronym to look for",
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "activities",
+                "description": "Shows daily guild activities",
+                "usage": [
+                    "**activities** [day]"
+                ],
+                "options": [
+                    {
+                        "name": "day",
+                        "type": 3,
+                        "description": "Day of the week",
+                        "choices": [
+                            {
+                                "name": "Sunday",
+                                "value": "day_Sunday"
+                            },
+                            {
+                                "name": "Monday",
+                                "value": "day_Monday"
+                            },
+                            {
+                                "name": "Tuesday",
+                                "value": "day_Tuesday"
+                            },
+                            {
+                                "name": "Wednesday",
+                                "value": "day_Wednesday"
+                            },
+                            {
+                                "name": "Thursday",
+                                "value": "day_Thursday"
+                            },
+                            {
+                                "name": "Friday",
+                                "value": "day_Friday"
+                            },
+                            {
+                                "name": "Saturday",
+                                "value": "day_Saturday"
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "arenarank",
+                "description": "Calculates the arena rank range for a given rank",
+                "usage": [
+                    "**/arenarank** <rank>"
+                ],
+                "options": [
+                    {
+                        "name": "rank",
+                        "type": 4,
+                        "description": "The rank to calculate the drops from",
+                        "required": true
+                    },
+                    {
+                        "name": "hops",
+                        "type": 4,
+                        "description": "How many more ranks to calculate"
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "botshards",
+                "description": "Display availability and ping info for each shard.",
+                "usage": [
+                    "**/botshards**"
+                ],
+                "options": [],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "challenges",
+                "description": "Show daily guild challenges",
+                "usage": [
+                    "**challenges** [day]"
+                ],
+                "options": [
+                    {
+                        "name": "day",
+                        "type": 3,
+                        "description": "Day of the week",
+                        "choices": [
+                            {
+                                "name": "Sunday",
+                                "value": "day_Sunday"
+                            },
+                            {
+                                "name": "Monday",
+                                "value": "day_Monday"
+                            },
+                            {
+                                "name": "Tuesday",
+                                "value": "day_Tuesday"
+                            },
+                            {
+                                "name": "Wednesday",
+                                "value": "day_Wednesday"
+                            },
+                            {
+                                "name": "Thursday",
+                                "value": "day_Thursday"
+                            },
+                            {
+                                "name": "Friday",
+                                "value": "day_Friday"
+                            },
+                            {
+                                "name": "Saturday",
+                                "value": "day_Saturday"
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "character",
+                "description": "Show overall info for the given character",
+                "usage": [
+                    "**/character** <character>"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "autocomplete": true,
+                        "type": 3,
+                        "description": "The character you want to see the gear of",
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "faction",
+                "description": "Lookup characters from a faction",
+                "usage": [
+                    "**/faction** <faction> [allycode] [leader] [zeta]"
+                ],
+                "options": [
+                    {
+                        "name": "faction",
+                        "description": "The faction you want to look up",
+                        "type": 3,
+                        "autocomplete": true,
+                        "required": true
+                    },
+                    {
+                        "name": "allycode",
+                        "description": "Ally code to look up the info for.",
+                        "type": 3,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "leader",
+                        "description": "Limit results to characters with the leader tag.",
+                        "type": 5
+                    },
+                    {
+                        "name": "zeta",
+                        "description": "Limit results to characters with abilities that can be zeta'd.",
+                        "type": 5
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "farm",
+                "description": "Finds the farming locations for units",
+                "usage": [
+                    "**/farm** <character>"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "autocomplete": true,
+                        "description": "The character or ship you want to search for",
+                        "type": 3,
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "help",
+                "description": "Displays a list of the available commands.",
+                "usage": [
+                    "**/help**"
+                ],
+                "options": [
+                    {
+                        "name": "details",
+                        "description": "Show details about each command's argument",
+                        "type": 5
+                    },
+                    {
+                        "name": "category",
+                        "description": "Show a list of commands in a given category",
+                        "type": 3,
+                        "choices": [
+                            {
+                                "name": "Admin",
+                                "value": "Admin"
+                            },
+                            {
+                                "name": "Gamedata",
+                                "value": "Gamedata"
+                            },
+                            {
+                                "name": "General",
+                                "value": "General"
+                            },
+                            {
+                                "name": "Patreon",
+                                "value": "Patreon"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "command",
+                        "description": "Show a specific command's details",
+                        "autocomplete": true,
+                        "type": 3
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "info",
+                "description": "Displays general stats & info about the bot",
+                "usage": [
+                    "**/info**"
+                ],
+                "options": [],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "modsets",
+                "description": "Displays how many mods you need per type for a full set",
+                "usage": [
+                    "**/modsets**"
+                ],
+                "options": [],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "shardtimes",
+                "description": "Manage shard times",
+                "usage": [
+                    "**add** <user> [timezone]",
+                    "  [time_until] [flag]",
+                    "**copy** <dest_channel>",
+                    "**remove** <user>",
+                    "**view** [ships]"
+                ],
+                "options": [
+                    {
+                        "name": "add",
+                        "type": 1,
+                        "description": "Add a new name/ user to be shown",
+                        "options": [
+                            {
+                                "name": "user",
+                                "type": 3,
+                                "description": "A name or mention/ userID",
+                                "required": true
+                            },
+                            {
+                                "name": "timezone",
+                                "type": 3,
+                                "description": "A timezone identifyer (Ex: US/Pacific)"
+                            },
+                            {
+                                "name": "time_until",
+                                "type": 3,
+                                "description": "How long (hh:mm) until the payout"
+                            },
+                            {
+                                "name": "flag",
+                                "type": 3,
+                                "description": "An emote to show next to the name"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "remove",
+                        "type": 1,
+                        "description": "Remove a name/ user from the list",
+                        "options": [
+                            {
+                                "name": "user",
+                                "type": 3,
+                                "description": "A name or mention/ userID",
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "copy",
+                        "type": 1,
+                        "description": "Copy the shard times from this channel to the target channel",
+                        "options": [
+                            {
+                                "name": "dest_channel",
+                                "type": 7,
+                                "description": "The channel you want it to be copied to",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "type": 1,
+                        "description": "Copy the shard times from this channel to the target channel",
+                        "options": [
+                            {
+                                "name": "ships",
+                                "type": 5,
+                                "description": "Show the ship arena payout times instead"
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "ships",
+                "description": "Get information about a ship",
+                "usage": [
+                    "**/ships** <ship>"
+                ],
+                "options": [
+                    {
+                        "name": "ship",
+                        "autocomplete": true,
+                        "type": 3,
+                        "description": "The ship to look up",
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "time",
+                "description": "Get the current time in a timezone",
+                "usage": [
+                    "**/time** [timezone]"
+                ],
+                "options": [
+                    {
+                        "name": "timezone",
+                        "type": 3,
+                        "description": "A valid timezone to view"
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "userconf",
+                "description": "Change your personal settings with the bot (allycode, view alerts, etc.)",
+                "usage": [
+                    "**allycodes add** <allycode>",
+                    "**allycodes make_primary** <allycode>",
+                    "**allycodes remove** <allycode>",
+                    "**arenaalert** [enable_dms] [arena]",
+                    "  [payout_result] [payout_warning]",
+                    "**lang** [bot_language] [swgoh_language]",
+                    "**view**"
+                ],
+                "options": [
+                    {
+                        "name": "allycodes",
+                        "description": "The ally code of the user you want to see",
+                        "type": 2,
+                        "options": [
+                            {
+                                "name": "add",
+                                "type": 1,
+                                "description": "Add an allycode",
+                                "options": [
+                                    {
+                                        "name": "allycode",
+                                        "description": "The ally code of the user you want to see",
+                                        "type": 3,
+                                        "required": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "remove",
+                                "type": 1,
+                                "description": "Remove an allycode",
+                                "options": [
+                                    {
+                                        "name": "allycode",
+                                        "description": "The ally code of the user you want to see",
+                                        "type": 3,
+                                        "required": true,
+                                        "autocomplete": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "make_primary",
+                                "type": 1,
+                                "description": "Set this ally code as the primary one",
+                                "options": [
+                                    {
+                                        "name": "allycode",
+                                        "description": "The ally code of the user you want to see",
+                                        "type": 3,
+                                        "required": true,
+                                        "autocomplete": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "arenaalert",
+                        "type": 1,
+                        "description": "Set up your arena alerts",
+                        "options": [
+                            {
+                                "name": "enable_dms",
+                                "description": "Set it to send DMs for various alerts",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "all",
+                                        "value": "all"
+                                    },
+                                    {
+                                        "name": "primary",
+                                        "value": "primary"
+                                    },
+                                    {
+                                        "name": "off",
+                                        "value": "off"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "arena",
+                                "description": "Choose which arena to watch",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "char",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "fleet",
+                                        "value": "fleet"
+                                    },
+                                    {
+                                        "name": "both",
+                                        "value": "both"
+                                    },
+                                    {
+                                        "name": "none",
+                                        "value": "none"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "payout_result",
+                                "description": "Set it to send you the final rank at your payout",
+                                "type": 5
+                            },
+                            {
+                                "name": "payout_warning",
+                                "description": "Set it to warn you before your payout, 1-1440min, 0 to disable",
+                                "type": 4,
+                                "minValue": 0,
+                                "maxValue": 1440
+                            }
+                        ]
+                    },
+                    {
+                        "name": "lang",
+                        "type": 1,
+                        "description": "Change your language settings",
+                        "options": [
+                            {
+                                "name": "bot_language",
+                                "description": "Set the language for the bot's text",
+                                "type": 3,
+                                "choices": []
+                            },
+                            {
+                                "name": "swgoh_language",
+                                "description": "Set the language for the game's text",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "ENG_US",
+                                        "value": "ENG_US"
+                                    },
+                                    {
+                                        "name": "GER_DE",
+                                        "value": "GER_DE"
+                                    },
+                                    {
+                                        "name": "SPA_XM",
+                                        "value": "SPA_XM"
+                                    },
+                                    {
+                                        "name": "FRE_FR",
+                                        "value": "FRE_FR"
+                                    },
+                                    {
+                                        "name": "RUS_RU",
+                                        "value": "RUS_RU"
+                                    },
+                                    {
+                                        "name": "POR_BR",
+                                        "value": "POR_BR"
+                                    },
+                                    {
+                                        "name": "KOR_KR",
+                                        "value": "KOR_KR"
+                                    },
+                                    {
+                                        "name": "ITA_IT",
+                                        "value": "ITA_IT"
+                                    },
+                                    {
+                                        "name": "TUR_TR",
+                                        "value": "TUR_TR"
+                                    },
+                                    {
+                                        "name": "CHS_CN",
+                                        "value": "CHS_CN"
+                                    },
+                                    {
+                                        "name": "CHT_CN",
+                                        "value": "CHT_CN"
+                                    },
+                                    {
+                                        "name": "IND_ID",
+                                        "value": "IND_ID"
+                                    },
+                                    {
+                                        "name": "JPN_JP",
+                                        "value": "JPN_JP"
+                                    },
+                                    {
+                                        "name": "THA_TH",
+                                        "value": "THA_TH"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "type": 1,
+                        "description": "View your current settings"
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "whois",
+                "description": "Find a player by name",
+                "usage": [
+                    "**/whois** <name>"
+                ],
+                "options": [
+                    {
+                        "name": "name",
+                        "type": 3,
+                        "description": "The player that you're looking for",
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            }
+        ]
+    },
+    "Admin": {
+        "description": "Commands with limited access",
+        "commands": [
+            {
+                "name": "aliases",
+                "description": "Set custom aliases for your guild to use",
+                "usage": [
+                    "**aliases** <add> <unit> <alias>",
+                    "**aliases** <remove> <alias>",
+                    "**aliases** <view>"
+                ],
+                "options": [
+                    {
+                        "name": "add",
+                        "type": 1,
+                        "description": "Add a unit alias",
+                        "options": [
+                            {
+                                "name": "unit",
+                                "type": 3,
+                                "autocomplete": true,
+                                "description": "The unit that you want to add an alias for",
+                                "required": true
+                            },
+                            {
+                                "name": "alias",
+                                "type": 3,
+                                "description": "The alias for the selected unit",
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "remove",
+                        "type": 1,
+                        "description": "Remove an alias",
+                        "options": [
+                            {
+                                "name": "alias",
+                                "type": 3,
+                                "description": "The alias to remove",
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "type": 1,
+                        "description": "View your current aliases"
+                    }
+                ],
+                "permLevel": 3,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "event",
+                "description": "Configure and view events.",
+                "usage": [
+                    "**create** <name> <day> <time> [message]",
+                    "  [repeat] [repeatday] [channel] [countdown]",
+                    "**createjson** <json>",
+                    "**delete** <name>",
+                    "**edit** <event_name> [name] [day] [time] ",
+                    "  [message] [repeat] [repeatday]",
+                    "  [channel] [countdown]",
+                    "**trigger** <name>",
+                    "**view** [name] [filter] [page]"
+                ],
+                "options": [
+                    {
+                        "name": "create",
+                        "description": "Make a new event",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "name",
+                                "description": "The name of the event, no spaces allowed.",
+                                "type": 3,
+                                "required": true
+                            },
+                            {
+                                "name": "day",
+                                "type": 3,
+                                "description": "The date (DD/MM/YYYY) that you want it to go off",
+                                "required": true
+                            },
+                            {
+                                "name": "time",
+                                "type": 3,
+                                "description": "The time (HH:MM) that you want it to go off. This needs to be in 24hr format",
+                                "required": true
+                            },
+                            {
+                                "name": "message",
+                                "type": 3,
+                                "description": "The message that you want the event to spit back out"
+                            },
+                            {
+                                "name": "repeat",
+                                "type": 3,
+                                "description": "Lets you set a duration with the format of 00d00h00m. It will repeat after that time has passed."
+                            },
+                            {
+                                "name": "repeatday",
+                                "type": 3,
+                                "description": "Lets you set it to repeat on set days with the format of 0,0,0,0,0."
+                            },
+                            {
+                                "name": "channel",
+                                "type": 7,
+                                "description": "Set which channel the event will announce on"
+                            },
+                            {
+                                "name": "countdown",
+                                "type": 5,
+                                "description": "Set to use the countdown or not (Configured in setconf)"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "createjson",
+                        "description": "Create new event(s), inputted as a json code block",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "json",
+                                "description": "The json formatted text.",
+                                "type": 3,
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "delete",
+                        "description": "Delete an event",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "name",
+                                "description": "The unique name of the event you want to delete",
+                                "type": 3,
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "edit",
+                        "description": "Create new event(s), inputted as a json code block",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "event_name",
+                                "description": "The name of the event you want to edit",
+                                "type": 3,
+                                "required": true,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "name",
+                                "description": "The new name of the event, no spaces allowed.",
+                                "type": 3
+                            },
+                            {
+                                "name": "day",
+                                "type": 3,
+                                "description": "The date (DD/MM/YYYY) that you want it to go off"
+                            },
+                            {
+                                "name": "time",
+                                "type": 3,
+                                "description": "The time (HH:MM) that you want it to go off. This needs to be in 24hr format"
+                            },
+                            {
+                                "name": "message",
+                                "type": 3,
+                                "description": "The message that you want the event to spit back out"
+                            },
+                            {
+                                "name": "repeat",
+                                "type": 3,
+                                "description": "Lets you set a duration with the format of 00d00h00m. (Not compatible with repeatday)"
+                            },
+                            {
+                                "name": "repeatday",
+                                "type": 3,
+                                "description": "Lets you set it to repeat on set days with the format of 0,0,0,0,0. (Not compatible with repeat)"
+                            },
+                            {
+                                "name": "channel",
+                                "type": 7,
+                                "description": "Set which channel the event will announce on"
+                            },
+                            {
+                                "name": "countdown",
+                                "type": 5,
+                                "description": "Set to use the countdown or not (Configured in setconf)"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "trigger",
+                        "description": "Trigger the selected event",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "name",
+                                "description": "The unique name of the event you want to trigger",
+                                "type": 3,
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "description": "View your event(s)",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "name",
+                                "description": "The unique name of the event you want to see.",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "minimal",
+                                "description": "Show the event(s), but without the message.",
+                                "type": 5
+                            },
+                            {
+                                "name": "page_num",
+                                "description": "Set it to paginate the events, showing 5 events at a time.",
+                                "type": 4
+                            },
+                            {
+                                "name": "filter",
+                                "description": "Show only events that match the filter",
+                                "type": 3
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "poll",
+                "description": "Create and vote on polls",
+                "usage": [
+                    "**/poll create** <question> <options> [anonymous]",
+                    "**/poll end**",
+                    "**/poll cancel**",
+                    "**/poll view**",
+                    "**/poll vote** <option>"
+                ],
+                "options": [
+                    {
+                        "name": "create",
+                        "description": "Create a poll",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "question",
+                                "required": true,
+                                "description": "The question you want people to vote on",
+                                "type": 3
+                            },
+                            {
+                                "name": "options",
+                                "required": true,
+                                "description": "Options for the poll, separated by a pipe symbol `|`",
+                                "type": 3
+                            },
+                            {
+                                "name": "anonymous",
+                                "description": "If enabled, current votes will not be shown until the poll is closed. ",
+                                "type": 5
+                            }
+                        ]
+                    },
+                    {
+                        "name": "end",
+                        "description": "End a poll, and show the final results",
+                        "type": 1,
+                        "options": []
+                    },
+                    {
+                        "name": "cancel",
+                        "description": "Cancel a poll, don't bother with the results",
+                        "type": 1,
+                        "options": []
+                    },
+                    {
+                        "name": "view",
+                        "description": "View the status of a poll with the current results",
+                        "type": 1,
+                        "options": []
+                    },
+                    {
+                        "name": "vote",
+                        "description": "Vote on a poll (your vote will be hidden)",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "option",
+                                "required": true,
+                                "description": "The poll option you want to vote for",
+                                "type": 4,
+                                "minValue": 0,
+                                "maxValue": 10
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "setconf",
+                "description": "Change settings for your guild",
+                "usage": [
+                    "**add** [admin_role] [event_countdown]",
+                    "**remove** [admin_role] [event_countdown]",
+                    "**set** [enable_welcome] [welcome_message]",
+                    "  [enable_part] [part_message] [timezone]",
+                    "  [announce_chan] [use_event_pages]",
+                    "  [language] [swgoh_language]",
+                    "  [shardtime_vertical]"
+                ],
+                "options": [
+                    {
+                        "name": "add",
+                        "description": "Add a value to one of the array settings",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "admin_role",
+                                "type": 8,
+                                "description": "A list of the roles that are allowed to mess with settings/ events.",
+                                "choices": null
+                            },
+                            {
+                                "name": "event_countdown",
+                                "type": 4,
+                                "description": "Set how long before events is should warn you.",
+                                "choices": null
+                            }
+                        ]
+                    },
+                    {
+                        "name": "remove",
+                        "description": "Remove a value from one of the array settings",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "admin_role",
+                                "type": 8,
+                                "description": "A list of the roles that are allowed to mess with settings/ events.",
+                                "choices": null
+                            },
+                            {
+                                "name": "event_countdown",
+                                "type": 4,
+                                "description": "Set how long before events is should warn you.",
+                                "choices": null
+                            }
+                        ]
+                    },
+                    {
+                        "name": "set",
+                        "type": 1,
+                        "description": "Set the value of one of the options",
+                        "options": [
+                            {
+                                "name": "enable_welcome",
+                                "type": 5,
+                                "description": "Toggle the welcome message",
+                                "choices": null
+                            },
+                            {
+                                "name": "welcome_message",
+                                "type": 3,
+                                "description": "Set the welcome message text",
+                                "choices": null
+                            },
+                            {
+                                "name": "enable_part",
+                                "type": 5,
+                                "description": "Toggle the parting/ leaving message",
+                                "choices": null
+                            },
+                            {
+                                "name": "part_message",
+                                "type": 3,
+                                "description": "Set the part message text",
+                                "choices": null
+                            },
+                            {
+                                "name": "timezone",
+                                "type": 3,
+                                "description": "Set the timezone to be referenced for events and such in the guild",
+                                "choices": null
+                            },
+                            {
+                                "name": "announce_chan",
+                                "type": 7,
+                                "description": "Set the default channel for events to announce to",
+                                "choices": null
+                            },
+                            {
+                                "name": "use_event_pages",
+                                "type": 5,
+                                "description": "Set it to show your events list in pages",
+                                "choices": null
+                            },
+                            {
+                                "name": "language",
+                                "type": 3,
+                                "description": "Change the language (Limited options outside of English)",
+                                "choices": [
+                                    {
+                                        "name": "en_US",
+                                        "value": "en_US"
+                                    },
+                                    {
+                                        "name": "de_DE",
+                                        "value": "de_DE"
+                                    },
+                                    {
+                                        "name": "es_SP",
+                                        "value": "es_SP"
+                                    },
+                                    {
+                                        "name": "ko_KR",
+                                        "value": "ko_KR"
+                                    },
+                                    {
+                                        "name": "pt_BR",
+                                        "value": "pt_BR"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "swgoh_language",
+                                "type": 3,
+                                "description": "Change the language of the data from in-game",
+                                "choices": [
+                                    {
+                                        "name": "ENG_US",
+                                        "value": "ENG_US"
+                                    },
+                                    {
+                                        "name": "GER_DE",
+                                        "value": "GER_DE"
+                                    },
+                                    {
+                                        "name": "SPA_XM",
+                                        "value": "SPA_XM"
+                                    },
+                                    {
+                                        "name": "FRE_FR",
+                                        "value": "FRE_FR"
+                                    },
+                                    {
+                                        "name": "RUS_RU",
+                                        "value": "RUS_RU"
+                                    },
+                                    {
+                                        "name": "POR_BR",
+                                        "value": "POR_BR"
+                                    },
+                                    {
+                                        "name": "KOR_KR",
+                                        "value": "KOR_KR"
+                                    },
+                                    {
+                                        "name": "ITA_IT",
+                                        "value": "ITA_IT"
+                                    },
+                                    {
+                                        "name": "TUR_TR",
+                                        "value": "TUR_TR"
+                                    },
+                                    {
+                                        "name": "CHS_CN",
+                                        "value": "CHS_CN"
+                                    },
+                                    {
+                                        "name": "CHT_CN",
+                                        "value": "CHT_CN"
+                                    },
+                                    {
+                                        "name": "IND_ID",
+                                        "value": "IND_ID"
+                                    },
+                                    {
+                                        "name": "JPN_JP",
+                                        "value": "JPN_JP"
+                                    },
+                                    {
+                                        "name": "THA_TH",
+                                        "value": "THA_TH"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "shardtime_vertical",
+                                "type": 5,
+                                "description": "Display the shardtimes info vertically",
+                                "choices": null
+                            }
+                        ]
+                    },
+                    {
+                        "name": "twlist",
+                        "type": 2,
+                        "description": "Manage the Territory War unit list",
+                        "options": [
+                            {
+                                "name": "manage_list",
+                                "type": 1,
+                                "description": "Update the Territory War unit list",
+                                "options": [
+                                    {
+                                        "name": "add_unit",
+                                        "type": 3,
+                                        "description": "Add a unit to the list",
+                                        "autocomplete": true
+                                    },
+                                    {
+                                        "name": "remove_unit",
+                                        "description": "Remove a unit from the list",
+                                        "type": 3,
+                                        "autocomplete": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "blacklist",
+                                "type": 1,
+                                "description": "Blacklist units you don't want showing up",
+                                "options": [
+                                    {
+                                        "name": "add_unit",
+                                        "type": 3,
+                                        "description": "Add a unit to the list",
+                                        "autocomplete": true
+                                    },
+                                    {
+                                        "name": "remove_unit",
+                                        "description": "Remove a unit from the list",
+                                        "type": 3,
+                                        "autocomplete": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "view",
+                                "type": 1,
+                                "description": "View the current list"
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 3,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "showconf",
+                "description": "Show the current guild configuration",
+                "usage": [
+                    "**/showconf**"
+                ],
+                "options": [],
+                "permLevel": 3,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            }
+        ]
+    },
+    "Gamedata": {
+        "description": "Commands that pull data from the game",
+        "commands": [
+            {
+                "name": "arenaalert",
+                "description": "Change settings for your arena alerts",
+                "usage": [
+                    "**/arenaalert** [enabledms] [arena] [payout_result] [payout_warning]"
+                ],
+                "options": [
+                    {
+                        "name": "enabledms",
+                        "type": 3,
+                        "description": "Set if it's going to DM you for jumps",
+                        "choices": [
+                            {
+                                "name": "All",
+                                "value": "all"
+                            },
+                            {
+                                "name": "Primary",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "Off",
+                                "value": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "arena",
+                        "type": 3,
+                        "description": "Set which arena it will watch.",
+                        "choices": [
+                            {
+                                "name": "Char",
+                                "value": "char"
+                            },
+                            {
+                                "name": "Fleet",
+                                "value": "fleet"
+                            },
+                            {
+                                "name": "Both",
+                                "value": "both"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "payout_result",
+                        "type": 3,
+                        "description": "Send you a DM with your final payout result",
+                        "choices": [
+                            {
+                                "name": "On",
+                                "value": "on"
+                            },
+                            {
+                                "name": "Off",
+                                "value": "off"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "payout_warning",
+                        "type": 4,
+                        "description": "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
+                        "minValue": 0,
+                        "maxValue": 1440
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "arenawatch",
+                "description": "Configurations for ArenaWatch",
+                "usage": [
+                    "**/arenawatch allycode add** <allycodes> [mark]",
+                    "**/arenawatch allycode remove** <allycodes>",
+                    "**/arenawatch allycode edit** <old_allycode> <new_allycode>",
+                    "**/arenawatch arena** <enabled> <arena>",
+                    "**/arenawatch channel** <target_channel> <arena>",
+                    "**/arenawatch enabled** <toggle>",
+                    "**/arenawatch report** <arena>",
+                    "**/arenawatch showvs** <enable>",
+                    "**/arenawatch warn** <allycode> <mins> <arena>",
+                    "**/arenawatch payout enable** <enabled> <arena>",
+                    "**/arenawatch payout channel** <target_channel> <arena>",
+                    "**/arenawatch payout mark** <allycode> [mark] [remove_mark]",
+                    "**/arenawatch result** <allycode> <arena>",
+                    "**/arenawatch use_marks_in_log** <enable>",
+                    "**/arenawatch view** [allycode] [view_by]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "type": 2,
+                        "description": "Any ally codes you want to put in (9 digit numbers, don't need the dashes)",
+                        "options": [
+                            {
+                                "name": "add",
+                                "description": "Add ally codes in",
+                                "type": 1,
+                                "options": [
+                                    {
+                                        "name": "allycodes",
+                                        "description": "AllyCodes or allycode:mention, comma seperated",
+                                        "type": 3,
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "mark",
+                                        "type": 3,
+                                        "description": "The emote or symbol to mark them with. Leaving this empty will remove it if available"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "remove",
+                                "description": "Remove ally codes",
+                                "type": 1,
+                                "options": [
+                                    {
+                                        "name": "allycodes",
+                                        "description": "AllyCodes, comma seperated",
+                                        "type": 3,
+                                        "required": true
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "edit",
+                                "type": 1,
+                                "description": "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
+                                "options": [
+                                    {
+                                        "name": "old_allycode",
+                                        "type": 3,
+                                        "description": "Ally code of the person you want to modify",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "new_allycode",
+                                        "type": 3,
+                                        "description": "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "arena",
+                        "type": 1,
+                        "description": "Choose between the arena types",
+                        "options": [
+                            {
+                                "name": "enabled",
+                                "type": 5,
+                                "description": "Set whether it's enabled or not",
+                                "required": true
+                            },
+                            {
+                                "name": "arena",
+                                "type": 3,
+                                "description": "Choose which arena to toggle",
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "Char",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "Fleet",
+                                        "value": "fleet"
+                                    },
+                                    {
+                                        "name": "Both",
+                                        "value": "both"
+                                    },
+                                    {
+                                        "name": "None",
+                                        "value": "none"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "channel",
+                        "type": 1,
+                        "description": "The channel to put the logs in",
+                        "options": [
+                            {
+                                "name": "target_channel",
+                                "type": 7,
+                                "required": true,
+                                "description": "The channel to put the logs in"
+                            },
+                            {
+                                "name": "arena",
+                                "type": 3,
+                                "required": true,
+                                "description": "The arena to watch",
+                                "choices": [
+                                    {
+                                        "name": "Char",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "Fleet",
+                                        "value": "fleet"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "enabled",
+                        "type": 1,
+                        "description": "Enable/ Disable arenawatch",
+                        "options": [
+                            {
+                                "name": "toggle",
+                                "description": "Enable/ Disable arenawatch",
+                                "type": 5,
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "report",
+                        "type": 1,
+                        "description": "Choose whether you want it to report on climbs, drops, or both",
+                        "options": [
+                            {
+                                "name": "arena",
+                                "type": 3,
+                                "description": "Choose whether you want it to report on climbs, drops, or both",
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "climb",
+                                        "value": "climb"
+                                    },
+                                    {
+                                        "name": "drop",
+                                        "value": "drop"
+                                    },
+                                    {
+                                        "name": "both",
+                                        "value": "both"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "showvs",
+                        "type": 1,
+                        "description": "Enable or disable showing when one person hits another",
+                        "options": [
+                            {
+                                "name": "enable",
+                                "description": "True/ False",
+                                "type": 5,
+                                "required": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "warn",
+                        "type": 1,
+                        "description": "Set when to warn who, and about which arena",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 3,
+                                "description": "The user's ally code",
+                                "required": true
+                            },
+                            {
+                                "name": "mins",
+                                "type": 4,
+                                "description": "(0-1439) Minutes before payout to warn (0 to disable)",
+                                "required": true,
+                                "minValue": 0,
+                                "maxValue": 1439
+                            },
+                            {
+                                "name": "arena",
+                                "type": 3,
+                                "description": "Set which arena it will watch.",
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "Char",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "Fleet",
+                                        "value": "fleet"
+                                    },
+                                    {
+                                        "name": "None",
+                                        "value": "none"
+                                    },
+                                    {
+                                        "name": "Both",
+                                        "value": "both"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "payout",
+                        "type": 2,
+                        "description": "Set to spit out the payout result of a user",
+                        "options": [
+                            {
+                                "name": "enable",
+                                "type": 1,
+                                "description": "Choose between the arena types",
+                                "options": [
+                                    {
+                                        "name": "enabled",
+                                        "type": 5,
+                                        "description": "Set whether it's enabled or not",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "arena",
+                                        "type": 3,
+                                        "description": "Choose which arena to toggle",
+                                        "required": true,
+                                        "choices": [
+                                            {
+                                                "name": "Char",
+                                                "value": "char"
+                                            },
+                                            {
+                                                "name": "Fleet",
+                                                "value": "fleet"
+                                            },
+                                            {
+                                                "name": "Both",
+                                                "value": "both"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "channel",
+                                "type": 1,
+                                "description": "Set an arena's logs to a specified channel",
+                                "options": [
+                                    {
+                                        "name": "target_channel",
+                                        "type": 7,
+                                        "description": "The channel to send to",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "arena",
+                                        "type": 3,
+                                        "description": "Set which arena it will log to this channel",
+                                        "required": true,
+                                        "choices": [
+                                            {
+                                                "name": "Char",
+                                                "value": "char"
+                                            },
+                                            {
+                                                "name": "Fleet",
+                                                "value": "fleet"
+                                            },
+                                            {
+                                                "name": "Both",
+                                                "value": "both"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "mark",
+                                "type": 1,
+                                "description": "Set a mark for a player",
+                                "options": [
+                                    {
+                                        "name": "allycode",
+                                        "type": 3,
+                                        "description": "The ally code of the player to mark",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "mark",
+                                        "type": 3,
+                                        "required": false,
+                                        "description": "The emote or symbol to mark them with. Leaving this empty will remove it if available"
+                                    },
+                                    {
+                                        "name": "remove_mark",
+                                        "type": 5,
+                                        "required": false,
+                                        "description": "Choose this to delete the mark on a selected user"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "result",
+                        "type": 1,
+                        "description": "Set to spit out the payout result of a user",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 3,
+                                "description": "The user's ally code",
+                                "required": true
+                            },
+                            {
+                                "name": "arena",
+                                "type": 3,
+                                "description": "Set which arena it will give the results of.",
+                                "required": true,
+                                "choices": [
+                                    {
+                                        "name": "Char",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "Fleet",
+                                        "value": "fleet"
+                                    },
+                                    {
+                                        "name": "None",
+                                        "value": "none"
+                                    },
+                                    {
+                                        "name": "Both",
+                                        "value": "both"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "use_marks_in_log",
+                        "type": 1,
+                        "description": "Toggle showing players' marks in the arena log",
+                        "options": [
+                            {
+                                "name": "enable",
+                                "type": 5,
+                                "required": true,
+                                "description": "Show marks in arena log?"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "type": 1,
+                        "description": "View your arenaWatch settings",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 3,
+                                "description": "An allycode to check the specific settings for"
+                            },
+                            {
+                                "name": "view_by",
+                                "type": 3,
+                                "description": "View the list sorted by char or fleet ranks",
+                                "choices": [
+                                    {
+                                        "name": "Fleet Rank",
+                                        "value": "fleet_rank"
+                                    },
+                                    {
+                                        "name": "Char Rank",
+                                        "value": "char_rank"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "charactergear",
+                "description": "Show the gear required for a specified character",
+                "usage": [
+                    "**/charactergear** <character> [allycode] [expand] [gearlevel]"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "autocomplete": true,
+                        "type": 3,
+                        "description": "The character you want to see the gear of",
+                        "required": true
+                    },
+                    {
+                        "name": "allycode",
+                        "type": 3,
+                        "autocomplete": true,
+                        "description": "An ally code to check the character against"
+                    },
+                    {
+                        "name": "expand",
+                        "type": 5,
+                        "description": "Expand the gear pieces to show their parts instead of the whole"
+                    },
+                    {
+                        "name": "gearlevel",
+                        "type": 4,
+                        "description": "The gear level you want to see the requirements for",
+                        "minValue": 1,
+                        "maxValue": 13
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "grandarena",
+                "description": "Compare two players' rosters for Grand Arena",
+                "usage": [
+                    "**/grandarena** <allycode_1> <allycode_2>",
+                    "  [characters] [faction]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode_1",
+                        "type": 3,
+                        "description": "Ally code for player 1",
+                        "required": true,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "allycode_2",
+                        "type": 3,
+                        "description": "Ally code for player 2",
+                        "autocomplete": true,
+                        "required": true
+                    },
+                    {
+                        "name": "characters",
+                        "type": 3,
+                        "description": "Characters to compare, comma seperated"
+                    },
+                    {
+                        "name": "faction",
+                        "type": 3,
+                        "description": "A faction to compare for the two players",
+                        "autocomplete": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "guildquality",
+                "description": "Check a guild's overall quality",
+                "usage": [
+                    "**/guildquality** [allycode]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "description": "The ally code of the guild you want to check.",
+                        "type": 3,
+                        "autocomplete": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "guilds",
+                "description": "View information about a specified guild",
+                "usage": [
+                    "**gear** [allycode] [sort]",
+                    "**mods** [allycode] [sort]",
+                    "**relics** [allycode]",
+                    "**roster** [allycode] [registered]",
+                    "  [show_allycode] [sort] [show_side]",
+                    "  [split_types]",
+                    "**tickets** [allycode] [sort]",
+                    "**twsummary** [allycode] [expand]",
+                    "**view** [allycode]"
+                ],
+                "options": [
+                    {
+                        "name": "gear",
+                        "description": "Show an overview of the guild's gear levels",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "sort",
+                                "description": "Which gear level you'd like it sorted by (9-13)",
+                                "type": 4,
+                                "minValue": 9,
+                                "maxValue": 13
+                            }
+                        ]
+                    },
+                    {
+                        "name": "mods",
+                        "description": "Show an overview of the guild's mod stats",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "sort",
+                                "description": "Choose how you want the results sorted",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "name",
+                                        "value": "name"
+                                    },
+                                    {
+                                        "name": "offense",
+                                        "value": "offense"
+                                    },
+                                    {
+                                        "name": "six pip/ 6*",
+                                        "value": "6"
+                                    },
+                                    {
+                                        "name": "speed",
+                                        "value": "speed"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "relics",
+                        "description": "Show an overview of the guild's relic counts",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "roster",
+                        "description": "View the guild's roster, showing ally codes, gp, etc.",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "registered",
+                                "description": "Show the discord names of anyone registered & on the server next to their name.",
+                                "type": 5
+                            },
+                            {
+                                "name": "show_allycode",
+                                "description": "Show user's ally codes instead of their gp",
+                                "type": 5
+                            },
+                            {
+                                "name": "sort",
+                                "description": "Choose what the list is sorted by.",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "name",
+                                        "value": "name"
+                                    },
+                                    {
+                                        "name": "rank",
+                                        "value": "rank"
+                                    },
+                                    {
+                                        "name": "gp",
+                                        "value": "gp"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "show_side",
+                                "description": "Display just light side or dark side GP",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Light Side",
+                                        "value": "light"
+                                    },
+                                    {
+                                        "name": "Dark Side",
+                                        "value": "dark"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "split_types",
+                                "description": "Display chacters and ships as different columns",
+                                "type": 5
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tickets",
+                        "description": "Show how many event tickets each guild member has aquired for the day",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "sort",
+                                "description": "Choose what the list is sorted by.",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "tickets",
+                                        "value": "tickets"
+                                    },
+                                    {
+                                        "name": "name",
+                                        "value": "name"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "show_all",
+                                "description": "Show all members, or just the ones that need more tickets",
+                                "type": 5
+                            }
+                        ]
+                    },
+                    {
+                        "name": "tw_summary",
+                        "description": "Show an overview of stats for your guild that could be useful for territory wars",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "expand",
+                                "description": "Expand some of the fields to show all options",
+                                "type": 5
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "description": "Show an overview of the guild's stats",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "description": "The ally code of the guild you want to check.",
+                                "type": 3,
+                                "autocomplete": true
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "guildsearch",
+                "description": "Search for stats on your guild's units",
+                "usage": [
+                    "**character** <character> [allycode]",
+                    "  [sort] [stat] [top] [rarity] [reverse]",
+                    "  [omicrons] [zetas]",
+                    "**ship** <ship> [allycode] [sort]",
+                    "  [top] [rarity] [reverse]"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "description": "Look for your guild's stats on a character.",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "character",
+                                "autocomplete": true,
+                                "description": "The character you want to display",
+                                "type": 3,
+                                "required": true
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "An ally code to determine which guild you're wanting to look up",
+                                "type": 3
+                            },
+                            {
+                                "name": "sort",
+                                "description": "Choose what to sort by",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Gear",
+                                        "value": "gear"
+                                    },
+                                    {
+                                        "name": "GP",
+                                        "value": "gp"
+                                    },
+                                    {
+                                        "name": "Name",
+                                        "value": "name"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "stat",
+                                "description": "Which stat you want it to show",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Health",
+                                        "value": "Health"
+                                    },
+                                    {
+                                        "name": "Protection",
+                                        "value": "Protection"
+                                    },
+                                    {
+                                        "name": "Speed",
+                                        "value": "Speed"
+                                    },
+                                    {
+                                        "name": "Potency",
+                                        "value": "Potency"
+                                    },
+                                    {
+                                        "name": "Physical Critical Chance",
+                                        "value": "Physical Critical Chance"
+                                    },
+                                    {
+                                        "name": "Physical Damage",
+                                        "value": "Physical Damage"
+                                    },
+                                    {
+                                        "name": "Special Critical Chance",
+                                        "value": "Special Critical Chance"
+                                    },
+                                    {
+                                        "name": "Special Damage",
+                                        "value": "Special Damage"
+                                    },
+                                    {
+                                        "name": "Critical Damage",
+                                        "value": "Critical Damage"
+                                    },
+                                    {
+                                        "name": "Tenacity",
+                                        "value": "Tenacity"
+                                    },
+                                    {
+                                        "name": "Accuracy",
+                                        "value": "Accuracy"
+                                    },
+                                    {
+                                        "name": "Armor",
+                                        "value": "Armor"
+                                    },
+                                    {
+                                        "name": "Resistance",
+                                        "value": "Resistance"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "top",
+                                "description": "View only the top x in the list (1-50)",
+                                "type": 4,
+                                "minValue": 0,
+                                "maxValue": 50
+                            },
+                            {
+                                "name": "rarity",
+                                "description": "View only X rarity (Star lvl) and above. (1-7)",
+                                "type": 4,
+                                "minValue": 0,
+                                "maxValue": 7
+                            },
+                            {
+                                "name": "reverse",
+                                "description": "Reverse the sort order",
+                                "type": 5
+                            },
+                            {
+                                "name": "omicrons",
+                                "description": "Show only results that have omicron'd abilities",
+                                "type": 5
+                            },
+                            {
+                                "name": "zetas",
+                                "description": "Show only results that have zeta'd abilities",
+                                "type": 5
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ship",
+                        "description": "Look for your guild's stats on a ship.",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "ship",
+                                "autocomplete": true,
+                                "description": "The ship you want to display",
+                                "type": 3,
+                                "required": true
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "An ally code to determine which guild you're wanting to look up",
+                                "type": 3
+                            },
+                            {
+                                "name": "sort",
+                                "description": "Choose what to sort by",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "GP",
+                                        "value": "gp"
+                                    },
+                                    {
+                                        "name": "Name",
+                                        "value": "name"
+                                    },
+                                    {
+                                        "name": "Rarity",
+                                        "value": "rarity"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "top",
+                                "description": "View only the top x in the list (1-50)",
+                                "type": 4,
+                                "minValue": 0,
+                                "maxValue": 50
+                            },
+                            {
+                                "name": "rarity",
+                                "description": "View only X rarity (Star lvl) and above. (1-7)",
+                                "type": 4,
+                                "minValue": 0,
+                                "maxValue": 7
+                            },
+                            {
+                                "name": "reverse",
+                                "description": "Reverse the sort order",
+                                "type": 5
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "guildtickets",
+                "description": "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
+                "usage": [
+                    "**/guildtickets set** [enabled] [channel] [show_max]",
+                    "  [sortby] [updates] [tickets] [allycode]",
+                    "**/guildtickets view**"
+                ],
+                "options": [
+                    {
+                        "name": "set",
+                        "description": "Change the settings",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "enabled",
+                                "description": "Turn the updates on or off",
+                                "type": 5
+                            },
+                            {
+                                "name": "channel",
+                                "description": "Set which channel to log updates to",
+                                "type": 7
+                            },
+                            {
+                                "name": "show_max",
+                                "description": "Show players who have all of their tickets",
+                                "type": 5
+                            },
+                            {
+                                "name": "sortby",
+                                "description": "Choose how to sort the list",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Tickets",
+                                        "value": "tickets"
+                                    },
+                                    {
+                                        "name": "Name",
+                                        "value": "name"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "updates",
+                                "description": "Choose how updates are displayed",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Update every 5min",
+                                        "value": "update"
+                                    },
+                                    {
+                                        "name": "Send a message near reset",
+                                        "value": "msg"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "tickets",
+                                "description": "Set the max expected tickets",
+                                "type": 4,
+                                "minValue": 1,
+                                "maxValue": 600
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "Set what ally code to get the guild's info from",
+                                "type": 3
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "description": "View the settings for your guild updates",
+                        "type": 1
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "guildupdate",
+                "description": "Set up the guild watcher to alert you for changes in guild member's rosters",
+                "usage": [
+                    "**/guildupdate set** [enabled] [channel] [allycode]",
+                    "**/guildupdate view**"
+                ],
+                "options": [
+                    {
+                        "name": "set",
+                        "description": "Change the settings",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "enabled",
+                                "description": "Turn the updates on or off",
+                                "type": 5
+                            },
+                            {
+                                "name": "channel",
+                                "description": "Set which channel to log updates to",
+                                "type": 7
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "Set what ally code to get the guild's info from",
+                                "type": 3
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "description": "View the settings for your guild updates",
+                        "type": 1
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "mods",
+                "description": "Display some suggested mod loadouts based on the most common loadouts by players in top 100 guilds.",
+                "usage": [
+                    "**/mods** <character>"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "required": true,
+                        "autocomplete": true,
+                        "description": "The character you want to see the mods for",
+                        "type": 3
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "myarena",
+                "description": "Show your current ranking in the character & fleet arenas",
+                "usage": [
+                    "**/myarena** [allycode] [stats]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "description": "The ally code of the user you want to see",
+                        "type": 3,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "stats",
+                        "type": 5,
+                        "description": "Show some general stats for your arena team"
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "mycharacter",
+                "description": "Display overall stats & mod info for the selected character",
+                "usage": [
+                    "**/mycharacter character** <character> [allycode]",
+                    "**/mycharacter ship** <ship> [allycode]"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "description": "Show the stats for a specified character",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "character",
+                                "autocomplete": true,
+                                "required": true,
+                                "type": 3,
+                                "description": "The character you want to show the stats of"
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "The ally code for whoever you're wanting to look up",
+                                "type": 3,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ship",
+                        "description": "Show the stats for a specified ship",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "ship",
+                                "autocomplete": true,
+                                "required": true,
+                                "type": 3,
+                                "description": "The ship you want to show the stats of"
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "The ally code for whoever you're wanting to look up",
+                                "type": 3,
+                                "autocomplete": true
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "mymods",
+                "description": "Show the current mods for a given character",
+                "usage": [
+                    "**best** <stat> [allycode]",
+                    "**bestmods** <stat> [allycode] [totale]",
+                    "**character** <character> [allycode]"
+                ],
+                "options": [
+                    {
+                        "name": "character",
+                        "description": "Show the mod stat for the specified character",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "character",
+                                "autocomplete": true,
+                                "required": true,
+                                "type": 3,
+                                "description": "The character you want to check"
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "The ally code for whoever you're wanting to look up",
+                                "type": 3,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "best",
+                        "type": 1,
+                        "description": "Show the characters that have the best of a stat",
+                        "options": [
+                            {
+                                "name": "stat",
+                                "required": true,
+                                "description": "Which stat you want it to show",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Accuracy",
+                                        "value": "Accuracy"
+                                    },
+                                    {
+                                        "name": "Armor",
+                                        "value": "Armor"
+                                    },
+                                    {
+                                        "name": "Critical Damage",
+                                        "value": "Critical Damage"
+                                    },
+                                    {
+                                        "name": "Health",
+                                        "value": "Health"
+                                    },
+                                    {
+                                        "name": "Physical Critical Chance",
+                                        "value": "Physical Critical Chance"
+                                    },
+                                    {
+                                        "name": "Physical Damage",
+                                        "value": "Physical Damage"
+                                    },
+                                    {
+                                        "name": "Potency",
+                                        "value": "Potency"
+                                    },
+                                    {
+                                        "name": "Protection",
+                                        "value": "Protection"
+                                    },
+                                    {
+                                        "name": "Resistance",
+                                        "value": "Resistance"
+                                    },
+                                    {
+                                        "name": "Special Critical Chance",
+                                        "value": "Special Critical Chance"
+                                    },
+                                    {
+                                        "name": "Special Damage",
+                                        "value": "Special Damage"
+                                    },
+                                    {
+                                        "name": "Speed",
+                                        "value": "Speed"
+                                    },
+                                    {
+                                        "name": "Tenacity",
+                                        "value": "Tenacity"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "The ally code for whoever you're wanting to look up",
+                                "type": 3,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "total",
+                                "type": 5,
+                                "description": "Show the total stat, instead of just what the mods add on"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "bestmods",
+                        "type": 1,
+                        "description": "Show the mods that have the best of a stat",
+                        "options": [
+                            {
+                                "name": "stat",
+                                "required": true,
+                                "description": "Which stat you want it to show",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Crit Chance %",
+                                        "value": "Critical Chance"
+                                    },
+                                    {
+                                        "name": "Defense",
+                                        "value": "Defense"
+                                    },
+                                    {
+                                        "name": "Health %",
+                                        "value": "Health %"
+                                    },
+                                    {
+                                        "name": "Health",
+                                        "value": "Health"
+                                    },
+                                    {
+                                        "name": "Offense %",
+                                        "value": "Offense %"
+                                    },
+                                    {
+                                        "name": "Offense",
+                                        "value": "Offense"
+                                    },
+                                    {
+                                        "name": "Potency %",
+                                        "value": "Potency"
+                                    },
+                                    {
+                                        "name": "Protection %",
+                                        "value": "Protection %"
+                                    },
+                                    {
+                                        "name": "Protection",
+                                        "value": "Protection"
+                                    },
+                                    {
+                                        "name": "Speed",
+                                        "value": "Speed"
+                                    },
+                                    {
+                                        "name": "Tenacity %",
+                                        "value": "Tenacity"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "The ally code for whoever you're wanting to look up",
+                                "type": 3,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "missing",
+                        "type": 1,
+                        "description": "Show which characters have missing or underleveled mods."
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "myprofile",
+                "description": "Show some general stats about your game profile",
+                "usage": [
+                    "**/myprofile**"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "description": "The ally code for the profile you want view",
+                        "type": 3,
+                        "autocomplete": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "need",
+                "description": "Shows your progress towards 7* characters from a faction or shop.",
+                "usage": [
+                    "**/need** [allycode] [battle]",
+                    "  [keyword] [shop] [faction]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "description": "The ally code for the user you want to look up",
+                        "type": 3,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "battle",
+                        "description": "Which section of battles you want to check on",
+                        "type": 3,
+                        "choices": [
+                            {
+                                "name": "Cantina Battles",
+                                "value": "Cantina"
+                            },
+                            {
+                                "name": "Dark Side Battles",
+                                "value": "Hard Modes (D)"
+                            },
+                            {
+                                "name": "Fleet Battles",
+                                "value": "Hard Modes (Fleet)"
+                            },
+                            {
+                                "name": "Light Side Battles",
+                                "value": "Hard Modes (L)"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "keyword",
+                        "description": "Choose all of a section",
+                        "type": 3,
+                        "choices": [
+                            {
+                                "name": "All Battles",
+                                "value": "battles"
+                            },
+                            {
+                                "name": "All Shops",
+                                "value": "shops"
+                            },
+                            {
+                                "name": "Everything",
+                                "value": "*"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "shop",
+                        "description": "Which shop you want to check the progress on",
+                        "type": 3,
+                        "choices": [
+                            {
+                                "name": "Arena Shop",
+                                "value": "Arena Shipments"
+                            },
+                            {
+                                "name": "Cantina Shop",
+                                "value": "Cantina Shipments"
+                            },
+                            {
+                                "name": "Fleet Shop",
+                                "value": "Fleet Shipments"
+                            },
+                            {
+                                "name": "Galactic War Shop",
+                                "value": "GW Shipments"
+                            },
+                            {
+                                "name": "Guild Event Shop",
+                                "value": "Guild Event Shop"
+                            },
+                            {
+                                "name": "Guild Shop",
+                                "value": "Guild Shop"
+                            },
+                            {
+                                "name": "Shard Shop",
+                                "value": "Shard Shop"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "faction_group_1",
+                        "description": "Which faction you want to check the progress on",
+                        "type": 3,
+                        "choices": [
+                            {
+                                "name": "Galactic Legend",
+                                "value": "galactic_legend"
+                            },
+                            {
+                                "name": "Leader",
+                                "value": "role_leader"
+                            },
+                            {
+                                "name": "Light Side",
+                                "value": "alignment_light"
+                            },
+                            {
+                                "name": "Dark Side",
+                                "value": "alignment_dark"
+                            },
+                            {
+                                "name": "501st",
+                                "value": "affiliation_501st"
+                            },
+                            {
+                                "name": "Attacker",
+                                "value": "role_attacker"
+                            },
+                            {
+                                "name": "Bad Batch",
+                                "value": "affiliation_badbatch"
+                            },
+                            {
+                                "name": "Bounty Hunter",
+                                "value": "profession_bountyhunter"
+                            },
+                            {
+                                "name": "Clone Trooper",
+                                "value": "profession_clonetrooper"
+                            },
+                            {
+                                "name": "Droid",
+                                "value": "species_droid"
+                            },
+                            {
+                                "name": "Empire",
+                                "value": "affiliation_empire"
+                            },
+                            {
+                                "name": "Ewok",
+                                "value": "species_ewok"
+                            },
+                            {
+                                "name": "First Order",
+                                "value": "affiliation_firstorder"
+                            },
+                            {
+                                "name": "Fleet Commander",
+                                "value": "character_fleetcommander"
+                            },
+                            {
+                                "name": "Galactic Republic",
+                                "value": "affiliation_republic"
+                            },
+                            {
+                                "name": "Geonosian",
+                                "value": "species_geonosian"
+                            },
+                            {
+                                "name": "Healer",
+                                "value": "role_healer"
+                            },
+                            {
+                                "name": "Imperial Remnant",
+                                "value": "affiliation_imperialremnant"
+                            },
+                            {
+                                "name": "Imperial Trooper",
+                                "value": "affiliation_imperialtrooper"
+                            },
+                            {
+                                "name": "Jawa",
+                                "value": "species_jawa"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "faction_group_2",
+                        "description": "Which faction you want to check the progress on",
+                        "type": 3,
+                        "choices": [
+                            {
+                                "name": "Jedi",
+                                "value": "profession_jedi"
+                            },
+                            {
+                                "name": "Mandalorian",
+                                "value": "affiliation_mandalorian"
+                            },
+                            {
+                                "name": "Nightsister",
+                                "value": "affiliation_nightsisters"
+                            },
+                            {
+                                "name": "Old Republic",
+                                "value": "affiliation_oldrepublic"
+                            },
+                            {
+                                "name": "Phoenix",
+                                "value": "affiliation_phoenix"
+                            },
+                            {
+                                "name": "Rebel",
+                                "value": "affiliation_rebels"
+                            },
+                            {
+                                "name": "Rebel Fighter",
+                                "value": "affiliation_rebelfighter"
+                            },
+                            {
+                                "name": "Resistance",
+                                "value": "affiliation_resistance"
+                            },
+                            {
+                                "name": "Rogue One",
+                                "value": "affiliation_rogue_one"
+                            },
+                            {
+                                "name": "Scoundrel",
+                                "value": "profession_scoundrel"
+                            },
+                            {
+                                "name": "Separaitst",
+                                "value": "affiliation_separatist"
+                            },
+                            {
+                                "name": "Sith",
+                                "value": "profession_sith"
+                            },
+                            {
+                                "name": "Sith Empire",
+                                "value": "affiliation_sithempire"
+                            },
+                            {
+                                "name": "Smuggler",
+                                "value": "profession_smuggler"
+                            },
+                            {
+                                "name": "Support",
+                                "value": "role_support"
+                            },
+                            {
+                                "name": "Tank",
+                                "value": "role_tank"
+                            },
+                            {
+                                "name": "Tusken",
+                                "value": "species_tusken"
+                            },
+                            {
+                                "name": "Unaligned Force User",
+                                "value": "unaligned_force_user"
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "panic",
+                "description": "Show how close you are to being ready for character events",
+                "usage": [
+                    "**/panic** [allycode] <unit>"
+                ],
+                "options": [
+                    {
+                        "name": "unit",
+                        "autocomplete": true,
+                        "required": true,
+                        "type": 3,
+                        "description": "The character you want to show the reqs of"
+                    },
+                    {
+                        "name": "allycode",
+                        "description": "The ally code for whoever you're wanting to look up",
+                        "type": 3,
+                        "autocomplete": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "raiddamage",
+                "description": "Calculate the damage amounts per raid (Legacy raids)",
+                "usage": [
+                    "**/raiddamage** <raid>"
+                ],
+                "options": [
+                    {
+                        "name": "raid",
+                        "description": "The raid you want to calculate for",
+                        "type": 3,
+                        "required": true,
+                        "choices": [
+                            {
+                                "name": "Rancor",
+                                "value": "Rancor"
+                            },
+                            {
+                                "name": "Challenge Rancor",
+                                "value": "cRancor"
+                            },
+                            {
+                                "name": "HAAT",
+                                "value": "HAAT"
+                            },
+                            {
+                                "name": "Heroic Sith",
+                                "value": "Sith"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "phase",
+                        "description": "Which of the 4 phases you want to calculate",
+                        "type": 3,
+                        "required": true,
+                        "choices": [
+                            {
+                                "name": "Phase 1",
+                                "value": "1"
+                            },
+                            {
+                                "name": "Phase 2",
+                                "value": "2"
+                            },
+                            {
+                                "name": "Phase 3",
+                                "value": "3"
+                            },
+                            {
+                                "name": "Phase 4",
+                                "value": "4"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "amount",
+                        "description": "What amount of the damage you want to calculate, damage number or percentage",
+                        "type": 3,
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "randomchar",
+                "description": "Grabs a random squad",
+                "usage": [
+                    "**/randomchar** [allycode] [rarity] [count]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "description": "The ally code for the user you want to look up",
+                        "type": 3,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "rarity",
+                        "description": "Choose a minimum rarity (Star level) to filter by",
+                        "type": 4,
+                        "choices": [
+                            {
+                                "name": "1*",
+                                "value": 1
+                            },
+                            {
+                                "name": "2*",
+                                "value": 2
+                            },
+                            {
+                                "name": "3*",
+                                "value": 3
+                            },
+                            {
+                                "name": "4*",
+                                "value": 4
+                            },
+                            {
+                                "name": "5*",
+                                "value": 5
+                            },
+                            {
+                                "name": "6*",
+                                "value": 6
+                            },
+                            {
+                                "name": "7*",
+                                "value": 7
+                            }
+                        ]
+                    },
+                    {
+                        "name": "count",
+                        "description": "The number of characters to grab",
+                        "type": 4,
+                        "choices": [
+                            {
+                                "name": "1",
+                                "value": 1
+                            },
+                            {
+                                "name": "2",
+                                "value": 2
+                            },
+                            {
+                                "name": "3",
+                                "value": 3
+                            },
+                            {
+                                "name": "4",
+                                "value": 4
+                            },
+                            {
+                                "name": "5",
+                                "value": 5
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "register",
+                "description": "Link an ally code to your account",
+                "usage": [
+                    "**/register** <allycode> [user]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "description": "The ally code for the user you want to look up",
+                        "type": 3,
+                        "required": true
+                    },
+                    {
+                        "name": "user",
+                        "description": "The user you want to link to an ally code. (You must have mod/ admin perms for this)",
+                        "type": 6
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "territorywar",
+                "description": "Compare the stats of two guilds",
+                "usage": [
+                    "**/territorywar** <allycode_1> <allycode_2>"
+                ],
+                "options": [
+                    {
+                        "name": "allycode_1",
+                        "type": 3,
+                        "description": "Ally code for player 1",
+                        "required": true,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "allycode_2",
+                        "type": 3,
+                        "description": "Ally code for player 2",
+                        "autocomplete": true,
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "versus",
+                "description": "Compare the stats of two users",
+                "usage": [
+                    "**/versus** <allycode_1> <allycode_2> <character>"
+                ],
+                "options": [
+                    {
+                        "name": "allycode_1",
+                        "description": "The ally code of the first user you want to compare",
+                        "type": 3,
+                        "required": true,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "allycode_2",
+                        "description": "The ally code of the second user you want to compare",
+                        "type": 3,
+                        "required": true,
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "character",
+                        "autocomplete": true,
+                        "description": "A character you want to compare the stats of",
+                        "type": 3,
+                        "required": true
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "zetas",
+                "description": "See a player's zetas",
+                "usage": [
+                    "**guild** <allycode> [character]",
+                    "**player** <allycode> [character]"
+                ],
+                "options": [
+                    {
+                        "name": "guild",
+                        "type": 1,
+                        "description": "See a list of zetas for your whole guild",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 3,
+                                "required": true,
+                                "autocomplete": true,
+                                "description": "The ally code of a player in the guild you want to see"
+                            },
+                            {
+                                "name": "character",
+                                "autocomplete": true,
+                                "type": 3,
+                                "description": "Just show the zeta'd abilities for a specific character"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "player",
+                        "type": 1,
+                        "description": "See a player's zetas",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 3,
+                                "required": true,
+                                "autocomplete": true,
+                                "description": "The ally code of the player you want to see."
+                            },
+                            {
+                                "name": "character",
+                                "autocomplete": true,
+                                "type": 3,
+                                "description": "Just show the zeta'd abilities for a specific character"
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            }
+        ]
+    },
+    "Patreon": {
+        "description": "Supporter-only commands",
+        "commands": [
+            {
+                "name": "patreon",
+                "description": "View your Patreon benefits and commands.",
+                "usage": [
+                    "**/patreon commands**",
+                    "**/patreon cooldowns**",
+                    "**/patreon benefits**",
+                    "**/patreon my_info**",
+                    "**/patreon set_server**",
+                    "**/patreon unset_server**"
+                ],
+                "options": [
+                    {
+                        "name": "commands",
+                        "description": "Show the available Patreon related commands.",
+                        "type": 1
+                    },
+                    {
+                        "name": "cooldowns",
+                        "description": "Show your current gamedata cooldowns",
+                        "type": 1
+                    },
+                    {
+                        "name": "benefits",
+                        "description": "Show the various benefits from supporting through Patreon.",
+                        "type": 1
+                    },
+                    {
+                        "name": "my_info",
+                        "description": "Show what benefits your currently have available to you",
+                        "type": 1
+                    },
+                    {
+                        "name": "set_server",
+                        "description": "Select this server to share your patreon benefits with",
+                        "type": 1
+                    },
+                    {
+                        "name": "unset_server",
+                        "description": "Unset your selected server",
+                        "type": 1
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            }
+        ]
+    }
+}

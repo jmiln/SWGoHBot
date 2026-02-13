@@ -12,6 +12,8 @@ export default class Farm extends Command {
     static readonly metadata = {
         name: "farm",
         description: "Finds the farming locations for units",
+        category: "General",
+        usage: ["**/farm** <character>"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

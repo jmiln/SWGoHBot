@@ -12,6 +12,8 @@ export default class Randomchar extends Command {
     static readonly metadata = {
         name: "randomchar",
         description: "Grabs a random squad",
+        category: "Gamedata",
+        usage: ["**/randomchar** [allycode] [rarity] [count]"],
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

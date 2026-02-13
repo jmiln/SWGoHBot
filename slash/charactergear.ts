@@ -13,9 +13,11 @@ import type { BotUnit, CommandContext } from "../types/types.ts";
 export default class Charactergear extends Command {
     static readonly metadata = {
         name: "charactergear",
+        category: "Gamedata",
         description: "Show the gear required for a specified character",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
+        usage: ["**/charactergear** <character> [allycode] [expand] [gearlevel]"],
         options: [
             {
                 name: "character",
