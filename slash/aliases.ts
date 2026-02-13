@@ -60,7 +60,6 @@ export default class Aliases extends Command {
             },
         ],
         category: "Admin",
-        usage: ["**aliases** <add> <unit> <alias>", "**aliases** <remove> <alias>", "**aliases** <view>"],
     };
 
     constructor() {

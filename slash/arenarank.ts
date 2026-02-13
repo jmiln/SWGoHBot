@@ -12,7 +12,7 @@ export default class Arenarank extends Command {
         name: "arenarank",
         description: "Calculates the arena rank range for a given rank",
         category: "General",
-        usage: ["**/arenarank** <rank>"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

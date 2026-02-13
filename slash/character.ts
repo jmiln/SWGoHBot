@@ -12,7 +12,7 @@ export default class Character extends Command {
     static readonly metadata = {
         name: "character",
         category: "General",
-        usage: ["**/character** <character>"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show overall info for the given character",

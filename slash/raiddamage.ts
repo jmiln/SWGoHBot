@@ -9,7 +9,7 @@ export default class RaidDamage extends Command {
         name: "raiddamage",
         description: "Calculate the damage amounts per raid (Legacy raids)",
         category: "Gamedata",
-        usage: ["**/raiddamage** <raid>"],
+
         enabled: true,
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],

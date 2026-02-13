@@ -13,7 +13,7 @@ export default class Versus extends Command {
         name: "versus",
         description: "Compare the stats of two users",
         category: "Gamedata",
-        usage: ["**/versus** <allycode_1> <allycode_2> <character>"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         enabled: true,

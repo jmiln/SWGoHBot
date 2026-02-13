@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { inspect } from "node:util";
 import { eachLimit } from "async";
+import { ApplicationCommandOptionType } from "discord.js";
 import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
 import config from "../config.ts";
@@ -11,7 +12,6 @@ import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
-import { getCommands } from "../handlers/slashHandler.ts";
 import logger from "../modules/Logger.ts";
 
 const FORCE_UPDATE = process.argv.includes("--force") || false;
@@ -222,6 +222,11 @@ async function init() {
                 debugTime("Running mod updaters");
                 await runModUpdaters(comlinkStub);
                 debugTimeEnd("Running mod updaters");
+
+                debugTime("Exporting command docs");
+                await exportCommandDocs();
+                debugTimeEnd("Exporting command docs");
+
                 debugLog("Finished running all updaters");
 
                 debugTimeEnd("Total update cycle");
@@ -236,12 +241,13 @@ async function init() {
             // TODO: Add a way to choose what's updated from the cmdline without having to manually change which bit we want updated
             // If we're forcing an update, just run the bits we want then exit
             logger.log("Forcing update, running updaters");
-            const { newMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
-                isMetadataUpdated: boolean;
-                newMetadata: Metadata;
-                oldMetadata: Metadata;
-            };
-            await runGameDataUpdaters(newMetadata, cache, comlinkStub);
+            // const { newMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
+            //     isMetadataUpdated: boolean;
+            //     newMetadata: Metadata;
+            //     oldMetadata: Metadata;
+            // };
+            // await runGameDataUpdaters(newMetadata, cache, comlinkStub);
+            await exportCommandDocs();
             // await updatePatrons(cache);
             await cleanup();
             process.exit(0);
@@ -2231,6 +2237,84 @@ function getCategoryDescription(category: string): string {
     return descriptions[category] || "Miscellaneous commands";
 }
 
+/**
+ * Generate usage strings from command options
+ * Handles subcommand groups, subcommands, and regular options
+ */
+function generateUsageFromOptions(commandName: string, options: unknown[]): string[] {
+    if (!Array.isArray(options) || options.length === 0) {
+        return [`**/${commandName}**`];
+    }
+
+    const usageStrings: string[] = [];
+
+    // Helper to format a single option parameter
+    const formatOption = (opt: { name: string; required?: boolean }) => {
+        return opt.required ? `<${opt.name}>` : `[${opt.name}]`;
+    };
+
+    // Helper to build usage string for a set of options
+    const buildUsageString = (baseCommand: string, opts: unknown[]) => {
+        if (!Array.isArray(opts) || opts.length === 0) {
+            return baseCommand;
+        }
+
+        const params = opts
+            .filter((opt): opt is { name: string; type: number; required?: boolean } => {
+                if (typeof opt !== "object" || opt === null) return false;
+                const o = opt as { type?: number };
+                // Exclude subcommand types from parameters
+                return o.type !== ApplicationCommandOptionType.Subcommand && o.type !== ApplicationCommandOptionType.SubcommandGroup;
+            })
+            .map(formatOption)
+            .join(" ");
+
+        return params ? `${baseCommand} ${params}` : baseCommand;
+    };
+
+    for (const option of options) {
+        if (typeof option !== "object" || option === null) continue;
+
+        const opt = option as {
+            name: string;
+            type: number;
+            options?: unknown[];
+        };
+
+        if (opt.type === ApplicationCommandOptionType.SubcommandGroup) {
+            // Handle subcommand groups: /command group subcommand [options]
+            const groupName = opt.name;
+            if (Array.isArray(opt.options)) {
+                for (const subOption of opt.options) {
+                    if (typeof subOption !== "object" || subOption === null) continue;
+
+                    const subOpt = subOption as {
+                        name: string;
+                        type: number;
+                        options?: unknown[];
+                    };
+
+                    if (subOpt.type === ApplicationCommandOptionType.Subcommand) {
+                        const baseCmd = `**/${commandName}** ${groupName} ${subOpt.name}`;
+                        usageStrings.push(buildUsageString(baseCmd, subOpt.options || []));
+                    }
+                }
+            }
+        } else if (opt.type === ApplicationCommandOptionType.Subcommand) {
+            // Handle subcommands: /command subcommand [options]
+            const baseCmd = `**/${commandName}** ${opt.name}`;
+            usageStrings.push(buildUsageString(baseCmd, opt.options || []));
+        }
+    }
+
+    // If no subcommands/groups were found, generate a simple usage string
+    if (usageStrings.length === 0) {
+        usageStrings.push(buildUsageString(`**/${commandName}**`, options));
+    }
+
+    return usageStrings;
+}
+
 interface CommandDocEntry {
     name: string;
     description: string;
@@ -2246,38 +2330,52 @@ async function exportCommandDocs() {
     try {
         logger.log(`[${myTime()}] [exportCommandDocs] Starting command documentation export`);
 
-        const commands = getCommands();
+        // Load commands directly from slash directory since slashHandler may not be initialized
+        const slashDir = path.join(import.meta.dirname, "..", "slash");
+        const commandFiles = (await readdir(slashDir)).filter((file) => file.endsWith(".ts") && !file.endsWith(".test.ts"));
+
         const categoryMap: Record<string, { description: string; commands: CommandDocEntry[] }> = {};
         let totalCommands = 0;
 
-        // Group commands by category
-        for (const [name, cmd] of commands) {
-            if (!cmd.commandData.enabled) {
-                debugLog(`[exportCommandDocs] Skipping disabled command: ${name}`);
-                continue;
+        // Load and process each command file
+        for (const file of commandFiles) {
+            const commandName = file.replace(/\.ts$/, "");
+            try {
+                const commandPath = path.join(slashDir, file);
+                const { default: CommandClass } = await import(commandPath);
+                const cmd = new CommandClass();
+
+                if (!cmd.commandData.enabled) {
+                    debugLog(`[exportCommandDocs] Skipping disabled command: ${commandName}`);
+                    continue;
+                }
+
+                const category = cmd.commandData.category || "General";
+
+                if (!categoryMap[category]) {
+                    categoryMap[category] = {
+                        description: getCategoryDescription(category),
+                        commands: [],
+                    };
+                }
+
+                categoryMap[category].commands.push({
+                    name: cmd.commandData.name,
+                    description: cmd.commandData.description,
+                    usage: generateUsageFromOptions(cmd.commandData.name, cmd.commandData.options),
+                    options: cmd.commandData.options,
+                    permLevel: cmd.commandData.permLevel,
+                    guildOnly: cmd.commandData.guildOnly,
+                    contexts: cmd.commandData.contexts,
+                    enabled: cmd.commandData.enabled,
+                });
+
+                totalCommands++;
+            } catch (err) {
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                logger.error(`[exportCommandDocs] Failed to load command ${commandName}: ${errorMessage}`);
+                // Continue processing other commands
             }
-
-            const category = cmd.commandData.category || "General";
-
-            if (!categoryMap[category]) {
-                categoryMap[category] = {
-                    description: getCategoryDescription(category),
-                    commands: [],
-                };
-            }
-
-            categoryMap[category].commands.push({
-                name: cmd.commandData.name,
-                description: cmd.commandData.description,
-                usage: cmd.commandData.usage || [],
-                options: cmd.commandData.options,
-                permLevel: cmd.commandData.permLevel,
-                guildOnly: cmd.commandData.guildOnly,
-                contexts: cmd.commandData.contexts,
-                enabled: cmd.commandData.enabled,
-            });
-
-            totalCommands++;
         }
 
         // Sort commands within each category alphabetically

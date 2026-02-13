@@ -13,7 +13,7 @@ export default class Farm extends Command {
         name: "farm",
         description: "Finds the farming locations for units",
         category: "General",
-        usage: ["**/farm** <character>"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

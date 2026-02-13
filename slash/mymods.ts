@@ -16,7 +16,7 @@ export default class MyMods extends Command {
     static readonly metadata = {
         name: "mymods",
         category: "Gamedata",
-        usage: ["**best** <stat> [allycode]", "**bestmods** <stat> [allycode] [totale]", "**character** <character> [allycode]"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show the current mods for a given character",

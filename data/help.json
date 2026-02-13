@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-02-13T06:03:29.124Z",
+        "generatedAt": "2026-02-13T21:40:42.927Z",
         "totalCommands": 44,
         "categories": 4
     },
@@ -11,7 +11,7 @@
                 "name": "acronyms",
                 "description": "Show what common acronyms mean",
                 "usage": [
-                    "**acronyms** <acronym>"
+                    "**/acronyms** <acronym>"
                 ],
                 "options": [
                     {
@@ -33,7 +33,7 @@
                 "name": "activities",
                 "description": "Shows daily guild activities",
                 "usage": [
-                    "**activities** [day]"
+                    "**/activities** [day]"
                 ],
                 "options": [
                     {
@@ -84,7 +84,7 @@
                 "name": "arenarank",
                 "description": "Calculates the arena rank range for a given rank",
                 "usage": [
-                    "**/arenarank** <rank>"
+                    "**/arenarank** <rank> [hops]"
                 ],
                 "options": [
                     {
@@ -126,7 +126,7 @@
                 "name": "challenges",
                 "description": "Show daily guild challenges",
                 "usage": [
-                    "**challenges** [day]"
+                    "**/challenges** [day]"
                 ],
                 "options": [
                     {
@@ -262,7 +262,7 @@
                 "name": "help",
                 "description": "Displays a list of the available commands.",
                 "usage": [
-                    "**/help**"
+                    "**/help** [details] [category] [command]"
                 ],
                 "options": [
                     {
@@ -342,11 +342,10 @@
                 "name": "shardtimes",
                 "description": "Manage shard times",
                 "usage": [
-                    "**add** <user> [timezone]",
-                    "  [time_until] [flag]",
-                    "**copy** <dest_channel>",
-                    "**remove** <user>",
-                    "**view** [ships]"
+                    "**/shardtimes** add <user> [timezone] [time_until] [flag]",
+                    "**/shardtimes** remove <user>",
+                    "**/shardtimes** copy <dest_channel>",
+                    "**/shardtimes** view [ships]"
                 ],
                 "options": [
                     {
@@ -472,13 +471,12 @@
                 "name": "userconf",
                 "description": "Change your personal settings with the bot (allycode, view alerts, etc.)",
                 "usage": [
-                    "**allycodes add** <allycode>",
-                    "**allycodes make_primary** <allycode>",
-                    "**allycodes remove** <allycode>",
-                    "**arenaalert** [enable_dms] [arena]",
-                    "  [payout_result] [payout_warning]",
-                    "**lang** [bot_language] [swgoh_language]",
-                    "**view**"
+                    "**/userconf** allycodes add <allycode>",
+                    "**/userconf** allycodes remove <allycode>",
+                    "**/userconf** allycodes make_primary <allycode>",
+                    "**/userconf** arenaalert [enable_dms] [arena] [payout_result] [payout_warning]",
+                    "**/userconf** lang [bot_language] [swgoh_language]",
+                    "**/userconf** view"
                 ],
                 "options": [
                     {
@@ -711,9 +709,9 @@
                 "name": "aliases",
                 "description": "Set custom aliases for your guild to use",
                 "usage": [
-                    "**aliases** <add> <unit> <alias>",
-                    "**aliases** <remove> <alias>",
-                    "**aliases** <view>"
+                    "**/aliases** add <unit> <alias>",
+                    "**/aliases** remove <alias>",
+                    "**/aliases** view"
                 ],
                 "options": [
                     {
@@ -767,15 +765,12 @@
                 "name": "event",
                 "description": "Configure and view events.",
                 "usage": [
-                    "**create** <name> <day> <time> [message]",
-                    "  [repeat] [repeatday] [channel] [countdown]",
-                    "**createjson** <json>",
-                    "**delete** <name>",
-                    "**edit** <event_name> [name] [day] [time] ",
-                    "  [message] [repeat] [repeatday]",
-                    "  [channel] [countdown]",
-                    "**trigger** <name>",
-                    "**view** [name] [filter] [page]"
+                    "**/event** create <name> <day> <time> [message] [repeat] [repeatday] [channel] [countdown]",
+                    "**/event** createjson <json>",
+                    "**/event** delete <name>",
+                    "**/event** edit <event_name> [name] [day] [time] [message] [repeat] [repeatday] [channel] [countdown]",
+                    "**/event** trigger <name>",
+                    "**/event** view [name] [minimal] [page_num] [filter]"
                 ],
                 "options": [
                     {
@@ -963,11 +958,11 @@
                 "name": "poll",
                 "description": "Create and vote on polls",
                 "usage": [
-                    "**/poll create** <question> <options> [anonymous]",
-                    "**/poll end**",
-                    "**/poll cancel**",
-                    "**/poll view**",
-                    "**/poll vote** <option>"
+                    "**/poll** create <question> <options> [anonymous]",
+                    "**/poll** end",
+                    "**/poll** cancel",
+                    "**/poll** view",
+                    "**/poll** vote <option>"
                 ],
                 "options": [
                     {
@@ -1039,13 +1034,12 @@
                 "name": "setconf",
                 "description": "Change settings for your guild",
                 "usage": [
-                    "**add** [admin_role] [event_countdown]",
-                    "**remove** [admin_role] [event_countdown]",
-                    "**set** [enable_welcome] [welcome_message]",
-                    "  [enable_part] [part_message] [timezone]",
-                    "  [announce_chan] [use_event_pages]",
-                    "  [language] [swgoh_language]",
-                    "  [shardtime_vertical]"
+                    "**/setconf** add [admin_role] [event_countdown]",
+                    "**/setconf** remove [admin_role] [event_countdown]",
+                    "**/setconf** set [enable_welcome] [welcome_message] [enable_part] [part_message] [timezone] [announce_chan] [use_event_pages] [language] [swgoh_language] [shardtime_vertical]",
+                    "**/setconf** twlist manage_list [add_unit] [remove_unit]",
+                    "**/setconf** twlist blacklist [add_unit] [remove_unit]",
+                    "**/setconf** twlist view"
                 ],
                 "options": [
                     {
@@ -1388,21 +1382,21 @@
                 "name": "arenawatch",
                 "description": "Configurations for ArenaWatch",
                 "usage": [
-                    "**/arenawatch allycode add** <allycodes> [mark]",
-                    "**/arenawatch allycode remove** <allycodes>",
-                    "**/arenawatch allycode edit** <old_allycode> <new_allycode>",
-                    "**/arenawatch arena** <enabled> <arena>",
-                    "**/arenawatch channel** <target_channel> <arena>",
-                    "**/arenawatch enabled** <toggle>",
-                    "**/arenawatch report** <arena>",
-                    "**/arenawatch showvs** <enable>",
-                    "**/arenawatch warn** <allycode> <mins> <arena>",
-                    "**/arenawatch payout enable** <enabled> <arena>",
-                    "**/arenawatch payout channel** <target_channel> <arena>",
-                    "**/arenawatch payout mark** <allycode> [mark] [remove_mark]",
-                    "**/arenawatch result** <allycode> <arena>",
-                    "**/arenawatch use_marks_in_log** <enable>",
-                    "**/arenawatch view** [allycode] [view_by]"
+                    "**/arenawatch** allycode add <allycodes> [mark]",
+                    "**/arenawatch** allycode remove <allycodes>",
+                    "**/arenawatch** allycode edit <old_allycode> <new_allycode>",
+                    "**/arenawatch** arena <enabled> <arena>",
+                    "**/arenawatch** channel <target_channel> <arena>",
+                    "**/arenawatch** enabled <toggle>",
+                    "**/arenawatch** report <arena>",
+                    "**/arenawatch** showvs <enable>",
+                    "**/arenawatch** warn <allycode> <mins> <arena>",
+                    "**/arenawatch** payout enable <enabled> <arena>",
+                    "**/arenawatch** payout channel <target_channel> <arena>",
+                    "**/arenawatch** payout mark <allycode> [mark] [remove_mark]",
+                    "**/arenawatch** result <allycode> <arena>",
+                    "**/arenawatch** use_marks_in_log <enable>",
+                    "**/arenawatch** view [allycode] [view_by]"
                 ],
                 "options": [
                     {
@@ -1855,8 +1849,7 @@
                 "name": "grandarena",
                 "description": "Compare two players' rosters for Grand Arena",
                 "usage": [
-                    "**/grandarena** <allycode_1> <allycode_2>",
-                    "  [characters] [faction]"
+                    "**/grandarena** <allycode_1> <allycode_2> [characters] [faction]"
                 ],
                 "options": [
                     {
@@ -1919,15 +1912,13 @@
                 "name": "guilds",
                 "description": "View information about a specified guild",
                 "usage": [
-                    "**gear** [allycode] [sort]",
-                    "**mods** [allycode] [sort]",
-                    "**relics** [allycode]",
-                    "**roster** [allycode] [registered]",
-                    "  [show_allycode] [sort] [show_side]",
-                    "  [split_types]",
-                    "**tickets** [allycode] [sort]",
-                    "**twsummary** [allycode] [expand]",
-                    "**view** [allycode]"
+                    "**/guilds** gear [allycode] [sort]",
+                    "**/guilds** mods [allycode] [sort]",
+                    "**/guilds** relics [allycode]",
+                    "**/guilds** roster [allycode] [registered] [show_allycode] [sort] [show_side] [split_types]",
+                    "**/guilds** tickets [allycode] [sort] [show_all]",
+                    "**/guilds** tw_summary [allycode] [expand]",
+                    "**/guilds** view [allycode]"
                 ],
                 "options": [
                     {
@@ -2138,11 +2129,8 @@
                 "name": "guildsearch",
                 "description": "Search for stats on your guild's units",
                 "usage": [
-                    "**character** <character> [allycode]",
-                    "  [sort] [stat] [top] [rarity] [reverse]",
-                    "  [omicrons] [zetas]",
-                    "**ship** <ship> [allycode] [sort]",
-                    "  [top] [rarity] [reverse]"
+                    "**/guildsearch** character <character> [allycode] [sort] [stat] [top] [rarity] [reverse] [omicrons] [zetas]",
+                    "**/guildsearch** ship <ship> [allycode] [sort] [top] [rarity] [reverse]"
                 ],
                 "options": [
                     {
@@ -2341,9 +2329,8 @@
                 "name": "guildtickets",
                 "description": "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
                 "usage": [
-                    "**/guildtickets set** [enabled] [channel] [show_max]",
-                    "  [sortby] [updates] [tickets] [allycode]",
-                    "**/guildtickets view**"
+                    "**/guildtickets** set [enabled] [channel] [show_max] [sortby] [updates] [tickets] [allycode]",
+                    "**/guildtickets** view"
                 ],
                 "options": [
                     {
@@ -2427,8 +2414,8 @@
                 "name": "guildupdate",
                 "description": "Set up the guild watcher to alert you for changes in guild member's rosters",
                 "usage": [
-                    "**/guildupdate set** [enabled] [channel] [allycode]",
-                    "**/guildupdate view**"
+                    "**/guildupdate** set [enabled] [channel] [allycode]",
+                    "**/guildupdate** view"
                 ],
                 "options": [
                     {
@@ -2520,8 +2507,8 @@
                 "name": "mycharacter",
                 "description": "Display overall stats & mod info for the selected character",
                 "usage": [
-                    "**/mycharacter character** <character> [allycode]",
-                    "**/mycharacter ship** <ship> [allycode]"
+                    "**/mycharacter** character <character> [allycode]",
+                    "**/mycharacter** ship <ship> [allycode]"
                 ],
                 "options": [
                     {
@@ -2577,9 +2564,10 @@
                 "name": "mymods",
                 "description": "Show the current mods for a given character",
                 "usage": [
-                    "**best** <stat> [allycode]",
-                    "**bestmods** <stat> [allycode] [totale]",
-                    "**character** <character> [allycode]"
+                    "**/mymods** character <character> [allycode]",
+                    "**/mymods** best <stat> [allycode] [total]",
+                    "**/mymods** bestmods <stat> [allycode]",
+                    "**/mymods** missing"
                 ],
                 "options": [
                     {
@@ -2763,7 +2751,7 @@
                 "name": "myprofile",
                 "description": "Show some general stats about your game profile",
                 "usage": [
-                    "**/myprofile**"
+                    "**/myprofile** [allycode]"
                 ],
                 "options": [
                     {
@@ -2785,8 +2773,7 @@
                 "name": "need",
                 "description": "Shows your progress towards 7* characters from a faction or shop.",
                 "usage": [
-                    "**/need** [allycode] [battle]",
-                    "  [keyword] [shop] [faction]"
+                    "**/need** [allycode] [battle] [keyword] [shop] [faction_group_1] [faction_group_2]"
                 ],
                 "options": [
                     {
@@ -3051,7 +3038,7 @@
                 "name": "panic",
                 "description": "Show how close you are to being ready for character events",
                 "usage": [
-                    "**/panic** [allycode] <unit>"
+                    "**/panic** <unit> [allycode]"
                 ],
                 "options": [
                     {
@@ -3080,7 +3067,7 @@
                 "name": "raiddamage",
                 "description": "Calculate the damage amounts per raid (Legacy raids)",
                 "usage": [
-                    "**/raiddamage** <raid>"
+                    "**/raiddamage** <raid> <phase> <amount>"
                 ],
                 "options": [
                     {
@@ -3328,8 +3315,8 @@
                 "name": "zetas",
                 "description": "See a player's zetas",
                 "usage": [
-                    "**guild** <allycode> [character]",
-                    "**player** <allycode> [character]"
+                    "**/zetas** guild <allycode> [character]",
+                    "**/zetas** player <allycode> [character]"
                 ],
                 "options": [
                     {
@@ -3390,12 +3377,12 @@
                 "name": "patreon",
                 "description": "View your Patreon benefits and commands.",
                 "usage": [
-                    "**/patreon commands**",
-                    "**/patreon cooldowns**",
-                    "**/patreon benefits**",
-                    "**/patreon my_info**",
-                    "**/patreon set_server**",
-                    "**/patreon unset_server**"
+                    "**/patreon** commands",
+                    "**/patreon** cooldowns",
+                    "**/patreon** benefits",
+                    "**/patreon** my_info",
+                    "**/patreon** set_server",
+                    "**/patreon** unset_server"
                 ],
                 "options": [
                     {

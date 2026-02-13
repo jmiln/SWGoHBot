@@ -8,7 +8,7 @@ export default class Mods extends Command {
     static readonly metadata = {
         name: "mods",
         category: "Gamedata",
-        usage: ["**/mods** <character>"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Display some suggested mod loadouts based on the most common loadouts by players in top 100 guilds.",

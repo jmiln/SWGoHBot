@@ -29,17 +29,6 @@ export default class Guilds extends Command {
         description: "View information about a specified guild",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
-        usage: [
-            "**gear** [allycode] [sort]",
-            "**mods** [allycode] [sort]",
-            "**relics** [allycode]",
-            "**roster** [allycode] [registered]",
-            "  [show_allycode] [sort] [show_side]",
-            "  [split_types]",
-            "**tickets** [allycode] [sort]",
-            "**twsummary** [allycode] [expand]",
-            "**view** [allycode]",
-        ],
         options: [
             {
                 name: "gear",

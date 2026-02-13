@@ -10,7 +10,7 @@ export default class GuildUpdate extends Command {
     static readonly metadata = {
         name: "guildupdate",
         category: "Gamedata",
-        usage: ["**/guildupdate set** [enabled] [channel] [allycode]", "**/guildupdate view**"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild],
         description: "Set up the guild watcher to alert you for changes in guild member's rosters",

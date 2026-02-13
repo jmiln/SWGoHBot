@@ -37,7 +37,7 @@ export default class Need extends Command {
         name: "need",
         description: "Shows your progress towards 7* characters from a faction or shop.",
         category: "Gamedata",
-        usage: ["**/need** [allycode] [battle]", "  [keyword] [shop] [faction]"],
+
         enabled: true,
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],

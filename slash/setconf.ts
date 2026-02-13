@@ -120,15 +120,6 @@ export default class SetConf extends Command {
         permLevel: 3,
         options: Object.values(options),
         category: "Admin",
-        usage: [
-            "**add** [admin_role] [event_countdown]",
-            "**remove** [admin_role] [event_countdown]",
-            "**set** [enable_welcome] [welcome_message]",
-            "  [enable_part] [part_message] [timezone]",
-            "  [announce_chan] [use_event_pages]",
-            "  [language] [swgoh_language]",
-            "  [shardtime_vertical]",
-        ],
     };
     constructor() {
         super(SetConf.metadata);

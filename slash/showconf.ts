@@ -15,7 +15,6 @@ export default class Showconf extends Command {
         guildOnly: false,
         permLevel: 3,
         category: "Admin",
-        usage: ["**/showconf**"],
     };
     constructor() {
         super(Showconf.metadata);

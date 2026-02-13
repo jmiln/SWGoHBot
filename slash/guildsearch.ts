@@ -16,13 +16,6 @@ export default class GuildSearch extends Command {
         description: "Search for stats on your guild's units",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
-        usage: [
-            "**character** <character> [allycode]",
-            "  [sort] [stat] [top] [rarity] [reverse]",
-            "  [omicrons] [zetas]",
-            "**ship** <ship> [allycode] [sort]",
-            "  [top] [rarity] [reverse]",
-        ],
         options: [
             {
                 name: "character",

@@ -23,7 +23,7 @@ export default class GuildQuality extends Command {
         name: "guildquality",
         description: "Check a guild's overall quality",
         category: "Gamedata",
-        usage: ["**/guildquality** [allycode]"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

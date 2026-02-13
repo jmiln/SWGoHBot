@@ -16,7 +16,7 @@ export default class MyArena extends Command {
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show your current ranking in the character & fleet arenas",
-        usage: ["**/myarena** [allycode] [stats]"],
+
         options: [
             {
                 name: "allycode",

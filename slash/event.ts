@@ -28,17 +28,6 @@ export default class Event extends Command {
         contexts: [InteractionContextType.Guild],
         guildOnly: false,
         category: "Admin",
-        usage: [
-            "**create** <name> <day> <time> [message]",
-            "  [repeat] [repeatday] [channel] [countdown]",
-            "**createjson** <json>",
-            "**delete** <name>",
-            "**edit** <event_name> [name] [day] [time] ",
-            "  [message] [repeat] [repeatday]",
-            "  [channel] [countdown]",
-            "**trigger** <name>",
-            "**view** [name] [filter] [page]",
-        ],
         options: [
             {
                 name: "create",

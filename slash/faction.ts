@@ -16,7 +16,7 @@ export default class Faction extends Command {
         name: "faction",
         description: "Lookup characters from a faction",
         category: "General",
-        usage: ["**/faction** <faction> [allycode] [leader] [zeta]"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

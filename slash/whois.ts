@@ -9,7 +9,7 @@ export default class WhoIs extends Command {
         name: "whois",
         description: "Find a player by name",
         category: "General",
-        usage: ["**/whois** <name>"],
+
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

@@ -22,7 +22,6 @@ const defCmdData = {
     permLevel: 0,
     contexts: undefined as InteractionContextType[] | undefined,
     category: "General",
-    usage: [],
 };
 
 export type CommandMetadata = typeof defCmdData;
