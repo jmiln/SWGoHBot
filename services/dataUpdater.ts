@@ -748,8 +748,6 @@ async function updatePatrons(cache: BotCache) {
                 { id: member.relationships.user.data.id },
                 {
                     id: member.relationships.user.data.id,
-                    full_name: member.attributes.full_name,
-                    email: member.attributes.email,
                     discordID: discordID,
                     amount_cents: member.attributes.currently_entitled_amount_cents,
                     patron_status: member.attributes.patron_status,
