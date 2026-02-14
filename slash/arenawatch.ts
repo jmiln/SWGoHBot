@@ -47,7 +47,7 @@ export default class ArenaWatch extends Command {
     static readonly metadata = {
         name: "arenawatch",
         description: "Configurations for ArenaWatch",
-        category: "Gamedata",
+        category: "Patreon",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

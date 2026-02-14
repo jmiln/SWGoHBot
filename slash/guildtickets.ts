@@ -14,10 +14,10 @@ const updateTypeStrings = {
 export default class GuildTickets extends Command {
     static readonly metadata = {
         name: "guildtickets",
-        category: "Gamedata",
+        category: "Patreon",
         guildOnly: false,
         contexts: [InteractionContextType.Guild],
-        description: "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
+        description: "Set up the guild watcher to automatically display a guild's current ticket counts",
         options: [
             {
                 name: "set",

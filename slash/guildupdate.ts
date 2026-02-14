@@ -9,7 +9,7 @@ import type { CommandContext } from "../types/types.ts";
 export default class GuildUpdate extends Command {
     static readonly metadata = {
         name: "guildupdate",
-        category: "Gamedata",
+        category: "Patreon",
 
         guildOnly: false,
         contexts: [InteractionContextType.Guild],

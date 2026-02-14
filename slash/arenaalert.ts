@@ -9,8 +9,7 @@ export default class ArenaAlert extends Command {
     static readonly metadata = {
         name: "arenaalert",
         description: "Change settings for your arena alerts",
-        category: "Gamedata",
-
+        category: "Patreon",
         guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [

@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-02-13T21:40:42.927Z",
+        "generatedAt": "2026-02-13T23:57:12.155Z",
         "totalCommands": 44,
         "categories": 4
     },
@@ -1299,8 +1299,8 @@
             }
         ]
     },
-    "Gamedata": {
-        "description": "Commands that pull data from the game",
+    "Patreon": {
+        "description": "Supporter-only commands",
         "commands": [
             {
                 "name": "arenaalert",
@@ -1804,6 +1804,190 @@
                 ],
                 "enabled": true
             },
+            {
+                "name": "guildtickets",
+                "description": "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
+                "usage": [
+                    "**/guildtickets** set [enabled] [channel] [show_max] [sortby] [updates] [tickets] [allycode]",
+                    "**/guildtickets** view"
+                ],
+                "options": [
+                    {
+                        "name": "set",
+                        "description": "Change the settings",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "enabled",
+                                "description": "Turn the updates on or off",
+                                "type": 5
+                            },
+                            {
+                                "name": "channel",
+                                "description": "Set which channel to log updates to",
+                                "type": 7
+                            },
+                            {
+                                "name": "show_max",
+                                "description": "Show players who have all of their tickets",
+                                "type": 5
+                            },
+                            {
+                                "name": "sortby",
+                                "description": "Choose how to sort the list",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Tickets",
+                                        "value": "tickets"
+                                    },
+                                    {
+                                        "name": "Name",
+                                        "value": "name"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "updates",
+                                "description": "Choose how updates are displayed",
+                                "type": 3,
+                                "choices": [
+                                    {
+                                        "name": "Update every 5min",
+                                        "value": "update"
+                                    },
+                                    {
+                                        "name": "Send a message near reset",
+                                        "value": "msg"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "tickets",
+                                "description": "Set the max expected tickets",
+                                "type": 4,
+                                "minValue": 1,
+                                "maxValue": 600
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "Set what ally code to get the guild's info from",
+                                "type": 3
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "description": "View the settings for your guild updates",
+                        "type": 1
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "guildupdate",
+                "description": "Set up the guild watcher to alert you for changes in guild member's rosters",
+                "usage": [
+                    "**/guildupdate** set [enabled] [channel] [allycode]",
+                    "**/guildupdate** view"
+                ],
+                "options": [
+                    {
+                        "name": "set",
+                        "description": "Change the settings",
+                        "type": 1,
+                        "options": [
+                            {
+                                "name": "enabled",
+                                "description": "Turn the updates on or off",
+                                "type": 5
+                            },
+                            {
+                                "name": "channel",
+                                "description": "Set which channel to log updates to",
+                                "type": 7
+                            },
+                            {
+                                "name": "allycode",
+                                "description": "Set what ally code to get the guild's info from",
+                                "type": 3
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "description": "View the settings for your guild updates",
+                        "type": 1
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
+            },
+            {
+                "name": "patreon",
+                "description": "View your Patreon benefits and commands.",
+                "usage": [
+                    "**/patreon** commands",
+                    "**/patreon** cooldowns",
+                    "**/patreon** benefits",
+                    "**/patreon** my_info",
+                    "**/patreon** set_server",
+                    "**/patreon** unset_server"
+                ],
+                "options": [
+                    {
+                        "name": "commands",
+                        "description": "Show the available Patreon related commands.",
+                        "type": 1
+                    },
+                    {
+                        "name": "cooldowns",
+                        "description": "Show your current gamedata cooldowns",
+                        "type": 1
+                    },
+                    {
+                        "name": "benefits",
+                        "description": "Show the various benefits from supporting through Patreon.",
+                        "type": 1
+                    },
+                    {
+                        "name": "my_info",
+                        "description": "Show what benefits your currently have available to you",
+                        "type": 1
+                    },
+                    {
+                        "name": "set_server",
+                        "description": "Select this server to share your patreon benefits with",
+                        "type": 1
+                    },
+                    {
+                        "name": "unset_server",
+                        "description": "Unset your selected server",
+                        "type": 1
+                    }
+                ],
+                "permLevel": 0,
+                "guildOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            }
+        ]
+    },
+    "Gamedata": {
+        "description": "Commands that pull data from the game",
+        "commands": [
             {
                 "name": "charactergear",
                 "description": "Show the gear required for a specified character",
@@ -2322,134 +2506,6 @@
                 "contexts": [
                     0,
                     1
-                ],
-                "enabled": true
-            },
-            {
-                "name": "guildtickets",
-                "description": "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
-                "usage": [
-                    "**/guildtickets** set [enabled] [channel] [show_max] [sortby] [updates] [tickets] [allycode]",
-                    "**/guildtickets** view"
-                ],
-                "options": [
-                    {
-                        "name": "set",
-                        "description": "Change the settings",
-                        "type": 1,
-                        "options": [
-                            {
-                                "name": "enabled",
-                                "description": "Turn the updates on or off",
-                                "type": 5
-                            },
-                            {
-                                "name": "channel",
-                                "description": "Set which channel to log updates to",
-                                "type": 7
-                            },
-                            {
-                                "name": "show_max",
-                                "description": "Show players who have all of their tickets",
-                                "type": 5
-                            },
-                            {
-                                "name": "sortby",
-                                "description": "Choose how to sort the list",
-                                "type": 3,
-                                "choices": [
-                                    {
-                                        "name": "Tickets",
-                                        "value": "tickets"
-                                    },
-                                    {
-                                        "name": "Name",
-                                        "value": "name"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "updates",
-                                "description": "Choose how updates are displayed",
-                                "type": 3,
-                                "choices": [
-                                    {
-                                        "name": "Update every 5min",
-                                        "value": "update"
-                                    },
-                                    {
-                                        "name": "Send a message near reset",
-                                        "value": "msg"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "tickets",
-                                "description": "Set the max expected tickets",
-                                "type": 4,
-                                "minValue": 1,
-                                "maxValue": 600
-                            },
-                            {
-                                "name": "allycode",
-                                "description": "Set what ally code to get the guild's info from",
-                                "type": 3
-                            }
-                        ]
-                    },
-                    {
-                        "name": "view",
-                        "description": "View the settings for your guild updates",
-                        "type": 1
-                    }
-                ],
-                "permLevel": 0,
-                "guildOnly": false,
-                "contexts": [
-                    0
-                ],
-                "enabled": true
-            },
-            {
-                "name": "guildupdate",
-                "description": "Set up the guild watcher to alert you for changes in guild member's rosters",
-                "usage": [
-                    "**/guildupdate** set [enabled] [channel] [allycode]",
-                    "**/guildupdate** view"
-                ],
-                "options": [
-                    {
-                        "name": "set",
-                        "description": "Change the settings",
-                        "type": 1,
-                        "options": [
-                            {
-                                "name": "enabled",
-                                "description": "Turn the updates on or off",
-                                "type": 5
-                            },
-                            {
-                                "name": "channel",
-                                "description": "Set which channel to log updates to",
-                                "type": 7
-                            },
-                            {
-                                "name": "allycode",
-                                "description": "Set what ally code to get the guild's info from",
-                                "type": 3
-                            }
-                        ]
-                    },
-                    {
-                        "name": "view",
-                        "description": "View the settings for your guild updates",
-                        "type": 1
-                    }
-                ],
-                "permLevel": 0,
-                "guildOnly": false,
-                "contexts": [
-                    0
                 ],
                 "enabled": true
             },
@@ -3358,62 +3414,6 @@
                                 "description": "Just show the zeta'd abilities for a specific character"
                             }
                         ]
-                    }
-                ],
-                "permLevel": 0,
-                "guildOnly": false,
-                "contexts": [
-                    0,
-                    1
-                ],
-                "enabled": true
-            }
-        ]
-    },
-    "Patreon": {
-        "description": "Supporter-only commands",
-        "commands": [
-            {
-                "name": "patreon",
-                "description": "View your Patreon benefits and commands.",
-                "usage": [
-                    "**/patreon** commands",
-                    "**/patreon** cooldowns",
-                    "**/patreon** benefits",
-                    "**/patreon** my_info",
-                    "**/patreon** set_server",
-                    "**/patreon** unset_server"
-                ],
-                "options": [
-                    {
-                        "name": "commands",
-                        "description": "Show the available Patreon related commands.",
-                        "type": 1
-                    },
-                    {
-                        "name": "cooldowns",
-                        "description": "Show your current gamedata cooldowns",
-                        "type": 1
-                    },
-                    {
-                        "name": "benefits",
-                        "description": "Show the various benefits from supporting through Patreon.",
-                        "type": 1
-                    },
-                    {
-                        "name": "my_info",
-                        "description": "Show what benefits your currently have available to you",
-                        "type": 1
-                    },
-                    {
-                        "name": "set_server",
-                        "description": "Select this server to share your patreon benefits with",
-                        "type": 1
-                    },
-                    {
-                        "name": "unset_server",
-                        "description": "Unset your selected server",
-                        "type": 1
                     }
                 ],
                 "permLevel": 0,
