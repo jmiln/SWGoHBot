@@ -31,7 +31,7 @@
         "@swgoh-utils/comlink": "^2.0.0",
         "async": "^3.2.6",
         "discord.js": "^14.25.1",
-        "mongodb": "^7.0.0",
+        "mongodb": "^7.1.0",
         "pino": "^10.3.0",
         "piscina": "^5.1.4",
         "socket.io": "^4.8.3",
