@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { type Client } from "discord.js";
 import { MongoClient } from "mongodb";
-import config from "../../config.js";
+import config from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import { PatreonFuncs } from "../../modules/patreonFuncs.ts";
 import type { PatronUser } from "../../types/types.ts";

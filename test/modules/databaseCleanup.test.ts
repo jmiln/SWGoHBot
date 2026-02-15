@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import config from "../../config.js";
+import config from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import databaseCleanup from "../../modules/databaseCleanup.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";

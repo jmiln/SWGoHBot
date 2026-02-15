@@ -5,10 +5,7 @@ Comprehensive test fixtures for SWGoHBot slash commands and bot functionality.
 ## Quick Start
 
 ```typescript
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
-
-// Create a bot mock
-const bot = createMockBot();
+import { createMockInteraction, createCommandContext } from "../mocks/index.ts";
 
 // Create an interaction mock
 const interaction = createMockInteraction({
@@ -18,180 +15,29 @@ const interaction = createMockInteraction({
     }
 });
 
+// Create command context
+const ctx = createCommandContext({ interaction });
+
 // Use in your tests
-await myCommand.run(bot, interaction);
+await myCommand.run(ctx);
 ```
 
 ## Table of Contents
 
-- [mockBot](#mockbot)
-  - [Basic Usage](#basic-usage)
-  - [Data Available](#data-available)
-  - [Cache System](#cache-system)
-  - [API Methods](#api-methods)
-  - [Overriding Properties](#overriding-properties)
 - [mockInteraction](#mockinteraction)
-  - [Basic Usage](#basic-usage-1)
+  - [Basic Usage](#basic-usage)
   - [Command Options](#command-options)
   - [State Tracking](#state-tracking)
   - [Language System](#language-system)
   - [Discord Properties](#discord-properties)
-- [Migration Guide](#migration-guide)
+- [CommandContext](#commandcontext)
+  - [Creating Context](#creating-context)
+  - [Context Properties](#context-properties)
+- [Mock SWAPI](#mock-swapi)
+  - [Basic Usage](#basic-usage-1)
+  - [Configuring Test Data](#configuring-test-data)
+  - [Error Simulation](#error-simulation)
 - [Testing Patterns](#testing-patterns)
-
----
-
-## mockBot
-
-Creates a comprehensive Bot object with realistic test data.
-
-### Basic Usage
-
-```typescript
-import { createMockBot } from "../mocks/index.ts";
-
-const bot = createMockBot();
-
-// Access mock data
-console.log(bot.factions); // Array of all factions
-console.log(bot.omicrons.tw); // Territory War omicrons
-console.log(bot.journeyNames); // Journey character names
-```
-
-### Data Available
-
-The mock includes extensive game data:
-
-**Characters** (15 units):
-- Galactic Legends: CLS, SEE, SLKR, GL Rey
-- Journey Characters: JKL, JKR
-- Meta Units: Vader, GMY, Old Ben
-- Diverse Factions: FOO, Dooku, Hondo
-- Both versions: Rey (base) and GL Rey
-
-**Ships** (8 units):
-- Ahsoka's Jedi Starfighter
-- Tie Silencer
-- Han's Millennium Falcon
-- Hound's Tooth
-- Xanadu Blood
-- Rebel Y-Wing
-- Slave I
-- Gauntlet Starfighter
-
-**Other Data**:
-- `factions`: All unit factions
-- `missions`: Mission data from data/missions.json
-- `resources`: Resource data from data/resources.json
-- `abilityCosts`: Ability upgrade costs
-- `journeyReqs`: Journey character requirements
-- `omicrons`: Omicron abilities by game mode (tw, ga, tb, raid, etc.)
-
-### Cache System
-
-The cache is **stateful** - it actually stores and retrieves data:
-
-```typescript
-const bot = createMockBot();
-
-// Store data
-await bot.cache.put("swgohbotdb", "users",
-    { discordId: "123" },
-    { name: "TestUser", allyCode: "123456789" }
-);
-
-// Retrieve data
-const user = await bot.cache.getOne("swgohbotdb", "users",
-    { discordId: "123" }
-);
-// Returns: { discordId: "123", name: "TestUser", allyCode: "123456789" }
-
-// Query multiple
-await bot.cache.put("swgohbotdb", "guilds", { id: "1" }, { name: "Guild1", gp: 100000000 });
-await bot.cache.put("swgohbotdb", "guilds", { id: "2" }, { name: "Guild2", gp: 200000000 });
-
-const guilds = await bot.cache.get("swgohbotdb", "guilds", {}, null, 2);
-// Returns: [{ id: "1", name: "Guild1", gp: 100000000 }, { id: "2", name: "Guild2", gp: 200000000 }]
-
-// Check existence
-const exists = await bot.cache.exists("swgohbotdb", "users", { discordId: "123" });
-// Returns: true
-
-// Remove data
-await bot.cache.remove("swgohbotdb", "users", { discordId: "123" });
-```
-
-**Available Methods**:
-- `get(db, collection, match, projection, limit)` - Get multiple records
-- `getOne(db, collection, match, projection)` - Get single record
-- `put(db, collection, match, object, autoUpdate)` - Store record
-- `putMany(db, collection, array)` - Store multiple records
-- `remove(db, collection, match)` - Delete records
-- `exists(db, collection, match)` - Check if record exists
-
-### API Methods
-
-Full swgohAPI implementation:
-
-```typescript
-const bot = createMockBot();
-
-// Get all units (characters + ships)
-const units = await bot.swgohAPI.units("eng_us");
-// Returns: array of 23 BotUnit objects
-
-// Get player data
-const player = await bot.swgohAPI.getPlayer("123456789", "eng_us");
-// Returns: { name, allyCode, level, roster, arena }
-
-// Get guild data
-const guild = await bot.swgohAPI.getGuild("123456789", "eng_us");
-// Returns: { name, id, gp, roster }
-
-// Search units by name/alias
-const results = await bot.swgohAPI.unitSearch("vader", "eng_us");
-// Returns: [{ name: "Darth Vader", uniqueName: "DARTHVADER", ... }]
-
-// Get character details
-const char = await bot.swgohAPI.getCharacter("COMMANDERLUKESKYWALKER", "eng_us");
-// Returns: { name, factions, skillReferenceList }
-```
-
-### Overriding Properties
-
-Use **deep merge** to override any property:
-
-```typescript
-// Override nested properties (deep merge)
-const bot = createMockBot({
-    config: {
-        mongodb: { swgohbotdb: "testdb" }
-    }
-});
-// Other config properties preserved
-
-// Replace cache entirely
-const bot = createMockBot({
-    cache: {
-        get: async () => [{ custom: "data" }],
-        getOne: async () => ({ custom: "single" }),
-        put: async () => {}
-    }
-});
-
-// Override functions
-const bot = createMockBot({
-    guildCount: async () => 500,
-    userCount: async () => 5000
-});
-```
-
-**Function Defaults**:
-- `guildCount()` → 150
-- `userCount()` → 1000
-- `deployCommands(force?)` → "Deployed X commands"
-- `getDefaultGuildSettings()` → Full default settings object
-- `sendWebhook(url, data)` → No-op
 
 ---
 
@@ -207,11 +53,11 @@ import { createMockInteraction } from "../mocks/index.ts";
 const interaction = createMockInteraction();
 
 // Use in command tests
-await myCommand.run(bot, interaction);
+await interaction.reply("Test response");
 
 // Check what was sent
 const replies = (interaction as any)._getReplies();
-console.log(replies); // Array of all reply/followUp calls
+console.log(replies); // ["Test response"]
 ```
 
 ### Command Options
@@ -375,52 +221,219 @@ const interaction = createMockInteraction({
 
 ---
 
-## Migration Guide
+## CommandContext
 
-### From Local Test Mocks
+Commands now receive a `CommandContext` object instead of separate parameters.
 
-If your test files create their own mocks, migrate to shared mocks:
+### Creating Context
 
-#### Before
 ```typescript
-// test/slash/mycommand.test.ts
-const mockBot = {
-    cache: {
-        get: async () => [],
-        getOne: async () => null
-    },
-    swgohAPI: {
-        getCharacter: async () => ({ name: "Mock" })
-    },
-    constants: {}
-} as any;
+import { createCommandContext, createMockInteraction, createMockGuildSettings } from "../mocks/index.ts";
 
-const mockInteraction = {
-    reply: async () => {},
-    options: {
-        getString: () => "test"
-    }
-} as any;
-```
+// Minimal context (only interaction)
+const ctx = createCommandContext({
+    interaction: createMockInteraction()
+});
 
-#### After
-```typescript
-// test/slash/mycommand.test.ts
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+// With swgohLanguage (for SWAPI-dependent commands)
+const ctx = createCommandContext({
+    interaction: createMockInteraction(),
+    swgohLanguage: "eng_us"
+});
 
-const bot = createMockBot();
-const interaction = createMockInteraction({
-    optionsData: { search: "test" }
+// With guild settings (for guild-specific commands)
+const ctx = createCommandContext({
+    interaction: createMockInteraction(),
+    guildSettings: createMockGuildSettings({ timezone: "UTC" })
+});
+
+// With permission level (for admin commands)
+const ctx = createCommandContext({
+    interaction: createMockInteraction(),
+    permLevel: 10
+});
+
+// With all properties
+const ctx = createCommandContext({
+    interaction: createMockInteraction(),
+    swgohLanguage: "eng_us",
+    guildSettings: createMockGuildSettings(),
+    permLevel: 10
 });
 ```
 
-### Benefits
-- ✅ **Stateful cache** - Actually stores/retrieves data
-- ✅ **Full API** - All swgohAPI methods work
-- ✅ **Comprehensive data** - 23 units, factions, omicrons, etc.
-- ✅ **State tracking** - Know what was replied
-- ✅ **Type safe** - Proper BotType and BotInteraction types
-- ✅ **Maintained** - One source of truth for all tests
+### Context Properties
+
+**CommandContext** provides:
+- `interaction`: ChatInputCommandInteraction (always present)
+- `language`: Language instance for localization (auto-created from interaction)
+- `swgohLanguage?`: Game language setting ("eng_us", "ger_de", etc.)
+- `guildSettings?`: Guild configuration object
+- `permLevel?`: User's permission level (0-10)
+
+### createMockGuildSettings
+
+```typescript
+import { createMockGuildSettings } from "../mocks/index.ts";
+
+// Default settings
+const settings = createMockGuildSettings();
+
+// Override specific fields
+const settings = createMockGuildSettings({
+    timezone: "America/New_York",
+    swgohLanguage: "eng_us",
+    prefix: "!",
+    adminRole: ["role123"],
+    useEmbeds: true
+});
+
+// All fields are merged with defaults
+```
+
+---
+
+## Mock SWAPI
+
+Mock implementation of the SWAPI module for testing commands that fetch game data.
+
+### Basic Usage
+
+```typescript
+import { createMockSwapi, createMockPlayer, createMockGuild } from "../mocks/index.ts";
+
+// Create mock SWAPI instance
+const mockSwapi = createMockSwapi();
+
+// Configure player data
+const player = createMockPlayer({
+    allyCode: 123456789,
+    name: "TestPlayer",
+    guildId: "guild123",
+    level: 85
+});
+mockSwapi.setPlayerData(player);
+
+// Configure guild data
+const guild = createMockGuild({
+    id: "guild123",
+    name: "The Empire",
+    members: 50,
+    gp: 250000000
+});
+mockSwapi.setGuildData(guild);
+
+// Use in tests
+const fetchedPlayer = await mockSwapi.player(123456789);
+const fetchedGuild = await mockSwapi.guild(123456789);
+```
+
+### Configuring Test Data
+
+**Players:**
+```typescript
+import { createMockPlayer, createMockUnit } from "../mocks/index.ts";
+
+const player = createMockPlayer({
+    allyCode: 123456789,
+    name: "Player1",
+    guildId: "guild123",
+    level: 85,
+    roster: [
+        createMockUnit({
+            defId: "DARTHVADER",
+            gear: 13,
+            level: 85,
+            rarity: 7,
+            relic: { currentTier: 8 }
+        }),
+        createMockUnit({
+            defId: "COMMANDERLUKESKYWALKER",
+            gear: 13,
+            level: 85,
+            rarity: 7,
+            relic: { currentTier: 9 }
+        })
+    ]
+});
+
+mockSwapi.setPlayerData(player);
+```
+
+**Guilds:**
+```typescript
+import { createMockGuild, createMockGuildMember } from "../mocks/index.ts";
+
+const guild = createMockGuild({
+    id: "guild123",
+    name: "Test Guild",
+    members: 50,
+    gp: 250000000,
+    roster: [
+        createMockGuildMember({
+            name: "Player1",
+            allyCode: 111111111,
+            gp: 5000000,
+            gpChar: 3000000,
+            gpShip: 2000000
+        }),
+        createMockGuildMember({
+            name: "Player2",
+            allyCode: 222222222,
+            gp: 4800000
+        })
+    ]
+});
+
+mockSwapi.setGuildData(guild);
+```
+
+**Units:**
+```typescript
+import { createMockUnit } from "../mocks/index.ts";
+
+const vader = createMockUnit({
+    defId: "DARTHVADER",
+    nameKey: "Darth Vader",
+    gear: 13,
+    level: 85,
+    rarity: 7,
+    relic: { currentTier: 8 },
+    skills: [
+        { id: "skill1", tier: 8, isZeta: true },
+        { id: "skill2", tier: 8, isZeta: false }
+    ],
+    mods: []
+});
+```
+
+### Error Simulation
+
+Test error handling by configuring the mock to throw errors:
+
+```typescript
+// Make a specific method throw an error
+mockSwapi.setShouldThrowError("guild", true);
+mockSwapi.setErrorMessage("guild", "API timeout");
+
+// Now this will throw
+try {
+    await mockSwapi.guild(123456789);
+} catch (err) {
+    console.log(err.message); // "API timeout"
+}
+
+// Reset to normal behavior
+mockSwapi.setShouldThrowError("guild", false);
+
+// Or reset all data
+mockSwapi.reset();
+```
+
+**Available error methods:**
+- `setShouldThrowError(methodName, shouldThrow)` - Enable/disable errors for a method
+- `setErrorMessage(methodName, message)` - Set custom error message
+- `reset()` - Clear all configured data and reset to defaults
 
 ---
 
@@ -431,62 +444,93 @@ const interaction = createMockInteraction({
 ```typescript
 import { describe, it } from "node:test";
 import assert from "node:assert";
-import { createMockBot, createMockInteraction } from "../mocks/index.ts";
+import { createMockInteraction, createCommandContext } from "../mocks/index.ts";
 import MyCommand from "../../slash/mycommand.ts";
 
 describe("MyCommand", () => {
     it("responds with character info", async () => {
-        const bot = createMockBot();
         const interaction = createMockInteraction({
             optionsData: { character: "vader" }
         });
 
-        const command = new MyCommand(bot);
-        await command.run(bot, interaction);
+        const command = new MyCommand();
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
         const replies = (interaction as any)._getReplies();
         assert.strictEqual(replies.length, 1);
-        assert.ok(replies[0].embeds);
+        assert.ok(replies[0].content || replies[0].embeds);
     });
 });
 ```
 
-### Pattern 2: Cache Interaction Test
+### Pattern 2: Command with SWAPI
 
 ```typescript
-it("retrieves user from cache", async () => {
-    const bot = createMockBot();
+import { createMockSwapi, createMockPlayer } from "../mocks/index.ts";
 
-    // Seed cache
-    await bot.cache.put("swgohbotdb", "users",
-        { discordId: "123" },
-        { name: "TestUser", allyCode: "123456789" }
-    );
+it("fetches and displays player data", async () => {
+    const mockSwapi = createMockSwapi();
+
+    // Configure mock data
+    const player = createMockPlayer({
+        allyCode: 123456789,
+        name: "TestPlayer"
+    });
+    mockSwapi.setPlayerData(player);
 
     const interaction = createMockInteraction({
-        user: { id: "123" } as any
+        optionsData: { allycode: "123456789" }
     });
 
-    const command = new MyCommand(bot);
-    await command.run(bot, interaction);
+    const command = new MyCommand();
+    const ctx = createCommandContext({
+        interaction,
+        swgohLanguage: "eng_us"
+    });
 
-    // Verify command used cached data
-    const user = await bot.cache.getOne("swgohbotdb", "users", { discordId: "123" });
-    assert.strictEqual(user.name, "TestUser");
+    await command.run(ctx);
+
+    const replies = (interaction as any)._getReplies();
+    assert.ok(replies[0].content.includes("TestPlayer"));
 });
 ```
 
-### Pattern 3: State Tracking Test
+### Pattern 3: Command with Guild Settings
+
+```typescript
+import { createMockGuildSettings } from "../mocks/index.ts";
+
+it("uses guild timezone", async () => {
+    const interaction = createMockInteraction();
+    const guildSettings = createMockGuildSettings({
+        timezone: "Europe/London"
+    });
+
+    const command = new Time();
+    const ctx = createCommandContext({
+        interaction,
+        guildSettings
+    });
+
+    await command.run(ctx);
+
+    const replies = (interaction as any)._getReplies();
+    assert.ok(replies[0].content.includes("Europe/London"));
+});
+```
+
+### Pattern 4: State Tracking Test
 
 ```typescript
 it("defers then replies for long operations", async () => {
-    const bot = createMockBot();
     const interaction = createMockInteraction({
         optionsData: { complex: "operation" }
     });
 
-    const command = new MyCommand(bot);
-    await command.run(bot, interaction);
+    const command = new MyCommand();
+    const ctx = createCommandContext({ interaction });
+    await command.run(ctx);
 
     // Verify it deferred first
     assert.strictEqual(interaction.deferred, true);
@@ -497,38 +541,31 @@ it("defers then replies for long operations", async () => {
 });
 ```
 
-### Pattern 4: API Search Test
+### Pattern 5: Error Handling Test
 
 ```typescript
-it("searches for units correctly", async () => {
-    const bot = createMockBot();
+it("handles API errors gracefully", async () => {
+    const mockSwapi = createMockSwapi();
+    mockSwapi.setShouldThrowError("player", true);
+    mockSwapi.setErrorMessage("player", "Network timeout");
+
     const interaction = createMockInteraction({
-        optionsData: { search: "vader" }
+        optionsData: { allycode: "123456789" }
     });
 
-    // Use the mock API
-    const results = await bot.swgohAPI.unitSearch("vader", "eng_us");
+    const command = new MyCommand();
+    const ctx = createCommandContext({
+        interaction,
+        swgohLanguage: "eng_us"
+    });
 
-    assert.strictEqual(results.length, 1);
-    assert.strictEqual(results[0].uniqueName, "DARTHVADER");
-    assert.ok(results[0].aliases.includes("Vader"));
-});
-```
+    await command.run(ctx);
 
-### Pattern 5: Language Placeholder Test
-
-```typescript
-it("formats messages with user data", async () => {
-    const interaction = createMockInteraction();
-
-    const message = interaction.language.get(
-        "Welcome {{name}}! You have {{count}} characters.",
-        { name: "Player1", count: 150 }
-    );
-
-    assert.strictEqual(
-        message,
-        "Welcome Player1! You have 150 characters."
+    const replies = (interaction as any)._getReplies();
+    // Should contain error message
+    assert.ok(
+        replies[0].embeds?.[0]?.description?.includes("timeout") ||
+        replies[0].content?.includes("timeout")
     );
 });
 ```
@@ -540,46 +577,59 @@ it("formats messages with user data", async () => {
 ### Do's ✅
 
 - **Use shared mocks by default** - Reduces duplication
-- **Override only what you need** - Deep merge preserves defaults
+- **Override only what you need** - Default values cover common cases
 - **Test state changes** - Use `_getReplies()` and state getters
-- **Seed cache for tests** - Use `put()` to setup test data
-- **Use optionsData** - Cleaner than mocking options methods
+- **Use createCommandContext** - Provides proper typing and defaults
+- **Reset mock SWAPI between tests** - Call `mockSwapi.reset()` in `beforeEach()`
 
 ### Don'ts ❌
 
 - **Don't create local mocks** - Use shared mocks instead
-- **Don't shallow override** - Deep merge handles nested objects
 - **Don't ignore state** - Check deferred/replied in tests
-- **Don't assume empty cache** - Cache persists during test
-- **Don't mock what exists** - swgohAPI already has full methods
+- **Don't assume empty state** - Mock data persists until reset
+- **Don't skip language** - CommandContext auto-creates it from interaction
 
 ### Common Gotchas
 
-1. **Cache persistence**: Cache data persists for the life of the bot mock. Create a new mock for isolated tests.
+1. **State persistence**: Mock SWAPI data persists until `reset()` is called. Use `beforeEach()` to reset.
 
-2. **State getters**: `deferred` and `replied` are getters, not plain properties. They track actual state.
+2. **State getters**: `deferred` and `replied` are getters that track actual state, not plain properties.
 
 3. **Reply array**: `_getReplies()` returns the actual array - mutations affect the mock.
 
 4. **Options data**: Keys prefixed with `_` are special (e.g., `_subcommand`, `_subcommandGroup`).
 
-5. **Deep merge**: Nested objects merge recursively, but arrays replace completely.
+5. **Language auto-creation**: You don't need to pass `language` to `createCommandContext()` - it's automatically created from the interaction.
+
+---
+
+## Migration from Old Pattern
+
+If you have tests using the old `BotType` pattern, see [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) for step-by-step migration instructions.
+
+**Old pattern (deprecated):**
+```typescript
+const bot = createMockBot();  // ❌ Doesn't exist
+await command.run({ interaction, language });  // ❌ Old signature
+```
+
+**New pattern (current):**
+```typescript
+const ctx = createCommandContext({ interaction });  // ✅ Current
+await command.run(ctx);  // ✅ Current
+```
 
 ---
 
 ## Examples Repository
 
-See `test/mocks/verification.test.ts` for complete working examples of all mock features.
-
-## Support
-
-If you need additional mock functionality:
-1. Check if it can be done with overrides
-2. Consider if it's specific to your test (use overrides)
-3. If it's generally useful, add it to the shared mocks
+See these files for complete working examples:
+- `test/slash/time.test.ts` - Fully migrated command test
+- `test/mocks/INTEGRATION_GUIDE.md` - Mock SWAPI integration examples
+- `test/mocks/MIGRATION_GUIDE.md` - Migration from old pattern
 
 ---
 
-**Last Updated**: January 2026
-**Mock Coverage**: ~95% of BotType interface
+**Last Updated**: February 2026
+**Mock Coverage**: Full CommandContext + SWAPI support
 **Test Compatibility**: Node.js native test runner with TypeScript

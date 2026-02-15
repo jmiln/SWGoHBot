@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
 import "../setup/mongodb.ts";
-import config from "../../config.js";
+import config from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
