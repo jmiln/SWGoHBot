@@ -6,7 +6,7 @@
  */
 
 import type { ChatInputCommandInteraction } from "discord.js";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import type { CommandStats } from "../schemas/index.ts";
 import database from "./database.ts";
 import logger from "./Logger.ts";

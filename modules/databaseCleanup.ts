@@ -1,4 +1,4 @@
-import config from "../config.ts";
+import config from "../config/config.ts";
 import cache from "./cache.ts";
 import { myTime } from "./functions.ts";
 import logger from "./Logger.ts";

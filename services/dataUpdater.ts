@@ -6,7 +6,7 @@ import { eachLimit } from "async";
 import { ApplicationCommandOptionType } from "discord.js";
 import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";

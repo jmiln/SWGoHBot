@@ -1,5 +1,5 @@
 import type { Document } from "mongodb";
-import config from "../../config.ts";
+import config from "../../config/config.ts";
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
 import type { GuildConfigPatreonSettings } from "../../types/guildConfig_types.ts";

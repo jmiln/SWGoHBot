@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";

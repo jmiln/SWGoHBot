@@ -1,6 +1,6 @@
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, DiscordAPIError, TextChannel } from "discord.js";
-import config from "./config.ts";
+import config from "./config/config.ts";
 import constants from "./data/constants/constants.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";

@@ -1,4 +1,4 @@
-import config from "../config.ts";
+import config from "../config/config.ts";
 import type { BotCache } from "../types/cache_types.ts";
 import type { UserConfig } from "../types/types.ts";
 

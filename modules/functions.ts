@@ -15,7 +15,7 @@ import {
     WebhookClient,
 } from "discord.js";
 import Language from "../base/Language.ts";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";

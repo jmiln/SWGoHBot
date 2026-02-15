@@ -1,4 +1,4 @@
-import config from "../../config.ts";
+import config from "../../config/config.ts";
 import type { GuildConfigShardTimes } from "../../types/guildConfig_types.ts";
 import cache from "../cache.ts";
 

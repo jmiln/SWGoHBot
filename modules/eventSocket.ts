@@ -1,5 +1,5 @@
 import { io, type Socket } from "socket.io-client";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import logger from "./Logger.ts";
 

@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { REST, Routes } from "discord.js";
 import type { CommandMetadata } from "../base/slashCommand.ts";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import logger from "./Logger.ts";
 

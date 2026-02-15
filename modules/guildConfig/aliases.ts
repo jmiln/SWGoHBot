@@ -1,4 +1,4 @@
-import config from "../../config.ts";
+import config from "../../config/config.ts";
 import type { GuildAlias } from "../../types/types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";

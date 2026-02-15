@@ -1,5 +1,5 @@
 import path from "node:path";
-import config from "../../config.ts";
+import config from "../../config/config.ts";
 import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
 import cache from "../cache.ts";
 import { readJSON } from "../functions.ts";

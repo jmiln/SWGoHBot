@@ -1,6 +1,6 @@
 import { type Client, type Embed, type Message, PermissionsBitField } from "discord.js";
 import Language from "../base/Language.ts";
-import config from "../config.ts";
+import config from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
