@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-02-13T23:57:12.155Z",
+        "generatedAt": "2026-02-15T20:55:58.935Z",
         "totalCommands": 44,
         "categories": 4
     },
@@ -1806,7 +1806,7 @@
             },
             {
                 "name": "guildtickets",
-                "description": "(Patreon command) Set up the guild watcher to automatically display a guild's current ticket counts",
+                "description": "Set up the guild watcher to automatically display a guild's current ticket counts",
                 "usage": [
                     "**/guildtickets** set [enabled] [channel] [show_max] [sortby] [updates] [tickets] [allycode]",
                     "**/guildtickets** view"
