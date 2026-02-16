@@ -173,7 +173,7 @@ const init = async () => {
 init()
     .then(() => {
         console.log(`[${myTime()}] Bot initialization complete`);
-        return client.login(config.token);
+        return client.login();
     })
     .catch((err) => {
         console.error(`[${myTime()}] Failed to initialize bot: ${err instanceof Error ? err.message : String(err)}`);
