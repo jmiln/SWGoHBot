@@ -15,7 +15,7 @@ import {
     WebhookClient,
 } from "discord.js";
 import Language from "../base/Language.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
@@ -151,7 +151,7 @@ export async function permLevel(interaction: ChatInputCommandInteraction, guildS
     const authId = interaction.user.id;
 
     // If bot owner, return max perm level
-    if (authId === config.ownerid) {
+    if (authId === env.DISCORD_OWNER_ID) {
         return permMap.BOT_OWNER;
     }
 
@@ -778,7 +778,7 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
     };
 
     try {
-        const res = await fetch(`${config.imageServIP_Port}/char/`, {
+        const res = await fetch(`${env.IMAGE_SERVER_URL}/char/`, {
             method: "post",
             body: JSON.stringify(fetchBody),
             headers: { "Content-Type": "application/json" },

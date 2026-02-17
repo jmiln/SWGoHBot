@@ -1,4 +1,5 @@
 import ComlinkStub from "@swgoh-utils/comlink";
+import { env } from "../../config/config.ts";
 import type { ComlinkPlayer } from "../../types/swapi_types.ts";
 import { myTime } from "../functions.ts";
 import logger from "../Logger.ts";
@@ -13,18 +14,20 @@ interface ModMap {
 
 // Cache stub instance per worker thread to avoid recreating for each player
 let cachedStub: ComlinkStub | null = null;
-let cachedClientStub: string | null = null;
 
-function getComlinkStub(clientStub: string): ComlinkStub {
-    if (!cachedStub || cachedClientStub !== clientStub) {
-        cachedStub = new ComlinkStub(clientStub);
-        cachedClientStub = clientStub;
+function getComlinkStub(): ComlinkStub {
+    if (!cachedStub) {
+        cachedStub = new ComlinkStub({
+            url: env.SWAPI_CLIENT_URL,
+            accessKey: env.SWAPI_ACCESS_KEY,
+            secretKey: env.SWAPI_SECRET_KEY,
+        });
     }
     return cachedStub;
 }
 
-export default async function ({ playerId, modMap, clientStub }: { playerId: number; modMap: ModMap; clientStub: string }) {
-    const comlinkStub = getComlinkStub(clientStub);
+export default async function ({ playerId, modMap }: { playerId: number; modMap: ModMap }) {
+    const comlinkStub = getComlinkStub();
     return await comlinkStub
         .getPlayer(null, playerId.toString())
         .then((res: ComlinkPlayer) => {

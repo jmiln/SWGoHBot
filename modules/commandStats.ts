@@ -6,7 +6,7 @@
  */
 
 import type { ChatInputCommandInteraction } from "discord.js";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import type { CommandStats } from "../schemas/index.ts";
 import database from "./database.ts";
 import logger from "./Logger.ts";
@@ -95,7 +95,7 @@ async function flushStats(): Promise<void> {
     statsBatch = [];
 
     try {
-        const db = database.getClient().db(config.mongodb.swgohbotdb);
+        const db = database.getClient().db(env.MONGODB_SWGOHBOT_DB);
         const collection = db.collection<CommandStats>(COLLECTION_NAME);
 
         // Insert batch
@@ -116,7 +116,7 @@ async function flushStats(): Promise<void> {
  */
 export async function getCommandStats(startTime: number, endTime: number): Promise<Map<string, number>> {
     try {
-        const db = database.getClient().db(config.mongodb.swgohbotdb);
+        const db = database.getClient().db(env.MONGODB_SWGOHBOT_DB);
         const collection = db.collection<CommandStats>(COLLECTION_NAME);
 
         // Aggregate stats by command path
@@ -158,7 +158,7 @@ export async function getCommandStats(startTime: number, endTime: number): Promi
  */
 export async function getTopCommands(startTime: number, endTime: number, limit = 10): Promise<Array<{ command: string; count: number }>> {
     try {
-        const db = database.getClient().db(config.mongodb.swgohbotdb);
+        const db = database.getClient().db(env.MONGODB_SWGOHBOT_DB);
         const collection = db.collection<CommandStats>(COLLECTION_NAME);
 
         const pipeline = [

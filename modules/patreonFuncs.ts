@@ -1,6 +1,6 @@
 import { type Client, type Embed, type Message, PermissionsBitField } from "discord.js";
 import Language from "../base/Language.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
@@ -44,8 +44,8 @@ class PatreonFuncs {
         const patron = (await cache.getOne("swgohbot", "patrons", { discordID: userId })) as PatronUser;
 
         // If they aren't in the db, see if we have em in there manually
-        if (!patron && config.patrons?.[userId]) {
-            const currentAmountCents = config.patrons[userId];
+        if (!patron && env.PATRONS?.[userId]) {
+            const currentAmountCents = env.PATRONS[userId];
             const currentTierNum = this.getPatreonTier({ amount_cents: currentAmountCents });
             const currentTier = tiers[currentTierNum];
             return {
@@ -746,15 +746,15 @@ class PatreonFuncs {
     private async getActivePatrons(): Promise<ActivePatron[]> {
         let patrons = (await cache.get("swgohbot", "patrons", {})) as ActivePatron[];
         patrons = patrons.filter((p) => !p.declined_since);
-        const others: string[] = Object.keys(config.patrons).length
-            ? Object.keys(config.patrons).concat([config.ownerid])
-            : [config.ownerid];
+        const others: string[] = Object.keys(env.PATRONS).length
+            ? Object.keys(env.PATRONS).concat([env.DISCORD_OWNER_ID])
+            : [env.DISCORD_OWNER_ID];
         for (const patUser of others) {
             const user = patrons.find((p) => p.discordID === patUser);
             if (!user) {
                 patrons.push({
                     discordID: patUser,
-                    amount_cents: config.patrons[patUser],
+                    amount_cents: env.PATRONS[patUser],
                 });
             }
         }

@@ -1,5 +1,5 @@
 import { io, type Socket } from "socket.io-client";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import logger from "./Logger.ts";
 
@@ -49,7 +49,8 @@ class EventSocket {
         }
 
         this.shardId = shardId;
-        this.socket = io(`ws://localhost:${config.eventServe.port}`, SOCKET_CONFIG);
+        // Use backing service URL - can swap local/remote by changing env var
+        this.socket = io(env.EVENT_SERVER_URL, SOCKET_CONFIG);
 
         this.socket.on("connect", () => {
             logger.log(`  [${this.shardId}] Connected to EventMgr socket!`);

@@ -1,5 +1,5 @@
 import { type Client, Events } from "discord.js";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import databaseCleanup from "../modules/databaseCleanup.ts";
 import eventFuncs from "../modules/eventFuncs.ts";
 import eventSocket from "../modules/eventSocket.ts";
@@ -37,7 +37,7 @@ export default {
 
         // Validate bot configuration - must be private bot unless authorized
         const application = client.application;
-        if (!isMain(client) && application.botPublic && application.owner.id !== config.ownerid) {
+        if (!isMain(client) && application.botPublic && application.owner.id !== env.DISCORD_OWNER_ID) {
             logger.error(
                 Buffer.from(
                     "RkFUQUwgRVJST1I6IElOVkFMSUQgQk9UIFNFVFVQCgpHbyB0byB5b3VyIEJvdCdzIGFwcGxpY2F0aW9uIHBhZ2UgaW4gRGlzY29yZCBEZXZlbG9wZXJzIHNpdGUgYW5kIGRpc2FibGUgdGhlICJQdWJsaWMgQm90IiBvcHRpb24uCgpQbGVhc2UgY29udGFjdCB0aGUgc3VwcG9ydCB0ZWFtIGF0IFNXR29IQm90IEhRIC0gaHR0cHM6Ly9kaXNjb3JkLmdnL0Zmd0d2aHIgLSBmb3IgbW9yZSBpbmZvcm1hdGlvbi4=",
@@ -73,7 +73,7 @@ function setupBackgroundTasks(client: Client<true>, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
     if (shardId === 0) {
         setupDatabaseCleanup(shardId);
-        if (config.premium) {
+        if (env.PREMIUM) {
             setupDataUpdateTasks(shardId);
         }
     }

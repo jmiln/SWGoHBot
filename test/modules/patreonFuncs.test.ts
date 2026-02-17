@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { type Client } from "discord.js";
 import { MongoClient } from "mongodb";
-import config from "../../config/config.ts";
+import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import { PatreonFuncs } from "../../modules/patreonFuncs.ts";
 import type { PatronUser } from "../../types/types.ts";
@@ -14,7 +14,7 @@ describe("PatreonFuncs Module", () => {
     let mockClient: Client<true>;
 
     // This has to use the same database as name as the main bot, since that's what the patreonFuncs module uses
-    const testDbName = config.mongodb.swgohbotdb;
+    const testDbName = env.MONGODB_SWAPI_DB;
 
     before(async () => {
         // Get shared MongoDB client from testcontainer

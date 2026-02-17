@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
@@ -329,7 +329,7 @@ export default class Need extends Command {
         async function getFactionUnits(searchName: string) {
             // Get units based on their faction
             const units = await cache.get(
-                config.mongodb.swapidb,
+                env.MONGODB_SWAPI_DB,
                 "units",
                 { categoryIdList: searchName, language: swgohLanguage.toLowerCase() },
                 { _id: 0, baseId: 1, nameKey: 1 },

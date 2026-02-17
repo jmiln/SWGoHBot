@@ -1,12 +1,11 @@
 import { readdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
-
 import { inspect } from "node:util";
 import { eachLimit } from "async";
 import { ApplicationCommandOptionType } from "discord.js";
 import { MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import { readJSON } from "../modules/functions.ts";
@@ -182,9 +181,13 @@ async function init() {
             return;
         }
 
-        mongoClient = await MongoClient.connect(config.mongodb.url);
+        mongoClient = await MongoClient.connect(env.MONGODB_URL);
         cache.init(mongoClient);
-        const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
+        const comlinkStub = new ComlinkStub({
+            url: env.SWAPI_CLIENT_URL,
+            accessKey: env.SWAPI_ACCESS_KEY,
+            secretKey: env.SWAPI_SECRET_KEY,
+        });
 
         if (!FORCE_UPDATE) {
             (async function runUpdatersAsNeeded() {
@@ -520,7 +523,7 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
         await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
             try {
                 playerCount++;
-                const strippedUnits = await piscina.run({ playerId, modMap, clientStub: config.swapiConfig.clientStub });
+                const strippedUnits = await piscina.run({ playerId, modMap });
                 rosterArr.push(...(strippedUnits || []));
             } catch (err) {
                 logger.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
@@ -669,8 +672,24 @@ async function mergeModsToCharacters(modsIn: { [defId: string]: { mods: BotUnitM
     await saveFile(CHAR_FILE_PATH, characters);
 }
 
+function patreonCredentials() {
+    return env.PATREON_CAMPAIGN_ID &&
+        env.PATREON_CLIENT_ID &&
+        env.PATREON_CLIENT_SECRET &&
+        env.PATREON_CREATOR_ACCESS_TOKEN &&
+        env.PATREON_CREATOR_REFRESH_TOKEN
+        ? {
+              campaignId: env.PATREON_CAMPAIGN_ID,
+              clientID: env.PATREON_CLIENT_ID,
+              clientSecret: env.PATREON_CLIENT_SECRET,
+              creatorAccessToken: env.PATREON_CREATOR_ACCESS_TOKEN,
+              creatorRefreshToken: env.PATREON_CREATOR_REFRESH_TOKEN,
+          }
+        : undefined;
+}
+
 async function updatePatrons(cache: BotCache) {
-    const patreon = config.patreonV2;
+    const patreon = patreonCredentials();
     if (!patreon) return;
 
     try {
@@ -736,7 +755,7 @@ async function updatePatrons(cache: BotCache) {
             // Check if the user is already in the db, and alert that there's a new supporter if not
             const discordID = user.attributes.social_connections?.discord?.user_id;
             if (discordID) {
-                const userConf = await cache.getOne(config.mongodb.swgohbotdb, "patrons", { discordID: discordID });
+                const userConf = await cache.getOne(env.MONGODB_SWAPI_DB, "patrons", { discordID: discordID });
                 if (!userConf)
                     logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
             }
@@ -759,7 +778,7 @@ async function updatePatrons(cache: BotCache) {
 
             if (newUser.patron_status !== "active_patron" || !newUser.amount_cents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
-                const userConf = (await cache.getOne(config.mongodb.swgohbotdb, "users", { id: newUser.discordID })) as UserConfig | null;
+                const userConf = (await cache.getOne(env.MONGODB_SWAPI_DB, "users", { id: newUser.discordID })) as UserConfig | null;
 
                 // If they don't have bonusServer set (As it should be), move on
                 if (!userConf?.bonusServer?.length) continue;
@@ -820,7 +839,7 @@ async function updateLocs(
     const [currentUnits, currentLocs] = await Promise.all([readJSON<BotUnit[]>(unitListFile), readJSON<UnitLocation[]>(currentLocFile)]);
 
     const shardNameMap = currentUnits.map((unit) => `unitshard_${unit.uniqueName}`);
-    const shardNameRes = (await cache.get(config.mongodb.swapidb, "materials", { id: { $in: shardNameMap } })) as { id: string }[];
+    const shardNameRes = (await cache.get(env.MONGODB_SWAPI_DB, "materials", { id: { $in: shardNameMap } })) as { id: string }[];
 
     const matArr = [];
     for (const unit of currentUnits) {
@@ -858,7 +877,7 @@ async function updateLocs(
             });
         }
     }
-    await cache.putMany(config.mongodb.swapidb, "locations", bulkLocPut);
+    await cache.putMany(env.MONGODB_SWAPI_DB, "locations", bulkLocPut);
 
     const [campaignMapNames, campaignMapNodes, featureStoreList] = await Promise.all([
         readJSON<unknown[]>(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNames.json")).then((data) => data[0]),
@@ -977,7 +996,7 @@ async function updateLocs(
                         language: lang,
                         langKey,
                     };
-                    await cache.put(config.mongodb.swapidb, "locations", { id: locId, language: lang }, out);
+                    await cache.put(env.MONGODB_SWAPI_DB, "locations", { id: locId, language: lang }, out);
                 }
                 // If locale strings were available, go ahead and stick the info in
                 if (isAvailable) charArr.push(charObj);
@@ -1241,7 +1260,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
 
         debugTime("Finished processing Materials");
         const { unitShardList, bulkMatArr } = processMaterials(gameData.material);
-        await cache.putMany(config.mongodb.swapidb, "materials", bulkMatArr);
+        await cache.putMany(env.MONGODB_SWAPI_DB, "materials", bulkMatArr);
         debugTimeEnd("Finished processing Materials");
 
         debugTime("Finished processing Mod data");
@@ -1264,7 +1283,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         }
 
         const bulkUnitArr = unitsToCharacterDB(structuredClone(processedUnitList));
-        await cache.putMany(config.mongodb.swapidb, "characters", bulkUnitArr);
+        await cache.putMany(env.MONGODB_SWAPI_DB, "characters", bulkUnitArr);
         await processLocalization(processedUnitList, "units", ["nameKey"], "baseId", locales, cache);
 
         const unitsOut = unitsForUnitMapFile(processedUnitList);
@@ -1351,10 +1370,10 @@ async function processLocalization(
     if (bulkWriteArr.length > BATCH_SIZE) {
         for (let i = 0; i < bulkWriteArr.length; i += BATCH_SIZE) {
             const batch = bulkWriteArr.slice(i, i + BATCH_SIZE);
-            await cache.putMany(config.mongodb.swapidb, dbTarget, batch);
+            await cache.putMany(env.MONGODB_SWAPI_DB, dbTarget, batch);
         }
     } else {
-        await cache.putMany(config.mongodb.swapidb, dbTarget, bulkWriteArr);
+        await cache.putMany(env.MONGODB_SWAPI_DB, dbTarget, bulkWriteArr);
     }
     debugLog(`Finished localizing ${dbTarget}`);
 }

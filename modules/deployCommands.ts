@@ -2,7 +2,7 @@ import { readdirSync } from "node:fs";
 import { join } from "node:path";
 import { REST, Routes } from "discord.js";
 import type { CommandMetadata } from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import logger from "./Logger.ts";
 
@@ -55,7 +55,7 @@ async function loadCommandMetadata(): Promise<{ commands: CommandMetadata[]; fai
  * Deploys commands to Discord API
  */
 async function deployCommands(commands: CommandMetadata[]) {
-    const rest = new REST().setToken(config.token);
+    const rest = new REST().setToken(env.DISCORD_TOKEN);
 
     const globalCommands = commands
         .filter((cmd) => !cmd.guildOnly)
@@ -77,7 +77,7 @@ async function deployCommands(commands: CommandMetadata[]) {
         if (constants.enableGlobalCmds && globalCommands.length) {
             logger.log(`Deploying ${globalCommands.length} global commands...`);
             // logger.log(inspect(globalCommands, { depth: 5 }));
-            await rest.put(Routes.applicationCommands(config.clientId), {
+            await rest.put(Routes.applicationCommands(env.DISCORD_CLIENT_ID), {
                 body: globalCommands,
             });
             logger.log(`Deployed ${globalCommands.length} global commands`);
@@ -86,13 +86,13 @@ async function deployCommands(commands: CommandMetadata[]) {
         }
 
         // Deploy guild commands if dev_server is set
-        if (config.dev_server && guildCommands.length) {
-            logger.log(`Deploying ${guildCommands.length} guild commands to ${config.dev_server}...`);
-            await rest.put(Routes.applicationGuildCommands(config.clientId, config.dev_server), {
+        if (env.DISCORD_DEV_SERVER && guildCommands.length) {
+            logger.log(`Deploying ${guildCommands.length} guild commands to ${env.DISCORD_DEV_SERVER}...`);
+            await rest.put(Routes.applicationGuildCommands(env.DISCORD_CLIENT_ID, env.DISCORD_DEV_SERVER), {
                 body: guildCommands,
             });
             logger.log(`Deployed ${guildCommands.length} guild commands`);
-        } else if (!config.dev_server && guildCommands.length) {
+        } else if (!env.DISCORD_DEV_SERVER && guildCommands.length) {
             logger.log(`${guildCommands.length} guild commands found but no dev_server configured`);
         }
 

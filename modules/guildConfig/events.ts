@@ -1,14 +1,14 @@
-import config from "../../config/config.ts";
+import { env } from "../../config/config.ts";
 import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
 
 export async function setEvents({ guildId, evArrOut }: { guildId: string; evArrOut: GuildConfigEvent[] }) {
     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
-    return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
+    return await cache.put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
 export async function updateGuildEvent({ guildId, evName, event }) {
-    const evList: GuildConfig = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { events: 1, _id: 0 });
+    const evList: GuildConfig = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { events: 1, _id: 0 });
     const evIx = evList.events.findIndex((ev) => ev.name === evName);
 
     if (evIx < 0) return null; // Just to be doubly sure that it exists
@@ -16,7 +16,7 @@ export async function updateGuildEvent({ guildId, evName, event }) {
 
     // Set the new event in the db
     const out = await cache
-        .put(config.mongodb.swgohbotdb, "guildConfigs", { guildId }, { events: evList.events }, false)
+        .put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { events: evList.events }, false)
         .then(() => {
             return { success: true, error: null };
         })
@@ -29,13 +29,13 @@ export async function updateGuildEvent({ guildId, evName, event }) {
 
 export async function getGuildEvents({ guildId }: { guildId: string }): Promise<GuildConfigEvent[]> {
     if (!guildId) return [] as GuildConfigEvent[];
-    const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: 1 });
+    const res = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { events: 1 });
     return (res?.events || []) as GuildConfigEvent[];
 }
 export async function addGuildEvent({ guildId, newEvent }: { guildId: string; newEvent: GuildConfigEvent }) {
     const events = await getGuildEvents({ guildId });
     events.push(newEvent);
-    return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events }, false);
+    return await cache.put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { events }, false);
 }
 export async function guildEventExists({ guildId, evName }: { guildId: string; evName: string }) {
     const resArr: GuildConfigEvent[] = await getGuildEvents({ guildId });
@@ -47,10 +47,10 @@ export async function deleteGuildEvent({ guildId, evName }: { guildId: string; e
 
     // Filter out the specific one that we want gone, then re-save em
     const evArrOut = res.filter((ev) => ev.name !== evName);
-    return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
+    return await cache.put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { events: evArrOut }, false);
 }
 export async function getAllEvents(): Promise<GuildConfigEvent[]> {
-    const resArr = (await cache.get(config.mongodb.swgohbotdb, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 })) as {
+    const resArr = (await cache.get(env.MONGODB_SWGOHBOT_DB, "guildConfigs", {}, { guildId: 1, events: 1, _id: 0 })) as {
         guildId: string;
         events: GuildConfigEvent[];
     }[];
@@ -71,7 +71,7 @@ export async function getAllEvents(): Promise<GuildConfigEvent[]> {
  */
 export async function getTriggeredEvents({ nowTime }: { nowTime: number }): Promise<GuildConfigEvent[]> {
     const resArr = (await cache.get(
-        config.mongodb.swgohbotdb,
+        env.MONGODB_SWGOHBOT_DB,
         "guildConfigs",
         {
             "events.eventDT": { $lte: nowTime },
@@ -97,7 +97,7 @@ export async function getTriggeredEvents({ nowTime }: { nowTime: number }): Prom
  */
 export async function getCountdownEvents({ nowTime }: { nowTime: number }): Promise<GuildConfigEvent[]> {
     const resArr = (await cache.get(
-        config.mongodb.swgohbotdb,
+        env.MONGODB_SWGOHBOT_DB,
         "guildConfigs",
         {
             "events.countdown": true,

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";
@@ -88,7 +88,7 @@ export default class ArenaAlert extends Command {
 
         // Grab the user's info
         const userID = interaction.user.id;
-        const user = (await cache.getOne(config.mongodb.swgohbotdb, "users", { id: userID })) as UserConfig;
+        const user = (await cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: userID })) as UserConfig;
         if (!user) {
             return super.error(interaction, "I couldn't find your data. Please try again.");
         }
@@ -128,7 +128,7 @@ export default class ArenaAlert extends Command {
         });
 
         // TODO Get a res from this, so it can be replied to more accurately
-        await cache.put(config.mongodb.swgohbotdb, "users", { id: userID }, updatedUser);
+        await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userID }, updatedUser);
         if (!changelog?.length) {
             return super.success(interaction, "It looks like nothing was updated.");
         }

@@ -1,6 +1,6 @@
 import { codeBlock, InteractionContextType, version } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import database from "../modules/database.ts";
 import { getShardId, guildCount, makeTable, userCount } from "../modules/functions.ts";
@@ -47,7 +47,7 @@ export default class Info extends Command {
 
     async run({ interaction, language }: CommandContext) {
         try {
-            const db = database.getClient().db(config.mongodb.swapidb);
+            const db = database.getClient().db(env.MONGODB_SWAPI_DB);
             const swgohPlayerCount = await db.collection("playerStats").estimatedDocumentCount();
             const swgohGuildCount = await db.collection("guilds").estimatedDocumentCount();
             const totalGuilds = await guildCount(interaction.client);

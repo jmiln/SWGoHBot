@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import config from "../../config/config.ts";
+import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import databaseCleanup from "../../modules/databaseCleanup.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
@@ -15,15 +15,15 @@ describe("DatabaseCleanup Module", () => {
         mongoClient = await getMongoClient();
 
         // Temporarily override the swapidb config to use test database
-        originalSwapiDb = config.mongodb.swapidb;
-        config.mongodb.swapidb = testDbName;
+        originalSwapiDb = env.MONGODB_SWAPI_DB;
+        env.MONGODB_SWAPI_DB = testDbName;
 
         cache.init(mongoClient);
     });
 
     after(async () => {
         // Restore original config
-        config.mongodb.swapidb = originalSwapiDb;
+        env.MONGODB_SWAPI_DB = originalSwapiDb;
 
         // Clean up test data
         await mongoClient.db(testDbName).collection("playerStats").deleteMany({});

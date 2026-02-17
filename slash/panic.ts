@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import { characters, journeyReqs, ships } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
@@ -130,7 +130,7 @@ export default class Panic extends Command {
         // Now that we have the units all formatted to send over to the image generator, go ahead and send it
         let imageOut = null;
         try {
-            imageOut = await fetch(`${config.imageServIP_Port}/panic/`, {
+            imageOut = await fetch(`${env.IMAGE_SERVER_URL}/panic/`, {
                 method: "post",
                 body: JSON.stringify({
                     header: `${player.name}'s ${targetUnit.name} requirements`,

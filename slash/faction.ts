@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
@@ -73,7 +73,7 @@ export default class Faction extends Command {
 
         const factionChars = [];
         let chars: RawCharacter[] = await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "units",
             { categoryIdList: query, language: swgohLanguage.toLowerCase() },
             { _id: 0, baseId: 1, nameKey: 1 },

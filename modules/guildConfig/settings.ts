@@ -1,4 +1,4 @@
-import config from "../../config/config.ts";
+import { env } from "../../config/config.ts";
 import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
 import cache from "../cache.ts";
 
@@ -6,7 +6,7 @@ import cache from "../cache.ts";
 export async function getGuildSettings({ guildId }: { guildId: string }) {
     if (!guildId) return defaultSettings;
 
-    const guildSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
+    const guildSettings = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { settings: 1 });
     if (!guildSettings) return defaultSettings;
     return { ...defaultSettings, ...(guildSettings.settings as object) };
 }
@@ -29,14 +29,14 @@ export async function setGuildSettings({ guildId, settings }: { guildId: string;
 
     if (!Object.keys(diffObj).length) {
         // In this case, there's nothing different than the default, so go ahead and set it to blank
-        return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: {} }, false);
+        return await cache.put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { settings: {} }, false);
     }
-    return await cache.put(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: diffObj }, false);
+    return await cache.put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { settings: diffObj }, false);
 }
 
 // Check if there are settings for the guild
 export async function hasGuildSettings(guildId: string) {
-    const guildSettings = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { settings: 1 });
+    const guildSettings = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { settings: 1 });
     if (guildSettings) {
         return true;
     }
@@ -45,7 +45,7 @@ export async function hasGuildSettings(guildId: string) {
 
 // Remove all settings, events, polls, etc for the given guild
 export async function deleteGuildConfig({ guildId }: { guildId: string }) {
-    return await cache.remove(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId });
+    return await cache.remove(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId });
 }
 
 function arrayEquals(a: unknown, b: unknown) {

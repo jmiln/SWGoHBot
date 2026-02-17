@@ -1,11 +1,11 @@
 import { type Shard, ShardingManager } from "discord.js";
-import config from "./config/config.ts";
+import { env } from "./config/config.ts";
 
 const Manager = new ShardingManager("./swgohBot.ts", {
     // totalShards: config.shardCount, // Tell it how many shards we want (Approx. 1100 servers per shard)
     totalShards: "auto",
     execArgv: ["--trace-warnings"],
-    token: config.token,
+    token: env.DISCORD_TOKEN,
 });
 
 Manager.on("shardCreate", (shard: Shard) => {

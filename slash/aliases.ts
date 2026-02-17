@@ -6,7 +6,7 @@ import {
     InteractionContextType,
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import { characters, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import type { CommandContext, GuildAlias } from "../types/types.ts";
@@ -78,7 +78,7 @@ export default class Aliases extends Command {
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 
             // Load guild aliases
-            const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: interaction.guild.id }, { aliases: 1 });
+            const res = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: interaction.guild.id }, { aliases: 1 });
             const guildAliases: GuildAlias[] = res?.aliases || [];
 
             // Filter and format aliases
@@ -104,7 +104,7 @@ export default class Aliases extends Command {
         const guildId = interaction.guild.id;
 
         // Load up all the guild's settings and such
-        const res = await cache.getOne(config.mongodb.swgohbotdb, "guildConfigs", { guildId: guildId }, { aliases: 1 });
+        const res = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { aliases: 1 });
         const guildAliases = res?.aliases || [];
 
         if (action === "add") {
@@ -136,7 +136,7 @@ export default class Aliases extends Command {
 
         try {
             await cache.put(
-                config.mongodb.swgohbotdb,
+                env.MONGODB_SWGOHBOT_DB,
                 "guildConfigs",
                 { guildId: interaction.guild.id },
                 { aliases: guildAliases } as never,
@@ -157,7 +157,7 @@ export default class Aliases extends Command {
         const filteredAliases = guildAliases.filter((al) => al.alias !== alias).sort((a, b) => (a.alias > b.alias ? 1 : -1));
         try {
             await cache.put(
-                config.mongodb.swgohbotdb,
+                env.MONGODB_SWGOHBOT_DB,
                 "guildConfigs",
                 { guildId: interaction.guild.id },
                 { aliases: filteredAliases } as never,

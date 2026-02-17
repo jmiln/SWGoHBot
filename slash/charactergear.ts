@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
@@ -307,7 +307,7 @@ async function expandPieces(list: string[]) {
     let end = [];
     for (const piece of list) {
         const gr = await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "gear",
             {
                 nameKey: piece,
@@ -344,7 +344,7 @@ async function getParts(gr: SWAPIGearRecipe, partList: { name: string; count: nu
     const gearPiece = Array.isArray(gr) ? gr[0] : gr;
     if (gearPiece.recipeId?.length) {
         const recArr = await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "recipes",
             {
                 id: gearPiece.recipeId,
@@ -361,7 +361,7 @@ async function getParts(gr: SWAPIGearRecipe, partList: { name: string; count: nu
         const thisRec = rec.ingredients.filter((r: SWAPIIngredient) => r.id !== "GRIND");
         for (const r of thisRec) {
             const gear = await cache.get(
-                config.mongodb.swapidb,
+                env.MONGODB_SWAPI_DB,
                 "gear",
                 {
                     id: r.id,

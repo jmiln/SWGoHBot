@@ -1,7 +1,7 @@
 import { MongoClient } from "mongodb";
 import type { Socket } from "socket.io";
 import { Server } from "socket.io";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import {
     addGuildEvent,
@@ -15,14 +15,14 @@ import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
-const io = new Server(config.eventServe.port);
+const io = new Server(env.EVENT_SERVER_PORT);
 let mongo: MongoClient | null = null;
 let isShuttingDown = false;
 
 async function init() {
     try {
         // Init this so it'll be ready for the event handlers
-        mongo = await MongoClient.connect(config.mongodb.url);
+        mongo = await MongoClient.connect(env.MONGODB_URL);
         cache.init(mongo);
 
         io.on("connection", (socket) => {
@@ -30,7 +30,7 @@ async function init() {
             setupEventHandlers(socket);
         });
 
-        logger.log(`EventMgr: Service started on port ${config.eventServe.port}`);
+        logger.log(`EventMgr: Service started on port ${env.EVENT_SERVER_PORT}`);
     } catch (error) {
         logger.error(`EventMgr: Failed to initialize - ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);

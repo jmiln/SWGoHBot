@@ -2,7 +2,7 @@ import os from "node:os";
 import { Worker } from "node:worker_threads";
 import ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
@@ -32,10 +32,14 @@ import logger from "./Logger.ts";
 const THREAD_COUNT = os.cpus().length;
 const abilityCosts = await readJSON(`${import.meta.dirname}/../data/abilityCosts.json`);
 
-if (!config.swapiConfig?.clientStub) {
-    throw new Error("Missing clientStub config info!");
-}
-const comlinkStub = new ComlinkStub(config.swapiConfig.clientStub);
+// if (!config.backingServices.swapiClient || !config.credentials.swapi) {
+//     throw new Error("Missing SWAPI client config or credentials!");
+// }
+const comlinkStub = new ComlinkStub({
+    url: env.SWAPI_CLIENT_URL,
+    accessKey: env.SWAPI_ACCESS_KEY,
+    secretKey: env.SWAPI_SECRET_KEY,
+});
 
 let modMap = await readJSON(`${import.meta.dirname}/../data/modMap.json`);
 let unitMap = await readJSON(`${import.meta.dirname}/../data/unitMap.json`);
@@ -103,7 +107,7 @@ class SWAPI {
     private async getSpecialAbilities(): Promise<SWAPIUnitAbility[]> {
         if (!this.specialAbilityList) {
             const abilityList = await cache.get(
-                config.mongodb.swapidb,
+                env.MONGODB_SWAPI_DB,
                 "abilities",
                 {
                     $or: [
@@ -136,7 +140,7 @@ class SWAPI {
 
             /** Try to get player's ally code from cache */
             const player = await cache.get(
-                config.mongodb.swapidb,
+                env.MONGODB_SWAPI_DB,
                 "playerStats",
                 { name: new RegExp(name, "i") },
                 { name: 1, allyCode: 1, _id: 0 },
@@ -154,7 +158,7 @@ class SWAPI {
         // Make sure the allycode(s) are in an array
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
         return await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "playerStats",
             { allyCode: { $in: acArr.map((a) => Number.parseInt(a, 10)) } },
             { _id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1 },
@@ -220,7 +224,7 @@ class SWAPI {
                 updatedBare.push(formattedComlinkPlayer);
             }
         });
-        const oldMembers = await cache.get(config.mongodb.swapidb, "rawPlayers", {
+        const oldMembers = await cache.get(env.MONGODB_SWAPI_DB, "rawPlayers", {
             allyCode: { $in: acArr },
         });
         const processMemberChunk = async (updatedBare: SWAPIPlayer[], chunkIx: number) => {
@@ -269,16 +273,16 @@ class SWAPI {
                     skillsArr.push(...skills);
                     defIdArr.push(...defIds);
                     if (!cacheUpdatesOut.length) continue;
-                    await cache.putMany(config.mongodb.swapidb, "rawPlayers", cacheUpdatesOut);
+                    await cache.putMany(env.MONGODB_SWAPI_DB, "rawPlayers", cacheUpdatesOut);
                 }
                 const skillNames = await cache.get(
-                    config.mongodb.swapidb,
+                    env.MONGODB_SWAPI_DB,
                     "abilities",
                     { skillId: { $in: skillsArr }, language: "eng_us" },
                     { nameKey: 1, skillId: 1 },
                 );
                 const unitNames = await cache.get(
-                    config.mongodb.swapidb,
+                    env.MONGODB_SWAPI_DB,
                     "units",
                     { baseId: { $in: defIdArr }, language: "eng_us" },
                     { baseId: 1, nameKey: 1 },
@@ -333,7 +337,7 @@ class SWAPI {
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options?.defId?.length) {
-                    players = await cache.getAggregate(config.mongodb.swapidb, "playerStats", [
+                    players = await cache.getAggregate(env.MONGODB_SWAPI_DB, "playerStats", [
                         { $match: { allyCode: { $in: filtereredAcArr } } },
                         {
                             $project: {
@@ -352,7 +356,7 @@ class SWAPI {
                         },
                     ]);
                 } else {
-                    players = await cache.get(config.mongodb.swapidb, "playerStats", { allyCode: { $in: filtereredAcArr } });
+                    players = await cache.get(env.MONGODB_SWAPI_DB, "playerStats", { allyCode: { $in: filtereredAcArr } });
                 }
             }
 
@@ -407,7 +411,7 @@ class SWAPI {
                 for (const bareP of updatedBare) {
                     if (bareP?.roster?.length) {
                         try {
-                            const statRoster = await fetch(`${config.swapiConfig.statCalc.url}/api?flags=gameStyle,calcGP`, {
+                            const statRoster = await fetch(`${env.SWAPI_STATCALC_URL}/api?flags=gameStyle,calcGP`, {
                                 method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify(bareP.roster),
@@ -463,7 +467,7 @@ class SWAPI {
                     }
                 }
                 if (bulkWrites.length) {
-                    await cache.putMany(config.mongodb.swapidb, "playerStats", bulkWrites);
+                    await cache.putMany(env.MONGODB_SWAPI_DB, "playerStats", bulkWrites);
                 }
             }
 
@@ -649,7 +653,7 @@ class SWAPI {
         if (char.factions) {
             for (const [factionIx, thisFaction] of char.factions.entries()) {
                 const factionNameRes: { nameKey: string }[] = await cache.get(
-                    config.mongodb.swapidb,
+                    env.MONGODB_SWAPI_DB,
                     "categories",
                     { id: thisFaction, language: thisLang },
                     { nameKey: 1, _id: 0 },
@@ -683,7 +687,7 @@ class SWAPI {
         if (char.skills) {
             for (const skill of char.skills) {
                 const skillNameRes: { nameKey: string }[] = await cache.get(
-                    config.mongodb.swapidb,
+                    env.MONGODB_SWAPI_DB,
                     "abilities",
                     { skillId: skill.id, language: thisLang },
                     { nameKey: 1, _id: 0 },
@@ -750,14 +754,14 @@ class SWAPI {
         // All the skills should be loaded, so just get em from the cache
         if (opts.min) {
             return (await cache.get(
-                config.mongodb.swapidb,
+                env.MONGODB_SWAPI_DB,
                 "abilities",
                 { skillId: { $in: skillArr }, language: lang.toLowerCase() },
                 { nameKey: 1, _id: 0 },
             )) as { nameKey: string }[];
         }
         const cacheRes = (await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "abilities",
             {
                 skillId: { $in: skillArr },
@@ -833,12 +837,7 @@ class SWAPI {
 
     // Function for updating all the stored character data from the game
     async character(defId: string): Promise<RawCharacter> {
-        const outChar = (await cache.getOne(
-            config.mongodb.swapidb,
-            "characters",
-            { baseId: defId },
-            { _id: 0, updated: 0 },
-        )) as RawCharacter;
+        const outChar = (await cache.getOne(env.MONGODB_SWAPI_DB, "characters", { baseId: defId }, { _id: 0, updated: 0 })) as RawCharacter;
         return outChar;
     }
 
@@ -852,7 +851,7 @@ class SWAPI {
 
         // All the skills should be loaded, so just get em from the cache
         return await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "gear",
             {
                 id: { $in: gearArr },
@@ -872,7 +871,7 @@ class SWAPI {
 
         // All the skills should be loaded, so just get em from the cache
         const uOut = (await cache.getOne(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "units",
             { baseId: defId, language: thisLang.toLowerCase() as never },
             {
@@ -896,7 +895,7 @@ class SWAPI {
         if (!defIdArray.length) return {};
 
         const units = (await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "units",
             { baseId: { $in: defIdArray }, language: thisLang },
             { baseId: 1, nameKey: 1, _id: 0 },
@@ -921,7 +920,7 @@ class SWAPI {
 
         // All the skills should be loaded, so just get em from the cache
         return await cache.get(
-            config.mongodb.swapidb,
+            env.MONGODB_SWAPI_DB,
             "recipes",
             {
                 id: { $in: recArr },
@@ -950,7 +949,7 @@ class SWAPI {
 
         if (!player.guildId) throw new Error("This player is not in a guild");
 
-        let rawGuild: RawGuild = await cache.getOne(config.mongodb.swapidb, "rawGuilds", { id: player.guildId });
+        let rawGuild: RawGuild = await cache.getOne(env.MONGODB_SWAPI_DB, "rawGuilds", { id: player.guildId });
         if (forceUpdate || !rawGuild || this.isExpired(rawGuild.updated, cooldown, true)) {
             rawGuild = await comlinkStub.getGuild(player.guildId, true);
 
@@ -995,7 +994,7 @@ class SWAPI {
                     tempGuild[key] = rawGuild[key];
                 }
             }
-            rawGuild = await cache.put(config.mongodb.swapidb, "rawGuilds", { id: player.guildId }, tempGuild);
+            rawGuild = await cache.put(env.MONGODB_SWAPI_DB, "rawGuilds", { id: player.guildId }, tempGuild);
         } else {
             /** If found and valid, serve from cache */
             rawGuild = rawGuild[0];
@@ -1020,7 +1019,7 @@ class SWAPI {
         }
         if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
 
-        const guild: SWAPIGuild = await cache.getOne(config.mongodb.swapidb, "guilds", { id: player.guildId });
+        const guild: SWAPIGuild = await cache.getOne(env.MONGODB_SWAPI_DB, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
         if (!guild || this.isExpired(guild.updated, cooldown, true)) {
@@ -1057,7 +1056,7 @@ class SWAPI {
             if (tempGuild.roster?.length !== tempGuild.members) {
                 logger.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
-            await cache.put(config.mongodb.swapidb, "guilds", { id: tempGuild.id }, tempGuild);
+            await cache.put(env.MONGODB_SWAPI_DB, "guilds", { id: tempGuild.id }, tempGuild);
             return tempGuild;
         }
         /** If found and valid, serve from cache */
@@ -1179,7 +1178,7 @@ class SWAPI {
     }
 
     async zetaRec(lang = "ENG_US") {
-        const zetas = await cache.getOne(config.mongodb.swapidb, "zetaRec", { lang: lang });
+        const zetas = await cache.getOne(env.MONGODB_SWAPI_DB, "zetaRec", { lang: lang });
         return zetas?.zetas;
     }
 

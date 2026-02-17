@@ -1,4 +1,4 @@
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import cache from "./cache.ts";
 import { myTime } from "./functions.ts";
 import logger from "./Logger.ts";
@@ -104,7 +104,7 @@ class DatabaseCleanup {
     async cleanOldPlayerStats(daysOld = 7): Promise<string> {
         const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
 
-        const result = await cache.delete(config.mongodb.swapidb, "playerStats", {
+        const result = await cache.delete(env.MONGODB_SWAPI_DB, "playerStats", {
             updated: { $lt: cutoffTime },
         });
 
@@ -119,7 +119,7 @@ class DatabaseCleanup {
     async cleanOldGuilds(daysOld = 7): Promise<string> {
         const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
 
-        const result = await cache.delete(config.mongodb.swapidb, "guilds", {
+        const result = await cache.delete(env.MONGODB_SWAPI_DB, "guilds", {
             updated: { $lt: cutoffTime },
         });
 
@@ -131,7 +131,7 @@ class DatabaseCleanup {
      * @returns Deletion summary
      */
     async cleanEmptyRosters(): Promise<string> {
-        const result = await cache.delete(config.mongodb.swapidb, "playerStats", {
+        const result = await cache.delete(env.MONGODB_SWAPI_DB, "playerStats", {
             roster: { $size: 0 },
         });
 
@@ -151,9 +151,9 @@ class DatabaseCleanup {
         const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
 
         const [oldPlayerStats, oldGuilds, emptyRosters] = await Promise.all([
-            cache.count(config.mongodb.swapidb, "playerStats", { updated: { $lt: cutoffTime } }),
-            cache.count(config.mongodb.swapidb, "guilds", { updated: { $lt: cutoffTime } }),
-            cache.count(config.mongodb.swapidb, "playerStats", { roster: { $size: 0 } }),
+            cache.count(env.MONGODB_SWAPI_DB, "playerStats", { updated: { $lt: cutoffTime } }),
+            cache.count(env.MONGODB_SWAPI_DB, "guilds", { updated: { $lt: cutoffTime } }),
+            cache.count(env.MONGODB_SWAPI_DB, "playerStats", { roster: { $size: 0 } }),
         ]);
 
         return {

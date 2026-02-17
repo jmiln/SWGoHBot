@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import config from "../../config/config.ts";
+import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import userReg from "../../modules/users.ts";
 import GuildSearch from "../../slash/guildsearch.ts";
@@ -17,7 +17,7 @@ function getReplyDescription(reply: any): string | undefined {
 
 describe("GuildSearch Command Functionality", () => {
     let mongoClient: MongoClient;
-    const testDbName = config.mongodb.swgohbotdb;
+    const testDbName = env.MONGODB_SWGOHBOT_DB;
 
     before(async () => {
         mongoClient = await getMongoClient();

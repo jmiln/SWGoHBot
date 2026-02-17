@@ -1,6 +1,6 @@
 import { inspect } from "node:util";
 import { RESTJSONErrorCodes as APIErrors, Client, DiscordAPIError, TextChannel } from "discord.js";
-import config from "./config/config.ts";
+import { env } from "./config/config.ts";
 import constants from "./data/constants/constants.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
@@ -28,8 +28,8 @@ const CWD_REGEX = new RegExp(process.cwd(), "g");
 
 const logErrorToChannel = (errorMsg: string) => {
     try {
-        if (!config.logs.logToChannel) return;
-        const thisChannel = client.channels.cache.get(config.logs.channel);
+        if (!env.LOG_TO_CHANNEL) return;
+        const thisChannel = client.channels.cache.get(env.LOG_CHANNEL_ID);
         if (!thisChannel || !(thisChannel instanceof TextChannel) || !thisChannel?.send) return;
         thisChannel.send(`\`\`\`${inspect(errorMsg)}\`\`\``);
     } catch {
@@ -88,7 +88,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
 const init = async () => {
     try {
-        await database.connect(config.mongodb.url);
+        await database.connect(env.MONGODB_URL);
     } catch (err) {
         console.error(`[${myTime()}] Failed to connect to MongoDB: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);
@@ -106,7 +106,7 @@ const init = async () => {
     cache.init(database.getClient());
     userReg.init(cache);
 
-    if (config.swapiConfig) {
+    if (env.SWAPI_CLIENT_URL) {
         // Load up the api connector/ helpers
         try {
             swgohAPI.init();

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import config from "../../config/config.ts";
+import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import Aliases from "../../slash/aliases.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
@@ -17,7 +17,7 @@ function getReplyDescription(reply: any): string | undefined {
 
 describe("Aliases Command Functionality", () => {
     let mongoClient: MongoClient;
-    const testDbName = config.mongodb.swgohbotdb;
+    const testDbName = env.MONGODB_SWGOHBOT_DB;
 
     before(async () => {
         // Get MongoDB client from testcontainer and initialize the cache module

@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
@@ -84,7 +84,7 @@ export default class Farm extends Command {
                 // It's a node, fleet, cantina, light/ dark side
                 if (loc.locId) {
                     const langLoc = (await cache.getOne(
-                        config.mongodb.swapidb,
+                        env.MONGODB_SWAPI_DB,
                         "locations",
                         {
                             id: loc.locId,
@@ -124,7 +124,7 @@ export default class Farm extends Command {
             } else if (loc.locId) {
                 // Just has the location id, so probably a marquee
                 const langLoc = (await cache.getOne(
-                    config.mongodb.swapidb,
+                    env.MONGODB_SWAPI_DB,
                     "locations",
                     {
                         id: loc.locId,

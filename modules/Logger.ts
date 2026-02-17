@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 import pino, { type Logger as PinoInstance } from "pino";
-import config from "../config/config.ts";
+import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { sendWebhook, toProperCase } from "./functions.ts";
 
@@ -31,7 +31,7 @@ class Logger {
         };
 
         this.pino = pino({
-            level: config.debugLogs ? "debug" : "info",
+            level: env.DEBUG_LOGS ? "debug" : "info",
             base: { shardId: this.shardId > -1 ? this.shardId : undefined },
             timestamp: pino.stdTimeFunctions.isoTime,
         });
@@ -57,7 +57,7 @@ class Logger {
     }
 
     private sendDiscordWebhook(content: unknown, type: LogType, color: number): void {
-        if (!config.logs.logToChannel || !config.webhookURL) return;
+        if (!env.LOG_TO_CHANNEL || !env.DISCORD_WEBHOOK_URL) return;
 
         const shardStr = this.shardId > -1 ? ` (${this.shardId})` : "";
         const embed = new EmbedBuilder()
@@ -66,7 +66,7 @@ class Logger {
             .setColor(color)
             .setTimestamp();
 
-        sendWebhook(config.webhookURL, embed as never);
+        sendWebhook(env.DISCORD_WEBHOOK_URL, embed as never);
     }
 
     error(content: unknown, webhook = false): void {
