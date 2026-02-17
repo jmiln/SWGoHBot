@@ -8,7 +8,7 @@
         "start": "node swgohBotShard.ts",
         "lint": "biome check --no-errors-on-unmatched .",
         "lint:write": "biome check --write --no-errors-on-unmatched .",
-        "deploy": "node ./modules/deployCommands.ts",
+        "deploy": "node scripts/deployCommands.ts",
         "indexes": "node scripts/verifyIndexes.ts",
         "indexes:check": "node scripts/verifyIndexes.ts --dry-run",
         "indexes:create": "node scripts/verifyIndexes.ts --create",
