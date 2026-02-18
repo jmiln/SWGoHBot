@@ -1,4 +1,4 @@
-import type { AutocompleteInteraction, BaseInteraction, ChatInputCommandInteraction, IntentsBitField, Partials } from "discord.js";
+import type { AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
 import type Language from "../base/Language.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 
@@ -9,16 +9,6 @@ export interface PlayerCooldown {
 
 export type BotLanguage = "en_US" | "de_DE" | "es_SP" | "ko_KR" | "pt_BR";
 export type UnitSide = "light" | "dark" | "neutral";
-
-export interface LangHelpStrs {
-    description: string;
-    actions: {
-        action: string;
-        actionDesc: string;
-        usage: string;
-        args: { [key: string]: string };
-    }[];
-}
 
 export interface JourneyName {
     defId: string;
@@ -138,15 +128,8 @@ export interface BotUnitMods {
     source?: string;
 }
 
-export interface BotInteraction extends ChatInputCommandInteraction {
-    guildSettings: BotDefaultSettings;
-    language: Language;
-    swgohLanguage: SWAPILang;
-    respond?: (choices: { name: string; value: string }[]) => Promise<void>;
-}
-
 // Union type for event handlers that process both command and autocomplete interactions
-export type AnyBotInteraction = BotInteraction | AutocompleteInteraction;
+export type AnyBotInteraction = ChatInputCommandInteraction | AutocompleteInteraction;
 
 // CommandContext - new pattern for command execution without mutating Discord types
 export interface CommandContext {
@@ -157,46 +140,6 @@ export interface CommandContext {
     permLevel?: number;
 }
 
-export interface BotBaseInteraction extends BaseInteraction {
-    respond?: (args: { name: string; value: string }[]) => Promise<void>;
-}
-
-export interface BotConfig {
-    ownerid: string;
-    clientId: string;
-    defaultSettings: BotDefaultSettings;
-    token: string;
-    dev_server: string;
-    patrons: {
-        [key: string]: number; // discordID: amount
-    };
-    eventServe: {
-        port: number;
-    };
-    mongodb: {
-        url: string;
-        swapidb: string;
-        swgohbotdb: string;
-    };
-    logs: {
-        logToChannel: boolean;
-        channel: string;
-    };
-    swapiConfig?: {
-        statCalc: {
-            url: string;
-        };
-        clientStub: {
-            url: string;
-            accessKey: string;
-            secretKey: string;
-        };
-    };
-    webhookURL: string;
-    botIntents: IntentsBitField[];
-    partials: Partials[];
-    [key: string]: string | number | boolean | object;
-}
 export interface BotDefaultSettings {
     adminRole: string[];
     enableWelcome: boolean;
@@ -210,27 +153,6 @@ export interface BotDefaultSettings {
     language: BotLanguage;
     swgohLanguage: SWAPILang;
     shardtimeVertical: boolean;
-}
-
-// User-scheduled events / alerts
-export interface GuildEvent {
-    eventID: string;
-    eventDT: number;
-    eventMessage: string;
-    eventChan: string;
-    countdown: boolean;
-    repeat?: {
-        repeatDay: number;
-        repeatMin: number;
-        repeatHour: number;
-    };
-    repeatDays?: number[];
-    updated: number;
-
-    // Mongo stuff
-    _id: null;
-    createdAt: Date;
-    updatedAt: Date;
 }
 
 export interface GuildAlias {
@@ -358,20 +280,6 @@ export interface ArenaWatchAcct {
 export interface TWList {
     [key: string]: {
         [key: string]: string;
-    };
-}
-
-export interface HelpObject {
-    [key: string]: {
-        // The command category
-        description: string;
-        commands: {
-            [key: string]: {
-                // The command name
-                desc: string;
-                usage: string[];
-            };
-        };
     };
 }
 

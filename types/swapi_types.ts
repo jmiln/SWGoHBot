@@ -198,27 +198,6 @@ export interface RawCharacter {
     nameKey: string | null;
 }
 
-export interface RawUnit {
-    language: SWAPILang;
-    baseId: string;
-    categoryIdList: string[];
-    combatType: number;
-    creationRecipeReference: string;
-    crewList: [];
-    legend: boolean;
-    nameKey: string;
-    skillReferenceList: {
-        skillId: string;
-        requiredTier: number;
-        requiredRarity: number;
-        requiredRelicTier: number;
-    }[];
-    unitTierList: {
-        tier: number;
-        equipmentSetList: string[];
-    };
-}
-
 // {
 //   profile: {
 //   },
