@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import "../setup/mongodb.ts";
 import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";

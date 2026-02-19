@@ -1,17 +1,8 @@
 import assert from "node:assert";
-import { after, before, describe, it } from "node:test";
+import { describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import { setup, teardown } from "./mongodb.ts";
 
 describe("MongoDB Testcontainer Setup", () => {
-    before(async () => {
-        await setup();
-    });
-
-    after(async () => {
-        await teardown();
-    });
-
     it("should set MONGO_URL environment variable", () => {
         assert.ok(process.env.MONGO_URL, "MONGO_URL should be set");
         assert.ok(process.env.MONGO_URL.startsWith("mongodb://"), "MONGO_URL should be a valid MongoDB connection string");

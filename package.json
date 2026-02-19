@@ -12,10 +12,9 @@
         "indexes": "node scripts/verifyIndexes.ts",
         "indexes:check": "node scripts/verifyIndexes.ts --dry-run",
         "indexes:create": "node scripts/verifyIndexes.ts --create",
-        "test": "npm run test:modules && npm run test:slash && npm run test:cleanup",
-        "test:modules": "node --test --import ./test/setup/mongodb.ts ./test/modules/*.test.ts",
-        "test:slash": "node --test --import ./test/setup/mongodb.ts ./test/slash/*.test.ts",
-        "test:cleanup": "rm -f /tmp/swgohbot-testcontainer.* && docker stop $(docker ps -q --filter 'ancestor=mongo:7.0') 2>/dev/null || true"
+        "test": "node --test --test-global-setup ./test/setup/globalSetup.ts ./test/**/*.test.ts",
+        "test:modules": "node --test --test-global-setup ./test/setup/globalSetup.ts ./test/modules/*.test.ts",
+        "test:slash": "node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

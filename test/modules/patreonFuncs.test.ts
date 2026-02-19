@@ -14,7 +14,7 @@ describe("PatreonFuncs Module", () => {
     let mockClient: Client<true>;
 
     // This has to use the same database as name as the main bot, since that's what the patreonFuncs module uses
-    const testDbName = env.MONGODB_SWAPI_DB;
+    const testDbName = env.MONGODB_SWGOHBOT_DB;
 
     before(async () => {
         // Get shared MongoDB client from testcontainer

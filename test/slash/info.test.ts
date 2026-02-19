@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import "../setup/mongodb.ts";
 import database from "../../modules/database.ts";
 import Info from "../../slash/info.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
