@@ -489,6 +489,11 @@ class SWAPI {
         }
     }
 
+    async player(allycode: string | number, cooldown?: PlayerCooldown): Promise<SWAPIPlayer | null> {
+        const res = await this.unitStats(Number.parseInt(String(allycode), 10), cooldown);
+        return res?.[0] ?? null;
+    }
+
     private getUnitDefId(unitDefId: string): string {
         if (typeof unitDefId !== "string") return unitDefId;
         return unitDefId.split(":")[0];
@@ -1006,6 +1011,16 @@ class SWAPI {
         return rawGuild;
     }
 
+    private filterGuildRoster(guild: SWAPIGuild): SWAPIGuild {
+        guild.roster = guild.roster.filter((m) => m.guildMemberLevel > 1);
+        const oldLen = guild.roster.length;
+        guild.roster = guild.roster.filter((m) => m.allyCode !== null);
+        if (guild.roster.length !== oldLen) {
+            logger.log(`[swapi/guild] Filtered ${oldLen - guild.roster.length} members with null allycodes`);
+        }
+        return guild;
+    }
+
     async guild(allycode: number | string, cooldown?: PlayerCooldown) {
         const thisAcStr = allycode?.toString().replace(/[^\d]/g, "");
         if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid allycode");
@@ -1047,7 +1062,7 @@ class SWAPI {
                 );
                 if (guild?.roster) {
                     logger.log(`[SWAPI-guild] Falling back to cached guild with ${guild.roster.length} members`);
-                    return guild;
+                    return this.filterGuildRoster(guild);
                 }
                 // logger.log("Broke getting tempGuild: " + inspect(tempGuild.error));
                 // throw new Error("Could not find your guild. The API is likely overflowing.");
@@ -1057,10 +1072,10 @@ class SWAPI {
                 logger.error(`[swgohAPI-guild] Missing players, only getting ${tempGuild.roster?.length}/${tempGuild.members}`);
             }
             await cache.put(env.MONGODB_SWAPI_DB, "guilds", { id: tempGuild.id }, tempGuild);
-            return tempGuild;
+            return this.filterGuildRoster(tempGuild);
         }
         /** If found and valid, serve from cache */
-        return guild;
+        return this.filterGuildRoster(guild);
     }
 
     private async fetchGuild(guildId: string) {

@@ -245,17 +245,6 @@ export default class GuildSearch extends Command {
         }
         await interaction.editReply({ content: `Found guild \`${guild.name}\`!\n*Processing...*` });
 
-        const oldLen = guild.roster.length;
-        guild.roster = guild.roster.filter((m) => m.allyCode !== null);
-
-        if (!guild.roster.length) {
-            return interaction.editReply({ content: "I could not get any valid roster for that guild." });
-        }
-
-        if (guild.roster.length !== oldLen) {
-            guild.warnings = guild.warnings || [];
-            guild.warnings.push(`Could not get info for ${oldLen - guild.roster.length} players`);
-        }
         const guildAllycodes = guild.roster.map((p) => p.allyCode);
 
         let guildChar: SWAPIUnit[];

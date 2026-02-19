@@ -54,8 +54,7 @@ export default class MyArena extends Command {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer;
         try {
-            const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-            player = playerRes?.[0] || null;
+            player = await swgohAPI.player(allycode, cooldown);
         } catch (e) {
             logger.error(`Broke getting player in myarena: ${e}`);
             return super.error(interaction, "Something broke, please try again in a bit");
@@ -81,8 +80,7 @@ export default class MyArena extends Command {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
             let playerStats: SWAPIPlayer = null;
             try {
-                const playerStatsRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-                playerStats = playerStatsRes?.[0] || null;
+                playerStats = await swgohAPI.player(allycode, cooldown);
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`[slash/myarena] Error fetching player stats: ${errorMessage}`);

@@ -56,9 +56,7 @@ export default class Panic extends Command {
 
         // Grab the player's info
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const playerArr = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-
-        const player = playerArr[0];
+        const player = await swgohAPI.player(allycode, cooldown);
         if (!player?.roster)
             return super.error(
                 interaction,

@@ -111,15 +111,13 @@ export default class Versus extends Command {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let user1: SWAPIPlayer = null;
         try {
-            const playerRes = await swgohAPI.unitStats(user1AC, cooldown);
-            user1 = playerRes?.[0] || null;
+            user1 = await swgohAPI.player(user1AC, cooldown);
         } catch (_) {
             return super.error(interaction, "Something broke when getting user 1");
         }
         let user2: SWAPIPlayer = null;
         try {
-            const playerRes = await swgohAPI.unitStats(user2AC, cooldown);
-            user2 = playerRes?.[0] || null;
+            user2 = await swgohAPI.player(user2AC, cooldown);
         } catch (_) {
             return super.error(interaction, "Something broke when getting user 2");
         }

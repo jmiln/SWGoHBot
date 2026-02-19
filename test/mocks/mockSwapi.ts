@@ -250,6 +250,12 @@ export class MockSWAPI {
         return players;
     }
 
+    async player(allycode: string | number, _cooldown?: PlayerCooldown): Promise<SWAPIPlayer | null> {
+        this.checkError("player");
+        const acNum = Number.parseInt(String(allycode), 10);
+        return this.config.players.get(acNum) ?? null;
+    }
+
     async langChar(char: Partial<SWAPIUnit>, _lang: SWAPILang): Promise<Partial<SWAPIUnit>> {
         this.checkError("langChar");
         if (!char) throw new Error("Missing Character");
@@ -394,7 +400,10 @@ export class MockSWAPI {
         const guild = this.config.guilds.get(player.guildId);
         if (!guild) throw new Error("Could not find guild");
 
-        return guild;
+        return {
+            ...guild,
+            roster: guild.roster.filter((m) => m.guildMemberLevel > 1).filter((m) => m.allyCode !== null),
+        };
     }
 
     async guildByName(gName: string): Promise<SWAPIGuild> {

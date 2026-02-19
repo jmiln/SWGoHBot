@@ -112,8 +112,7 @@ export default class Need extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-            player = playerRes?.[0] || null;
+            player = await swgohAPI.player(allycode, cooldown);
         } catch (e) {
             logger.error(`Broke getting player in myprofile: ${e}`);
             return super.error(interaction, "Please make sure you are registered with a valid ally code");

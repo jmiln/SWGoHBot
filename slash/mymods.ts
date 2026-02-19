@@ -137,8 +137,7 @@ export default class MyMods extends Command {
 
         let player: SWAPIPlayer;
         try {
-            const resPlayer = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-            player = resPlayer[0];
+            player = await swgohAPI.player(allycode, cooldown);
         } catch (e) {
             return super.error(interaction, codeBlock(e.message), {
                 title: language.get("BASE_SOMETHING_BROKE"),

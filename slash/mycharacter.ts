@@ -97,8 +97,7 @@ export default class MyCharacter extends Command {
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
         let player: SWAPIPlayer = null;
         try {
-            const playerRes = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-            player = playerRes?.[0] || null;
+            player = await swgohAPI.player(allycode, cooldown);
         } catch (e) {
             logger.error(`[slash/mycharacter] Error: ${e}`);
             return super.error(interaction, codeBlock(e.message), {

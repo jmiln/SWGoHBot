@@ -187,8 +187,7 @@ export default class Charactergear extends Command {
             // Looking for a player's remaining needed gear
             const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
             let player: SWAPIPlayer;
-            const playerArr = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
-            if (Array.isArray(playerArr)) player = playerArr[0];
+            player = await swgohAPI.player(allycode, cooldown);
 
             if (!player?.roster) {
                 return super.error(
