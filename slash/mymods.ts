@@ -1,13 +1,12 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType, PermissionsBitField } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType, PermissionsBitField } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
-import { findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { charListFromSearch, findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
@@ -124,8 +123,6 @@ export default class MyMods extends Command {
     }
 
     async run({ interaction, language, swgohLanguage }: CommandContext) {
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-
         const subCommand = interaction.options.getSubcommand();
         let allycode = interaction.options.getString("allycode");
         allycode = await getAllyCode(interaction, allycode);
@@ -135,20 +132,10 @@ export default class MyMods extends Command {
         }
         await interaction.reply({ content: language.get("COMMAND_MYMODS_WAIT") });
 
-        let player: SWAPIPlayer;
-        try {
-            player = await swgohAPI.player(allycode, cooldown);
-        } catch (e) {
-            return super.error(interaction, codeBlock(e.message), {
-                title: language.get("BASE_SOMETHING_BROKE"),
-                footer: "Please try again in a bit.",
-            });
-        }
+        const player = await fetchPlayerWithCooldown(interaction, allycode);
         if (!player?.roster) {
-            // If there's no characters, then there's nothing to show...
             return super.error(interaction, "Unable to retrieve roster.", {
                 title: language.get("BASE_SOMETHING_BROKE"),
-                footer: "Please try again in a bit.",
             });
         }
         const footerStr = updatedFooterStr(player.updated, language) || "";
@@ -166,8 +153,7 @@ export default class MyMods extends Command {
                 return interaction.editReply({ content: language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar) });
             }
             if (foundCharacters.length > 1) {
-                const charList = foundCharacters.sort((p, c) => (p.name > c.name ? 1 : -1)).map((c) => c.name);
-                return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charList.join("\n")));
+                return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(foundCharacters)));
             }
             character = foundCharacters[0];
 

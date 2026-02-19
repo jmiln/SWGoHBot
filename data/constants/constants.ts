@@ -53,6 +53,15 @@ export default {
         // Base users, anyone that's not included above
         BASE_USER: 0
     },
+    rarityMap: {
+        ONESTAR: 1,
+        TWOSTAR: 2,
+        THREESTAR: 3,
+        FOURSTAR: 4,
+        FIVESTAR: 5,
+        SIXSTAR: 6,
+        SEVENSTAR: 7,
+    } as Record<string, number>,
     OmicronMode: [
         "OmicronMode_DEFAULT",
         "ALLOMICRON",

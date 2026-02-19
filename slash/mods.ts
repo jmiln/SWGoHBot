@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
-import { findChar, getSideColor } from "../modules/functions.ts";
+import { charListFromSearch, findChar, getSideColor } from "../modules/functions.ts";
 import type { BotUnitMods, CommandContext } from "../types/types.ts";
 
 export default class Mods extends Command {
@@ -105,12 +105,7 @@ export default class Mods extends Command {
             });
         }
         if (chars.length > 1) {
-            const charL = [];
-            const charS = chars.sort((p, c) => (p.name > c.name ? 1 : -1));
-            for (const c of charS) {
-                charL.push(c.name);
-            }
-            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(chars)));
         }
 
         const character = chars[0];

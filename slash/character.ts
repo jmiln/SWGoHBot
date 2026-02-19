@@ -2,7 +2,17 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
-import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
+import {
+    charListFromSearch,
+    expandSpaces,
+    findChar,
+    getAbilityType,
+    getBlankUnitImage,
+    getSideColor,
+    msgArray,
+    msgArrayToFields,
+    toProperCase,
+} from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
@@ -50,12 +60,7 @@ export default class Character extends Command {
             return super.error(interaction, err, { example: "abilities Han Solo" });
         }
         if (chars.length > 1) {
-            const charL = [];
-            const charS = chars.sort((p, c) => (p.name > c.name ? 1 : -1));
-            for (const c of charS) {
-                charL.push(c.name);
-            }
-            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(chars)));
         }
 
         const character = chars[0];
@@ -80,14 +85,7 @@ export default class Character extends Command {
         }
 
         for (const ability of char.skillReferenceList) {
-            // Get the ability type
-            const types = ["basic", "special", "leader", "unique", "contract"];
-            let type = "Basic";
-            for (const t of types) {
-                if (ability.skillId.startsWith(t)) {
-                    type = toProperCase(t);
-                }
-            }
+            const type = getAbilityType(ability.skillId);
 
             const costs = [];
             if (ability.cost) {
@@ -123,19 +121,7 @@ export default class Character extends Command {
                 1000,
             );
 
-            msgArr.forEach((m, ix) => {
-                if (ix === 0) {
-                    fields.push({
-                        name: ability.name,
-                        value: m,
-                    });
-                } else {
-                    fields.push({
-                        name: "-",
-                        value: m,
-                    });
-                }
-            });
+            fields.push(...msgArrayToFields(msgArr, ability.name));
         }
 
         let embeds1Len = 0;

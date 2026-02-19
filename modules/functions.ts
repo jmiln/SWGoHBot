@@ -899,3 +899,48 @@ export async function getAllyCode(interaction: ChatInputCommandInteraction, user
     }
     return null;
 }
+
+/**
+ * Given an array of BotUnit results from findChar(), returns a sorted
+ * newline-joined list of names for use in "did you mean one of these?" errors.
+ */
+export function charListFromSearch(chars: BotUnit[]): string {
+    return chars
+        .slice()
+        .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+        .map((c) => c.name)
+        .join("\n");
+}
+
+/**
+ * Determines the ability type label from a skillId string.
+ * Checks for known prefixes: basic, special, leader, unique, contract.
+ * Falls back to "Basic".
+ */
+export function getAbilityType(skillId: string): string {
+    const types = ["basic", "special", "leader", "unique", "contract"] as const;
+    for (const t of types) {
+        if (skillId.startsWith(t)) return toProperCase(t);
+    }
+    return "Basic";
+}
+
+/**
+ * Converts an array of message strings (from msgArray()) into embed field objects.
+ * The first element uses titleForFirst as the field name; subsequent elements use separator.
+ */
+export function msgArrayToFields(msgs: string[], titleForFirst: string, separator = "-"): { name: string; value: string }[] {
+    return msgs.map((m, ix) => ({ name: ix === 0 ? titleForFirst : separator, value: m }));
+}
+
+/**
+ * Searches characters first, then ships. Returns the matching units and whether
+ * the result came from the ship list. Both lists are passed as parameters to
+ * avoid circular imports with units.ts.
+ */
+export function findCharOrShip(searchName: string, charList: BotUnit[], shipList: BotUnit[]): { units: BotUnit[]; isShip: boolean } {
+    const chars = findChar(searchName, charList);
+    if (chars.length) return { units: chars, isShip: false };
+    const foundShips = findChar(searchName, shipList, true);
+    return { units: foundShips, isShip: true };
+}

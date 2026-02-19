@@ -2,7 +2,16 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import { expandSpaces, findChar, getAllyCode, getGearStr, makeTable, msgArray, updatedFooterStr } from "../modules/functions.ts";
+import {
+    charListFromSearch,
+    expandSpaces,
+    findChar,
+    getAllyCode,
+    getGearStr,
+    makeTable,
+    msgArray,
+    updatedFooterStr,
+} from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -218,11 +227,7 @@ export default class GuildSearch extends Command {
             return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchStr));
         }
         if (unitList.length > 1) {
-            // Too many characters found, give a list of possible matches
-            const sortedUnits = unitList
-                .sort((p, c) => (p.name > c.name ? 1 : -1)) // Sort the characters by name
-                .map((c) => c.name); // Map it to just show the name strings
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", sortedUnits.join("\n")));
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charListFromSearch(unitList)));
         }
 
         // If there's just one match, use it

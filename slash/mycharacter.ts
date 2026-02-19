@@ -3,11 +3,19 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import { expandSpaces, findChar, getAllyCode, getUnitImage, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import {
+    charListFromSearch,
+    expandSpaces,
+    findChar,
+    getAllyCode,
+    getUnitImage,
+    msgArray,
+    toProperCase,
+    updatedFooterStr,
+} from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
@@ -84,9 +92,7 @@ export default class MyCharacter extends Command {
             return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchUnit));
         }
         if (units.length > 1) {
-            const sortedUnitList = units.sort((p, c) => (p.name > c.name ? 1 : -1));
-            const unitList = sortedUnitList.map((u) => u.name);
-            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", unitList.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(units)));
         }
 
         // If there's nothing wrong above, grab the single unit and go from there
@@ -94,15 +100,10 @@ export default class MyCharacter extends Command {
 
         await interaction.reply({ content: "Please wait while I look up your profile." });
 
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player: SWAPIPlayer = null;
-        try {
-            player = await swgohAPI.player(allycode, cooldown);
-        } catch (e) {
-            logger.error(`[slash/mycharacter] Error: ${e}`);
-            return super.error(interaction, codeBlock(e.message), {
+        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        if (!player) {
+            return super.error(interaction, "Sorry, I couldn't fetch player data right now. Please try again later.", {
                 title: language.get("BASE_SOMETHING_BROKE"),
-                footer: "Please try again in a bit.",
             });
         }
 

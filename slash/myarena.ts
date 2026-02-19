@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
@@ -52,13 +52,11 @@ export default class MyArena extends Command {
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player: SWAPIPlayer;
-        try {
-            player = await swgohAPI.player(allycode, cooldown);
-        } catch (e) {
-            logger.error(`Broke getting player in myarena: ${e}`);
-            return super.error(interaction, "Something broke, please try again in a bit");
-        }
+        const player = await swgohAPI.player(allycode, cooldown).catch((e: Error) => {
+            logger.error(`[slash/myarena] Error fetching player: ${e.message}`);
+            return null;
+        });
+        if (!player) return super.error(interaction, "Something broke, please try again in a bit");
 
         if (!player || !player.arena) {
             return super.error(interaction, "Something broke when getting your info, please try again in a bit.");
@@ -78,15 +76,13 @@ export default class MyArena extends Command {
             if (charArena) fields.push(charArena);
         } else {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
-            let playerStats: SWAPIPlayer = null;
-            try {
-                playerStats = await swgohAPI.player(allycode, cooldown);
-            } catch (e) {
-                const errorMessage = e instanceof Error ? e.message : String(e);
-                logger.error(`[slash/myarena] Error fetching player stats: ${errorMessage}`);
-                return super.error(interaction, codeBlock(errorMessage), {
+            const playerStats = await swgohAPI.player(allycode, cooldown).catch((e: Error) => {
+                logger.error(`[slash/myarena] Error fetching player stats: ${e.message}`);
+                return null;
+            });
+            if (!playerStats) {
+                return super.error(interaction, "Sorry, I couldn't fetch player stats right now.", {
                     title: language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit.",
                 });
             }
 

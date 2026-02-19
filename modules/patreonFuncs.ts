@@ -1,10 +1,10 @@
-import { type Client, type Embed, type Message, PermissionsBitField } from "discord.js";
+import { type ChatInputCommandInteraction, type Client, type Embed, type Message, PermissionsBitField } from "discord.js";
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
-import type { RawGuild, SWAPIGuild } from "../types/swapi_types.ts";
+import type { RawGuild, SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { ActivePatron, ArenaWatchAcct, PatronUser, PlayerArenaRes, PlayerUpdates, UserAcct, UserConfig } from "../types/types.ts";
 import cache from "./cache.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
@@ -1069,6 +1069,24 @@ class PatreonFuncs {
 
 // Create and export a singleton instance
 const patreonFuncs = new PatreonFuncs();
+
+/**
+ * Fetches a player's data from the SWGOH API with patreon-aware cooldown.
+ * Returns null on any error — the caller is responsible for the error reply.
+ *
+ * Usage:
+ *   const player = await fetchPlayerWithCooldown(interaction, allycode);
+ *   if (!player?.roster) return super.error(interaction, "...");
+ */
+export async function fetchPlayerWithCooldown(interaction: ChatInputCommandInteraction, allycode: string): Promise<SWAPIPlayer | null> {
+    const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+    try {
+        return await swgohAPI.player(allycode, cooldown);
+    } catch (e) {
+        logger.error(`[fetchPlayerWithCooldown] Error fetching player ${allycode}: ${e}`);
+        return null;
+    }
+}
 
 export default patreonFuncs;
 export { PatreonFuncs };

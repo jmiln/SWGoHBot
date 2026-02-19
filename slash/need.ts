@@ -5,10 +5,9 @@ import { characters, charLocs, shipLocs, ships } from "../data/constants/units.t
 import factionMap from "../data/factionMap.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode, msgArray, toProperCase } from "../modules/functions.ts";
-import logger from "../modules/Logger.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { SWAPIUnit } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 const shopMap = [
@@ -108,15 +107,7 @@ export default class Need extends Command {
         }
         await interaction.reply({ content: "Please wait while I look up your data." });
 
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-
-        let player: SWAPIPlayer;
-        try {
-            player = await swgohAPI.player(allycode, cooldown);
-        } catch (e) {
-            logger.error(`Broke getting player in myprofile: ${e}`);
-            return super.error(interaction, "Please make sure you are registered with a valid ally code");
-        }
+        const player = await fetchPlayerWithCooldown(interaction, allycode);
 
         if (!player) {
             return super.error(interaction, "I couldn't find that player, please make sure you've got the corect ally code.");

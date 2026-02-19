@@ -4,8 +4,7 @@ import { env } from "../config/config.ts";
 import { characters, journeyReqs, ships } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
-import swgohAPI from "../modules/swapi.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Panic extends Command {
@@ -55,8 +54,7 @@ export default class Panic extends Command {
         await interaction.reply({ content: "Please wait while I process your request." });
 
         // Grab the player's info
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const player = await swgohAPI.player(allycode, cooldown);
+        const player = await fetchPlayerWithCooldown(interaction, allycode);
         if (!player?.roster)
             return super.error(
                 interaction,

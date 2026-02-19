@@ -6,6 +6,7 @@ import type { GuildConfigPatreonSettings } from "../../types/guildConfig_types.t
 import type { UserConfig } from "../../types/types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
+import { guildConfigDB } from "./db.ts";
 
 // MongoDB document types for cache queries
 interface PatreonSettingsProjection {
@@ -19,14 +20,14 @@ interface SupportersProjection {
 
 export async function getPatreonSettings({ guildId }: { guildId: string }) {
     if (!guildId) return {};
-    const res = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { patreonSettings: 1, _id: 0 });
+    const res = await guildConfigDB.getOne({ guildId }, { patreonSettings: 1, _id: 0 });
     return res?.patreonSettings || {};
 }
 
 export async function setPatreonSettings({ guildId, patreonSettingsOut }: { guildId: string; patreonSettingsOut: unknown }) {
     // Filter out any settings that are the same as the defaults
-    const res = await cache
-        .put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { patreonSettings: patreonSettingsOut }, false)
+    const res = await guildConfigDB
+        .put({ guildId }, { patreonSettings: patreonSettingsOut }, false)
         .then(() => {
             return { success: true, error: null };
         })
@@ -54,7 +55,7 @@ export async function addServerSupporter({
 
     if (resOut.guild.error || resOut.user.error) return resOut;
 
-    const res = await cache.getOne<PatreonSettingsProjection>(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, {
+    const res = await guildConfigDB.getOne<PatreonSettingsProjection>({ guildId }, {
         patreonSettings: 1,
         _id: 0,
     } as Document);
@@ -72,8 +73,8 @@ export async function addServerSupporter({
     // If the user isn't there yet, put them in
     patSettings.supporters.push(userInfo);
 
-    resOut.guild = await cache
-        .put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { patreonSettings: patSettings }, false)
+    resOut.guild = await guildConfigDB
+        .put({ guildId }, { patreonSettings: patSettings }, false)
         .then(() => {
             return { success: true, error: null };
         })
@@ -105,7 +106,7 @@ export async function addServerSupporter({
 //  - Get the users from the given guilds' supporters list if available
 export async function getServerSupporters({ guildId }: { guildId: string }): Promise<{ userId: string; tier: number }[]> {
     if (!guildId) return [];
-    const res = await cache.getOne<PatreonSettingsProjection>(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, {
+    const res = await guildConfigDB.getOne<PatreonSettingsProjection>({ guildId }, {
         patreonSettings: 1,
         _id: 0,
     } as Document);
@@ -123,7 +124,7 @@ export async function removeServerSupporter({
     if (!guildId) return { success: false, error: "Missing guild ID." };
     if (!userId) return { success: false, error: "Missing userId." };
 
-    const guildPatSettings = await cache.getOne<PatreonSettingsProjection>(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, {
+    const guildPatSettings = await guildConfigDB.getOne<PatreonSettingsProjection>({ guildId }, {
         patreonSettings: 1,
         _id: 0,
     } as Document);
@@ -134,8 +135,8 @@ export async function removeServerSupporter({
 
     // Get the list of supporters without the user, then save it as such
     guildPatSettings.patreonSettings.supporters = guildPatSettings.patreonSettings.supporters.filter((sup) => sup.userId !== userId);
-    return await cache
-        .put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { patreonSettings: guildPatSettings }, false)
+    return await guildConfigDB
+        .put({ guildId }, { patreonSettings: guildPatSettings }, false)
         .then(() => {
             return { success: true, error: null };
         })
@@ -181,12 +182,11 @@ export async function clearSupporterInfo({
 // Go through each server that has anyone in their supports array, and make sure those users still have it set to that server
 export async function ensureGuildSupporter() {
     // Grab all guilds' patreonSettings that have someone listed
-    const supporterGuilds = await cache.get<SupportersProjection>(
-        env.MONGODB_SWGOHBOT_DB,
-        "guildConfigs",
-        { "patreonSettings.supporters": { $exists: true, $ne: [] } },
-        { supporters: "$patreonSettings.supporters", guildId: 1, _id: 0 } as Document,
-    );
+    const supporterGuilds = await guildConfigDB.get<SupportersProjection>({ "patreonSettings.supporters": { $exists: true, $ne: [] } }, {
+        supporters: "$patreonSettings.supporters",
+        guildId: 1,
+        _id: 0,
+    } as Document);
 
     // Go through each of those, and check that each person listed in each of those has the given server selected, and if not, remove them from that guilds' list
     for (const guild of supporterGuilds) {
@@ -208,14 +208,8 @@ export async function ensureGuildSupporter() {
         if (!isModified) continue;
 
         // Otherwise, resave it
-        return await cache
-            .put(
-                env.MONGODB_SWGOHBOT_DB,
-                "guildConfigs",
-                { guildId: guild.guildId },
-                { "patreonSettings.supporters": guild.supporters },
-                false,
-            )
+        return await guildConfigDB
+            .put({ guildId: guild.guildId }, { "patreonSettings.supporters": guild.supporters }, false)
             .then(() => {
                 return { success: true, error: null };
             })
@@ -260,7 +254,7 @@ export async function getGuildSupporterTier({ guildId }: { guildId: string }) {
     if (!guildId) return 0;
 
     // Get the guild's patreon settings
-    const res = await cache.getOne<PatreonSettingsProjection>(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, {
+    const res = await guildConfigDB.getOne<PatreonSettingsProjection>({ guildId }, {
         patreonSettings: 1,
         _id: 0,
     } as Document);

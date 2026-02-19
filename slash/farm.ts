@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
-import { expandSpaces, findChar, getSideColor, toProperCase } from "../modules/functions.ts";
+import { charListFromSearch, expandSpaces, findCharOrShip, getSideColor, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { CommandContext } from "../types/types.ts";
@@ -33,23 +33,15 @@ export default class Farm extends Command {
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
-        let isChar = true;
 
-        // Check the characters list
-        let chars = findChar(searchChar, characters);
-
-        // If there was no luck with characters, try checking the ships
-        if (!chars?.length) {
-            isChar = false;
-            chars = findChar(searchChar, ships, true);
-        }
+        const { units: chars, isShip } = findCharOrShip(searchChar, characters, ships);
         if (!chars?.length) {
             // Didn't find one
             return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         }
         if (chars.length > 1) {
             // Found too many
-            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", chars.map((c) => c.name).join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(chars)));
         }
 
         // There was only one result, so lets use it
@@ -62,7 +54,7 @@ export default class Farm extends Command {
 
         const outList = [];
         let unitLocs = null;
-        if (!isChar) {
+        if (isShip) {
             unitLocs = shipLocs.find((s) => s.defId === character.uniqueName);
         } else {
             unitLocs = charLocs.find((c) => c.defId === character.uniqueName);

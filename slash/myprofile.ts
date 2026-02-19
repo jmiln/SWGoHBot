@@ -2,10 +2,7 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { expandSpaces, getAllyCode, updatedFooterStr } from "../modules/functions.ts";
-import logger from "../modules/Logger.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
-import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer } from "../types/swapi_types.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class MyProfile extends Command {
@@ -37,12 +34,8 @@ export default class MyProfile extends Command {
         }
         await interaction.reply({ content: `> Please wait while I look up the profile for ${allycode}` });
 
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let player: SWAPIPlayer;
-        try {
-            player = await swgohAPI.player(allycode, cooldown);
-        } catch (e) {
-            logger.error(`Broke getting player in myprofile: ${e}`);
+        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        if (!player) {
             return super.error(interaction, "Please make sure you are registered with a valid ally code");
         }
 
@@ -62,16 +55,6 @@ export default class MyProfile extends Command {
         const gpChar = gpCharStat?.value ?? "N/A";
         const gpShip = gpShipStat?.value ?? "N/A";
 
-        const rarityMap = {
-            ONESTAR: 1,
-            TWOSTAR: 2,
-            THREESTAR: 3,
-            FOURSTAR: 4,
-            FIVESTAR: 5,
-            SIXSTAR: 6,
-            SEVENSTAR: 7,
-        };
-
         const fields = [];
 
         // Get the mod stats
@@ -84,7 +67,7 @@ export default class MyProfile extends Command {
         for (const c of player.roster) {
             // Convert string rarity keys to numeric values
             if (typeof c.rarity === "string") {
-                c.rarity = rarityMap[c.rarity] ?? 0;
+                c.rarity = constants.rarityMap[c.rarity] ?? 0;
             }
             if (c.mods) {
                 const six = c.mods.filter((p) => p.pips === 6);

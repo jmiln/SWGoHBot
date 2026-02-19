@@ -2,7 +2,15 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
-import { chunkArray, findChar, getAllyCode, getBlankUnitImage, msgArray, updatedFooterStr } from "../modules/functions.ts";
+import {
+    charListFromSearch,
+    chunkArray,
+    findChar,
+    getAllyCode,
+    getBlankUnitImage,
+    msgArray,
+    updatedFooterStr,
+} from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -86,25 +94,17 @@ export default class Zetas extends Command {
                 return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
             if (foundCharacters.length > 1) {
-                const charL = [];
-                const charS = foundCharacters.sort((p, c) => (p.name > c.name ? 1 : -1));
-                for (const c of charS) {
-                    charL.push(c.name);
-                }
-                return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charL.join("\n")));
+                return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charListFromSearch(foundCharacters)));
             }
             character = foundCharacters[0];
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-
-        let player: SWAPIPlayer;
-        try {
-            player = await swgohAPI.player(allycode, cooldown);
-        } catch (e) {
-            logger.error(`Error: Broke while trying to get player data in zetas: ${e}`);
-            return super.error(interaction, language.get("BASE_SWGOH_NO_ACCT"));
-        }
+        const player = await swgohAPI.player(allycode, cooldown).catch((e: Error) => {
+            logger.error(`[slash/zetas] Error fetching player ${allycode}: ${e.message}`);
+            return null;
+        });
+        if (!player) return super.error(interaction, language.get("BASE_SWGOH_NO_ACCT"));
 
         if (!player?.roster) return super.error(interaction, "I cannot get this player's info right now. Please try again later");
 

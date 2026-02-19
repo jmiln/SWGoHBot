@@ -4,10 +4,10 @@ import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
-import { expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { charListFromSearch, expandSpaces, findChar, getAllyCode, getSideColor, msgArray, updatedFooterStr } from "../modules/functions.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { RawCharacter, SWAPIGearRecipe, SWAPIIngredient, SWAPIPlayer, SWAPIRecipe } from "../types/swapi_types.ts";
+import type { RawCharacter, SWAPIGearRecipe, SWAPIIngredient, SWAPIRecipe } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class Charactergear extends Command {
@@ -76,12 +76,7 @@ export default class Charactergear extends Command {
             return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
         }
         if (chars.length > 1) {
-            const charL = [];
-            const charS = chars.sort((p, c) => (p.name > c.name ? 1 : -1));
-            for (const ch of charS) {
-                charL.push(ch.name);
-            }
-            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charL.join("\n")));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(chars)));
         }
         character = chars[0];
 
@@ -185,9 +180,7 @@ export default class Charactergear extends Command {
             }
         } else {
             // Looking for a player's remaining needed gear
-            const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-            let player: SWAPIPlayer;
-            player = await swgohAPI.player(allycode, cooldown);
+            const player = await fetchPlayerWithCooldown(interaction, allycode);
 
             if (!player?.roster) {
                 return super.error(

@@ -1,7 +1,16 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import { expandSpaces, findChar, getBlankUnitImage, getSideColor, msgArray, toProperCase } from "../modules/functions.ts";
+import {
+    expandSpaces,
+    findChar,
+    getAbilityType,
+    getBlankUnitImage,
+    getSideColor,
+    msgArray,
+    msgArrayToFields,
+    toProperCase,
+} from "../modules/functions.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { CommandContext } from "../types/types.ts";
 
@@ -82,26 +91,14 @@ export default class Ships extends Command {
         if (shipAbilities.length) {
             for (const ability of shipAbilities) {
                 const a = {
-                    type: toProperCase(ability.skillId.split("_")[0].replace("skill", "")),
+                    type: getAbilityType(ability.skillId),
                     abilityCooldown: ability.cooldown,
                     abilityDesc: ability.desc,
                 };
 
                 const msgArr = msgArray(expandSpaces(language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
 
-                msgArr.forEach((m, ix) => {
-                    if (ix === 0) {
-                        fields.push({
-                            name: ability.name,
-                            value: m,
-                        });
-                    } else {
-                        fields.push({
-                            name: "-",
-                            value: m,
-                        });
-                    }
-                });
+                fields.push(...msgArrayToFields(msgArr, ability.name));
             }
         }
         if (!fields.length) {

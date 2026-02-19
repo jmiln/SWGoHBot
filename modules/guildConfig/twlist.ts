@@ -1,9 +1,8 @@
 import path from "node:path";
-import { env } from "../../config/config.ts";
 import type { GuildConfigTWList } from "../../types/guildConfig_types.ts";
-import cache from "../cache.ts";
 import { readJSON } from "../functions.ts";
 import logger from "../Logger.ts";
+import { guildConfigDB } from "./db.ts";
 
 const defaultTWList = {
     "Light Side": [],
@@ -38,7 +37,7 @@ export async function getUnitChecklist(): Promise<Record<string, [string, string
 
 export async function getGuildTWList({ guildId }: { guildId: string }): Promise<GuildConfigTWList> {
     if (!guildId) return defaultTWList;
-    const res = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { twList: 1 });
+    const res = await guildConfigDB.getOne({ guildId: guildId }, { twList: 1 });
     const outObj = {};
     for (const key of Object.keys(defaultTWList)) {
         outObj[key] = res?.twList?.[key] || [];
@@ -50,7 +49,7 @@ export async function getFullTWList({ guildId }: { guildId: string }) {
     const unitChecklist = await getUnitChecklist();
 
     if (!guildId) return unitChecklist;
-    const res = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId: guildId }, { twList: 1 });
+    const res = await guildConfigDB.getOne({ guildId: guildId }, { twList: 1 });
     const twList: GuildConfigTWList = res?.twList || defaultTWList;
 
     const twListOut = {};
@@ -69,8 +68,8 @@ export async function getFullTWList({ guildId }: { guildId: string }) {
 }
 
 export async function setGuildTWList({ guildId, twListOut }: { guildId: string; twListOut: GuildConfigTWList }) {
-    const res = await cache
-        .put(env.MONGODB_SWGOHBOT_DB, "guildConfigs", { guildId }, { twList: twListOut }, false)
+    const res = await guildConfigDB
+        .put({ guildId }, { twList: twListOut }, false)
         .then(() => {
             return { success: true, error: null };
         })

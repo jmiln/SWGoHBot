@@ -2,10 +2,9 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import { findChar, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { charListFromSearch, findCharOrShip, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Versus extends Command {
@@ -93,34 +92,22 @@ export default class Versus extends Command {
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
-        let charRes = findChar(character, characters);
-        if (!charRes.length) {
-            charRes = findChar(character, ships, true);
-        }
+        const { units: charRes } = findCharOrShip(character, characters, ships);
         if (!charRes.length) {
             // Didn't find any matches
             return super.error(interaction, language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
         }
         if (charRes.length > 1) {
             // If found more than 1 match
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charRes.map((c) => c.name).join("\n")));
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charListFromSearch(charRes)));
         }
         // It only found one match
         const char = charRes?.[0] || null;
 
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let user1: SWAPIPlayer = null;
-        try {
-            user1 = await swgohAPI.player(user1AC, cooldown);
-        } catch (_) {
-            return super.error(interaction, "Something broke when getting user 1");
-        }
-        let user2: SWAPIPlayer = null;
-        try {
-            user2 = await swgohAPI.player(user2AC, cooldown);
-        } catch (_) {
-            return super.error(interaction, "Something broke when getting user 2");
-        }
+        const user1 = await fetchPlayerWithCooldown(interaction, user1AC);
+        if (!user1) return super.error(interaction, "Something broke when getting user 1");
+        const user2 = await fetchPlayerWithCooldown(interaction, user2AC);
+        if (!user2) return super.error(interaction, "Something broke when getting user 2");
         const errArr = [];
         if (!user1?.roster?.length) {
             errArr.push("User 1 is missing pieces, please try again later.");

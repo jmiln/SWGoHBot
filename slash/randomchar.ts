@@ -3,9 +3,9 @@ import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
+import type { SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class Randomchar extends Command {
@@ -70,15 +70,10 @@ export default class Randomchar extends Command {
 
         if (allycode) {
             // If there is a valid allycode provided, grab the user's roster
-            const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-            let player: SWAPIPlayer = null;
-            try {
-                player = await swgohAPI.player(allycode, cooldown);
-            } catch (e) {
-                logger.error(`[slash/randomchar] Error fetching player: ${e}`);
-                return super.error(interaction, codeBlock(e.message), {
+            const player = await fetchPlayerWithCooldown(interaction, allycode);
+            if (!player) {
+                return super.error(interaction, "Sorry, I couldn't fetch player data right now.", {
                     title: language.get("BASE_SOMETHING_BROKE"),
-                    footer: "Please try again in a bit.",
                 });
             }
 
