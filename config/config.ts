@@ -57,7 +57,7 @@ const envSchema = z.object({
     MONGODB_SWAPI_DB: z.string().default("swapi"),
 
     // Event Server Configuration
-    EVENT_SERVER_URL: urlString({ default: "ws://localhost:3700" }),
+    EVENT_SERVER_URL: urlString({ default: "http://localhost:3700" }),
     EVENT_SERVER_PORT: z.coerce.number().int().positive().default(3700),
 
     // Logging Configuration

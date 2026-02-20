@@ -10,7 +10,6 @@ import commandStats from "./modules/commandStats.ts";
 import database from "./modules/database.ts";
 import databaseCleanup from "./modules/databaseCleanup.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
-import eventSocket from "./modules/eventSocket.ts";
 import { myTime, reloadLanguages } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
@@ -61,9 +60,6 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
         // Flush any pending command stats
         await commandStats.shutdown();
-
-        // Disconnect socket.io connection
-        eventSocket.disconnect();
 
         // Destroy Discord client connection
         await client.destroy();

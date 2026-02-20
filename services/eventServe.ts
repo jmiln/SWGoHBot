@@ -1,6 +1,5 @@
+import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { MongoClient } from "mongodb";
-import type { Socket } from "socket.io";
-import { Server } from "socket.io";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import {
@@ -15,29 +14,105 @@ import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 
-const io = new Server(env.EVENT_SERVER_PORT);
 let mongo: MongoClient | null = null;
 let isShuttingDown = false;
 
+const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    if (req.method !== "POST") {
+        res.writeHead(405, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Method not allowed" }));
+        return;
+    }
+
+    let body: unknown;
+    try {
+        body = await readBody(req);
+    } catch {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Invalid JSON" }));
+        return;
+    }
+
+    const respond = (data: unknown) => {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(data));
+    };
+
+    try {
+        switch (req.url) {
+            case "/checkEvents": {
+                respond(await processEvents());
+                break;
+            }
+            case "/addEvents": {
+                const { guildId, events } = body as { guildId: string; events: GuildConfigEvent | GuildConfigEvent[] };
+                respond(await addEvents(guildId, events));
+                break;
+            }
+            case "/delEvent": {
+                const { guildId, eventName } = body as { guildId: string; eventName: string };
+                respond(await removeEvent(guildId, eventName));
+                break;
+            }
+            case "/getEventByName": {
+                const { guildId, evName } = body as { guildId: string; evName: string };
+                const events = await getGuildEvents({ guildId });
+                respond(events.find((ev) => ev.name === evName) ?? null);
+                break;
+            }
+            case "/getEventsByFilter": {
+                const { guildId, filterArr } = body as { guildId: string; filterArr: string[] };
+                respond(await getEventsByFilter(guildId, filterArr));
+                break;
+            }
+            case "/getEventsByGuild": {
+                const { guildId } = body as { guildId: string };
+                respond(await getGuildEvents({ guildId }));
+                break;
+            }
+            default: {
+                res.writeHead(404, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ error: "Not found" }));
+            }
+        }
+    } catch (error) {
+        logger.error(`EventMgr: Handler error for ${req.url}: ${error instanceof Error ? error.message : String(error)}`);
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Internal server error" }));
+    }
+});
+
+async function readBody(req: IncomingMessage): Promise<unknown> {
+    return new Promise((resolve, reject) => {
+        let data = "";
+        req.on("data", (chunk) => {
+            data += chunk;
+        });
+        req.on("end", () => {
+            try {
+                resolve(data ? JSON.parse(data) : {});
+            } catch {
+                reject(new Error("Invalid JSON"));
+            }
+        });
+        req.on("error", reject);
+    });
+}
+
 async function init() {
     try {
-        // Init this so it'll be ready for the event handlers
         mongo = await MongoClient.connect(env.MONGODB_URL);
         cache.init(mongo);
 
-        io.on("connection", (socket) => {
-            logger.log("EventMgr: Socket connected");
-            setupEventHandlers(socket);
+        server.listen(env.EVENT_SERVER_PORT, () => {
+            logger.log(`EventMgr: Service started on port ${env.EVENT_SERVER_PORT}`);
         });
-
-        logger.log(`EventMgr: Service started on port ${env.EVENT_SERVER_PORT}`);
     } catch (error) {
         logger.error(`EventMgr: Failed to initialize - ${error instanceof Error ? error.message : String(error)}`);
         process.exit(1);
     }
 }
 
-// Graceful shutdown handler
 async function gracefulShutdown(signal: string): Promise<void> {
     if (isShuttingDown) return;
     isShuttingDown = true;
@@ -45,15 +120,17 @@ async function gracefulShutdown(signal: string): Promise<void> {
     logger.log(`EventMgr: Received ${signal}, starting graceful shutdown`);
 
     try {
-        // Close Socket.IO server
-        await new Promise<void>((resolve) => {
-            io.close(() => {
-                logger.log("EventMgr: Socket.IO server closed");
-                resolve();
+        await new Promise<void>((resolve, reject) => {
+            server.close((err) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    logger.log("EventMgr: HTTP server closed");
+                    resolve();
+                }
             });
         });
 
-        // Close MongoDB connection
         if (mongo) {
             await mongo.close();
             logger.log("EventMgr: MongoDB connection closed");
@@ -67,11 +144,9 @@ async function gracefulShutdown(signal: string): Promise<void> {
     }
 }
 
-// Handle process signals
 process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
 process.on("SIGINT", () => gracefulShutdown("SIGINT"));
 
-// Handle uncaught errors
 process.on("uncaughtException", (error) => {
     logger.error(`EventMgr: Uncaught exception - ${error instanceof Error ? error.message : String(error)}`);
     logger.error(String(error.stack));
@@ -82,79 +157,14 @@ process.on("unhandledRejection", (reason, promise) => {
     logger.error(`Reason: ${reason}`);
 });
 
-function setupEventHandlers(socket: Socket) {
-    socket.on("checkEvents", async (callback) => {
-        try {
-            const eventsOut = await processEvents();
-            callback(eventsOut);
-        } catch (error) {
-            logger.error(`Failed to check events: ${error}`);
-            callback([]);
-        }
-    });
-
-    socket.on("addEvents", async ({ guildId, events }, callback) => {
-        try {
-            const results = await addEvents(guildId, events);
-            callback(results);
-        } catch (error) {
-            logger.error(`Failed to add events: ${error}`);
-            callback([]);
-        }
-    });
-
-    socket.on("delEvent", async ({ guildId, eventName }, callback) => {
-        try {
-            const result = await removeEvent(guildId, eventName);
-            callback(result);
-        } catch (error) {
-            logger.error(`Failed to delete event: ${error}`);
-            callback({ eventName, success: false, error: error instanceof Error ? error.message : String(error) });
-        }
-    });
-
-    socket.on("getEventByName", async ({ guildId, evName }, callback) => {
-        try {
-            const events = await getGuildEvents({ guildId });
-            callback(events.find((ev) => ev.name === evName));
-        } catch (error) {
-            logger.error(`Failed to get event by name: ${error}`);
-            callback([]);
-        }
-    });
-
-    socket.on("getEventsByFilter", async (guildId, filterArr, callback) => {
-        try {
-            const events = await getEventsByFilter(guildId, filterArr);
-            callback(events);
-        } catch (error) {
-            logger.error(`Failed to get events by filter: ${error}`);
-            callback([]);
-        }
-    });
-
-    socket.on("getEventsByGuild", async (guildId, callback) => {
-        try {
-            const events = await getGuildEvents({ guildId });
-            callback(events);
-        } catch (error) {
-            logger.error(`Failed to get events by guild: ${error}`);
-            callback([]);
-        }
-    });
-}
-
 async function processEvents() {
     const nowTime = Date.now();
 
-    // Use database-level filtering to get triggered events
     const triggeredEvents = await getTriggeredEvents({ nowTime });
     const eventsOut = [...triggeredEvents];
 
-    // Get countdown events separately with database filtering
     const countdownEvents = await getCountdownEvents({ nowTime });
 
-    // Process countdown events to check if they match configured countdown times
     for (const ev of countdownEvents) {
         const guildConf = await getGuildSettings({ guildId: ev.guildId });
 

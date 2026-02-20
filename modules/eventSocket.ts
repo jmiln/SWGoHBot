@@ -1,15 +1,6 @@
-import { io, type Socket } from "socket.io-client";
 import { env } from "../config/config.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import logger from "./Logger.ts";
-
-const SOCKET_CONFIG = {
-    reconnection: true,
-    reconnectionAttempts: 10,
-    reconnectionDelay: 1000,
-    reconnectionDelayMax: 30000,
-    timeout: 5000,
-};
 
 const ERROR_THROTTLE_MS = 60000;
 const DEFAULT_TIMEOUT = 5000;
@@ -20,7 +11,6 @@ const DEFAULT_TIMEOUT = 5000;
  */
 class EventSocket {
     private static instance: EventSocket;
-    private socket: Socket | null = null;
     private shardId: number | null = null;
     private lastErrorTime = 0;
     private errorCount = 0;
@@ -42,80 +32,64 @@ class EventSocket {
     /**
      * Initialize the socket connection for this shard
      */
+    /** No-op: HTTP is stateless. Kept for API compatibility. */
     connect(shardId: number): void {
-        if (this.socket?.connected) {
-            logger.log(`[EventSocket] Already connected on shard ${shardId}`);
-            return;
-        }
-
         this.shardId = shardId;
-        // Use backing service URL - can swap local/remote by changing env var
-        this.socket = io(env.EVENT_SERVER_URL, SOCKET_CONFIG);
-
-        this.socket.on("connect", () => {
-            logger.log(`  [${this.shardId}] Connected to EventMgr socket!`);
-            this.errorCount = 0;
-        });
-
-        this.socket.on("connect_error", (err) => this.logThrottledError("connection failed", err));
-        this.socket.on("reconnect_error", (err) => this.logThrottledError("reconnect failed", err));
-        this.socket.on("connect_failed", (err) => this.logThrottledError("connect failed", err));
-        this.socket.on("disconnect", (reason) => {
-            logger.log(`  [${this.shardId}] EventMgr disconnected: ${reason}`);
-        });
+        logger.log(`  [${this.shardId}] EventSocket ready (HTTP mode)`);
     }
 
     /**
      * Disconnect and cleanup the socket
      */
+    /** No-op: HTTP is stateless. Kept for API compatibility. */
     disconnect(): void {
-        if (this.socket) {
-            this.socket.disconnect();
-            this.socket = null;
-            logger.log(`  [${this.shardId}] Socket.io disconnected`);
-        }
+        logger.log(`  [${this.shardId}] EventSocket disconnected (HTTP mode)`);
     }
 
     /**
      * Check if socket is connected
      */
+    /** Always true: HTTP is stateless. Kept for API compatibility. */
     isConnected(): boolean {
-        return this.socket?.connected ?? false;
+        return true;
     }
 
     /**
-     * Emit a socket event and wait for the callback with timeout
+     * POST to the event server with a JSON body and return the parsed response.
      */
-    private emit<T>(event: string, data?: unknown, timeout = DEFAULT_TIMEOUT): Promise<T> {
-        return new Promise((resolve, reject) => {
-            if (!this.socket || !this.socket.connected) {
-                reject(new Error("Socket not connected"));
-                return;
+    private async post<T>(endpoint: string, body?: unknown): Promise<T> {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
+
+        try {
+            const response = await fetch(`${env.EVENT_SERVER_URL}${endpoint}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: body !== undefined ? JSON.stringify(body) : undefined,
+                signal: controller.signal,
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} from ${endpoint}`);
             }
 
-            const timeoutId = setTimeout(() => {
-                reject(new Error(`Socket timeout after ${timeout}ms for event: ${event}`));
-            }, timeout);
-
-            const callback = (response: T) => {
-                clearTimeout(timeoutId);
-                resolve(response);
-            };
-
-            if (data !== undefined) {
-                this.socket.emit(event, data, callback);
-            } else {
-                this.socket.emit(event, callback);
-            }
-        });
+            return response.json() as Promise<T>;
+        } finally {
+            clearTimeout(timeoutId);
+        }
     }
 
     /**
      * Check for events that need to be triggered
      */
     async checkEvents(): Promise<GuildConfigEvent[]> {
-        const events = await this.emit<GuildConfigEvent[]>("checkEvents");
-        return Array.isArray(events) ? events : [];
+        try {
+            const events = await this.post<GuildConfigEvent[]>("/checkEvents");
+            return Array.isArray(events) ? events : [];
+        } catch (error) {
+            this.logThrottledError("checkEvents failed", error instanceof Error ? error : undefined);
+            return [];
+        }
     }
 
     /**
@@ -126,11 +100,10 @@ class EventSocket {
         events: GuildConfigEvent | GuildConfigEvent[],
     ): Promise<{ success: boolean; error: string; event: GuildConfigEvent }[]> {
         try {
-            const response = await this.emit<{ success: boolean; error: string; event: GuildConfigEvent }[]>("addEvents", {
+            return await this.post("/addEvents", {
                 guildId,
                 events,
             });
-            return response;
         } catch (error) {
             const eventArr = Array.isArray(events) ? events : [events];
             return eventArr.map((event) => ({
@@ -146,11 +119,10 @@ class EventSocket {
      */
     async deleteEvent(guildId: string, eventName: string): Promise<{ success: boolean; error?: string; eventName: string }> {
         try {
-            const response = await this.emit<{ success: boolean; error?: string; eventName: string }>("delEvent", {
+            return await this.post("/delEvent", {
                 guildId,
                 eventName,
             });
-            return response;
         } catch (error) {
             return {
                 success: false,
@@ -165,8 +137,7 @@ class EventSocket {
      */
     async getEventByName(guildId: string, evName: string): Promise<GuildConfigEvent | null> {
         try {
-            const response = await this.emit<GuildConfigEvent>("getEventByName", { guildId, evName });
-            return response || null;
+            return await this.post<GuildConfigEvent | null>("/getEventByName", { guildId, evName });
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);
             logger.error(`[EventSocket/getEventByName] Failed for guild ${guildId}, event ${evName}: ${message}`);
@@ -178,21 +149,12 @@ class EventSocket {
      * Get events filtered by search terms
      */
     async getEventsByFilter(guildId: string, filterArr: string[]): Promise<GuildConfigEvent[]> {
-        return new Promise<GuildConfigEvent[]>((resolve) => {
-            if (!this.socket || !this.socket.connected) {
-                resolve([]);
-                return;
-            }
-
-            const timeoutId = setTimeout(() => {
-                resolve([]);
-            }, DEFAULT_TIMEOUT);
-
-            this.socket.emit("getEventsByFilter", guildId, filterArr, (response: GuildConfigEvent[]) => {
-                clearTimeout(timeoutId);
-                resolve(Array.isArray(response) ? response : []);
-            });
-        });
+        try {
+            const response = await this.post<GuildConfigEvent[]>("/getEventsByFilter", { guildId, filterArr });
+            return Array.isArray(response) ? response : [];
+        } catch {
+            return [];
+        }
     }
 
     /**
@@ -200,7 +162,7 @@ class EventSocket {
      */
     async getEventsByGuild(guildId: string): Promise<GuildConfigEvent[]> {
         try {
-            const response = await this.emit<GuildConfigEvent[]>("getEventsByGuild", guildId);
+            const response = await this.post<GuildConfigEvent[]>("/getEventsByGuild", { guildId });
             return Array.isArray(response) ? response : [];
         } catch (error) {
             const message = error instanceof Error ? error.message : String(error);

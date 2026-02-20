@@ -57,7 +57,6 @@ export default {
         if (client.shard) {
             readyString += ` Shard #${shardId}`;
 
-            eventSocket.connect(shardId);
             setupBackgroundTasks(client, shardId);
         }
 
@@ -134,14 +133,6 @@ function setupEventChecking(shardId: number): void {
     let consecutiveFailures = 0;
 
     const intervalId = setInterval(async () => {
-        if (!eventSocket.isConnected()) {
-            consecutiveFailures++;
-            if (consecutiveFailures === MAX_CONSECUTIVE_FAILURES) {
-                logger.warn(`  [${shardId}] EventMgr not connected, skipping event checks (will retry silently)`);
-            }
-            return;
-        }
-
         try {
             const eventsList = await eventSocket.checkEvents();
             consecutiveFailures = 0;

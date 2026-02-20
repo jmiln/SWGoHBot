@@ -31,10 +31,8 @@
         "async": "^3.2.6",
         "discord.js": "^14.25.1",
         "mongodb": "^7.1.0",
-        "pino": "^10.3.0",
+        "pino": "^10.3.1",
         "piscina": "^5.1.4",
-        "socket.io": "^4.8.3",
-        "socket.io-client": "^4.8.3",
         "zod": "^4.3.6"
     },
     "engines": {
