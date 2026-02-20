@@ -3,7 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
@@ -51,11 +51,7 @@ export default class MyArena extends Command {
             );
         }
 
-        const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const player = await swgohAPI.player(allycode, cooldown).catch((e: Error) => {
-            logger.error(`[slash/myarena] Error fetching player: ${e.message}`);
-            return null;
-        });
+        const player = await fetchPlayerWithCooldown(interaction, allycode);
         if (!player) return super.error(interaction, "Something broke, please try again in a bit");
 
         if (!player || !player.arena) {
@@ -76,15 +72,7 @@ export default class MyArena extends Command {
             if (charArena) fields.push(charArena);
         } else {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
-            const playerStats = await swgohAPI.player(allycode, cooldown).catch((e: Error) => {
-                logger.error(`[slash/myarena] Error fetching player stats: ${e.message}`);
-                return null;
-            });
-            if (!playerStats) {
-                return super.error(interaction, "Sorry, I couldn't fetch player stats right now.", {
-                    title: language.get("BASE_SOMETHING_BROKE"),
-                });
-            }
+            const playerStats = player;
 
             const chars = [];
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
