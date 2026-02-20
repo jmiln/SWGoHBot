@@ -11,7 +11,7 @@ export const PatronUserSchema = z.object({
     awAccounts: z.number(),
     discordID: z.string(),
     amount_cents: z.number(),
-    declined_since: z.string().optional(),
+    updatedAt: z.date().optional(),
 });
 
 /**
@@ -20,7 +20,6 @@ export const PatronUserSchema = z.object({
 export const ActivePatronSchema = z.object({
     discordID: z.string(),
     amount_cents: z.number(),
-    declined_since: z.string().optional(),
 });
 
 // Export inferred types

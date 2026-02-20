@@ -696,7 +696,7 @@ async function updatePatrons(cache: BotCache) {
         // Use the given patId to get all of the supporters
         // https://docs.patreon.com/#get-api-oauth2-v2-campaigns
         const response = await fetch(
-            `https://www.patreon.com/api/oauth2/v2/campaigns/${patreon.campaignId}/members?include=user&fields%5Bmember%5D=full_name,currently_entitled_amount_cents,patron_status,email&fields%5Buser%5D=social_connections&page%5Bcount%5D=200`,
+            `https://www.patreon.com/api/oauth2/v2/campaigns/${patreon.campaignId}/members?include=user&fields%5Bmember%5D=full_name,currently_entitled_amount_cents,patron_status&fields%5Buser%5D=social_connections&page%5Bcount%5D=200`,
             {
                 headers: {
                     Authorization: `Bearer ${patreon.creatorAccessToken}`,
@@ -770,6 +770,7 @@ async function updatePatrons(cache: BotCache) {
                     discordID: discordID,
                     amount_cents: member.attributes.currently_entitled_amount_cents,
                     patron_status: member.attributes.patron_status,
+                    updatedAt: new Date(),
                 },
             );
 

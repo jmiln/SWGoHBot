@@ -169,14 +169,12 @@ export interface PatronUser {
     awAccounts: number;
     discordID: string;
     amount_cents: number;
-
-    declined_since?: string;
+    updatedAt?: Date;
 }
 
 export interface ActivePatron {
     discordID: string;
     amount_cents: number;
-    declined_since?: string;
 }
 export interface PatreonTier {
     playerTime: number;
@@ -290,7 +288,6 @@ export interface PatreonMember {
         full_name: string;
         patron_status: string;
         currently_entitled_amount_cents: number;
-        email?: string;
     };
     relationships?: {
         user?: {

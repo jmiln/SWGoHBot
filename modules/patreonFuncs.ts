@@ -65,16 +65,12 @@ class PatreonFuncs {
         if (!currentTierNum) return null;
         const currentTier = tiers[currentTierNum];
 
-        if (patron && !patron.declined_since) {
-            return {
-                ...patron,
-                playerTime: currentTier.playerTime,
-                guildTime: currentTier.guildTime,
-                awAccounts: currentTier.awAccounts,
-            };
-        }
-
-        return null;
+        return {
+            ...patron,
+            playerTime: currentTier.playerTime,
+            guildTime: currentTier.guildTime,
+            awAccounts: currentTier.awAccounts,
+        };
     }
 
     // Get the cooldown for the given player
@@ -744,8 +740,7 @@ class PatreonFuncs {
 
     // Get an array of all active patrons
     private async getActivePatrons(): Promise<ActivePatron[]> {
-        let patrons = (await cache.get("swgohbot", "patrons", {})) as ActivePatron[];
-        patrons = patrons.filter((p) => !p.declined_since);
+        const patrons = (await cache.get("swgohbot", "patrons", {})) as ActivePatron[];
         const others: string[] = Object.keys(env.PATRONS).length
             ? Object.keys(env.PATRONS).concat([env.DISCORD_OWNER_ID])
             : [env.DISCORD_OWNER_ID];

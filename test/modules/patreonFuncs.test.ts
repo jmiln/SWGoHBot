@@ -85,20 +85,6 @@ describe("PatreonFuncs Module", () => {
             assert.strictEqual(result, null);
         });
 
-        it("filters out declined patrons", async () => {
-            const patronData: PatronUser = {
-                discordID: "declined",
-                amount_cents: 500,
-                userId: "declined",
-                declined_since: new Date(),
-            };
-
-            await cache.put(testDbName, "patrons", { discordID: "declined" }, patronData);
-
-            const result = await patreonFuncs.getPatronUser("declined");
-
-            assert.strictEqual(result, null);
-        });
 
         it("throws error for missing user ID", async () => {
             await assert.rejects(async () => await patreonFuncs.getPatronUser(""), /Missing user ID/);
@@ -296,35 +282,6 @@ describe("PatreonFuncs Module", () => {
             assert.strictEqual(result.discordID, "active");
         });
 
-        it("excludes declined patrons", async () => {
-            const declinedPatron: PatronUser = {
-                discordID: "declined_status",
-                amount_cents: 500,
-                userId: "declined_status",
-                declined_since: new Date("2024-01-01"),
-            };
-
-            await cache.put(testDbName, "patrons", { discordID: "declined_status" }, declinedPatron);
-
-            const result = await patreonFuncs.getPatronUser("declined_status");
-
-            assert.strictEqual(result, null);
-        });
-
-        it("handles patron without declined_since field", async () => {
-            const patron: PatronUser = {
-                discordID: "no_declined",
-                amount_cents: 500,
-                userId: "no_declined",
-            };
-
-            await cache.put(testDbName, "patrons", { discordID: "no_declined" }, patron);
-
-            const result = await patreonFuncs.getPatronUser("no_declined");
-
-            assert.ok(result);
-            assert.strictEqual(result.discordID, "no_declined");
-        });
     });
 
     describe("edge cases", () => {

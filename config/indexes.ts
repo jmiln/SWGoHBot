@@ -96,6 +96,14 @@ export const indexConfig: DatabaseIndexes = {
                     unique: true,
                 },
             },
+            {
+                // TTL index - auto-delete lapsed patrons 7 days after last update
+                key: { updatedAt: 1 },
+                options: {
+                    name: "idx_patrons_ttl",
+                    expireAfterSeconds: 604800, // 7 days
+                },
+            },
         ],
 
         // Command usage statistics
