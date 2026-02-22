@@ -1,21 +1,30 @@
+import assert from "node:assert";
 import { describe, it } from "node:test";
 import Shardtimes from "../../slash/shardtimes.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
+import { assertErrorReply } from "./helpers.ts";
 
 describe("Shardtimes", () => {
-    // TODO: Add functionality tests
-    // Note: Full shardtimes tests require MongoDB and guild configuration.
-    // Should test:
-    // - Add subcommand adds user shard times
-    // - Remove subcommand removes user shard times
-    // - Copy subcommand copies shard times to another channel
-    // - View subcommand displays all shard times
-    // - Proper timezone handling and formatting
-    // - Error handling for invalid users/channels
-    // - Works without guild context (guildOnly: false)
-
-    it("placeholder test", () => {
-        // Placeholder until functionality tests are added
+    it("should initialize with correct name", () => {
         const command = new Shardtimes();
-        // Command exists and can be instantiated
+        assert.strictEqual(command.commandData.name, "shardtimes");
+    });
+
+    it("should have add, remove, copy, and view subcommands", () => {
+        const command = new Shardtimes();
+        const subcommandNames = command.commandData.options.map((o: any) => o.name);
+        assert.ok(subcommandNames.includes("add"), "Expected add subcommand");
+        assert.ok(subcommandNames.includes("remove"), "Expected remove subcommand");
+        assert.ok(subcommandNames.includes("copy"), "Expected copy subcommand");
+        assert.ok(subcommandNames.includes("view"), "Expected view subcommand");
+    });
+
+    it("should return error when no channel is present (DM context)", async () => {
+        // Default mock has no channel — !interaction.channel fires immediately, no MongoDB needed
+        const interaction = createMockInteraction({ optionsData: { _subcommand: "view" } });
+        const ctx = createCommandContext({ interaction });
+        const command = new Shardtimes();
+        await command.run(ctx);
+        assertErrorReply(interaction, "not available in DMs");
     });
 });

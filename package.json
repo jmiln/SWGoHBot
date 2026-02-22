@@ -12,9 +12,9 @@
         "indexes": "node scripts/verifyIndexes.ts",
         "indexes:check": "node scripts/verifyIndexes.ts --dry-run",
         "indexes:create": "node scripts/verifyIndexes.ts --create",
-        "test": "node --test --test-global-setup ./test/setup/globalSetup.ts ./test/**/*.test.ts",
-        "test:modules": "node --test --test-global-setup ./test/setup/globalSetup.ts ./test/modules/*.test.ts",
-        "test:slash": "node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts"
+        "test": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/**/*.test.ts",
+        "test:modules": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/modules/*.test.ts",
+        "test:slash": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

@@ -302,6 +302,7 @@ export default class SetConf extends Command {
                 settingStr = channel.id;
             } else if (keyType === ApplicationCommandOptionType.Role) {
                 const role = interaction.options.getRole(optionKey);
+                if (!role) continue;
                 nameStr = role.name;
                 settingStr = role.id;
                 if (!settingStr) continue;

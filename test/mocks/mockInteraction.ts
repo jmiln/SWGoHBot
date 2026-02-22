@@ -209,6 +209,22 @@ class MockLanguage extends Language {
             };
         }
 
+        // Mod stat names (unitStat ID → display name)
+        if (key === "BASE_MODS_FROM_GAME") {
+            return {
+                1: "Health", 5: "+Speed", 16: "Critical Damage %",
+                17: "Potency %", 18: "Tenacity %", 28: "Protection",
+                41: "+Offense", 42: "Offense %", 48: "Defense",
+                49: "Defense %", 52: "Accuracy %", 53: "Critical Avoidance %",
+                55: "Speed",
+            };
+        }
+
+        // Mod set names (set ID → display name)
+        if (key === "BASE_MODSETS_FROM_GAME") {
+            return { 1: "Health", 2: "Offense", 3: "Defense", 4: "Speed", 5: "Critical Chance", 6: "Critical Damage", 7: "Potency", 8: "Tenacity" };
+        }
+
         // Handle guild-specific keys with parameters
         if (key === "COMMAND_GUILDS_STAT_STRINGS" && args.length >= 5) {
             // Args: memberCount, required, totalGP, charGP, shipGP

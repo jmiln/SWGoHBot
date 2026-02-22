@@ -39,7 +39,7 @@ export default class MyProfile extends Command {
             return super.error(interaction, "Please make sure you are registered with a valid ally code");
         }
 
-        if (!player?.stats) {
+        if (!player?.stats?.length) {
             return super.error(interaction, "Sorry, but I could not find that player right now.");
         }
 
