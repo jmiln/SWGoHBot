@@ -755,7 +755,7 @@ async function updatePatrons(cache: BotCache) {
             // Check if the user is already in the db, and alert that there's a new supporter if not
             const discordID = user.attributes.social_connections?.discord?.user_id;
             if (discordID) {
-                const userConf = await cache.getOne(env.MONGODB_SWAPI_DB, "patrons", { discordID: discordID });
+                const userConf = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "patrons", { discordID: discordID });
                 if (!userConf)
                     logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
             }
