@@ -2089,7 +2089,7 @@
             "cross": "Offense",
             "sets": [
                 "Offense x4",
-                "Potency x2"
+                "Crit. Chance x2"
             ]
         },
         "avatarName": "charui_trooperclone_echo"
@@ -2120,9 +2120,9 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_trooperclone_fives"

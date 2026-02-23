@@ -18,7 +18,9 @@ Manager.on("shardCreate", (shard: Shard) => {
     });
 
     shard.on("reconnecting", () => {
-        console.log(`  [${shard.id}] Reconnecting shard`);
+        // This seems to happen fairly often without disconnecting a lot, so let's not spam the logs with it
+        // - Apparently Discord will reconnect any shards periodically
+        // console.log(`  [${shard.id}] Reconnecting shard`);
     });
 
     shard.on("disconnect", () => {

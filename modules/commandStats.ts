@@ -101,7 +101,7 @@ async function flushStats(): Promise<void> {
         // Insert batch
         await collection.insertMany(batchToFlush, { ordered: false });
 
-        logger.log(`[commandStats] Flushed ${batchToFlush.length} command stats`);
+        logger.debug(`[commandStats] Flushed ${batchToFlush.length} command stats`);
     } catch (err) {
         // Log but don't throw - we don't want to break the app for stats
         logger.error(`[commandStats] Error flushing stats batch: ${String(err)}`);

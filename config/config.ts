@@ -64,7 +64,6 @@ const envSchema = z.object({
     DEBUG_LOGS: z.coerce.boolean().default(false),
     LOG_TO_CHANNEL: z.coerce.boolean().default(false),
     LOG_CHANNEL_ID: z.string().optional().default(""),
-    LOG_COMMANDS: z.coerce.boolean().default(false),
 
     // Premium Configuration
     PREMIUM: z.coerce.boolean().default(false),

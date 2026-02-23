@@ -16,6 +16,8 @@ class Logger {
     private readonly logConfigs: Record<LogType, LogConfig>;
     private pino: PinoInstance;
 
+    private logLevel = process.env.LOG_LEVEL ?? (env.DEBUG_LOGS ? "debug" : "info");
+
     constructor(shardId = -1) {
         this.shardId = shardId;
 
@@ -31,7 +33,7 @@ class Logger {
         };
 
         this.pino = pino({
-            level: process.env.LOG_LEVEL ?? (env.DEBUG_LOGS ? "debug" : "info"),
+            level: this.logLevel,
             base: { shardId: this.shardId > -1 ? this.shardId : undefined },
             timestamp: pino.stdTimeFunctions.isoTime,
         });
