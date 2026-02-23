@@ -2089,7 +2089,7 @@
             "cross": "Offense",
             "sets": [
                 "Offense x4",
-                "Crit. Chance x2"
+                "Potency x2"
             ]
         },
         "avatarName": "charui_trooperclone_echo"
@@ -4539,7 +4539,7 @@
             "cross": "Tenacity",
             "sets": [
                 "Speed x4",
-                "Crit. Chance x2"
+                "Tenacity x2"
             ]
         },
         "crew": []
@@ -7303,7 +7303,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
