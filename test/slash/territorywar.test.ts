@@ -5,7 +5,7 @@ import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import TerritoryWar from "../../slash/territorywar.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
-import { createCommandContext, createMockInteraction, createMockGuild, createMockGuildMember, createMockPlayer, createMockUnit } from "../mocks/index.ts";
+import { createCommandContext, createMockGuild, createMockGuildMember, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
 describe("TerritoryWar", () => {

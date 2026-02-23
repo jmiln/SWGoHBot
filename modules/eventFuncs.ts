@@ -3,7 +3,7 @@ import Language from "../base/Language.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
-import { announceMsg, formatDuration } from "./functions.ts";
+import { formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";
 
@@ -55,9 +55,23 @@ class EventFuncs {
                 await this.client.shard.broadcastEval(
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
                         const targetGuild = client.guilds.cache.get(guildId);
-                        if (targetGuild) {
-                            announceMsg({ client: client as Client<true>, guild: targetGuild, announceMessage, channel: chan, guildConf });
+                        if (!targetGuild) return;
+
+                        const announceChan = chan || guildConf?.announceChan || "";
+                        let channel = targetGuild.channels.cache.get(announceChan.toString().replace(/[^0-9]/g, ""));
+                        if (!channel) {
+                            channel = targetGuild.channels.cache.find((c) => c.name === announceChan);
                         }
+
+                        if (!channel || !channel.isTextBased() || !("send" in channel)) return;
+
+                        const botMember = targetGuild.members.me;
+                        if (!botMember) return;
+
+                        // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                        if (!channel.permissionsFor(botMember)?.has(3072n)) return;
+
+                        await (channel as import("discord.js").TextChannel).send(announceMessage);
                     },
                     {
                         context: {
