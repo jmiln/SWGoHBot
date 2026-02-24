@@ -59,8 +59,8 @@ export default class Faction extends Command {
 
         const wantsLeader = interaction.options.getBoolean("leader");
         const wantsZeta = interaction.options.getBoolean("zeta");
-        let allycode = interaction.options.getString("allycode");
-        allycode = await getAllyCode(interaction, allycode, false);
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac, false);
 
         let extra = "";
         if (wantsLeader && wantsZeta) {
@@ -122,7 +122,7 @@ export default class Faction extends Command {
                 });
             }
         }
-        if (!allycode) {
+        if (!allyCode) {
             return interaction.reply({
                 embeds: [
                     {
@@ -137,7 +137,7 @@ export default class Faction extends Command {
         await interaction.deferReply();
         if (chars.length) {
             const charDefIds = chars.map((c) => c.baseId);
-            const player = await fetchPlayerWithCooldown(interaction, allycode);
+            const player = await fetchPlayerWithCooldown(interaction, allyCode);
             if (!player?.roster?.length) {
                 return super.error(interaction, "I couldn't get that player's roster. Please try again later.");
             }

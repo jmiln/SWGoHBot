@@ -59,7 +59,7 @@ export default class GuildUpdate extends Command {
         const defGU = {
             enabled: false,
             channel: null,
-            allycode: null,
+            allyCode: null,
             sortBy: null,
         };
         if (!gu) {
@@ -79,7 +79,7 @@ export default class GuildUpdate extends Command {
             const updatedArr = [];
             const isEnabled = interaction.options.getBoolean("enabled");
             const channel = interaction.options.getChannel("channel");
-            let allycode = interaction.options.getString("allycode");
+            let allyCode = interaction.options.getString("allycode");
 
             if (isEnabled !== null) {
                 gu.enabled = isEnabled;
@@ -93,21 +93,21 @@ export default class GuildUpdate extends Command {
                 gu.channel = channel.id;
                 updatedArr.push(`Channel: <#${channel.id}>`);
             }
-            if (allycode) {
+            if (allyCode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!isAllyCode(allycode)) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!isAllyCode(allyCode)) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
-                // Grab a cleaned allycode
-                allycode = await getAllyCode(interaction, allycode);
+                // Grab a cleaned allyCode
+                allyCode = await getAllyCode(interaction, allyCode);
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
-                const player = await swgohAPI.unitStats(Number.parseInt(allycode, 10));
+                const player = await swgohAPI.unitStats(Number.parseInt(allyCode, 10));
                 if (!player?.length) {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gu.allycode = Number.parseInt(allycode, 10);
-                updatedArr.push(`Ally Code: **${allycode}**`);
+                gu.allyCode = Number.parseInt(allyCode, 10);
+                updatedArr.push(`Ally Code: **${allyCode}**`);
             }
 
             if (updatedArr.length) {
@@ -123,7 +123,7 @@ export default class GuildUpdate extends Command {
                     ],
                 });
             }
-            return super.error(interaction, "Please provide at least one option to update (enabled, channel, or allycode).");
+            return super.error(interaction, "Please provide at least one option to update (enabled, channel, or ally code).");
         }
         if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
@@ -134,7 +134,7 @@ export default class GuildUpdate extends Command {
                         description: [
                             `Enabled:  **${gu.enabled ? "ON" : "OFF"}**`,
                             `Channel:  **${gu.channel ? `<#${gu.channel}>` : "N/A"}**`,
-                            `Allycode: **${gu.allycode ? gu.allycode : "N/A"}**`,
+                            `Allycode: **${gu.allyCode ? gu.allyCode : "N/A"}**`,
                         ].join("\n"),
                     },
                 ],

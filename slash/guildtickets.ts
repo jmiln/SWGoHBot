@@ -103,7 +103,7 @@ export default class GuildTickets extends Command {
         }
         let gt = user.guildTickets;
         const defGT = {
-            allycode: null,
+            allyCode: null,
             channel: null,
             enabled: false,
             showMax: false,
@@ -133,7 +133,7 @@ export default class GuildTickets extends Command {
             const sortBy = interaction.options.getString("sortby");
             const tickets = interaction.options.getInteger("tickets");
             const updateType = interaction.options.getString("updates");
-            let allycode = interaction.options.getString("allycode");
+            let allyCode = interaction.options.getString("allycode");
 
             // GuildTickets -> activate/ deactivate
             if (isEnabled !== null) {
@@ -152,22 +152,22 @@ export default class GuildTickets extends Command {
                 gt.updateType = updateType;
                 updatedArr.push(`Update: **${updateTypeStrings[updateType]}**`);
             }
-            if (allycode) {
+            if (allyCode) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!isAllyCode(allycode) && allycode !== "me")
+                if (!isAllyCode(allyCode) && allyCode !== "me")
                     return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
-                // Grab a cleaned allycode
-                allycode = await getAllyCode(interaction, allycode);
+                // Grab a cleaned ally code
+                allyCode = await getAllyCode(interaction, allyCode);
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
-                const player = await swgohAPI.unitStats(Number.parseInt(allycode, 10));
+                const player = await swgohAPI.unitStats(Number.parseInt(allyCode, 10));
                 if (!player?.length) {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gt.allycode = Number.parseInt(allycode, 10);
-                updatedArr.push(`Ally Code: **${allycode}**`);
+                gt.allyCode = Number.parseInt(allyCode, 10);
+                updatedArr.push(`Ally Code: **${allyCode}**`);
             }
             if (showMax !== null) {
                 gt.showMax = showMax;
@@ -206,7 +206,7 @@ export default class GuildTickets extends Command {
                         description: [
                             `Enabled:  **${gt.enabled ? "ON" : "OFF"}**`,
                             `Channel:  **${gt.channel ? `<#${gt.channel}>` : "N/A"}**`,
-                            `Allycode: **${gt.allycode ? gt.allycode : "N/A"}**`,
+                            `Allycode: **${gt.allyCode ? gt.allyCode : "N/A"}**`,
                             `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
                             `SortBy:   **${toProperCase(gt.sortBy)}**`,
                             `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,

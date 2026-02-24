@@ -6,11 +6,11 @@ import { z } from "zod";
 export const ArenaWatchAcctSchema = z.object({
     allyCode: z.number(),
     name: z.string(),
-    mention: z.string(),
+    mention: z.string().nullable(),
     lastChar: z.number(),
     lastShip: z.number(),
     poOffset: z.number(),
-    mark: z.string().optional(),
+    mark: z.string().optional().nullable(),
     warn: z
         .object({
             min: z.number().optional(),
@@ -46,53 +46,69 @@ export const UserConfigSchema = z.object({
     id: z.string(),
     accounts: z.array(UserAcctSchema),
     arenaAlert: z.object({
-        enableRankDMs: z.string(),
+        enableRankDMs: z.string().optional(),
         arena: z.string(),
         payoutWarning: z.number(),
-        enablePayoutResult: z.boolean(),
+        enablePayoutResult: z.boolean().optional(),
         payoutResult: z.string().optional(),
     }),
     updated: z.number(),
-    lang: z.object({
-        language: z.string().optional(),
-        swgohLanguage: z.string().optional(),
-    }),
+    lang: z
+        .object({
+            language: z.string().optional(),
+            swgohLanguage: z.string().optional(),
+        })
+        .optional(),
     arenaWatch: z.object({
         enabled: z.boolean(),
-        allycodes: z.array(ArenaWatchAcctSchema),
-        channel: z.string().optional(),
+        allyCodes: z.array(ArenaWatchAcctSchema),
+        channel: z.string().optional().nullable(),
         arena: z.object({
             fleet: z.object({ channel: z.string(), enabled: z.boolean() }).optional(),
             char: z.object({ channel: z.string(), enabled: z.boolean() }).optional(),
         }),
         payout: z.object({
-            char: z.object({ enabled: z.boolean(), channel: z.string(), msgID: z.string() }),
-            fleet: z.object({ enabled: z.boolean(), channel: z.string(), msgID: z.string() }),
+            char: z.object({
+                enabled: z.boolean(),
+                channel: z.string().nullable(),
+                msgID: z.string().nullable(),
+            }),
+            fleet: z.object({
+                enabled: z.boolean(),
+                channel: z.string().nullable(),
+                msgID: z.string().nullable(),
+            }),
         }),
         useEmotesInLog: z.boolean().optional(),
         useMarksInLog: z.boolean().optional(),
-        report: z.string(),
-        showvs: z.boolean(),
+        report: z.string().optional(),
+        showvs: z.boolean().optional(),
     }),
-    guildUpdate: z.object({
-        enabled: z.boolean(),
-        channel: z.string(),
-        allycode: z.number(),
-        sortBy: z.string(),
-    }),
-    username: z.string(),
-    guildTickets: z.object({
-        enabled: z.boolean(),
-        channel: z.string(),
-        allycode: z.number(),
-        sortBy: z.string(),
-        msgId: z.string(),
-        tickets: z.number(),
-        updateType: z.string(),
-        nextChallengesRefresh: z.string(),
-        showMax: z.boolean(),
-    }),
-    bonusServer: z.string(),
+    guildUpdate: z
+        .object({
+            enabled: z.boolean(),
+            channel: z.string(),
+            allyCode: z.number(),
+            sortBy: z.string(),
+        })
+        .partial()
+        .optional(),
+    username: z.string().optional(),
+    guildTickets: z
+        .object({
+            enabled: z.boolean(),
+            channel: z.string(),
+            allyCode: z.number(),
+            sortBy: z.string(),
+            msgId: z.string(),
+            tickets: z.number(),
+            updateType: z.string(),
+            nextChallengesRefresh: z.string(),
+            showMax: z.boolean(),
+        })
+        .partial()
+        .optional(),
+    bonusServer: z.string().optional(),
 });
 
 // Export inferred types

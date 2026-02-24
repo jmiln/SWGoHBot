@@ -213,7 +213,7 @@ export interface UserConfig {
     };
     arenaWatch: {
         enabled: boolean;
-        allycodes: ArenaWatchAcct[];
+        allyCodes: ArenaWatchAcct[];
         channel?: string;
         arena: {
             fleet?: { channel: string; enabled: boolean };
@@ -231,14 +231,14 @@ export interface UserConfig {
     guildUpdate: {
         enabled: boolean;
         channel: string;
-        allycode: number;
+        allyCode: number;
         sortBy: string;
     };
     username: string;
     guildTickets: {
         enabled: boolean;
         channel: string;
-        allycode: number;
+        allyCode: number;
         sortBy: string;
         msgId: string;
         tickets: number;

@@ -31,12 +31,12 @@ describe("MyProfile", () => {
         assert.strictEqual(command.commandData.name, "myprofile");
     });
 
-    it("should return error when no allycode is registered and none provided", async () => {
+    it("should return error when no allyCode is registered and none provided", async () => {
         const interaction = createMockInteraction({ optionsData: {} });
         const ctx = createCommandContext({ interaction });
         const command = new MyProfile();
         await command.run(ctx);
-        assertErrorReply(interaction, "not a valid allycode");
+        assertErrorReply(interaction, "not a valid ally code");
     });
 
     it("should return error when player data cannot be fetched", async () => {

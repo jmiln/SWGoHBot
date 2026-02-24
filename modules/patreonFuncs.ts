@@ -138,7 +138,7 @@ class PatreonFuncs {
                     player = playerRes?.[0] || null;
                 } catch (e) {
                     const message = e instanceof Error ? e.message : String(e);
-                    logger.error(`[patreonFuncs/getRanks] Failed to fetch arena data for allycode ${acc.allyCode}: ${message}`);
+                    logger.error(`[patreonFuncs/getRanks] Failed to fetch arena data for ally code ${acc.allyCode}: ${message}`);
                     // Wait since it won't happen later when something breaks
                     await wait(750);
                     continue;
@@ -205,7 +205,7 @@ class PatreonFuncs {
             else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
             else acctCount = constants.arenaWatchConfig.tier3;
 
-            const players = structuredClone(aw.allycodes.slice(0, acctCount));
+            const players = structuredClone(aw.allyCodes.slice(0, acctCount));
             if (!players || !players.length) continue;
 
             // If char is enabled, send it there
@@ -239,8 +239,8 @@ class PatreonFuncs {
     async shardRanks(): Promise<void> {
         const patrons = await this.getActivePatrons();
         for (const patron of patrons) {
-            const compChar = []; // Array to keep track of allycode, toRank, and fromRank
-            const compShip = []; // Array to keep track of allycode, toRank, and fromRank
+            const compChar = []; // Array to keep track of ally code, toRank, and fromRank
+            const compShip = []; // Array to keep track of ally code, toRank, and fromRank
             // For each person that qualifies, go through their list
             //   - Check their patreon level and go through their top x ally codes based on the lvl
             //   - check the arena rank
@@ -261,7 +261,7 @@ class PatreonFuncs {
             //                 enabled: true/ false
             //             }
             //         }
-            //         allycodes: [
+            //         allyCodes: [
             //             {
             //                 "allyCode": 123123123                // The player's ally code
             //                 "name" :    "NameHere"               // The player's name (From the game)
@@ -310,7 +310,7 @@ class PatreonFuncs {
             else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
             else acctCount = constants.arenaWatchConfig.tier3;
 
-            const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allycodes.slice(0, acctCount));
+            const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
             const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
             if (!allyCodes || !allyCodes.length) continue;
 
@@ -403,7 +403,7 @@ class PatreonFuncs {
             }
 
             // Update the player so shardTimes always has the latest info
-            user.arenaWatch.allycodes = accountsToCheck;
+            user.arenaWatch.allyCodes = accountsToCheck;
             await userReg.updateUser(patron.discordID, user);
 
             // Only send the alerts if there have been rank changes, and the user has alerts enabled
@@ -474,7 +474,7 @@ class PatreonFuncs {
             // If the guild update isn't enabled, then move along
             if (!user?.guildUpdate?.enabled) continue;
             const gu = user.guildUpdate;
-            if (!gu?.allycode) continue;
+            if (!gu?.allyCode) continue;
             if (!gu?.channel) continue;
 
             // This is what will be in the user.guildUpdate, possibly add something
@@ -482,7 +482,7 @@ class PatreonFuncs {
 
             // gu = {
             //     enabled: false,          // If it's enabled or not
-            //     allycode: 123123123,     // Ally code to watch the guild of
+            //     allyCode: 123123123,     // Ally code to watch the guild of
             //     channel: channelID,      // The channel to log all this into
             // }
 
@@ -495,16 +495,16 @@ class PatreonFuncs {
             // Get any updates for the guild
             let guild: SWAPIGuild = null;
             try {
-                guild = await swgohAPI.guild(gu.allycode);
+                guild = await swgohAPI.guild(gu.allyCode);
             } catch (err) {
                 const errStr = err instanceof Error ? err.message : String(err);
                 if (errStr.includes("not in a guild")) continue;
-                logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allycode}: ${errStr}`);
+                logger.error(`[patreonFuncs/guildsUpdate] Issue getting the guild from ${gu.allyCode}: ${errStr}`);
                 continue;
             }
             if (!guild?.roster) {
                 logger.error(
-                    `[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allycode}, guild output: ${JSON.stringify(guild)}`,
+                    `[patreonFuncs/guildsUpdate] Could not get the guild/ roster for ${gu.allyCode}, guild output: ${JSON.stringify(guild)}`,
                 );
                 continue;
             }
@@ -512,7 +512,7 @@ class PatreonFuncs {
             let guildLog: PlayerUpdates;
             try {
                 if (!guild?.roster?.length) {
-                    logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allycode}`);
+                    logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allyCode}`);
                     continue;
                 }
                 guildLog = await swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
@@ -593,7 +593,7 @@ class PatreonFuncs {
             // This is what will be in the user.guildTickets
             // gt = {
             //     enabled:  false,                 // If it's enabled or not
-            //     allycode: 123123123,             // Ally code to watch the guild of
+            //     allyCode: 123123123,             // Ally code to watch the guild of
             //     channel:  channelID,             // The channel to log all this into
             //     sortBy:   "name" / "tickets",    // What to sort the list by (Defaults to name)
             //     tickets: 600,                    // The ticket count to consider players to be finished at (Defaults to the game's max of 600)
@@ -611,7 +611,7 @@ class PatreonFuncs {
             // If the guild update isn't enabled, or is missing some needed info, move along
             const gt = user?.guildTickets;
             if (!gt?.enabled) continue;
-            if (!gt?.allycode) continue;
+            if (!gt?.allyCode) continue;
             if (!gt?.channel) continue;
 
             const MAX_TICKETS = gt?.tickets || 600;
@@ -632,11 +632,11 @@ class PatreonFuncs {
             // Get any updates for the guild
             let rawGuild: RawGuild = null;
             try {
-                rawGuild = await swgohAPI.getRawGuild(gt.allycode, null, { forceUpdate: true });
+                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, null, { forceUpdate: true });
             } catch (err) {
                 const errStr = err instanceof Error ? err.message : String(err);
                 if (errStr.includes("not in a guild")) continue;
-                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allycode}: ${errStr}`);
+                logger.error(`[patreonFuncs/guildsTickets] Issue getting the guild from ${gt.allyCode}: ${errStr}`);
                 continue;
             }
 
@@ -647,7 +647,7 @@ class PatreonFuncs {
 
             if (!rawGuild?.roster?.length) {
                 logger.error(
-                    `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allycode}, guild output: ${JSON.stringify(rawGuild)}`,
+                    `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allyCode}, guild output: ${JSON.stringify(rawGuild)}`,
                 );
                 continue;
             }
@@ -1070,15 +1070,15 @@ const patreonFuncs = new PatreonFuncs();
  * Returns null on any error — the caller is responsible for the error reply.
  *
  * Usage:
- *   const player = await fetchPlayerWithCooldown(interaction, allycode);
+ *   const player = await fetchPlayerWithCooldown(interaction, allyCode);
  *   if (!player?.roster) return super.error(interaction, "...");
  */
-export async function fetchPlayerWithCooldown(interaction: ChatInputCommandInteraction, allycode: string): Promise<SWAPIPlayer | null> {
+export async function fetchPlayerWithCooldown(interaction: ChatInputCommandInteraction, allyCode: string): Promise<SWAPIPlayer | null> {
     const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
     try {
-        return await swgohAPI.player(allycode, cooldown);
+        return await swgohAPI.player(allyCode, cooldown);
     } catch (e) {
-        logger.error(`[fetchPlayerWithCooldown] Error fetching player ${allycode}: ${e}`);
+        logger.error(`[fetchPlayerWithCooldown] Error fetching player ${allyCode}: ${e}`);
         return null;
     }
 }

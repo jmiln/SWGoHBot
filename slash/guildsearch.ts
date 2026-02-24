@@ -168,23 +168,13 @@ export default class GuildSearch extends Command {
         // Get all the string options
         const sort = interaction.options.getString("sort");
         const stat = interaction.options.getString("stat");
-        const allycode = interaction.options.getString("allycode");
-
-        const rarityMap = {
-            ONESTAR: 1,
-            TWOSTAR: 2,
-            THREESTAR: 3,
-            FOURSTAR: 4,
-            FIVESTAR: 5,
-            SIXSTAR: 6,
-            SEVENSTAR: 7,
-        };
+        const ac = interaction.options.getString("allycode");
 
         // If an ally code is supplied, try using it
         // If not, it'll try grabbing the primary registered code of the author
-        const userAC = await getAllyCode(interaction, allycode, true);
+        const allyCode = await getAllyCode(interaction, ac, true);
 
-        if (!userAC) {
+        if (!allyCode) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }
 
@@ -198,6 +188,16 @@ export default class GuildSearch extends Command {
         if (starLvl < 0 || starLvl > 7) {
             return super.error(interaction, language.get("COMMAND_GUILDSEARCH_BAD_STAR"));
         }
+
+        const rarityMap = {
+            ONESTAR: 1,
+            TWOSTAR: 2,
+            THREESTAR: 3,
+            FOURSTAR: 4,
+            FIVESTAR: 5,
+            SIXSTAR: 6,
+            SEVENSTAR: 7,
+        };
 
         // Get the boolean options
         const doReverse = interaction.options.getBoolean("reverse");
@@ -235,7 +235,7 @@ export default class GuildSearch extends Command {
 
         let guild: SWAPIGuild = null;
         try {
-            guild = await swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
+            guild = await swgohAPI.guild(Number.parseInt(allyCode, 10), cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, "Sorry, but it looks like that player is not in a guild");

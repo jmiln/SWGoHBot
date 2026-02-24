@@ -13,7 +13,7 @@ export default {
             name: "Youngling",
             benefits : {
                 ArenaAlert  : "Enable the ArenaAlert command to watch your primary registered account for arena drops",
-                ArenaWatch  : "Enable ArenaWatch and it's payout monitor for 1 allycode",
+                ArenaWatch  : "Enable ArenaWatch and it's payout monitor for 1 ally code",
                 GuildTickets: "Enable the GuildTickets command & monitor",
                 GuildUpdate : "Enable the GuildUpdate command & monitors"
             },
@@ -31,7 +31,7 @@ export default {
             name: "Padawan",
             benefits: {
                 ArenaAlert: "Enable ArenaAlert to watch all registered accounts for arena drops",
-                ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 20 allycodes",
+                ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 20 ally codes",
                 Cooldowns:  "Enable sharing cooldowns of the previous tier with a selected Discord server"
             },
             playerTime: 5,    // 5min
@@ -47,7 +47,7 @@ export default {
         10: {
             name: "Jedi Knight",
             benefits: {
-                ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 50 allycodes",
+                ArenaWatch: "Enable ArenaWatch and it's payout monitor for up to 50 ally codes",
                 Cooldowns:  "Enable sharing cooldowns of the previous tier with a selected Discord server"
             },
             playerTime: 1,    // 1min

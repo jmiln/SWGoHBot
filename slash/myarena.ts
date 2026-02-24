@@ -36,22 +36,20 @@ export default class MyArena extends Command {
     }
 
     async run({ interaction, language, swgohLanguage }: CommandContext) {
-        // eslint-disable-line no-unused-vars
-        const ac = interaction.options.getString("allycode");
         const showStats = interaction.options.getBoolean("stats");
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac);
 
         await interaction.reply({ content: "> Please wait while I look up your info" });
 
-        const allycode = await getAllyCode(interaction, ac);
-
-        if (!allycode) {
+        if (!allyCode) {
             return super.error(
                 interaction,
                 "Invalid user ID, you need to use either the `me` keyword if you have a registered ally code, an ally code, or mention a Discord user",
             );
         }
 
-        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) return super.error(interaction, "Something broke, please try again in a bit");
 
         if (!player || !player.arena) {

@@ -77,11 +77,11 @@ export default class MyCharacter extends Command {
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         const searchType = interaction.options.getSubcommand();
         const searchUnit = searchType === "character" ? interaction.options.getString("character") : interaction.options.getString("ship");
-        let allycode = interaction.options.getString("allycode");
-        allycode = await getAllyCode(interaction, allycode);
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac);
 
-        if (!allycode) {
-            return super.error(interaction, "I could not find a valid allycode. Please make sure you're using a valid code.");
+        if (!allyCode) {
+            return super.error(interaction, "I could not find a valid ally code. Please make sure you're using a valid code.");
         }
 
         // Get any matching units
@@ -100,7 +100,7 @@ export default class MyCharacter extends Command {
 
         await interaction.reply({ content: "Please wait while I look up your profile." });
 
-        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) {
             return super.error(interaction, "Sorry, I couldn't fetch player data right now. Please try again later.", {
                 title: language.get("BASE_SOMETHING_BROKE"),

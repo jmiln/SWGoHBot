@@ -39,18 +39,18 @@ export default class Register extends Command {
         // eslint-disable-line no-unused-vars
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
-        let allycode = interaction.options.getString("allycode");
+        let allyCode = interaction.options.getString("allycode");
         let user = interaction.options.getUser("user");
 
-        if (!isAllyCode(allycode)) {
+        if (!isAllyCode(allyCode)) {
             return super.error(
                 interaction,
-                `**${allycode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`,
+                `**${allyCode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`,
             );
             // return super.error(interaction, language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
         }
         // Wipe out any non-number characters just in case
-        allycode = allycode.replace(/[^\d]*/g, "");
+        allyCode = allyCode.replace(/[^\d]*/g, "");
 
         // If they don't supply a user, themselves or otherwise, set it to use themself
         if (!user) {
@@ -79,14 +79,14 @@ export default class Register extends Command {
             // If they don't exist in the DB yet, stick em with a default config
             userConfig = JSON.parse(JSON.stringify(constants.defaultUserConf)) as Partial<UserConfig> as UserConfig;
             userConfig.id = user.id;
-        } else if (userConfig.accounts.find((a) => a.allyCode === allycode && a.primary)) {
+        } else if (userConfig.accounts.find((a) => a.allyCode === allyCode && a.primary)) {
             // This ally code is already registered & primary
             return super.error(interaction, language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
-        } else if (userConfig.accounts.find((a) => a.allyCode === allycode && !a.primary)) {
+        } else if (userConfig.accounts.find((a) => a.allyCode === allyCode && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
             userConfig.accounts = userConfig.accounts.map((a) => {
                 if (a.primary) a.primary = false;
-                if (a.allyCode === allycode) a.primary = true;
+                if (a.allyCode === allyCode) a.primary = true;
                 return a;
             });
             userConfig = await userReg.updateUser(user.id, userConfig);
@@ -110,13 +110,13 @@ export default class Register extends Command {
         await interaction.reply({ content: language.get("COMMAND_REGISTER_PLEASE_WAIT") });
 
         try {
-            const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(Number.parseInt(allycode, 10), cooldown);
+            const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(Number.parseInt(allyCode, 10), cooldown);
             const player = playerRes?.[0] || null;
             if (!player) {
-                return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE") + allycode);
+                return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE") + allyCode);
             }
             userConfig.accounts.push({
-                allyCode: allycode,
+                allyCode: allyCode,
                 name: player.name,
                 primary: true,
             });

@@ -73,9 +73,9 @@ export default class Zetas extends Command {
     }
 
     async run({ interaction, language, swgohLanguage }: CommandContext) {
-        let allycode = interaction.options.getString("allycode");
-        allycode = await getAllyCode(interaction, allycode);
-        if (!allycode) {
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac);
+        if (!allyCode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
 
@@ -100,8 +100,8 @@ export default class Zetas extends Command {
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const player = await swgohAPI.player(allycode, cooldown).catch((e: Error) => {
-            logger.error(`[slash/zetas] Error fetching player ${allycode}: ${e.message}`);
+        const player: SWAPIPlayer = await swgohAPI.player(allyCode, cooldown).catch((e: Error) => {
+            logger.error(`[slash/zetas] Error fetching player ${allyCode}: ${e.message}`);
             return null;
         });
         if (!player) return super.error(interaction, language.get("BASE_SWGOH_NO_ACCT"));

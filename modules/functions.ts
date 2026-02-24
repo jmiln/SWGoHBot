@@ -892,7 +892,7 @@ export async function getAllyCode(interaction: ChatInputCommandInteraction, user
             const index = Number.parseInt(userStr.replace("-", ""), 10) - 1;
             account = userAcct.accounts[index];
         } else {
-            // If it's a missing allycode, a "me", or for a specified discord ID, just grab the primary if available
+            // If it's a missing ally code, a "me", or for a specified discord ID, just grab the primary if available
             account = userAcct.accounts.find((a) => a.primary);
         }
         return account ? account.allyCode : null;

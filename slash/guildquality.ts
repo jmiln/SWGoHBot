@@ -42,11 +42,11 @@ export default class GuildQuality extends Command {
     async run({ interaction, language }: CommandContext) {
         await interaction.reply({ content: language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
 
-        const allycode = interaction.options.getString("allycode");
-        const userAC = await getAllyCode(interaction, allycode, true);
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac, true);
 
         // If it hasn't found a valid ally code, grumble at the user, since that's required
-        if (!userAC) {
+        if (!allyCode) {
             return super.error(
                 interaction,
                 "No valid ally code found. Please make sure that you have a registered ally code via the `userconf` command, or have entered a valid ally code",
@@ -59,7 +59,7 @@ export default class GuildQuality extends Command {
         let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await swgohAPI.guild(Number.parseInt(userAC, 10), cooldown);
+            guild = await swgohAPI.guild(Number.parseInt(allyCode, 10), cooldown);
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
             logger.error(`[GuildQuality] Failed to get guild: ${errorMessage}`);

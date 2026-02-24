@@ -65,12 +65,12 @@ export default class Randomchar extends Command {
         let count = interaction.options.getInteger("count");
         if (!count) count = MAX_CHARACTERS;
 
-        let allycode = interaction.options.getString("allycode");
-        allycode = await getAllyCode(interaction, allycode, false);
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac, false);
 
-        if (allycode) {
-            // If there is a valid allycode provided, grab the user's roster
-            const player = await fetchPlayerWithCooldown(interaction, allycode);
+        if (allyCode) {
+            // If there is a valid ally code provided, grab the user's roster
+            const player = await fetchPlayerWithCooldown(interaction, allyCode);
             if (!player) {
                 return super.error(interaction, "Sorry, I couldn't fetch player data right now.", {
                     title: language.get("BASE_SOMETHING_BROKE"),
@@ -94,7 +94,7 @@ export default class Randomchar extends Command {
         }
 
         const charOut: string[] = [];
-        if (allycode && chars?.length) {
+        if (allyCode && chars?.length) {
             // chars is SWAPIUnit[] when allycode is provided
             const swapiChars = chars as SWAPIUnit[];
             while (charOut.length < count) {

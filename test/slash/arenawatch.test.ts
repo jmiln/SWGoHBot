@@ -8,7 +8,7 @@ describe("ArenaWatch", () => {
     function createBaseAW(): UserConfig["arenaWatch"] {
         return {
             enabled: false,
-            allycodes: [],
+            allyCodes: [],
             channel: null,
             arena: {
                 fleet: {
@@ -41,7 +41,7 @@ describe("ArenaWatch", () => {
     describe("Functionality Tests", () => {
         describe("fillAWSkeleton", () => {
             it("should fill in missing payout structure", () => {
-                const aw = { enabled: true, allycodes: [] } as UserConfig["arenaWatch"];
+                const aw = { enabled: true, allyCodes: [] } as UserConfig["arenaWatch"];
                 const filled = fillAWSkeleton(aw);
 
                 assert.ok(filled.payout);
@@ -52,7 +52,7 @@ describe("ArenaWatch", () => {
             });
 
             it("should set default values for useMarksInLog, report, and showvs", () => {
-                const aw = { enabled: true, allycodes: [] } as UserConfig["arenaWatch"];
+                const aw = { enabled: true, allyCodes: [] } as UserConfig["arenaWatch"];
                 const filled = fillAWSkeleton(aw);
 
                 assert.strictEqual(filled.useMarksInLog, false);
@@ -63,7 +63,7 @@ describe("ArenaWatch", () => {
             it("should migrate old channel setting to arena structure", () => {
                 const aw = {
                     enabled: true,
-                    allycodes: [],
+                    allyCodes: [],
                     channel: "12345",
                     report: "both",
                     arena: {},
@@ -81,7 +81,7 @@ describe("ArenaWatch", () => {
 
                 assert.ok(filled);
                 assert.strictEqual(filled.enabled, false);
-                assert.ok(Array.isArray(filled.allycodes));
+                assert.ok(Array.isArray(filled.allyCodes));
             });
         });
 
@@ -372,10 +372,10 @@ describe("ArenaWatch", () => {
             });
         });
 
-        describe("allycode remove subcommand", () => {
-            it("should remove an existing allycode", async () => {
+        describe("allyCode remove subcommand", () => {
+            it("should remove an existing allyCode", async () => {
                 const aw = createBaseAW();
-                aw.allycodes = [
+                aw.allyCodes = [
                     {
                         allyCode: 123456789,
                         name: "Test Player",
@@ -389,20 +389,20 @@ describe("ArenaWatch", () => {
 
                 const { result, aw: awRes } = await processAWChanges({
                     target: "allycode",
-                    interactionOptions: { subCommand: "remove", allycodes: "123456789" } as any,
+                    interactionOptions: { subCommand: "remove", allyCodes: "123456789" } as any,
                     aw,
                     unitStats: async () => [],
                 });
 
-                assert.strictEqual(awRes.allycodes.length, 0);
+                assert.strictEqual(awRes.allyCodes.length, 0);
                 assert.ok(result.outLog.includes("removed"));
             });
 
-            it("should error when removing non-existent allycode", async () => {
+            it("should error when removing non-existent allyCode", async () => {
                 const aw = createBaseAW();
                 const { result } = await processAWChanges({
                     target: "allycode",
-                    interactionOptions: { subCommand: "remove", allycodes: "999999999" } as any,
+                    interactionOptions: { subCommand: "remove", allyCodes: "999999999" } as any,
                     aw,
                     unitStats: async () => [],
                 });
@@ -432,16 +432,16 @@ describe("ArenaWatch", () => {
             assert.strictEqual(command.commandData.name, "arenawatch");
         });
 
-        it("should have allycode subcommand group with add, remove, and edit", () => {
+        it("should have allyCode subcommand group with add, remove, and edit", () => {
             const command = new ArenaWatch();
 
-            const allycodeGroup = command.commandData.options.find((o) => o.name === "allycode");
-            assert.ok(allycodeGroup);
-            assert.strictEqual(allycodeGroup.type, 2); // SubcommandGroup
+            const allyCodeGroup = command.commandData.options.find((o) => o.name === "allycode");
+            assert.ok(allyCodeGroup);
+            assert.strictEqual(allyCodeGroup.type, 2); // SubcommandGroup
 
-            const addSubcmd = allycodeGroup.options.find((o) => o.name === "add");
-            const removeSubcmd = allycodeGroup.options.find((o) => o.name === "remove");
-            const editSubcmd = allycodeGroup.options.find((o) => o.name === "edit");
+            const addSubcmd = allyCodeGroup.options.find((o) => o.name === "add");
+            const removeSubcmd = allyCodeGroup.options.find((o) => o.name === "remove");
+            const editSubcmd = allyCodeGroup.options.find((o) => o.name === "edit");
 
             assert.ok(addSubcmd);
             assert.ok(removeSubcmd);

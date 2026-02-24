@@ -56,15 +56,13 @@ export default class Charactergear extends Command {
         const doExpand = interaction.options.getBoolean("expand");
         const gearLvl = interaction.options.getInteger("gearlevel") || 0;
         const searchChar = interaction.options.getString("character");
-        let allycode = interaction.options.getString("allycode");
+
+        const ac = interaction.options.getString("allycode");
+        const allyCode = ac ? await getAllyCode(interaction, ac, true) : null;
 
         // The current max possible gear level
         const MAX_GEAR = 13;
 
-        // Go through and verify as possible
-        if (allycode) {
-            allycode = await getAllyCode(interaction, allycode, true);
-        }
         if (gearLvl < 0 || gearLvl > MAX_GEAR) {
             return super.error(interaction, `${gearLvl} is not a valid gear level. It must be between 1 and ${MAX_GEAR}`);
         }
@@ -87,7 +85,7 @@ export default class Charactergear extends Command {
             return super.error(interaction, "There was an error fetching character data. Please try again later.");
         }
 
-        if (!allycode) {
+        if (!allyCode) {
             if (!gearLvl) {
                 const allGear = {};
                 let allGearList = [];
@@ -180,7 +178,7 @@ export default class Charactergear extends Command {
             }
         } else {
             // Looking for a player's remaining needed gear
-            const player = await fetchPlayerWithCooldown(interaction, allycode);
+            const player = await fetchPlayerWithCooldown(interaction, allyCode);
 
             if (!player?.roster) {
                 return super.error(

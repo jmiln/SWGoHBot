@@ -20,15 +20,15 @@ interface InteractionOptions {
     subCommand: string;
     subCommandGroup: string;
 
-    allycode: string;
-    allycodes: string;
+    allyCode: string;
+    allyCodes: string;
     arena: string;
     channel: GuildChannel;
     enabled: boolean;
     mark: string;
     mins: number;
-    new_allycode: string;
-    old_allycode: string;
+    new_allyCode: string;
+    old_allyCode: string;
     remove_mark: boolean;
     toggle: boolean;
     view_by: string;
@@ -63,7 +63,7 @@ export default class ArenaWatch extends Command {
                         options: [
                             {
                                 name: "allycodes",
-                                description: "AllyCodes or allycode:mention, comma seperated",
+                                description: "Ally Codes or ally code:mention, comma seperated",
                                 type: ApplicationCommandOptionType.String,
                                 required: true,
                             },
@@ -90,7 +90,7 @@ export default class ArenaWatch extends Command {
                     {
                         name: "edit",
                         type: ApplicationCommandOptionType.Subcommand,
-                        description: "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
+                        description: "Use to change an ally code or mention (Ex: '123123123 123123123:mention')",
                         options: [
                             {
                                 name: "old_allycode",
@@ -101,7 +101,7 @@ export default class ArenaWatch extends Command {
                             {
                                 name: "new_allycode",
                                 type: ApplicationCommandOptionType.String,
-                                description: "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
+                                description: "Different ally code, or ally code:mention to change to (Ex: 123123123:@mention)",
                                 required: true,
                             },
                         ],
@@ -475,15 +475,15 @@ export default class ArenaWatch extends Command {
             subCommandGroup: interaction.options.getSubcommandGroup(),
 
             // The settings to change
-            allycode: interaction.options.getString("allycode"), // When they can only reference one at a time
-            allycodes: interaction.options.getString("allycodes"), // When they're able to enter multiple ally codes
+            allyCode: interaction.options.getString("allycode"), // When they can only reference one at a time
+            allyCodes: interaction.options.getString("allycodes"), // When they're able to enter multiple ally codes
             arena: interaction.options.getString("arena"),
             channel: channelIn,
             enabled: interaction.options.getBoolean("enabled"),
             mark: interaction.options.getString("mark"),
             mins: interaction.options.getInteger("mins"),
-            new_allycode: interaction.options.getString("new_allycode"),
-            old_allycode: interaction.options.getString("old_allycode"),
+            new_allyCode: interaction.options.getString("new_allycode"),
+            old_allyCode: interaction.options.getString("old_allycode"),
             remove_mark: interaction.options.getBoolean("remove_mark"),
             toggle: interaction.options.getBoolean("toggle"),
             view_by: interaction.options.getString("view_by"),
@@ -533,7 +533,7 @@ export async function processAWChanges({
     interactionOptions: InteractionOptions;
     aw: UserConfig["arenaWatch"];
     unitStats: (
-        allycodes: number | number[],
+        allyCodes: number | number[],
         cooldown?: PlayerCooldown,
         options?: { force?: boolean; defId?: string },
     ) => Promise<SWAPIPlayer[]>;
@@ -570,7 +570,7 @@ export async function processAWChanges({
         case "payout": {
             // ;aw payout enable char | fleet | both    (Toggles per arena)
             // ;aw payout channel #channelName char     (Sets it to a channel)
-            // ;aw payout mark <allycode>   (Sets it to mark a player with an emote)
+            // ;aw payout mark <allyCode>   (Sets it to mark a player with an emote)
             const targetArena = interactionOptions.arena;
 
             // Get the which part of the payout we're working with
@@ -598,7 +598,7 @@ export async function processAWChanges({
             } else if (setting === "mark") {
                 // Setting the mark/ emote/ symbol/ whatver to help show people as friendly/ enemy
                 // ;aw payout mark 123123123 :smile:
-                const ac = interactionOptions.allycode;
+                const ac = interactionOptions.allyCode;
                 const mark = interactionOptions.mark;
                 const remove_mark = interactionOptions.remove_mark;
 
@@ -611,9 +611,9 @@ export async function processAWChanges({
                     break;
                 }
 
-                const player = aw.allycodes.find((p) => p.allyCode.toString() === ac.toString());
+                const player = aw.allyCodes.find((p) => p.allyCode.toString() === ac.toString());
                 if (!player) {
-                    result.error = "Sorry, but you can only apply a mark to an already present player/ allycode";
+                    result.error = "Sorry, but you can only apply a mark to an already present player/ ally code";
                     break;
                 }
                 if (remove_mark && !player?.mark?.length) {
@@ -629,7 +629,7 @@ export async function processAWChanges({
                         "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from";
                 }
                 const resArr = [];
-                aw.allycodes = aw.allycodes.map((p) => {
+                aw.allyCodes = aw.allyCodes.map((p) => {
                     if (p.allyCode.toString() === ac.toString()) {
                         p.mark = remove_mark ? null : mark;
                     }
@@ -658,7 +658,7 @@ export async function processAWChanges({
             // Logic for add/ remove
             if (action === "add") {
                 // List of ally codes to add or remove
-                const codesIn = interactionOptions.allycodes
+                const codesIn = interactionOptions.allyCodes
                     .split(",") // Split em at the commas if there are more than one
                     .map((a) => a?.trim()) // Trim off any spaces in case
                     .filter(Boolean);
@@ -684,7 +684,7 @@ export async function processAWChanges({
                     try {
                         [ac, mention] = getAcMention(code);
                         if (!isAllyCode(ac)) {
-                            outLog.push(`${ac} is not a valid allycode.`);
+                            outLog.push(`${ac} is not a valid ally code.`);
                             continue;
                         }
                     } catch (e) {
@@ -724,7 +724,7 @@ export async function processAWChanges({
                         continue;
                     }
 
-                    aw.allycodes.push({
+                    aw.allyCodes.push({
                         allyCode: c.code,
                         name: player.name,
                         mention: c.mention,
@@ -738,8 +738,8 @@ export async function processAWChanges({
                 result.outLog = outLog.join("\n");
             } else if (action === "edit") {
                 // Used to add or remove a mention
-                const oldCode = interactionOptions.old_allycode;
-                const newCode = interactionOptions.new_allycode;
+                const oldCode = interactionOptions.old_allyCode;
+                const newCode = interactionOptions.new_allyCode;
 
                 if (!isAllyCode(oldCode)) {
                     result.error = `${oldCode} is not a valid ally code.`;
@@ -762,12 +762,12 @@ export async function processAWChanges({
                 // Check if the specified code is available to edit
                 // If not, just add it in fresh
                 // If so, delte it then add it back
-                const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(oldCode, 10));
+                const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(oldCode, 10));
                 if (!exists) {
                     result.error = `${oldCode} is not in the list.`;
                     break;
                 }
-                aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== Number.parseInt(oldCode, 10));
+                aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(oldCode, 10));
 
                 let player = null;
                 try {
@@ -779,7 +779,7 @@ export async function processAWChanges({
                     result.error = `Error getting player info.\n${e}`;
                     break;
                 }
-                aw.allycodes.push({
+                aw.allyCodes.push({
                     allyCode: ac,
                     name: player.name,
                     mention: mention,
@@ -791,7 +791,7 @@ export async function processAWChanges({
                 result.outLog = outLog.join("\n");
             } else if (["remove", "delete"].includes(action)) {
                 // List of ally codes to add or remove
-                const codesIn = interactionOptions.allycodes
+                const codesIn = interactionOptions.allyCodes
                     .split(",") // Split em at the commas if there are more than one
                     .map((a) => a?.trim()) // Trim off any spaces in case
                     .filter((a) => isAllyCode(a));
@@ -804,14 +804,14 @@ export async function processAWChanges({
 
                 for (const code of codesIn) {
                     const thisCode = Number.parseInt(code.replace(/[^\d]/g, ""), 10);
-                    const exists = aw.allycodes.find((ac) => ac.allyCode === thisCode);
+                    const exists = aw.allyCodes.find((ac) => ac.allyCode === thisCode);
                     if (!exists) {
                         result.error = "That ally code was not available to be removed";
                         break;
                     }
-                    const codes = aw.allycodes.filter((ac) => ac.allyCode !== thisCode);
+                    const codes = aw.allyCodes.filter((ac) => ac.allyCode !== thisCode);
 
-                    aw.allycodes = codes;
+                    aw.allyCodes = codes;
                     outLog.push(`${code} has been removed`);
                 }
                 result.outLog = outLog.join("\n");
@@ -841,7 +841,7 @@ export async function processAWChanges({
         }
         case "warn": {
             // ;aw warn 123123123 <# of min> <none|both|char|fleet>
-            const code = interactionOptions.allycode;
+            const code = interactionOptions.allyCode;
             const mins = interactionOptions.mins;
             const arena = interactionOptions.arena;
 
@@ -850,27 +850,27 @@ export async function processAWChanges({
                 break;
             }
 
-            const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(code, 10));
+            const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
             if (!exists) {
                 result.error = "That ally code is not in your list.";
                 break;
             }
 
-            aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
+            aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
 
             if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
             exists.warn = {
                 min: mins && mins > 0 ? mins : null,
                 arena: arena === "none" ? null : arena,
             };
-            aw.allycodes.push(exists);
+            aw.allyCodes.push(exists);
 
             result.outLog = `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`;
             break;
         }
         case "result": {
             // ;aw result 123123123 <none|char|fleet|both>
-            const code = interactionOptions.allycode;
+            const code = interactionOptions.allyCode;
             const arena = interactionOptions.arena;
 
             if (!isAllyCode(code)) {
@@ -878,20 +878,20 @@ export async function processAWChanges({
                 break;
             }
 
-            const exists = aw.allycodes.find((p) => p.allyCode === Number.parseInt(code, 10));
+            const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
             if (!exists) {
                 result.error = "That ally code is not in your list.";
                 break;
             }
 
             // Take that user out of the list
-            aw.allycodes = aw.allycodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
+            aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
 
             // Update the user
             exists.result = arena === "none" ? null : arena;
 
             // Put the user back in
-            aw.allycodes.push(exists);
+            aw.allyCodes.push(exists);
             result.outLog = `Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`;
             break;
         }
@@ -907,10 +907,10 @@ export async function processAWChanges({
         }
         case "view": {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
-            const allycode = interactionOptions.allycode;
+            const allyCode = interactionOptions.allyCode;
             const view_by = interactionOptions.view_by;
 
-            const { error, embedOut } = await formatForViewing(aw, allycode, view_by, interactionOptions.codeCap);
+            const { error, embedOut } = await formatForViewing(aw, allyCode, view_by, interactionOptions.codeCap);
             if (error) {
                 result.error = error;
                 break;
@@ -944,7 +944,7 @@ const defPayout = {
 };
 const defAW = {
     enabled: false,
-    allycodes: [],
+    allyCodes: [],
     channel: null,
     arena: {
         fleet: {
@@ -1021,12 +1021,12 @@ function checkPlayer(
     if (!player) {
         throw new Error(`Could not find ${code.code}, invalid code`);
     }
-    if (aw.allycodes.find((usercode) => usercode.allyCode === code.code)) {
+    if (aw.allyCodes.find((usercode) => usercode.allyCode === code.code)) {
         throw new Error(
             `${code.code} was already in the list. If you're trying to change something, try using the \`/arenawatch allycode edit\` command`,
         );
     }
-    if (!isEdit && aw.allycodes.length >= codeCap) {
+    if (!isEdit && aw.allyCodes.length >= codeCap) {
         throw new Error(`Could not add ${code.code}, ally code cap reached!`);
     }
     return player;
@@ -1041,14 +1041,14 @@ function getChannelIdIfValid(interaction: ChatInputCommandInteraction, channel: 
     return channel.id;
 }
 
-async function formatForViewing(aw: UserConfig["arenaWatch"], allycode: string, view_by: string | null, codeCap: number) {
+async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, view_by: string | null, codeCap: number) {
     const result = {
         error: null,
         embedOut: null,
     };
-    if (!allycode) {
+    if (!allyCode) {
         // If there's any ally codes in the array, go ahead and format them
-        const ac = aw.allycodes.length ? aw.allycodes : [];
+        const ac = aw.allyCodes.length ? aw.allyCodes : [];
         const acOut = ac
             // Sort by name
             .sort((a, b) => {
@@ -1081,7 +1081,7 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allycode: string, 
         const acChunks = msgArray(acOut, "\n", 1000);
         for (const [ix, chunk] of acChunks.entries()) {
             fields.push({
-                name: ix > 0 ? "-" : `Members (${aw.allycodes.length}/${codeCap}):`,
+                name: ix > 0 ? "-" : `Members (${aw.allyCodes.length}/${codeCap}):`,
                 value: chunk,
             });
         }
@@ -1109,18 +1109,18 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allycode: string, 
         };
         return result;
     }
-    if (!isAllyCode(allycode)) {
-        result.error = `${allycode} is not a valid ally code.`;
+    if (!isAllyCode(allyCode)) {
+        result.error = `${allyCode} is not a valid ally code.`;
         return result;
     }
-    if (!aw.allycodes.filter((a) => a.allyCode === Number.parseInt(allycode, 10)).length) {
-        result.error = `${allycode} is not listed in your registered ally codes.`;
+    if (!aw.allyCodes.filter((a) => a.allyCode === Number.parseInt(allyCode, 10)).length) {
+        result.error = `${allyCode} is not listed in your registered ally codes.`;
         return result;
     }
 
-    const player = aw.allycodes.find((p) => p.allyCode === Number.parseInt(allycode, 10));
+    const player = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(allyCode, 10));
     result.embedOut = {
-        title: `Arena Watch Settings (${allycode})`,
+        title: `Arena Watch Settings (${allyCode})`,
         description: [
             `Name: **${player.name}**`,
             `Mention: **${player.mention ? `<@${player.mention}>` : "N/A"}**`,

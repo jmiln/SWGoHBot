@@ -174,17 +174,17 @@ export default class UserConf extends Command {
         if (subCommandGroup) {
             // This means the user is working with the allycode, so go from there
 
-            let allycode = interaction.options.getString("allycode");
-            if (!isAllyCode(allycode)) {
-                return super.error(interaction, `${allycode} is not a valid ally code, please double check your digits.`);
+            let allyCode = interaction.options.getString("allycode");
+            if (!isAllyCode(allyCode)) {
+                return super.error(interaction, `${allyCode} is not a valid ally code, please double check your digits.`);
             }
-            allycode = allycode.replace(/[^\d]*/g, "");
+            allyCode = allyCode.replace(/[^\d]*/g, "");
 
             switch (subCommand) {
                 case "add": {
                     // Add an ally code to the user's list
                     // Make sure it's not in there already, then stick it in.
-                    if (user.accounts.map((a) => a.allyCode).includes(allycode)) {
+                    if (user.accounts.map((a) => a.allyCode).includes(allyCode)) {
                         // Make sure the specified code is not already registered
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
@@ -193,13 +193,13 @@ export default class UserConf extends Command {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
                     try {
-                        const playerRes = await swgohAPI.unitStats(Number(allycode), cooldown);
+                        const playerRes = await swgohAPI.unitStats(Number(allyCode), cooldown);
                         const player = playerRes?.[0] || null;
                         if (!player) {
                             return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE"));
                         }
                         user.accounts.push({
-                            allyCode: allycode,
+                            allyCode: allyCode,
                             name: player.name,
                             primary: !user.accounts.length,
                         });
@@ -220,7 +220,7 @@ export default class UserConf extends Command {
                             },
                         );
                     } catch (e) {
-                        logger.error(`ERROR[UC AC ADD]: Incorrect Ally Code(${allycode}): ${e}`);
+                        logger.error(`ERROR[UC AC ADD]: Incorrect Ally Code(${allyCode}): ${e}`);
                         return super.error(
                             interaction,
                             `Something broke. Please make sure you've got the correct ally code${codeBlock(e.message)}`,
@@ -231,12 +231,12 @@ export default class UserConf extends Command {
                     // Remove specified ally code from the list,
                     // - If it was not in the list, let em know
                     // - If the chosen one was the primary, set the 1st
-                    const acc = user.accounts.find((a) => a.allyCode === allycode);
+                    const acc = user.accounts.find((a) => a.allyCode === allyCode);
                     if (!acc) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
 
-                    // Filter out the one(s) that match the specified allycode
+                    // Filter out the one(s) that match the specified ally code
                     user.accounts = user.accounts.filter((a) => a.allyCode !== acc.allyCode);
                     // If none of the remaining accounts are marked as primary, mark the first one as such
                     if (user.accounts.length && !user.accounts.find((a) => a.primary)) {
@@ -247,7 +247,7 @@ export default class UserConf extends Command {
                 }
                 case "make_primary": {
                     // Set the specified ally code to be the primary one
-                    const acc = user.accounts.find((a) => a.allyCode === allycode);
+                    const acc = user.accounts.find((a) => a.allyCode === allyCode);
                     if (!acc) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
@@ -257,7 +257,7 @@ export default class UserConf extends Command {
                     const prim = user.accounts.find((a) => a.primary);
                     user.accounts = user.accounts.map((a) => {
                         if (a.primary) a.primary = false;
-                        if (a.allyCode === allycode) a.primary = true;
+                        if (a.allyCode === allyCode) a.primary = true;
                         return a;
                     });
                     await userReg.updateUser(userID, user);
@@ -427,7 +427,7 @@ export default class UserConf extends Command {
                             // AW Allycodes
                             fields.push({
                                 name: "Arenawatch Allycodes",
-                                value: `\`\`\`${user.arenaWatch.allycodes
+                                value: `\`\`\`${user.arenaWatch.allyCodes
                                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
                                     .map((ac) => `${ac.allyCode} | ${ac.name}`)
                                     .join("\n")}\`\`\``,
@@ -454,7 +454,7 @@ export default class UserConf extends Command {
                                 value: [
                                     `>>> Enabled:  **${user.guildUpdate.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildUpdate.channel ? `<#${user.guildUpdate.channel}>` : "N/A"}`,
-                                    `Allycode: **${user.guildUpdate.allycode || "N/A"}**`,
+                                    `Allycode: **${user.guildUpdate.allyCode || "N/A"}**`,
                                     `SortBy:   **${user.guildUpdate.sortBy || "N/A"}**`,
                                 ].join("\n"),
                             });
@@ -467,7 +467,7 @@ export default class UserConf extends Command {
                                 value: [
                                     `>>> Enabled:  **${user.guildTickets.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildTickets.channel ? `<#${user.guildTickets.channel}>` : "N/A"}`,
-                                    `Allycode: **${user.guildTickets.allycode || "N/A"}**`,
+                                    `Allycode: **${user.guildTickets.allyCode || "N/A"}**`,
                                     `SortBy:   **${user.guildTickets.sortBy || "N/A"}**`,
                                 ].join("\n"),
                             });
@@ -492,7 +492,7 @@ export default class UserConf extends Command {
         const subCommandGroup = interaction.options.getSubcommandGroup(false);
         const subCommand = interaction.options.getSubcommand();
 
-        // Only handle autocomplete for the make_primary or remove subcommand's allycode option
+        // Only handle autocomplete for the make_primary or remove subcommand's ally code option
         if (subCommandGroup === "allycodes" && ["make_primary", "remove"].includes(subCommand) && focusedOption.name === "allycode") {
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 

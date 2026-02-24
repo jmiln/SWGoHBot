@@ -41,7 +41,7 @@ describe("MyCharacter", () => {
         assert.ok(subcommandNames.includes("ship"), "Expected ship subcommand");
     });
 
-    it("should return error for character search with no allycode registered", async () => {
+    it("should return error for character search with no ally code registered", async () => {
         // No allycode provided and user not registered → getAllyCode returns null → error before reply
         const interaction = createMockInteraction({
             optionsData: { _subcommand: "character", character: "Darth Vader" },
@@ -49,7 +49,7 @@ describe("MyCharacter", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyCharacter();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find a valid allycode");
+        assertErrorReply(interaction, "could not find a valid ally code");
     });
 
     it("should return error when character search yields no matches", async () => {

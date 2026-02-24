@@ -27,14 +27,14 @@ export default class MyProfile extends Command {
     }
 
     async run({ interaction, language }: CommandContext) {
-        const allycodeIn = interaction.options.getString("allycode");
-        const allycode = await getAllyCode(interaction, allycodeIn);
-        if (!allycode) {
-            return super.error(interaction, `Sorry, but ${allycodeIn} is not a valid allycode`);
+        const ac = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, ac, true);
+        if (!allyCode) {
+            return super.error(interaction, `Sorry, but ${ac} is not a valid ally code`);
         }
-        await interaction.reply({ content: `> Please wait while I look up the profile for ${allycode}` });
+        await interaction.reply({ content: `> Please wait while I look up the profile for ${allyCode}` });
 
-        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) {
             return super.error(interaction, "Please make sure you are registered with a valid ally code");
         }
