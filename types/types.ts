@@ -290,6 +290,14 @@ export interface PatreonMember {
         currently_entitled_amount_cents: number;
     };
     relationships?: {
+        currently_entitled_tiers?: {
+            data?: [
+                {
+                    id: string;
+                    type: string;
+                },
+            ];
+        };
         user?: {
             data?: {
                 id: string;

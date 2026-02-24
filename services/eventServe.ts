@@ -172,8 +172,8 @@ async function processEvents() {
 
         const timesToCountdown = new Set(guildConf.eventCountdown);
         const timeTil = ev.eventDT - nowTime;
-        const { minute } = convertMS(timeTil);
-        const cdMin = timesToCountdown.has(minute);
+        const { totalMin } = convertMS(timeTil);
+        const cdMin = timesToCountdown.has(totalMin);
 
         if (cdMin) {
             ev.isCD = true;
