@@ -24,7 +24,6 @@ const MAX_CONCURRENT = process.argv.includes("--max-concurrent")
     : 80;
 
 import ComlinkStub from "@swgoh-utils/comlink";
-import type { BotCache } from "../types/cache_types.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
 import type { HelpJSON } from "../types/help_types.ts";
 import type { ComlinkAbility, FeatureStore, SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
@@ -93,7 +92,6 @@ const SHIP_COMBAT_TYPE = 2;
 
 const DATA_DIR_PATH = path.resolve(import.meta.dirname, "../data/");
 const GAMEDATA_DIR_PATH = path.resolve(import.meta.dirname, "../data/gameDataFiles/");
-// const CACHE_FILE_PATH          = path.resolve(import.meta.dirname, "../modules/cache.js");
 
 const CHAR_FILE_PATH = path.join(DATA_DIR_PATH, "characters.json");
 const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
@@ -217,7 +215,7 @@ async function init() {
                     if (log.length) logger.log(["Found new metadata, running updaters", ...log].join("\n"));
 
                     debugTime("Running game data updaters");
-                    await runGameDataUpdaters(newMetadata, cache, comlinkStub);
+                    await runGameDataUpdaters(newMetadata, comlinkStub);
                     debugTimeEnd("Running game data updaters");
                     debugLog("Finished running game data updater for new metadata");
                 }
@@ -239,7 +237,7 @@ async function init() {
             })();
 
             // Run the Patreon updater every 15 minutes - store interval reference
-            patronsInterval = setInterval(async () => await updatePatrons(cache), 15 * constants.minMS);
+            patronsInterval = setInterval(async () => await updatePatrons(), 15 * constants.minMS);
         } else {
             // TODO: Add a way to choose what's updated from the cmdline without having to manually change which bit we want updated
             // If we're forcing an update, just run the bits we want then exit
@@ -249,9 +247,9 @@ async function init() {
             //     newMetadata: Metadata;
             //     oldMetadata: Metadata;
             // };
-            // await runGameDataUpdaters(newMetadata, cache, comlinkStub);
+            // await runGameDataUpdaters(newMetadata, comlinkStub);
             await exportCommandDocs();
-            // await updatePatrons(cache);
+            // await updatePatrons();
             await cleanup();
             process.exit(0);
         }
@@ -338,7 +336,7 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
     debugTimeEnd("Merging mods to characters");
 }
 
-async function runGameDataUpdaters(metadata: Metadata, cache: BotCache, comlinkStub: ComlinkStub) {
+async function runGameDataUpdaters(metadata: Metadata, comlinkStub: ComlinkStub) {
     debugLog("Running gameData updater");
     const time = new Date().toString().split(" ").slice(1, 5);
     const log = [];
@@ -346,13 +344,13 @@ async function runGameDataUpdaters(metadata: Metadata, cache: BotCache, comlinkS
     const locales = await getLocalizationData(comlinkStub, metadata.latestLocalizationBundleVersion);
 
     // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
-    await updateGameData(locales, metadata, cache, comlinkStub); // Run the stuff to grab all new game data, and update listings in the db
+    await updateGameData(locales, metadata, comlinkStub); // Run the stuff to grab all new game data, and update listings in the db
     debugLog("Finished processing gameData chunks");
 
     // Run unit locations updaters in parallel
     const [charLocsResult, shipLocsResult] = await Promise.all([
-        updateLocs(CHAR_FILE_PATH, CHAR_LOCATIONS_FILE_PATH, locales, cache),
-        updateLocs(SHIP_FILE_PATH, SHIP_LOCATIONS_FILE_PATH, locales, cache),
+        updateLocs(CHAR_FILE_PATH, CHAR_LOCATIONS_FILE_PATH, locales),
+        updateLocs(SHIP_FILE_PATH, SHIP_LOCATIONS_FILE_PATH, locales),
     ]);
 
     // Save if changes detected
@@ -688,26 +686,57 @@ function patreonCredentials() {
         : undefined;
 }
 
-async function updatePatrons(cache: BotCache) {
+async function getPatreonTiers(): Promise<{ id: string; amount_cents: number; title: string }[]> {
+    const patreon = patreonCredentials();
+    if (!patreon) return;
+
+    const baseMembersUrl = `https://api.patreon.com/oauth2/v2/campaigns/${patreon.campaignId}?include=tiers&fields[tier]=title,amount_cents`;
+    const { included } = await fetch(encodeURI(baseMembersUrl), {
+        headers: {
+            Authorization: `Bearer ${patreon.creatorAccessToken}`,
+        },
+    })
+        .then((res) => res.json())
+        .catch((err) => console.error(`[${myTime()}] [dataUpdater/getPatreonTiers] ${myTime()}Error fetching Patreon tiers`, err));
+
+    return included.map(({ id, attributes }) => {
+        return {
+            id: id,
+            amount_cents: attributes.amount_cents,
+            title: attributes.title,
+        };
+    });
+}
+
+async function updatePatrons() {
     const patreon = patreonCredentials();
     if (!patreon) return;
 
     try {
+        const patreonTiers = await getPatreonTiers();
+
+        const baseMembersUrl = `https://www.patreon.com/api/oauth2/v2/campaigns/${patreon.campaignId}/members?include=user,currently_entitled_tiers`;
+        const memberFields = "&fields[member]=full_name,currently_entitled_amount_cents,patron_status";
+        const userFields = "&fields[user]=social_connections";
+        const countPerPage = "&page[count]=200";
+
+        const fullUrl = encodeURI([baseMembersUrl, memberFields, userFields, countPerPage].join(""));
+
         // Use the given patId to get all of the supporters
         // https://docs.patreon.com/#get-api-oauth2-v2-campaigns
-        const response = await fetch(
-            `https://www.patreon.com/api/oauth2/v2/campaigns/${patreon.campaignId}/members?include=user&fields%5Bmember%5D=full_name,currently_entitled_amount_cents,patron_status&fields%5Buser%5D=social_connections&page%5Bcount%5D=200`,
-            {
-                headers: {
-                    Authorization: `Bearer ${patreon.creatorAccessToken}`,
-                },
-                signal: AbortSignal.timeout(30000), // 30 second timeout
+        const response = await fetch(fullUrl, {
+            headers: {
+                Authorization: `Bearer ${patreon.creatorAccessToken}`,
             },
-        );
+            signal: AbortSignal.timeout(30000), // 30 second timeout
+        });
 
         // Check response status
         if (!response.ok) {
-            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}`);
+            const errorBody = await response.text().catch(() => "Could not read error body");
+            logger.error(
+                `[${myTime()}] [dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}\nBody: ${errorBody}`,
+            );
             return;
         }
 
@@ -742,13 +771,19 @@ async function updatePatrons(cache: BotCache) {
         const users = Array.isArray(included) ? included.filter((inc: PatreonAPIUser) => inc.type === "user") : [];
 
         for (const member of members) {
-            const user = users.find((user) => user.id === member.relationships?.user?.data?.id);
+            const memberId = member.relationships?.user?.data?.id;
+            const memberStatus = member.attributes?.patron_status;
+            const memberName = member.attributes?.full_name;
+            const user = users.find((user) => user.id === memberId);
+
+            // In case the user's currently_entitled_amount_cents is showing 0 (Patreon bug/ gifted subs?), grab it by their tiers
+            const memberTiers = member.relationships?.currently_entitled_tiers?.data;
+            const userTierCents = memberTiers.map((t) => patreonTiers.find((tier) => tier.id === t.id).amount_cents);
+            const memberCents = Math.max(member.attributes.currently_entitled_amount_cents, ...userTierCents);
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)
             if (!user) {
-                logger.log(
-                    `Patreon user not found for member: ${member.attributes?.full_name} (ID: ${member.relationships?.user?.data?.id})`,
-                );
+                logger.log(`Patreon user not found for member: ${memberName} (ID: ${memberId})`);
                 continue;
             }
 
@@ -756,40 +791,40 @@ async function updatePatrons(cache: BotCache) {
             const discordID = user.attributes.social_connections?.discord?.user_id;
             if (discordID) {
                 const userConf = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "patrons", { discordID: discordID });
-                if (!userConf)
-                    logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${member.attributes.full_name} (${discordID || "N/A"})`);
+                if (!userConf) logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${memberName} (${discordID || "N/A"})`);
             }
 
             // Save this user's info to the db
-            const newUser = await cache.put(
-                "swgohbot",
+            await cache.put(
+                env.MONGODB_SWGOHBOT_DB,
                 "patrons",
-                { id: member.relationships.user.data.id },
+                { id: memberId },
                 {
-                    id: member.relationships.user.data.id,
+                    id: memberId,
                     discordID: discordID,
-                    amount_cents: member.attributes.currently_entitled_amount_cents,
-                    patron_status: member.attributes.patron_status,
+                    amount_cents: memberCents,
+                    patron_status: memberStatus,
+                    tiers: memberTiers.map((tier) => tier.id),
                     updatedAt: new Date(),
                 },
             );
 
             // If they don't have a discord id to work with, move on
-            if (!newUser.discordID) continue;
+            if (!discordID) continue;
 
-            if (newUser.patron_status !== "active_patron" || !newUser.amount_cents) {
+            if (!memberCents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
-                const userConf = (await cache.getOne(env.MONGODB_SWAPI_DB, "users", { id: newUser.discordID })) as UserConfig | null;
+                const userConf = (await cache.getOne(env.MONGODB_SWAPI_DB, "users", { id: discordID })) as UserConfig | null;
 
                 // If they don't have bonusServer set (As it should be), move on
                 if (!userConf?.bonusServer?.length) continue;
 
                 // If it is set, remove it
-                const { user: userRes, guild: guildRes } = await clearSupporterInfo({ userId: newUser.discordID });
+                const { user: userRes, guild: guildRes } = await clearSupporterInfo({ userId: discordID });
 
                 // No issues, move on
                 if (!userRes?.error && !guildRes?.error) {
-                    logger.log(`User ${newUser.discordID} has been ended their Patreon support`);
+                    logger.log(`User ${discordID} has been ended their Patreon support`);
                     continue;
                 }
 
@@ -803,8 +838,8 @@ async function updatePatrons(cache: BotCache) {
                 // If the user exists, and they're active, make sure everything is set correctly
                 // Make sure that if they have a bonus server set in their user settings, it's set properly in the given guild
                 const { user: userRes, guild: guildRes } = (await ensureBonusServerSet({
-                    userId: newUser.discordID,
-                    amount_cents: newUser.amount_cents,
+                    userId: discordID,
+                    amount_cents: memberCents,
                 })) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
 
                 // If there are no issues, move along
@@ -819,13 +854,17 @@ async function updatePatrons(cache: BotCache) {
             }
         }
 
-        // Go through each of the guilds that have a supporter and make sure all of the lsited users are supposed to be there
+        // Go through each of the guilds that have a supporter and make sure all of the listed users are supposed to be there
         await ensureGuildSupporter();
     } catch (e) {
+        const errorMessage = e instanceof Error ? e.message : String(e);
+        const errorStack = e instanceof Error ? e.stack : "No stack trace available";
+
         if (e.name === "AbortError" || e.name === "TimeoutError") {
             logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds`);
         } else {
-            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Error getting patrons:`, e);
+            // Log both the message and the stack for full visibility
+            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Error getting patrons: ${errorMessage}\nStack: ${errorStack}`);
         }
     }
 }
@@ -834,7 +873,6 @@ async function updateLocs(
     unitListFile: string,
     currentLocFile: string,
     locales: Locales,
-    cache: BotCache,
 ): Promise<{ locations: UnitLocation[]; hasChanges: boolean }> {
     debugLog(`Updating unit locations for ${unitListFile}`);
     const [currentUnits, currentLocs] = await Promise.all([readJSON<BotUnit[]>(unitListFile), readJSON<UnitLocation[]>(currentLocFile)]);
@@ -1214,7 +1252,7 @@ function validateGameData(gameData: GameData): void {
     logger.log("[validateGameData] Validated gameData");
 }
 
-async function updateGameData(locales: Locales, metadata: Metadata, cache: BotCache, comlinkStub: ComlinkStub) {
+async function updateGameData(locales: Locales, metadata: Metadata, comlinkStub: ComlinkStub) {
     try {
         if (!metadata.latestGamedataVersion) {
             throw new Error("[updateGameData] Missing latestGamedataVersion from metadata");
@@ -1224,14 +1262,14 @@ async function updateGameData(locales: Locales, metadata: Metadata, cache: BotCa
 
         const gameData = await getMostRecentGameData(comlinkStub, metadata.latestGamedataVersion);
 
-        await processGameData(gameData, locales, cache);
+        await processGameData(gameData, locales);
     } catch (error) {
         logError("dataUpdater/updateGameData", "Error processing game data:", error);
         throw error;
     }
 }
 
-async function processGameData(gameData: GameData, locales: Locales, cache: BotCache) {
+async function processGameData(gameData: GameData, locales: Locales) {
     try {
         debugTime("Finished processing all GameData");
         // Validate gameData structure before processing
@@ -1240,7 +1278,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         debugTime("Finished processing Abilities");
         const { abilitiesOut, skillMap } = processAbilities(gameData.ability, gameData.skill);
         await saveFile(path.join(DATA_DIR_PATH, "skillMap.json"), skillMap, false);
-        await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales, cache);
+        await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales);
         debugTimeEnd("Finished processing Abilities");
 
         debugTime("Finished processing Omicrons");
@@ -1251,12 +1289,12 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
         debugTime("Finished processing Categories");
         const catMapOut = processCategories(gameData.category) as { id: string; descKey: string }[];
         // await saveFile(dataDir + "catMap.json", catMapOut, false);
-        await processLocalization(catMapOut, "categories", ["descKey"], "id", locales, cache);
+        await processLocalization(catMapOut, "categories", ["descKey"], "id", locales);
         debugTimeEnd("Finished processing Categories");
 
         debugTime("Finished processing Equipment");
         const mappedEquipmentList = processEquipment(gameData.equipment);
-        await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales, cache);
+        await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales);
         debugTimeEnd("Finished processing Equipment");
 
         debugTime("Finished processing Materials");
@@ -1271,7 +1309,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
 
         debugTime("Finished processing Recipes");
         const { unitRecipeList, mappedRecipeList } = processRecipes(gameData.recipe);
-        await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", locales, cache, ["eng_us"]);
+        await processLocalization(mappedRecipeList, "recipes", ["descKey"], "id", locales, ["eng_us"]);
         debugTimeEnd("Finished processing Recipes");
 
         debugTime("Finished processing Units");
@@ -1285,7 +1323,7 @@ async function processGameData(gameData: GameData, locales: Locales, cache: BotC
 
         const bulkUnitArr = unitsToCharacterDB(structuredClone(processedUnitList));
         await cache.putMany(env.MONGODB_SWAPI_DB, "characters", bulkUnitArr);
-        await processLocalization(processedUnitList, "units", ["nameKey"], "baseId", locales, cache);
+        await processLocalization(processedUnitList, "units", ["nameKey"], "baseId", locales);
 
         const unitsOut = unitsForUnitMapFile(processedUnitList);
         await saveFile(path.join(DATA_DIR_PATH, "unitMap.json"), unitsOut, false);
@@ -1335,7 +1373,6 @@ async function processLocalization(
     targetKeys: string[],
     dbIdKey: string,
     locales: Locales,
-    cache: BotCache,
     langList: SWAPILang[] = null,
 ) {
     const idKey = dbIdKey || "id";
