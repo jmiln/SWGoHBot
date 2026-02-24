@@ -194,9 +194,9 @@ export default class Charactergear extends Command {
             if (!playerChar) {
                 return super.error(interaction, "Looks like you don't have this character unlocked");
             }
+
             // They do have the character unlocked.
             // Need to filter out the gear that they already have assigned to the character, then show them what's left
-
             if (gearLvl && gearLvl < playerChar.gear) {
                 return super.error(interaction, "Looks like you already have all the gear equipped for that level", {
                     title: "Already There",
@@ -215,11 +215,11 @@ export default class Charactergear extends Command {
                         g.equipmentSetList.splice(toRemove.pop(), 1);
                     }
                 }
-                // Take out the unknown ones
-                if (g.equipmentSetList.indexOf("???????") > -1) {
-                    g.equipmentSetList.splice(g.equipmentSetList.indexOf("???????"), 1);
-                }
-                if (g.tier === 12 && ix === 0 && g.equipmentSetList.length === 0) {
+                // Take out all of the unknown ones
+                // This is a string of question marks that shows for g13, since that is the max/ there's no more gear at that point
+                g.equipmentSetList = g.equipmentSetList.filter((gname) => gname !== "???????");
+
+                if (g.tier === MAX_GEAR && ix === 0 && g.equipmentSetList.length === 0) {
                     fields.push({
                         name: "Congrats!",
                         value: `Look like you have the gear maxed out for ${character.name}`,
@@ -228,14 +228,18 @@ export default class Charactergear extends Command {
                     if (doExpand) {
                         // If they want all the pieces, work on that
                         const out = await expandPieces(g.equipmentSetList);
-                        const outK = Object.keys(out).sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10));
+                        const outKeys = Object.keys(out)
+                            .sort((a, b) => Number.parseInt(out[a].mark, 10) - Number.parseInt(out[b].mark, 10))
+                            .map((g) => `**${out[g].count}x**${" ".repeat(3 - out[g].count.toString().length)} ${g}`)
+                            .join("\n");
 
-                        fields.push({
-                            name: `Gear Lvl ${g.tier}`,
-                            value: expandSpaces(
-                                outK.map((g) => `**${out[g].count}x** ${" ".repeat(3 - out[g].count.toString().length)}${g}`).join("\n"),
-                            ),
-                        });
+                        const msgArr = msgArray(outKeys, "\n", 950);
+                        for (const [ix, msg] of msgArr.entries()) {
+                            fields.push({
+                                name: ix === 0 ? `Gear Lvl ${g.tier}` : "",
+                                value: expandSpaces(msg),
+                            });
+                        }
                     } else {
                         fields.push({
                             name: `Gear Lvl ${g.tier}`,
