@@ -124,15 +124,15 @@ export default class MyMods extends Command {
 
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         const subCommand = interaction.options.getSubcommand();
-        let allycode = interaction.options.getString("allycode");
-        allycode = await getAllyCode(interaction, allycode);
+        let allyCode = interaction.options.getString("allycode");
+        allyCode = await getAllyCode(interaction, allyCode);
 
-        if (!allycode) {
+        if (!allyCode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
         }
         await interaction.reply({ content: language.get("COMMAND_MYMODS_WAIT") });
 
-        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player?.roster) {
             return super.error(interaction, "Unable to retrieve roster.", {
                 title: language.get("BASE_SOMETHING_BROKE"),

@@ -38,9 +38,9 @@ export default class Panic extends Command {
     async run({ interaction }: CommandContext) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
-        const allycode = await getAllyCode(interaction, ac);
+        const allyCode = await getAllyCode(interaction, ac);
 
-        if (!allycode) {
+        if (!allyCode) {
             return super.error(interaction, "I could not find a valid allycode. Please make sure you've type it in correctly.");
         }
 
@@ -54,7 +54,7 @@ export default class Panic extends Command {
         await interaction.reply({ content: "Please wait while I process your request." });
 
         // Grab the player's info
-        const player = await fetchPlayerWithCooldown(interaction, allycode);
+        const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player?.roster)
             return super.error(
                 interaction,

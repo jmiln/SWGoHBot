@@ -60,9 +60,9 @@ export async function wait(ms: number): Promise<void> {
  * Check if a string of numbers is a valid ally code.
  * Needs to be a string of 9 numbers
  */
-export function isAllyCode(aCode: string | number): boolean {
-    if (!aCode || !aCode.toString().length) return false;
-    const match = aCode
+export function isAllyCode(allyCode: string | number): boolean {
+    if (!allyCode || !allyCode.toString().length) return false;
+    const match = allyCode
         .toString()
         .replace(/[^\d]*/g, "") // Remove non-numbers
         .match(/^\d{9}$/); // Make sure it's a string of 9 numbers

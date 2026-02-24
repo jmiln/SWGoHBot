@@ -154,9 +154,9 @@ class SWAPI {
         }
     }
 
-    async getPayoutFromAC(allycodes: string | string[]) {
-        // Make sure the allycode(s) are in an array
-        const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
+    async getPayoutFromAC(allyCodes: string | string[]) {
+        // Make sure the ally code(s) are in an array
+        const acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
         return await cache.get(
             env.MONGODB_SWAPI_DB,
             "playerStats",
@@ -165,8 +165,8 @@ class SWAPI {
         );
     }
 
-    async getPlayersArena(allycodes: number | number[]) {
-        let acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
+    async getPlayersArena(allyCodes: number | number[]) {
+        let acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
         acArr = acArr.filter((ac) => !!ac && ac.toString().length === 9);
         if (!acArr.length) throw new Error("No valid ally code(s) entered");
 
@@ -206,9 +206,9 @@ class SWAPI {
             .filter((p) => !!p);
     }
 
-    async getPlayerUpdates(allycodes: number | number[]) {
+    async getPlayerUpdates(allyCodes: number | number[]) {
         const specialAbilities = await this.getSpecialAbilities();
-        const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
+        const acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
         const updatedBare: SWAPIPlayer[] = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
@@ -313,16 +313,16 @@ class SWAPI {
     }
 
     async unitStats(
-        allycodes: number | number[],
+        allyCodes: number | number[],
         cooldown: PlayerCooldown = {
             player: this.playerMaxCooldown,
             guild: this.guildMaxCooldown,
         },
         options: { force?: boolean; defId?: string } = { force: false, defId: null },
     ): Promise<SWAPIPlayer[]> {
-        // Make sure the allycode(s) are in an array
-        if (!allycodes) return null;
-        const acArr: number[] = Array.isArray(allycodes) ? allycodes : [allycodes];
+        // Make sure the allyCode(s) are in an array
+        if (!allyCodes) return null;
+        const acArr: number[] = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
         const specialAbilities: SWAPIUnitAbility[] = await this.getSpecialAbilities();
 
@@ -471,13 +471,13 @@ class SWAPI {
                 }
             }
 
-            // Sort results to match the order of input allycodes
+            // Sort results to match the order of input allyCodes
             // This ensures consistent ordering for comparison commands (e.g., grandarena, versus)
             // Note: acArr may contain strings at runtime despite number[] type, so normalize to numbers for comparison
             const sortedStats = acArr
-                .map((allycode) => {
+                .map((allyCode) => {
                     // Normalize to number for comparison (handles both string and number inputs)
-                    const normalizedAC = typeof allycode === "string" ? Number.parseInt(allycode, 10) : allycode;
+                    const normalizedAC = typeof allyCode === "string" ? Number.parseInt(allyCode, 10) : allyCode;
                     return playerStats.find((p) => p?.allyCode === normalizedAC);
                 })
                 .filter((p) => p !== undefined);
@@ -489,8 +489,8 @@ class SWAPI {
         }
     }
 
-    async player(allycode: string | number, cooldown?: PlayerCooldown): Promise<SWAPIPlayer | null> {
-        const res = await this.unitStats(Number.parseInt(String(allycode), 10), cooldown);
+    async player(allyCode: string | number, cooldown?: PlayerCooldown): Promise<SWAPIPlayer | null> {
+        const res = await this.unitStats(Number.parseInt(String(allyCode), 10), cooldown);
         return res?.[0] ?? null;
     }
 
@@ -939,18 +939,18 @@ class SWAPI {
     }
 
     async getRawGuild(
-        allycode: number,
+        allyCode: number,
         cooldown: PlayerCooldown = { player: this.playerMaxCooldown, guild: this.guildMaxCooldown },
         { forceUpdate } = { forceUpdate: false },
     ) {
         const tempGuild: RawGuild = {} as RawGuild;
-        const thisAc = allycode?.toString().replace(/[^\d]/g, "");
+        const thisAc = allyCode?.toString().replace(/[^\d]/g, "");
         if (!thisAc || Number.isNaN(thisAc) || thisAc.length !== 9) {
-            throw new Error("Please provide a valid allycode");
+            throw new Error("Please provide a valid ally code");
         }
 
         const player = await comlinkStub.getPlayer(thisAc);
-        if (!player) throw new Error("I cannot find a matching profile for this allycode, please make sure it's typed in correctly");
+        if (!player) throw new Error("I cannot find a matching profile for this ally code, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
 
@@ -1013,14 +1013,14 @@ class SWAPI {
         const oldLen = guild.roster.length;
         guild.roster = guild.roster.filter((m) => m.allyCode !== null);
         if (guild.roster.length !== oldLen) {
-            logger.log(`[swapi/guild] Filtered ${oldLen - guild.roster.length} members with null allycodes`);
+            logger.log(`[swapi/guild] Filtered ${oldLen - guild.roster.length} members with null ally codes`);
         }
         return guild;
     }
 
-    async guild(allycode: number | string, cooldown?: PlayerCooldown) {
-        const thisAcStr = allycode?.toString().replace(/[^\d]/g, "");
-        if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid allycode");
+    async guild(allyCode: number | string, cooldown?: PlayerCooldown) {
+        const thisAcStr = allyCode?.toString().replace(/[^\d]/g, "");
+        if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid ally code");
         const thisAc = Number.parseInt(thisAcStr, 10);
 
         /** Get player from cache */
