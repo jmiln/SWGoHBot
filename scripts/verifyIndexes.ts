@@ -19,8 +19,8 @@
  */
 
 import type { Db, IndexDescription, IndexDirection, MongoClient } from "mongodb";
+import { env } from "../config/config.ts";
 import indexConfig, { type IndexDefinition } from "../config/indexes.ts";
-import config from "../config.ts";
 import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
 
@@ -306,7 +306,7 @@ async function main() {
         // Connect to MongoDB
         logger.info("[IndexVerifier] Connecting to MongoDB...");
         const { MongoClient } = await import("mongodb");
-        const mongoClient = new MongoClient(config.mongodb.url);
+        const mongoClient = new MongoClient(env.MONGODB_URL);
         await mongoClient.connect();
 
         // Initialize cache with mongo client

@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-02-24T00:58:04.559Z",
+        "generatedAt": "2026-02-24T22:24:02.681Z",
         "totalCommands": 44,
         "categories": 4
     },
@@ -1411,7 +1411,7 @@
                                 "options": [
                                     {
                                         "name": "allycodes",
-                                        "description": "AllyCodes or allycode:mention, comma seperated",
+                                        "description": "Ally Codes or ally code:mention, comma seperated",
                                         "type": 3,
                                         "required": true
                                     },
@@ -1438,7 +1438,7 @@
                             {
                                 "name": "edit",
                                 "type": 1,
-                                "description": "Use to change an allycode or mention (Ex: '123123123 123123123:mention')",
+                                "description": "Use to change an ally code or mention (Ex: '123123123 123123123:mention')",
                                 "options": [
                                     {
                                         "name": "old_allycode",
@@ -1449,7 +1449,7 @@
                                     {
                                         "name": "new_allycode",
                                         "type": 3,
-                                        "description": "Different ally code, or allycode:mention to change to (Ex: 123123123:@mention)",
+                                        "description": "Different ally code, or ally code:mention to change to (Ex: 123123123:@mention)",
                                         "required": true
                                     }
                                 ]

@@ -109,6 +109,7 @@ function setupDataUpdateTasks(shardId: number): void {
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[${shardId}] Error in data update tasks: ${message}`);
+                logger.error(err.stack);
             }
         }, MINUTE_MS);
 

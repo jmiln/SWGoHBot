@@ -2120,9 +2120,9 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ]
         },
         "avatarName": "charui_trooperclone_fives"
@@ -7221,7 +7221,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Protection",
+            "circle": "Health",
             "cross": "Offense",
             "sets": [
                 "Health x2",

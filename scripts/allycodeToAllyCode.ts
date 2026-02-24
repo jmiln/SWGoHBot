@@ -17,14 +17,21 @@ async function migrate() {
         const pipeline: any[] = [
             {
                 $set: {
+                    // Update Accounts Array
                     "accounts": {
                         $map: {
                             input: "$accounts",
                             as: "acc",
-                            in: { $mergeObjects: ["$$acc", { allyCode: "$$acc.allycode" }] }
+                            in: {
+                                $mergeObjects: [
+                                    "$$acc",
+                                    // Only set new key if old key exists
+                                    { $cond: [{ $gt: ["$$acc.allycode", null] }, { allyCode: "$$acc.allycode" }, {}] }
+                                ]
+                            }
                         }
                     },
-                    // Only attempt to map allyCodes if the array exists
+                    // Update arenaWatch Array (if it exists)
                     "arenaWatch.allyCodes": {
                         $cond: {
                             if: { $isArray: "$arenaWatch.allycodes" },
@@ -32,18 +39,24 @@ async function migrate() {
                                 $map: {
                                     input: "$arenaWatch.allycodes",
                                     as: "aw",
-                                    in: { $mergeObjects: ["$$aw", { allyCode: "$$aw.allycode" }] }
+                                    in: {
+                                        $mergeObjects: [
+                                            "$$aw",
+                                            { $cond: [{ $gt: ["$$aw.allycode", null] }, { allyCode: "$$aw.allycode" }, {}] }
+                                        ]
+                                    }
                                 }
                             },
-                            else: "$$REMOVE"
+                            else: "$arenaWatch.allyCodes" // Keep existing if no old field to migrate
                         }
                     },
-                    // Use $cond to only set if the old field exists
-                    "guildUpdate.allyCode": { $ifNull: ["$guildUpdate.allycode", "$$REMOVE"] },
-                    "guildTickets.allyCode": { $ifNull: ["$guildTickets.allycode", "$$REMOVE"] }
+                    // Simple fields
+                    "guildUpdate.allyCode": { $ifNull: ["$guildUpdate.allycode", "$guildUpdate.allyCode"] },
+                    "guildTickets.allyCode": { $ifNull: ["$guildTickets.allycode", "$guildTickets.allyCode"] }
                 }
             },
             {
+                // Now safely remove the old lowercase fields
                 $unset: [
                     "accounts.allycode",
                     "arenaWatch.allycodes",
