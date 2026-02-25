@@ -161,19 +161,27 @@ export default class Charactergear extends Command {
                         fields.push(f);
                     }
                 }
-                return interaction.reply({
-                    content: null,
-                    embeds: [
-                        {
-                            color: getSideColor(character.side),
-                            author: {
-                                name: character.name,
-                                url: character.url,
-                                icon_url: character.avatarURL,
-                            },
-                            fields: fields,
-                        },
-                    ],
+                const embedBase = {
+                    color: getSideColor(character.side),
+                    author: {
+                        name: character.name,
+                        url: character.url,
+                        icon_url: character.avatarURL,
+                    },
+                };
+                const totalLen = fields.reduce((acc, cur) => acc + cur.name.length + cur.value.length, 0);
+                if (totalLen < 5500) {
+                    return interaction.reply({
+                        content: null,
+                        embeds: [{ ...embedBase, fields }],
+                    });
+                }
+                const half = Math.floor(fields.length / 2);
+                await interaction.reply({
+                    embeds: [{ ...embedBase, fields: fields.slice(0, half) }],
+                });
+                return await interaction.followUp({
+                    embeds: [{ color: getSideColor(character.side), fields: fields.slice(half) }],
                 });
             }
         } else {
