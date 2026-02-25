@@ -109,6 +109,7 @@ export const UserConfigSchema = z.object({
         .partial()
         .optional(),
     bonusServer: z.string().optional(),
+    patreonAmountCents: z.number().optional(),
 });
 
 // Export inferred types

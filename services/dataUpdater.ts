@@ -816,6 +816,12 @@ async function updatePatrons() {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
                 const userConf = (await cache.getOne(env.MONGODB_SWAPI_DB, "users", { id: discordID })) as UserConfig | null;
 
+                // Cache patreon status as 0 (inactive) on userconf if the user is registered
+                const userConfExists = await cache.exists(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID });
+                if (userConfExists) {
+                    await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID }, { patreonAmountCents: 0 });
+                }
+
                 // If they don't have bonusServer set (As it should be), move on
                 if (!userConf?.bonusServer?.length) continue;
 
@@ -841,6 +847,12 @@ async function updatePatrons() {
                     userId: discordID,
                     amount_cents: memberCents,
                 })) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
+
+                // Cache patreon status on userconf so commands can read it without querying patrons collection
+                const userConfExists = await cache.exists(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID });
+                if (userConfExists) {
+                    await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID }, { patreonAmountCents: memberCents });
+                }
 
                 // If there are no issues, move along
                 if (!userRes?.error && !guildRes?.error) continue;
