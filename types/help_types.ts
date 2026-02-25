@@ -12,7 +12,7 @@ export interface HelpCommand {
     usage: string[];
     options: unknown[];
     permLevel: number;
-    guildOnly: boolean;
+    devServerOnly: boolean;
     contexts: unknown;
     enabled: boolean;
 }

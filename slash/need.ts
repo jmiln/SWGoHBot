@@ -38,7 +38,6 @@ export default class Need extends Command {
         category: "Gamedata",
 
         enabled: true,
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             // Allycode (Of course)

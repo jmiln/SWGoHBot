@@ -13,7 +13,6 @@ export default class Poll extends Command {
         category: "Admin",
         contexts: [InteractionContextType.Guild],
         description: "Create and vote on polls",
-        guildOnly: false,
         options: [
             // Subcommands for create, view, end, cancel, vote
             {

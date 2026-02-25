@@ -15,7 +15,6 @@ export default class GuildTickets extends Command {
     static readonly metadata = {
         name: "guildtickets",
         category: "Patreon",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild],
         description: "Set up the guild watcher to automatically display a guild's current ticket counts",
         options: [

@@ -82,19 +82,6 @@ describe("Arenarank", () => {
         assert.ok(replies.length > 0, "Expected at least one reply");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            optionsData: { rank: 100 },
-            guild: null as any
-        });
-
-        const command = new Arenarank();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-    });
-
     it("should send exactly one reply", async () => {        const interaction = createMockInteraction({
             optionsData: { rank: 250 }
         });

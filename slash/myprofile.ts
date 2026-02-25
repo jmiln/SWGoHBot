@@ -10,7 +10,6 @@ export default class MyProfile extends Command {
         name: "myprofile",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show some general stats about your game profile",
         options: [

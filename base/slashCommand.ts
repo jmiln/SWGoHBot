@@ -17,7 +17,7 @@ const defCmdData = {
     description: "No description provided.",
     options: [],
     defaultPermissions: true,
-    guildOnly: false, // false = global, true = dev_server only
+    devServerOnly: false, // false = global, true = dev_server only
     enabled: true,
     permLevel: 0,
     contexts: undefined as InteractionContextType[] | undefined,
@@ -33,7 +33,7 @@ export default abstract class slashCommand {
     abstract run(context: CommandContext): Promise<any>;
 
     commandData: CommandMetadata;
-    guildOnly: boolean;
+    devServerOnly: boolean;
 
     async autocomplete?(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
 
@@ -42,7 +42,7 @@ export default abstract class slashCommand {
             ...defCmdData,
             ...commandData,
         };
-        this.guildOnly = this.commandData.guildOnly;
+        this.devServerOnly = this.commandData.devServerOnly;
     }
 
     async error(interaction: ChatInputCommandInteraction, errMsg: string, options: SlashEmbedOptions = {}): Promise<void> {

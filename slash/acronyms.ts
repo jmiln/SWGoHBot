@@ -15,8 +15,6 @@ export default class Acronyms extends Command {
         name: "acronyms",
         description: "Show what common acronyms mean",
         category: "General",
-
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

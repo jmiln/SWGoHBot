@@ -46,17 +46,6 @@ describe("Patreon", () => {
         assert.ok(commandField, "Expected 'Patreon Commands' field");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            optionsData: { _subcommand: "benefits" },
-            guild: null as any
-        });
-
-        const command = new Patreon();
-        await command.run({ interaction, language: (interaction as any).language });
-
-        assertReplyCount(interaction, 1);
-    });
-
     it("should send exactly one reply", async () => {        const interaction = createMockInteraction({
             optionsData: { _subcommand: "benefits" }
         });

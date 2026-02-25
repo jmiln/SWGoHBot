@@ -11,7 +11,6 @@ export default class RaidDamage extends Command {
         category: "Gamedata",
 
         enabled: true,
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

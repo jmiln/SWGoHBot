@@ -22,7 +22,6 @@ export default class UserConf extends Command {
         name: "userconf",
         description: "Change your personal settings with the bot (allycode, view alerts, etc.)",
         category: "General",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

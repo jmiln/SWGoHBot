@@ -10,7 +10,6 @@ export default class ArenaAlert extends Command {
         name: "arenaalert",
         description: "Change settings for your arena alerts",
         category: "Patreon",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

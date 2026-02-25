@@ -163,23 +163,6 @@ describe("Character", () => {
         const reply = replies[0];
         assert.ok(reply.embeds && reply.embeds.length > 0, "Expected embed in reply");
     });
-
-    it("should work in DMs (guild context not required)", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" },
-            guild: null as any
-        });
-
-        const command = new Character();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-
-        const reply = replies[0];
-        assert.ok(reply.embeds && reply.embeds.length > 0, "Expected embed in reply");
-    });
-
     it("should handle character search by alias", async () => {        const interaction = createMockInteraction({
             optionsData: { character: "CLS" } // Alias for Commander Luke
         });

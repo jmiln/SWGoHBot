@@ -118,21 +118,6 @@ describe("WhoIs", () => {
         assert.ok(content.includes("333333333"), "Expected third player");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        mockSwapi.setPlayerData({ allyCode: 123456789, name: "Test", level: 85 } as any);
-
-        const interaction = createMockInteraction({
-            optionsData: { name: "Test" },
-            guild: null as any
-        });
-
-        const command = new WhoIs();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-    });
 
     it("should defer reply before fetching data", async () => {
         mockSwapi.setPlayerData({ allyCode: 123456789, name: "Test", level: 85 } as any);

@@ -13,7 +13,6 @@ export default class Panic extends Command {
         description: "Show how close you are to being ready for character events",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

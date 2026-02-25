@@ -12,7 +12,6 @@ export default class Patreon extends Command {
         description: "View your Patreon benefits and commands.",
         category: "Patreon",
         enabled: true,
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

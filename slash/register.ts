@@ -15,7 +15,6 @@ export default class Register extends Command {
         description: "Link an ally code to your account",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

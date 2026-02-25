@@ -12,7 +12,6 @@ export default class Showconf extends Command {
         name: "showconf",
         contexts: [InteractionContextType.Guild],
         description: "Show the current guild configuration",
-        guildOnly: false,
         permLevel: 3,
         category: "Admin",
     };

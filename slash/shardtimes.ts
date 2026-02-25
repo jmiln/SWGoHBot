@@ -16,10 +16,8 @@ export default class Shardtimes extends Command {
     static readonly metadata = {
         name: "shardtimes",
         category: "General",
-
         contexts: [InteractionContextType.Guild],
         description: "Manage shard times",
-        guildOnly: false,
         options: [
             // Add
             //  - UserID, name, me

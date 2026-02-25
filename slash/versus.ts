@@ -13,7 +13,6 @@ export default class Versus extends Command {
         description: "Compare the stats of two users",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         enabled: true,
         options: [

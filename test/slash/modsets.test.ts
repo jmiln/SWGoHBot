@@ -34,15 +34,4 @@ describe("Modsets", () => {
         assertReplyCount(interaction, 1);
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            guild: null as any
-        });
-
-        const command = new Modsets();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-    });
 });

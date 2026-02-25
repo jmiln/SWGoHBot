@@ -116,7 +116,6 @@ export default class SetConf extends Command {
         name: "setconf",
         description: "Change settings for your guild",
         contexts: [InteractionContextType.Guild],
-        guildOnly: false,
         permLevel: 3,
         options: Object.values(options),
         category: "Admin",

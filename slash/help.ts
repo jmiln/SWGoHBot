@@ -10,8 +10,6 @@ export default class Help extends Command {
     static readonly metadata = {
         name: "help",
         category: "General",
-
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Displays a list of the available commands.",
         options: [

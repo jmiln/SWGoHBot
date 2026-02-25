@@ -414,12 +414,6 @@ describe("ArenaWatch", () => {
     });
 
     describe("Command Configuration", () => {
-        it("should work without guild context (guildOnly: false)", () => {
-            const command = new ArenaWatch();
-
-            assert.strictEqual(command.commandData.guildOnly, false);
-        });
-
         it("should be enabled", () => {
             const command = new ArenaWatch();
 

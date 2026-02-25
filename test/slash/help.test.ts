@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import Help from "../../slash/help.ts";
 import { createMockInteraction } from "../mocks/index.ts";
-import { assertErrorReply, assertReplyCount } from "./helpers.ts";
+import { assertErrorReply } from "./helpers.ts";
 
 describe("Help", () => {
     it("should display all commands when no options provided", async () => {        const interaction = createMockInteraction();
@@ -82,17 +82,6 @@ describe("Help", () => {
         // Details flag affects formatting but doesn't change fundamental response
         const reply = replies[0];
         assert.ok(reply.embeds, "Expected embed");
-    });
-
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            guild: null as any
-        });
-
-        const command = new Help();
-        await command.run({ interaction, language: (interaction as any).language });
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
     });
 
     it("should have random color in embed", async () => {        const interaction = createMockInteraction();

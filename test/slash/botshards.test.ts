@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import BotShards, { formatShardInfo, type ShardData } from "../../slash/botshards.ts";
-import { createMockInteraction } from "../mocks/index.ts";
+import { formatShardInfo, type ShardData } from "../../slash/botshards.ts";
 
 describe("BotShards", () => {
     // Note: Full botshards tests require Discord sharding API.
@@ -41,11 +40,6 @@ describe("BotShards", () => {
         const formatted = formatShardInfo(results, 1);
 
         assert.ok(formatted.includes("Ready"), "Expected Ready status");
-    });
-
-    it("should work without guild context (guildOnly: false)", () => {        const command = new BotShards();
-
-        assert.strictEqual(command.commandData.guildOnly, false, "Expected guildOnly to be false");
     });
 
     it("should pad shard numbers correctly for alignment", () => {

@@ -23,7 +23,6 @@ export default class GuildSearch extends Command {
         name: "guildsearch",
         category: "Gamedata",
         description: "Search for stats on your guild's units",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

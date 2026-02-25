@@ -23,11 +23,6 @@ describe("Panic", () => {
         assert.strictEqual(command.commandData.name, "panic");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const command = new Panic();
-        assert.strictEqual(command.commandData.guildOnly, false);
-    });
-
     it("should return error for unit not in journey requirements when allycode is provided", async () => {
         // With a literal 9-digit allycode, getAllyCode returns without hitting MongoDB.
         // The journeyReqs check happens before fetchPlayerWithCooldown, so no swgohAPI mock needed.

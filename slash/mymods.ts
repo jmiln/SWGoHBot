@@ -16,7 +16,6 @@ export default class MyMods extends Command {
         name: "mymods",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show the current mods for a given character",
         options: [

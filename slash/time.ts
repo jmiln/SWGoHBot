@@ -9,7 +9,6 @@ export default class Time extends Command {
         description: "Get the current time in a timezone",
         category: "General",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

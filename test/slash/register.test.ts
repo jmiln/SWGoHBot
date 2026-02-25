@@ -23,11 +23,6 @@ describe("Register", () => {
         assert.strictEqual(command.commandData.name, "register");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const command = new Register();
-        assert.strictEqual(command.commandData.guildOnly, false);
-    });
-
     it("should return error for invalid ally code format", async () => {
         const interaction = createMockInteraction({
             optionsData: { allycode: "invalid" },

@@ -8,8 +8,6 @@ export default class Challenges extends Command {
         name: "challenges",
         description: "Show daily guild challenges",
         category: "General",
-
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

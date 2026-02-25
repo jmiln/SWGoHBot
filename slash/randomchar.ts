@@ -14,7 +14,6 @@ export default class Randomchar extends Command {
         description: "Grabs a random squad",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

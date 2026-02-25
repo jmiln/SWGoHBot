@@ -20,7 +20,6 @@ export default class Ships extends Command {
         description: "Get information about a ship",
         category: "General",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

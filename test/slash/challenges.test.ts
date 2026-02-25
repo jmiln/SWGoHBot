@@ -92,18 +92,6 @@ describe("Challenges", () => {
         assertReplyCount(interaction, 1);
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            guild: null as any
-        });
-
-        const command = new Challenges();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-    });
-
     it("should format response as code block", async () => {        const interaction = createMockInteraction();
 
         const command = new Challenges();

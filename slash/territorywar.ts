@@ -16,7 +16,6 @@ export default class TerritoryWar extends Command {
         description: "Compare the stats of two guilds",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

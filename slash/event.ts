@@ -26,7 +26,6 @@ export default class Event extends Command {
         name: "event",
         description: "Configure and view events.",
         contexts: [InteractionContextType.Guild],
-        guildOnly: false,
         category: "Admin",
         options: [
             {

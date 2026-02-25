@@ -23,7 +23,6 @@ export default class Zetas extends Command {
         description: "See a player's zetas",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

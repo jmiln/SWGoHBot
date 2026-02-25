@@ -27,7 +27,6 @@ export default class Guilds extends Command {
         name: "guilds",
         category: "Gamedata",
         description: "View information about a specified guild",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

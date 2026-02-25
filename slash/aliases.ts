@@ -15,7 +15,6 @@ export default class Aliases extends Command {
     static readonly metadata = {
         name: "aliases",
         description: "Set custom aliases for your guild to use",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild],
         permLevel: 3,
         options: [

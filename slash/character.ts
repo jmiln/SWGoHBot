@@ -22,8 +22,6 @@ export default class Character extends Command {
     static readonly metadata = {
         name: "character",
         category: "General",
-
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         description: "Show overall info for the given character",
         options: [

@@ -90,17 +90,4 @@ describe("Time", () => {
         );
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {
-        const interaction = createMockInteraction({
-            optionsData: { timezone: "UTC" },
-            guild: null as any
-        });
-
-        const command = new Time();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-    });
 });

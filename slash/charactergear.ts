@@ -15,9 +15,7 @@ export default class Charactergear extends Command {
         name: "charactergear",
         category: "Gamedata",
         description: "Show the gear required for a specified character",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
-
         options: [
             {
                 name: "character",

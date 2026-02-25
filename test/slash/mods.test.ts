@@ -43,16 +43,4 @@ describe("Mods", () => {
         assert.strictEqual((interaction as any).deferred, true, "Expected interaction to be deferred");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "InvalidChar" },
-            guild: null as any
-        });
-
-        const command = new Mods();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply even without guild context");
-    });
 });

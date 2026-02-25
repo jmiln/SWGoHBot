@@ -35,8 +35,4 @@ describe("Poll", () => {
         assertErrorReply(interaction, "not available in DMs");
     });
 
-    it("should work without guild context (guildOnly: false)", () => {
-        const command = new Poll();
-        assert.strictEqual(command.commandData.guildOnly, false);
-    });
 });

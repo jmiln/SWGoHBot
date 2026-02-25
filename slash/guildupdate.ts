@@ -10,8 +10,6 @@ export default class GuildUpdate extends Command {
     static readonly metadata = {
         name: "guildupdate",
         category: "Patreon",
-
-        guildOnly: false,
         contexts: [InteractionContextType.Guild],
         description: "Set up the guild watcher to alert you for changes in guild member's rosters",
         options: [

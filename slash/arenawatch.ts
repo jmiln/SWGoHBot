@@ -48,7 +48,6 @@ export default class ArenaWatch extends Command {
         name: "arenawatch",
         description: "Configurations for ArenaWatch",
         category: "Patreon",
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {

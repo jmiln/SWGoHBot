@@ -2376,7 +2376,7 @@ interface CommandDocEntry {
     usage: string[];
     options: unknown[];
     permLevel: number;
-    guildOnly: boolean;
+    devServerOnly: boolean;
     contexts: unknown;
     enabled: boolean;
 }
@@ -2420,7 +2420,7 @@ async function exportCommandDocs() {
                     usage: generateUsageFromOptions(cmd.commandData.name, cmd.commandData.options),
                     options: cmd.commandData.options,
                     permLevel: cmd.commandData.permLevel,
-                    guildOnly: cmd.commandData.guildOnly,
+                    devServerOnly: cmd.commandData.devServerOnly,
                     contexts: cmd.commandData.contexts,
                     enabled: cmd.commandData.enabled,
                 });

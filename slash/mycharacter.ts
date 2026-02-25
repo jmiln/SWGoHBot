@@ -24,7 +24,6 @@ export default class MyCharacter extends Command {
         description: "Display overall stats & mod info for the selected character",
         category: "Gamedata",
 
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         enabled: true,
         options: [

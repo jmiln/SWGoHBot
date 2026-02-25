@@ -53,17 +53,6 @@ describe("Randomchar", () => {
         assert.ok(replies.length > 0, "Expected reply");
     });
 
-    it("should work without guild context (guildOnly: false)", async () => {        const interaction = createMockInteraction({
-            guild: null as any
-        });
-
-        const command = new Randomchar();
-        await command.run({ interaction, language: (interaction as any).language });
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected reply even without guild context");
-    });
-
     it("should send exactly one reply", async () => {        const interaction = createMockInteraction();
 
         const command = new Randomchar();

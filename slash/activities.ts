@@ -8,8 +8,6 @@ export default class Activites extends Command {
         name: "activities",
         description: "Shows daily guild activities",
         category: "General",
-
-        guildOnly: false,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
         options: [
             {
