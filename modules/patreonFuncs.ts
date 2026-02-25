@@ -416,9 +416,8 @@ class PatreonFuncs {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (
                                 chan?.type === 0 && // 0 = GUILD_TEXT
-                                chan
-                                    ?.permissionsFor(client.user)
-                                    .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                                // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                                chan?.permissionsFor(client.user).has(3072n)
                             ) {
                                 await chan.send(`>>> ${fields.join("\n")}`);
                             }
@@ -433,9 +432,8 @@ class PatreonFuncs {
                                 const chan = client.channels.cache.get(aw.arena.char.channel);
                                 if (
                                     chan?.type === 0 && // 0 = GUILD_TEXT
-                                    chan
-                                        ?.permissionsFor(client.user)
-                                        .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                                    chan?.permissionsFor(client.user).has(3072n)
                                 ) {
                                     await chan.send(`>>> ${charFields.join("\n")}`);
                                 }
@@ -449,9 +447,8 @@ class PatreonFuncs {
                                 const chan = client.channels.cache.get(aw.arena.fleet.channel);
                                 if (
                                     chan?.type === 0 && // 0 = GUILD_TEXT
-                                    chan
-                                        ?.permissionsFor(client.user)
-                                        .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                                    chan?.permissionsFor(client.user).has(3072n)
                                 ) {
                                     await chan.send(`>>> ${shipFields.join("\n")}`);
                                 }
