@@ -37,9 +37,9 @@ npm install
 
 3. Configure the bot:
 ```bash
-cp example_config.js config.js
+cp .env.example .env
 ```
-Edit `config.js` and add:
+Edit `.env` and add:
 - Your Discord bot token
 - Bot client ID and owner ID
 - MongoDB connection URL
@@ -70,13 +70,12 @@ npm run lint:write
 # Run all tests
 npm test
 
+# Run module or slash tests only
+npm run test:modules
+npm run test:slash
+
 # Deploy slash commands to Discord
 npm run deploy
-
-# Manage test database (Docker required)
-npm run test:db:start
-npm run test:db:stop
-npm run test:db:clean
 ```
 
 ## Architecture

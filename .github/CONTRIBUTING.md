@@ -51,7 +51,6 @@ import type { CommandContext } from "../types/types.ts";
 export default class MyCommand extends Command {
     static readonly metadata = {
         name: "mycommand",
-        guildOnly: false,
         description: "Description of what this command does",
         options: [
             {
@@ -91,7 +90,7 @@ import { characters, ships } from "../data/constants/units.ts";
 // Import modules
 import swgohAPI from "../modules/swapi.ts";
 import { findChar, msgArray } from "../modules/functions.ts";
-import config from "../config.js";
+import { env } from "../config/config.ts";
 ```
 
 Look at existing commands in `/slash/` for more examples and patterns.
@@ -132,8 +131,8 @@ npm install
 ```
 
 Once finished:
-- Copy `example_config.js` to `config.js`
-- Edit `config.js` and enter your bot's token, client ID, owner ID, and MongoDB connection URL as indicated.
+- Copy `.env.example` to `.env`
+- Edit `.env` and enter your bot's token, client ID, owner ID, and MongoDB connection URL as indicated.
 
 In order to get game data, you'll need to set up and use Comlink and SWGoH-Stats.
 These can be run as docker instances, with the setup described in each repo
