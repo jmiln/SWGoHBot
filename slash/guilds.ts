@@ -721,6 +721,8 @@ export default class Guilds extends Command {
             }
 
             if (!rawGuild) return interaction.editReply({ content: `Sorry, but I could not find a guild to match with ${userAC}` });
+            if (!rawGuild.profile)
+                return interaction.editReply({ content: "Sorry, could not retrieve guild profile data. Please try again." });
 
             const out = [];
             const fullOut = [];

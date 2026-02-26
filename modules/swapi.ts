@@ -955,7 +955,7 @@ class SWAPI {
         if (!player.guildId) throw new Error("This player is not in a guild");
 
         let rawGuild: RawGuild = await cache.getOne(env.MONGODB_SWAPI_DB, "rawGuilds", { id: player.guildId });
-        if (forceUpdate || !rawGuild || !rawGuild.roster || this.isExpired(rawGuild.updated, cooldown, true)) {
+        if (forceUpdate || !rawGuild || !rawGuild.roster || !rawGuild.profile || this.isExpired(rawGuild.updated, cooldown, true)) {
             rawGuild = await comlinkStub.getGuild(player.guildId, true);
 
             // TODO: I have no idea what this is supposed to do??? Comlink wiki doesn't think it exists
