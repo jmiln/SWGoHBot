@@ -86,7 +86,22 @@ const envSchema = z.object({
     PATREON_CREATOR_REFRESH_TOKEN: z.string().optional(),
 
     // Patrons Configuration (JSON string: {"discordId": tierLevel})
-    PATRONS: z.string().optional().default("{}"),
+    PATRONS: z
+        .string()
+        .default("{}")
+        .transform((str, ctx) => {
+            try {
+                const parsed = JSON.parse(str);
+                // Validates that it is an object and not an array or primitive
+                return z.record(z.string(), z.number()).parse(parsed);
+            } catch (_) {
+                ctx.addIssue({
+                    code: "custom",
+                    message: "PATRONS must be a valid JSON string",
+                });
+                return z.NEVER;
+            }
+        }),
 });
 
 // Parse and validate environment variables
