@@ -235,38 +235,6 @@
     },
     {
         "name": "Ahsoka Tano",
-        "uniqueName": "GLAHSOKATANO",
-        "aliases": [
-            "Ahsoka Tano (GL)",
-            "Ahsoka Tano Gray",
-            "Galactic Legend Ahsoka Tano"
-        ],
-        "avatarName": "charui_ahsokatanogray",
-        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokatanogray.png",
-        "side": "light",
-        "factions": [
-            "Galactic Legend",
-            "Leader",
-            "Tank",
-            "Spectre",
-            "Unaligned Force User"
-        ],
-        "mods": {
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health",
-            "sets": [
-                "Defense x2",
-                "Speed x4"
-            ]
-        },
-        "crew": []
-    },
-    {
-        "name": "Ahsoka Tano",
         "uniqueName": "AHSOKATANO",
         "aliases": [
             "Ahsoka Tano",
@@ -296,6 +264,38 @@
             ]
         },
         "avatarName": "charui_ahsoka"
+    },
+    {
+        "name": "Ahsoka Tano",
+        "uniqueName": "GLAHSOKATANO",
+        "aliases": [
+            "Ahsoka Tano (GL)",
+            "Ahsoka Tano Gray",
+            "Galactic Legend Ahsoka Tano"
+        ],
+        "avatarName": "charui_ahsokatanogray",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokatanogray.png",
+        "side": "light",
+        "factions": [
+            "Galactic Legend",
+            "Leader",
+            "Tank",
+            "Spectre",
+            "Unaligned Force User"
+        ],
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Defense x2",
+                "Speed x4"
+            ]
+        },
+        "crew": []
     },
     {
         "name": "Ahsoka Tano (Fulcrum)",
@@ -2120,9 +2120,9 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_trooperclone_fives"
@@ -3130,7 +3130,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -3689,7 +3689,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4563,9 +4563,9 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
@@ -7305,8 +7305,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Offense x4",
+                "Potency x2"
             ]
         },
         "avatarName": "charui_resistancetrooper"

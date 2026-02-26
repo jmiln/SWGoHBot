@@ -135,11 +135,6 @@
     },
     {
         "name": "Ahsoka Tano",
-        "defId": "GLAHSOKATANO",
-        "locations": []
-    },
-    {
-        "name": "Ahsoka Tano",
         "defId": "AHSOKATANO",
         "locations": [
             {
@@ -163,18 +158,23 @@
         ]
     },
     {
+        "name": "Ahsoka Tano",
+        "defId": "GLAHSOKATANO",
+        "locations": []
+    },
+    {
         "name": "Ahsoka Tano (Fulcrum)",
         "defId": "FULCRUMAHSOKA",
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_REBEL_NAME",
-                "name": "Rebel Roundup Assault Battle"
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
             },
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
-                "name": "Fanatical Devotion Assault Battles"
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
                 "type": "Fleet Arena Store",
@@ -624,13 +624,13 @@
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
-                "name": "Sky Saber Special Marquee Event"
+                "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
+                "name": "Rebel Rouser Marquee Event"
             },
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_CAPTAINDROGAN_NAME",
-                "name": "Rebel Rouser Marquee Event"
+                "locId": "EVENT_MARQUEE_BWINGREBEL_NAME",
+                "name": "Sky Saber Special Marquee Event"
             }
         ]
     },
@@ -1195,11 +1195,6 @@
                 "type": "Assault Battle Event",
                 "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
                 "name": "Secrets And Shadows Assault Battle"
-            },
-            {
-                "type": "Hard Modes (D)",
-                "level": "9-A",
-                "locId": "HARD_DARK"
             }
         ]
     },
@@ -1570,13 +1565,13 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
-                "name": "Fanatical Devotion Assault Battles"
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_REBEL_NAME",
-                "name": "Rebel Roundup Assault Battle"
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -2590,13 +2585,13 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
-                "name": "Fanatical Devotion Assault Battles"
+                "locId": "EVENT_ASSAULT_REBEL_NAME",
+                "name": "Rebel Roundup Assault Battle"
             },
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_REBEL_NAME",
-                "name": "Rebel Roundup Assault Battle"
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -2900,13 +2895,13 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_JEDI_NAME",
-                "name": "Places Of Power Assault Battles"
+                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
+                "name": "Fanatical Devotion Assault Battles"
             },
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_INQUISITOR_NAME",
-                "name": "Fanatical Devotion Assault Battles"
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
             },
             {
                 "type": "Fleet Arena Store",
@@ -4112,6 +4107,11 @@
         "defId": "STORMTROOPERLUKE",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "9-A",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_STORMTROOPERLUKE_NAME",
                 "name": "Situation Normal Special Marquee Event"
@@ -4463,7 +4463,13 @@
     {
         "name": "Vel Sartha",
         "defId": "VEL",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_VEL_NAME",
+                "name": "The Price Of Rebellion Special Marquee Event"
+            }
+        ]
     },
     {
         "name": "Veteran Smuggler Chewbacca",
