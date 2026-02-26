@@ -708,9 +708,38 @@ async function getPatreonTiers(): Promise<{ id: string; amount_cents: number; ti
     });
 }
 
+async function applyActivePatronBenefits(discordID: string, amountCents: number) {
+    const { user: userRes, guild: guildRes } = (await ensureBonusServerSet({
+        userId: discordID,
+        amount_cents: amountCents,
+    })) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
+
+    const userConfExists = await cache.exists(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID });
+    if (userConfExists) {
+        await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID }, { patreonAmountCents: amountCents });
+    }
+
+    if (userRes?.error || guildRes?.error) {
+        logger.error(
+            `[${myTime()}] [dataUpdater/updatePatrons] Issue adding info for patron ${discordID}\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`,
+        );
+    }
+}
+
+async function processManualPatrons() {
+    const manualPatrons = JSON.parse(env.PATRONS) as Record<string, number>;
+    for (const [discordID, amountCents] of Object.entries(manualPatrons)) {
+        await applyActivePatronBenefits(discordID, amountCents);
+    }
+}
+
 async function updatePatrons() {
     const patreon = patreonCredentials();
-    if (!patreon) return;
+    if (!patreon) {
+        await processManualPatrons();
+        await ensureGuildSupporter();
+        return;
+    }
 
     try {
         const patreonTiers = await getPatreonTiers();
@@ -841,30 +870,12 @@ async function updatePatrons() {
                     }`,
                 );
             } else {
-                // If the user exists, and they're active, make sure everything is set correctly
-                // Make sure that if they have a bonus server set in their user settings, it's set properly in the given guild
-                const { user: userRes, guild: guildRes } = (await ensureBonusServerSet({
-                    userId: discordID,
-                    amount_cents: memberCents,
-                })) as { user: { success: boolean; error: string }; guild: { success: boolean; error: string } };
-
-                // Cache patreon status on userconf so commands can read it without querying patrons collection
-                const userConfExists = await cache.exists(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID });
-                if (userConfExists) {
-                    await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID }, { patreonAmountCents: memberCents });
-                }
-
-                // If there are no issues, move along
-                if (!userRes?.error && !guildRes?.error) continue;
-
-                // If there are issues, log em
-                logger.error(
-                    `[${myTime()}] [dataUpdater addServerSupporter] Issue adding info for user\n${userRes?.error || "N/A"} \nOr guild:\n${
-                        guildRes?.error || "N/A"
-                    }`,
-                );
+                await applyActivePatronBenefits(discordID, memberCents);
             }
         }
+
+        // Process manually configured patrons from env.PATRONS
+        await processManualPatrons();
 
         // Go through each of the guilds that have a supporter and make sure all of the listed users are supposed to be there
         await ensureGuildSupporter();
