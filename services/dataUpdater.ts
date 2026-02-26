@@ -727,8 +727,7 @@ async function applyActivePatronBenefits(discordID: string, amountCents: number)
 }
 
 async function processManualPatrons() {
-    const manualPatrons = JSON.parse(env.PATRONS) as Record<string, number>;
-    for (const [discordID, amountCents] of Object.entries(manualPatrons)) {
+    for (const [discordID, amountCents] of Object.entries(env.PATRONS)) {
         await applyActivePatronBenefits(discordID, amountCents);
     }
 }
