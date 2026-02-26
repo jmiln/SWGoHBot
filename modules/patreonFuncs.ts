@@ -1,4 +1,4 @@
-import { type ChatInputCommandInteraction, type Client, type Embed, type Message, PermissionsBitField } from "discord.js";
+import type { ChatInputCommandInteraction, Client, Embed, Message } from "discord.js";
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
@@ -554,9 +554,8 @@ class PatreonFuncs {
                         if (
                             channel?.type === 0 && // 0 = GUILD_TEXT
                             channel?.guild &&
-                            channel
-                                .permissionsFor(client.user)
-                                .has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                            // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                            channel.permissionsFor(client.user).has(3072n)
                         ) {
                             return channel.send({
                                 embeds: [
@@ -761,7 +760,8 @@ class PatreonFuncs {
                 if (
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
-                    channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                    channel.permissionsFor(client.user).has(3072n)
                 ) {
                     return true;
                 }
@@ -874,7 +874,7 @@ class PatreonFuncs {
                 const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${player.name}` : player.name;
                 if (player.oldRank < player.newRank && aw.report !== "climb") {
                     outArr.push(`${pName} has dropped from ${player.oldRank} to ${player.newRank}`);
-                } else if (aw.report !== "drop") {
+                } else if (player.oldRank > player.newRank && aw.report !== "drop") {
                     outArr.push(`${pName} has climbed from ${player.oldRank} to ${player.newRank}`);
                 }
             }
@@ -896,7 +896,8 @@ class PatreonFuncs {
                 if (
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
-                    channel.permissionsFor(client.user).has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
+                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                    channel.permissionsFor(client.user).has(3072n)
                 ) {
                     if (!msgIdIn) {
                         targetMsg = await channel.send({ embeds: [outEmbed] });
