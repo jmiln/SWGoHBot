@@ -1,4 +1,4 @@
-import { type ChatInputCommandInteraction, type Client, type Embed, type Message } from "discord.js";
+import type { ChatInputCommandInteraction, Client, Embed, Message } from "discord.js";
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
