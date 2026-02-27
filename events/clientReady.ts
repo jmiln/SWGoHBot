@@ -87,8 +87,12 @@ function setupBackgroundTasks(client: Client<true>, shardId: number): void {
  * Sets up periodic data update tasks (arena ranks, guild tickets, etc.)
  */
 function setupDataUpdateTasks(shardId: number): void {
+    let isRunning = false;
+
     setTimeout(() => {
         const intervalId = setInterval(async () => {
+            if (isRunning) return;
+            isRunning = true;
             try {
                 // Run every minute
                 await patreonFuncs.getRanks();
@@ -110,6 +114,8 @@ function setupDataUpdateTasks(shardId: number): void {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[${shardId}] Error in data update tasks: ${message}`);
                 logger.error(err.stack);
+            } finally {
+                isRunning = false;
             }
         }, MINUTE_MS);
 

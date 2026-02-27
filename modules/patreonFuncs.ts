@@ -17,8 +17,8 @@ const tiers = patreonModule.tiers;
 
 // Arena payout offsets (hours difference from daily reset)
 const ARENA_OFFSETS = {
-    char: 6,
-    fleet: 5,
+    char: 18,
+    fleet: 19,
 } as const;
 
 // Patron tier thresholds (in cents)
@@ -402,10 +402,6 @@ class PatreonFuncs {
                 shipFields.push(shipOut.map((c) => `- ${c}`).join("\n"));
             }
 
-            // Update the player so shardTimes always has the latest info
-            user.arenaWatch.allyCodes = accountsToCheck;
-            await userReg.updateUser(patron.discordID, user);
-
             // Only send the alerts if there have been rank changes, and the user has alerts enabled
             if ((charFields.length || shipFields.length) && hasAlerts) {
                 if (aw.arena.char.channel === aw.arena.fleet.channel) {
@@ -417,7 +413,9 @@ class PatreonFuncs {
                             if (
                                 chan?.type === 0 && // 0 = GUILD_TEXT
                                 // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                chan?.permissionsFor(client.user).has(3072n)
+                                chan
+                                    ?.permissionsFor(client.user)
+                                    .has(3072n)
                             ) {
                                 await chan.send(`>>> ${fields.join("\n")}`);
                             }
@@ -433,7 +431,9 @@ class PatreonFuncs {
                                 if (
                                     chan?.type === 0 && // 0 = GUILD_TEXT
                                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                    chan?.permissionsFor(client.user).has(3072n)
+                                    chan
+                                        ?.permissionsFor(client.user)
+                                        .has(3072n)
                                 ) {
                                     await chan.send(`>>> ${charFields.join("\n")}`);
                                 }
@@ -448,7 +448,9 @@ class PatreonFuncs {
                                 if (
                                     chan?.type === 0 && // 0 = GUILD_TEXT
                                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                    chan?.permissionsFor(client.user).has(3072n)
+                                    chan
+                                        ?.permissionsFor(client.user)
+                                        .has(3072n)
                                 ) {
                                     await chan.send(`>>> ${shipFields.join("\n")}`);
                                 }
@@ -458,6 +460,10 @@ class PatreonFuncs {
                     }
                 }
             }
+
+            // Update lastChar/lastShip after sending so a failed send doesn't permanently lose a rank change
+            user.arenaWatch.allyCodes = accountsToCheck;
+            await userReg.updateUser(patron.discordID, user);
         }
     }
 
@@ -555,7 +561,9 @@ class PatreonFuncs {
                             channel?.type === 0 && // 0 = GUILD_TEXT
                             channel?.guild &&
                             // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                            channel.permissionsFor(client.user).has(3072n)
+                            channel
+                                .permissionsFor(client.user)
+                                .has(3072n)
                         ) {
                             return channel.send({
                                 embeds: [
@@ -761,7 +769,9 @@ class PatreonFuncs {
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                    channel.permissionsFor(client.user).has(3072n)
+                    channel
+                        .permissionsFor(client.user)
+                        .has(3072n)
                 ) {
                     return true;
                 }
@@ -897,7 +907,9 @@ class PatreonFuncs {
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                    channel.permissionsFor(client.user).has(3072n)
+                    channel
+                        .permissionsFor(client.user)
+                        .has(3072n)
                 ) {
                     if (!msgIdIn) {
                         targetMsg = await channel.send({ embeds: [outEmbed] });
