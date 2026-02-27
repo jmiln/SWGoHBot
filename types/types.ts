@@ -232,7 +232,6 @@ export interface UserConfig {
         enabled: boolean;
         channel: string;
         allyCode: number;
-        sortBy: string;
     };
     username: string;
     guildTickets: {

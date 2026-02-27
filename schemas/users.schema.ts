@@ -89,7 +89,6 @@ export const UserConfigSchema = z.object({
             enabled: z.boolean(),
             channel: z.string(),
             allyCode: z.number(),
-            sortBy: z.string(),
         })
         .partial()
         .optional(),

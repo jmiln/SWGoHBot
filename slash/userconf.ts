@@ -454,7 +454,6 @@ export default class UserConf extends Command {
                                     `>>> Enabled:  **${user.guildUpdate.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildUpdate.channel ? `<#${user.guildUpdate.channel}>` : "N/A"}`,
                                     `Allycode: **${user.guildUpdate.allyCode || "N/A"}**`,
-                                    `SortBy:   **${user.guildUpdate.sortBy || "N/A"}**`,
                                 ].join("\n"),
                             });
                         }

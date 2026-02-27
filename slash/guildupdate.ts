@@ -58,7 +58,6 @@ export default class GuildUpdate extends Command {
             enabled: false,
             channel: null,
             allyCode: null,
-            sortBy: null,
         };
         if (!gu) {
             gu = defGU;
@@ -106,6 +105,15 @@ export default class GuildUpdate extends Command {
                 }
                 gu.allyCode = Number.parseInt(allyCode, 10);
                 updatedArr.push(`Ally Code: **${allyCode}**`);
+            }
+
+            // If no allyCode is stored yet, fall back to the user's primary account
+            if (!gu.allyCode) {
+                const primaryAcct = user.accounts?.find((a) => a.primary);
+                if (primaryAcct?.allyCode) {
+                    gu.allyCode = Number.parseInt(primaryAcct.allyCode, 10);
+                    updatedArr.push(`Ally Code: **${gu.allyCode}** (from your primary account)`);
+                }
             }
 
             if (updatedArr.length) {
