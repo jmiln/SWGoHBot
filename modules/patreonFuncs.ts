@@ -133,15 +133,25 @@ class PatreonFuncs {
                 }
 
                 let player: PlayerArenaRes;
-                try {
-                    const playerRes = await swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
-                    player = playerRes?.[0] || null;
-                } catch (e) {
-                    const message = e instanceof Error ? e.message : String(e);
-                    logger.error(`[patreonFuncs/getRanks] Failed to fetch arena data for ally code ${acc.allyCode}: ${message}`);
-                    // Wait since it won't happen later when something breaks
-                    await wait(750);
-                    continue;
+                let attempts = 0;
+                while (attempts < 3) {
+                    try {
+                        const playerRes = await swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
+                        player = playerRes?.[0] || null;
+                        break;
+                    } catch (e) {
+                        const code = e instanceof Error && "code" in e ? (e as Error & { code: unknown }).code : null;
+                        if (code === 6 && attempts < 2) {
+                            // RATEEXCEEDED — back off and retry
+                            await wait(1000 * (attempts + 1));
+                            attempts++;
+                        } else {
+                            logger.error(
+                                `[patreonFuncs/getRanks] Failed to fetch arena data for ally code ${acc.allyCode}: ${e instanceof Error ? e.message : String(e)}`,
+                            );
+                            break;
+                        }
+                    }
                 }
                 if (!acc.lastCharRank) {
                     acc.lastCharRank = 0;
@@ -176,9 +186,6 @@ class PatreonFuncs {
 
                 // Save this back to the user
                 user.accounts[ix] = acc;
-
-                // Wait here in case of extra accounts
-                await wait(750);
             }
             await userReg.updateUser(patron.discordID, user);
         }
@@ -413,9 +420,7 @@ class PatreonFuncs {
                             if (
                                 chan?.type === 0 && // 0 = GUILD_TEXT
                                 // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                chan
-                                    ?.permissionsFor(client.user)
-                                    .has(3072n)
+                                chan?.permissionsFor(client.user).has(3072n)
                             ) {
                                 await chan.send(`>>> ${fields.join("\n")}`);
                             }
@@ -431,9 +436,7 @@ class PatreonFuncs {
                                 if (
                                     chan?.type === 0 && // 0 = GUILD_TEXT
                                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                    chan
-                                        ?.permissionsFor(client.user)
-                                        .has(3072n)
+                                    chan?.permissionsFor(client.user).has(3072n)
                                 ) {
                                     await chan.send(`>>> ${charFields.join("\n")}`);
                                 }
@@ -448,9 +451,7 @@ class PatreonFuncs {
                                 if (
                                     chan?.type === 0 && // 0 = GUILD_TEXT
                                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                    chan
-                                        ?.permissionsFor(client.user)
-                                        .has(3072n)
+                                    chan?.permissionsFor(client.user).has(3072n)
                                 ) {
                                     await chan.send(`>>> ${shipFields.join("\n")}`);
                                 }
@@ -561,9 +562,7 @@ class PatreonFuncs {
                             channel?.type === 0 && // 0 = GUILD_TEXT
                             channel?.guild &&
                             // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                            channel
-                                .permissionsFor(client.user)
-                                .has(3072n)
+                            channel.permissionsFor(client.user).has(3072n)
                         ) {
                             return channel.send({
                                 embeds: [
@@ -769,9 +768,7 @@ class PatreonFuncs {
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                    channel
-                        .permissionsFor(client.user)
-                        .has(3072n)
+                    channel.permissionsFor(client.user).has(3072n)
                 ) {
                     return true;
                 }
@@ -907,9 +904,7 @@ class PatreonFuncs {
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                    channel
-                        .permissionsFor(client.user)
-                        .has(3072n)
+                    channel.permissionsFor(client.user).has(3072n)
                 ) {
                     if (!msgIdIn) {
                         targetMsg = await channel.send({ embeds: [outEmbed] });
