@@ -241,7 +241,10 @@ class SWAPI {
                     reject(err);
                 });
                 worker.on("exit", (code) => {
-                    if (code !== 0) logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
+                    if (code !== 0) {
+                        logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
+                        reject(new Error(`Worker stopped with exit code ${code}`));
+                    }
                 });
             });
             return chunkRes;

@@ -88,6 +88,7 @@ function setupBackgroundTasks(client: Client<true>, shardId: number): void {
  */
 function setupDataUpdateTasks(shardId: number): void {
     let isRunning = false;
+    let lastGuildsUpdateHour = -1;
 
     setTimeout(() => {
         const intervalId = setInterval(async () => {
@@ -98,7 +99,9 @@ function setupDataUpdateTasks(shardId: number): void {
                 await patreonFuncs.getRanks();
                 await patreonFuncs.shardRanks();
 
-                const currentMinute = new Date().getMinutes();
+                const now = new Date();
+                const currentMinute = now.getMinutes();
+                const currentHour = now.getHours();
 
                 // Run every 5 minutes
                 if (currentMinute % 5 === 0) {
@@ -106,8 +109,9 @@ function setupDataUpdateTasks(shardId: number): void {
                     await patreonFuncs.guildTickets();
                 }
 
-                // Run hourly
-                if (currentMinute === 0) {
+                // Run hourly — guard against re-running if isRunning resets within the same minute
+                if (currentMinute === 0 && currentHour !== lastGuildsUpdateHour) {
+                    lastGuildsUpdateHour = currentHour;
                     await patreonFuncs.guildsUpdate();
                 }
             } catch (err) {

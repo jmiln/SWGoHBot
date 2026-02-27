@@ -144,6 +144,12 @@ function isPlayerUpdated(playerLog: SWAPIWorkerPlayerLog) {
     return false;
 }
 
-init(workerData).then(() => {
-    parentPort?.postMessage({ guildLogOut, cacheUpdatesOut, defIds: [...defIdList], skills: [...skillIdList] });
-});
+init(workerData)
+    .then(() => {
+        parentPort?.postMessage({ guildLogOut, cacheUpdatesOut, defIds: [...defIdList], skills: [...skillIdList] });
+    })
+    .catch((err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error(`[getPlayerUpdates worker] Unhandled error: ${message}`);
+        process.exit(1);
+    });
