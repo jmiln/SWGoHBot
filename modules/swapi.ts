@@ -229,19 +229,20 @@ class SWAPI {
         });
         const processMemberChunk = async (updatedBare: SWAPIPlayer[], chunkIx: number) => {
             const chunkRes: SWAPIWorkerOutput = await new Promise((resolve, reject) => {
+                let settled = false;
                 const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.ts`, {
                     workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
                 });
                 worker.on("message", (result) => {
-                    worker.terminate();
+                    settled = true;
                     resolve(result);
                 });
                 worker.on("error", (err) => {
-                    worker.terminate();
+                    settled = true;
                     reject(err);
                 });
                 worker.on("exit", (code) => {
-                    if (code !== 0) {
+                    if (code !== 0 && !settled) {
                         logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
                         reject(new Error(`Worker stopped with exit code ${code}`));
                     }
