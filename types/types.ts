@@ -146,7 +146,6 @@ export interface BotDefaultSettings {
     welcomeMessage: string;
     enablePart: boolean;
     partMessage: string;
-    useEmbeds: boolean;
     timezone: string;
     announceChan: string;
     eventCountdown: number[];

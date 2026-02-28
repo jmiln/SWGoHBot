@@ -285,7 +285,6 @@ export function createMockGuildSettings(overrides: Record<string, any> = {}) {
         language: "eng_us",
         timezone: "America/Los_Angeles",
         announceChan: "",
-        useEmbeds: true,
         ...overrides,
     };
 }

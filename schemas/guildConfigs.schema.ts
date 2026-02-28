@@ -18,7 +18,6 @@ export const GuildConfigSettingsSchema = z.object({
     welcomeMessage: z.string(),
     enablePart: z.boolean(),
     partMessage: z.string(),
-    useEmbeds: z.boolean(),
     timezone: z.string(),
     announceChan: z.string(),
     eventCountdown: z.array(z.number()),

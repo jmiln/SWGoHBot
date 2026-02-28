@@ -853,12 +853,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "useEmbeds",
-                        actionDesc: "몇몇 명령어의 결과로 임베드(embed)를 사용할지 말지 결정.",
-                        usage: ";setconf useEmbeds <true|false>",
-                        args: {}
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "시간 관련한 모든 명령어에 적용되는 타임존을 설정합니다. 타임존 목록이 필요한 경우 다음을 확인하십시오 https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <timezone>",

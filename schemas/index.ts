@@ -21,12 +21,14 @@
 
 import type { z } from "zod";
 
+export { defaultSettings as defaultGuildSettings } from "../data/constants/defaultGuildConf.ts";
+
+// Export all schemas
 export * from "./commandStats.schema.ts";
 export * from "./guildConfigs.schema.ts";
 export * from "./guilds.schema.ts";
 export * from "./patrons.schema.ts";
 export * from "./players.schema.ts";
-// Export all schemas
 export * from "./users.schema.ts";
 
 /**

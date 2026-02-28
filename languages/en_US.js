@@ -1511,12 +1511,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "useEmbeds",
-                        actionDesc: "Toggles whether or not to use embeds as the output for some commands.",
-                        usage: ";setconf useEmbeds <true|false>",
-                        args: {}
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Sets the timezone that you want all time related commands to use. Look here if you need a list https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <timezone>",

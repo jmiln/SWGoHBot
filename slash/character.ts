@@ -123,7 +123,6 @@ export default class Character extends Command {
         }
 
         let embeds1Len = 0;
-        let useEmbeds2 = false;
         const charImage = await getBlankUnitImage(character.uniqueName);
         const embeds = [
             {
@@ -138,12 +137,10 @@ export default class Character extends Command {
         ];
 
         for (const thisField of fields) {
-            if (!useEmbeds2 && embeds1Len + thisField.value.length < 5000) {
-                // Use msg1
+            if (!embeds[1] && embeds1Len + thisField.value.length < 5000) {
                 embeds[0].fields.push(thisField);
                 embeds1Len += thisField.value.length;
             } else {
-                // Use msg2
                 if (!embeds[1]) {
                     embeds.push({
                         color: getSideColor(character.side),
@@ -156,7 +153,6 @@ export default class Character extends Command {
                     });
                 }
                 embeds[1].fields.push(thisField);
-                useEmbeds2 = true;
             }
         }
 

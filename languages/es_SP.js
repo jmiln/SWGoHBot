@@ -929,12 +929,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "useEmbeds",
-                        actionDesc: "Activa/desactiva el uso de mensajes establecidos como salida para algunos comandos.",
-                        usage: ";setconf useEmbeds <true|false>",
-                        args: {}
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Establece la zona horaria la cual deseas que todos los comandos relacionados con los horarios los usen. Mira aquí si necesitas una lista https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <zonaHoraria>",

@@ -869,12 +869,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "useEmbeds",
-                        actionDesc: "Liga/desliga a utilização de recursos de embeds na saída de alguns comandos.",
-                        usage: ";setconf useEmbeds <true|false>",
-                        args: {}
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Configura o fuso horário para todos os comandos baseados em data\\hora. Acesse o site https://goo.gl/Vqwe49. caso precise de uma lista",
                         usage: ";setconf timezone <timezone>",

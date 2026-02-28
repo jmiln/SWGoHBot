@@ -1344,12 +1344,6 @@ export default class extends Language {
                         }
                     },
                     {
-                        action: "useEmbeds",
-                        actionDesc: "Schaltet ein bzw. aus, ob die Ausgabe einiger Kommandos eingebettet werden soll.",
-                        usage: ";setconf useEmbeds <true|false>",
-                        args: {}
-                    },
-                    {
                         action: "timezone",
                         actionDesc: "Setzt die Zeitzone die genutzt werden soll. Hier eine Liste der Zeitzonen https://goo.gl/Vqwe49.",
                         usage: ";setconf timezone <Zeitzone>",
