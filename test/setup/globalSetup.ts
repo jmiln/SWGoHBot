@@ -27,6 +27,7 @@ export async function globalTeardown(): Promise<void> {
         } finally {
             container = undefined;
             delete process.env.MONGO_URL;
+            console.log("✅ MongoDB testcontainer stopped");
         }
     }
 }
