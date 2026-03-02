@@ -58,7 +58,7 @@ npm start
 ## Development Commands
 
 ```bash
-# Run bot (development with type stripping)
+# Run bot
 npm start
 
 # Lint code with Biome
@@ -66,6 +66,9 @@ npm run lint
 
 # Lint and auto-fix issues
 npm run lint:write
+
+# Type-check without emitting
+tsc --noEmit
 
 # Run all tests
 npm test
@@ -93,9 +96,8 @@ npm run deploy
 
 ### Technology Stack
 - **Discord.js v14** with sharding support
-- **Native TypeScript** using Node.js `--experimental-strip-types` (no compilation step)
+- **Native TypeScript** using Node.js type-stripping (no compilation step)
 - **MongoDB v7** for data persistence
-- **Socket.io** for cross-shard communication
 - **Piscina** for worker thread management
 - **Biome** for linting and formatting
 
@@ -106,15 +108,14 @@ npm run deploy
 
 ## Configuration
 
-Key settings in `config.js`:
+Configuration is loaded from a `.env` file using Node.js's built-in `process.loadEnvFile()`. Copy `.env.example` to `.env` and fill in your values. Key variables:
 
-- **Discord**: `token`, `clientId`, `ownerid`, `dev_server`
-- **MongoDB**: Connection URL and database names
-- **Sharding**: `shardCount` for horizontal scaling
-- **Intents**: Guild, member, message, and DM access
-- **Optional**: Webhook URLs, Patreon integration, image server, arena watch tiers
+- **Discord**: `DISCORD_TOKEN`, `CLIENT_ID`, `OWNER_ID`
+- **MongoDB**: `MONGODB_URL`
+- **Game API**: `SWAPI_URL`, `SWAPI_ACCESS_KEY`, `SWAPI_SECRET_KEY`
+- **Optional**: webhook URLs, Patreon integration (`PATREON_*`), image server URL
 
-See `example_config.js` for full configuration template.
+See [docs/CONFIG.md](../docs/CONFIG.md) for the full variable reference.
 
 ## Links
 
@@ -141,7 +142,7 @@ Contributions are welcome! Please:
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Follow the code style (run `npm run lint:write`)
 4. Write tests for new features
-5. Commit your changes (`git commit -m 'Add amazing feature'`)
+5. Commit your changes (the pre-commit hook will run lint, type-check, and tests automatically)
 6. Push to the branch (`git push origin feature/amazing-feature`)
 7. Open a Pull Request
 

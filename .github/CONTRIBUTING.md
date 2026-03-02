@@ -60,7 +60,7 @@ export default class MyCommand extends Command {
                 required: false,
             },
         ],
-        permLevel: 0, // 0 = everyone, 1 = server admin, 10 = bot owner
+        permLevel: 0, // 0 = everyone, 3 = guild admin, 10 = bot owner
     };
 
     constructor() {
@@ -164,10 +164,15 @@ This runs `node swgohBotShard.ts` which spawns the shard manager and starts the 
 > If at any point it says "cannot find module X" just run `npm install` to ensure all dependencies are installed.
 
 ### Using PM2
-If you are using PM2 to keep the bot running:
+The repo includes `ecosystem.config.cjs` which defines all three processes. To start them all:
 ```bash
-pm2 start swgohBotShard.ts --name swgohbot
+pm2 start ecosystem.config.cjs
 ```
+
+This starts:
+- `swhohBotShard` — the Discord bot (shard manager)
+- `dataUpdater` — game data refresh and player update service
+- `eventServe` — HTTP server for cross-shard guild event management
 
 
 # Contributing to the website (swgohbot.com)

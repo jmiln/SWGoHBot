@@ -23,7 +23,10 @@
 #### Checklist
 <!--
     For completed items, change [ ] to [x].
+    The pre-commit hook runs lint, type-check, and tests automatically.
 -->
-- [ ] Code passes Biome linting (`npm run lint`)
-- [ ] Code is commented and readable
+- [ ] Biome lint passes (`npm run lint`)
+- [ ] Type-check passes (`tsc --noEmit`)
+- [ ] Tests pass (`npm test`)
+- [ ] Documentation updated if behaviour changed
 
