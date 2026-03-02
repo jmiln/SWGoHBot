@@ -382,7 +382,6 @@ export default class extends Language {
 
             // Event Command (Create -json)
             COMMAND_EVENT_JSON_INVALID_NAME: "Ungueltiger oder fehlender Eventname",
-            COMMAND_EVENT_JSON_NO_SPACES: "Eventname darf keine Leerzeichen enthalten. Du kannst stattdessen entweder _ oder - verwenden.",
             COMMAND_EVENT_JSON_EXISTS: "Es existiert bereits ein Event mit diesem Namen",
             COMMAND_EVENT_JSON_DUPLICATE: "Du kannst keine 2 Events mit dem gleichen Namen erstellen",
             COMMAND_EVENT_JSON_MISSING_DAY: "Datum fehlt (DD/MM/YYYY)",
@@ -430,7 +429,6 @@ export default class extends Language {
             COMMAND_EVENT_EDIT_MISSING_ARG: "Es fehlt ein Feld zum Editieren",
             COMMAND_EVENT_EDIT_INVALID_ARG: (target, changable) => `${target} ist kein gueltiges Feld. Versuche es mit einem von diesen:\n\`${changable}\``,
             COMMAND_EVENT_EDIT_MISSING_NAME: "Es fehlt ein Name zum aendern",
-            COMMAND_EVENT_EDIT_INAVLID_NAME: "Leerzeichen im Namen sind nicht moeglich, verwende `-` oder `_` stattdessen.",
             COMMAND_EVENT_EDIT_SPACE_DATE: "Es duerfen keine Leerzeichen im Datum verwendet werden. Das korrekte Format ist `DD/MM/YYYY`",
             COMMAND_EVENT_EDIT_MISSING_DATE: "Zum aendern fehlt das Datum.",
             COMMAND_EVENT_EDIT_INVALID_DATE: "Ungueltiges Datumsformat, nur `DD/MM/YYYY` wird unterstuetzt.",

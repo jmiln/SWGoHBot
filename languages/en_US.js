@@ -530,7 +530,6 @@ export default class extends Language {
 
             // Event Command (Create -json)
             COMMAND_EVENT_JSON_INVALID_NAME: "Invalid or missing event name",
-            COMMAND_EVENT_JSON_NO_SPACES: "Event name cannot contain spaces. You can use _ or - instead.",
             COMMAND_EVENT_JSON_EXISTS: "There is already an event with this name",
             COMMAND_EVENT_JSON_DUPLICATE: "You cannot make 2 events with the same name",
             COMMAND_EVENT_JSON_MISSING_DAY: "Missing event day (DD/MM/YYYY)",
@@ -578,7 +577,6 @@ export default class extends Language {
             COMMAND_EVENT_EDIT_MISSING_ARG: "Missing a field to edit",
             COMMAND_EVENT_EDIT_INVALID_ARG: (target, changable) => `${target} is not a valid field. Try one of these:\n\`${changable}\``,
             COMMAND_EVENT_EDIT_MISSING_NAME: "Missing a name to change to",
-            COMMAND_EVENT_EDIT_INAVLID_NAME: "Spaces are not allowed in the name, try using `-` or `_` instead.",
             COMMAND_EVENT_EDIT_SPACE_DATE: "There should be no spaces in the date. The correct format is `DD/MM/YYYY`",
             COMMAND_EVENT_EDIT_MISSING_DATE: "Missing a date to change to.",
             COMMAND_EVENT_EDIT_INVALID_DATE: "Invalid date format, only `DD/MM/YYYY` is supported.",

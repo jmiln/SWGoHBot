@@ -35,7 +35,7 @@ export default class Event extends Command {
                 options: [
                     {
                         name: "name",
-                        description: "The name of the event, no spaces allowed.",
+                        description: "The name of the event.",
                         type: ApplicationCommandOptionType.String,
                         required: true,
                     },
@@ -119,7 +119,7 @@ export default class Event extends Command {
                     },
                     {
                         name: "name",
-                        description: "The new name of the event, no spaces allowed.",
+                        description: "The new name of the event.",
                         type: ApplicationCommandOptionType.String,
                     },
                     {
@@ -356,7 +356,7 @@ export default class Event extends Command {
 
                 // ```json
                 // [{
-                //     "name":      "Example",               // No spaces ?
+                //     "name":      "Example",
                 //     "time":      "12:36",                 // hh:mm    (24hr format)
                 //     "day":       "28/09/18",              // dd/mm/yy
                 //     "message":   "Example message here",  // If you need a line break, put \n in the spot you want it
