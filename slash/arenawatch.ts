@@ -14,7 +14,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { SWAPIPlayer } from "../types/swapi_types.ts";
-import type { CommandContext, PlayerCooldown, UserConfig } from "../types/types.ts";
+import type { CommandContext, UserConfig } from "../types/types.ts";
 
 interface InteractionOptions {
     subCommand: string;
@@ -494,7 +494,7 @@ export default class ArenaWatch extends Command {
 
         await interaction.deferReply();
 
-        const { result, aw: awRes } = await processAWChanges({ target, interactionOptions, aw, unitStats: swgohAPI.unitStats });
+        const { result, aw: awRes } = await processAWChanges({ target, interactionOptions, aw });
 
         if (result.error) {
             await super.error(interaction, result.error);
@@ -526,16 +526,10 @@ export async function processAWChanges({
     target,
     interactionOptions,
     aw,
-    unitStats,
 }: {
     target: string;
     interactionOptions: InteractionOptions;
     aw: UserConfig["arenaWatch"];
-    unitStats: (
-        allyCodes: number | number[],
-        cooldown?: PlayerCooldown,
-        options?: { force?: boolean; defId?: string },
-    ) => Promise<SWAPIPlayer[]>;
 }): Promise<{ result: AwChangeRes; aw: UserConfig["arenaWatch"] }> {
     const result = {
         outLog: "", // Normal progress, just results of changing values
@@ -705,7 +699,7 @@ export async function processAWChanges({
                 }
 
                 // There are more than one valid code, try adding them all
-                const players = await unitStats(codes.map((c) => c.code));
+                const players = await swgohAPI.unitStats(codes.map((c) => c.code));
                 if (!players?.length) {
                     const errorMsg =
                         "Sorry, but it looks like none of the ally code(s) you entered were found with rosters. If you're sure the code(s) were correct, please wait a bit and try again.";
@@ -770,7 +764,7 @@ export async function processAWChanges({
 
                 let player = null;
                 try {
-                    const players = await unitStats(ac);
+                    const players = await swgohAPI.unitStats(ac);
                     if (!players?.length) logger.error(`[AW Edit] Missing players ${ac}`);
                     player = checkPlayer(aw, players, { code: ac }, interactionOptions.codeCap, true);
                     if (!player) logger.error(`[AW Edit] Missing player after check ${ac}`);
