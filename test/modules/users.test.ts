@@ -25,7 +25,7 @@ describe("UserReg Module", () => {
 
     after(async () => {
         try {
-            await (await getMongoClient()).db(testDbName).dropDatabase();
+            await (await getMongoClient()).db(testDbName).collection("users").deleteMany({});
         } catch (_) {
             // Ignore cleanup errors
         }

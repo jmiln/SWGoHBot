@@ -34,7 +34,7 @@ describe("PatreonFuncs Module", () => {
 
     after(async () => {
         try {
-            await client.db(testDbName).dropDatabase();
+            await client.db(testDbName).collection("patrons").deleteMany({});
         } catch (e) {
             // Ignore cleanup errors
         }
