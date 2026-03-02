@@ -955,7 +955,7 @@ class PatreonFuncs {
 
     private getTimeLeft(offset: number, hrDiff: number) {
         const now = Date.now();
-        let then = constants.dayMS - 1 + getUTCFromOffset(offset) - hrDiff * constants.hrMS;
+        let then = getUTCFromOffset(offset) + hrDiff * constants.hrMS;
         if (then < now) {
             then = then + constants.dayMS;
         }
