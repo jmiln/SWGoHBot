@@ -271,8 +271,3 @@ export async function getGuildSupporterTier({ guildId }: { guildId: string }) {
     // If it gets to here (It shouldn't), return 0
     return 0;
 }
-
-//  - Figure out the settings for various sub-chunks, like auto-commands or guildtickets, etc
-//      * Getter/ setter/ changer
-//      * Change the guildtickets to be part of this mess/ allow any of the server mods to change it?
-//      * Update the arenawatch to be saved in the guild config too, so anyone with perms can update it?

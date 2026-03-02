@@ -8,7 +8,7 @@ import { FixedQueue, Piscina } from "piscina";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
-import { readJSON } from "../modules/functions.ts";
+import { myTime, readJSON, toProperCase } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
 import logger from "../modules/Logger.ts";
@@ -2261,14 +2261,6 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
     }
 }
 
-const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;
-function toProperCase(strIn: string) {
-    return strIn.replace(/([^\W_]+[^\s-]*) */g, (txt) => {
-        if (ROMAN_REGEX.test(txt)) return txt.toUpperCase();
-        return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
-    });
-}
-
 function debugTime(name: string) {
     if (!FORCE_UPDATE && !DEBUG_LOGS) return;
     if (!name?.length) return;
@@ -2287,17 +2279,6 @@ function debugLog(str: string | string[]) {
     } else {
         logger.log(inspect(str, { depth: 5 }));
     }
-}
-
-function myTime() {
-    return Intl.DateTimeFormat("en", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        timeZone: "America/Los_Angeles",
-    }).format(new Date());
 }
 
 function logError(context: string, message: string, error?: unknown) {

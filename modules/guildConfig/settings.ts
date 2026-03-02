@@ -13,24 +13,24 @@ export async function getGuildSettings({ guildId }: { guildId: string }) {
 // Set any guildSettings that do not match the defaultSettings in the bot's config
 export async function setGuildSettings({ guildId, settings }: { guildId: string; settings: typeof defaultSettings }) {
     // Filter out any settings that are the same as the defaults
-    const diffObj = {};
+    const customSettings = {};
 
     for (const key of Object.keys(defaultSettings)) {
         const configVal = defaultSettings[key];
         if (Array.isArray(configVal)) {
             if (!arrayEquals(configVal, settings[key])) {
-                diffObj[key] = settings[key];
+                customSettings[key] = settings[key];
             }
         } else if (defaultSettings[key] !== settings[key]) {
-            diffObj[key] = settings[key];
+            customSettings[key] = settings[key];
         }
     }
 
-    if (!Object.keys(diffObj).length) {
+    if (!Object.keys(customSettings).length) {
         // In this case, there's nothing different than the default, so go ahead and set it to blank
         return await guildConfigDB.put({ guildId: guildId }, { settings: {} }, false);
     }
-    return await guildConfigDB.put({ guildId: guildId }, { settings: diffObj }, false);
+    return await guildConfigDB.put({ guildId: guildId }, { settings: customSettings }, false);
 }
 
 // Check if there are settings for the guild

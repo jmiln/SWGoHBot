@@ -120,12 +120,6 @@ export function isUserMention(mention: string): boolean {
 export function isChannelId(mention: string): boolean {
     return /^\d{17,19}/.test(mention);
 }
-export function isChannelMention(mention: string): boolean {
-    return /^<#\d{17,19}>/.test(mention);
-}
-export function isRoleMention(mention: string): boolean {
-    return /^<@&\d{17,19}>/.test(mention);
-}
 
 export function getSideColor(side: string): number | null {
     if (!side) {
@@ -408,14 +402,6 @@ export function getStartOfDay(zone: string): Date {
     const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
 
     day.setHours(day.getHours() - Number.parseInt(localeHour, 10), 0, 0, 0);
-    return day;
-}
-
-export function getEndOfDay(zone: string): Date {
-    const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
-    const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
-
-    day.setHours(day.getHours() - Number.parseInt(localeHour, 10) + 23, 59, 59, 999);
     return day;
 }
 
@@ -723,11 +709,11 @@ export function shortenNum(number: number, trimTo = 2): string {
 
 // Helper for shortenNum,
 // Trims a fload down to either 0 or 1 (by default) decimal points
-export function trimFloat(num: number, dec = 1): string {
+export function trimFloat(num: number, trimTo = 1): string {
     if (num % 1 === 0) {
         return num.toString();
     }
-    return num.toFixed(dec);
+    return num.toFixed(trimTo);
 }
 
 // Function to see if we have permission to see/ send messages in a given channel

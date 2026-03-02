@@ -164,19 +164,6 @@ export class MockSWAPI {
         return matchingPlayers;
     }
 
-    async getPayoutFromAC(allycodes: string | string[]) {
-        this.checkError("getPayoutFromAC");
-        const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
-        const acNumbers = acArr.map((a) => Number.parseInt(a, 10));
-
-        return Array.from(this.config.players.values())
-            .filter((p) => acNumbers.includes(p.allyCode))
-            .map((p) => ({
-                name: p.name,
-                allyCode: p.allyCode,
-                poUTCOffsetMinutes: p.poUTCOffsetMinutes,
-            }));
-    }
 
     async getPlayersArena(allycodes: number | number[]): Promise<SWAPIPlayerArenaProfile[]> {
         this.checkError("getPlayersArena");

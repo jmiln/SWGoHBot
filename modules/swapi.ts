@@ -154,17 +154,6 @@ class SWAPI {
         }
     }
 
-    async getPayoutFromAC(allyCodes: string | string[]) {
-        // Make sure the ally code(s) are in an array
-        const acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
-        return await cache.get(
-            env.MONGODB_SWAPI_DB,
-            "playerStats",
-            { allyCode: { $in: acArr.map((a) => Number.parseInt(a, 10)) } },
-            { _id: 0, name: 1, allyCode: 1, poUTCOffsetMinutes: 1 },
-        );
-    }
-
     async getPlayersArena(allyCodes: number | number[]) {
         let acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
         acArr = acArr.filter((ac) => !!ac && ac.toString().length === 9);
@@ -311,6 +300,7 @@ class SWAPI {
             })
             .catch((err) => {
                 logger.error(`Error running workers: ${err}`);
+                throw err;
             });
 
         return guildLog;
@@ -498,11 +488,6 @@ class SWAPI {
         return res?.[0] ?? null;
     }
 
-    private getUnitDefId(unitDefId: string): string {
-        if (typeof unitDefId !== "string") return unitDefId;
-        return unitDefId.split(":")[0];
-    }
-
     private async formatComlinkPlayer(comlinkPlayer: ComlinkPlayer): Promise<SWAPIPlayer> {
         const comlinkPlayerArena = {};
         const emptyArena = { rank: null, squad: null };
@@ -514,7 +499,7 @@ class SWAPI {
                     squad?.cell?.map((unit) => {
                         return {
                             id: unit.unitId,
-                            defId: this.getUnitDefId(unit.unitDefId),
+                            defId: typeof unit.unitDefId === "string" ? unit.unitDefId.split(":")[0] : unit.unitDefId,
                         };
                     }) || [],
                 // TODO Should probably look into making use of this if I ever get around to figuring out datacrons
