@@ -33,6 +33,7 @@ class Logger {
         };
 
         this.pino = pino({
+            name: process.env.APP_NAME || "SWGoHBot",
             level: this.logLevel,
             base: { shardId: this.shardId > -1 ? this.shardId : undefined },
             timestamp: pino.stdTimeFunctions.isoTime,
