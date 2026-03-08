@@ -745,14 +745,15 @@ export default class Guilds extends Command {
                 // It's in the future
                 timeUntilReset = formatDuration(chaTime - nowTime, language);
             } else {
-                // It's in the past, so calculate the next time
-                const dur = chaTime + dayMS - nowTime;
+                // It's in the past; use modulo to find time until the next daily reset
+                // regardless of how stale the timestamp is
+                const dur = dayMS - ((nowTime - chaTime) % dayMS);
                 timeUntilReset = formatDuration(dur, language);
             }
 
             let maxed = 0;
             for (const member of roster) {
-                const tickets = member.memberContribution["2"].currentValue;
+                const tickets = Number.parseInt(member.memberContribution["2"]?.currentValue, 10) || 0;
                 if (tickets < maxTickets) {
                     out.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else {
@@ -767,6 +768,7 @@ export default class Guilds extends Command {
             }
             const footerStr = updatedFooterStr(rawGuild.updated, language);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
+            const allMaxedString = out.length === 0 && !showAll ? `All members have reached their ticket quota!\n\n` : "";
             const maxedString = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
             return interaction.editReply({
                 content: null,
@@ -775,7 +777,7 @@ export default class Guilds extends Command {
                         author: {
                             name: `${rawGuild.profile.name}'s Ticket Counts`,
                         },
-                        description: `${timeTilString}${maxedString}${out.join("\n")}\n${footerStr}`,
+                        description: `${timeTilString}${allMaxedString}${maxedString}${out.join("\n")}\n${footerStr}`,
                     },
                 ],
             });

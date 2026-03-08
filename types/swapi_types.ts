@@ -264,7 +264,8 @@ export interface RawGuild {
     };
     progress: null;
     roster: RawGuildMember[];
-    member: RawComlinkGuildMember[]; // This is what the game sense back, but it's processed and moved into roster
+    member: RawComlinkGuildMember[]; // Hoisted from guild.member during processing
+    guild?: { member: RawComlinkGuildMember[] }; // Raw API response wraps members here
     updated: number;
     updatedAt: Date;
 }
@@ -278,16 +279,41 @@ export interface RawGuildMember {
     lastActivityTime: string;
     playerId: string;
 }
-interface RawComlinkGuildMember {
+export interface RawComlinkGuildMember {
     memberContribution: {
         type: number;
         currentValue: string;
         lifetimeValue: string;
     }[];
-    playerName: string;
-    lastActivityTime: string;
+    seasonStatus: {
+        seasonId: string;
+        eventInstanceId: string;
+        league: string;
+        wins: number;
+        losses: number;
+        seasonPoints: number;
+        division: number;
+        joinTime: string;
+        endTime: string;
+        remove: boolean;
+        rank: number;
+    }[];
     playerId: string;
-    // Plus others that aren't used
+    playerName: string;
+    playerLevel: number;
+    memberLevel: number;
+    guildXp: number;
+    lastActivityTime: string;
+    squadPower: number;
+    guildJoinTime: string;
+    galacticPower: string;
+    shipGalacticPower: string;
+    characterGalacticPower: string;
+    playerTitle: string;
+    playerPortrait: string;
+    lifetimeSeasonScore: string;
+    leagueId: string;
+    nucleusId: string;
 }
 
 export interface ComlinkUnit {

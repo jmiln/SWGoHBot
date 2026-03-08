@@ -944,12 +944,20 @@ class SWAPI {
         if (!player.guildId) throw new Error("This player is not in a guild");
 
         let rawGuild: RawGuild = await cache.getOne(env.MONGODB_SWAPI_DB, "rawGuilds", { id: player.guildId });
-        if (forceUpdate || !rawGuild || !rawGuild.roster || !rawGuild.profile || this.isExpired(rawGuild.updated, cooldown, true)) {
+        if (
+            forceUpdate ||
+            !rawGuild ||
+            !rawGuild.roster ||
+            !rawGuild.roster.length ||
+            !rawGuild.profile ||
+            this.isExpired(rawGuild.updated, cooldown, true)
+        ) {
             rawGuild = await comlinkStub.getGuild(player.guildId, true);
 
-            // TODO: I have no idea what this is supposed to do??? Comlink wiki doesn't think it exists
-            // https://github.com/swgoh-utils/swgoh-comlink/wiki/Guild-Data
-            // rawGuild = rawGuild.guild;
+            // The comlink API wraps member data under a 'guild' key; hoist it so the loop below finds it
+            if (rawGuild.guild?.member?.length) {
+                rawGuild.member = rawGuild.guild.member;
+            }
             const ignoreArr = [
                 "inviteStatus",
                 "raidStatus",
@@ -963,6 +971,7 @@ class SWAPI {
                 "stat",
                 "recentRaidResult",
                 "recentTerritoryWarResult",
+                "guild", // member data hoisted above; don't store the raw wrapper
             ];
 
             // Only keep the useful parts of this mess
