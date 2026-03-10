@@ -673,8 +673,12 @@ class PatreonFuncs {
                 // It's in the future
                 timeUntilReset = formatDuration(refreshTime - nowTime, Language.getLanguages()[defaultSettings.language]);
             } else {
-                // It's in the past, so calculate the next time
-                timeUntilReset = formatDuration(refreshTime + constants.dayMS - nowTime, Language.getLanguages()[defaultSettings.language]);
+                // It's in the past; use modulo to find time until the next daily reset
+                // regardless of how stale the timestamp is
+                timeUntilReset = formatDuration(
+                    constants.dayMS - ((nowTime - refreshTime) % constants.dayMS),
+                    Language.getLanguages()[defaultSettings.language],
+                );
             }
 
             // If the user only wants the message, and we didn't have a saved refreshTime for them, check here
