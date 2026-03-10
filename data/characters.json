@@ -138,7 +138,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Tenacity",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2561,7 +2561,7 @@
             "circle": "Protection",
             "cross": "Potency",
             "sets": [
-                "Offense x4",
+                "Crit. Damage x4",
                 "Potency x2"
             ]
         },
@@ -3689,7 +3689,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4563,9 +4563,9 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Critical Avoidance",
+            "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
@@ -5756,7 +5756,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -7221,7 +7221,7 @@
             "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
-            "circle": "Health",
+            "circle": "Protection",
             "cross": "Offense",
             "sets": [
                 "Health x2",
@@ -7305,8 +7305,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ]
         },
         "avatarName": "charui_resistancetrooper"

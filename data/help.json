@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-02-25T21:51:33.911Z",
+        "generatedAt": "2026-03-10T22:33:59.253Z",
         "totalCommands": 44,
         "categories": 4
     },
@@ -780,7 +780,7 @@
                         "options": [
                             {
                                 "name": "name",
-                                "description": "The name of the event, no spaces allowed.",
+                                "description": "The name of the event.",
                                 "type": 3,
                                 "required": true
                             },
@@ -864,7 +864,7 @@
                             },
                             {
                                 "name": "name",
-                                "description": "The new name of the event, no spaces allowed.",
+                                "description": "The new name of the event.",
                                 "type": 3
                             },
                             {

@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
         {
-            name: "swhohBotShard",
+            name: "swgohBotShard",
             node_args: ["--env-file=.env"],
             interpreter: "node",
             script: "swgohBotShard.ts",
