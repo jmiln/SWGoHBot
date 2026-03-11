@@ -184,7 +184,12 @@ class MockLanguage extends Language {
         // Initialize required properties
         this.language = {};
         this.DAYSOFWEEK = {};
-        this.TIMES = {};
+        this.TIMES = {
+            DAY:    { PLURAL: "days",    SING: "day",    SHORT_PLURAL: "ds",   SHORT_SING: "d"   },
+            HOUR:   { PLURAL: "hours",   SING: "hour",   SHORT_PLURAL: "hrs",  SHORT_SING: "hr"  },
+            MINUTE: { PLURAL: "minutes", SING: "minute", SHORT_PLURAL: "mins", SHORT_SING: "min" },
+            SECOND: { PLURAL: "seconds", SING: "second", SHORT_PLURAL: "secs", SHORT_SING: "sec" },
+        };
     }
 
     override get(key: string, ...args: any[]): any {

@@ -6,6 +6,7 @@ import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import Guilds from "../../slash/guilds.ts";
+import type { RawGuild, RawGuildMember } from "../../types/swapi_types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockGuild, createMockGuildMember, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
 
@@ -471,6 +472,96 @@ describe("Guilds Command Functionality", () => {
             // Verify guild name and mods mention
             assert.ok(author?.includes("Test Guild"), "Expected guild name");
             assert.ok(author?.toLowerCase().includes("mod"), "Expected mods mention");
+        });
+    });
+
+    describe("tickets subcommand", () => {
+        const DAY_MS = 86400000;
+
+        function makeRawGuild(nextChallengesRefreshSecs: number): RawGuild {
+            return {
+                id: "guild123",
+                nextChallengesRefresh: nextChallengesRefreshSecs.toString(),
+                profile: { name: "Test Guild" } as RawGuild["profile"],
+                roster: [
+                    {
+                        playerName: "Player1",
+                        memberContribution: {
+                            "1": { currentValue: "600", lifetimeValue: "50000" },
+                            "2": { currentValue: "400", lifetimeValue: "10000" },
+                            "3": { currentValue: "30000", lifetimeValue: "1000000" },
+                        },
+                        lastActivityTime: new Date().toISOString(),
+                    } as RawGuildMember,
+                    {
+                        playerName: "Player2",
+                        memberContribution: {
+                            "1": { currentValue: "600", lifetimeValue: "50000" },
+                            "2": { currentValue: "600", lifetimeValue: "20000" },
+                            "3": { currentValue: "30000", lifetimeValue: "1000000" },
+                        },
+                        lastActivityTime: new Date().toISOString(),
+                    } as RawGuildMember,
+                ],
+                updated: Date.now(),
+            } as RawGuild;
+        }
+
+        it("should show positive time until reset when nextChallengesRefresh is multiple days stale", async () => {
+            const command = new Guilds();
+            // 3 days ago in seconds — the pre-fix code (chaTime + dayMS - nowTime) would give a large negative number
+            const staleTimeSecs = Math.floor((Date.now() - 3 * DAY_MS) / 1000);
+            swgohAPI.getRawGuild = async () => makeRawGuild(staleTimeSecs);
+
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "tickets", allycode: "123456789" },
+            });
+            await command.run(createCommandContext({ interaction }));
+
+            const replies = (interaction as any)._getReplies();
+            const description = getReplyDescription(replies[replies.length - 1]);
+
+            assert.ok(description?.includes("Time until reset:"), "Expected time until reset in output");
+            assert.ok(!description?.match(/Time until reset:.*-\d/), "Time until reset must not be negative");
+            assert.ok(getReplyAuthor(replies[replies.length - 1])?.includes("Test Guild"), "Expected guild name in embed author");
+        });
+
+        it("should show positive time until reset when nextChallengesRefresh is in the future", async () => {
+            const command = new Guilds();
+            // 12 hours from now in seconds
+            const futureTimeSecs = Math.floor((Date.now() + 12 * 3600000) / 1000);
+            swgohAPI.getRawGuild = async () => makeRawGuild(futureTimeSecs);
+
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "tickets", allycode: "123456789" },
+            });
+            await command.run(createCommandContext({ interaction }));
+
+            const replies = (interaction as any)._getReplies();
+            const description = getReplyDescription(replies[replies.length - 1]);
+
+            assert.ok(description?.includes("Time until reset:"), "Expected time until reset in output");
+            assert.ok(!description?.match(/Time until reset:.*-\d/), "Time until reset must not be negative");
+        });
+
+        it("should list members below max tickets and report the maxed count separately", async () => {
+            const command = new Guilds();
+            const nowSecs = Math.floor(Date.now() / 1000);
+            swgohAPI.getRawGuild = async () => makeRawGuild(nowSecs - 3600);
+
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "tickets", allycode: "123456789" },
+            });
+            await command.run(createCommandContext({ interaction }));
+
+            const replies = (interaction as any)._getReplies();
+            const description = getReplyDescription(replies[replies.length - 1]);
+
+            // Player1 (400 tickets) is below max so must appear; Player2 (600) is maxed so must not appear individually
+            assert.ok(description?.includes("Player1"), "Expected Player1 (below max) in output");
+            assert.ok(!description?.includes("Player2"), "Player2 (maxed) should not appear without show_all");
+            // The "N members with 600 tickets" summary line should be present
+            assert.ok(description?.includes("members with 600 tickets"), "Expected maxed member count line");
         });
     });
 
