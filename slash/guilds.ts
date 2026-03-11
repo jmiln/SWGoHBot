@@ -768,7 +768,7 @@ export default class Guilds extends Command {
             }
             const footerStr = updatedFooterStr(rawGuild.updated, language);
             const timeTilString = `***Time until reset: ${timeUntilReset}***\n\n`;
-            const allMaxedString = out.length === 0 && !showAll ? `All members have reached their ticket quota!\n\n` : "";
+            const allMaxedString = out.length === 0 && !showAll ? "All members have reached their ticket quota!\n\n" : "";
             const maxedString = maxed > 0 ? `**${maxed}** members with ${maxTickets} tickets\n\n` : "";
             return interaction.editReply({
                 content: null,

@@ -15,6 +15,7 @@ class Logger {
     private shardId: number;
     private readonly logConfigs: Record<LogType, LogConfig>;
     private pino: PinoInstance;
+    private readonly throttleMap = new Map<string, { count: number; lastLogged: number }>();
 
     private logLevel = process.env.LOG_LEVEL ?? (env.DEBUG_LOGS ? "debug" : "info");
 
@@ -74,6 +75,26 @@ class Logger {
 
     error(content: unknown, webhook = false): void {
         this.log(content, "error", webhook);
+    }
+
+    /**
+     * Log an error with rate-limiting by key. The first occurrence in each window is logged
+     * immediately. Subsequent occurrences within windowMs are suppressed and counted. When
+     * the next error arrives after the window expires, the suppressed count is reported first.
+     */
+    throttleError(key: string, content: string, windowMs = 60_000): void {
+        const now = Date.now();
+        const entry = this.throttleMap.get(key);
+
+        if (!entry || now - entry.lastLogged >= windowMs) {
+            if (entry && entry.count > 0) {
+                this.error(`[${key}] ${entry.count} additional error(s) suppressed in the last ${Math.round(windowMs / 1000)}s`);
+            }
+            this.error(content);
+            this.throttleMap.set(key, { count: 0, lastLogged: now });
+        } else {
+            entry.count++;
+        }
     }
     warn(content: unknown, webhook = false): void {
         this.log(content, "warn", webhook);

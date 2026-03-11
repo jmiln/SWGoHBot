@@ -163,7 +163,7 @@ class SWAPI {
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
             const p: SWAPIPlayerArenaProfile | null = await comlinkStub.getPlayerArenaProfile(ac.toString()).catch((err: unknown) => {
                 const message = err instanceof Error ? err.message : String(err);
-                logger.error(`Error fetching arena profile for ${ac}: ${message}`);
+                logger.throttleError("swapi-arena-profile", `Error fetching arena profile for ${ac}: ${message}`);
                 return null;
             });
             if (p) {
@@ -203,12 +203,10 @@ class SWAPI {
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
             const tempBare: ComlinkPlayer | null = await comlinkStub.getPlayer(ac?.toString()).catch((err: unknown) => {
                 const message = err instanceof Error ? err.message : String(err);
-                logger.error(`Error in eachLimit getPlayer (${ac}): ${message}`);
+                logger.throttleError("swapi-getPlayer", `Error in eachLimit getPlayer (${ac}): ${message}`);
                 return null;
             });
-            if (!tempBare) {
-                logger.error(`[getPlayerUpdates] Failed to fetch player data for ally code ${ac}`);
-            } else {
+            if (tempBare) {
                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                 updatedBare.push(formattedComlinkPlayer);
             }
@@ -367,7 +365,7 @@ class SWAPI {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
                         const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch((err: unknown) => {
                             const message = err instanceof Error ? err.message : String(err);
-                            logger.error(`[swapi getPlayer] Failed to fetch player ${ac}: ${message}`);
+                            logger.throttleError("swapi-getPlayer", `[swapi getPlayer] Failed to fetch player ${ac}: ${message}`);
                             return null;
                         });
                         if (tempBare) {
