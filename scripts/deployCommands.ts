@@ -4,7 +4,7 @@ import { REST, Routes } from "discord.js";
 import type { CommandMetadata } from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import logger from "./Logger.ts";
+import logger from "../modules/Logger.ts";
 
 const slashDir = join(import.meta.dirname, "..", "slash");
 

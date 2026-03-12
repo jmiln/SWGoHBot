@@ -19,6 +19,17 @@ const ENABLE_TRACKING = process.env.COMMAND_STATS_ENABLED !== "false"; // Enable
 const BATCH_SIZE = 100;
 const FLUSH_INTERVAL_MS = 60000; // Flush every 60 seconds
 
+// 90 days — matches the TTL index on this collection
+export const STATS_WINDOW_MS = 90 * 24 * 60 * 60 * 1000;
+
+export interface CommandDetail {
+    commandName: string;
+    totalCount: number;
+    subcommandCounts: Record<string, number>;
+    successRate: number; // 0-100
+    avgExecutionTime: number | null; // ms, or null if no data
+}
+
 // In-memory batch for performance
 let statsBatch: CommandStats[] = [];
 let flushTimeout: NodeJS.Timeout | null = null;
@@ -194,6 +205,80 @@ export async function getTopCommands(startTime: number, endTime: number, limit =
 }
 
 /**
+ * Gets detailed stats for a single command over a time period.
+ * Returns subcommand breakdown, success rate, and avg execution time.
+ */
+export async function getCommandDetail(commandName: string, startTime: number, endTime: number): Promise<CommandDetail> {
+    const empty: CommandDetail = {
+        commandName,
+        totalCount: 0,
+        subcommandCounts: {},
+        successRate: 0,
+        avgExecutionTime: null,
+    };
+
+    try {
+        const db = database.getClient().db(env.MONGODB_SWGOHBOT_DB);
+        const collection = db.collection<CommandStats>(COLLECTION_NAME);
+
+        const pipeline = [
+            {
+                $match: {
+                    commandName,
+                    timestamp: { $gte: startTime, $lte: endTime },
+                },
+            },
+            {
+                $facet: {
+                    totals: [
+                        {
+                            $group: {
+                                _id: null,
+                                total: { $sum: "$count" },
+                                successCount: {
+                                    $sum: { $cond: [{ $eq: ["$success", true] }, "$count", 0] },
+                                },
+                                avgTime: { $avg: "$executionTime" },
+                            },
+                        },
+                    ],
+                    bySubcommand: [
+                        {
+                            $group: {
+                                _id: "$subcommand",
+                                count: { $sum: "$count" },
+                            },
+                        },
+                    ],
+                },
+            },
+        ];
+
+        const [result] = await collection.aggregate(pipeline).toArray();
+
+        if (!result?.totals?.length) return empty;
+
+        const { total, successCount, avgTime } = result.totals[0];
+
+        const subcommandCounts: Record<string, number> = {};
+        for (const row of result.bySubcommand) {
+            if (row._id) subcommandCounts[row._id] = row.count;
+        }
+
+        return {
+            commandName,
+            totalCount: total,
+            subcommandCounts,
+            successRate: total > 0 ? Math.round((successCount / total) * 100) : 0,
+            avgExecutionTime: avgTime != null ? Math.round(avgTime) : null,
+        };
+    } catch (err) {
+        logger.error(`[commandStats] Error getting command detail: ${String(err)}`);
+        return empty;
+    }
+}
+
+/**
  * Force flush any pending stats (call on shutdown)
  */
 export async function shutdown(): Promise<void> {
@@ -208,5 +293,6 @@ export default {
     recordCommandUsage,
     getCommandStats,
     getTopCommands,
+    getCommandDetail,
     shutdown,
 };

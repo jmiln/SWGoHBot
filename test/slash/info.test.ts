@@ -19,61 +19,108 @@ describe("Info", () => {
         await closeMongoClient();
     });
 
-    it("should display bot information and stats", async () => {        const interaction = createMockInteraction();
+    describe("/info stats", () => {
+        it("should display bot information and stats", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "stats" },
+            });
 
-        const command = new Info();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
 
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
+            const replies = (interaction as any)._getReplies();
+            assert.ok(replies.length > 0, "Expected at least one reply");
 
-        const reply = replies[0];
-        assert.ok(reply.embeds, "Expected embed reply");
+            const reply = replies[0];
+            assert.ok(reply.embeds, "Expected embed reply");
 
-        const embed = reply.embeds[0];
-        assert.ok(embed.author, "Expected author in embed");
-        assert.ok(embed.description, "Expected description with stats");
+            const embed = reply.embeds[0];
+            assert.ok(embed.author, "Expected author in embed");
+            assert.ok(embed.description, "Expected description with stats");
+            assert.ok(embed.description.length > 0, "Expected non-empty description");
+        });
 
-        // The description should be a code block containing stats
-        const description = embed.description || "";
-        assert.ok(description.length > 0, "Expected non-empty description");
+        it("should include links in embed fields", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "stats" },
+            });
+
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
+
+            const replies = (interaction as any)._getReplies();
+            const embed = replies[0].embeds[0];
+            assert.ok(embed.fields !== undefined, "Expected fields in embed");
+        });
+
+        it("should send exactly one reply", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "stats" },
+            });
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
+            assertReplyCount(interaction, 1);
+        });
+
+        it("should have a random color for the embed", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "stats" },
+            });
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
+
+            const replies = (interaction as any)._getReplies();
+            const embed = replies[0].embeds[0];
+            assert.ok(typeof embed.color === "number", "Expected numeric color");
+            assert.ok(embed.color >= 0 && embed.color <= 0xffffff, "Expected valid color range");
+        });
     });
 
-    it("should include links in embed fields", async () => {        const interaction = createMockInteraction();
+    describe("/info cmdstats", () => {
+        it("should display top commands list when no command arg is given", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "cmdstats" },
+            });
 
-        const command = new Info();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
 
-        const replies = (interaction as any)._getReplies();
-        const embed = replies[0].embeds[0];
+            const replies = (interaction as any)._getReplies();
+            assert.ok(replies.length > 0, "Expected at least one reply");
 
-        // The info command adds links as fields from content.links
-        // Mock language.get("COMMAND_INFO_OUTPUT") returns an object
-        assert.ok(embed.fields !== undefined, "Expected fields in embed");
-    });
+            const embed = replies[0].embeds[0];
+            assert.ok(embed.description, "Expected description");
+        });
 
-    it("should send exactly one reply", async () => {        const interaction = createMockInteraction();
+        it("should display detail view when command arg is given", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "cmdstats", command: "mods" },
+            });
 
-        const command = new Info();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
 
-        assertReplyCount(interaction, 1);
-    });
+            const replies = (interaction as any)._getReplies();
+            assert.ok(replies.length > 0, "Expected at least one reply");
 
-    it("should have a random color for the embed", async () => {        const interaction = createMockInteraction();
+            const embed = replies[0].embeds[0];
+            assert.ok(embed.description, "Expected description");
+        });
 
-        const command = new Info();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        const embed = replies[0].embeds[0];
-
-        // Color should be a number (random color)
-        assert.ok(typeof embed.color === "number", "Expected numeric color");
-        assert.ok(embed.color >= 0 && embed.color <= 0xffffff, "Expected valid color range");
+        it("should send exactly one reply for cmdstats", async () => {
+            const interaction = createMockInteraction({
+                optionsData: { _subcommand: "cmdstats" },
+            });
+            const command = new Info();
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
+            assertReplyCount(interaction, 1);
+        });
     });
 });
