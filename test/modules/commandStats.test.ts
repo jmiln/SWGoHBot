@@ -24,6 +24,46 @@ describe("commandStats module", () => {
             { commandName: "mymods", subcommand: "best",      count: 8, success: true, executionTime: 150, timestamp: now },
             { commandName: "mymods", subcommand: "character", count: 4, success: true, executionTime: 120, timestamp: now },
         ]);
+
+        await col().insertMany([
+            {
+                commandName: "mycharacter",
+                subcommand: "character",
+                count: 1,
+                success: true,
+                timestamp: now,
+                options: [
+                    { name: "allycode", type: 3, value: "123456789" },
+                    { name: "compare", type: 5, value: true },
+                ],
+            },
+            {
+                commandName: "mycharacter",
+                subcommand: "character",
+                count: 1,
+                success: true,
+                timestamp: now,
+                options: [
+                    { name: "allycode", type: 3, value: "987654321" },
+                ],
+            },
+            {
+                commandName: "mycharacter",
+                subcommand: "ship",
+                count: 1,
+                success: true,
+                timestamp: now,
+                // no options field — should be excluded from argument aggregation
+            },
+            {
+                commandName: "mycharacter",
+                subcommand: "character",
+                count: 3,  // represents 3 executions
+                success: true,
+                timestamp: now,
+                options: [{ name: "allycode", type: 3, value: "111111111" }],
+            },
+        ]);
     });
 
     after(async () => {
@@ -69,6 +109,21 @@ describe("commandStats module", () => {
             assert.strictEqual(result.totalCount, 0);
             assert.strictEqual(result.successRate, 0);
             assert.strictEqual(result.avgExecutionTime, null);
+            assert.deepStrictEqual(result.argumentUsage, {});
+        });
+
+        it("returns argument usage counts collapsed across all subcommands", async () => {
+            const now = Date.now();
+            const result = await getCommandDetail("mycharacter", now - STATS_WINDOW_MS, now);
+            assert.strictEqual(result.argumentUsage["allycode"], 5);
+            assert.strictEqual(result.argumentUsage["compare"], 1);
+            assert.strictEqual(Object.keys(result.argumentUsage).length, 2);
+        });
+
+        it("returns empty argumentUsage when no options data exists", async () => {
+            const now = Date.now();
+            const result = await getCommandDetail("mods", now - STATS_WINDOW_MS, now);
+            assert.deepStrictEqual(result.argumentUsage, {});
         });
     });
 });

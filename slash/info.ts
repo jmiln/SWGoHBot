@@ -154,6 +154,7 @@ export default class Info extends Command {
 
     private async replyCmdDetail(interaction: CommandContext["interaction"], commandName: string, startTime: number, endTime: number) {
         const detail = await getCommandDetail(commandName, startTime, endTime);
+        const pct = (count: number) => (detail.totalCount > 0 ? Math.round((count / detail.totalCount) * 100) : 0);
 
         const summaryRows = [
             { title: "Total uses", content: detail.totalCount },
@@ -167,9 +168,31 @@ export default class Info extends Command {
         if (Object.keys(detail.subcommandCounts).length > 0) {
             const subRows = Object.entries(detail.subcommandCounts)
                 .sort(([, a], [, b]) => b - a)
-                .map(([sub, count]) => ({ title: sub, content: count }));
+                .map(([sub, count]) => ({
+                    title: sub,
+                    content: `${count}  (${pct(count)}%)`,
+                }));
             const subTable = makeTable(TABLE_CONFIG.columns, subRows, TABLE_CONFIG.options).join("\n");
             fields.push({ name: "Subcommands", value: codeBlock("asciidoc", subTable) });
+        }
+
+        if (Object.keys(detail.argumentUsage).length > 0) {
+            const MAX_ARG_ROWS = 10;
+            const allArgRows = Object.entries(detail.argumentUsage).sort(([, a], [, b]) => b - a);
+            const visibleRows = allArgRows.slice(0, MAX_ARG_ROWS);
+            const overflow = allArgRows.length - visibleRows.length;
+
+            const argRows = visibleRows.map(([name, count]) => ({
+                title: name,
+                content: `${count}  (${pct(count)}%)`,
+            }));
+
+            let argTable = codeBlock("asciidoc", makeTable(TABLE_CONFIG.columns, argRows, TABLE_CONFIG.options).join("\n"));
+            if (overflow > 0) {
+                argTable += `\n+ ${overflow} more`;
+            }
+
+            fields.push({ name: "Arguments (across all subcommands)", value: argTable });
         }
 
         return interaction.reply({

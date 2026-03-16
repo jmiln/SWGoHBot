@@ -26,6 +26,7 @@ export interface CommandDetail {
     commandName: string;
     totalCount: number;
     subcommandCounts: Record<string, number>;
+    argumentUsage: Record<string, number>;
     successRate: number; // 0-100
     avgExecutionTime: number | null; // ms, or null if no data
 }
@@ -213,6 +214,7 @@ export async function getCommandDetail(commandName: string, startTime: number, e
         commandName,
         totalCount: 0,
         subcommandCounts: {},
+        argumentUsage: {},
         successRate: 0,
         avgExecutionTime: null,
     };
@@ -250,6 +252,15 @@ export async function getCommandDetail(commandName: string, startTime: number, e
                             },
                         },
                     ],
+                    byArgument: [
+                        { $unwind: "$options" },
+                        {
+                            $group: {
+                                _id: "$options.name",
+                                count: { $sum: "$count" },
+                            },
+                        },
+                    ],
                 },
             },
         ];
@@ -265,10 +276,16 @@ export async function getCommandDetail(commandName: string, startTime: number, e
             if (row._id) subcommandCounts[row._id] = row.count;
         }
 
+        const argumentUsage: Record<string, number> = {};
+        for (const row of result.byArgument) {
+            if (row._id) argumentUsage[row._id] = row.count;
+        }
+
         return {
             commandName,
             totalCount: total,
             subcommandCounts,
+            argumentUsage,
             successRate: total > 0 ? Math.round((successCount / total) * 100) : 0,
             avgExecutionTime: avgTime != null ? Math.round(avgTime) : null,
         };
