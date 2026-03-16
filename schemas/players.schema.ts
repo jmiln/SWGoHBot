@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const ArenaSquadMemberSchema = z.object({
+    id: z.string(),
+    defId: z.string(),
+});
+
 /**
  * Simplified schema for raw player documents (rawPlayers collection)
  * Full SWAPIPlayer type is extensive; this covers the most important fields
@@ -10,26 +15,26 @@ export const RawPlayerSchema = z.object({
     level: z.number(),
     guildName: z.string().optional(),
     guildId: z.string().optional(),
-    roster: z.array(z.any()), // Full roster schema would be very large
+    roster: z.array(z.unknown()), // SWAPIUnit has many optional fields; unknown enforces narrowing before use
     updated: z.number(),
     arena: z
         .object({
             char: z
                 .object({
                     rank: z.number(),
-                    squad: z.array(z.any()),
+                    squad: z.array(ArenaSquadMemberSchema),
                 })
                 .optional(),
             ship: z
                 .object({
                     rank: z.number(),
-                    squad: z.array(z.any()),
+                    squad: z.array(ArenaSquadMemberSchema),
                 })
                 .optional(),
         })
         .optional(),
-    stats: z.array(z.any()).optional(),
-    grandArena: z.any().optional(),
+    stats: z.array(z.object({ nameKey: z.string(), value: z.number() })).optional(),
+    grandArena: z.null().optional(),
     warnings: z.array(z.string()).optional(),
 });
 
@@ -42,8 +47,8 @@ export const PlayerStatsSchema = z.object({
     name: z.string().optional(),
     level: z.number().optional(),
     guildName: z.string().optional(),
-    stats: z.any().optional(), // Processed stats object
-    roster: z.array(z.any()).optional(),
+    stats: z.array(z.object({ nameKey: z.string(), value: z.number() })).optional(),
+    roster: z.array(z.unknown()).optional(), // Processed roster — differs from raw SWAPIUnit shape
 });
 
 // Export inferred types

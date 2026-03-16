@@ -12,6 +12,11 @@ export const GuildMemberSchema = z.object({
     gpShip: z.number().optional(),
 });
 
+const RaidEntrySchema = z.object({
+    diffId: z.string(),
+    progress: z.string(),
+});
+
 /**
  * Simplified schema for raw guild documents (rawGuilds collection)
  */
@@ -23,9 +28,7 @@ export const RawGuildSchema = z.object({
     gp: z.number(),
     roster: z.array(GuildMemberSchema),
     updated: z.number(),
-    raid: z.any().optional(),
-    territoryBattleResult: z.array(z.any()).optional(),
-    territoryWarResult: z.array(z.any()).optional(),
+    raid: z.record(z.string(), RaidEntrySchema).optional(),
 });
 
 /**
