@@ -398,11 +398,22 @@ export function getUTCFromOffset(offset: number): number {
 }
 
 export function getStartOfDay(zone: string): Date {
-    const day = new Date(new Date().toLocaleString("en-US", { timeZone: zone }));
-    const localeHour = day.toLocaleString("en-US", { hour: "numeric", hour12: false, timeZone: zone });
+    const now = new Date();
+    const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: zone,
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false,
+    }).formatToParts(now);
 
-    day.setHours(day.getHours() - Number.parseInt(localeHour, 10), 0, 0, 0);
-    return day;
+    const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? "0");
+    const hours = get("hour") === 24 ? 0 : get("hour");
+    const elapsedMs = (hours * 3600 + get("minute") * 60 + get("second")) * 1000 + now.getMilliseconds();
+    return new Date(now.getTime() - elapsedMs);
 }
 
 /*

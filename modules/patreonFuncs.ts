@@ -300,9 +300,7 @@ class PatreonFuncs {
 
             // Check if they have either alerts or payouts enabled
             const hasAlerts =
-                aw?.enabled &&
-                (aw.arena?.fleet?.channel || aw.arena?.char?.channel) &&
-                (aw.arena?.fleet?.enabled || aw.arena?.char?.enabled);
+                (aw?.arena?.fleet?.channel || aw?.arena?.char?.channel) && (aw?.arena?.fleet?.enabled || aw?.arena?.char?.enabled);
             const hasPayouts =
                 aw?.payout &&
                 ((aw.payout?.char?.enabled && aw.payout?.char?.channel) || (aw.payout?.fleet?.enabled && aw.payout?.fleet?.channel));

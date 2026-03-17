@@ -60,7 +60,6 @@ export const UserConfigSchema = z.object({
         })
         .optional(),
     arenaWatch: z.object({
-        enabled: z.boolean(),
         allyCodes: z.array(ArenaWatchAcctSchema),
         channel: z.string().optional().nullable(),
         arena: z.object({

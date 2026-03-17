@@ -408,7 +408,6 @@ export default class UserConf extends Command {
                             fields.push({
                                 name: "Arenawatch",
                                 value: [
-                                    `>>> Enabled: **${uAW.enabled ? "ON" : "OFF"}**`,
                                     `Channel: **${uAW.channel ? `<#${uAW.channel}>` : "N/A"}**`,
                                     `Emotes in log: **${uAW.useEmotesInLog ? "ON" : "OFF"}**`,
                                     `Marks in log: **${uAW.useMarksInLog ? "ON" : "OFF"}**`,

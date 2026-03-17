@@ -211,7 +211,6 @@ export interface UserConfig {
         swgohLanguage?: SWAPILang;
     };
     arenaWatch: {
-        enabled: boolean;
         allyCodes: ArenaWatchAcct[];
         channel?: string;
         arena: {

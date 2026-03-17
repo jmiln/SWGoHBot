@@ -9,7 +9,6 @@ const BASE_USER = {
     arenaAlert: { arena: "none", payoutWarning: 0 },
     updated: Date.now(),
     arenaWatch: {
-        enabled: false,
         allyCodes: [],
         channel: null,
         arena: {},

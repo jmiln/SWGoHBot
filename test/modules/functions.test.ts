@@ -523,16 +523,29 @@ describe("getStartOfDay", () => {
         assert.ok(getStartOfDay("UTC") instanceof Date);
     });
 
-    it("has zero minutes, seconds, and milliseconds", () => {
+    it("has zero UTC hours, minutes, seconds, and milliseconds", () => {
         const result = getStartOfDay("UTC");
-        assert.strictEqual(result.getMinutes(), 0);
-        assert.strictEqual(result.getSeconds(), 0);
-        assert.strictEqual(result.getMilliseconds(), 0);
+        assert.strictEqual(result.getUTCHours(), 0);
+        assert.strictEqual(result.getUTCMinutes(), 0);
+        assert.strictEqual(result.getUTCSeconds(), 0);
+        assert.strictEqual(result.getUTCMilliseconds(), 0);
     });
 
-    it("is not in the future", () => {
+    it("represents the start of the current UTC day", () => {
+        const before = new Date();
         const result = getStartOfDay("UTC");
-        assert.ok(result.getTime() <= Date.now(), "Start of day should not be in the future");
+        // Capture after in case the test runs right at midnight and the date rolls over
+        const after = new Date();
+
+        const resultDay = result.toISOString().slice(0, 10);
+        assert.ok(
+            resultDay === before.toISOString().slice(0, 10) || resultDay === after.toISOString().slice(0, 10),
+            `Expected start-of-day ${resultDay} to match current UTC date`,
+        );
+        assert.strictEqual(result.getUTCHours(), 0);
+        assert.strictEqual(result.getUTCMinutes(), 0);
+        assert.strictEqual(result.getUTCSeconds(), 0);
+        assert.strictEqual(result.getUTCMilliseconds(), 0);
     });
 });
 

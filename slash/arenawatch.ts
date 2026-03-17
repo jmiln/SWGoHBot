@@ -23,6 +23,7 @@ interface InteractionOptions {
     allyCode: string;
     allyCodes: string;
     arena: string;
+    arenaType: string;
     channel: GuildChannel;
     enabled: boolean;
     mark: string;
@@ -30,7 +31,6 @@ interface InteractionOptions {
     new_allyCode: string;
     old_allyCode: string;
     remove_mark: boolean;
-    toggle: boolean;
     view_by: string;
 
     channelId: string;
@@ -108,155 +108,151 @@ export default class ArenaWatch extends Command {
                 ],
             },
             {
-                name: "arena",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Choose between the arena types",
+                name: "arena_log",
+                type: ApplicationCommandOptionType.SubcommandGroup,
+                description: "Settings for the arena rank change log",
                 options: [
                     {
-                        name: "enabled",
-                        type: ApplicationCommandOptionType.Boolean,
-                        description: "Set whether it's enabled or not",
-                        required: true,
-                    },
-                    {
                         name: "arena",
-                        type: ApplicationCommandOptionType.String,
-                        description: "Choose which arena to toggle",
-                        required: true,
-                        choices: [
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Enable arena log for char, fleet, both, or none to disable",
+                        options: [
                             {
-                                name: "Char",
-                                value: "char",
-                            },
-                            {
-                                name: "Fleet",
-                                value: "fleet",
-                            },
-                            {
-                                name: "Both",
-                                value: "both",
-                            },
-                            {
-                                name: "None",
-                                value: "none",
+                                name: "type",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Which arena to enable (none disables all)",
+                                required: true,
+                                choices: [
+                                    { name: "Char", value: "char" },
+                                    { name: "Fleet", value: "fleet" },
+                                    { name: "Both", value: "both" },
+                                    { name: "None", value: "none" },
+                                ],
                             },
                         ],
                     },
-                ],
-            },
-            {
-                name: "channel",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "The channel to put the logs in",
-                options: [
                     {
-                        name: "target_channel",
-                        type: ApplicationCommandOptionType.Channel,
-                        required: true,
+                        name: "channel",
+                        type: ApplicationCommandOptionType.Subcommand,
                         description: "The channel to put the logs in",
-                    },
-                    {
-                        name: "arena",
-                        type: ApplicationCommandOptionType.String,
-                        required: true,
-                        description: "The arena to watch",
-                        choices: [
+                        options: [
                             {
-                                name: "Char",
-                                value: "char",
+                                name: "target_channel",
+                                type: ApplicationCommandOptionType.Channel,
+                                required: true,
+                                description: "The channel to put the logs in",
                             },
                             {
-                                name: "Fleet",
-                                value: "fleet",
+                                name: "arena",
+                                type: ApplicationCommandOptionType.String,
+                                required: true,
+                                description: "The arena to watch",
+                                choices: [
+                                    { name: "Char", value: "char" },
+                                    { name: "Fleet", value: "fleet" },
+                                ],
                             },
                         ],
                     },
-                ],
-            },
-            {
-                name: "enabled",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Enable/ Disable arenawatch",
-                options: [
                     {
-                        name: "toggle",
-                        description: "Enable/ Disable arenawatch",
-                        type: ApplicationCommandOptionType.Boolean,
-                        required: true,
+                        name: "warn",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Set when to warn who, and about which arena",
+                        options: [
+                            {
+                                name: "allycode",
+                                type: ApplicationCommandOptionType.String,
+                                description: "The user's ally code",
+                                required: true,
+                            },
+                            {
+                                name: "mins",
+                                type: ApplicationCommandOptionType.Integer,
+                                description: "(0-1439) Minutes before payout to warn (0 to disable)",
+                                required: true,
+                                minValue: 0,
+                                maxValue: 1439,
+                            },
+                            {
+                                name: "arena",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Set which arena it will watch.",
+                                required: true,
+                                choices: [
+                                    { name: "Char", value: "char" },
+                                    { name: "Fleet", value: "fleet" },
+                                    { name: "None", value: "none" },
+                                    { name: "Both", value: "both" },
+                                ],
+                            },
+                        ],
                     },
-                ],
-            },
-            {
-                name: "report",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Choose whether you want it to report on climbs, drops, or both",
-                options: [
                     {
-                        name: "arena",
-                        type: ApplicationCommandOptionType.String,
+                        name: "report",
+                        type: ApplicationCommandOptionType.Subcommand,
                         description: "Choose whether you want it to report on climbs, drops, or both",
-                        required: true,
-                        choices: [
-                            { name: "climb", value: "climb" },
-                            { name: "drop", value: "drop" },
-                            { name: "both", value: "both" },
+                        options: [
+                            {
+                                name: "arena",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Choose whether you want it to report on climbs, drops, or both",
+                                required: true,
+                                choices: [
+                                    { name: "climb", value: "climb" },
+                                    { name: "drop", value: "drop" },
+                                    { name: "both", value: "both" },
+                                ],
+                            },
                         ],
                     },
-                ],
-            },
-            {
-                name: "showvs",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Enable or disable showing when one person hits another",
-                options: [
                     {
-                        name: "enable",
-                        description: "True/ False",
-                        type: ApplicationCommandOptionType.Boolean,
-                        required: true,
-                    },
-                ],
-            },
-            {
-                name: "warn",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Set when to warn who, and about which arena",
-                options: [
-                    {
-                        name: "allycode",
-                        type: ApplicationCommandOptionType.String,
-                        description: "The user's ally code",
-                        required: true,
+                        name: "showvs",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Enable or disable showing when one person hits another",
+                        options: [
+                            {
+                                name: "enable",
+                                type: ApplicationCommandOptionType.Boolean,
+                                required: true,
+                                description: "True/ False",
+                            },
+                        ],
                     },
                     {
-                        name: "mins",
-                        type: ApplicationCommandOptionType.Integer,
-                        description: "(0-1439) Minutes before payout to warn (0 to disable)",
-                        required: true,
-                        minValue: 0,
-                        maxValue: 1439,
+                        name: "result",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Set to spit out the payout result of a user",
+                        options: [
+                            {
+                                name: "allycode",
+                                type: ApplicationCommandOptionType.String,
+                                description: "The user's ally code",
+                                required: true,
+                            },
+                            {
+                                name: "arena",
+                                type: ApplicationCommandOptionType.String,
+                                description: "Set which arena it will give the results of.",
+                                required: true,
+                                choices: [
+                                    { name: "Char", value: "char" },
+                                    { name: "Fleet", value: "fleet" },
+                                    { name: "None", value: "none" },
+                                    { name: "Both", value: "both" },
+                                ],
+                            },
+                        ],
                     },
                     {
-                        name: "arena",
-                        type: ApplicationCommandOptionType.String,
-                        description: "Set which arena it will watch.",
-                        required: true,
-                        choices: [
+                        name: "use_marks_in_log",
+                        type: ApplicationCommandOptionType.Subcommand,
+                        description: "Toggle showing players' marks in the arena log",
+                        options: [
                             {
-                                name: "Char",
-                                value: "char",
-                            },
-                            {
-                                name: "Fleet",
-                                value: "fleet",
-                            },
-                            {
-                                name: "None",
-                                value: "none",
-                            },
-                            {
-                                name: "Both",
-                                value: "both",
+                                name: "enable",
+                                type: ApplicationCommandOptionType.Boolean,
+                                required: true,
+                                description: "Show marks in arena log?",
                             },
                         ],
                     },
@@ -268,34 +264,20 @@ export default class ArenaWatch extends Command {
                 description: "Set to spit out the payout result of a user",
                 options: [
                     {
-                        name: "enable",
+                        name: "arena",
                         type: ApplicationCommandOptionType.Subcommand,
-                        description: "Choose between the arena types",
+                        description: "Enable payout log for char, fleet, both, or none to disable",
                         options: [
                             {
-                                name: "enabled",
-                                type: ApplicationCommandOptionType.Boolean,
-                                description: "Set whether it's enabled or not",
-                                required: true,
-                            },
-                            {
-                                name: "arena",
+                                name: "type",
                                 type: ApplicationCommandOptionType.String,
-                                description: "Choose which arena to toggle",
+                                description: "Which arena to enable (none disables all)",
                                 required: true,
                                 choices: [
-                                    {
-                                        name: "Char",
-                                        value: "char",
-                                    },
-                                    {
-                                        name: "Fleet",
-                                        value: "fleet",
-                                    },
-                                    {
-                                        name: "Both",
-                                        value: "both",
-                                    },
+                                    { name: "Char", value: "char" },
+                                    { name: "Fleet", value: "fleet" },
+                                    { name: "Both", value: "both" },
+                                    { name: "None", value: "none" },
                                 ],
                             },
                         ],
@@ -357,56 +339,6 @@ export default class ArenaWatch extends Command {
                                 description: "Choose this to delete the mark on a selected user",
                             },
                         ],
-                    },
-                ],
-            },
-            {
-                name: "result",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Set to spit out the payout result of a user",
-                options: [
-                    {
-                        name: "allycode",
-                        type: ApplicationCommandOptionType.String,
-                        description: "The user's ally code",
-                        required: true,
-                    },
-                    {
-                        name: "arena",
-                        type: ApplicationCommandOptionType.String,
-                        description: "Set which arena it will give the results of.",
-                        required: true,
-                        choices: [
-                            {
-                                name: "Char",
-                                value: "char",
-                            },
-                            {
-                                name: "Fleet",
-                                value: "fleet",
-                            },
-                            {
-                                name: "None",
-                                value: "none",
-                            },
-                            {
-                                name: "Both",
-                                value: "both",
-                            },
-                        ],
-                    },
-                ],
-            },
-            {
-                name: "use_marks_in_log",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Toggle showing players' marks in the arena log",
-                options: [
-                    {
-                        name: "enable",
-                        type: ApplicationCommandOptionType.Boolean,
-                        required: true,
-                        description: "Show marks in arena log?",
                     },
                 ],
             },
@@ -477,6 +409,7 @@ export default class ArenaWatch extends Command {
             allyCode: interaction.options.getString("allycode"), // When they can only reference one at a time
             allyCodes: interaction.options.getString("allycodes"), // When they're able to enter multiple ally codes
             arena: interaction.options.getString("arena"),
+            arenaType: interaction.options.getString("type"),
             channel: channelIn,
             enabled: interaction.options.getBoolean("enabled"),
             mark: interaction.options.getString("mark"),
@@ -484,7 +417,6 @@ export default class ArenaWatch extends Command {
             new_allyCode: interaction.options.getString("new_allycode"),
             old_allyCode: interaction.options.getString("old_allycode"),
             remove_mark: interaction.options.getBoolean("remove_mark"),
-            toggle: interaction.options.getBoolean("toggle"),
             view_by: interaction.options.getString("view_by"),
 
             // Processed bits
@@ -539,27 +471,6 @@ export async function processAWChanges({
     };
 
     switch (target) {
-        // ArenaWatch -> activate/ deactivate
-        case "enabled": {
-            const isEnabled = interactionOptions.toggle;
-            aw.enabled = isEnabled;
-            result.outLog = `ArenaWatch is now ${isEnabled ? "enabled" : "disabled"}.`;
-            break;
-        }
-        case "channel": {
-            // This needs to make sure the person has an adminrole or something so they cannot just spam a chat with it
-            const targetArena = interactionOptions.arena;
-            if (!interactionOptions.channelId) {
-                result.error = "Invalid channel, please make sure you're choosing a text channel in this server.";
-                break;
-            }
-
-            // They got throught all that, go ahead and set it
-            aw.arena.char.channel = ["both", "char"].includes(targetArena) ? interactionOptions.channelId : null;
-            aw.arena.fleet.channel = ["both", "fleet"].includes(targetArena) ? interactionOptions.channelId : null;
-            result.outLog = `ArenaWatch channel for ${targetArena === "both" ? "both arenas" : targetArena} has been set to <#${interactionOptions.channelId}>.`;
-            break;
-        }
         case "payout": {
             // ;aw payout enable char | fleet | both    (Toggles per arena)
             // ;aw payout channel #channelName char     (Sets it to a channel)
@@ -568,14 +479,14 @@ export async function processAWChanges({
 
             // Get the which part of the payout we're working with
             const setting = interactionOptions.subCommand;
-            if (setting === "enable") {
-                // Grab which arena to set it to
-                const enabled = interactionOptions.enabled;
-
-                // If it's one of the correct options
-                aw.payout.char.enabled = ["char", "both"].includes(targetArena) ? enabled : false;
-                aw.payout.fleet.enabled = ["fleet", "both"].includes(targetArena) ? enabled : false;
-                result.outLog = `ArenaWatch payout for ${targetArena === "both" ? "both arenas" : targetArena} has been ${enabled ? "enabled" : "disabled"}.`;
+            if (setting === "arena") {
+                const arenaType = interactionOptions.arenaType;
+                aw.payout.char.enabled = ["char", "both"].includes(arenaType);
+                aw.payout.fleet.enabled = ["fleet", "both"].includes(arenaType);
+                result.outLog =
+                    arenaType === "none"
+                        ? "ArenaWatch payout has been disabled."
+                        : `ArenaWatch payout for ${arenaType === "both" ? "both arenas" : arenaType} has been enabled.`;
             } else if (setting === "channel") {
                 // Set the channel for one of the options (Char/ fleet)
                 if (!interactionOptions.channelId) {
@@ -633,14 +544,103 @@ export async function processAWChanges({
             }
             break;
         }
-        case "arena": {
-            const enabled = interactionOptions.enabled;
-            const arena = interactionOptions.arena;
+        case "arena_log": {
+            const setting = interactionOptions.subCommand;
+            if (setting === "arena") {
+                const arenaType = interactionOptions.arenaType;
+                aw.arena.char.enabled = ["char", "both"].includes(arenaType);
+                aw.arena.fleet.enabled = ["fleet", "both"].includes(arenaType);
+                result.outLog =
+                    arenaType === "none"
+                        ? "ArenaWatch arena log has been disabled."
+                        : `ArenaWatch arena log for ${arenaType === "both" ? "both arenas" : arenaType} has been enabled.`;
+            } else if (setting === "channel") {
+                const targetArena = interactionOptions.arena;
+                if (!interactionOptions.channelId) {
+                    result.error = "Invalid channel, please make sure you're choosing a text channel in this server.";
+                    break;
+                }
+                aw.arena.char.channel = ["both", "char"].includes(targetArena) ? interactionOptions.channelId : null;
+                aw.arena.fleet.channel = ["both", "fleet"].includes(targetArena) ? interactionOptions.channelId : null;
+                result.outLog = `ArenaWatch channel for ${targetArena === "both" ? "both arenas" : targetArena} has been set to <#${interactionOptions.channelId}>.`;
+            } else if (setting === "warn") {
+                // ;aw warn 123123123 <# of min> <none|both|char|fleet>
+                const code = interactionOptions.allyCode;
+                const mins = interactionOptions.mins;
+                const arena = interactionOptions.arena;
 
-            aw.arena.char.enabled = ["char", "both"].includes(arena) ? enabled : false;
-            aw.arena.fleet.enabled = ["fleet", "both"].includes(arena) ? enabled : false;
+                if (!isAllyCode(code)) {
+                    result.error = `Invalid ally code (${code})`;
+                    break;
+                }
 
-            result.outLog = `ArenaWatch for ${arena === "both" ? "both arenas" : arena} has been ${enabled ? "enabled" : "disabled"}.`;
+                const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
+                if (!exists) {
+                    result.error = "That ally code is not in your list.";
+                    break;
+                }
+
+                aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
+
+                if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
+                exists.warn = {
+                    min: mins && mins > 0 ? mins : null,
+                    arena: arena === "none" ? null : arena,
+                };
+                aw.allyCodes.push(exists);
+
+                result.outLog = `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`;
+            } else if (setting === "report") {
+                const arena = interactionOptions.arena;
+                if (aw.report === arena.toLowerCase()) {
+                    result.outLog = `Your report setting was already set to ${arena}`;
+                    break;
+                }
+                aw.report = arena.toLowerCase();
+                result.outLog = `Your report setting has been set to ${arena}`;
+            } else if (setting === "showvs") {
+                // Enable or disable showing when one person hits another
+                const isEnabled = interactionOptions.enabled;
+                if (isEnabled === aw.showvs) {
+                    result.outLog = `Your showvs setting was already set to ${isEnabled.toString()}`;
+                    break;
+                }
+                aw.showvs = isEnabled;
+                result.outLog = `The log will ${aw.showvs ? "now" : "not"} show when someone hits someone else.`;
+            } else if (setting === "result") {
+                // ;aw result 123123123 <none|char|fleet|both>
+                const code = interactionOptions.allyCode;
+                const arena = interactionOptions.arena;
+
+                if (!isAllyCode(code)) {
+                    result.error = `Invalid ally code (${code})`;
+                    break;
+                }
+
+                const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
+                if (!exists) {
+                    result.error = "That ally code is not in your list.";
+                    break;
+                }
+
+                // Take that user out of the list
+                aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
+
+                // Update the user
+                exists.result = arena === "none" ? null : arena;
+
+                // Put the user back in
+                aw.allyCodes.push(exists);
+                result.outLog = `Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`;
+            } else if (setting === "use_marks_in_log") {
+                const useMarksInLog = interactionOptions.enabled;
+                if (aw.useMarksInLog === useMarksInLog) {
+                    result.error = `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`;
+                    break;
+                }
+                aw.useMarksInLog = useMarksInLog;
+                result.outLog = `UseMarksInLog has been set to ${aw.useMarksInLog.toString()}`;
+            }
             break;
         }
         case "allycode": {
@@ -811,93 +811,6 @@ export async function processAWChanges({
             }
             break;
         }
-        case "report": {
-            const arena = interactionOptions.arena;
-            if (aw.report === arena.toLowerCase()) {
-                result.outLog = `Your report setting was already set to ${arena}`;
-                break;
-            }
-            aw.report = arena.toLowerCase();
-            result.outLog = `Your report setting has been set to ${arena}`;
-            break;
-        }
-        case "showvs": {
-            // Enable or disable showing when one person hits another
-            const isEnabled = interactionOptions.enabled;
-            if (isEnabled === aw.showvs) {
-                result.outLog = `Your showvs setting was already set to ${isEnabled.toString()}`;
-                break;
-            }
-            aw.showvs = isEnabled;
-            result.outLog = `The log will ${aw.showvs ? "now" : "not"} show when someone hits someone else.`;
-            break;
-        }
-        case "warn": {
-            // ;aw warn 123123123 <# of min> <none|both|char|fleet>
-            const code = interactionOptions.allyCode;
-            const mins = interactionOptions.mins;
-            const arena = interactionOptions.arena;
-
-            if (!isAllyCode(code)) {
-                result.error = `Invalid ally code (${code})`;
-                break;
-            }
-
-            const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
-            if (!exists) {
-                result.error = "That ally code is not in your list.";
-                break;
-            }
-
-            aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
-
-            if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
-            exists.warn = {
-                min: mins && mins > 0 ? mins : null,
-                arena: arena === "none" ? null : arena,
-            };
-            aw.allyCodes.push(exists);
-
-            result.outLog = `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`;
-            break;
-        }
-        case "result": {
-            // ;aw result 123123123 <none|char|fleet|both>
-            const code = interactionOptions.allyCode;
-            const arena = interactionOptions.arena;
-
-            if (!isAllyCode(code)) {
-                result.error = `Invalid ally code (${code})`;
-                break;
-            }
-
-            const exists = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(code, 10));
-            if (!exists) {
-                result.error = "That ally code is not in your list.";
-                break;
-            }
-
-            // Take that user out of the list
-            aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
-
-            // Update the user
-            exists.result = arena === "none" ? null : arena;
-
-            // Put the user back in
-            aw.allyCodes.push(exists);
-            result.outLog = `Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`;
-            break;
-        }
-        case "use_marks_in_log": {
-            const useMarksInLog = interactionOptions.enabled;
-            if (aw.useMarksInLog === useMarksInLog) {
-                result.error = `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`;
-                break;
-            }
-            aw.useMarksInLog = useMarksInLog;
-            result.outLog = `UseMarksInLog has been set to ${aw.useMarksInLog.toString()}`;
-            break;
-        }
         case "view": {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
             const allyCode = interactionOptions.allyCode;
@@ -936,7 +849,6 @@ const defPayout = {
     },
 };
 const defAW = {
-    enabled: false,
     allyCodes: [],
     channel: null,
     arena: {
@@ -1094,7 +1006,6 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, 
         result.embedOut = {
             title: "Arena Watch Settings",
             description: [
-                `Enabled:  **${aw.enabled ? "ON" : "OFF"}**`,
                 `Char:     **${aw.arena.char.enabled && aw.arena.char.channel ? "ON " : "OFF"}**  -  ${charChan}`,
                 `Ship:     **${aw.arena.fleet.enabled && aw.arena.fleet.channel ? "ON " : "OFF"}**  -  ${fleetChan}`,
             ].join("\n"),

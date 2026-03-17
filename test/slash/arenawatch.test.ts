@@ -9,7 +9,6 @@ describe("ArenaWatch", () => {
     // Helper to create a base arena watch config
     function createBaseAW(): UserConfig["arenaWatch"] {
         return {
-            enabled: false,
             allyCodes: [],
             channel: null,
             arena: {
@@ -43,7 +42,7 @@ describe("ArenaWatch", () => {
     describe("Functionality Tests", () => {
         describe("fillAWSkeleton", () => {
             it("should fill in missing payout structure", () => {
-                const aw = { enabled: true, allyCodes: [] } as UserConfig["arenaWatch"];
+                const aw = { allyCodes: [] } as UserConfig["arenaWatch"];
                 const filled = fillAWSkeleton(aw);
 
                 assert.ok(filled.payout);
@@ -54,7 +53,7 @@ describe("ArenaWatch", () => {
             });
 
             it("should set default values for useMarksInLog, report, and showvs", () => {
-                const aw = { enabled: true, allyCodes: [] } as UserConfig["arenaWatch"];
+                const aw = { allyCodes: [] } as UserConfig["arenaWatch"];
                 const filled = fillAWSkeleton(aw);
 
                 assert.strictEqual(filled.useMarksInLog, false);
@@ -64,7 +63,6 @@ describe("ArenaWatch", () => {
 
             it("should migrate old channel setting to arena structure", () => {
                 const aw = {
-                    enabled: true,
                     allyCodes: [],
                     channel: "12345",
                     report: "both",
@@ -82,37 +80,7 @@ describe("ArenaWatch", () => {
                 const filled = fillAWSkeleton(null);
 
                 assert.ok(filled);
-                assert.strictEqual(filled.enabled, false);
                 assert.ok(Array.isArray(filled.allyCodes));
-            });
-        });
-
-        describe("enabled subcommand", () => {
-            it("should enable arenawatch", async () => {
-                const aw = createBaseAW();
-                const { result, aw: awRes } = await processAWChanges({
-                    target: "enabled",
-                    interactionOptions: { toggle: true } as any,
-                    aw,
-
-                });
-
-                assert.strictEqual(awRes.enabled, true);
-                assert.ok(result.outLog.includes("enabled"));
-            });
-
-            it("should disable arenawatch", async () => {
-                const aw = createBaseAW();
-                aw.enabled = true;
-                const { result, aw: awRes } = await processAWChanges({
-                    target: "enabled",
-                    interactionOptions: { toggle: false } as any,
-                    aw,
-
-                });
-
-                assert.strictEqual(awRes.enabled, false);
-                assert.ok(result.outLog.includes("disabled"));
             });
         });
 
@@ -120,10 +88,9 @@ describe("ArenaWatch", () => {
             it("should enable char arena", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "arena",
-                    interactionOptions: { enabled: true, arena: "char" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "arena", arenaType: "char" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.arena.char.enabled, true);
@@ -135,10 +102,9 @@ describe("ArenaWatch", () => {
             it("should enable both arenas", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "arena",
-                    interactionOptions: { enabled: true, arena: "both" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "arena", arenaType: "both" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.arena.char.enabled, true);
@@ -146,18 +112,18 @@ describe("ArenaWatch", () => {
                 assert.ok(result.outLog.includes("both"));
             });
 
-            it("should disable fleet arena", async () => {
+            it("should disable all arenas when none is selected", async () => {
                 const aw = createBaseAW();
+                aw.arena.char.enabled = true;
                 aw.arena.fleet.enabled = true;
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "arena",
-                    interactionOptions: { enabled: false, arena: "fleet" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "arena", arenaType: "none" } as any,
                     aw,
-
                 });
 
+                assert.strictEqual(awRes.arena.char.enabled, false);
                 assert.strictEqual(awRes.arena.fleet.enabled, false);
-                assert.ok(result.outLog.includes("fleet"));
                 assert.ok(result.outLog.includes("disabled"));
             });
         });
@@ -166,8 +132,8 @@ describe("ArenaWatch", () => {
             it("should set channel for char arena", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "channel",
-                    interactionOptions: { channelId: "123456789", arena: "char" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "channel", channelId: "123456789", arena: "char" } as any,
                     aw,
 
                 });
@@ -180,8 +146,8 @@ describe("ArenaWatch", () => {
             it("should set channel for both arenas", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "channel",
-                    interactionOptions: { channelId: "987654321", arena: "both" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "channel", channelId: "987654321", arena: "both" } as any,
                     aw,
 
                 });
@@ -194,8 +160,8 @@ describe("ArenaWatch", () => {
             it("should reject invalid channel", async () => {
                 const aw = createBaseAW();
                 const { result } = await processAWChanges({
-                    target: "channel",
-                    interactionOptions: { channelId: null, arena: "char" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "channel", channelId: null, arena: "char" } as any,
                     aw,
 
                 });
@@ -209,8 +175,8 @@ describe("ArenaWatch", () => {
             it("should set report to climb", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "report",
-                    interactionOptions: { arena: "climb" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "report", arena: "climb" } as any,
                     aw,
 
                 });
@@ -222,8 +188,8 @@ describe("ArenaWatch", () => {
             it("should set report to drop", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "report",
-                    interactionOptions: { arena: "drop" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "report", arena: "drop" } as any,
                     aw,
 
                 });
@@ -235,8 +201,8 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 aw.report = "both";
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "report",
-                    interactionOptions: { arena: "both" } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "report", arena: "both" } as any,
                     aw,
 
                 });
@@ -251,8 +217,8 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 aw.showvs = false;
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "showvs",
-                    interactionOptions: { enabled: true } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "showvs", enabled: true } as any,
                     aw,
 
                 });
@@ -265,8 +231,8 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 aw.showvs = true;
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "showvs",
-                    interactionOptions: { enabled: false } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "showvs", enabled: false } as any,
                     aw,
 
                 });
@@ -279,8 +245,8 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 aw.showvs = true;
                 const { result } = await processAWChanges({
-                    target: "showvs",
-                    interactionOptions: { enabled: true } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "showvs", enabled: true } as any,
                     aw,
 
                 });
@@ -293,8 +259,8 @@ describe("ArenaWatch", () => {
             it("should enable use_marks_in_log", async () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
-                    target: "use_marks_in_log",
-                    interactionOptions: { enabled: true } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "use_marks_in_log", enabled: true } as any,
                     aw,
 
                 });
@@ -307,8 +273,8 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 aw.useMarksInLog = false;
                 const { result } = await processAWChanges({
-                    target: "use_marks_in_log",
-                    interactionOptions: { enabled: false } as any,
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "use_marks_in_log", enabled: false } as any,
                     aw,
 
                 });
@@ -323,9 +289,8 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
                     target: "payout",
-                    interactionOptions: { subCommand: "enable", enabled: true, arena: "char" } as any,
+                    interactionOptions: { subCommand: "arena", arenaType: "char" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.payout.char.enabled, true);
@@ -337,13 +302,27 @@ describe("ArenaWatch", () => {
                 const aw = createBaseAW();
                 const { result, aw: awRes } = await processAWChanges({
                     target: "payout",
-                    interactionOptions: { subCommand: "enable", enabled: true, arena: "both" } as any,
+                    interactionOptions: { subCommand: "arena", arenaType: "both" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.payout.char.enabled, true);
                 assert.strictEqual(awRes.payout.fleet.enabled, true);
+            });
+
+            it("should disable payout when none is selected", async () => {
+                const aw = createBaseAW();
+                aw.payout.char.enabled = true;
+                aw.payout.fleet.enabled = true;
+                const { result, aw: awRes } = await processAWChanges({
+                    target: "payout",
+                    interactionOptions: { subCommand: "arena", arenaType: "none" } as any,
+                    aw,
+                });
+
+                assert.strictEqual(awRes.payout.char.enabled, false);
+                assert.strictEqual(awRes.payout.fleet.enabled, false);
+                assert.ok(result.outLog.includes("disabled"));
             });
 
             it("should set payout channel for fleet", async () => {
@@ -644,41 +623,61 @@ describe("ArenaWatch", () => {
             assert.strictEqual(addSubcmd.type, 1); // Subcommand
         });
 
-        it("should have payout subcommand group with enable, channel, and mark", () => {
+        it("should have payout subcommand group with arena, channel, and mark", () => {
             const command = new ArenaWatch();
 
             const payoutGroup = command.commandData.options.find((o) => o.name === "payout");
             assert.ok(payoutGroup);
             assert.strictEqual(payoutGroup.type, 2); // SubcommandGroup
 
-            const enableSubcmd = payoutGroup.options.find((o) => o.name === "enable");
+            const arenaSubcmd = payoutGroup.options.find((o) => o.name === "arena");
             const channelSubcmd = payoutGroup.options.find((o) => o.name === "channel");
             const markSubcmd = payoutGroup.options.find((o) => o.name === "mark");
 
-            assert.ok(enableSubcmd);
+            assert.ok(arenaSubcmd);
             assert.ok(channelSubcmd);
             assert.ok(markSubcmd);
         });
 
-        it("should have all main subcommands", () => {
+        it("should have arena_log subcommand group with expected subcommands", () => {
             const command = new ArenaWatch();
 
-            const subcommands = ["arena", "channel", "enabled", "report", "showvs", "warn", "result", "use_marks_in_log", "view"];
+            const arenaLogGroup = command.commandData.options.find((o) => o.name === "arena_log");
+            assert.ok(arenaLogGroup, "Expected arena_log group to exist");
+            assert.strictEqual(arenaLogGroup.type, 2); // SubcommandGroup
 
-            for (const subcmd of subcommands) {
-                const option = command.commandData.options.find((o) => o.name === subcmd);
-                assert.ok(option, `Expected ${subcmd} subcommand to exist`);
+            const expectedSubcmds = ["arena", "channel", "warn", "report", "showvs", "result", "use_marks_in_log"];
+            for (const name of expectedSubcmds) {
+                const sub = arenaLogGroup.options.find((o) => o.name === name);
+                assert.ok(sub, `Expected arena_log.${name} subcommand to exist`);
             }
         });
 
-        it("should have arena choices for arena subcommand", () => {
+        it("should have view subcommand at top level", () => {
+            const command = new ArenaWatch();
+            const view = command.commandData.options.find((o) => o.name === "view");
+            assert.ok(view, "Expected view subcommand at top level");
+            assert.strictEqual(view.type, 1); // Subcommand
+        });
+
+        it("should not have enabled, arena, channel, report, showvs, warn, result, use_marks_in_log at top level", () => {
+            const command = new ArenaWatch();
+            const removed = ["enabled", "arena", "channel", "report", "showvs", "warn", "result", "use_marks_in_log"];
+            for (const name of removed) {
+                const opt = command.commandData.options.find((o) => o.name === name);
+                assert.strictEqual(opt, undefined, `Expected ${name} to not exist at top level`);
+            }
+        });
+
+        it("should have arena choices for arena_log arena subcommand", () => {
             const command = new ArenaWatch();
 
-            const arenaSubcmd = command.commandData.options.find((o) => o.name === "arena");
-            const arenaOption = arenaSubcmd.options.find((o) => o.name === "arena");
+            const arenaLogGroup = command.commandData.options.find((o) => o.name === "arena_log");
+            const arenaSubcmd = arenaLogGroup.options.find((o) => o.name === "arena");
+            const typeOption = arenaSubcmd.options.find((o) => o.name === "type");
 
-            assert.ok(arenaOption.choices);
-            const values = arenaOption.choices.map((c) => c.value);
+            assert.ok(typeOption.choices);
+            const values = typeOption.choices.map((c) => c.value);
             assert.ok(values.includes("char"));
             assert.ok(values.includes("fleet"));
             assert.ok(values.includes("both"));
@@ -688,7 +687,8 @@ describe("ArenaWatch", () => {
         it("should have report choices", () => {
             const command = new ArenaWatch();
 
-            const reportSubcmd = command.commandData.options.find((o) => o.name === "report");
+            const arenaLogGroup = command.commandData.options.find((o) => o.name === "arena_log");
+            const reportSubcmd = arenaLogGroup.options.find((o) => o.name === "report");
             const arenaOption = reportSubcmd.options.find((o) => o.name === "arena");
 
             assert.ok(arenaOption.choices);
@@ -701,7 +701,8 @@ describe("ArenaWatch", () => {
         it("should have warn subcommand with proper min/max values", () => {
             const command = new ArenaWatch();
 
-            const warnSubcmd = command.commandData.options.find((o) => o.name === "warn");
+            const arenaLogGroup = command.commandData.options.find((o) => o.name === "arena_log");
+            const warnSubcmd = arenaLogGroup.options.find((o) => o.name === "warn");
             const minsOption = warnSubcmd.options.find((o) => o.name === "mins");
 
             assert.ok(minsOption);
