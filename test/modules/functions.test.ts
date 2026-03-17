@@ -6,10 +6,17 @@ import {
     convertMS,
     expandSpaces,
     findCharOrShip,
+    formatCurrentTime,
+    formatDuration,
     getAbilityType,
+    getCurrentWeekday,
     getDivider,
     getGearStr,
+    getSetTimeForTimezone,
+    getStartOfDay,
+    getTimezoneOffset,
     getUserID,
+    getUTCFromOffset,
     isAllyCode,
     isChannelId,
     isUserID,
@@ -17,10 +24,13 @@ import {
     msgArray,
     msgArrayToFields,
     shortenNum,
+    summarizeCharLevels,
     toProperCase,
     trimFloat,
 } from "../../modules/functions.ts";
+import type { SWAPIPlayer } from "../../types/swapi_types.ts";
 import type { BotUnit } from "../../types/types.ts";
+import { createMockLanguage } from "../mocks/index.ts";
 
 const ZWS = "\u200b";
 
@@ -366,5 +376,223 @@ describe("getGearStr", () => {
 
     it("returns just gear number when equipped is empty and relic tier <= 2", () => {
         assert.strictEqual(getGearStr({ gear: 13, equipped: [] } as any), "13");
+    });
+});
+
+const minMS = 1000 * 60;
+const hrMS = 1000 * 60 * 60;
+const dayMS = 1000 * 60 * 60 * 24;
+
+describe("formatDuration", () => {
+    const lang = createMockLanguage();
+
+    it("returns '0 min' for zero duration", () => {
+        assert.strictEqual(formatDuration(0, lang), "0 min");
+    });
+
+    it("formats minutes only when under one hour", () => {
+        assert.strictEqual(formatDuration(45 * minMS, lang), "45 min");
+    });
+
+    it("formats exactly one hour with singular hr label", () => {
+        assert.strictEqual(formatDuration(1 * hrMS, lang), "1 hr, 0 min");
+    });
+
+    it("formats hours and minutes together", () => {
+        assert.strictEqual(formatDuration(1 * hrMS + 30 * minMS, lang), "1 hr, 30 min");
+    });
+
+    it("uses plural hrs label for more than one hour", () => {
+        assert.strictEqual(formatDuration(2 * hrMS, lang), "2 hrs, 0 min");
+    });
+
+    it("formats multi-hour with minutes", () => {
+        assert.strictEqual(formatDuration(3 * hrMS + 15 * minMS, lang), "3 hrs, 15 min");
+    });
+});
+
+describe("getUTCFromOffset", () => {
+    it("returns UTC midnight for offset 0", () => {
+        const d = new Date();
+        const utcMidnight = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+        assert.strictEqual(getUTCFromOffset(0), utcMidnight);
+    });
+
+    it("result for offset 0 is always exactly divisible by a full day", () => {
+        assert.strictEqual(getUTCFromOffset(0) % dayMS, 0);
+    });
+
+    it("result differs by exactly the offset minutes between two calls", () => {
+        const result0 = getUTCFromOffset(0);
+        const result60 = getUTCFromOffset(60);
+        assert.strictEqual(result0 - result60, 60 * minMS);
+    });
+
+    it("negative offset gives a later timestamp than offset 0", () => {
+        const result0 = getUTCFromOffset(0);
+        const resultNeg60 = getUTCFromOffset(-60);
+        assert.strictEqual(resultNeg60 - result0, 60 * minMS);
+    });
+
+    it("offset of one full day equals UTC midnight of the previous day", () => {
+        const result0 = getUTCFromOffset(0);
+        const result1440 = getUTCFromOffset(1440);
+        assert.strictEqual(result0 - result1440, dayMS);
+    });
+});
+
+describe("getTimezoneOffset", () => {
+    it("returns 0 for UTC", () => {
+        assert.strictEqual(getTimezoneOffset("UTC"), 0);
+    });
+
+    it("returns 330 for Asia/Kolkata (UTC+5:30, no DST)", () => {
+        assert.strictEqual(getTimezoneOffset("Asia/Kolkata"), 330);
+    });
+
+    it("returns -420 for America/Phoenix (MST, no DST)", () => {
+        assert.strictEqual(getTimezoneOffset("America/Phoenix"), -420);
+    });
+
+    it("returns null for an invalid timezone", () => {
+        assert.strictEqual(getTimezoneOffset("Not/AZone"), null);
+    });
+});
+
+describe("getSetTimeForTimezone", () => {
+    it("converts a UTC datetime string to the correct UTC timestamp", () => {
+        // offset 0 for UTC, so result equals Date.UTC directly
+        const expected = Date.UTC(2025, 0, 15, 12, 0);
+        assert.strictEqual(getSetTimeForTimezone("01/15/2025 12:00", "UTC"), expected);
+    });
+
+    it("shifts the timestamp by the timezone offset for a positive-offset zone", () => {
+        // IST (UTC+5:30) = +330 min; noon IST = 06:30 UTC
+        const expected = Date.UTC(2025, 6, 4, 12, 0) - 330 * minMS;
+        assert.strictEqual(getSetTimeForTimezone("07/04/2025 12:00", "Asia/Kolkata"), expected);
+    });
+
+    it("shifts the timestamp by the timezone offset for a negative-offset zone", () => {
+        // America/Phoenix (UTC-7) = -420 min; noon MST = 19:00 UTC
+        const expected = Date.UTC(2025, 6, 4, 12, 0) - (-420) * minMS;
+        assert.strictEqual(getSetTimeForTimezone("07/04/2025 12:00", "America/Phoenix"), expected);
+    });
+
+    it("throws when the year is not 4 digits", () => {
+        assert.throws(() => getSetTimeForTimezone("01/15/25 12:00", "UTC"), /Year MUST be 4/);
+    });
+});
+
+describe("getCurrentWeekday", () => {
+    const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    it("returns a valid day of the week for UTC", () => {
+        const result = getCurrentWeekday("UTC");
+        assert.ok(DAYS.includes(result), `Expected a weekday name, got: ${result}`);
+    });
+
+    it("returns a valid day name when no zone is given", () => {
+        const result = getCurrentWeekday();
+        assert.ok(DAYS.includes(result), `Expected a weekday name, got: ${result}`);
+    });
+
+    it("falls back gracefully for an invalid timezone and still returns a weekday", () => {
+        const result = getCurrentWeekday("Not/AZone");
+        assert.ok(DAYS.includes(result), `Expected a weekday name, got: ${result}`);
+    });
+});
+
+describe("formatCurrentTime", () => {
+    it("returns a non-empty string for a valid timezone", () => {
+        const result = formatCurrentTime("UTC");
+        assert.ok(typeof result === "string" && result.length > 0, "Expected a non-empty string");
+    });
+
+    it("does not throw for an invalid timezone (falls back to UTC)", () => {
+        assert.doesNotThrow(() => formatCurrentTime("Not/AZone"));
+    });
+
+    it("returns a non-empty string when no timezone is provided", () => {
+        const result = formatCurrentTime();
+        assert.ok(result.length > 0, "Expected a non-empty string");
+    });
+});
+
+describe("getStartOfDay", () => {
+    it("returns a Date instance", () => {
+        assert.ok(getStartOfDay("UTC") instanceof Date);
+    });
+
+    it("has zero minutes, seconds, and milliseconds", () => {
+        const result = getStartOfDay("UTC");
+        assert.strictEqual(result.getMinutes(), 0);
+        assert.strictEqual(result.getSeconds(), 0);
+        assert.strictEqual(result.getMilliseconds(), 0);
+    });
+
+    it("is not in the future", () => {
+        const result = getStartOfDay("UTC");
+        assert.ok(result.getTime() <= Date.now(), "Start of day should not be in the future");
+    });
+});
+
+describe("summarizeCharLevels", () => {
+    function makePlayer(roster: any[]): SWAPIPlayer {
+        return { roster } as unknown as SWAPIPlayer;
+    }
+
+    const player = makePlayer([
+        { combatType: 1, gear: 13, rarity: 7, relic: { currentTier: 7 } }, // char: g13, rarity 7, R5
+        { combatType: 1, gear: 12, rarity: 6, relic: { currentTier: 2 } }, // char: g12, rarity 6, not reliced
+        { combatType: 2, gear: 13, rarity: 7, relic: { currentTier: 7 } }, // ship: should be ignored
+    ]);
+
+    it("throws for an invalid type", () => {
+        assert.throws(() => summarizeCharLevels([player], "weight"), /Invalid type/);
+    });
+
+    it("throws when input is not an array", () => {
+        assert.throws(() => summarizeCharLevels(null as any, "gear"), /must be an array/);
+    });
+
+    it("counts gear levels correctly, excluding ships", () => {
+        const [levels] = summarizeCharLevels([player], "gear");
+        assert.strictEqual(levels[13], 1, "Expected 1 character at G13");
+        assert.strictEqual(levels[12], 1, "Expected 1 character at G12");
+        assert.strictEqual(levels[11], undefined, "Expected no character at G11");
+    });
+
+    it("calculates correct gear average", () => {
+        const [, avg] = summarizeCharLevels([player], "gear");
+        // (13*1 + 12*1) / 2 = 12.5
+        assert.strictEqual(avg, "12.50");
+    });
+
+    it("counts relic tiers correctly using the currentTier - 2 offset", () => {
+        // currentTier=7 → relic 5; currentTier=2 → not reliced (0, skipped)
+        const [levels] = summarizeCharLevels([player], "relic");
+        assert.strictEqual(levels[5], 1, "Expected 1 character at R5");
+        assert.strictEqual(levels[0], undefined, "Non-reliced characters should not appear");
+    });
+
+    it("counts rarity levels correctly", () => {
+        const [levels] = summarizeCharLevels([player], "rarity");
+        assert.strictEqual(levels[7], 1, "Expected 1 character at 7-star");
+        assert.strictEqual(levels[6], 1, "Expected 1 character at 6-star");
+    });
+
+    it("handles an empty roster", () => {
+        const [levels, avg] = summarizeCharLevels([makePlayer([])], "gear");
+        assert.deepStrictEqual(levels, {});
+        assert.strictEqual(avg, "NaN");
+    });
+
+    it("aggregates across multiple players", () => {
+        const p2 = makePlayer([
+            { combatType: 1, gear: 13, rarity: 7, relic: { currentTier: 9 } }, // G13, R7
+        ]);
+        const [levels] = summarizeCharLevels([player, p2], "gear");
+        assert.strictEqual(levels[13], 2, "Expected 2 characters at G13 across both players");
+        assert.strictEqual(levels[12], 1, "Expected 1 character at G12");
     });
 });

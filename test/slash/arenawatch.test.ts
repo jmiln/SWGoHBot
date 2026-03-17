@@ -1,7 +1,9 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { afterEach, beforeEach, describe, it } from "node:test";
+import swgohAPI from "../../modules/swapi.ts";
 import ArenaWatch, { fillAWSkeleton, processAWChanges } from "../../slash/arenawatch.ts";
 import type { UserConfig } from "../../types/types.ts";
+import { createMockPlayer, MockSWAPI } from "../mocks/mockSwapi.ts";
 
 describe("ArenaWatch", () => {
     // Helper to create a base arena watch config
@@ -92,7 +94,7 @@ describe("ArenaWatch", () => {
                     target: "enabled",
                     interactionOptions: { toggle: true } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.enabled, true);
@@ -106,7 +108,7 @@ describe("ArenaWatch", () => {
                     target: "enabled",
                     interactionOptions: { toggle: false } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.enabled, false);
@@ -121,7 +123,7 @@ describe("ArenaWatch", () => {
                     target: "arena",
                     interactionOptions: { enabled: true, arena: "char" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.arena.char.enabled, true);
@@ -136,7 +138,7 @@ describe("ArenaWatch", () => {
                     target: "arena",
                     interactionOptions: { enabled: true, arena: "both" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.arena.char.enabled, true);
@@ -151,7 +153,7 @@ describe("ArenaWatch", () => {
                     target: "arena",
                     interactionOptions: { enabled: false, arena: "fleet" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.arena.fleet.enabled, false);
@@ -167,7 +169,7 @@ describe("ArenaWatch", () => {
                     target: "channel",
                     interactionOptions: { channelId: "123456789", arena: "char" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.arena.char.channel, "123456789");
@@ -181,7 +183,7 @@ describe("ArenaWatch", () => {
                     target: "channel",
                     interactionOptions: { channelId: "987654321", arena: "both" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.arena.char.channel, "987654321");
@@ -195,7 +197,7 @@ describe("ArenaWatch", () => {
                     target: "channel",
                     interactionOptions: { channelId: null, arena: "char" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.ok(result.error);
@@ -210,7 +212,7 @@ describe("ArenaWatch", () => {
                     target: "report",
                     interactionOptions: { arena: "climb" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.report, "climb");
@@ -223,7 +225,7 @@ describe("ArenaWatch", () => {
                     target: "report",
                     interactionOptions: { arena: "drop" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.report, "drop");
@@ -236,7 +238,7 @@ describe("ArenaWatch", () => {
                     target: "report",
                     interactionOptions: { arena: "both" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.report, "both");
@@ -252,7 +254,7 @@ describe("ArenaWatch", () => {
                     target: "showvs",
                     interactionOptions: { enabled: true } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.showvs, true);
@@ -266,7 +268,7 @@ describe("ArenaWatch", () => {
                     target: "showvs",
                     interactionOptions: { enabled: false } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.showvs, false);
@@ -280,7 +282,7 @@ describe("ArenaWatch", () => {
                     target: "showvs",
                     interactionOptions: { enabled: true } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.ok(result.outLog.includes("already"));
@@ -294,7 +296,7 @@ describe("ArenaWatch", () => {
                     target: "use_marks_in_log",
                     interactionOptions: { enabled: true } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.useMarksInLog, true);
@@ -308,7 +310,7 @@ describe("ArenaWatch", () => {
                     target: "use_marks_in_log",
                     interactionOptions: { enabled: false } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.ok(result.error);
@@ -323,7 +325,7 @@ describe("ArenaWatch", () => {
                     target: "payout",
                     interactionOptions: { subCommand: "enable", enabled: true, arena: "char" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.payout.char.enabled, true);
@@ -337,7 +339,7 @@ describe("ArenaWatch", () => {
                     target: "payout",
                     interactionOptions: { subCommand: "enable", enabled: true, arena: "both" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.payout.char.enabled, true);
@@ -350,7 +352,7 @@ describe("ArenaWatch", () => {
                     target: "payout",
                     interactionOptions: { subCommand: "channel", channelId: "555555555", arena: "fleet" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.payout.fleet.channel, "555555555");
@@ -364,7 +366,7 @@ describe("ArenaWatch", () => {
                     target: "payout",
                     interactionOptions: { subCommand: "channel", channelId: null, arena: "char" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.ok(result.error);
@@ -391,7 +393,7 @@ describe("ArenaWatch", () => {
                     target: "allycode",
                     interactionOptions: { subCommand: "remove", allyCodes: "123456789" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.strictEqual(awRes.allyCodes.length, 0);
@@ -404,12 +406,211 @@ describe("ArenaWatch", () => {
                     target: "allycode",
                     interactionOptions: { subCommand: "remove", allyCodes: "999999999" } as any,
                     aw,
-                    unitStats: async () => [],
+
                 });
 
                 assert.ok(result.error);
                 assert.ok(result.error.includes("not available"));
             });
+        });
+    });
+
+    describe("allycode add/edit subcommand (uses swgohAPI singleton)", () => {
+        let mockSwapi: MockSWAPI;
+        const originalUnitStats = swgohAPI.unitStats;
+
+        beforeEach(() => {
+            mockSwapi = new MockSWAPI();
+            (swgohAPI as any).unitStats = mockSwapi.unitStats.bind(mockSwapi);
+        });
+
+        afterEach(() => {
+            swgohAPI.unitStats = originalUnitStats;
+        });
+
+        it("should add a valid ally code and populate player data", async () => {
+            const player = createMockPlayer({
+                allyCode: 123456789,
+                name: "TestPlayer",
+                arena: { char: { rank: 50, squad: [] }, ship: { rank: 25, squad: [] } },
+                poUTCOffsetMinutes: -300,
+            });
+            mockSwapi.setPlayerData(player);
+
+            const aw = createBaseAW();
+            const { result, aw: awRes } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "123456789", codeCap: 5 } as any,
+                aw,
+            });
+
+            assert.strictEqual(awRes.allyCodes.length, 1);
+            assert.strictEqual(awRes.allyCodes[0].allyCode, 123456789);
+            assert.strictEqual(awRes.allyCodes[0].name, "TestPlayer");
+            assert.strictEqual(awRes.allyCodes[0].lastChar, 50);
+            assert.strictEqual(awRes.allyCodes[0].lastShip, 25);
+            assert.strictEqual(awRes.allyCodes[0].poOffset, -300);
+            assert.ok(result.outLog.includes("added!"));
+        });
+
+        it("should store the mark when one is provided", async () => {
+            const player = createMockPlayer({ allyCode: 123456789, name: "TestPlayer" });
+            mockSwapi.setPlayerData(player);
+
+            const aw = createBaseAW();
+            const { aw: awRes } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "123456789", mark: "⭐", codeCap: 5 } as any,
+                aw,
+            });
+
+            assert.strictEqual(awRes.allyCodes[0].mark, "⭐");
+        });
+
+        it("should error when API returns no players for the ally code", async () => {
+            // No player data set — unitStats returns empty array
+            const aw = createBaseAW();
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "123456789", codeCap: 5 } as any,
+                aw,
+            });
+
+            assert.ok(result.error, "Expected an error when API returns no players");
+            assert.ok(result.error.includes("none of the ally code(s)"));
+        });
+
+        it("should error when ally code is already in the list", async () => {
+            const player = createMockPlayer({ allyCode: 123456789, name: "TestPlayer" });
+            mockSwapi.setPlayerData(player);
+
+            const aw = createBaseAW();
+            aw.allyCodes.push({
+                allyCode: 123456789,
+                name: "TestPlayer",
+                mention: null,
+                lastChar: 100,
+                lastShip: 50,
+                poOffset: 0,
+                mark: null,
+            });
+
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "123456789", codeCap: 5 } as any,
+                aw,
+            });
+
+            assert.ok(result.outLog.includes("already in the list"));
+        });
+
+        it("should error when codeCap is reached", async () => {
+            const player = createMockPlayer({ allyCode: 123456789, name: "TestPlayer" });
+            mockSwapi.setPlayerData(player);
+
+            const aw = createBaseAW();
+            aw.allyCodes.push({
+                allyCode: 987654321,
+                name: "ExistingPlayer",
+                mention: null,
+                lastChar: 100,
+                lastShip: 50,
+                poOffset: 0,
+                mark: null,
+            });
+
+            // codeCap of 1 means the slot is already taken
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "123456789", codeCap: 1 } as any,
+                aw,
+            });
+
+            assert.ok(result.outLog.includes("cap reached"));
+        });
+
+        it("should reject an invalid ally code format", async () => {
+            const aw = createBaseAW();
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "not-a-code", codeCap: 5 } as any,
+                aw,
+            });
+
+            // Invalid code is reported in outLog, no players added, then errors because no valid codes
+            assert.ok(result.error, "Expected an error for invalid ally code format");
+        });
+
+        it("should add multiple comma-separated ally codes", async () => {
+            const player1 = createMockPlayer({ allyCode: 111111111, name: "Player1" });
+            const player2 = createMockPlayer({ allyCode: 222222222, name: "Player2" });
+            mockSwapi.setPlayerData(player1);
+            mockSwapi.setPlayerData(player2);
+
+            const aw = createBaseAW();
+            const { result, aw: awRes } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: { subCommand: "add", allyCodes: "111111111, 222222222", codeCap: 5 } as any,
+                aw,
+            });
+
+            assert.strictEqual(awRes.allyCodes.length, 2);
+            assert.ok(result.outLog.includes("111111111 added!"));
+            assert.ok(result.outLog.includes("222222222 added!"));
+        });
+
+        it("should edit an existing ally code and update player data", async () => {
+            const updatedPlayer = createMockPlayer({
+                allyCode: 999888777,
+                name: "UpdatedPlayer",
+                arena: { char: { rank: 10, squad: [] }, ship: { rank: 5, squad: [] } },
+                poUTCOffsetMinutes: 60,
+            });
+            mockSwapi.setPlayerData(updatedPlayer);
+
+            const aw = createBaseAW();
+            aw.allyCodes.push({
+                allyCode: 123456789,
+                name: "OldPlayer",
+                mention: null,
+                lastChar: 100,
+                lastShip: 50,
+                poOffset: 0,
+                mark: null,
+            });
+
+            const { result, aw: awRes } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: {
+                    subCommand: "edit",
+                    old_allyCode: "123456789",
+                    new_allyCode: "999888777",
+                    codeCap: 5,
+                } as any,
+                aw,
+            });
+
+            assert.strictEqual(awRes.allyCodes.length, 1);
+            assert.strictEqual(awRes.allyCodes[0].allyCode, 999888777);
+            assert.strictEqual(awRes.allyCodes[0].name, "UpdatedPlayer");
+            assert.ok(result.outLog.includes("updated"));
+        });
+
+        it("should error when editing a code not in the list", async () => {
+            const aw = createBaseAW();
+            const { result } = await processAWChanges({
+                target: "allycode",
+                interactionOptions: {
+                    subCommand: "edit",
+                    old_allyCode: "123456789",
+                    new_allyCode: "987654321",
+                    codeCap: 5,
+                } as any,
+                aw,
+            });
+
+            assert.ok(result.error);
+            assert.ok(result.error.includes("not in the list"));
         });
     });
 

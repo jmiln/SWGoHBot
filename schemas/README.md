@@ -115,7 +115,9 @@ function processUser(user: UserConfig) {
 ## Notes
 
 - Player and guild schemas are simplified due to the complexity of the full SWAPI types
-- Schemas use `z.any()` for deeply nested objects that would be impractical to fully define
+- Roster fields use `z.unknown()` (not `z.any()`) for `SWAPIUnit` arrays — the full interface has
+  many optional/computed fields making an inline Zod schema impractical; use TypeScript types when
+  reading roster data
 - You can extend these schemas as needed for stricter validation
 - Consider adding custom refinements for business logic validation (e.g., allyCode format)
 
@@ -125,4 +127,3 @@ function processUser(user: UserConfig) {
 - Add refinements for Discord ID format (snowflake)
 - Create more detailed schemas for player roster and skills
 - Add schemas for character/ability definitions
-- Create validation middleware for API endpoints
