@@ -142,7 +142,7 @@ class SWAPI {
             const player = await cache.get(
                 env.MONGODB_SWAPI_DB,
                 "playerStats",
-                { name: new RegExp(name, "i") },
+                { name: new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i") },
                 { name: 1, allyCode: 1, _id: 0 },
                 limit,
             );

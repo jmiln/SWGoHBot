@@ -61,10 +61,15 @@ class EventSocket {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), DEFAULT_TIMEOUT);
 
+        const headers: Record<string, string> = { "Content-Type": "application/json" };
+        if (env.EVENT_SERVER_SECRET) {
+            headers["Authorization"] = `Bearer ${env.EVENT_SERVER_SECRET}`;
+        }
+
         try {
             const response = await fetch(`${env.EVENT_SERVER_URL}${endpoint}`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers,
                 body: body !== undefined ? JSON.stringify(body) : undefined,
                 signal: controller.signal,
             });

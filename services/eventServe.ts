@@ -24,6 +24,15 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
         return;
     }
 
+    if (env.EVENT_SERVER_SECRET) {
+        const authHeader = req.headers.authorization;
+        if (authHeader !== `Bearer ${env.EVENT_SERVER_SECRET}`) {
+            res.writeHead(401, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "Unauthorized" }));
+            return;
+        }
+    }
+
     let body: unknown;
     try {
         body = await readBody(req);
