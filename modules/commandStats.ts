@@ -17,6 +17,7 @@ const COLLECTION_NAME = "commandStats";
 // Configuration
 const ENABLE_TRACKING = process.env.COMMAND_STATS_ENABLED !== "false"; // Enabled by default
 const BATCH_SIZE = 100;
+const MAX_BATCH_SIZE = 1000;
 const FLUSH_INTERVAL_MS = 60000; // Flush every 60 seconds
 
 // 90 days — matches the TTL index on this collection
@@ -118,8 +119,13 @@ async function flushStats(): Promise<void> {
         // Log but don't throw - we don't want to break the app for stats
         logger.error(`[commandStats] Error flushing stats batch: ${String(err)}`);
 
-        // Put failed batch back for retry
+        // Put failed batch back for retry, but cap to avoid unbounded growth during sustained DB failure
         statsBatch.unshift(...batchToFlush);
+        if (statsBatch.length > MAX_BATCH_SIZE) {
+            const dropped = statsBatch.length - MAX_BATCH_SIZE;
+            statsBatch = statsBatch.slice(dropped);
+            logger.error(`[commandStats] Dropped ${dropped} stats entries due to batch overflow (DB down?)`);
+        }
     }
 }
 

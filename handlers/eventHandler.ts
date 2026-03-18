@@ -5,6 +5,8 @@ import logger from "../modules/Logger.ts";
 const needsClient = ["error", "clientReady", "messageCreate", "guildMemberAdd", "guildMemberRemove"];
 const evDir = `${import.meta.dirname}/../events/`;
 
+const loadedEventNames = new Set<string>();
+
 /**
  * Loads an event file and binds it to the client
  */
@@ -19,6 +21,7 @@ async function loadEvent(client: Client<true>, file: string, cacheBust = false):
         client.on(eventName, event.execute);
     }
 
+    loadedEventNames.add(eventName);
     return eventName;
 }
 
@@ -36,8 +39,11 @@ export async function reloadAllEvents(client: Client<true>): Promise<{ succArr: 
     const succArr: string[] = [];
     const errArr: string[] = [];
 
-    // Remove all existing event listeners
-    client.removeAllListeners();
+    // Remove only our managed event listeners, preserving Discord.js internals
+    for (const eventName of loadedEventNames) {
+        client.removeAllListeners(eventName);
+    }
+    loadedEventNames.clear();
 
     const evtFiles = getEventFiles();
     for (const file of evtFiles) {
