@@ -325,7 +325,7 @@ class SWAPI {
             }
             const filtereredAcArr = acArr.filter((a) => a?.toString().length === 9);
 
-            let players: SWAPIPlayer[] | null = null;
+            let players: SWAPIPlayer[] = [];
             if (!options.force) {
                 // If it's going to pull everyone fresh anyways, why bother grabbing the old data?
                 if (options?.defId?.length) {
@@ -353,7 +353,7 @@ class SWAPI {
             }
 
             // If options.force is true, set the list of unexpired players to be empty so that all players will be run through the updater
-            const updatedList = options.force ? [] : players.filter((p) => !this.isExpired(p.updated, cooldown, players.length > 5));
+            const updatedList = players.filter((p) => !this.isExpired(p.updated, cooldown, players.length > 5));
             const updatedAC = updatedList.map((p) => p.allyCode);
             const needUpdating = acArr.filter((a) => !updatedAC.includes(a));
 

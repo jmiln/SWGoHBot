@@ -278,7 +278,7 @@ export default class SetConf extends Command {
                 }
             } else if (keyType === ApplicationCommandOptionType.Integer) {
                 settingStr = interaction.options.getInteger(optionKey);
-                if (!settingStr) continue;
+                if (settingStr === null) continue;
                 if (key === "eventCountdown" && settingStr < 0) {
                     // Make sure the entered number is positive
                     errors.push(`${settingStr} is not a valid entry, it __must__ be above 0`);
@@ -388,14 +388,15 @@ export default class SetConf extends Command {
                             if (!searchKey?.length) return true;
                             const thisUnit =
                                 characterNameList.find((char) => char.defId === defId) || shipNameList.find((ship) => ship.defId === defId);
-                            return thisUnit.name.toLowerCase().includes(searchKey);
+                            return thisUnit?.name.toLowerCase().includes(searchKey) ?? false;
                         })
                             .map((defId) => {
                                 const thisUnit =
                                     characterNameList.find((char) => char.defId === defId) ||
                                     shipNameList.find((ship) => ship.defId === defId);
-                                return { name: thisUnit.name, value: thisUnit.defId };
+                                return thisUnit ? { name: thisUnit.name, value: thisUnit.defId } : null;
                             })
+                            .filter((entry) => entry !== null)
                             .slice(0, 24) || [];
                     await interaction.respond(outArr);
                 } else if (subCommand === "manage_list") {
@@ -411,13 +412,14 @@ export default class SetConf extends Command {
                                 const thisUnit =
                                     characterNameList.find((char) => char.defId === defId) ||
                                     shipNameList.find((ship) => ship.defId === defId);
-                                return thisUnit.name.toLowerCase().includes(searchKey);
+                                return thisUnit?.name.toLowerCase().includes(searchKey) ?? false;
                             })
                             .map((key) => {
                                 const thisUnit =
                                     characterNameList.find((char) => char.defId === key) || shipNameList.find((ship) => ship.defId === key);
-                                return { name: thisUnit.name, value: thisUnit.defId };
+                                return thisUnit ? { name: thisUnit.name, value: thisUnit.defId } : null;
                             })
+                            .filter((entry) => entry !== null)
                             .slice(0, 24) || [];
                     await interaction.respond(outArr);
                 }

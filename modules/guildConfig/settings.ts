@@ -49,6 +49,5 @@ export async function deleteGuildConfig({ guildId }: { guildId: string }) {
 
 function arrayEquals(a: unknown, b: unknown) {
     if (!Array.isArray(a) || !Array.isArray(b)) return false;
-    if (!a?.length || !b?.length) return false;
     return a.length === b.length && a.every((val, index) => val === b[index]);
 }

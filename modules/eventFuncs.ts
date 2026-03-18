@@ -142,16 +142,18 @@ class EventFuncs {
             outMsg += `\n> This event is ${minPast} minutes past time.`;
         }
 
+        // If this is the truly last firing (no repeats remaining), add the notification to the
+        // announcement only -- never mutate event.message to avoid the suffix accumulating in the DB
+        if (Array.isArray(event.repeatDays) && event.repeatDays.length === 1) {
+            outMsg += language.get("BASE_LAST_EVENT_NOTIFICATION");
+        }
+
         // Announce the event
         const announceMessage = `**${event.name}**\n${outMsg}`;
         await this.sendMsg(event, guildConf, event.guildId, announceMessage);
 
         let doRepeat = false;
         if ((event.repeat && (event.repeat.repeatDay || event.repeat.repeatHour || event.repeat.repeatMin)) || event.repeatDays?.length) {
-            if (event.repeatDays?.length === 1) {
-                event.message += language.get("BASE_LAST_EVENT_NOTIFICATION");
-            }
-
             const tmpEv = await this.reCalc(event);
             if (tmpEv) {
                 // Got a viable next time, so set it and move on

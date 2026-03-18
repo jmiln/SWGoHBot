@@ -269,11 +269,13 @@ export function sendWebhook(hookUrl: string, embed: Embed): void {
     try {
         const { id, token } = parseWebhook(hookUrl);
         const hook = new WebhookClient({ id, token });
-        hook.send({ embeds: [embed] }).catch((err) => {
-            const message = err instanceof Error ? err.message : String(err);
-            logger.error(`[sendWebhook] Failed to send webhook message: ${message}`);
-            throw err;
-        });
+        hook.send({ embeds: [embed] })
+            .catch((err) => {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.error(`[sendWebhook] Failed to send webhook message: ${message}`);
+                throw err;
+            })
+            .finally(() => hook.destroy());
     } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`[sendWebhook] ${message}`);

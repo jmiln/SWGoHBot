@@ -35,6 +35,7 @@ export interface CommandDetail {
 // In-memory batch for performance
 let statsBatch: CommandStats[] = [];
 let flushTimeout: NodeJS.Timeout | null = null;
+let isFlushing = false;
 
 /**
  * Records a command execution
@@ -95,7 +96,8 @@ export async function recordCommandUsage(interaction: ChatInputCommandInteractio
  * Flushes the current batch of stats to the database
  */
 async function flushStats(): Promise<void> {
-    if (statsBatch.length === 0) return;
+    if (statsBatch.length === 0 || isFlushing) return;
+    isFlushing = true;
 
     // Clear timeout if it exists
     if (flushTimeout) {
@@ -126,6 +128,8 @@ async function flushStats(): Promise<void> {
             statsBatch = statsBatch.slice(dropped);
             logger.error(`[commandStats] Dropped ${dropped} stats entries due to batch overflow (DB down?)`);
         }
+    } finally {
+        isFlushing = false;
     }
 }
 
