@@ -1,5 +1,8 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+    "files": {
+        "includes": ["**", "!**/node_modules", "!scripts", "!languages", "!data", "!wipCommands", "!test"]
+    },
     "assist": {
         "actions": {
             "source": {
@@ -12,8 +15,7 @@
         "formatWithErrors": false,
         "indentStyle": "space",
         "indentWidth": 4,
-        "lineWidth": 140,
-        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"]
+        "lineWidth": 140
     },
     "javascript": {
         "formatter": {
@@ -28,7 +30,6 @@
     },
     "linter": {
         "enabled": true,
-        "includes": ["**", "!**/node_modules", "!scripts/**", "!languages/**", "!data/**", "!wipCommands/**", "!test/**"],
         "rules": {
             "recommended": true,
             "style": {
