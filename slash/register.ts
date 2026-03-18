@@ -130,7 +130,7 @@ export default class Register extends Command {
                                 "COMMAND_REGISTER_SUCCESS_DESC",
                                 player,
                                 player.allyCode?.toString().match(/\d{3}/g).join("-"),
-                                player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME").value.toLocaleString(),
+                                player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME")?.value?.toLocaleString() ?? "0",
                             ),
                         ),
                         {

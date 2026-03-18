@@ -119,8 +119,8 @@ const init = async () => {
     // Initialize event functions
     eventFuncs.init(client);
 
-    slashHandler();
-    eventHandler(client);
+    await slashHandler();
+    await eventHandler(client);
 
     // Register graceful shutdown handlers
     process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));

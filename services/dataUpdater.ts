@@ -688,7 +688,7 @@ function patreonCredentials() {
 
 async function getPatreonTiers(): Promise<{ id: string; amount_cents: number; title: string }[]> {
     const patreon = patreonCredentials();
-    if (!patreon) return;
+    if (!patreon) return [];
 
     const baseMembersUrl = `https://api.patreon.com/oauth2/v2/campaigns/${patreon.campaignId}?include=tiers&fields[tier]=title,amount_cents`;
     const { included } = await fetch(encodeURI(baseMembersUrl), {

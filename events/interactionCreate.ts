@@ -301,8 +301,9 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
             const firstLine = err?.toString().split("\n")[0] || String(err);
             logErr(`ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \n${firstLine}`);
         } else {
+            const optionNames = interaction.options.data.map((o) => o.name).join(", ");
             logErr(
-                `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${inspect(interaction.options, { depth: 5 })} \n${inspect(err, { depth: 5 })}`,
+                `ERROR(inter) (user: ${interaction.user.id}) I broke with ${cmd.commandData.name}: \nOptions: ${optionNames} \n${inspect(err, { depth: 5 })}`,
                 true,
             );
         }

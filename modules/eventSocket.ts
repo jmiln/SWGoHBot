@@ -63,7 +63,7 @@ class EventSocket {
 
         const headers: Record<string, string> = { "Content-Type": "application/json" };
         if (env.EVENT_SERVER_SECRET) {
-            headers["Authorization"] = `Bearer ${env.EVENT_SERVER_SECRET}`;
+            headers.Authorization = `Bearer ${env.EVENT_SERVER_SECRET}`;
         }
 
         try {
