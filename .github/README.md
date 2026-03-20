@@ -45,12 +45,17 @@ Edit `.env` and add:
 - MongoDB connection URL
 - Optional: webhook URLs, premium features
 
-4. Deploy slash commands to Discord:
+4. Clone the external game data files:
+```bash
+git clone https://github.com/Kidori78/swgoh-json-files data/swgoh-json-files
+```
+
+5. Deploy slash commands to Discord:
 ```bash
 npm run deploy
 ```
 
-5. Start the bot:
+6. Start the bot:
 ```bash
 npm start
 ```

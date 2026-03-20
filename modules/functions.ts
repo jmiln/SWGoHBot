@@ -28,14 +28,8 @@ import userReg from "./users.ts";
  * Helper function to read and parse JSON files asynchronously
  */
 export async function readJSON<T = unknown>(filePath: string): Promise<T> {
-    try {
-        const content = await readFile(filePath, "utf-8");
-        return JSON.parse(content) as T;
-    } catch (error) {
-        const message = error instanceof Error ? error.message : String(error);
-        logger.error(`[readJSON] Failed to read/parse ${filePath}: ${message}`);
-        throw error;
-    }
+    const content = await readFile(filePath, "utf-8");
+    return JSON.parse(content) as T;
 }
 
 export function isMain(client: Client): boolean {
