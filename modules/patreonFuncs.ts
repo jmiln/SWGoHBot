@@ -305,7 +305,7 @@ class PatreonFuncs {
             if (!player.poOffset || player.poOffset !== newPlayer.poUTCOffsetMinutes) {
                 player.poOffset = newPlayer.poUTCOffsetMinutes;
             }
-            if (newPlayer.arena.char.rank !== null && (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar)) {
+            if (newPlayer.arena?.char?.rank != null && (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar)) {
                 const charOverview = {
                     name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                     allyCode: player.allyCode,
@@ -317,7 +317,7 @@ class PatreonFuncs {
                 player.lastChar = newPlayer.arena.char.rank;
                 player.lastCharChange = charOverview.oldRank - charOverview.newRank;
             }
-            if (newPlayer.arena.ship.rank !== null && (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip)) {
+            if (newPlayer.arena?.ship?.rank != null && (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip)) {
                 const shipOverview = {
                     name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                     allyCode: player.allyCode,
