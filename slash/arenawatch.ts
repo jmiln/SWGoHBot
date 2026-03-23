@@ -876,17 +876,10 @@ export function fillAWSkeleton(awIn: UserConfig["arenaWatch"] | null): UserConfi
     aw.report ??= "both";
     if (aw.showvs !== true && aw.showvs !== false) aw.showvs = true;
     if (thisChan && (!aw.arena.fleet || !aw.arena.char)) {
-        const flEnabled = !!["fleet", "both"].includes(aw.report);
-        const chEnabled = !!["char", "both"].includes(aw.report);
+        // Migrating from old single-channel format: user had it active, so enable both arenas.
         aw.arena = {
-            fleet: {
-                channel: thisChan,
-                enabled: flEnabled,
-            },
-            char: {
-                channel: thisChan,
-                enabled: chEnabled,
-            },
+            fleet: aw.arena.fleet ?? { channel: thisChan, enabled: true },
+            char: aw.arena.char ?? { channel: thisChan, enabled: true },
         };
     }
     return aw;

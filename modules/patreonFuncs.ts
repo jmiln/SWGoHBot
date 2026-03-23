@@ -246,224 +246,208 @@ class PatreonFuncs {
     async shardRanks(): Promise<void> {
         const patrons = await this.getActivePatrons();
         for (const patron of patrons) {
-            const compChar = []; // Array to keep track of ally code, toRank, and fromRank
-            const compShip = []; // Array to keep track of ally code, toRank, and fromRank
-            // For each person that qualifies, go through their list
-            //   - Check their patreon level and go through their top x ally codes based on the lvl
-            //   - check the arena rank
-            //   - save that change somewhere
-            //   - for each next one, see if someone else had the opposite move
+            await this.processShardPatron(patron).catch((err) => {
+                const msg = err instanceof Error ? err.message : String(err);
+                logger.error(`[shardRanks] Error processing patron ${patron.discordID}: ${msg}`);
+            });
+        }
+    }
 
-            // user = {
-            //     ...
-            //     arenaWatch: {
-            //         enabled: true/ false,
-            //         arena: {
-            //             fleet: {
-            //                 channel: chID,
-            //                 enabled: true/ false
-            //             },
-            //             char: {
-            //                 channel: chID,
-            //                 enabled: true/ false
-            //             }
-            //         }
-            //         allyCodes: [
-            //             {
-            //                 "allyCode": 123123123                // The player's ally code
-            //                 "name" :    "NameHere"               // The player's name (From the game)
-            //                 "mention":  "discordUserID"          // If they want to be mentioned when they drop, their ID goes here
-            //                 "lastChar": 53                       // Their last char arena rank
-            //                 "lastShip": 35                       // Their last ship arena rank
-            //                 "poOffset": -480                     // The utc offset for their payout
-            //                 "mark" :    "Emote/Mark"             // An emote or other mark to tag a player in the monitor
-            //                 "warn":     {min: 30, arena: ""}     // # of min before a payout to mention someone
-            //                 "result":   "none|char|fleet|both"   // This will send a message with their payout result, and mention em if available
-            //              }
-            //         ]
-            //     }
-            // };
-            // payout = {
-            //     // Temp ones that don't get saved
-            //     "charDuration"
-            //     "charTimeTil"
-            //     "fleetDuration"
-            //     "fleetTimeTil"
-            // }
+    // Process a single patron's arena rank notifications. Extracted so errors in one patron
+    // don't abort the entire shardRanks loop and cause everyone after them to be skipped.
+    private async processShardPatron(patron: ActivePatron): Promise<void> {
+        if (patron.amount_cents < TIER_1_CENTS) return;
+        const user = await userReg.getUser(patron.discordID);
 
-            if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user = await userReg.getUser(patron.discordID);
+        // If they're not registered with anything or don't have any ally codes
+        if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) return;
+        const aw = user.arenaWatch;
 
-            // If they're not registered with anything or don't have any ally codes
-            if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) continue;
-            const aw = user.arenaWatch;
+        // Fill in missing arena sub-configs with disabled defaults so the rest of the function
+        // can safely access their properties without crashing on old/partial DB records.
+        aw.arena.char ??= { channel: "", enabled: false };
+        aw.arena.fleet ??= { channel: "", enabled: false };
 
-            // Check if they have either alerts or payouts enabled
-            const hasAlerts =
-                (aw?.arena?.fleet?.channel || aw?.arena?.char?.channel) && (aw?.arena?.fleet?.enabled || aw?.arena?.char?.enabled);
-            const hasPayouts =
-                aw?.payout &&
-                ((aw.payout?.char?.enabled && aw.payout?.char?.channel) || (aw.payout?.fleet?.enabled && aw.payout?.fleet?.channel));
+        // Check if they have either alerts or payouts enabled
+        const hasAlerts = (aw.arena.fleet.channel || aw.arena.char.channel) && (aw.arena.fleet.enabled || aw.arena.char.enabled);
+        const hasPayouts =
+            aw?.payout &&
+            ((aw.payout?.char?.enabled && aw.payout?.char?.channel) || (aw.payout?.fleet?.enabled && aw.payout?.fleet?.channel));
 
-            // If they don't want any alerts or payouts, skip
-            if (!hasAlerts && !hasPayouts) {
+        // If they don't want any alerts or payouts, skip
+        if (!hasAlerts && !hasPayouts) return;
+
+        let acctCount = 0;
+        if (patron.amount_cents < TIER_5_CENTS) acctCount = constants.arenaWatchConfig.tier1;
+        else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
+        else acctCount = constants.arenaWatchConfig.tier3;
+
+        const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
+        const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
+        if (!allyCodes || !allyCodes.length) return;
+
+        const newPlayers = await swgohAPI.getPlayersArena(allyCodes);
+
+        // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
+        const compChar = [];
+        const compShip = [];
+        let charOut = [];
+        let shipOut = [];
+        for (const [ix, player] of accountsToCheck.entries()) {
+            const newPlayer = newPlayers.find((p) => p.allyCode === player.allyCode);
+            if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
+                // Both, since low level players can have just char arena I believe
                 continue;
             }
-
-            let acctCount = 0;
-            if (patron.amount_cents < TIER_5_CENTS) acctCount = constants.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
-            else acctCount = constants.arenaWatchConfig.tier3;
-
-            const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
-            const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
-            if (!allyCodes || !allyCodes.length) continue;
-
-            const newPlayers = await swgohAPI.getPlayersArena(allyCodes);
-
-            // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
-            let charOut = [];
-            let shipOut = [];
-            for (const [ix, player] of accountsToCheck.entries()) {
-                const newPlayer = newPlayers.find((p) => p.allyCode === player.allyCode);
-                if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
-                    // Both, since low level players can have just char arena I believe
-                    continue;
-                }
-                if (!player.name) {
-                    player.name = newPlayer.name;
-                }
-                if (!player.poOffset || player.poOffset !== newPlayer.poUTCOffsetMinutes) {
-                    player.poOffset = newPlayer.poUTCOffsetMinutes;
-                }
-                if (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar) {
-                    const charOverview = {
-                        name: player.mention ? `<@${player.mention}>` : newPlayer.name,
-                        allyCode: player.allyCode,
-                        oldRank: player.lastChar ?? 0,
-                        newRank: newPlayer.arena.char.rank,
-                        mark: player.mark,
-                    };
-                    compChar.push(charOverview);
-                    player.lastChar = newPlayer.arena.char.rank;
-                    player.lastCharChange = charOverview.oldRank - charOverview.newRank;
-                }
-                if (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip) {
-                    const shipOverview = {
-                        name: player.mention ? `<@${player.mention}>` : newPlayer.name,
-                        allyCode: player.allyCode,
-                        oldRank: player.lastShip ?? 0,
-                        newRank: newPlayer.arena.ship.rank,
-                        mark: player.mark,
-                    };
-                    compShip.push(shipOverview);
-                    player.lastShip = newPlayer.arena.ship.rank;
-                    player.lastShipChange = shipOverview.oldRank - shipOverview.newRank;
-                }
-
-                if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
-                    const payouts = this.getAllPayoutTimes(player);
-                    let pName = player.mention ? `<@${player.mention}>` : player.name;
-                    if (aw.useMarksInLog && player.mark) {
-                        pName = `${player.mark} ${pName}`;
-                    }
-                    const charMinLeft = Math.floor(payouts.charDuration);
-                    const fleetMinLeft = Math.floor(payouts.fleetDuration);
-                    if (charMinLeft === 0 && ["char", "both"].includes(player.result)) {
-                        // If they have char payouts turned on, do that here
-                        charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
-                    }
-                    if (player.warn?.min && ["char", "both"].includes(player.warn.arena) && charMinLeft === player.warn.min) {
-                        // Warn them of their upcoming payout if this is enabled
-                        charOut.push(`${pName}'s **character** arena payout is in ${`${player.warn.min} minutes`}`);
-                    }
-                    if (fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
-                        // If they have fleet payouts turned on, do that here
-                        shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
-                    }
-                    if (player.warn?.min && ["fleet", "both"].includes(player.warn.arena) && fleetMinLeft === player.warn.min) {
-                        // Warn them of their upcoming payout if this is enabled
-                        shipOut.push(`${pName}'s **fleet** arena payout is in ${`${player.warn.min} minutes`}`);
-                    }
-                }
-                accountsToCheck[ix] = player;
+            if (!player.name) {
+                player.name = newPlayer.name;
+            }
+            if (!player.poOffset || player.poOffset !== newPlayer.poUTCOffsetMinutes) {
+                player.poOffset = newPlayer.poUTCOffsetMinutes;
+            }
+            if (newPlayer.arena.char.rank !== null && (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar)) {
+                const charOverview = {
+                    name: player.mention ? `<@${player.mention}>` : newPlayer.name,
+                    allyCode: player.allyCode,
+                    oldRank: player.lastChar ?? 0,
+                    newRank: newPlayer.arena.char.rank,
+                    mark: player.mark,
+                };
+                compChar.push(charOverview);
+                player.lastChar = newPlayer.arena.char.rank;
+                player.lastCharChange = charOverview.oldRank - charOverview.newRank;
+            }
+            if (newPlayer.arena.ship.rank !== null && (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip)) {
+                const shipOverview = {
+                    name: player.mention ? `<@${player.mention}>` : newPlayer.name,
+                    allyCode: player.allyCode,
+                    oldRank: player.lastShip ?? 0,
+                    newRank: newPlayer.arena.ship.rank,
+                    mark: player.mark,
+                };
+                compShip.push(shipOverview);
+                player.lastShip = newPlayer.arena.ship.rank;
+                player.lastShipChange = shipOverview.oldRank - shipOverview.newRank;
             }
 
-            if (compChar.length && aw.arena?.char.enabled) {
-                charOut = charOut.concat(this.checkRanks(compChar, aw));
+            if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
+                const payouts = this.getAllPayoutTimes(player);
+                let pName = player.mention ? `<@${player.mention}>` : player.name;
+                if (aw.useMarksInLog && player.mark) {
+                    pName = `${player.mark} ${pName}`;
+                }
+                const charMinLeft = Math.floor(payouts.charDuration);
+                const fleetMinLeft = Math.floor(payouts.fleetDuration);
+                if (player.lastChar !== null && charMinLeft === 0 && ["char", "both"].includes(player.result)) {
+                    // If they have char payouts turned on, do that here
+                    charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
+                }
+                if (
+                    player.lastChar !== null &&
+                    player.warn?.min &&
+                    ["char", "both"].includes(player.warn.arena) &&
+                    charMinLeft === player.warn.min
+                ) {
+                    // Warn them of their upcoming payout if this is enabled
+                    charOut.push(`${pName}'s **character** arena payout is in ${`${player.warn.min} minutes`}`);
+                }
+                if (player.lastShip !== null && fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
+                    // If they have fleet payouts turned on, do that here
+                    shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
+                }
+                if (
+                    player.lastShip !== null &&
+                    player.warn?.min &&
+                    ["fleet", "both"].includes(player.warn.arena) &&
+                    fleetMinLeft === player.warn.min
+                ) {
+                    // Warn them of their upcoming payout if this is enabled
+                    shipOut.push(`${pName}'s **fleet** arena payout is in ${`${player.warn.min} minutes`}`);
+                }
             }
-            if (compShip.length && aw.arena?.fleet.enabled) {
-                shipOut = shipOut.concat(this.checkRanks(compShip, aw));
-            }
+            accountsToCheck[ix] = player;
+        }
 
-            const charFields = [];
-            const shipFields = [];
-            if (charOut.length) {
-                charFields.push("**Character Arena:**");
-                charFields.push(charOut.map((c) => `- ${c}`).join("\n"));
-            }
-            if (shipOut.length) {
-                shipFields.push("**Fleet Arena:**");
-                shipFields.push(shipOut.map((c) => `- ${c}`).join("\n"));
-            }
+        if (compChar.length && aw.arena.char.enabled) {
+            charOut = charOut.concat(this.checkRanks(compChar, aw));
+        }
+        if (compShip.length && aw.arena.fleet.enabled) {
+            shipOut = shipOut.concat(this.checkRanks(compShip, aw));
+        }
 
-            // Only send the alerts if there have been rank changes, and the user has alerts enabled
-            if ((charFields.length || shipFields.length) && hasAlerts) {
-                if (aw.arena.char.channel === aw.arena.fleet.channel) {
-                    // If they're both set to the same channel, send it all
-                    const fields = charFields.concat(shipFields);
+        const charFields = [];
+        const shipFields = [];
+        if (charOut.length) {
+            charFields.push("**Character Arena:**");
+            charFields.push(charOut.map((c) => `- ${c}`).join("\n"));
+        }
+        if (shipOut.length) {
+            shipFields.push("**Fleet Arena:**");
+            shipFields.push(shipOut.map((c) => `- ${c}`).join("\n"));
+        }
+
+        // Only send the alerts if there have been rank changes, and the user has alerts enabled
+        if ((charFields.length || shipFields.length) && hasAlerts) {
+            if (aw.arena.char.channel && aw.arena.char.channel === aw.arena.fleet.channel) {
+                // If they're both set to the same channel, send it all
+                const fields = charFields.concat(shipFields);
+                await this.client.shard.broadcastEval(
+                    async (client, { aw, fields }) => {
+                        const chan = client.channels.cache.get(aw.arena.char.channel);
+                        if (
+                            chan?.type === 0 && // 0 = GUILD_TEXT
+                            // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                            chan?.permissionsFor(client.user).has(3072n)
+                        ) {
+                            await chan.send(`>>> ${fields.join("\n")}`);
+                        }
+                    },
+                    { context: { aw: aw, fields: fields } },
+                );
+            } else {
+                // Else they each have their own channels, so send em there
+                if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
                     await this.client.shard.broadcastEval(
-                        async (client, { aw, fields }) => {
+                        async (client, { aw, charFields }) => {
                             const chan = client.channels.cache.get(aw.arena.char.channel);
                             if (
                                 chan?.type === 0 && // 0 = GUILD_TEXT
                                 // 3072n = SendMessages (2048n) | ViewChannel (1024n)
                                 chan?.permissionsFor(client.user).has(3072n)
                             ) {
-                                await chan.send(`>>> ${fields.join("\n")}`);
+                                await chan.send(`>>> ${charFields.join("\n")}`);
                             }
                         },
-                        { context: { aw: aw, fields: fields } },
+                        { context: { aw: aw, charFields: charFields } },
                     );
-                } else {
-                    // Else they each have their own channels, so send em there
-                    if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
-                        await this.client.shard.broadcastEval(
-                            async (client, { aw, charFields }) => {
-                                const chan = client.channels.cache.get(aw.arena.char.channel);
-                                if (
-                                    chan?.type === 0 && // 0 = GUILD_TEXT
-                                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                    chan?.permissionsFor(client.user).has(3072n)
-                                ) {
-                                    await chan.send(`>>> ${charFields.join("\n")}`);
-                                }
-                            },
-                            { context: { aw: aw, charFields: charFields } },
-                        );
-                    }
-                    if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
-                        await this.client.shard.broadcastEval(
-                            async (client, { aw, shipFields }) => {
-                                const chan = client.channels.cache.get(aw.arena.fleet.channel);
-                                if (
-                                    chan?.type === 0 && // 0 = GUILD_TEXT
-                                    // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                    chan?.permissionsFor(client.user).has(3072n)
-                                ) {
-                                    await chan.send(`>>> ${shipFields.join("\n")}`);
-                                }
-                            },
-                            { context: { aw: aw, shipFields: shipFields } },
-                        );
-                    }
+                }
+                if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
+                    await this.client.shard.broadcastEval(
+                        async (client, { aw, shipFields }) => {
+                            const chan = client.channels.cache.get(aw.arena.fleet.channel);
+                            if (
+                                chan?.type === 0 && // 0 = GUILD_TEXT
+                                // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                                chan?.permissionsFor(client.user).has(3072n)
+                            ) {
+                                await chan.send(`>>> ${shipFields.join("\n")}`);
+                            }
+                        },
+                        { context: { aw: aw, shipFields: shipFields } },
+                    );
                 }
             }
-
-            // Update lastChar/lastShip after sending so a failed send doesn't permanently lose a rank change
-            user.arenaWatch.allyCodes = accountsToCheck;
-            await userReg.updateUser(patron.discordID, user);
         }
+
+        // Update lastChar/lastShip after sending so a failed send doesn't permanently lose a rank change.
+        // Match by allyCode rather than index so we never mix up or truncate accounts beyond the tier limit.
+        for (const acct of accountsToCheck) {
+            const idx = user.arenaWatch.allyCodes.findIndex((a) => a.allyCode === acct.allyCode);
+            if (idx !== -1) {
+                user.arenaWatch.allyCodes[idx] = acct;
+            }
+        }
+        await userReg.updateUser(patron.discordID, user);
     }
 
     async guildsUpdate(): Promise<void> {

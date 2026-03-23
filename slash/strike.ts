@@ -266,7 +266,7 @@ export default class StrikeCommand extends Command {
             const date = new Date(s.issuedAt).toISOString().split("T")[0];
             if (s.removedAt !== undefined) {
                 const revokedDate = new Date(s.removedAt).toISOString().split("T")[0];
-                return `• ~~${s.reason}~~ — ${date} by <@${s.issuedBy}> (revoked ${revokedDate} by <@${s.removedBy}>)`;
+                return `• ~~${s.reason}~~ — ${date} by <@${s.issuedBy}> (revoked ${revokedDate} by <@${s.removedBy ?? "unknown"}>)`;
             }
             const expiry = s.expiresAt ? ` (expired: ${new Date(s.expiresAt).toISOString().split("T")[0]})` : "";
             return `• ${s.reason} — ${date} by <@${s.issuedBy}>${expiry}`;
