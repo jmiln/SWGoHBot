@@ -8,6 +8,7 @@ import { FixedQueue, Piscina } from "piscina";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
+import databaseCleanup from "../modules/databaseCleanup.ts";
 import { myTime, readJSON, toProperCase } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
@@ -126,6 +127,8 @@ async function cleanup() {
         patronsInterval = null;
     }
 
+    databaseCleanup.stop();
+
     // Close MongoDB connection
     if (mongoClient) {
         await mongoClient.close();
@@ -181,6 +184,7 @@ async function init() {
 
         mongoClient = await MongoClient.connect(env.MONGODB_URL);
         cache.init(mongoClient);
+        databaseCleanup.start(24);
         const comlinkStub = new ComlinkStub({
             url: env.SWAPI_CLIENT_URL,
             accessKey: env.SWAPI_ACCESS_KEY,

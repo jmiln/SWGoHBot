@@ -1,6 +1,5 @@
 import { type Client, Events } from "discord.js";
 import { env } from "../config/config.ts";
-import databaseCleanup from "../modules/databaseCleanup.ts";
 import eventFuncs from "../modules/eventFuncs.ts";
 import eventSocket from "../modules/eventSocket.ts";
 import { getShardId, isMain } from "../modules/functions.ts";
@@ -71,7 +70,6 @@ export default {
 function setupBackgroundTasks(client: Client<true>, shardId: number): void {
     // Shard 0 handles data updates and arena tracking
     if (shardId === 0) {
-        setupDatabaseCleanup(shardId);
         if (env.PREMIUM) {
             setupDataUpdateTasks(shardId);
         }
@@ -125,16 +123,6 @@ function setupDataUpdateTasks(shardId: number): void {
 
         activeIntervals.push(intervalId);
     }, STARTUP_DELAY_MS);
-}
-
-/**
- * Sets up automated database cleanup (runs daily on shard 0)
- */
-function setupDatabaseCleanup(shardId: number): void {
-    logger.log(`[${shardId}] Setting up automated database cleanup (24hr interval)`);
-
-    // Start the cleanup scheduler
-    databaseCleanup.start(24);
 }
 
 /**
