@@ -2,6 +2,24 @@ import type { ApplicationCommandOptionType } from "discord.js";
 import type { SWAPILang } from "./swapi_types.ts";
 import type { BotLanguage, GuildAlias } from "./types.ts";
 
+export interface Strike {
+    id: string;
+    reason: string;
+    issuedBy: string;
+    issuedAt: number;
+    expiresAt?: number;
+    removedAt?: number;
+    removedBy?: string;
+}
+
+export interface PlayerStrikes {
+    allyCode: number;
+    playerName: string;
+    guildId: string;
+    guildName: string;
+    strikes: Strike[];
+}
+
 export interface GuildConfig {
     guildId: string;
     events: GuildConfigEvent[];
@@ -11,6 +29,7 @@ export interface GuildConfig {
     aliases: GuildAlias[];
     patreonSettings: GuildConfigPatreonSettings;
     twList: GuildConfigTWList;
+    strikes: PlayerStrikes[];
 }
 export interface GuildConfigSettings {
     useEventPages?: boolean;

@@ -105,6 +105,30 @@ export const GuildConfigTWListSchema = z.object({
 });
 
 /**
+ * Schema for an individual strike record
+ */
+export const StrikeSchema = z.object({
+    id: z.string(),
+    reason: z.string(),
+    issuedBy: z.string(),
+    issuedAt: z.number(),
+    expiresAt: z.number().optional(),
+    removedAt: z.number().optional(),
+    removedBy: z.string().optional(),
+});
+
+/**
+ * Schema for a player's strike record within a guild config
+ */
+export const PlayerStrikesSchema = z.object({
+    allyCode: z.number(),
+    playerName: z.string(),
+    guildId: z.string(),
+    guildName: z.string(),
+    strikes: z.array(StrikeSchema),
+});
+
+/**
  * Schema for guild configuration documents (guildConfigs collection)
  */
 export const GuildConfigSchema = z.object({
@@ -116,6 +140,7 @@ export const GuildConfigSchema = z.object({
     aliases: z.array(GuildAliasSchema),
     patreonSettings: GuildConfigPatreonSettingsSchema,
     twList: GuildConfigTWListSchema,
+    strikes: z.array(PlayerStrikesSchema).default([]),
 });
 
 // Export inferred types
