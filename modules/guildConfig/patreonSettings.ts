@@ -196,8 +196,8 @@ export async function ensureGuildSupporter() {
             // Check each supporter against their userConf
             const userConf = await cache.getOne<UserConfig>(env.MONGODB_SWGOHBOT_DB, "users", { id: user.userId });
 
-            // If the set bonusServer is the same as this guild's ID, it's fine, so move on
-            if (userConf.bonusServer === guild.guildId) continue;
+            // If user no longer exists or bonusServer matches this guild's ID, it's fine, so move on
+            if (!userConf || userConf.bonusServer === guild.guildId) continue;
 
             // Otherwise, remove this user from the supporters list of that guild
             isModified = true;

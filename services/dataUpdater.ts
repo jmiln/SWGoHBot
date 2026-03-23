@@ -805,8 +805,8 @@ async function updatePatrons() {
             const user = users.find((user) => user.id === memberId);
 
             // In case the user's currently_entitled_amount_cents is showing 0 (Patreon bug/ gifted subs?), grab it by their tiers
-            const memberTiers = member.relationships?.currently_entitled_tiers?.data;
-            const userTierCents = memberTiers.map((t) => patreonTiers.find((tier) => tier.id === t.id).amount_cents);
+            const memberTiers = member.relationships?.currently_entitled_tiers?.data ?? [];
+            const userTierCents = memberTiers.map((t) => patreonTiers.find((tier) => tier.id === t.id)?.amount_cents ?? 0);
             const memberCents = Math.max(member.attributes.currently_entitled_amount_cents, ...userTierCents);
 
             // Couldn't find a user to match with the pledge (Shouldn't happen, but just in case)

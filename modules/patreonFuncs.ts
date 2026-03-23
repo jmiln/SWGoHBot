@@ -112,6 +112,9 @@ class PatreonFuncs {
             // If they're not registered with anything or don't have any ally codes
             if (!user?.accounts?.length) continue;
 
+            // If arenaAlert is missing on old DB records, skip
+            if (!user.arenaAlert) continue;
+
             // Check for missing values
             if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
             if (!user.arenaAlert.arena) {
@@ -119,7 +122,7 @@ class PatreonFuncs {
             }
 
             // If they don't want any alerts
-            if (!user.arenaAlert || user.arenaAlert.enableRankDMs === "off" || user.arenaAlert.arena === "none") continue;
+            if (user.arenaAlert.enableRankDMs === "off" || user.arenaAlert.arena === "none") continue;
 
             const accountsToCheck = structuredClone(user.accounts);
 
@@ -265,8 +268,9 @@ class PatreonFuncs {
 
         // Fill in missing arena sub-configs with disabled defaults so the rest of the function
         // can safely access their properties without crashing on old/partial DB records.
-        aw.arena.char ??= { channel: "", enabled: false };
-        aw.arena.fleet ??= { channel: "", enabled: false };
+        aw.arena ??= { char: { channel: null, enabled: false }, fleet: { channel: null, enabled: false } };
+        aw.arena.char ??= { channel: null, enabled: false };
+        aw.arena.fleet ??= { channel: null, enabled: false };
 
         // Check if they have either alerts or payouts enabled
         const hasAlerts = (aw.arena.fleet.channel || aw.arena.char.channel) && (aw.arena.fleet.enabled || aw.arena.char.enabled);
