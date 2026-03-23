@@ -1,156 +1,156 @@
 {
     "eng_us": {
         "kraytdragon": "KRAYT DRAGON HUNT",
+        "naboo": "BATTLE FOR NABOO",
+        "order66": "ORDER 66",
         "speederbike": "SPEEDER BIKE PURSUIT",
         "heroic": "HEROIC",
         "aat": "TANK TAKEDOWN",
         "rancor_challenge": "THE PIT (CHALLENGE)",
         "rancor": "THE PIT",
-        "sith_raid": "THE SITH TRIUMVIRATE",
-        "naboo": "BATTLE FOR NABOO",
-        "order66": "ORDER 66"
+        "sith_raid": "THE SITH TRIUMVIRATE"
     },
     "ger_de": {
         "kraytdragon": "KRAYT-DRACHENJAGD",
+        "naboo": "SCHLACHT UM NABOO",
+        "order66": "ORDER 66",
         "speederbike": "SPEEDER-VERFOLGUNG",
         "heroic": "HELDENHAFT",
         "aat": "TANK-TAKEDOWN",
         "rancor_challenge": "DIE GRUBE (HERAUSFOR.)",
         "rancor": "DIE GRUBE",
-        "sith_raid": "DAS SITH-TRIUMVIRAT",
-        "naboo": "SCHLACHT UM NABOO",
-        "order66": "ORDER 66"
+        "sith_raid": "DAS SITH-TRIUMVIRAT"
     },
     "spa_xm": {
         "kraytdragon": "CACERÍA DEL DRAGÓN KRAYT",
+        "naboo": "BATALLA POR NABOO",
+        "order66": "ORDEN 66",
         "speederbike": "PERSECUCIÓN EN MOTO SPEEDER",
         "heroic": "HEROICO",
         "aat": "DERRIBO DE TANQUE",
         "rancor_challenge": "EL FOSO (DESAFÍO)",
         "rancor": "EL FOSO",
-        "sith_raid": "EL TRIUNVIRATO SITH",
-        "naboo": "BATALLA POR NABOO",
-        "order66": "ORDEN 66"
+        "sith_raid": "EL TRIUNVIRATO SITH"
     },
     "fre_fr": {
         "kraytdragon": "CHASSE AU DRAGON KRAYT",
+        "naboo": "BATAILLE POUR NABOO",
+        "order66": "ORDRE 66",
         "speederbike": "POURSUITE EN MOTOJET",
         "heroic": "HÉROÏQUE",
         "aat": "ASSAUT DE CHAR",
         "rancor_challenge": "LA FOSSE (DÉFI)",
         "rancor": "LA FOSSE",
-        "sith_raid": "LE TRIUMVIRAT SITH",
-        "naboo": "BATAILLE POUR NABOO",
-        "order66": "ORDRE 66"
+        "sith_raid": "LE TRIUMVIRAT SITH"
     },
     "rus_ru": {
         "kraytdragon": "ОХОТА НА КРАЙТ-ДРАКОНА",
+        "naboo": "БИТВА ЗА НАБУ",
+        "order66": "ПРИКАЗ 66",
         "speederbike": "ПОГОНЯ НА СПИДЕР-БАЙКАХ",
         "heroic": "ГЕРОИЧЕСКИЙ",
         "aat": "УНИЧТОЖЕНИЕ ТАНКА",
         "rancor_challenge": "ЯМА (ИСПЫТАНИЕ)",
         "rancor": "ЯМА",
-        "sith_raid": "ТРИУМВИРАТ СИТХОВ",
-        "naboo": "БИТВА ЗА НАБУ",
-        "order66": "ПРИКАЗ 66"
+        "sith_raid": "ТРИУМВИРАТ СИТХОВ"
     },
     "por_br": {
         "kraytdragon": "CAÇADA AO DRAGÃO KRAYT",
+        "naboo": "BATALHA POR NABOO",
+        "order66": "ORDEM 66",
         "speederbike": "PERSEGUIÇÃO DE SPEEDER BIKE",
         "heroic": "HEROICA",
         "aat": "ELIMINAÇÃO DE TANQUE",
         "rancor_challenge": "O FOSSO (DESAFIO)",
         "rancor": "O FOSSO",
-        "sith_raid": "O TRIUNVIRATO SITH",
-        "naboo": "BATALHA POR NABOO",
-        "order66": "ORDEM 66"
+        "sith_raid": "O TRIUNVIRATO SITH"
     },
     "kor_kr": {
         "kraytdragon": "크레이트 드래곤 사냥",
+        "naboo": "나부 전투",
+        "order66": "오더 66",
         "speederbike": "스피더 바이크 추격",
         "heroic": "영웅",
         "aat": "탱크 테이크다운",
         "rancor_challenge": "핏 (챌린지)",
         "rancor": "구덩이",
-        "sith_raid": "시스 삼인방",
-        "naboo": "나부 전투",
-        "order66": "오더 66"
+        "sith_raid": "시스 삼인방"
     },
     "ita_it": {
         "kraytdragon": "CACCIA AL DRAGO KRAYT",
+        "naboo": "BATTAGLIA PER NABOO",
+        "order66": "ORDINE 66",
         "speederbike": "INSEGUIMENTO SULLE SPEEDER BIKE",
         "heroic": "EROICO",
         "aat": "ALL'ASSALTO DEL CARRO",
         "rancor_challenge": "LA FOSSA (SFIDA)",
         "rancor": "LA FOSSA",
-        "sith_raid": "IL TRIUMVIRATO SITH",
-        "naboo": "BATTAGLIA PER NABOO",
-        "order66": "ORDINE 66"
+        "sith_raid": "IL TRIUMVIRATO SITH"
     },
     "tur_tr": {
         "kraytdragon": "KRAYT DRAGON AVI",
+        "naboo": "NABOO SAVAŞI",
+        "order66": "EMİR 66",
         "speederbike": "HIZ MOTOSİKLETİ TAKİBİ",
         "heroic": "EPİK",
         "aat": "TANK PARÇALAMA",
         "rancor_challenge": "ÇUKUR (GÖREV)",
         "rancor": "ÇUKUR",
-        "sith_raid": "SITH ÜÇLÜ YÖNETİMİ",
-        "naboo": "NABOO SAVAŞI",
-        "order66": "EMİR 66"
+        "sith_raid": "SITH ÜÇLÜ YÖNETİMİ"
     },
     "chs_cn": {
         "kraytdragon": "克雷特龙猎杀",
+        "naboo": "纳布之战",
+        "order66": "66 号令",
         "speederbike": "飞行摩托追击",
         "heroic": "英雄",
         "aat": "坦克歼击",
         "rancor_challenge": "深坑（挑战）",
         "rancor": "深坑",
-        "sith_raid": "西斯三巨头",
-        "naboo": "纳布之战",
-        "order66": "66 号令"
+        "sith_raid": "西斯三巨头"
     },
     "cht_cn": {
         "kraytdragon": "獵殺克雷特龍",
+        "naboo": "那卜戰役",
+        "order66": "66號密令",
         "speederbike": "飛行摩托車追逐",
         "heroic": "英雄",
         "aat": "肉盾擊倒",
         "rancor_challenge": "地窖（挑戰）",
         "rancor": "地窖",
-        "sith_raid": "西斯三巨頭",
-        "naboo": "那卜戰役",
-        "order66": "66號密令"
+        "sith_raid": "西斯三巨頭"
     },
     "ind_id": {
         "kraytdragon": "PERBURUAN KRAYT DRAGON",
+        "naboo": "PERANG UNTUK NABOO",
+        "order66": "PERINTAH 66",
         "speederbike": "PENGEJARAN MOTOR SPEEDER",
         "heroic": "HEROIK",
         "aat": "PELUMPUHAN TANK",
         "rancor_challenge": "GUA (TANTANGAN)",
         "rancor": "GUA",
-        "sith_raid": "TIGA SERANGKAI SITH",
-        "naboo": "PERANG UNTUK NABOO",
-        "order66": "PERINTAH 66"
+        "sith_raid": "TIGA SERANGKAI SITH"
     },
     "jpn_jp": {
         "kraytdragon": "クレイト・ドラゴン・ハント",
+        "naboo": "ナブーの戦い",
+        "order66": "オーダー66",
         "speederbike": "スピーダー・バイク・パシュート",
         "heroic": "ヒロイック",
         "aat": "タンク排除",
         "rancor_challenge": "ピット(チャレンジ)",
         "rancor": "ピット",
-        "sith_raid": "シス三頭政治",
-        "naboo": "ナブーの戦い",
-        "order66": "オーダー66"
+        "sith_raid": "シス三頭政治"
     },
     "tha_th": {
         "kraytdragon": "ล่ามังกรไครท์",
+        "naboo": "สงครามแห่งนาบู",
+        "order66": "คำสั่งที่ 66",
         "speederbike": "ไล่ล่าสปีดเดอร์ไบค์",
         "heroic": "โหมดฮีโร่",
         "aat": "แทงค์บรรลัยกัลป์",
         "rancor_challenge": "อุโมงค์มรณะ (ภารกิจท้าทาย)",
         "rancor": "หลุมลึก",
-        "sith_raid": "ไตรภาคีแห่งซิธ",
-        "naboo": "สงครามแห่งนาบู",
-        "order66": "คำสั่งที่ 66"
+        "sith_raid": "ไตรภาคีแห่งซิธ"
     }
 }

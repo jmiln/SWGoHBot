@@ -1,7 +1,7 @@
 {
     "metadata": {
-        "generatedAt": "2026-03-10T22:33:59.253Z",
-        "totalCommands": 44,
+        "generatedAt": "2026-03-23T21:25:19.914Z",
+        "totalCommands": 45,
         "categories": 4
     },
     "General": {
@@ -312,9 +312,29 @@
                 "name": "info",
                 "description": "Displays general stats & info about the bot",
                 "usage": [
-                    "**/info**"
+                    "**/info** stats",
+                    "**/info** cmdstats [command]"
                 ],
-                "options": [],
+                "options": [
+                    {
+                        "name": "stats",
+                        "type": 1,
+                        "description": "Displays bot statistics and info"
+                    },
+                    {
+                        "name": "cmdstats",
+                        "type": 1,
+                        "description": "Displays command usage statistics",
+                        "options": [
+                            {
+                                "name": "command",
+                                "type": 3,
+                                "description": "Command name to show detailed stats for",
+                                "required": false
+                            }
+                        ]
+                    }
+                ],
                 "permLevel": 0,
                 "devServerOnly": false,
                 "contexts": [
@@ -1296,6 +1316,130 @@
                     0
                 ],
                 "enabled": true
+            },
+            {
+                "name": "strike",
+                "description": "Track guild member strikes and offenses",
+                "usage": [
+                    "**/strike** add <allycode> <reason> [expires]",
+                    "**/strike** revoke <allycode> <strike_id>",
+                    "**/strike** clear <allycode>",
+                    "**/strike** view <allycode>",
+                    "**/strike** list [guild] [sort]"
+                ],
+                "options": [
+                    {
+                        "name": "add",
+                        "type": 1,
+                        "description": "Add a strike to a guild member",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 4,
+                                "description": "The guild member's ally code",
+                                "required": true
+                            },
+                            {
+                                "name": "reason",
+                                "type": 3,
+                                "description": "Reason for the strike",
+                                "required": true
+                            },
+                            {
+                                "name": "expires",
+                                "type": 4,
+                                "description": "Number of days until this strike expires (omit for permanent)",
+                                "required": false,
+                                "minValue": 1
+                            }
+                        ]
+                    },
+                    {
+                        "name": "revoke",
+                        "type": 1,
+                        "description": "Revoke a strike — it remains visible in the member's history",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 4,
+                                "description": "The guild member's ally code",
+                                "required": true,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "strike_id",
+                                "type": 3,
+                                "description": "The strike to revoke",
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "clear",
+                        "type": 1,
+                        "description": "Clear all strikes (including history) for a guild member",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 4,
+                                "description": "The guild member's ally code",
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "view",
+                        "type": 1,
+                        "description": "View active and historical strikes for a guild member",
+                        "options": [
+                            {
+                                "name": "allycode",
+                                "type": 4,
+                                "description": "The guild member's ally code",
+                                "required": true,
+                                "autocomplete": true
+                            }
+                        ]
+                    },
+                    {
+                        "name": "list",
+                        "type": 1,
+                        "description": "List members with active strikes, or a guild's full roster with strike counts",
+                        "options": [
+                            {
+                                "name": "guild",
+                                "type": 3,
+                                "description": "Filter by guild (shows full roster with strike counts)",
+                                "required": false,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "sort",
+                                "type": 3,
+                                "description": "Sort order (default: name)",
+                                "required": false,
+                                "choices": [
+                                    {
+                                        "name": "Name",
+                                        "value": "name"
+                                    },
+                                    {
+                                        "name": "Strikes (highest first)",
+                                        "value": "strikes"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "permLevel": 0,
+                "devServerOnly": false,
+                "contexts": [
+                    0
+                ],
+                "enabled": true
             }
         ]
     },
@@ -1385,17 +1529,16 @@
                     "**/arenawatch** allycode add <allycodes> [mark]",
                     "**/arenawatch** allycode remove <allycodes>",
                     "**/arenawatch** allycode edit <old_allycode> <new_allycode>",
-                    "**/arenawatch** arena <enabled> <arena>",
-                    "**/arenawatch** channel <target_channel> <arena>",
-                    "**/arenawatch** enabled <toggle>",
-                    "**/arenawatch** report <arena>",
-                    "**/arenawatch** showvs <enable>",
-                    "**/arenawatch** warn <allycode> <mins> <arena>",
-                    "**/arenawatch** payout enable <enabled> <arena>",
+                    "**/arenawatch** arena_log arena <type>",
+                    "**/arenawatch** arena_log channel <target_channel> <arena>",
+                    "**/arenawatch** arena_log warn <allycode> <mins> <arena>",
+                    "**/arenawatch** arena_log report <arena>",
+                    "**/arenawatch** arena_log showvs <enable>",
+                    "**/arenawatch** arena_log result <allycode> <arena>",
+                    "**/arenawatch** arena_log use_marks_in_log <enable>",
+                    "**/arenawatch** payout arena <type>",
                     "**/arenawatch** payout channel <target_channel> <arena>",
                     "**/arenawatch** payout mark <allycode> [mark] [remove_mark]",
-                    "**/arenawatch** result <allycode> <arena>",
-                    "**/arenawatch** use_marks_in_log <enable>",
                     "**/arenawatch** view [allycode] [view_by]"
                 ],
                 "options": [
@@ -1457,189 +1600,19 @@
                         ]
                     },
                     {
-                        "name": "arena",
-                        "type": 1,
-                        "description": "Choose between the arena types",
-                        "options": [
-                            {
-                                "name": "enabled",
-                                "type": 5,
-                                "description": "Set whether it's enabled or not",
-                                "required": true
-                            },
-                            {
-                                "name": "arena",
-                                "type": 3,
-                                "description": "Choose which arena to toggle",
-                                "required": true,
-                                "choices": [
-                                    {
-                                        "name": "Char",
-                                        "value": "char"
-                                    },
-                                    {
-                                        "name": "Fleet",
-                                        "value": "fleet"
-                                    },
-                                    {
-                                        "name": "Both",
-                                        "value": "both"
-                                    },
-                                    {
-                                        "name": "None",
-                                        "value": "none"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "channel",
-                        "type": 1,
-                        "description": "The channel to put the logs in",
-                        "options": [
-                            {
-                                "name": "target_channel",
-                                "type": 7,
-                                "required": true,
-                                "description": "The channel to put the logs in"
-                            },
-                            {
-                                "name": "arena",
-                                "type": 3,
-                                "required": true,
-                                "description": "The arena to watch",
-                                "choices": [
-                                    {
-                                        "name": "Char",
-                                        "value": "char"
-                                    },
-                                    {
-                                        "name": "Fleet",
-                                        "value": "fleet"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "enabled",
-                        "type": 1,
-                        "description": "Enable/ Disable arenawatch",
-                        "options": [
-                            {
-                                "name": "toggle",
-                                "description": "Enable/ Disable arenawatch",
-                                "type": 5,
-                                "required": true
-                            }
-                        ]
-                    },
-                    {
-                        "name": "report",
-                        "type": 1,
-                        "description": "Choose whether you want it to report on climbs, drops, or both",
-                        "options": [
-                            {
-                                "name": "arena",
-                                "type": 3,
-                                "description": "Choose whether you want it to report on climbs, drops, or both",
-                                "required": true,
-                                "choices": [
-                                    {
-                                        "name": "climb",
-                                        "value": "climb"
-                                    },
-                                    {
-                                        "name": "drop",
-                                        "value": "drop"
-                                    },
-                                    {
-                                        "name": "both",
-                                        "value": "both"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "showvs",
-                        "type": 1,
-                        "description": "Enable or disable showing when one person hits another",
-                        "options": [
-                            {
-                                "name": "enable",
-                                "description": "True/ False",
-                                "type": 5,
-                                "required": true
-                            }
-                        ]
-                    },
-                    {
-                        "name": "warn",
-                        "type": 1,
-                        "description": "Set when to warn who, and about which arena",
-                        "options": [
-                            {
-                                "name": "allycode",
-                                "type": 3,
-                                "description": "The user's ally code",
-                                "required": true
-                            },
-                            {
-                                "name": "mins",
-                                "type": 4,
-                                "description": "(0-1439) Minutes before payout to warn (0 to disable)",
-                                "required": true,
-                                "minValue": 0,
-                                "maxValue": 1439
-                            },
-                            {
-                                "name": "arena",
-                                "type": 3,
-                                "description": "Set which arena it will watch.",
-                                "required": true,
-                                "choices": [
-                                    {
-                                        "name": "Char",
-                                        "value": "char"
-                                    },
-                                    {
-                                        "name": "Fleet",
-                                        "value": "fleet"
-                                    },
-                                    {
-                                        "name": "None",
-                                        "value": "none"
-                                    },
-                                    {
-                                        "name": "Both",
-                                        "value": "both"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "payout",
+                        "name": "arena_log",
                         "type": 2,
-                        "description": "Set to spit out the payout result of a user",
+                        "description": "Settings for the arena rank change log",
                         "options": [
                             {
-                                "name": "enable",
+                                "name": "arena",
                                 "type": 1,
-                                "description": "Choose between the arena types",
+                                "description": "Enable arena log for char, fleet, both, or none to disable",
                                 "options": [
                                     {
-                                        "name": "enabled",
-                                        "type": 5,
-                                        "description": "Set whether it's enabled or not",
-                                        "required": true
-                                    },
-                                    {
-                                        "name": "arena",
+                                        "name": "type",
                                         "type": 3,
-                                        "description": "Choose which arena to toggle",
+                                        "description": "Which arena to enable (none disables all)",
                                         "required": true,
                                         "choices": [
                                             {
@@ -1653,6 +1626,212 @@
                                             {
                                                 "name": "Both",
                                                 "value": "both"
+                                            },
+                                            {
+                                                "name": "None",
+                                                "value": "none"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "channel",
+                                "type": 1,
+                                "description": "The channel to put the logs in",
+                                "options": [
+                                    {
+                                        "name": "target_channel",
+                                        "type": 7,
+                                        "required": true,
+                                        "description": "The channel to put the logs in"
+                                    },
+                                    {
+                                        "name": "arena",
+                                        "type": 3,
+                                        "required": true,
+                                        "description": "The arena to watch",
+                                        "choices": [
+                                            {
+                                                "name": "Char",
+                                                "value": "char"
+                                            },
+                                            {
+                                                "name": "Fleet",
+                                                "value": "fleet"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "warn",
+                                "type": 1,
+                                "description": "Set when to warn who, and about which arena",
+                                "options": [
+                                    {
+                                        "name": "allycode",
+                                        "type": 3,
+                                        "description": "The user's ally code",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "mins",
+                                        "type": 4,
+                                        "description": "(0-1439) Minutes before payout to warn (0 to disable)",
+                                        "required": true,
+                                        "minValue": 0,
+                                        "maxValue": 1439
+                                    },
+                                    {
+                                        "name": "arena",
+                                        "type": 3,
+                                        "description": "Set which arena it will watch.",
+                                        "required": true,
+                                        "choices": [
+                                            {
+                                                "name": "Char",
+                                                "value": "char"
+                                            },
+                                            {
+                                                "name": "Fleet",
+                                                "value": "fleet"
+                                            },
+                                            {
+                                                "name": "None",
+                                                "value": "none"
+                                            },
+                                            {
+                                                "name": "Both",
+                                                "value": "both"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "report",
+                                "type": 1,
+                                "description": "Choose whether you want it to report on climbs, drops, or both",
+                                "options": [
+                                    {
+                                        "name": "arena",
+                                        "type": 3,
+                                        "description": "Choose whether you want it to report on climbs, drops, or both",
+                                        "required": true,
+                                        "choices": [
+                                            {
+                                                "name": "climb",
+                                                "value": "climb"
+                                            },
+                                            {
+                                                "name": "drop",
+                                                "value": "drop"
+                                            },
+                                            {
+                                                "name": "both",
+                                                "value": "both"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "showvs",
+                                "type": 1,
+                                "description": "Enable or disable showing when one person hits another",
+                                "options": [
+                                    {
+                                        "name": "enable",
+                                        "type": 5,
+                                        "required": true,
+                                        "description": "True/ False"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "result",
+                                "type": 1,
+                                "description": "Set to spit out the payout result of a user",
+                                "options": [
+                                    {
+                                        "name": "allycode",
+                                        "type": 3,
+                                        "description": "The user's ally code",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "arena",
+                                        "type": 3,
+                                        "description": "Set which arena it will give the results of.",
+                                        "required": true,
+                                        "choices": [
+                                            {
+                                                "name": "Char",
+                                                "value": "char"
+                                            },
+                                            {
+                                                "name": "Fleet",
+                                                "value": "fleet"
+                                            },
+                                            {
+                                                "name": "None",
+                                                "value": "none"
+                                            },
+                                            {
+                                                "name": "Both",
+                                                "value": "both"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "use_marks_in_log",
+                                "type": 1,
+                                "description": "Toggle showing players' marks in the arena log",
+                                "options": [
+                                    {
+                                        "name": "enable",
+                                        "type": 5,
+                                        "required": true,
+                                        "description": "Show marks in arena log?"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "payout",
+                        "type": 2,
+                        "description": "Set to spit out the payout result of a user",
+                        "options": [
+                            {
+                                "name": "arena",
+                                "type": 1,
+                                "description": "Enable payout log for char, fleet, both, or none to disable",
+                                "options": [
+                                    {
+                                        "name": "type",
+                                        "type": 3,
+                                        "description": "Which arena to enable (none disables all)",
+                                        "required": true,
+                                        "choices": [
+                                            {
+                                                "name": "Char",
+                                                "value": "char"
+                                            },
+                                            {
+                                                "name": "Fleet",
+                                                "value": "fleet"
+                                            },
+                                            {
+                                                "name": "Both",
+                                                "value": "both"
+                                            },
+                                            {
+                                                "name": "None",
+                                                "value": "none"
                                             }
                                         ]
                                     }
@@ -1715,56 +1894,6 @@
                                         "description": "Choose this to delete the mark on a selected user"
                                     }
                                 ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "result",
-                        "type": 1,
-                        "description": "Set to spit out the payout result of a user",
-                        "options": [
-                            {
-                                "name": "allycode",
-                                "type": 3,
-                                "description": "The user's ally code",
-                                "required": true
-                            },
-                            {
-                                "name": "arena",
-                                "type": 3,
-                                "description": "Set which arena it will give the results of.",
-                                "required": true,
-                                "choices": [
-                                    {
-                                        "name": "Char",
-                                        "value": "char"
-                                    },
-                                    {
-                                        "name": "Fleet",
-                                        "value": "fleet"
-                                    },
-                                    {
-                                        "name": "None",
-                                        "value": "none"
-                                    },
-                                    {
-                                        "name": "Both",
-                                        "value": "both"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "use_marks_in_log",
-                        "type": 1,
-                        "description": "Toggle showing players' marks in the arena log",
-                        "options": [
-                            {
-                                "name": "enable",
-                                "type": 5,
-                                "required": true,
-                                "description": "Show marks in arena log?"
                             }
                         ]
                     },
