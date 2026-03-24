@@ -222,28 +222,24 @@ class PatreonFuncs {
             const players = structuredClone(aw.allyCodes.slice(0, acctCount));
             if (!players || !players.length) continue;
 
-            // If char is enabled, send it there
-            if (aw?.payout?.char?.enabled && aw.payout.char.channel) {
-                const playerTimes = this.getPayoutTimes(players, "char");
-                const formattedEmbed = this.formatPayouts(playerTimes, "char");
-                const sentMessage = (await this.sendBroadcastMsg(aw.payout.char.msgID, aw.payout.char.channel, formattedEmbed)) as Message;
-                if (sentMessage) {
-                    user.arenaWatch.payout.char.msgID = sentMessage.id;
-                }
-            }
-            // Then if fleet is enabled, send it there as well/ instead
-            if (aw.payout?.fleet?.enabled && aw.payout.fleet.channel) {
-                const playerTimes = this.getPayoutTimes(players, "fleet");
-                const formattedEmbed = this.formatPayouts(playerTimes, "fleet");
-                const sentMessage = (await this.sendBroadcastMsg(
-                    aw.payout.fleet.msgID,
-                    aw.payout.fleet.channel,
-                    formattedEmbed,
-                )) as Message;
-                if (sentMessage) {
-                    user.arenaWatch.payout.fleet.msgID = sentMessage.id;
-                }
-            }
+            const [charMsg, fleetMsg] = await Promise.all([
+                aw?.payout?.char?.enabled && aw.payout.char.channel
+                    ? (this.sendBroadcastMsg(
+                          aw.payout.char.msgID,
+                          aw.payout.char.channel,
+                          this.formatPayouts(this.getPayoutTimes(players, "char"), "char"),
+                      ) as Promise<Message>)
+                    : Promise.resolve(null),
+                aw?.payout?.fleet?.enabled && aw.payout.fleet.channel
+                    ? (this.sendBroadcastMsg(
+                          aw.payout.fleet.msgID,
+                          aw.payout.fleet.channel,
+                          this.formatPayouts(this.getPayoutTimes(players, "fleet"), "fleet"),
+                      ) as Promise<Message>)
+                    : Promise.resolve(null),
+            ]);
+            if (charMsg) user.arenaWatch.payout.char.msgID = charMsg.id;
+            if (fleetMsg) user.arenaWatch.payout.fleet.msgID = fleetMsg.id;
             // Update the user in case something changed (Likely message ID)
             await userReg.updateUser(patron.discordID, user);
         }
@@ -414,36 +410,38 @@ class PatreonFuncs {
                 );
             } else {
                 // Else they each have their own channels, so send em there
-                if (aw.arena.char.channel && aw.arena.char.enabled && charFields.length) {
-                    await this.client.shard.broadcastEval(
-                        async (client, { aw, charFields }) => {
-                            const chan = client.channels.cache.get(aw.arena.char.channel);
-                            if (
-                                chan?.type === 0 && // 0 = GUILD_TEXT
-                                // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                chan?.permissionsFor(client.user).has(3072n)
-                            ) {
-                                await chan.send(`>>> ${charFields.join("\n")}`);
-                            }
-                        },
-                        { context: { aw: aw, charFields: charFields } },
-                    );
-                }
-                if (aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length) {
-                    await this.client.shard.broadcastEval(
-                        async (client, { aw, shipFields }) => {
-                            const chan = client.channels.cache.get(aw.arena.fleet.channel);
-                            if (
-                                chan?.type === 0 && // 0 = GUILD_TEXT
-                                // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                chan?.permissionsFor(client.user).has(3072n)
-                            ) {
-                                await chan.send(`>>> ${shipFields.join("\n")}`);
-                            }
-                        },
-                        { context: { aw: aw, shipFields: shipFields } },
-                    );
-                }
+                await Promise.allSettled([
+                    aw.arena.char.channel && aw.arena.char.enabled && charFields.length
+                        ? this.client.shard.broadcastEval(
+                              async (client, { aw, charFields }) => {
+                                  const chan = client.channels.cache.get(aw.arena.char.channel);
+                                  if (
+                                      chan?.type === 0 && // 0 = GUILD_TEXT
+                                      // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                                      chan?.permissionsFor(client.user).has(3072n)
+                                  ) {
+                                      await chan.send(`>>> ${charFields.join("\n")}`);
+                                  }
+                              },
+                              { context: { aw: aw, charFields: charFields } },
+                          )
+                        : Promise.resolve(),
+                    aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length
+                        ? this.client.shard.broadcastEval(
+                              async (client, { aw, shipFields }) => {
+                                  const chan = client.channels.cache.get(aw.arena.fleet.channel);
+                                  if (
+                                      chan?.type === 0 && // 0 = GUILD_TEXT
+                                      // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                                      chan?.permissionsFor(client.user).has(3072n)
+                                  ) {
+                                      await chan.send(`>>> ${shipFields.join("\n")}`);
+                                  }
+                              },
+                              { context: { aw: aw, shipFields: shipFields } },
+                          )
+                        : Promise.resolve(),
+                ]);
             }
         }
 

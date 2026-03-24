@@ -97,15 +97,15 @@ export function msgArray(arr: string | string[], join = "\n", maxLen = 1900): st
 // Expand multiple spaces to have zero width spaces between them so
 // Discord doesn't collapse em
 export function expandSpaces(str: string): string {
-    let outStr = "";
+    const parts: string[] = [];
     for (const e of str.split(/([\s]{2,})/)) {
         if (e.match(/[\s]{2,}/)) {
-            outStr += e.split("").join(constants.zws);
+            parts.push(e.split("").join(constants.zws));
         } else {
-            outStr += e;
+            parts.push(e);
         }
     }
-    return outStr;
+    return parts.join("");
 }
 
 export function isUserMention(mention: string): boolean {

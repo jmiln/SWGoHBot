@@ -65,7 +65,7 @@ export async function addServerSupporter({
     if (!patSettings?.supporters) patSettings.supporters = [];
 
     // Check if the user is already set in there
-    if (patSettings.supporters?.filter((supp) => supp.userId === userInfo.userId)?.length) {
+    if (patSettings.supporters?.find((supp) => supp.userId === userInfo.userId)) {
         resOut.user = { success: false, error: "User already set." };
         return resOut;
     }
@@ -128,7 +128,7 @@ export async function removeServerSupporter({
         patreonSettings: 1,
         _id: 0,
     } as Document);
-    const hasUser = guildPatSettings?.patreonSettings?.supporters.filter((sup) => sup.userId === userId)?.length > 0;
+    const hasUser = guildPatSettings?.patreonSettings?.supporters.find((sup) => sup.userId === userId);
 
     // If the user isn't in the supporters arr, say so
     if (!hasUser) return { success: false, error: "User not in supporters array" };
@@ -232,7 +232,7 @@ export async function ensureBonusServerSet({ userId, amount_cents }: { userId: s
     const guildSupArr = await getServerSupporters({ guildId: userConf.bonusServer });
 
     // The user is already in the guild's supporter array, move on
-    if (guildSupArr.filter((sup) => sup.userId === userId)?.length > 0) return {};
+    if (guildSupArr.find((sup) => sup.userId === userId)) return {};
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
     const addServerRes: { user: { success: boolean; error: string }; guild: { success: boolean; error: string } } =

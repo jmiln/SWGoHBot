@@ -266,18 +266,15 @@ class SWAPI {
                     if (!cacheUpdatesOut.length) continue;
                     await cache.putMany(env.MONGODB_SWAPI_DB, "rawPlayers", cacheUpdatesOut);
                 }
-                const skillNames = await cache.get(
-                    env.MONGODB_SWAPI_DB,
-                    "abilities",
-                    { skillId: { $in: skillsArr }, language: "eng_us" },
-                    { nameKey: 1, skillId: 1 },
-                );
-                const unitNames = await cache.get(
-                    env.MONGODB_SWAPI_DB,
-                    "units",
-                    { baseId: { $in: defIdArr }, language: "eng_us" },
-                    { baseId: 1, nameKey: 1 },
-                );
+                const [skillNames, unitNames] = await Promise.all([
+                    cache.get(
+                        env.MONGODB_SWAPI_DB,
+                        "abilities",
+                        { skillId: { $in: skillsArr }, language: "eng_us" },
+                        { nameKey: 1, skillId: 1 },
+                    ),
+                    cache.get(env.MONGODB_SWAPI_DB, "units", { baseId: { $in: defIdArr }, language: "eng_us" }, { baseId: 1, nameKey: 1 }),
+                ]);
                 const langKeys = {};
                 for (const nameId of [...skillNames, ...unitNames]) {
                     langKeys[nameId?.skillId || nameId?.baseId] = nameId.nameKey;

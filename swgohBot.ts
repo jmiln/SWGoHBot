@@ -47,7 +47,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
     console.log(`[${myTime()}] Received ${signal}, starting graceful shutdown...`);
 
-    try {
+    const shutdown = async () => {
         // Stop accepting new interactions
         client.removeAllListeners();
 
@@ -68,7 +68,12 @@ async function gracefulShutdown(signal: string): Promise<void> {
         if (database.isConnected()) {
             await database.close();
         }
+    };
 
+    const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error("Shutdown timed out after 10s")), 10_000));
+
+    try {
+        await Promise.race([shutdown(), timeout]);
         console.log(`[${myTime()}] Graceful shutdown complete`);
         process.exit(0);
     } catch (err) {

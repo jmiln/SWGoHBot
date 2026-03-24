@@ -61,6 +61,25 @@ export default class Farm extends Command {
         if (!unitLocs) {
             return super.error(interaction, `I couldn't get the location data for *${character.name}*`);
         }
+
+        type LangLoc = { id: string; language: string; langKey: string };
+
+        const locIds: string[] = [
+            ...new Set<string>(unitLocs.locations.map((loc) => loc.locId as string | undefined).filter((id): id is string => !!id)),
+        ];
+        const locMap = new Map<string, LangLoc>();
+        if (locIds.length > 0) {
+            const langLocs = (await cache.get(
+                env.MONGODB_SWAPI_DB,
+                "locations",
+                { id: { $in: locIds }, language: swgohLanguage.toLowerCase() },
+                {},
+            )) as LangLoc[];
+            for (const langLoc of langLocs) {
+                locMap.set(langLoc.id, langLoc);
+            }
+        }
+
         for (const loc of unitLocs.locations) {
             if (loc.cost) {
                 // This will be anything in a store
@@ -73,15 +92,7 @@ export default class Farm extends Command {
             } else if (loc.level) {
                 // It's a node, fleet, cantina, light/ dark side
                 if (loc.locId) {
-                    const langLoc = (await cache.getOne(
-                        env.MONGODB_SWAPI_DB,
-                        "locations",
-                        {
-                            id: loc.locId,
-                            language: swgohLanguage.toLowerCase(),
-                        },
-                        {},
-                    )) as { id: string; language: string; langKey: string } | null;
+                    const langLoc = locMap.get(loc.locId) ?? null;
 
                     if (!langLoc) {
                         logger.debug(`[slash/farm] Missing localized location for ${loc.locId} in language ${swgohLanguage}`);
@@ -113,15 +124,7 @@ export default class Farm extends Command {
                 outList.push(expandSpaces(`__${loc.type}__: ${loc.name}`));
             } else if (loc.locId) {
                 // Just has the location id, so probably a marquee
-                const langLoc = (await cache.getOne(
-                    env.MONGODB_SWAPI_DB,
-                    "locations",
-                    {
-                        id: loc.locId,
-                        language: swgohLanguage.toLowerCase(),
-                    },
-                    {},
-                )) as { id: string; language: string; langKey: string } | null;
+                const langLoc = locMap.get(loc.locId) ?? null;
                 if (!langLoc) {
                     logger.debug(`[slash/farm] Missing localized location for ${loc.locId} in language ${swgohLanguage}`);
                     continue;
