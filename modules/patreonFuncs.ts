@@ -106,9 +106,11 @@ class PatreonFuncs {
     // Check for updated ranks
     async getRanks(): Promise<void> {
         const patrons = await this.getActivePatrons();
+        const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
+        const userMap = await userReg.getUsersByIds(eligibleIds);
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user: UserConfig = await userReg.getUser(patron.discordID);
+            const user: UserConfig = userMap.get(patron.discordID);
             // If they're not registered with anything or don't have any ally codes
             if (!user?.accounts?.length) continue;
 
@@ -197,9 +199,11 @@ class PatreonFuncs {
     // Send/ update a shard payout times message (Automated shardtimes)
     async shardTimes(): Promise<void> {
         const patrons = await this.getActivePatrons();
+        const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
+        const userMap = await userReg.getUsersByIds(eligibleIds);
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user = await userReg.getUser(patron.discordID);
+            const user = userMap.get(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
             if (!user || !user.arenaWatch || !user.arenaWatch.payout) continue;
@@ -248,8 +252,11 @@ class PatreonFuncs {
     // Check for updated ranks across up to 50 players
     async shardRanks(): Promise<void> {
         const patrons = await this.getActivePatrons();
+        const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
+        const userMap = await userReg.getUsersByIds(eligibleIds);
         for (const patron of patrons) {
-            await this.processShardPatron(patron).catch((err) => {
+            if (patron.amount_cents < TIER_1_CENTS) continue;
+            await this.processShardPatron(patron, userMap.get(patron.discordID) ?? null).catch((err) => {
                 const msg = err instanceof Error ? err.message : String(err);
                 logger.error(`[shardRanks] Error processing patron ${patron.discordID}: ${msg}`);
             });
@@ -258,10 +265,7 @@ class PatreonFuncs {
 
     // Process a single patron's arena rank notifications. Extracted so errors in one patron
     // don't abort the entire shardRanks loop and cause everyone after them to be skipped.
-    private async processShardPatron(patron: ActivePatron): Promise<void> {
-        if (patron.amount_cents < TIER_1_CENTS) return;
-        const user = await userReg.getUser(patron.discordID);
-
+    private async processShardPatron(patron: ActivePatron, user: UserConfig | null): Promise<void> {
         // If they're not registered with anything or don't have any ally codes
         if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) return;
         const aw = user.arenaWatch;
@@ -456,10 +460,12 @@ class PatreonFuncs {
 
     async guildsUpdate(): Promise<void> {
         const patrons = await this.getActivePatrons();
+        const eligibleIds = patrons.filter((p) => p.discordID && p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
+        const userMap = await userReg.getUsersByIds(eligibleIds);
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
             if (!patron.discordID || patron.amount_cents < TIER_1_CENTS) continue;
-            const user = await userReg.getUser(patron.discordID);
+            const user = userMap.get(patron.discordID);
 
             // If the guild update isn't enabled, then move along
             if (!user?.guildUpdate?.enabled) continue;
@@ -574,6 +580,8 @@ class PatreonFuncs {
     // Check guild tickets for each applicable member, and send the list of anyone who has not gotten 600 (Or their set value) yet
     async guildTickets(): Promise<void> {
         const patrons = await this.getActivePatrons();
+        const eligibleIds = patrons.filter((p) => p.discordID && p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
+        const userMap = await userReg.getUsersByIds(eligibleIds);
         const nowTime = Date.now();
         for (const patron of patrons) {
             // Make sure to pass if there's no DiscordId or not at least in the $1 tier
@@ -595,7 +603,7 @@ class PatreonFuncs {
             // }
 
             // Get the user's saved data
-            const user = await userReg.getUser(patron.discordID);
+            const user = userMap.get(patron.discordID);
 
             // If the guild update isn't enabled, or is missing some needed info, move along
             const gt = user?.guildTickets;

@@ -17,6 +17,15 @@ class UserReg {
         return user || null;
     }
 
+    async getUsersByIds(userIds: string[]): Promise<Map<string, UserConfig>> {
+        const users = (await this.cache.get(env.MONGODB_SWGOHBOT_DB, "users", { id: { $in: userIds } })) as UserConfig[];
+        const map = new Map<string, UserConfig>();
+        for (const user of users ?? []) {
+            if (user.id) map.set(user.id, user);
+        }
+        return map;
+    }
+
     async getUsersFromAlly(allyCode: string | number) {
         const allyCodeStr = Number(allyCode).toString();
         const users = (await this.cache.get(env.MONGODB_SWGOHBOT_DB, "users", { "accounts.allyCode": allyCodeStr })) as UserConfig[];
