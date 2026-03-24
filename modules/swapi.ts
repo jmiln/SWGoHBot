@@ -354,8 +354,8 @@ class SWAPI {
 
             // If options.force is true, set the list of unexpired players to be empty so that all players will be run through the updater
             const updatedList = players.filter((p) => !this.isExpired(p.updated, cooldown, players.length > 5));
-            const updatedAC = updatedList.map((p) => p.allyCode);
-            const needUpdating = acArr.filter((a) => !updatedAC.includes(a));
+            const updatedAC = new Set(updatedList.map((p) => p.allyCode));
+            const needUpdating = acArr.filter((a) => !updatedAC.has(a));
 
             playerStats = playerStats.concat(updatedList);
 

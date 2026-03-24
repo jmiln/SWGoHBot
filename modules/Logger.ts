@@ -4,6 +4,8 @@ import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { sendWebhook, toProperCase } from "./functions.ts";
 
+const MAX_THROTTLE_KEYS = 500;
+
 type LogType = "log" | "warn" | "error" | "debug" | "cmd" | "ready" | "info";
 
 interface LogConfig {
@@ -84,6 +86,15 @@ class Logger {
      */
     throttleError(key: string, content: string, windowMs = 60_000): void {
         const now = Date.now();
+
+        if (!this.throttleMap.has(key) && this.throttleMap.size >= MAX_THROTTLE_KEYS) {
+            for (const [k, v] of this.throttleMap) {
+                if (now - v.lastLogged >= windowMs) {
+                    this.throttleMap.delete(k);
+                }
+            }
+        }
+
         const entry = this.throttleMap.get(key);
 
         if (!entry || now - entry.lastLogged >= windowMs) {
