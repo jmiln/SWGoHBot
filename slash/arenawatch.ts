@@ -411,7 +411,7 @@ export default class ArenaWatch extends Command {
             arena: interaction.options.getString("arena"),
             arenaType: interaction.options.getString("type"),
             channel: channelIn,
-            enabled: interaction.options.getBoolean("enabled"),
+            enabled: interaction.options.getBoolean("enable"),
             mark: interaction.options.getString("mark"),
             mins: interaction.options.getInteger("mins"),
             new_allyCode: interaction.options.getString("new_allycode"),
@@ -537,7 +537,7 @@ export async function processAWChanges({
                     if (p.allyCode.toString() === ac.toString()) {
                         p.mark = remove_mark ? null : mark;
                     }
-                    resArr.push(`${p.allyCode}: '${p.mark ? `: ${p.mark}` : ""}'`);
+                    resArr.push(`${p.allyCode}: '${p.mark ?? ""}'`);
                     return p;
                 });
                 result.outLog = `Updated the following marks: \n- ${resArr.join("\n- ")}${cmdOut ? `\n\n${cmdOut}` : ""}`;
@@ -635,7 +635,7 @@ export async function processAWChanges({
             } else if (setting === "use_marks_in_log") {
                 const useMarksInLog = interactionOptions.enabled;
                 if (aw.useMarksInLog === useMarksInLog) {
-                    result.error = `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`;
+                    result.outLog = `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`;
                     break;
                 }
                 aw.useMarksInLog = useMarksInLog;
@@ -738,18 +738,13 @@ export async function processAWChanges({
                     result.error = `${oldCode} is not a valid ally code.`;
                     break;
                 }
-                if (!isAllyCode(newCode)) {
-                    result.error = `${newCode} is not a valid ally code.`;
-                    break;
-                }
-
                 let ac: number;
                 let mention: string;
                 try {
                     [ac, mention] = getAcMention(newCode);
                 } catch (e) {
-                    const errorMsg = e instanceof Error ? e.message : String(e);
-                    outLog.push(errorMsg);
+                    result.error = e instanceof Error ? e.message : String(e);
+                    break;
                 }
 
                 // Check if the specified code is available to edit
@@ -795,19 +790,20 @@ export async function processAWChanges({
                     break;
                 }
 
-                for (const code of codesIn) {
-                    const thisCode = Number.parseInt(code.replace(/[^\d]/g, ""), 10);
-                    const exists = aw.allyCodes.find((ac) => ac.allyCode === thisCode);
-                    if (!exists) {
-                        result.error = "That ally code was not available to be removed";
+                const numericCodes = codesIn.map((code) => Number.parseInt(code.replace(/[^\d]/g, ""), 10));
+                for (const thisCode of numericCodes) {
+                    if (!aw.allyCodes.find((ac) => ac.allyCode === thisCode)) {
+                        result.error = `${thisCode} was not available to be removed`;
                         break;
                     }
-                    const codes = aw.allyCodes.filter((ac) => ac.allyCode !== thisCode);
-
-                    aw.allyCodes = codes;
-                    outLog.push(`${code} has been removed`);
                 }
-                result.outLog = outLog.join("\n");
+                if (!result.error) {
+                    for (const thisCode of numericCodes) {
+                        aw.allyCodes = aw.allyCodes.filter((ac) => ac.allyCode !== thisCode);
+                        outLog.push(`${thisCode} has been removed`);
+                    }
+                    result.outLog = outLog.join("\n");
+                }
             }
             break;
         }

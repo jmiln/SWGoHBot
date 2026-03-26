@@ -269,7 +269,7 @@ describe("ArenaWatch", () => {
                 assert.ok(result.outLog.includes("true"));
             });
 
-            it("should reject no change", async () => {
+            it("should notify when no change", async () => {
                 const aw = createBaseAW();
                 aw.useMarksInLog = false;
                 const { result } = await processAWChanges({
@@ -279,8 +279,8 @@ describe("ArenaWatch", () => {
 
                 });
 
-                assert.ok(result.error);
-                assert.ok(result.error.includes("already"));
+                assert.ok(result.outLog);
+                assert.ok(result.outLog.includes("already"));
             });
         });
 
