@@ -234,6 +234,11 @@
         "defId": "ASAJJDARKDISCIPLE",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "9-B",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_ASAJJDARKDISCIPLE_NAME",
                 "name": "Heretic Hunter Special Marquee Event"
@@ -356,7 +361,7 @@
             },
             {
                 "type": "Hard Modes (L)",
-                "level": "9-C",
+                "level": "5-F",
                 "locId": "HARD_LIGHT"
             }
         ]
@@ -953,6 +958,11 @@
                 "locId": "CANTINA"
             }
         ]
+    },
+    {
+        "name": "Cobb Vanth",
+        "defId": "COBBVANTH",
+        "locations": []
     },
     {
         "name": "Colonel Starck",
@@ -2288,6 +2298,11 @@
         "defId": "IG90",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "8-A",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_IG90_NAME",
                 "name": "Seeing Red Special Marquee Event"
@@ -2701,7 +2716,13 @@
     {
         "name": "KX Security Droid",
         "defId": "KXSECURITYDROID",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_KXSECURITYDROID_NAME",
+                "name": "Still Resisting? Special Marquee Event"
+            }
+        ]
     },
     {
         "name": "Kyle Katarn",
@@ -2940,7 +2961,13 @@
     {
         "name": "Major Partagaz",
         "defId": "MAJORPARTAGAZ",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MAJORPARTAGAZ_NAME",
+                "name": "The Doctrine Of Precision Special Marquee Event"
+            }
+        ]
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
@@ -4011,7 +4038,13 @@
     {
         "name": "SM-33",
         "defId": "SM33",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Snowtrooper",
@@ -4605,6 +4638,11 @@
         "name": "Yoda & Chewie",
         "defId": "YODACHEWBACCA",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "level": "9-C",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_YODACHEWBACCA_NAME",

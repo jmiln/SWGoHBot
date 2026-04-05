@@ -1620,9 +1620,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -1887,6 +1887,23 @@
         "avatarName": "charui_clonewarschewbacca"
     },
     {
+        "name": "Cobb Vanth",
+        "uniqueName": "COBBVANTH",
+        "aliases": [
+            "Cobb Vanth"
+        ],
+        "avatarName": "charui_cobbvanth",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cobbvanth.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_CONSTABLE_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_ROLELEADER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Colonel Starck",
         "uniqueName": "COLONELSTARCK",
         "aliases": [
@@ -2120,9 +2137,9 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ]
         },
         "avatarName": "charui_trooperclone_fives"
@@ -3688,7 +3705,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4628,8 +4645,9 @@
             "circle": "Protection",
             "cross": "Tenacity",
             "sets": [
-                "Offense x4",
-                "Potency x2"
+                "Tenacity x2",
+                "Tenacity x2",
+                "Tenacity x2"
             ]
         },
         "avatarName": "charui_imperial_super_commando"
@@ -5755,7 +5773,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -7559,7 +7577,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_ROLETANK_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -8798,7 +8827,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Potency",
             "sets": [
@@ -8894,7 +8923,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Defense x2"
+                "Health x2"
             ]
         },
         "crew": []
