@@ -495,7 +495,7 @@ export default class UserConf extends Command {
 
             // Fetch the user's registered accounts
             const user = await userReg.getUser(interaction.user.id);
-            if (!user || !user.accounts || user.accounts.length === 0) {
+            if (!user?.accounts || user.accounts.length === 0) {
                 // No registered accounts, return empty array
                 return await interaction.respond([]);
             }

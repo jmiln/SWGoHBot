@@ -161,7 +161,9 @@ class SWAPI {
 
         const playersOut = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const p: SWAPIPlayerArenaProfile | null = await comlinkStub.getPlayerArenaProfile(ac.toString()).catch((err: unknown) => {
+            const p: SWAPIPlayerArenaProfile | null = await (
+                comlinkStub.getPlayerArenaProfile(ac.toString()) as Promise<SWAPIPlayerArenaProfile>
+            ).catch((err: unknown) => {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.throttleError("swapi-arena-profile", `Error fetching arena profile for ${ac}: ${message}`);
                 return null;
@@ -201,11 +203,13 @@ class SWAPI {
 
         const updatedBare: SWAPIPlayer[] = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const tempBare: ComlinkPlayer | null = await comlinkStub.getPlayer(ac?.toString()).catch((err: unknown) => {
-                const message = err instanceof Error ? err.message : String(err);
-                logger.throttleError("swapi-getPlayer", `Error in eachLimit getPlayer (${ac}): ${message}`);
-                return null;
-            });
+            const tempBare: ComlinkPlayer | null = await (comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>).catch(
+                (err: unknown) => {
+                    const message = err instanceof Error ? err.message : String(err);
+                    logger.throttleError("swapi-getPlayer", `Error in eachLimit getPlayer (${ac}): ${message}`);
+                    return null;
+                },
+            );
             if (tempBare) {
                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                 updatedBare.push(formattedComlinkPlayer);
@@ -360,7 +364,9 @@ class SWAPI {
                 let updatedBare: SWAPIPlayer[] = [];
                 try {
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
-                        const tempBare: ComlinkPlayer = await comlinkStub.getPlayer(ac?.toString()).catch((err: unknown) => {
+                        const tempBare: ComlinkPlayer | null = await (
+                            comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>
+                        ).catch((err: unknown) => {
                             const message = err instanceof Error ? err.message : String(err);
                             logger.throttleError("swapi-getPlayer", `[swapi getPlayer] Failed to fetch player ${ac}: ${message}`);
                             return null;
@@ -376,13 +382,15 @@ class SWAPI {
                     if (missingRosters.length) {
                         updatedBare = updatedBare.filter((p) => p?.roster?.length);
                         for (const missing of missingRosters) {
-                            const tempBare = await comlinkStub.getPlayer(missing?.allyCode?.toString()).catch((err: unknown) => {
-                                const message = err instanceof Error ? err.message : String(err);
-                                logger.error(
-                                    `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${message}`,
-                                );
-                                return null;
-                            });
+                            const tempBare = await (comlinkStub.getPlayer(missing?.allyCode?.toString()) as Promise<ComlinkPlayer>).catch(
+                                (err: unknown) => {
+                                    const message = err instanceof Error ? err.message : String(err);
+                                    logger.error(
+                                        `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${message}`,
+                                    );
+                                    return null;
+                                },
+                            );
                             if (tempBare) {
                                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                                 updatedBare.push(formattedComlinkPlayer);
@@ -933,7 +941,7 @@ class SWAPI {
             throw new Error("Please provide a valid ally code");
         }
 
-        const player = await comlinkStub.getPlayer(thisAc);
+        const player = (await comlinkStub.getPlayer(thisAc)) as ComlinkPlayer;
         if (!player) throw new Error("I cannot find a matching profile for this ally code, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
@@ -947,7 +955,7 @@ class SWAPI {
             !rawGuild.profile ||
             this.isExpired(rawGuild.updated, cooldown, true)
         ) {
-            rawGuild = await comlinkStub.getGuild(player.guildId, true);
+            rawGuild = (await comlinkStub.getGuild(player.guildId, true)) as RawGuild;
 
             // The comlink API wraps member data under a 'guild' key; hoist it so the loop below finds it
             if (rawGuild.guild?.member?.length) {
@@ -1070,7 +1078,11 @@ class SWAPI {
     }
 
     private async fetchGuild(guildId: string) {
-        const comlinkGuild = await comlinkStub.getGuild(guildId, true);
+        const comlinkGuild = (await comlinkStub.getGuild(guildId, true)) as {
+            guild: unknown;
+            raidLaunchConfig: unknown;
+            [key: string]: unknown;
+        };
 
         const formattedGuild = await this.formatGuild(comlinkGuild);
         return formattedGuild;
@@ -1124,7 +1136,7 @@ class SWAPI {
             }) => {
                 // Grab each player and process their info
                 try {
-                    const { name, level, allyCode, profileStat } = await comlinkStub.getPlayer(null, playerId);
+                    const { name, level, allyCode, profileStat } = (await comlinkStub.getPlayer(null, playerId)) as ComlinkPlayer;
 
                     let gp: number;
                     let gpChar: number;

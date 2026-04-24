@@ -206,7 +206,7 @@ class PatreonFuncs {
             const user = userMap.get(patron.discordID);
 
             // If they're not registered with anything or don't have any ally codes
-            if (!user || !user.arenaWatch || !user.arenaWatch.payout) continue;
+            if (!user?.arenaWatch?.payout) continue;
             const aw = user.arenaWatch;
 
             // Make sure at least one of the alerts is enabled, no point otherwise
@@ -220,7 +220,7 @@ class PatreonFuncs {
             else acctCount = constants.arenaWatchConfig.tier3;
 
             const players = structuredClone(aw.allyCodes.slice(0, acctCount));
-            if (!players || !players.length) continue;
+            if (!players?.length) continue;
 
             const [charMsg, fleetMsg] = await Promise.all([
                 aw?.payout?.char?.enabled && aw.payout.char.channel
@@ -263,7 +263,7 @@ class PatreonFuncs {
     // don't abort the entire shardRanks loop and cause everyone after them to be skipped.
     private async processShardPatron(patron: ActivePatron, user: UserConfig | null): Promise<void> {
         // If they're not registered with anything or don't have any ally codes
-        if (!user || !user.accounts || !user.accounts.length || !user.arenaWatch) return;
+        if (!user?.accounts?.length || !user.arenaWatch) return;
         const aw = user.arenaWatch;
 
         // Fill in missing arena sub-configs with disabled defaults so the rest of the function
@@ -288,7 +288,7 @@ class PatreonFuncs {
 
         const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
         const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
-        if (!allyCodes || !allyCodes.length) return;
+        if (!allyCodes?.length) return;
 
         const newPlayers = await swgohAPI.getPlayersArena(allyCodes);
 

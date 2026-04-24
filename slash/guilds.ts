@@ -547,7 +547,7 @@ export default class Guilds extends Command {
             const members = [];
 
             // Make sure the guild roster exists, and grab all the ally codes
-            if (!guild || !guild.roster || !guild.roster.length) {
+            if (!guild?.roster?.length) {
                 throw new Error(
                     "I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.",
                 );
@@ -893,7 +893,7 @@ export default class Guilds extends Command {
             }
 
             // Make sure the guild roster exists, and grab all the ally codes
-            if (!guild || !guild.roster || !guild.roster.length) {
+            if (!guild?.roster?.length) {
                 throw new Error(
                     "I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.",
                 );
@@ -1112,7 +1112,7 @@ export default class Guilds extends Command {
             const fields = [];
             const doExpand = interaction.options.getBoolean("expand");
             const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id });
-            if (!guild || !guild.roster || !guild.roster.length) {
+            if (!guild?.roster?.length) {
                 return interaction.editReply({
                     content: null,
                     embeds: [

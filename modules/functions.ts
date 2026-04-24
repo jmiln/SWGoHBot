@@ -55,7 +55,7 @@ export async function wait(ms: number): Promise<void> {
  * Needs to be a string of 9 numbers
  */
 export function isAllyCode(allyCode: string | number): boolean {
-    if (!allyCode || !allyCode.toString().length) return false;
+    if (!allyCode?.toString().length) return false;
     const match = allyCode
         .toString()
         .replace(/[^\d]*/g, "") // Remove non-numbers
@@ -472,7 +472,7 @@ export async function guildCount(client: Client): Promise<number> {
  * Check if a string of numbers is a valid user.
  */
 export function isUserID(numStr: string): boolean {
-    if (!numStr || !numStr.length) return false;
+    if (!numStr?.length) return false;
     const match = /(?:<@!?)?([0-9]{17,20})>?/gi.exec(numStr);
     return !!match;
 }
@@ -481,7 +481,7 @@ export function isUserID(numStr: string): boolean {
  * Get a valid Discord id string from a given string.
  */
 export function getUserID(userMention: string): string | null {
-    if (!userMention || !userMention.length) return null;
+    if (!userMention?.length) return null;
     const match = /(?:<@!?)?([0-9]{17,20})>?/gi.exec(userMention);
     if (match) {
         return userMention.replace(/[^0-9]/g, "");

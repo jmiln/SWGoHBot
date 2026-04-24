@@ -8,6 +8,7 @@
         "moduleResolution": "NodeNext",
         "rewriteRelativeImportExtensions": true,
         "skipLibCheck": true,
+        "strict": false,
         "target": "ESNext",
         "verbatimModuleSyntax": true
     }

@@ -1,6 +1,5 @@
 import { env } from "../config/config.ts";
 import cache from "./cache.ts";
-import { myTime } from "./functions.ts";
 import logger from "./Logger.ts";
 
 /**
@@ -17,7 +16,7 @@ class DatabaseCleanup {
      */
     start(intervalHours = 24): void {
         if (this.cleanupInterval) {
-            logger.warn(`[${myTime()}] Database cleanup already scheduled`);
+            logger.warn("Database cleanup already scheduled");
             return;
         }
 
@@ -26,18 +25,18 @@ class DatabaseCleanup {
         // Run immediately on startup
         this.runCleanup().catch((err) => {
             const errorMsg = err instanceof Error ? err.message : String(err);
-            logger.error(`[${myTime()}] Initial database cleanup failed: ${errorMsg}`);
+            logger.error(`Initial database cleanup failed: ${errorMsg}`);
         });
 
         // Then schedule regular cleanups
         this.cleanupInterval = setInterval(() => {
             this.runCleanup().catch((err) => {
                 const errorMsg = err instanceof Error ? err.message : String(err);
-                logger.error(`[${myTime()}] Scheduled database cleanup failed: ${errorMsg}`);
+                logger.error(`Scheduled database cleanup failed: ${errorMsg}`);
             });
         }, intervalMs);
 
-        logger.log(`[${myTime()}] Database cleanup scheduled every ${intervalHours} hours`);
+        logger.log(`Database cleanup scheduled every ${intervalHours} hours`);
     }
 
     /**
@@ -47,7 +46,7 @@ class DatabaseCleanup {
         if (this.cleanupInterval) {
             clearInterval(this.cleanupInterval);
             this.cleanupInterval = null;
-            logger.log(`[${myTime()}] Database cleanup schedule stopped`);
+            logger.log("Database cleanup schedule stopped");
         }
     }
 
@@ -56,7 +55,7 @@ class DatabaseCleanup {
      */
     private async runCleanup(): Promise<void> {
         if (this.isRunning) {
-            logger.warn(`[${myTime()}] Database cleanup already in progress, skipping...`);
+            logger.warn("Database cleanup already in progress, skipping...");
             return;
         }
 
@@ -64,7 +63,7 @@ class DatabaseCleanup {
         const startTime = Date.now();
 
         try {
-            logger.log(`[${myTime()}] Starting database cleanup...`);
+            logger.log("Starting database cleanup...");
 
             const results = await Promise.allSettled([this.cleanOldPlayerStats(), this.cleanOldGuilds(), this.cleanEmptyRosters()]);
 
@@ -77,19 +76,19 @@ class DatabaseCleanup {
 
                 if (result.status === "fulfilled") {
                     successCount++;
-                    logger.log(`[${myTime()}] ${taskName}: ${result.value}`);
+                    logger.log(`${taskName}: ${result.value}`);
                 } else {
                     failCount++;
                     const errorMsg = result.reason instanceof Error ? result.reason.message : String(result.reason);
-                    logger.error(`[${myTime()}] ${taskName} failed: ${errorMsg}`);
+                    logger.error(`${taskName} failed: ${errorMsg}`);
                 }
             }
 
             const duration = ((Date.now() - startTime) / 1000).toFixed(2);
-            logger.log(`[${myTime()}] Database cleanup complete in ${duration}s (${successCount} succeeded, ${failCount} failed)`);
+            logger.log(`Database cleanup complete in ${duration}s (${successCount} succeeded, ${failCount} failed)`);
         } catch (err) {
             const errorMsg = err instanceof Error ? err.message : String(err);
-            logger.error(`[${myTime()}] Database cleanup encountered an error: ${errorMsg}`);
+            logger.error(`Database cleanup encountered an error: ${errorMsg}`);
             throw err;
         } finally {
             this.isRunning = false;

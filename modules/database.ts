@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb";
-import { myTime } from "./functions.ts";
 import logger from "./Logger.ts";
 
 /**
@@ -16,16 +15,16 @@ class Database {
      */
     async connect(url: string): Promise<void> {
         if (this.client) {
-            logger.warn(`[${myTime()}] MongoDB already connected`);
+            logger.warn("MongoDB already connected");
             return;
         }
 
         try {
             this.client = await MongoClient.connect(url);
-            logger.log(`[${myTime()}] Connected to MongoDB`);
+            logger.log("Connected to MongoDB");
         } catch (err) {
             const errorMsg = err instanceof Error ? err.message : String(err);
-            logger.error(`[${myTime()}] Failed to connect to MongoDB: ${errorMsg}`);
+            logger.error(`Failed to connect to MongoDB: ${errorMsg}`);
             throw err;
         }
     }
@@ -51,11 +50,11 @@ class Database {
 
         try {
             await this.client.close();
-            logger.log(`[${myTime()}] MongoDB connection closed`);
+            logger.log("MongoDB connection closed");
             this.client = null;
         } catch (err) {
             const errorMsg = err instanceof Error ? err.message : String(err);
-            logger.error(`[${myTime()}] Error closing MongoDB: ${errorMsg}`);
+            logger.error(`Error closing MongoDB: ${errorMsg}`);
             throw err;
         }
     }

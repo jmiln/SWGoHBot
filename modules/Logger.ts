@@ -1,8 +1,9 @@
+import { Writable } from "node:stream";
 import { EmbedBuilder } from "discord.js";
 import pino, { type Logger as PinoInstance } from "pino";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import { sendWebhook, toProperCase } from "./functions.ts";
+import { myTime, sendWebhook, toProperCase } from "./functions.ts";
 
 const MAX_THROTTLE_KEYS = 500;
 
@@ -12,6 +13,48 @@ interface LogConfig {
     color: number;
     pinoLevel: string;
 }
+
+// ANSI color codes for log level coloring
+const ANSI = {
+    reset: "\x1b[0m",
+    green: "\x1b[32m",
+    yellow: "\x1b[33m",
+    red: "\x1b[31m",
+    cyan: "\x1b[36m",
+    white: "\x1b[37m",
+} as const;
+
+// Map pino numeric levels to display names and colors
+const LEVEL_FORMAT: Record<number, { label: string; color: string }> = {
+    10: { label: "TRACE", color: ANSI.white },
+    20: { label: "DEBUG", color: ANSI.cyan },
+    30: { label: "INFO", color: ANSI.green },
+    40: { label: "WARN", color: ANSI.yellow },
+    50: { label: "ERROR", color: ANSI.red },
+    60: { label: "FATAL", color: ANSI.red },
+};
+
+function formatLogLine(raw: string): string {
+    try {
+        const obj = JSON.parse(raw);
+        const appName = obj.name ?? "SWGoHBot";
+        const level = LEVEL_FORMAT[obj.level] ?? { label: "UNKNOWN", color: ANSI.white };
+        const msg = obj.msg ?? "";
+        return `[${appName}] ${level.color}[${level.label}]${ANSI.reset} [${myTime()}] ${msg}\n`;
+    } catch {
+        return raw;
+    }
+}
+
+const prettyStream = new Writable({
+    write(chunk: Buffer, _encoding: string, callback: () => void) {
+        const lines = chunk.toString().split("\n").filter(Boolean);
+        for (const line of lines) {
+            process.stdout.write(formatLogLine(line));
+        }
+        callback();
+    },
+});
 
 class Logger {
     private shardId: number;
@@ -35,12 +78,15 @@ class Logger {
             warn: { color: constants.colors.yellow, pinoLevel: "warn" },
         };
 
-        this.pino = pino({
-            name: process.env.APP_NAME || "SWGoHBot",
-            level: this.logLevel,
-            base: { shardId: this.shardId > -1 ? this.shardId : undefined },
-            timestamp: pino.stdTimeFunctions.isoTime,
-        });
+        this.pino = pino(
+            {
+                name: process.env.APP_NAME || "SWGoHBot",
+                level: this.logLevel,
+                base: { shardId: this.shardId > -1 ? this.shardId : undefined },
+                timestamp: pino.stdTimeFunctions.isoTime,
+            },
+            prettyStream,
+        );
     }
 
     /**

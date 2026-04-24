@@ -51,7 +51,7 @@ export default class MyArena extends Command {
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) return super.error(interaction, "Something broke, please try again in a bit");
 
-        if (!player || !player.arena) {
+        if (!player?.arena) {
             return super.error(interaction, "Something broke when getting your info, please try again in a bit.");
         }
 

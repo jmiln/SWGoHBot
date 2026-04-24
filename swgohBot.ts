@@ -9,7 +9,7 @@ import cache from "./modules/cache.ts";
 import commandStats from "./modules/commandStats.ts";
 import database from "./modules/database.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
-import { myTime, reloadLanguages } from "./modules/functions.ts";
+import { reloadLanguages } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
 import swgohAPI from "./modules/swapi.ts";
@@ -45,7 +45,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
     if (isShuttingDown) return;
     isShuttingDown = true;
 
-    console.log(`[${myTime()}] Received ${signal}, starting graceful shutdown...`);
+    logger.log(`Received ${signal}, starting graceful shutdown...`);
 
     const shutdown = async () => {
         // Stop accepting new interactions
@@ -62,7 +62,7 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
         // Destroy Discord client connection
         await client.destroy();
-        console.log(`[${myTime()}] Discord client destroyed`);
+        logger.log("Discord client destroyed");
 
         // Close MongoDB connection
         if (database.isConnected()) {
@@ -74,11 +74,11 @@ async function gracefulShutdown(signal: string): Promise<void> {
 
     try {
         await Promise.race([shutdown(), timeout]);
-        console.log(`[${myTime()}] Graceful shutdown complete`);
+        logger.log("Graceful shutdown complete");
         process.exit(0);
     } catch (err) {
         const errorMsg = err instanceof Error ? err.message : String(err);
-        console.error(`[${myTime()}] Error during shutdown: ${errorMsg}`);
+        logger.error(`Error during shutdown: ${errorMsg}`);
         process.exit(1);
     }
 }
@@ -87,7 +87,7 @@ const init = async () => {
     try {
         await database.connect(env.MONGODB_URL);
     } catch (err) {
-        console.error(`[${myTime()}] Failed to connect to MongoDB: ${err instanceof Error ? err.message : String(err)}`);
+        logger.error(`Failed to connect to MongoDB: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);
     }
 
@@ -95,7 +95,7 @@ const init = async () => {
     try {
         await reloadLanguages();
     } catch (err) {
-        console.error(`[${myTime()}] Failed to load languages: ${err instanceof Error ? err.message : String(err)}`);
+        logger.error(`Failed to load languages: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);
     }
 
@@ -108,10 +108,10 @@ const init = async () => {
         try {
             swgohAPI.init();
         } catch (err) {
-            console.error(`[${myTime()}] Failed to initialize swgohAPI: ${err instanceof Error ? err.message : String(err)}`);
+            logger.error(`Failed to initialize swgohAPI: ${err instanceof Error ? err.message : String(err)}`);
         }
     } else {
-        console.error(`[${myTime()}] Failed to load swapi: No swapiConfig found`);
+        logger.error("Failed to load swapi: No swapiConfig found");
     }
 
     // Initialize patreon functions
@@ -129,7 +129,7 @@ const init = async () => {
 
     process.on("uncaughtException", (err) => {
         const errorMsg = err.stack?.replace(CWD_REGEX, ".") || String(err);
-        console.error(`[${myTime()}] Uncaught Exception: ${errorMsg}`);
+        logger.error(`Uncaught Exception: ${errorMsg}`);
 
         // If it's that error, don't bother showing it again
         if (!errorMsg.includes("RSV2 and RSV3 must be clear")) {
@@ -162,17 +162,17 @@ const init = async () => {
         if (errorMsg.includes("ShardClientUtil._handleMessage") && errorMsg.includes("client is not defined")) {
             logger.error("The following error probably has to do with a 'client' inside a broadcastEval");
         }
-        console.error(`[${myTime()}] Uncaught Promise Error: ${errorMsg}`);
+        logger.error(`Uncaught Promise Error: ${errorMsg}`);
         logErrorToChannel(errorMsg);
     });
 };
 
 init()
     .then(() => {
-        console.log(`[${myTime()}] Bot initialization complete`);
+        logger.log("Bot initialization complete");
         return client.login();
     })
     .catch((err) => {
-        console.error(`[${myTime()}] Failed to initialize bot: ${err instanceof Error ? err.message : String(err)}`);
+        logger.error(`Failed to initialize bot: ${err instanceof Error ? err.message : String(err)}`);
         process.exit(1);
     });

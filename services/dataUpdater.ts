@@ -9,7 +9,7 @@ import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import cache from "../modules/cache.ts";
 import databaseCleanup from "../modules/databaseCleanup.ts";
-import { myTime, readJSON, toProperCase } from "../modules/functions.ts";
+import { readJSON, toProperCase } from "../modules/functions.ts";
 // Grab the functions used for checking guilds' supporter arrays against Patreon supporters' info
 import { clearSupporterInfo, ensureBonusServerSet, ensureGuildSupporter } from "../modules/guildConfig/patreonSettings.ts";
 import logger from "../modules/Logger.ts";
@@ -472,7 +472,7 @@ async function getGuildIds(comlinkStub: ComlinkStub) {
 
         return guildLeaderboardRes.leaderboard[0].guild.map((guild) => guild.id);
     } catch (error) {
-        logger.error(`[${myTime()}] [dataUpdater/getGuildIds] Failed to fetch guild leaderboard:`, error);
+        logger.error("[dataUpdater/getGuildIds] Failed to fetch guild leaderboard:", error);
         throw error; // Re-throw to let caller handle
     }
 }
@@ -488,7 +488,7 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
 
             // Validate response structure
             if (!guild?.member) {
-                logger.warn(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Invalid guild data for ${guildId}`);
+                logger.warn(`[dataUpdater/getGuildPlayerIds] Invalid guild data for ${guildId}`);
                 failedGuilds++;
                 return;
             }
@@ -496,13 +496,13 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
             const playerIds = guild.member.map((player) => player.playerId);
             playerIdArr.push(...playerIds);
         } catch (error) {
-            logger.error(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Failed to fetch guild ${guildId}:`, error);
+            logger.error(`[dataUpdater/getGuildPlayerIds] Failed to fetch guild ${guildId}:`, error);
             failedGuilds++;
         }
     });
 
     if (failedGuilds > 0) {
-        logger.warn(`[${myTime()}] [dataUpdater/getGuildPlayerIds] Failed to fetch ${failedGuilds}/${guildIds.length} guilds`);
+        logger.warn(`[dataUpdater/getGuildPlayerIds] Failed to fetch ${failedGuilds}/${guildIds.length} guilds`);
     }
 
     return playerIdArr;
@@ -528,14 +528,12 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
                 const strippedUnits = await piscina.run({ playerId, modMap });
                 rosterArr.push(...(strippedUnits || []));
             } catch (err) {
-                logger.error(`[${myTime()}] [dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
+                logger.error(`[dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
             }
         });
 
         if (playerCount !== playerIds.length) {
-            logger.error(
-                `[${myTime()}] [dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`,
-            );
+            logger.error(`[dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
         }
     } finally {
         // Always close, even if errors occurred
@@ -701,7 +699,9 @@ async function getPatreonTiers(): Promise<{ id: string; amount_cents: number; ti
         },
     })
         .then((res) => res.json())
-        .catch((err) => console.error(`[${myTime()}] [dataUpdater/getPatreonTiers] ${myTime()}Error fetching Patreon tiers`, err));
+        .catch((err) =>
+            logger.error(`[dataUpdater/getPatreonTiers] Error fetching Patreon tiers: ${err instanceof Error ? err.message : String(err)}`),
+        );
 
     return included.map(({ id, attributes }) => {
         return {
@@ -725,7 +725,7 @@ async function applyActivePatronBenefits(discordID: string, amountCents: number)
 
     if (userRes?.error || guildRes?.error) {
         logger.error(
-            `[${myTime()}] [dataUpdater/updatePatrons] Issue adding info for patron ${discordID}\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`,
+            `[dataUpdater/updatePatrons] Issue adding info for patron ${discordID}\n${userRes?.error || "N/A"} \nOr guild:\n${guildRes?.error || "N/A"}`,
         );
     }
 }
@@ -766,9 +766,7 @@ async function updatePatrons() {
         // Check response status
         if (!response.ok) {
             const errorBody = await response.text().catch(() => "Could not read error body");
-            logger.error(
-                `[${myTime()}] [dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}\nBody: ${errorBody}`,
-            );
+            logger.error(`[dataUpdater/updatePatrons] Patreon API returned ${response.status}: ${response.statusText}\nBody: ${errorBody}`);
             return;
         }
 
@@ -777,7 +775,7 @@ async function updatePatrons() {
         try {
             jsonData = await response.json();
         } catch (parseError) {
-            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Failed to parse Patreon response as JSON:`, parseError);
+            logger.error("[dataUpdater/updatePatrons] Failed to parse Patreon response as JSON:", parseError);
             return;
         }
 
@@ -788,7 +786,7 @@ async function updatePatrons() {
             !("data" in jsonData) ||
             !Array.isArray((jsonData as { data: unknown }).data)
         ) {
-            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Invalid response structure - missing data array`);
+            logger.error("[dataUpdater/updatePatrons] Invalid response structure - missing data array");
             return;
         }
 
@@ -796,7 +794,7 @@ async function updatePatrons() {
 
         // Validate included array
         if (!Array.isArray(included)) {
-            logger.warn(`[${myTime()}] [dataUpdater/updatePatrons] Invalid included field, using empty array`);
+            logger.warn("[dataUpdater/updatePatrons] Invalid included field, using empty array");
         }
 
         const members = data.filter((item: PatreonMember) => item.type === "member" && item.attributes.patron_status === "active_patron");
@@ -868,7 +866,7 @@ async function updatePatrons() {
 
                 // If it somehow got here / there are issues, log em
                 logger.error(
-                    `[${myTime()}] [dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${
+                    `[dataUpdater clearSupporterInfo] Issue clearing info from user\n${userRes?.error || "N/A"} \nOr guild:\n${
                         guildRes?.error || "N/A"
                     }`,
                 );
@@ -887,10 +885,10 @@ async function updatePatrons() {
         const errorStack = e instanceof Error ? e.stack : "No stack trace available";
 
         if (e.name === "AbortError" || e.name === "TimeoutError") {
-            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds`);
+            logger.error("[dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds");
         } else {
             // Log both the message and the stack for full visibility
-            logger.error(`[${myTime()}] [dataUpdater/updatePatrons] Error getting patrons: ${errorMessage}\nStack: ${errorStack}`);
+            logger.error(`[dataUpdater/updatePatrons] Error getting patrons: ${errorMessage}\nStack: ${errorStack}`);
         }
     }
 }
@@ -1243,7 +1241,7 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string) 
             } catch (error) {
                 // Ignore ENOENT (file already deleted), log other errors
                 if (error.code !== "ENOENT") {
-                    logger.warn(`[${myTime()}] [getMostRecentGameData] Failed to delete old file ${f}: ${error}`);
+                    logger.warn(`[getMostRecentGameData] Failed to delete old file ${f}: ${error}`);
                 }
             }
         }),
@@ -1792,7 +1790,7 @@ async function unitsToUnitFiles(
         } else if (unit.combatType === SHIP_COMBAT_TYPE) {
             shipsOut.push(unitObj);
         } else {
-            logger.error({ message: `[${myTime()}] Bad combatType for`, unit: unitObj });
+            logger.error({ message: "Bad combatType for", unit: unitObj });
         }
     }
 
@@ -1816,7 +1814,7 @@ function getSide(factions: { id: string; descKey: string }[]): { side: UnitSide;
         }
     }
     // Fallback for units without alignment - shouldn't happen but prevents undefined
-    logger.warn(`[${myTime()}] Unit has no alignment faction, defaulting to neutral`);
+    logger.warn("Unit has no alignment faction, defaulting to neutral");
     return {
         side: "neutral" as UnitSide,
         factions: factions.map((fact) => fact.descKey),
@@ -1890,7 +1888,7 @@ function unitsToCharacterDB(unitsIn: ProcessedUnit[]) {
         unit.creationRecipeReference = undefined;
 
         if (!unit.categoryIdList) {
-            logger.error(`[${myTime()}] Missing baseCharacter abilities for ${unit.baseId}`);
+            logger.error(`Missing baseCharacter abilities for ${unit.baseId}`);
             continue;
         }
         for (const category of unit.categoryIdList) {
@@ -1963,11 +1961,11 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
 
     try {
         // If we don't have the most recent version locally, grab a new copy of the gameData from CG
-        const localeData: Record<string, string> = await withTimeout(
+        const localeData = (await withTimeout(
             comlinkStub.getLocalizationBundle(bundleVersion, true),
             60000,
             "getLocalizationBundle",
-        );
+        )) as Record<string, string>;
 
         const localeOut = {
             eng_us: null,
@@ -2014,7 +2012,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
                 } catch (error) {
                     // Ignore ENOENT (file already deleted), log other errors
                     if (error.code !== "ENOENT") {
-                        logger.warn(`[${myTime()}] [getLocalizationData] Failed to delete old file ${f}: ${error}`);
+                        logger.warn(`[getLocalizationData] Failed to delete old file ${f}: ${error}`);
                     }
                 }
             }),
@@ -2198,7 +2196,7 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
         try {
             checklist = await readJSON<Record<string, [string, string][]>>(UNIT_CHECKLIST_FILE_PATH);
         } catch (error) {
-            logger.warn(`[${myTime()}] [updateUnitChecklist] Could not read checklist (${error.code || error.message}), creating new one`);
+            logger.warn(`[updateUnitChecklist] Could not read checklist (${error.code || error.message}), creating new one`);
             checklist = {
                 "Galactic Legends": [],
                 "Light Side": [],
@@ -2221,7 +2219,7 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
                 // Create a shortened name (use first word or abbreviation)
                 const shortName = gl.name || gl.uniqueName;
                 checklist["Galactic Legends"].push([gl.uniqueName, shortName]);
-                logger.log(`[${myTime()}] [updateUnitChecklist] Added new Galactic Legend: ${gl.name} (${gl.uniqueName})`);
+                logger.log(`[updateUnitChecklist] Added new Galactic Legend: ${gl.name} (${gl.uniqueName})`);
                 hasChanges = true;
             }
 
@@ -2242,7 +2240,7 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
                 // Use the ship name without "Capital Ship" prefix if present
                 const shortName = ship.name.replace(/^Capital\s+/i, "").trim() || ship.uniqueName.replace(/^CAPITAL/, "");
                 checklist["Capital Ships"].push([ship.uniqueName, shortName]);
-                logger.log(`[${myTime()}] [updateUnitChecklist] Added new Capital Ship: ${ship.name} (${ship.uniqueName})`);
+                logger.log(`[updateUnitChecklist] Added new Capital Ship: ${ship.name} (${ship.uniqueName})`);
                 hasChanges = true;
             }
 
@@ -2254,7 +2252,7 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
         if (hasChanges) {
             await saveFile(UNIT_CHECKLIST_FILE_PATH, checklist);
             logger.log(
-                `[${myTime()}] [updateUnitChecklist] Updated unit checklist with ${newGLs.length} new GL(s) and ${newCapitalShips.length} new Capital Ship(s)`,
+                `[updateUnitChecklist] Updated unit checklist with ${newGLs.length} new GL(s) and ${newCapitalShips.length} new Capital Ship(s)`,
             );
         } else {
             debugLog("[updateUnitChecklist] No new Galactic Legends or Capital Ships detected");
@@ -2286,7 +2284,7 @@ function debugLog(str: string | string[]) {
 }
 
 function logError(context: string, message: string, error?: unknown) {
-    logger.error(`[${myTime()}] [${context}] ${message}${error ? `: ${error}` : ""}`);
+    logger.error(`[${context}] ${message}${error ? `: ${error}` : ""}`);
 }
 
 function getCategoryDescription(category: string): string {
@@ -2390,7 +2388,7 @@ interface CommandDocEntry {
 
 async function exportCommandDocs() {
     try {
-        logger.log(`[${myTime()}] [exportCommandDocs] Starting command documentation export`);
+        logger.log("[exportCommandDocs] Starting command documentation export");
 
         // Load commands directly from slash directory since slashHandler may not be initialized
         const slashDir = path.join(import.meta.dirname, "..", "slash");
@@ -2456,9 +2454,7 @@ async function exportCommandDocs() {
 
         await saveFile(HELP_JSON_PATH, output);
 
-        logger.log(
-            `[${myTime()}] [exportCommandDocs] Exported ${totalCommands} commands across ${Object.keys(categoryMap).length} categories`,
-        );
+        logger.log(`[exportCommandDocs] Exported ${totalCommands} commands across ${Object.keys(categoryMap).length} categories`);
     } catch (error) {
         logError("dataUpdater/exportCommandDocs", "Error exporting command docs", error);
         // Don't throw - this shouldn't block other updates

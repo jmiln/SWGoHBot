@@ -63,7 +63,7 @@ class EventFuncs {
                             channel = targetGuild.channels.cache.find((c) => c.name === announceChan);
                         }
 
-                        if (!channel || !channel.isTextBased() || !("send" in channel)) return;
+                        if (!channel?.isTextBased() || !("send" in channel)) return;
 
                         const botMember = targetGuild.members.me;
                         if (!botMember) return;
