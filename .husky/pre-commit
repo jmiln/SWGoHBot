@@ -13,6 +13,12 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+if command -v tsgo > /dev/null 2>&1; then
+    TSC_CMD="tsgo"
+else
+    TSC_CMD="tsc"
+fi
+
 FAILED=0
 
 print_success() {
@@ -46,7 +52,7 @@ fi
 
 # 1. Biome check (lint + format)
 print_section "Biome Check"
-if npx @biomejs/biome check --no-errors-on-unmatched $STAGED_TS_FILES; then
+if npx @biomejs/biome check --no-errors-on-unmatched "$STAGED_TS_FILES"; then
     print_success "Biome check passed"
 else
     print_error "Biome check failed"
@@ -57,7 +63,7 @@ fi
 
 # 2. TypeScript Type Check
 print_section "TypeScript Type Check"
-if tsc --noEmit; then
+if $TSC_CMD --noEmit; then
     print_success "Type check passed"
 else
     print_error "Type check failed"
