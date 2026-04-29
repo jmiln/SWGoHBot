@@ -846,7 +846,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Offense",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Offense",
             "circle": "Health",
@@ -1620,7 +1620,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
@@ -1875,9 +1875,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Defense",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Defense",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -2137,9 +2137,9 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
-                "Defense x2"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_trooperclone_fives"
@@ -2577,7 +2577,7 @@
             "circle": "Protection",
             "cross": "Potency",
             "sets": [
-                "Offense x4",
+                "Crit. Damage x4",
                 "Potency x2"
             ]
         },
@@ -3323,7 +3323,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -3410,8 +3410,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
+                "Health x2",
+                "Health x2",
                 "Defense x2"
             ]
         },
@@ -3705,7 +3705,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3910,7 +3910,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Offense",
             "circle": "Protection",
             "cross": "Potency",
             "sets": [
@@ -4579,9 +4579,9 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Critical Avoidance",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
@@ -4645,9 +4645,8 @@
             "circle": "Protection",
             "cross": "Tenacity",
             "sets": [
-                "Tenacity x2",
-                "Tenacity x2",
-                "Tenacity x2"
+                "Offense x4",
+                "Potency x2"
             ]
         },
         "avatarName": "charui_imperial_super_commando"
@@ -4936,7 +4935,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5773,7 +5772,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
@@ -7378,7 +7377,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -9189,7 +9188,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -9221,13 +9220,12 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Defense",
             "circle": "Protection",
-            "cross": "Health",
+            "cross": "Defense",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Defense x2"
+                "Defense x2",
+                "Speed x4"
             ]
         },
         "crew": []

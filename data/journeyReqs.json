@@ -4032,5 +4032,41 @@
                 "ship": true
             }
         ]
+    },
+    "MAULHATEFUELED": {
+        "guideId": "WEB_OF_HATE_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "STORMTROOPERLUKE",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "IG90",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "YODACHEWBACCA",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "ASAJJDARKDISCIPLE",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "INQUISITORBARRISS",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "VADERDUELSEND",
+                "type": "RELIC",
+                "tier": 6
+            }
+        ]
     }
 }

@@ -2368,6 +2368,11 @@
         "defId": "INQUISITORBARRISS",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "level": "4-C",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_INQUISITORBARRISS_NAME",
                 "name": "From Light To Shadow Special Marquee Event"
