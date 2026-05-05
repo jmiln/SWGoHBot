@@ -79,6 +79,11 @@
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "3-B",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -478,9 +483,9 @@
                 "name": "Secrets And Shadows Assault Battle"
             },
             {
-                "type": "Hard Modes (L)",
-                "level": "9-A",
-                "locId": "HARD_LIGHT"
+                "type": "Cantina",
+                "level": "4-C",
+                "locId": "CANTINA"
             }
         ]
     },
@@ -882,17 +887,22 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
-                "name": "Secrets And Shadows Assault Battle"
-            },
-            {
-                "type": "Assault Battle Event",
                 "locId": "EVENT_ASSAULT_EMPIRE_NAME",
                 "name": "Empire Assault"
             },
             {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_DARKSIDE_NAME",
+                "name": "Secrets And Shadows Assault Battle"
+            },
+            {
                 "type": "Fleet Arena Store",
                 "cost": "400 Fleet Arena Tokens/4"
+            },
+            {
+                "type": "Hard Modes (Fleet)",
+                "level": "5-E",
+                "locId": "HARD_FLEET"
             }
         ]
     },
@@ -912,9 +922,9 @@
         "defId": "TIEDEFENDER",
         "locations": [
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "3-B",
-                "locId": "HARD_FLEET"
+                "type": "Hard Modes (L)",
+                "level": "4-D",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -1001,7 +1011,7 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "4-D",
+                "level": "3-C",
                 "locId": "HARD_LIGHT"
             },
             {

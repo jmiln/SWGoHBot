@@ -1239,6 +1239,25 @@
         "avatarName": "charui_canderous"
     },
     {
+        "name": "Captain Carson Teva",
+        "uniqueName": "CARSONTEVA",
+        "aliases": [
+            "Captain Carson Teva"
+        ],
+        "avatarName": "charui_carsonteva",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_carsonteva.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_CONSTABLE_DESC",
+            "CATEGORY_NEWREPUBLIC_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_ROLELEADER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Captain Drogan",
         "uniqueName": "CAPTAINDROGAN",
         "aliases": [
@@ -2257,7 +2276,8 @@
             "cross": "Protection",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ]
         }
     },
@@ -2823,7 +2843,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
@@ -3323,7 +3343,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -3410,8 +3430,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Health x2",
-                "Health x2",
+                "Defense x2",
+                "Defense x2",
                 "Defense x2"
             ]
         },
@@ -7132,6 +7152,25 @@
         "avatarName": "charui_astromech_r2d2"
     },
     {
+        "name": "R5-D4",
+        "uniqueName": "R5D4",
+        "aliases": [
+            "R5-D4"
+        ],
+        "avatarName": "charui_r5d4",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_r5d4.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_NEWREPUBLIC_DESC",
+            "CATEGORY_REBELFIGHTER_DESC",
+            "CATEGORY_REBELS_DESC",
+            "CATEGORY_ROLESUPPORT_DESC",
+            "CATEGORY_SPECIESDROID_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Range Trooper",
         "uniqueName": "RANGETROOPER",
         "aliases": [
@@ -7321,8 +7360,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Offense x4",
+                "Potency x2"
             ]
         },
         "avatarName": "charui_resistancetrooper"
@@ -8091,6 +8130,25 @@
         "avatarName": "charui_troopersnow"
     },
     {
+        "name": "Snowtrooper Commander",
+        "uniqueName": "REMNANTSNOWCOMMANDER",
+        "aliases": [
+            "Snowtrooper Commander"
+        ],
+        "avatarName": "charui_remnantsnowcommander",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_remnantsnowcommander.png",
+        "side": "dark",
+        "factions": [
+            "CATEGORY_EMPIRE_DESC",
+            "CATEGORY_IMPERIALREMNANT_DESC",
+            "CATEGORY_IMPERIALTROOPER_DESC",
+            "CATEGORY_ROLELEADER_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "STAP",
         "uniqueName": "STAP",
         "aliases": [
@@ -8775,7 +8833,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -9188,7 +9246,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Protection",
+            "arrow": "Speed",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
@@ -9344,6 +9402,22 @@
             ]
         },
         "avatarName": "charui_zamwesell"
+    },
+    {
+        "name": "Zeb Orrelios (New Republic Pilot)",
+        "uniqueName": "RANGERZEB",
+        "aliases": [
+            "Zeb Orrelios (New Republic Pilot)"
+        ],
+        "avatarName": "charui_rangerzeb",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rangerzeb.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_NEWREPUBLIC_DESC",
+            "CATEGORY_ROLETANK_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Zorii Bliss",

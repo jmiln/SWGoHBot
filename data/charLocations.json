@@ -360,6 +360,11 @@
                 "name": "Rebel Roundup Assault Battle"
             },
             {
+                "type": "Cantina",
+                "level": "5-F",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Hard Modes (L)",
                 "level": "5-F",
                 "locId": "HARD_LIGHT"
@@ -516,9 +521,9 @@
         "defId": "BOSSK",
         "locations": [
             {
-                "type": "Hard Modes (D)",
-                "level": "9-B",
-                "locId": "HARD_DARK"
+                "type": "Hard Modes (L)",
+                "level": "8-D",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -559,9 +564,9 @@
         "defId": "BT1",
         "locations": [
             {
-                "type": "Hard Modes (L)",
-                "level": "2-C",
-                "locId": "HARD_LIGHT"
+                "type": "Hard Modes (D)",
+                "level": "2-A",
+                "locId": "HARD_DARK"
             },
             {
                 "type": "Marquee",
@@ -588,6 +593,11 @@
             {
                 "type": "Galactic War Store",
                 "cost": "400 Galactic War Tokens/10"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "8-B",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -617,6 +627,11 @@
                 "locId": "CANTINA"
             }
         ]
+    },
+    {
+        "name": "Captain Carson Teva",
+        "defId": "CARSONTEVA",
+        "locations": []
     },
     {
         "name": "Captain Drogan",
@@ -1291,6 +1306,10 @@
         "defId": "VADERDUELSEND",
         "locations": [
             {
+                "type": "Hard Modes (D)",
+                "locId": "HARD_DARK"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_VADERDUELSEND_NAME",
                 "name": "What Remains Special Marquee Event"
@@ -1444,7 +1463,6 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "8-B",
                 "locId": "HARD_LIGHT"
             }
         ]
@@ -1481,7 +1499,7 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "6-E",
+                "level": "2-C",
                 "locId": "HARD_LIGHT"
             },
             {
@@ -1770,6 +1788,10 @@
                 "type": "Assault Battle Event",
                 "locId": "EVENT_ASSAULT_SEPARATIST_NAME",
                 "name": "Ground War Assault Battles"
+            },
+            {
+                "type": "Cantina",
+                "locId": "CANTINA"
             },
             {
                 "type": "Fleet Arena Store",
@@ -2083,6 +2105,10 @@
                 "name": "Fanatical Devotion Assault Battles"
             },
             {
+                "type": "Cantina",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Guild Activity Store",
                 "cost": "1250 Mk II Raid Tokens/5"
             },
@@ -2288,6 +2314,11 @@
         "defId": "IG88",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "level": "6-E",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Squad Arena Store",
                 "cost": "400 Squad Arena Tokens/10"
             }
@@ -2340,6 +2371,10 @@
             {
                 "type": "Guild Events Store",
                 "cost": "900 Mk II Guild Event Tokens/5\n1800 Mk II Guild Event Tokens/10"
+            },
+            {
+                "type": "Hard Modes (D)",
+                "locId": "HARD_DARK"
             }
         ]
     },
@@ -2396,7 +2431,6 @@
         "locations": [
             {
                 "type": "Hard Modes (L)",
-                "level": "8-D",
                 "locId": "HARD_LIGHT"
             }
         ]
@@ -3568,6 +3602,17 @@
         ]
     },
     {
+        "name": "R5-D4",
+        "defId": "R5D4",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_R5D4_NAME",
+                "name": "Red, Let's Go! Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Range Trooper",
         "defId": "RANGETROOPER",
         "locations": [
@@ -3615,6 +3660,10 @@
             {
                 "type": "Guild Events Store",
                 "cost": "900 Mk II Guild Event Tokens/5\n1800 Mk II Guild Event Tokens/10"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -4067,6 +4116,17 @@
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/10"
+            }
+        ]
+    },
+    {
+        "name": "Snowtrooper Commander",
+        "defId": "REMNANTSNOWCOMMANDER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_REMNANTSNOWCOMMANDER_NAME",
+                "name": "Imperial Vanguard Special Marquee Event"
             }
         ]
     },
@@ -4552,6 +4612,10 @@
         "defId": "WAMPA",
         "locations": [
             {
+                "type": "Cantina",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Galactic Bounty Event",
                 "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
                 "name": "Galactic Bounties Special Event"
@@ -4700,6 +4764,11 @@
                 "cost": "450 Guild Tokens/10\n200 Mk I Raid Tokens/10"
             }
         ]
+    },
+    {
+        "name": "Zeb Orrelios (New Republic Pilot)",
+        "defId": "RANGERZEB",
+        "locations": []
     },
     {
         "name": "Zorii Bliss",
