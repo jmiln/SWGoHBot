@@ -180,19 +180,6 @@ function hasRole(interaction: ChatInputCommandInteraction, roleId: string): bool
     );
 }
 
-// Default formatting for current US/Pacific time
-// TODO: Make this work for other timezones / put the timezone into the config
-export function myTime(): string {
-    return Intl.DateTimeFormat("en", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        timeZone: "America/Los_Angeles",
-    }).format(new Date());
-}
-
 // This finds any character that matches the search, and returns them in an array
 export function findChar(searchName: string, unitList: BotUnit[], isShip = false): BotUnit[] {
     if (!searchName?.length || typeof searchName !== "string") {

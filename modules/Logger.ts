@@ -3,7 +3,7 @@ import { EmbedBuilder } from "discord.js";
 import pino, { type Logger as PinoInstance } from "pino";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import { myTime, sendWebhook, toProperCase } from "./functions.ts";
+import { sendWebhook, toProperCase } from "./functions.ts";
 
 const MAX_THROTTLE_KEYS = 500;
 
@@ -40,7 +40,15 @@ function formatLogLine(raw: string): string {
         const appName = obj.name ?? "SWGoHBot";
         const level = LEVEL_FORMAT[obj.level] ?? { label: "UNKNOWN", color: ANSI.white };
         const msg = obj.msg ?? "";
-        return `[${appName}] ${level.color}[${level.label}]${ANSI.reset} [${myTime()}] ${msg}\n`;
+        const timestamp = Intl.DateTimeFormat("en", {
+            day: "numeric",
+            month: "numeric",
+            year: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            timeZone: env.LOG_TIMEZONE,
+        }).format(new Date());
+        return `[${appName}] ${level.color}[${level.label}]${ANSI.reset} [${timestamp}] ${msg}\n`;
     } catch {
         return raw;
     }

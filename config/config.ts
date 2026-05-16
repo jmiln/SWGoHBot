@@ -65,6 +65,20 @@ const envSchema = z.object({
     DEBUG_LOGS: z.coerce.boolean().default(false),
     LOG_TO_CHANNEL: z.coerce.boolean().default(false),
     LOG_CHANNEL_ID: z.string().optional().default(""),
+    LOG_TIMEZONE: z
+        .string()
+        .default("America/Los_Angeles")
+        .refine(
+            (tz) => {
+                try {
+                    Intl.DateTimeFormat(undefined, { timeZone: tz });
+                    return true;
+                } catch {
+                    return false;
+                }
+            },
+            { message: "LOG_TIMEZONE must be a valid IANA timezone (e.g. America/Los_Angeles)" },
+        ),
 
     // Premium Configuration
     PREMIUM: z.coerce.boolean().default(false),
