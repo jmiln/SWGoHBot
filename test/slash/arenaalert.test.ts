@@ -12,7 +12,7 @@ describe("ArenaAlert", () => {
             arenaAlert: {
                 enableRankDMs: "off",
                 arena: "char",
-                payoutResult: "off",
+                enablePayoutResult: false,
                 payoutWarning: 0,
             },
         } as UserConfig;
@@ -57,11 +57,11 @@ describe("ArenaAlert", () => {
                 payoutResult: "on",
             });
 
-            assert.strictEqual(result.updatedUser.arenaAlert.payoutResult, "on");
+            assert.strictEqual(result.updatedUser.arenaAlert.enablePayoutResult, true);
             assert.strictEqual(result.changelog.length, 1);
             assert.ok(result.changelog[0].includes("Payout Result"));
-            assert.ok(result.changelog[0].includes("off"));
-            assert.ok(result.changelog[0].includes("on"));
+            assert.ok(result.changelog[0].includes("OFF"));
+            assert.ok(result.changelog[0].includes("ON"));
         });
 
         it("should update payout warning with valid value", () => {
@@ -77,34 +77,6 @@ describe("ArenaAlert", () => {
             assert.ok(result.changelog[0].includes("Payout Warning"));
             assert.ok(result.changelog[0].includes("0"));
             assert.ok(result.changelog[0].includes("30"));
-        });
-
-        it("should reject payout warning value that is too low", () => {
-            const command = new ArenaAlert();
-            const user = createBaseUser();
-
-            const result = (command as any).computeArenaAlertChanges(user, {
-                payoutWarning: -5,
-            });
-
-            assert.strictEqual(result.updatedUser.arenaAlert.payoutWarning, 0);
-            assert.strictEqual(result.changelog.length, 1);
-            assert.ok(result.changelog[0].includes("Cannot change"));
-            assert.ok(result.changelog[0].includes("-5"));
-        });
-
-        it("should reject payout warning value that is too high", () => {
-            const command = new ArenaAlert();
-            const user = createBaseUser();
-
-            const result = (command as any).computeArenaAlertChanges(user, {
-                payoutWarning: 1500,
-            });
-
-            assert.strictEqual(result.updatedUser.arenaAlert.payoutWarning, 0);
-            assert.strictEqual(result.changelog.length, 1);
-            assert.ok(result.changelog[0].includes("Cannot change"));
-            assert.ok(result.changelog[0].includes("1500"));
         });
 
         it("should accept maximum valid payout warning value (1439)", () => {
@@ -134,7 +106,7 @@ describe("ArenaAlert", () => {
 
             assert.strictEqual(result.updatedUser.arenaAlert.enableRankDMs, "primary");
             assert.strictEqual(result.updatedUser.arenaAlert.arena, "both");
-            assert.strictEqual(result.updatedUser.arenaAlert.payoutResult, "on");
+            assert.strictEqual(result.updatedUser.arenaAlert.enablePayoutResult, true);
             assert.strictEqual(result.updatedUser.arenaAlert.payoutWarning, 60);
             assert.strictEqual(result.changelog.length, 4);
         });
@@ -241,7 +213,7 @@ describe("ArenaAlert", () => {
             const payoutWarningOpt = command.commandData.options.find((o) => o.name === "payout_warning");
             assert.ok(payoutWarningOpt);
             assert.strictEqual(payoutWarningOpt.minValue, 0);
-            assert.strictEqual(payoutWarningOpt.maxValue, 1440);
+            assert.strictEqual(payoutWarningOpt.maxValue, 1439);
         });
     });
 });

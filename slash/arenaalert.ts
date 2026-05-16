@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
+import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";
 
@@ -70,7 +71,7 @@ export default class ArenaAlert extends Command {
                 type: ApplicationCommandOptionType.Integer,
                 description: "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
                 minValue: 0,
-                maxValue: 1440,
+                maxValue: 1439,
             },
         ],
     };
@@ -85,12 +86,7 @@ export default class ArenaAlert extends Command {
         const payoutResult = interaction.options.getString("payout_result");
         const payoutWarning = interaction.options.getInteger("payout_warning");
 
-        // Grab the user's info
         const userID = interaction.user.id;
-        const user = (await cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: userID })) as UserConfig;
-        if (!user) {
-            return super.error(interaction, "I couldn't find your data. Please try again.");
-        }
 
         // Make sure the user is a patreon
         const pat = await patreonFuncs.getPatronUser(userID);
@@ -98,7 +94,13 @@ export default class ArenaAlert extends Command {
             return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
         }
 
-        if (!enabledms && !arena && !payoutResult && !payoutWarning && payoutWarning !== 0) {
+        // Grab the user's info
+        const user = (await cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: userID })) as UserConfig;
+        if (!user) {
+            return super.error(interaction, "I couldn't find your data. Please try again.");
+        }
+
+        if (!enabledms && !arena && !payoutResult && payoutWarning === null) {
             // If none of the arguments are used, just view
             return interaction.reply({
                 embeds: [
@@ -126,10 +128,14 @@ export default class ArenaAlert extends Command {
             payoutWarning,
         });
 
-        // TODO Get a res from this, so it can be replied to more accurately
-        await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userID }, updatedUser);
-        if (!changelog?.length) {
+        if (!changelog.length) {
             return super.success(interaction, "It looks like nothing was updated.");
+        }
+        try {
+            await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userID }, updatedUser);
+        } catch (e) {
+            logger.error(`[arenaalert] Failed to save settings for user ${userID}: ${e}`);
+            return super.error(interaction, "Failed to save your settings. Please try again.");
         }
         return super.success(interaction, changelog.join("\n"));
     }
@@ -161,19 +167,20 @@ export default class ArenaAlert extends Command {
         }
 
         // Set payout result DM preference (On, Off)
-        if (payoutResult && updatedUser.arenaAlert.payoutResult !== payoutResult) {
-            changelog.push(`Changed Payout Result from ${updatedUser.arenaAlert.payoutResult} to ${payoutResult}`);
-            updatedUser.arenaAlert.payoutResult = payoutResult;
+        if (payoutResult) {
+            const enablePayoutResult = payoutResult === "on";
+            if (updatedUser.arenaAlert.enablePayoutResult !== enablePayoutResult) {
+                changelog.push(
+                    `Changed Payout Result from ${updatedUser.arenaAlert.enablePayoutResult ? "ON" : "OFF"} to ${enablePayoutResult ? "ON" : "OFF"}`,
+                );
+                updatedUser.arenaAlert.enablePayoutResult = enablePayoutResult;
+            }
         }
 
         // Set payout warning
-        if (payoutWarning !== undefined && payoutWarning !== null && !Number.isNaN(payoutWarning)) {
-            if (payoutWarning < 0 || payoutWarning > 1439) {
-                changelog.push(`Cannot change the Payout Warning to ${payoutWarning}. Value must be between 0 and 1439`);
-            } else if (updatedUser.arenaAlert.payoutWarning !== payoutWarning) {
-                changelog.push(`Changed Payout Warning from ${updatedUser.arenaAlert.payoutWarning} to ${payoutWarning}`);
-                updatedUser.arenaAlert.payoutWarning = payoutWarning;
-            }
+        if (payoutWarning != null && updatedUser.arenaAlert.payoutWarning !== payoutWarning) {
+            changelog.push(`Changed Payout Warning from ${updatedUser.arenaAlert.payoutWarning} to ${payoutWarning}`);
+            updatedUser.arenaAlert.payoutWarning = payoutWarning;
         }
 
         return { changelog, updatedUser };
