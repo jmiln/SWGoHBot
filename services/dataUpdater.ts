@@ -193,55 +193,60 @@ async function init() {
 
         if (!FORCE_UPDATE) {
             (async function runUpdatersAsNeeded() {
-                debugTime("Total update cycle");
+                try {
+                    debugTime("Total update cycle");
 
-                debugTime("Checking metadata");
-                const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
-                    isMetadataUpdated: boolean;
-                    newMetadata: Metadata;
-                    oldMetadata: Metadata;
-                };
-                debugTimeEnd("Checking metadata");
+                    debugTime("Checking metadata");
+                    const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
+                        isMetadataUpdated: boolean;
+                        newMetadata: Metadata;
+                        oldMetadata: Metadata;
+                    };
+                    debugTimeEnd("Checking metadata");
 
-                if (isMetadataUpdated) {
-                    const log = [];
-                    if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
-                        log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
-                    }
-                    if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
-                        log.push(
-                            ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
-                        );
-                    }
-                    if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
-                        log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
-                    }
-                    if (log.length) logger.log(["Found new metadata, running updaters", ...log].join("\n"));
+                    if (isMetadataUpdated) {
+                        const log = [];
+                        if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
+                            log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
+                        }
+                        if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
+                            log.push(
+                                ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
+                            );
+                        }
+                        if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
+                            log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
+                        }
+                        if (log.length) logger.log(["Found new metadata, running updaters", ...log].join("\n"));
 
-                    debugTime("Running game data updaters");
-                    await runGameDataUpdaters(newMetadata, comlinkStub);
-                    debugTimeEnd("Running game data updaters");
-                    debugLog("Finished running game data updater for new metadata");
+                        debugTime("Running game data updaters");
+                        await runGameDataUpdaters(newMetadata, comlinkStub);
+                        debugTimeEnd("Running game data updaters");
+                        debugLog("Finished running game data updater for new metadata");
+                    }
+
+                    debugTime("Running mod updaters");
+                    await runModUpdaters(comlinkStub);
+                    debugTimeEnd("Running mod updaters");
+
+                    debugTime("Exporting command docs");
+                    await exportCommandDocs();
+                    debugTimeEnd("Exporting command docs");
+
+                    debugLog("Finished running all updaters");
+
+                    debugTimeEnd("Total update cycle");
+                } catch (error) {
+                    logger.error("[dataUpdater] Update cycle failed, will retry in 24 hours:", error);
+                } finally {
+                    // Always schedule the next run, even if this cycle failed
+                    updatersTimeout = setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
                 }
-
-                debugTime("Running mod updaters");
-                await runModUpdaters(comlinkStub);
-                debugTimeEnd("Running mod updaters");
-
-                debugTime("Exporting command docs");
-                await exportCommandDocs();
-                debugTimeEnd("Exporting command docs");
-
-                debugLog("Finished running all updaters");
-
-                debugTimeEnd("Total update cycle");
-
-                // Run it again each 24 hours - store timeout reference
-                updatersTimeout = setTimeout(runUpdatersAsNeeded, 24 * 60 * 60 * 1000);
             })();
 
-            // Run the Patreon updater every 15 minutes - store interval reference
-            patronsInterval = setInterval(async () => await updatePatrons(), 15 * constants.minMS);
+            // Run the Patreon updater immediately, then every 15 minutes
+            await updatePatrons();
+            patronsInterval = setInterval(() => void updatePatrons(), 15 * constants.minMS);
         } else {
             // TODO: Add a way to choose what's updated from the cmdline without having to manually change which bit we want updated
             // If we're forcing an update, just run the bits we want then exit
@@ -367,7 +372,7 @@ async function runGameDataUpdaters(metadata: Metadata, comlinkStub: ComlinkStub)
         await saveFile(SHIP_LOCATIONS_FILE_PATH, shipLocsResult.locations);
     }
 
-    if (log?.length) {
+    if (log.length) {
         logger.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
         logger.log(log.join("\n"));
     } else {
@@ -382,6 +387,7 @@ async function saveFile(filePath: string, jsonData: [] | object, doPretty = true
         await writeFile(filePath, content);
     } catch (error) {
         logError("dataUpdater/saveFile", `Failed to save file ${filePath}:`, error);
+        throw error;
     }
 }
 
@@ -513,7 +519,7 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
     debugLog(`Getting rosters for ${playerIds.length} players (${MAX_CONCURRENT} at a time)`);
     const rosterArr = [];
 
-    let playerCount = 0;
+    let failedCount = 0;
 
     // Create pool locally for this operation
     const piscina = new Piscina({
@@ -524,16 +530,16 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
     try {
         await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
             try {
-                playerCount++;
                 const strippedUnits = await piscina.run({ playerId, modMap });
                 rosterArr.push(...(strippedUnits || []));
             } catch (err) {
+                failedCount++;
                 logger.error(`[dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
             }
         });
 
-        if (playerCount !== playerIds.length) {
-            logger.error(`[dataUpdater/getPlayerRosters] Found ${playerCount} players, but ${playerIds.length} were requested`);
+        if (failedCount > 0) {
+            logger.error(`[dataUpdater/getPlayerRosters] Failed to process ${failedCount}/${playerIds.length} players`);
         }
     } finally {
         // Always close, even if errors occurred
@@ -693,23 +699,26 @@ async function getPatreonTiers(): Promise<{ id: string; amount_cents: number; ti
     if (!patreon) return [];
 
     const baseMembersUrl = `https://api.patreon.com/oauth2/v2/campaigns/${patreon.campaignId}?include=tiers&fields[tier]=title,amount_cents`;
-    const { included } = await fetch(encodeURI(baseMembersUrl), {
-        headers: {
-            Authorization: `Bearer ${patreon.creatorAccessToken}`,
-        },
-    })
-        .then((res) => res.json())
-        .catch((err) =>
-            logger.error(`[dataUpdater/getPatreonTiers] Error fetching Patreon tiers: ${err instanceof Error ? err.message : String(err)}`),
-        );
+    let responseJson: { included?: { id: string; attributes: { amount_cents: number; title: string } }[] };
+    try {
+        const res = await fetch(encodeURI(baseMembersUrl), {
+            headers: {
+                Authorization: `Bearer ${patreon.creatorAccessToken}`,
+            },
+        });
+        responseJson = await res.json();
+    } catch (err) {
+        logger.error(`[dataUpdater/getPatreonTiers] Error fetching Patreon tiers: ${err instanceof Error ? err.message : String(err)}`);
+        return [];
+    }
 
-    return included.map(({ id, attributes }) => {
-        return {
-            id: id,
-            amount_cents: attributes.amount_cents,
-            title: attributes.title,
-        };
-    });
+    if (!responseJson.included?.length) return [];
+
+    return responseJson.included.map(({ id, attributes }) => ({
+        id,
+        amount_cents: attributes.amount_cents,
+        title: attributes.title,
+    }));
 }
 
 async function applyActivePatronBenefits(discordID: string, amountCents: number) {
@@ -739,8 +748,12 @@ async function processManualPatrons() {
 async function updatePatrons() {
     const patreon = patreonCredentials();
     if (!patreon) {
-        await processManualPatrons();
-        await ensureGuildSupporter();
+        try {
+            await processManualPatrons();
+            await ensureGuildSupporter();
+        } catch (e) {
+            logger.error(`[dataUpdater/updatePatrons] Error processing manual patrons: ${e instanceof Error ? e.message : String(e)}`);
+        }
         return;
     }
 
@@ -817,21 +830,19 @@ async function updatePatrons() {
                 continue;
             }
 
-            // Check if the user is already in the db, and alert that there's a new supporter if not
             const discordID = user.attributes.social_connections?.discord?.user_id;
-            if (discordID) {
-                const userConf = await cache.getOne(env.MONGODB_SWGOHBOT_DB, "patrons", { discordID: discordID });
-                if (!userConf) logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${memberName} (${discordID || "N/A"})`);
-            }
 
-            // Save this user's info to the db
+            // Check before the put so we can detect new supporters
+            const isNewSupporter = !(await cache.exists(env.MONGODB_SWGOHBOT_DB, "patrons", { id: memberId }));
+
+            // Save this user's info to the db (omit discordID field if not linked)
             await cache.put(
                 env.MONGODB_SWGOHBOT_DB,
                 "patrons",
                 { id: memberId },
                 {
                     id: memberId,
-                    discordID: discordID,
+                    ...(discordID && { discordID }),
                     amount_cents: memberCents,
                     patron_status: memberStatus,
                     tiers: memberTiers.map((tier) => tier.id),
@@ -839,16 +850,23 @@ async function updatePatrons() {
                 },
             );
 
+            if (isNewSupporter) {
+                if (discordID) {
+                    logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${memberName} (${discordID})`);
+                } else {
+                    logger.log(`[dataUpdater/updatePatrons] New Patreon supporter ${memberName} — no Discord account linked`);
+                }
+            }
+
             // If they don't have a discord id to work with, move on
             if (!discordID) continue;
 
             if (!memberCents) {
                 // If the user isn't currently active, make sure they don't have any bonusServers linked
-                const userConf = (await cache.getOne(env.MONGODB_SWAPI_DB, "users", { id: discordID })) as UserConfig | null;
+                const userConf = (await cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID })) as UserConfig | null;
 
                 // Cache patreon status as 0 (inactive) on userconf if the user is registered
-                const userConfExists = await cache.exists(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID });
-                if (userConfExists) {
+                if (userConf) {
                     await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: discordID }, { patreonAmountCents: 0 });
                 }
 
@@ -884,7 +902,7 @@ async function updatePatrons() {
         const errorMessage = e instanceof Error ? e.message : String(e);
         const errorStack = e instanceof Error ? e.stack : "No stack trace available";
 
-        if (e.name === "AbortError" || e.name === "TimeoutError") {
+        if (e instanceof Error && (e.name === "AbortError" || e.name === "TimeoutError")) {
             logger.error("[dataUpdater/updatePatrons] Patreon API request timed out after 30 seconds");
         } else {
             // Log both the message and the stack for full visibility
@@ -915,7 +933,7 @@ async function updateLocs(
         }
     }
 
-    if (!matArr.length) return;
+    if (!matArr.length) return { locations: [], hasChanges: false };
 
     const langList = Object.keys(locales);
     const targets = {
@@ -949,6 +967,7 @@ async function updateLocs(
     ]);
 
     const outArr = [];
+    const bulkEventLocPut = [];
     for (const mat of matArr) {
         const missions = mat?.mats?.lookupMissionList || [];
 
@@ -1059,7 +1078,13 @@ async function updateLocs(
                         language: lang,
                         langKey,
                     };
-                    await cache.put(env.MONGODB_SWAPI_DB, "locations", { id: locId, language: lang }, out);
+                    bulkEventLocPut.push({
+                        updateOne: {
+                            filter: { id: locId, language: lang },
+                            update: { $set: out },
+                            upsert: true,
+                        },
+                    });
                 }
                 // If locale strings were available, go ahead and stick the info in
                 if (isAvailable) charArr.push(charObj);
@@ -1110,6 +1135,10 @@ async function updateLocs(
         outArr.push({ defId: mat.defId, locations: charArr });
     }
 
+    if (bulkEventLocPut.length) {
+        await cache.putMany(env.MONGODB_SWAPI_DB, "locations", bulkEventLocPut);
+    }
+
     // Wipe out all previous locations so we can replace them later, but leave the shop info alone
     const whitelistTypeLocs = [
         "Achievements",
@@ -1150,9 +1179,9 @@ async function updateLocs(
         const unitLoc = outArr.find((loc) => loc.defId === unit.uniqueName) || { defId: unit.uniqueName };
 
         const locations: Location[] = removeDuplicates([...thisUnitLoc, ...(unitLoc?.locations || [])]);
-        const unitName = thisUnitLoc.name || unitLoc.name || unit.name;
+        const unitName = unit.name;
 
-        if (!unitName && !unitLoc.defId) continue;
+        if (!unitName) continue;
 
         const newUnitData = {
             name: unitName,
@@ -1166,8 +1195,8 @@ async function updateLocs(
             if (!oldUnitData) {
                 // New unit added
                 hasChanges = true;
-            } else if (oldUnitData.locations.length !== newUnitData.locations.length) {
-                // Locations changed for existing unit
+            } else if (JSON.stringify(oldUnitData.locations) !== JSON.stringify(newUnitData.locations)) {
+                // Locations changed for existing unit (count or content)
                 hasChanges = true;
             }
         }
@@ -1185,9 +1214,12 @@ async function updateLocs(
         return a.defId.toLowerCase().localeCompare(b.defId.toLowerCase());
     });
 
-    // Final check if we haven't detected changes yet
-    if (!hasChanges && sortedOut.length !== currentLocs.length) {
-        hasChanges = true;
+    // Final check: catch length changes and unit swaps (removed + added in same cycle)
+    if (!hasChanges) {
+        const newDefIds = new Set(sortedOut.map((u) => u.defId));
+        if (sortedOut.length !== currentLocs.length || currentLocs.some((u) => !newDefIds.has(u.defId))) {
+            hasChanges = true;
+        }
     }
 
     return { locations: sortedOut, hasChanges };
@@ -1214,22 +1246,25 @@ function check1or2(strIn: string, locale: Record<string, string>) {
 }
 
 async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string) {
-    let gameData = null;
     const dataFile = `gameData_${version}.json`;
     const filePath = path.join(GAMEDATA_DIR_PATH, dataFile);
 
     // Try to read cached file
     try {
-        const gameData = await readJSON(filePath);
+        const cachedData = await readJSON(filePath);
         debugLog(`Found gameData for ${version}`);
-        return gameData;
+        return cachedData;
     } catch (error) {
         // File doesn't exist or can't be read, fetch new data
         debugLog(`No cached gameData for ${version} (${error.code || error.message}), fetching new copy`);
     }
 
     // If we don't have the most recent version locally, grab a new copy of the gameData from CG
-    gameData = (await withTimeout(comlinkStub.getGameData(version, false), 60000, "getGameData")) as operations["getGameData"]["responses"];
+    const gameData = (await withTimeout(
+        comlinkStub.getGameData(version, false),
+        60000,
+        "getGameData",
+    )) as operations["getGameData"]["responses"];
 
     // This is going to be a new version, so we can just delete the old files
     const allFiles = await readdir(GAMEDATA_DIR_PATH);
@@ -1248,7 +1283,7 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string) 
     );
 
     // Then save it
-    await writeFile(filePath, JSON.stringify(gameData));
+    await saveFile(filePath, gameData, false);
 
     // Then return the gameData
     return gameData;
@@ -1427,15 +1462,10 @@ async function processLocalization(
         debugLog(`Finished localizing ${dbTarget} for ${lang}`);
     }
 
-    // Batch operations to avoid MongoDB's 1000-operation limit
+    // Batch operations to avoid overwhelming MongoDB
     const BATCH_SIZE = 1000;
-    if (bulkWriteArr.length > BATCH_SIZE) {
-        for (let i = 0; i < bulkWriteArr.length; i += BATCH_SIZE) {
-            const batch = bulkWriteArr.slice(i, i + BATCH_SIZE);
-            await cache.putMany(env.MONGODB_SWAPI_DB, dbTarget, batch);
-        }
-    } else {
-        await cache.putMany(env.MONGODB_SWAPI_DB, dbTarget, bulkWriteArr);
+    for (let i = 0; i < bulkWriteArr.length; i += BATCH_SIZE) {
+        await cache.putMany(env.MONGODB_SWAPI_DB, dbTarget, bulkWriteArr.slice(i, i + BATCH_SIZE));
     }
     debugLog(`Finished localizing ${dbTarget}`);
 }
@@ -1865,7 +1895,7 @@ function unitsToCharacterDB(unitsIn: ProcessedUnit[]) {
         dark: "dark side",
         firstorder: "first order",
         huttcartel: "hutt cartel",
-        imperialremnant: "imerpial remnant",
+        imperialremnant: "imperial remnant",
         imperialtrooper: "imperial trooper",
         inquisitoriu: "inquisitorius",
         light: "light side",
@@ -1967,22 +1997,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
             "getLocalizationBundle",
         )) as Record<string, string>;
 
-        const localeOut = {
-            eng_us: null,
-            ger_de: null,
-            spa_xm: null,
-            fre_fr: null,
-            rus_ru: null,
-            por_br: null,
-            kor_kr: null,
-            ita_it: null,
-            tur_tr: null,
-            chs_cn: null,
-            cht_cn: null,
-            ind_id: null,
-            jpn_jp: null,
-            tha_th: null,
-        } as Locales;
+        const localeOut = {} as Locales;
         for (const [lang, content] of Object.entries(localeData)) {
             const out = {};
             if (lang === "Loc_Key_Mapping.txt") continue;
@@ -2020,7 +2035,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
 
         // Then save it
         logger.log(`Saving localeData for ${bundleVersion}`);
-        await writeFile(filePath, JSON.stringify(localeOut));
+        await saveFile(filePath, localeOut, false);
 
         // Then finally, return it
         return localeOut;
@@ -2175,18 +2190,7 @@ async function processJourneyReqs(gameData: GameData) {
     );
 
     // Combine the old stuff with the new automated data
-    await writeFile(
-        JOURNEY_FILE_PATH,
-        JSON.stringify(
-            {
-                ...oldReqs,
-                ...unitGuideOut,
-            },
-            null,
-            4,
-        ),
-        { encoding: "utf-8" },
-    );
+    await saveFile(JOURNEY_FILE_PATH, { ...reqsOut, ...unitGuideOut });
 }
 
 async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
