@@ -4,6 +4,22 @@ import { MongoDBContainer } from "@testcontainers/mongodb";
 let container: StartedMongoDBContainer | undefined;
 
 export async function globalSetup(): Promise<void> {
+    // Prevent modules with top-level side effects (e.g. dataUpdater init()) from
+    // running during tests. Set before any test file is loaded.
+    process.env.TESTING_ENV = "1";
+
+    // Stub required config vars with safe dummy values when not already set by .env.
+    // Pure-function tests don't use these at runtime; they're only needed to satisfy
+    // Zod validation when config.ts is first imported.
+    process.env.DISCORD_OWNER_ID ??= "000000000000000001";
+    process.env.DISCORD_CLIENT_ID ??= "000000000000000002";
+    process.env.DISCORD_TOKEN ??= "test.token.stub";
+    process.env.MONGODB_URL ??= "mongodb://localhost:27018";
+    process.env.SWAPI_STATCALC_URL ??= "http://localhost:3000";
+    process.env.SWAPI_CLIENT_URL ??= "http://localhost:3001";
+    process.env.SWAPI_ACCESS_KEY ??= "test-access-key";
+    process.env.SWAPI_SECRET_KEY ??= "test-secret-key";
+
     if (process.env.MONGO_URL) {
         return;
     }

@@ -15,7 +15,8 @@
         "indexes:create": "node scripts/verifyIndexes.ts --create",
         "test": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/**/*.test.ts",
         "test:modules": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/modules/*.test.ts",
-        "test:slash": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts"
+        "test:slash": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts",
+        "test:services": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/services/*.test.ts"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",
