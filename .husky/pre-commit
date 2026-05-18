@@ -51,8 +51,13 @@ if [ -z "$STAGED_TS_FILES" ]; then
 fi
 
 # 1. Biome check (lint + format)
+# Filter out test/ files -- Biome config excludes that directory and passing them
+# directly causes an internal error rather than a graceful skip.
+BIOME_FILES=$(echo "$STAGED_TS_FILES" | grep -v '^test/' || true)
 print_section "Biome Check"
-if npx @biomejs/biome check --no-errors-on-unmatched "$STAGED_TS_FILES"; then
+if [ -z "$BIOME_FILES" ]; then
+    print_success "Biome check passed (only test files staged)"
+elif npx @biomejs/biome check --no-errors-on-unmatched $BIOME_FILES; then
     print_success "Biome check passed"
 else
     print_error "Biome check failed"
