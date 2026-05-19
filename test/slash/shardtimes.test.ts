@@ -112,13 +112,13 @@ describe("Shardtimes", () => {
     });
 
     describe("add subcommand", () => {
-        it("succeeds with a valid timezone and non-self user name", async () => {
+        it("succeeds when an admin adds another user with a valid timezone", async () => {
             const interaction = makeShardInteraction({
                 _subcommand: "add",
                 user: "ShardPlayer",
                 timezone: "America/New_York",
             });
-            const ctx = createCommandContext({ interaction });
+            const ctx = createCommandContext({ interaction, permLevel: 6 });
             const command = new Shardtimes();
             await command.run(ctx);
 
@@ -132,7 +132,7 @@ describe("Shardtimes", () => {
         it("returns error for an invalid timezone string", async () => {
             const interaction = makeShardInteraction({
                 _subcommand: "add",
-                user: "ShardPlayer",
+                user: "me",
                 timezone: "not-a-valid-zone",
             });
             const ctx = createCommandContext({ interaction });
@@ -144,7 +144,7 @@ describe("Shardtimes", () => {
         it("returns error when both timezone and time_until are specified", async () => {
             const interaction = makeShardInteraction({
                 _subcommand: "add",
-                user: "ShardPlayer",
+                user: "me",
                 timezone: "America/New_York",
                 time_until: "02:30",
             });
@@ -157,7 +157,7 @@ describe("Shardtimes", () => {
         it("returns error when neither timezone nor time_until is specified", async () => {
             const interaction = makeShardInteraction({
                 _subcommand: "add",
-                user: "ShardPlayer",
+                user: "me",
             });
             const ctx = createCommandContext({ interaction });
             const command = new Shardtimes();
@@ -168,7 +168,7 @@ describe("Shardtimes", () => {
         it("succeeds with a valid time_until value", async () => {
             const interaction = makeShardInteraction({
                 _subcommand: "add",
-                user: "ShardPlayer",
+                user: "me",
                 time_until: "02:30",
             });
             const ctx = createCommandContext({ interaction });
@@ -202,7 +202,7 @@ describe("Shardtimes", () => {
                 _subcommand: "remove",
                 user: "ShardPlayer",
             });
-            const ctx = createCommandContext({ interaction });
+            const ctx = createCommandContext({ interaction, permLevel: 6 });
             const command = new Shardtimes();
             await command.run(ctx);
 
@@ -216,7 +216,7 @@ describe("Shardtimes", () => {
         it("returns error when user is not in the shard times list", async () => {
             const interaction = makeShardInteraction({
                 _subcommand: "remove",
-                user: "ShardPlayer",
+                user: "me",
             });
             const ctx = createCommandContext({ interaction });
             const command = new Shardtimes();

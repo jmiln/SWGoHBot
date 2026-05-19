@@ -267,7 +267,7 @@ export default class MyMods extends Command {
             // }
 
             // Sort it all by the totoal
-            let sortedCharList = charList.sort((p, c) => {
+            let sortedCharList = [...charList].sort((p, c) => {
                 if (p.stats?.final?.[statToCheck] && c.stats?.final?.[statToCheck]) {
                     return p.stats.final[statToCheck] < c.stats.final[statToCheck] ? 1 : -1;
                 }
@@ -279,7 +279,7 @@ export default class MyMods extends Command {
 
             // Then if we want it sorted by mods, do that after
             if (!showTotal) {
-                sortedCharList = charList.sort((p, c) => {
+                sortedCharList = [...charList].sort((p, c) => {
                     if (p.stats?.mods?.[statToCheck] && c.stats?.mods?.[statToCheck]) {
                         return p.stats.mods[statToCheck] < c.stats.mods[statToCheck] ? 1 : -1;
                     }
@@ -344,6 +344,7 @@ export default class MyMods extends Command {
             const statMap = [];
             for (const character of player.roster) {
                 // For each character
+                if (!character.mods?.length) continue;
                 for (const mod of character.mods) {
                     // For each mod on the character
                     for (const stat of mod.secondaryStat) {

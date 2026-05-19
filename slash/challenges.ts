@@ -82,6 +82,8 @@ export default class Challenges extends Command {
                 return sendDay("Friday");
             case "day_Saturday":
                 return sendDay("Saturday");
+            default:
+                return super.error(interaction, "Unknown day.");
         }
         function sendDay(day: string) {
             return interaction.reply({ content: codeBlock("asciiDoc", dayString(day)) });

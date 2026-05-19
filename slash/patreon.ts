@@ -113,6 +113,9 @@ export default class Patreon extends Command {
                     userId: interaction.user.id,
                     tier: Math.floor(pat.amount_cents / 100),
                 };
+                if (!interaction.guild) {
+                    return super.error(interaction, "This action must be performed in a server.");
+                }
                 const res = await addServerSupporter({ guildId: interaction.guild.id, userInfo });
                 if (res.user?.error || res.guild?.error) {
                     return super.error(

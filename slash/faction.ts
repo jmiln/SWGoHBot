@@ -76,7 +76,7 @@ export default class Faction extends Command {
             { categoryIdList: query, language: swgohLanguage.toLowerCase() },
             { _id: 0, baseId: 1, nameKey: 1 },
         );
-        const searchName = factionMap.find((f) => f.value === query)?.name;
+        const searchName = factionMap.find((f) => f.value === query)?.name ?? query;
 
         // Filter out any ships that show up
         chars = chars.filter((c) => characters.find((char) => char.uniqueName === c.baseId));
@@ -94,18 +94,14 @@ export default class Faction extends Command {
 
         // If they want just characters with leader abilities or zetas, filter em out
         if (wantsLeader || wantsZeta) {
-            const units = [];
-
-            for (const c of chars) {
-                const char: RawCharacter = await swgohAPI.getCharacter(c.baseId, swgohLanguage);
-                const isLeader = char.skillReferenceList.some((s) => s.skillId.startsWith("leader"));
-                const hasZeta = char.skillReferenceList.some((s) => s.cost?.AbilityMatZeta > 0);
-                units.push({
-                    char,
-                    isLeader,
-                    hasZeta,
-                });
-            }
+            const units = await Promise.all(
+                chars.map(async (c) => {
+                    const char: RawCharacter = await swgohAPI.getCharacter(c.baseId, swgohLanguage);
+                    const isLeader = char.skillReferenceList.some((s) => s.skillId.startsWith("leader"));
+                    const hasZeta = char.skillReferenceList.some((s) => s.cost?.AbilityMatZeta > 0);
+                    return { char, isLeader, hasZeta };
+                }),
+            );
 
             if (wantsLeader) {
                 chars = chars.filter((c) => {

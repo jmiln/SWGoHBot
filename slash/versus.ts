@@ -228,11 +228,11 @@ export default class Versus extends Command {
                     fields: [
                         {
                             name: "General Info",
-                            value: codeBlock(generalTable.join("\n"), "asciidoc"),
+                            value: codeBlock("asciidoc", generalTable.join("\n")),
                         },
                         {
                             name: "Stats",
-                            value: codeBlock(statTable.join("\n"), "asciidoc"),
+                            value: codeBlock("asciidoc", statTable.join("\n")),
                         },
                         {
                             name: constants.zws,

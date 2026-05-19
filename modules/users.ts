@@ -26,6 +26,23 @@ class UserReg {
         return map;
     }
 
+    async getUsersByAllyCodes(allyCodes: (string | number)[]): Promise<Map<string, UserConfig[]>> {
+        const allyCodeStrs = allyCodes.map((ac) => Number(ac).toString());
+        const users = (await this.cache.get(env.MONGODB_SWGOHBOT_DB, "users", {
+            "accounts.allyCode": { $in: allyCodeStrs },
+        })) as UserConfig[];
+        const map = new Map<string, UserConfig[]>();
+        for (const user of users ?? []) {
+            for (const account of user.accounts ?? []) {
+                if (allyCodeStrs.includes(account.allyCode)) {
+                    if (!map.has(account.allyCode)) map.set(account.allyCode, []);
+                    map.get(account.allyCode).push(user);
+                }
+            }
+        }
+        return map;
+    }
+
     async getUsersFromAlly(allyCode: string | number) {
         const allyCodeStr = Number(allyCode).toString();
         const users = (await this.cache.get(env.MONGODB_SWGOHBOT_DB, "users", { "accounts.allyCode": allyCodeStr })) as UserConfig[];

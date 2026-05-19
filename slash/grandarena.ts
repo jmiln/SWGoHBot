@@ -625,6 +625,7 @@ const getDiv = (gpIn: number) => {
         if (gpIn < Number.parseInt(key, 10)) continue;
         return gpMap[key];
     }
+    return gpMap[divKeys[0]];
 };
 
 function getGearStr(charIn: SWAPIUnit) {

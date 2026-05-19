@@ -144,7 +144,7 @@ export default class Panic extends Command {
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : String(err);
             logger.error(`[slash/panic] Failed to generate image: ${errorMessage}`);
-            return null;
+            return super.error(interaction, "Sorry, but something went wrong generating the image. Please try again later.");
         }
 
         if (!imageOut) {

@@ -81,6 +81,15 @@ export default class Poll extends Command {
     async run({ interaction, language, permLevel }: CommandContext) {
         const action = interaction.options.getSubcommand();
 
+        if (!interaction.guild || !interaction.channel) {
+            // This is not available in DMs
+            // TODO Lang this
+            return super.error(
+                interaction,
+                "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.",
+            );
+        }
+
         const poll = {
             question: "",
             options: [],
@@ -90,15 +99,6 @@ export default class Poll extends Command {
             anon: false,
             channelId: interaction.channel.id,
         };
-
-        if (!interaction.guild || !interaction.channel) {
-            // This is not available in DMs
-            // TODO Lang this
-            return super.error(
-                interaction,
-                "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.",
-            );
-        }
 
         const pollsArr = await getGuildPolls({ guildId: interaction.guild.id });
         const oldPoll = pollsArr.find((p) => p.channelId === interaction.channel.id);

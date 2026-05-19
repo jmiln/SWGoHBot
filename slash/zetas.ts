@@ -301,7 +301,11 @@ export default class Zetas extends Command {
                                 zetas[char.defId] = {};
                             }
 
-                            zetas[char.defId][s.id] ? zetas[char.defId][s.id].push(player.name) : [player.name];
+                            if (zetas[char.defId][s.id]) {
+                                zetas[char.defId][s.id].push(player.name);
+                            } else {
+                                zetas[char.defId][s.id] = [player.name];
+                            }
                         }
                     }
                 }
@@ -342,7 +346,7 @@ export default class Zetas extends Command {
 
                 for (const [index, fieldChunk] of fieldArrChunks.entries()) {
                     if (index === 0) {
-                        return interaction.editReply({
+                        await interaction.editReply({
                             content: null,
                             embeds: [
                                 {
@@ -353,51 +357,52 @@ export default class Zetas extends Command {
                                 },
                             ],
                         });
-                    }
-                    return interaction.followUp({
-                        embeds: [
-                            {
-                                fields: fieldChunk,
-                            },
-                        ],
-                    });
-                }
-            } else {
-                const footerStr = updatedFooterStr(guild.updated, language);
-                if (!zetas[character.uniqueName]?.length) {
-                    return interaction.editReply({
-                        embeds: [
-                            {
-                                author: {
-                                    name: language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
+                    } else {
+                        await interaction.followUp({
+                            embeds: [
+                                {
+                                    fields: fieldChunk,
                                 },
-                                description: `It looks like nobody in your guild has any zetas for ${searchChar}.\n\n${footerStr}`,
-                            },
-                        ],
-                    });
+                            ],
+                        });
+                    }
                 }
-                for (const skill of Object.keys(zetas[character.uniqueName])) {
-                    const name = await swgohAPI.abilities(skill, null, { min: true });
-                    fields.push({
-                        name: name[0].nameKey,
-                        value: zetas[character.uniqueName][skill].join("\n"),
-                    });
-                }
-                fields.push({
-                    name: constants.zws,
-                    value: footerStr,
-                });
+                return;
+            }
+            const footerStr = updatedFooterStr(guild.updated, language);
+            if (!zetas[character.uniqueName]?.length) {
                 return interaction.editReply({
                     embeds: [
                         {
                             author: {
                                 name: language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
                             },
-                            fields: fields,
+                            description: `It looks like nobody in your guild has any zetas for ${searchChar}.\n\n${footerStr}`,
                         },
                     ],
                 });
             }
+            for (const skill of Object.keys(zetas[character.uniqueName])) {
+                const name = await swgohAPI.abilities(skill, null, { min: true });
+                fields.push({
+                    name: name[0].nameKey,
+                    value: zetas[character.uniqueName][skill].join("\n"),
+                });
+            }
+            fields.push({
+                name: constants.zws,
+                value: footerStr,
+            });
+            return interaction.editReply({
+                embeds: [
+                    {
+                        author: {
+                            name: language.get("COMMAND_ZETA_ZETAS_HEADER", guild.name),
+                        },
+                        fields: fields,
+                    },
+                ],
+            });
         }
     }
 }

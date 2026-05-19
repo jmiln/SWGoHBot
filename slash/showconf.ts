@@ -90,7 +90,7 @@ export default class Showconf extends Command {
             supporterList.push(user.displayName);
         }
         outArr.push(
-            `* Current supporters${totalSuppTier > 0 && ` (Combined tier: $${totalSuppTier})`}: ${
+            `* Current supporters${totalSuppTier > 0 ? ` (Combined tier: $${totalSuppTier})` : ""}: ${
                 supporterList?.length ? "\n" : "N/A"
             }${supporterList.map((s) => `  - ${s}`).join("\n")}`,
         );

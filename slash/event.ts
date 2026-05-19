@@ -542,7 +542,7 @@ export default class Event extends Command {
                 }
                 const [oldDate, oldTime] = new Date(event.eventDT)
                     .toLocaleString("en-GB", {
-                        timeZone: "us/pacific",
+                        timeZone: "America/Los_Angeles",
                         hour12: false,
                         month: "numeric",
                         year: "numeric",
@@ -674,6 +674,7 @@ export default class Event extends Command {
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
             const nameArr = [];
+            const guildEvNames = new Set(guildEvArray?.map((ev) => ev.name) ?? []);
             const eventArray = Array.isArray(eventArr) ? eventArr : [eventArr];
 
             for (const [ix, thisEvent] of eventArray.entries()) {
@@ -695,7 +696,7 @@ export default class Event extends Command {
                 if (!thisEvent?.name?.length) {
                     err.push(language.get("COMMAND_EVENT_JSON_INVALID_NAME"));
                 } else {
-                    if (nameArr.includes(thisEvent.name) || guildEvArray?.map((ev) => ev.name).includes(thisEvent.name)) {
+                    if (nameArr.includes(thisEvent.name) || guildEvNames.has(thisEvent.name)) {
                         err.push(language.get("COMMAND_EVENT_JSON_DUPLICATE"));
                     } else {
                         nameArr.push(thisEvent.name);
@@ -839,7 +840,7 @@ export default class Event extends Command {
             return outStr;
         }
 
-        function sendPaged({ eventList, minimal, page }: { eventList: GuildConfigEvent[]; minimal: boolean; page: number }) {
+        async function sendPaged({ eventList, minimal, page }: { eventList: GuildConfigEvent[]; minimal: boolean; page: number }) {
             if (Array.isArray(eventList) && eventList.length === 0)
                 return interaction.reply({ content: "I could not find any events for this server" });
             const evOutArr = [];
@@ -902,12 +903,7 @@ export default class Event extends Command {
                 if (evArray.length === 0) {
                     return interaction.reply({ content: language.get("COMMAND_EVENT_NO_EVENT") });
                 }
-                if (!evArray.length) {
-                    if (guildConf.useEventPages) {
-                        return interaction.reply({
-                            content: language.get("COMMAND_EVENT_SHOW_PAGED", eventCount, PAGE_SELECTED, PAGES_NEEDED, evArray[0]),
-                        });
-                    }
+                if (evArray.length === 1) {
                     return interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evArray[0]) });
                 }
                 for (const [ix, evMsg] of evArray.entries()) {
@@ -917,11 +913,9 @@ export default class Event extends Command {
                         });
                     }
                     if (ix === 0) {
-                        // If it's the first one, reply to the interaction
-                        interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
+                        await interaction.reply({ content: language.get("COMMAND_EVENT_SHOW", eventCount, evMsg) });
                     } else {
-                        // After the first one, just send to the channel instead of replying
-                        interaction.channel.send({ content: evMsg });
+                        await interaction.channel.send({ content: evMsg });
                     }
                 }
             } catch (err) {

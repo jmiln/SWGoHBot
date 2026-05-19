@@ -74,7 +74,7 @@ export default class Ships extends Command {
             const crew = [];
             for (const crewMember of unit.crew) {
                 const crewName = characters.find((c) => c.uniqueName === crewMember);
-                crew.push(crewName.name);
+                if (crewName) crew.push(crewName.name);
             }
             fields.push({
                 name: language.get("COMMAND_SHIPS_CREW"),
@@ -116,15 +116,17 @@ export default class Ships extends Command {
                         url: ship.url,
                     },
                     fields: fields,
-                    thumbnail: { url: "attachment://image.png" },
+                    ...(charImg && { thumbnail: { url: "attachment://image.png" } }),
                 },
             ],
-            files: [
-                {
-                    attachment: charImg,
-                    name: "image.png",
-                },
-            ],
+            ...(charImg && {
+                files: [
+                    {
+                        attachment: charImg,
+                        name: "image.png",
+                    },
+                ],
+            }),
         });
     }
 }

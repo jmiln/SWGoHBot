@@ -202,7 +202,7 @@ export default class GuildQuality extends Command {
                 }
             }
 
-            const modQuality = spd15Count / (charGP / 100_000);
+            const modQuality = charGP > 0 ? spd15Count / (charGP / 100_000) : 0;
             const gearQuality = (g12Plus + accumulatedCharScore) / (totalGP / 100_000);
             return {
                 name: player.name,

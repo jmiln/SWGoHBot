@@ -184,7 +184,7 @@ export default class Shardtimes extends Command {
             let tempZone = timezone ? timezone : null;
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
+            if (![interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
@@ -227,7 +227,7 @@ export default class Shardtimes extends Command {
                 const minMS = 60 * 1000;
                 const updatedTime = new Date(
                     new Date().setTime(
-                        nowTime.getTime() + Number.parseInt(hour, 10) * hourMS || 0 + Number.parseInt(minute, 10) * minMS || 0,
+                        nowTime.getTime() + (Number.parseInt(hour, 10) || 0) * hourMS + (Number.parseInt(minute, 10) || 0) * minMS,
                     ),
                 );
                 const tempH = updatedTime.getHours();
@@ -300,7 +300,7 @@ export default class Shardtimes extends Command {
             }
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if ([interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
+            if (![interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 

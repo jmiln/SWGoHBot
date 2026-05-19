@@ -69,6 +69,10 @@ export default class MyArena extends Command {
             if (charArena) fields.push(charArena);
         } else {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
+            if (!player.arena?.char?.squad?.length) {
+                return super.error(interaction, "Something broke when getting your arena info, please try again in a bit.");
+            }
+
             const playerStats = player;
 
             const chars = [];

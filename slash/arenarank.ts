@@ -37,7 +37,7 @@ export default class Arenarank extends Command {
         const currentRank = interaction.options.getInteger("rank");
         const rankHops = interaction.options.getInteger("hops") || 5;
 
-        if (Number.isNaN(currentRank) || !currentRank) {
+        if (!currentRank) {
             return super.error(interaction, language.get("COMMAND_ARENARANK_INVALID_NUMBER"), { example: "arenarank 55" });
         }
 

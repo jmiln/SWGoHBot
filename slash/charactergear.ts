@@ -214,9 +214,9 @@ export default class Charactergear extends Command {
                 // Take out any that are already equipped
                 if (gearLvl > 0 && g.tier > gearLvl) continue;
                 if (g.tier === playerChar.gear) {
-                    const toRemove = playerChar.equipped.map((eq) => eq.slot);
-                    while (toRemove.length) {
-                        g.equipmentSetList.splice(toRemove.pop(), 1);
+                    const toRemove = playerChar.equipped.map((eq) => eq.slot).sort((a, b) => b - a);
+                    for (const slot of toRemove) {
+                        g.equipmentSetList.splice(slot, 1);
                     }
                 }
                 // Take out all of the unknown ones
@@ -376,8 +376,8 @@ async function getParts(gr: SWAPIGearRecipe, partList: { name: string; count: nu
             await getParts(gear as never, partList, amt * r.maxQuantity);
         }
     } else {
-        let mk = gearPiece.nameKey.split(" ")[1];
-        mk = Number.isNaN(mk) ? -20 : mk;
+        const mkStr = gearPiece.nameKey.split(" ")[1];
+        const mk = Number.isNaN(Number(mkStr)) ? -20 : mkStr;
         partList.push({ name: gearPiece.nameKey, count: amt, mark: mk });
     }
 

@@ -448,7 +448,7 @@ export default class Guilds extends Command {
                     embeds: [
                         {
                             title: "Something Broke while getting your guild's characters",
-                            description: ` ${codeBlock(err)}`,
+                            description: ` ${codeBlock(err instanceof Error ? err.message : String(err))}`,
                             footer: { text: "Please try again in a bit" },
                         },
                     ],
@@ -552,7 +552,7 @@ export default class Guilds extends Command {
                     "I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.",
                 );
             }
-            interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
+            await interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
             const gRosterCodes = guild.roster.map((m) => m.allyCode);
 
             // Use the ally codes to get all the other info for the guild
@@ -635,9 +635,9 @@ export default class Guilds extends Command {
                 });
             }
             const tierKeys = Object.keys(members[0]).reverse();
-            for (const tier in tierKeys) {
-                if (members.filter((mem) => mem[tierKeys[tier]] > 0).length) {
-                    firstViableTier = tier;
+            for (const [index, tier] of tierKeys.entries()) {
+                if (members.filter((mem) => mem[tier] > 0).length) {
+                    firstViableTier = String(index);
                     break;
                 }
             }
@@ -898,7 +898,7 @@ export default class Guilds extends Command {
                     "I cannot find any players in that guild.\n Please make sure you have the name or ally code correct and try again.",
                 );
             }
-            interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
+            await interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
             const gRosterACs = guild.roster.map((m) => m.allyCode);
 
             // Use the ally codes to get all the other info for the guild
@@ -1022,30 +1022,47 @@ export default class Guilds extends Command {
                 3: "O", // Officer
                 4: "L", // Leader
             };
+            // Assign memberLvl and count missing ally codes
             for (const p of sortedGuild) {
-                // If there's a missing ally code, add to the count and move along
                 if (!p.allyCode) {
                     badCount += 1;
-                    continue;
+                } else {
+                    p.memberLvl = p.guildMemberLevel ? gRanks[p.guildMemberLevel] : null;
                 }
+            }
 
-                // Add in a letter for their rank in the guild ([M]ember, [O]fficer, [L]eader)
-                p.memberLvl = p.guildMemberLevel ? gRanks[p.guildMemberLevel] : null;
+            // Bulk-fetch all registered users for every ally code in one query
+            const validAllyCodes = sortedGuild.filter((p) => p.allyCode).map((p) => p.allyCode.toString());
+            const allyCodeUserMap = await userReg.getUsersByAllyCodes(validAllyCodes);
 
-                // Check if the player is registered, then bold the name if so
-                const codes = await userReg.getUsersFromAlly(p.allyCode.toString());
-                if (!codes?.length) continue;
-                for (const c of codes) {
-                    // Make sure they're in the same server
-                    const mem = await interaction.guild?.members.fetch(c.id).catch((err: unknown) => {
-                        // Member might have left guild or permissions issue
-                        const message = err instanceof Error ? err.message : String(err);
-                        logger.error(`Failed to fetch member ${c.id} in guild ${interaction.guild?.id}: ${message}`);
-                        return null;
-                    });
-                    if (interaction.guild && mem) {
+            // Collect all Discord IDs that appear in the results
+            const allDiscordIds = [
+                ...new Set(
+                    [...allyCodeUserMap.values()]
+                        .flat()
+                        .map((u) => u.id)
+                        .filter(Boolean),
+                ),
+            ];
+
+            // Bulk-fetch Discord guild members in one API call
+            const guildMembers = interaction.guild?.members
+                ? await interaction.guild.members.fetch({ user: allDiscordIds }).catch((err: unknown) => {
+                      const message = err instanceof Error ? err.message : String(err);
+                      logger.error(`Failed to bulk-fetch members in guild ${interaction.guild?.id}: ${message}`);
+                      return null;
+                  })
+                : null;
+
+            // Map ally codes back to the matching in-guild Discord user
+            for (const p of sortedGuild) {
+                if (!p.allyCode) continue;
+                const registeredUsers = allyCodeUserMap.get(p.allyCode.toString());
+                if (!registeredUsers?.length) continue;
+                for (const u of registeredUsers) {
+                    if (guildMembers?.has(u.id)) {
                         p.inGuild = true;
-                        p.dID = c.id;
+                        p.dID = u.id;
                         break;
                     }
                 }

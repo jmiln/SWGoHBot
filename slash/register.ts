@@ -69,11 +69,6 @@ export default class Register extends Command {
         // Then, if not, move along
         // See if they have an entry in the DB already
         let userConfig: UserConfig = await userReg.getUser(user.id);
-        if (userConfig?.accounts?.length && userConfig?.id !== user.id) {
-            // If someone else is trying to change the code already registered, error out
-            return super.error(interaction, "This account already has an ally code linked to it.");
-        }
-
         if (!userConfig) {
             // If they don't exist in the DB yet, stick em with a default config
             userConfig = JSON.parse(JSON.stringify(constants.defaultUserConf)) as Partial<UserConfig> as UserConfig;
@@ -92,7 +87,7 @@ export default class Register extends Command {
             const u = userConfig.accounts.find((a) => a.primary);
             return super.success(
                 interaction,
-                codeBlock("asciiDoc", language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g).join("-"))),
+                codeBlock("asciiDoc", language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g)?.join("-"))),
                 {
                     title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
                 },
@@ -119,32 +114,22 @@ export default class Register extends Command {
                 name: player.name,
                 primary: true,
             });
-            await userReg
-                .updateUser(user.id, userConfig)
-                .then(async () => {
-                    return super.success(
-                        interaction,
-                        codeBlock(
-                            "asciiDoc",
-                            language.get(
-                                "COMMAND_REGISTER_SUCCESS_DESC",
-                                player,
-                                player.allyCode?.toString().match(/\d{3}/g).join("-"),
-                                player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME")?.value?.toLocaleString() ?? "0",
-                            ),
-                        ),
-                        {
-                            title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
-                        },
-                    );
-                })
-                .catch((e: Error) => {
-                    logger.error(`[REGISTER] Broke while trying to link new user: ${e}`);
-                    return super.error(interaction, codeBlock(e.message), {
-                        title: language.get("BASE_SOMETHING_BROKE"),
-                        footer: "Please try again in a bit.",
-                    });
-                });
+            await userReg.updateUser(user.id, userConfig);
+            return super.success(
+                interaction,
+                codeBlock(
+                    "asciiDoc",
+                    language.get(
+                        "COMMAND_REGISTER_SUCCESS_DESC",
+                        player,
+                        player.allyCode?.toString().match(/\d{3}/g)?.join("-"),
+                        player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME")?.value?.toLocaleString() ?? "0",
+                    ),
+                ),
+                {
+                    title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
+                },
+            );
         } catch (e) {
             logger.error(`[REGISTER] Incorrect Ally Code: ${e}`);
             return super.error(interaction, `Something broke. Make sure you've got the correct ally code${codeBlock(e.message)}`);

@@ -293,9 +293,9 @@ export default class GuildSearch extends Command {
                 }
                 for (const s of Object.keys(member.stats.final)) {
                     if (member.stats.final[s] % 1 !== 0) {
-                        member.stats[s] = `${(member.stats.final[s] * 100).toFixed(2)}%`;
+                        stats[s] = `${(member.stats.final[s] * 100).toFixed(2)}%`;
                     } else {
-                        member.stats[s] = member.stats.final[s] ? member.stats.final[s].toLocaleString() : "N/A";
+                        stats[s] = member.stats.final[s] ? member.stats.final[s].toLocaleString() : "N/A";
                     }
                 }
                 outArr.push({

@@ -25,12 +25,12 @@ interface InteractionOptions {
     arena: string;
     arenaType: string;
     channel: GuildChannel;
-    enabled: boolean;
+    enabled: boolean | null;
     mark: string;
     mins: number;
     new_allyCode: string;
     old_allyCode: string;
-    remove_mark: boolean;
+    remove_mark: boolean | null;
     view_by: string;
 
     channelId: string;
@@ -450,7 +450,7 @@ export default class ArenaWatch extends Command {
             return;
         }
 
-        return super.error(interaction, result.outLog, { title: " ", color: constants.colors.blue });
+        return interaction.editReply({ content: result.outLog });
     }
 }
 
@@ -526,7 +526,7 @@ export async function processAWChanges({
                 }
 
                 // If they're trying to use a custom emote, make sure it's available for the bot to use
-                const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
+                const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/;
                 let cmdOut = null;
                 if (emojiRegex.test(mark)) {
                     cmdOut =
@@ -663,7 +663,7 @@ export async function processAWChanges({
 
                 // The mark to put with the ally code (Optional)
                 const mark = interactionOptions.mark || "";
-                const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/g;
+                const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/;
                 if (emojiRegex.test(mark)) {
                     outLog.push(
                         "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from",

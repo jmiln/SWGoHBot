@@ -52,7 +52,7 @@ export default class BotShards extends Command {
             await interaction.reply({ content: codeBlock("prolog", formatted) });
         } catch (error) {
             logger.error(`[slash/botshards] Error fetching shard info: ${error}`);
-            await interaction.reply("❌ Error fetching shard information.");
+            await interaction.reply({ content: "Error fetching shard information." });
         }
     }
 }
