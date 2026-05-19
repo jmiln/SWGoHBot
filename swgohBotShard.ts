@@ -36,9 +36,22 @@ Manager.on("shardCreate", (shard: Shard) => {
     });
 });
 
+async function formatSpawnError(err: unknown): Promise<string> {
+    if (err instanceof Response) {
+        const retryAfter = err.headers.get("retry-after");
+        const scope = err.headers.get("x-ratelimit-scope");
+        let detail = `HTTP ${err.status} ${err.statusText}`;
+        if (retryAfter) detail += ` — retry after ${retryAfter}s`;
+        if (scope) detail += ` (scope: ${scope})`;
+        return detail;
+    }
+    return err instanceof Error ? err.message : String(err);
+}
+
 // Give it a large timeout since it refuses to work otherwise
 Manager.spawn({ timeout: 60000 }).catch(async (err) => {
-    console.error(`Failed to spawn shards: ${err instanceof Error ? err.message : String(err)}`);
+    const message = await formatSpawnError(err);
+    console.error(`Failed to spawn shards: ${message}`);
     try {
         // Clean up spawned shards before exiting
         await Manager.broadcastEval(() => {
