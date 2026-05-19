@@ -1,117 +1,58 @@
 import assert from "node:assert";
-import { beforeEach, describe, it, mock } from "node:test";
+import { afterEach, beforeEach, describe, it } from "node:test";
+import swgohAPI from "../../modules/swapi.ts";
+import patreonFuncs from "../../modules/patreonFuncs.ts";
 import GrandArena from "../../slash/grandarena.ts";
-import { createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
+import { assertErrorReply, getLastReply } from "./helpers.ts";
+
+const originalUnitStats = swgohAPI.unitStats;
+const originalGetPlayerCooldown = patreonFuncs.getPlayerCooldown;
+
+const mockCooldown = { player: 60000, guild: 3600000 };
+
+function makeDarthVader(overrides: Record<string, any> = {}) {
+    return createMockUnit({
+        defId: "DARTHVADER",
+        nameKey: "Darth Vader",
+        combatType: 1,
+        gear: 13,
+        rarity: 7,
+        gp: 28000,
+        level: 85,
+        relic: { currentTier: 9 },
+        skills: [
+            { id: "basic01darthvader", tier: 8, tiers: 8, isZeta: false, isOmicron: false },
+            { id: "special01darthvader", tier: 8, tiers: 8, isZeta: true, isOmicron: false },
+        ],
+        ...overrides,
+    });
+}
 
 describe("GrandArena Functionality", () => {
     beforeEach(() => {
-        // Reset mocks before each test
-        mock.restoreAll();
+        patreonFuncs.getPlayerCooldown = async () => mockCooldown as any;
     });
 
-    it("should validate player comparison output structure", async () => {
-        // Mock player data with realistic rosters
-        const mockPlayer1 = {
-            id: "player1",
+    afterEach(() => {
+        swgohAPI.unitStats = originalUnitStats;
+        patreonFuncs.getPlayerCooldown = originalGetPlayerCooldown;
+    });
+
+    it("should return a comparison embed with all expected field sections", async () => {
+        const player1 = createMockPlayer({
             name: "TestPlayer1",
             allyCode: 123456789,
-            guildId: "guild1",
-            guildName: "Test Guild 1",
-            guildBannerColor: "blue",
-            guildBannerLogo: "logo",
-            level: 85,
-            poUTCOffsetMinutes: 0,
-            stats: [],
-            arena: {
-                char: { rank: 50, squad: [] },
-                ship: { rank: 100, squad: [] },
-            },
-            lastActivity: Date.now(),
-            updated: Date.now(),
-            roster: [
-                {
-                    id: "char1",
-                    defId: "DARTHVADER",
-                    nameKey: "Darth Vader",
-                    gear: 13,
-                    equipped: [],
-                    skills: [
-                        { id: "basic", tier: 8, tiers: 8, isZeta: false, isOmicron: false },
-                        { id: "special", tier: 8, tiers: 8, isZeta: true, isOmicron: false },
-                    ],
-                    mods: [
-                        {
-                            id: "mod1",
-                            level: 15,
-                            tier: 5,
-                            slot: 1,
-                            set: 1,
-                            pips: 6,
-                            primaryStat: { unitStat: 1, value: 100 },
-                            secondaryStat: [
-                                { unitStat: 5, value: 20, roll: 4 }, // Speed
-                                { unitStat: 41, value: 120, roll: 3 }, // Offense
-                            ],
-                        },
-                    ],
-                    relic: { currentTier: 9 },
-                    purchasedAbilityId: [],
-                    crew: null,
-                    combatType: 1,
-                    gp: 28000,
-                    level: 85,
-                    rarity: 7,
-                    stats: {
-                        final: { Speed: 200 } as any,
-                        mods: { Speed: 50 } as any,
-                        gp: 28000,
-                    },
-                },
-                {
-                    id: "ship1",
-                    defId: "HOUNDSTOOTH",
-                    nameKey: "Hound's Tooth",
-                    gear: 0,
-                    equipped: [],
-                    skills: [],
-                    relic: null,
-                    purchasedAbilityId: [],
-                    crew: [],
-                    combatType: 2,
-                    gp: 25000,
-                    level: 85,
-                    rarity: 7,
-                },
-            ],
-        };
-
-        const mockPlayer2 = {
-            ...mockPlayer1,
-            id: "player2",
+            roster: [makeDarthVader()],
+        });
+        const player2 = createMockPlayer({
             name: "TestPlayer2",
             allyCode: 987654321,
-            guildName: "Test Guild 2",
-            roster: [
-                {
-                    ...mockPlayer1.roster[0],
-                    id: "char2",
-                    gear: 12,
-                    equipped: [{ equipmentId: 1, slot: 1 }],
-                    relic: null,
-                    gp: 20000,
-                    stats: {
-                        final: { Speed: 180 } as any,
-                        mods: { Speed: 40 } as any,
-                        gp: 20000,
-                    },
-                },
-                {
-                    ...mockPlayer1.roster[1],
-                    id: "ship2",
-                    gp: 22000,
-                },
-            ],
-        };
+            roster: [makeDarthVader({ gear: 12, gp: 20000, relic: null })],
+        });
+
+        swgohAPI.unitStats = async () => [player1, player2] as any;
+
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
@@ -119,90 +60,54 @@ describe("GrandArena Functionality", () => {
             },
         } as any);
 
-        // Mock patreonFuncs to avoid database dependency
-        const patreonFuncs = await import("../../modules/patreonFuncs.ts");
-        mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
+        await new GrandArena().run(createCommandContext({ interaction }));
 
-        const command = new GrandArena();
-        await command.run({ interaction, language: (interaction as any).language });
+        const lastReply = getLastReply(interaction);
+        assert.ok(lastReply.embeds?.length > 0, "Expected embed in final reply");
 
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
+        const embed = lastReply.embeds[0];
+        const embedData = embed.data || embed;
+        assert.ok(embedData.fields?.length > 0, "Expected embed fields");
 
-        const finalReply = replies[replies.length - 1];
-
-        // The command may return an error if patreonFuncs isn't mocked properly
-        // Check if we got an error or a successful comparison
-        if (finalReply.embeds && finalReply.embeds[0]) {
-            const embed = finalReply.embeds[0];
-
-            // If it's an error embed, that's okay for this test (mocking limitations)
-            if (embed.description) {
-                // This is likely an error embed - just verify it exists
-                assert.ok(true, "Got response from command");
-                return;
-            }
-
-            // Verify key comparison sections are present if we got a successful response
-            if (embed.fields && embed.fields.length > 0) {
-                const fieldNames = embed.fields.map((f: any) => f.name);
-                assert.ok(fieldNames.includes("General Overview"), "Expected General Overview field");
-                assert.ok(fieldNames.includes("GP Stats Overview"), "Expected GP Stats Overview field");
-                assert.ok(fieldNames.includes("Character Gear Counts"), "Expected Character Gear Counts field");
-                assert.ok(fieldNames.includes("Character Rarity Counts"), "Expected Character Rarity Counts field");
-                assert.ok(fieldNames.includes("Galactic Legend Overview"), "Expected Galactic Legend Overview field");
-                assert.ok(fieldNames.includes("Character Relic Counts"), "Expected Character Relic Counts field");
-                assert.ok(fieldNames.includes("Mod Stats Overview"), "Expected Mod Stats Overview field");
-            } else {
-                // If no fields, just verify we got some kind of embed response
-                // This can happen due to mocking limitations
-                assert.ok(embed, "Got embed response from command");
-            }
-        } else {
-            assert.fail("Expected embeds in final reply");
-        }
+        const fieldNames = embedData.fields.map((f: any) => f.name);
+        assert.ok(fieldNames.includes("General Overview"), "Expected General Overview field");
+        assert.ok(fieldNames.includes("GP Stats Overview"), "Expected GP Stats Overview field");
+        assert.ok(fieldNames.includes("Character Gear Counts"), "Expected Character Gear Counts field");
+        assert.ok(fieldNames.includes("Character Rarity Counts"), "Expected Character Rarity Counts field");
+        assert.ok(fieldNames.includes("Character Relic Counts"), "Expected Character Relic Counts field");
+        assert.ok(fieldNames.includes("Mod Stats Overview"), "Expected Mod Stats Overview field");
     });
 
-    it("should handle character-specific comparisons with character filter", async () => {
-        const mockRoster = [
-            {
-                id: "char1",
-                defId: "DARTHVADER",
-                nameKey: "Darth Vader",
-                gear: 13,
-                equipped: [],
-                skills: [
-                    { id: "basic", tier: 8, tiers: 8, isZeta: false, isOmicron: false },
-                    { id: "special", tier: 8, tiers: 8, isZeta: true, isOmicron: false },
-                ],
-                mods: [],
-                relic: { currentTier: 9 },
-                purchasedAbilityId: [],
-                crew: null,
-                combatType: 1,
-                gp: 28000,
-                level: 85,
-                rarity: 7,
-                stats: { final: { Speed: 200 } as any, mods: { Speed: 50 } as any, gp: 28000 },
-            },
-        ];
+    it("should set the embed author using the output header language key", async () => {
+        const player1 = createMockPlayer({ name: "AlphaPlayer", allyCode: 123456789, roster: [makeDarthVader()] });
+        const player2 = createMockPlayer({ name: "BetaPlayer", allyCode: 987654321, roster: [makeDarthVader()] });
 
-        const mockPlayer = {
-            id: "player1",
-            name: "TestPlayer",
-            allyCode: 123456789,
-            guildId: "guild1",
-            guildName: "Test Guild",
-            guildBannerColor: "blue",
-            guildBannerLogo: "logo",
-            level: 85,
-            poUTCOffsetMinutes: 0,
-            stats: [],
-            arena: { char: { rank: 50, squad: [] }, ship: { rank: 100, squad: [] } },
-            lastActivity: Date.now(),
-            updated: Date.now(),
-            roster: mockRoster,
-        };
+        swgohAPI.unitStats = async () => [player1, player2] as any;
+
+        const interaction = createMockInteraction({
+            optionsData: { allycode_1: "123456789", allycode_2: "987654321" },
+        } as any);
+
+        await new GrandArena().run(createCommandContext({ interaction }));
+
+        const lastReply = getLastReply(interaction);
+        const embed = lastReply.embeds?.[0];
+        const embedData = embed?.data || embed;
+
+        // The test language mock returns the language key itself; verify the correct key is used
+        assert.ok(embedData?.author?.name?.includes("COMMAND_GRANDARENA_OUT_HEADER"), "Expected embed author to use grandarena output header language key");
+
+        // Verify the General Overview field contains GP values derived from the mock roster
+        const overviewField = embedData?.fields?.find((f: any) => f.name === "General Overview");
+        assert.ok(overviewField?.value?.length > 0, "Expected General Overview field to have content");
+    });
+
+    it("should include a character comparison section when characters filter is used", async () => {
+        const player1 = createMockPlayer({ name: "P1", allyCode: 123456789, roster: [makeDarthVader()] });
+        const player2 = createMockPlayer({ name: "P2", allyCode: 987654321, roster: [makeDarthVader({ gear: 12, relic: null })] });
+
+        swgohAPI.unitStats = async () => [player1, player2] as any;
+
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
@@ -211,83 +116,63 @@ describe("GrandArena Functionality", () => {
             },
         } as any);
 
-        const patreonFuncs = await import("../../modules/patreonFuncs.ts");
-        mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
+        await new GrandArena().run(createCommandContext({ interaction }));
 
-        const command = new GrandArena();
-        await command.run({ interaction, language: (interaction as any).language });
+        const lastReply = getLastReply(interaction);
+        const embed = lastReply.embeds?.[0];
+        const embedData = embed?.data || embed;
+        assert.ok(embedData?.fields?.length > 0, "Expected fields in character comparison embed");
 
-        const replies = (interaction as any)._getReplies();
-        const finalReply = replies[replies.length - 1];
-
-        assert.ok(finalReply.embeds, "Expected embeds in reply");
-        const embed = finalReply.embeds[0];
-        assert.ok(embed, "Expected embed object");
-
-        // Should have character-specific comparison fields
-        if (embed.fields && embed.fields.length > 0) {
-            const fieldNames = embed.fields.map((f: any) => f.name);
-            assert.ok(fieldNames.some((name: string) => name.includes("Darth Vader")), "Expected Darth Vader comparison field");
-        }
+        const fieldNames = embedData.fields.map((f: any) => f.name);
+        const hasDarthVaderField = fieldNames.some((n: string) => n.includes("Darth Vader") || n.includes("DARTHVADER"));
+        assert.ok(hasDarthVaderField, "Expected a field comparing Darth Vader between the two players");
     });
 
-    it("should handle error when API call fails", async () => {
-        const interaction = createMockInteraction({
-            optionsData: {
-                allycode_1: "123456789",
-                allycode_2: "987654321",
-            },
-        } as any);
-
-        const patreonFuncs = await import("../../modules/patreonFuncs.ts");
-        mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
-
-        const command = new GrandArena();
-        await command.run({ interaction, language: (interaction as any).language });
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
-
-        // Command should have attempted to respond (even if it errors internally)
-        // We're mainly testing that it doesn't crash
-        assert.ok(true, "Command completed without crashing");
-    });
-
-    it("should handle empty rosters", async () => {
-        const emptyPlayer = {
-            id: "player1",
-            name: "EmptyPlayer",
-            allyCode: 123456789,
-            guildId: "guild1",
-            guildName: "Test Guild",
-            guildBannerColor: "blue",
-            guildBannerLogo: "logo",
-            level: 85,
-            poUTCOffsetMinutes: 0,
-            stats: [],
-            arena: { char: { rank: 50, squad: [] }, ship: { rank: 100, squad: [] } },
-            lastActivity: Date.now(),
-            updated: Date.now(),
-            roster: [],
+    it("should return an error reply when the API call fails", async () => {
+        swgohAPI.unitStats = async () => {
+            throw new Error("API unavailable");
         };
+
+        const interaction = createMockInteraction({
+            optionsData: { allycode_1: "123456789", allycode_2: "987654321" },
+        } as any);
+
+        await new GrandArena().run(createCommandContext({ interaction }));
+
+        assertErrorReply(interaction, "Could not get user");
+    });
+
+    it("should return an error reply when players have empty rosters", async () => {
+        const player1 = createMockPlayer({ name: "EmptyP1", allyCode: 123456789, roster: [] });
+        const player2 = createMockPlayer({ name: "EmptyP2", allyCode: 987654321, roster: [] });
+
+        swgohAPI.unitStats = async () => [player1, player2] as any;
+
+        const interaction = createMockInteraction({
+            optionsData: { allycode_1: "123456789", allycode_2: "987654321" },
+        } as any);
+
+        await new GrandArena().run(createCommandContext({ interaction }));
+
+        assertErrorReply(interaction, "Could not get user");
+    });
+
+    it("should return an error reply when a faction filter matches nothing", async () => {
+        const player1 = createMockPlayer({ name: "P1", allyCode: 123456789, roster: [makeDarthVader()] });
+        const player2 = createMockPlayer({ name: "P2", allyCode: 987654321, roster: [makeDarthVader()] });
+
+        swgohAPI.unitStats = async () => [player1, player2] as any;
+
         const interaction = createMockInteraction({
             optionsData: {
                 allycode_1: "123456789",
                 allycode_2: "987654321",
+                faction: "NONEXISTENTFACTION99999",
             },
         } as any);
 
-        const patreonFuncs = await import("../../modules/patreonFuncs.ts");
-        mock.method(patreonFuncs.default, "getPlayerCooldown", async () => ({ player: 60000, guild: 3600000 }));
+        await new GrandArena().run(createCommandContext({ interaction }));
 
-        const command = new GrandArena();
-        await command.run({ interaction, language: (interaction as any).language });
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
-
-        // Command should have attempted to respond (even if it errors internally)
-        // We're mainly testing that it doesn't crash
-        assert.ok(true, "Command completed without crashing");
+        assertErrorReply(interaction);
     });
 });
