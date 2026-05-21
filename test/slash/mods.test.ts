@@ -1,14 +1,54 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { after, before, describe, it } from "node:test";
 import Mods from "../../slash/mods.ts";
+import type { BotUnit } from "../../types/types.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
-describe("Mods", () => {
-    // Note: Mods command uses static character data, so we can test more functionality.
+const FIXTURE_WITH_MODS: BotUnit = {
+    uniqueName: "FIXTURE_WITHMODS",
+    name: "Fixture With Mods",
+    aliases: ["Fixture With Mods"],
+    avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_test.png",
+    avatarName: "charui_test",
+    side: "light",
+    factions: ["Rebel"],
+    mods: {
+        sets: ["Speed x4", "Potency x2"],
+        square: "Offense",
+        arrow: "Speed",
+        diamond: "Defense",
+        triangle: "Critical Chance",
+        circle: "Protection",
+        cross: "Potency",
+    },
+};
 
-    it("should return error for character not found", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "NonexistentCharacter999" }
+const FIXTURE_NO_MODS: BotUnit = {
+    uniqueName: "FIXTURE_NOMODS",
+    name: "Fixture No Mods",
+    aliases: ["Fixture No Mods"],
+    avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_testnomods.png",
+    avatarName: "charui_testnomods",
+    side: "dark",
+    factions: ["Empire"],
+};
+
+describe("Mods", () => {
+    let originalCharacters: BotUnit[];
+
+    before(() => {
+        originalCharacters = Mods.characters;
+        Mods.characters = [FIXTURE_WITH_MODS, FIXTURE_NO_MODS];
+    });
+
+    after(() => {
+        Mods.characters = originalCharacters;
+    });
+
+    it("should return error for character not found", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "NonexistentCharacter999" },
         });
 
         const command = new Mods();
@@ -18,35 +58,35 @@ describe("Mods", () => {
         assertErrorReply(interaction, "COMMAND_MODS_USAGE");
     });
 
-    it("should return error for multiple character matches", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "CHAR" } // Generic search
+    it("should return error for multiple character matches", async () => {
+        // "fixture" appears in both fixture character names
+        const interaction = createMockInteraction({
+            optionsData: { character: "fixture" },
         });
 
         const command = new Mods();
         const ctx = createCommandContext({ interaction });
         await command.run(ctx);
 
-        // Either finds nothing or finds multiple - both should error
         const replies = (interaction as any)._getReplies();
         assert.ok(replies.length > 0, "Expected at least one reply");
     });
 
-    it("should defer reply before processing", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "InvalidChar" }
+    it("should defer reply before processing", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "NonexistentChar" },
         });
 
         const command = new Mods();
         const ctx = createCommandContext({ interaction });
         await command.run(ctx);
 
-        // Should have deferred the reply
         assert.strictEqual((interaction as any).deferred, true, "Expected interaction to be deferred");
     });
 
     it("should return embed with mod set info for a character with mods", async () => {
-        // COMMANDERLUKESKYWALKER has mod data in the static units list
         const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" },
+            optionsData: { character: "FIXTURE_WITHMODS" },
         });
 
         const command = new Mods();
@@ -62,15 +102,13 @@ describe("Mods", () => {
         const embedData = embed.data || embed;
         const description = embedData.description || "";
 
-        // Description should contain actual mod data, not the "no mod sets" key
         assert.ok(!description.includes("COMMAND_NO_MODSETS"), "Expected mod data, not no-mod-sets message");
         assert.ok(description.length > 0, "Expected non-empty description");
     });
 
     it("should return COMMAND_NO_MODSETS for a character without mod recommendations", async () => {
-        // CASSIANUNDERCOVER has no mod data
         const interaction = createMockInteraction({
-            optionsData: { character: "CASSIANUNDERCOVER" },
+            optionsData: { character: "FIXTURE_NOMODS" },
         });
 
         const command = new Mods();
@@ -88,5 +126,4 @@ describe("Mods", () => {
 
         assert.ok(description.includes("COMMAND_NO_MODSETS"), "Expected no-mod-sets key in description");
     });
-
 });

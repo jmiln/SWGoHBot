@@ -2,9 +2,11 @@ import { ApplicationCommandOptionType, InteractionContextType } from "discord.js
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import { charListFromSearch, findChar, getSideColor } from "../modules/functions.ts";
-import type { BotUnitMods, CommandContext } from "../types/types.ts";
+import type { BotUnit, BotUnitMods, CommandContext } from "../types/types.ts";
 
 export default class Mods extends Command {
+    static characters: BotUnit[] = characters;
+
     static readonly metadata = {
         name: "mods",
         category: "Gamedata",
@@ -96,7 +98,7 @@ export default class Mods extends Command {
         const searchName = interaction.options.getString("character");
 
         // Find any characters that match that
-        const chars = findChar(searchName, characters);
+        const chars = findChar(searchName, Mods.characters);
         if (!chars?.length) {
             return super.error(interaction, language.get("COMMAND_MODS_USAGE") || "Usage is `/mods character: <characterName>`", {
                 title: language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER") || "Invalid Character",
