@@ -2724,6 +2724,10 @@
         "defId": "KLEYA",
         "locations": [
             {
+                "type": "Hard Modes (L)",
+                "locId": "HARD_LIGHT"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_KLEYA_NAME",
                 "name": "The Gallery Of Secrets Special Marquee Event"
@@ -4377,11 +4381,6 @@
                 "locId": "HARD_DARK"
             },
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "5-E",
-                "locId": "HARD_FLEET"
-            },
-            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_THEMANDALORIAN_NAME",
                 "name": "Tales From The Outer Rim Iii Marquee Event"
@@ -4768,7 +4767,13 @@
     {
         "name": "Zeb Orrelios (New Republic Pilot)",
         "defId": "RANGERZEB",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_RANGERZEB_NAME",
+                "name": "Training Operations Special Marquee Event"
+            }
+        ]
     },
     {
         "name": "Zorii Bliss",

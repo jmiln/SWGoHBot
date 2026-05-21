@@ -1588,7 +1588,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -1641,7 +1652,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -1840,7 +1851,18 @@
             "CATEGORY_REBELS_DESC",
             "CATEGORY_ROLEATTACKER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -2276,8 +2298,7 @@
             "cross": "Protection",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ]
         }
     },
@@ -2762,7 +2783,18 @@
             "CATEGORY_IMPERIALSECURITYBUREAU",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -3343,7 +3375,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -3430,8 +3462,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
+                "Health x2",
+                "Health x2",
                 "Defense x2"
             ]
         },
@@ -3725,7 +3757,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3900,9 +3932,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
+            "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4955,7 +4987,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -5459,7 +5491,18 @@
             "CATEGORY_REBELS_DESC",
             "CATEGORY_ROLEATTACKER_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -5535,7 +5578,19 @@
             "CATEGORY_ROLETANK_DESC",
             "CATEGORY_SPECIESDROID_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Tenacity x2"
+            ]
+        },
         "crew": []
     },
     {
@@ -5968,7 +6023,18 @@
             "CATEGORY_ROLELEADER_DESC",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        },
         "crew": []
     },
     {
@@ -7358,7 +7424,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Potency",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -8833,7 +8899,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -8999,7 +9065,19 @@
             "CATEGORY_REBELS_DESC",
             "CATEGORY_ROLESUPPORT_DESC"
         ],
-        "mods": {},
+        "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ]
+        },
         "crew": []
     },
     {
@@ -9246,7 +9324,7 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Protection",
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",

@@ -1,1012 +1,4 @@
 {
-    "ENDORLEIA": {
-        "guideId": "GLLEIA_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "CAPTAINREX",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "PRINCESSKNEESAA",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "WICKET",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "ADMINISTRATORLANDO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "ADMIRALACKBAR",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "SCOUTTROOPER_V3",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "R2D2_LEGENDARY",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "HOTHHAN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "HOTHLEIA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "CHIEFCHIRPA",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "CAPTAINDROGAN",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "COMMANDERLUKESKYWALKER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BOUSHH",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "C3POCHEWBACCA",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "LOBOT",
-                "type": "RELIC",
-                "tier": 3
-            }
-        ]
-    },
-    "JEDIKNIGHTCAL": {
-        "guideId": "CALKESTISSURVIVOR_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "CALKESTIS",
-                "type": "GEAR",
-                "tier": 12
-            },
-            {
-                "defId": "CEREJUNDA",
-                "type": "GEAR",
-                "tier": 12
-            },
-            {
-                "defId": "MERRIN",
-                "type": "GEAR",
-                "tier": 12
-            },
-            {
-                "defId": "TARFFUL",
-                "type": "GEAR",
-                "tier": 12
-            },
-            {
-                "defId": "SAWGERRERA",
-                "type": "GEAR",
-                "tier": 12
-            }
-        ]
-    },
-    "DOCTORAPHRA": {
-        "guideId": "DOCTORAPHRA_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "HONDO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "TRIPLEZERO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BT1",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "SANASTARROS",
-                "type": "RELIC",
-                "tier": 5
-            }
-        ]
-    },
-    "JABBATHEHUTT": {
-        "guideId": "JABBA_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "KRRSANTAN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "HANSOLO",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "GAMORREANGUARD",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "OUTRIDER",
-                "type": "STAR",
-                "tier": 7,
-                "ship": true
-            },
-            {
-                "defId": "GREEDO",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "UNDERCOVERLANDO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "JEDIKNIGHTLUKE",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "JAWA",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "URORRURRR",
-                "type": "RELIC",
-                "tier": 4
-            },
-            {
-                "defId": "C3POLEGENDARY",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BOUSHH",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "AURRA_SING",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "FENNECSHAND",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BOBAFETT",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "HUMANTHUG",
-                "type": "RELIC",
-                "tier": 3
-            }
-        ]
-    },
-    "GRANDINQUISITOR": {
-        "guideId": "GRANDINQUISITOR_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "SECONDSISTER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "NINTHSISTER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "SEVENTHSISTER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "EIGHTHBROTHER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "FIFTHBROTHER",
-                "type": "RELIC",
-                "tier": 5
-            }
-        ]
-    },
-    "STARKILLER": {
-        "guideId": "STARKILLER_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "DASHRENDAR",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "KYLEKATARN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "DARTHTALON",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "MARAJADE",
-                "type": "RELIC",
-                "tier": 5
-            }
-        ]
-    },
-    "CAPITALEXECUTOR": {
-        "guideId": "EXECUTOR_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "VADER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "ADMIRALPIETT",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "BOBAFETT",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "DENGAR",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "IG88",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BOSSK",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "TIEFIGHTERPILOT",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "TIEADVANCED",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "TIEBOMBERIMPERIAL",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "HOUNDSTOOTH",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "SLAVE1",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "IG2000",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "TIEFIGHTERIMPERIAL",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "RAZORCREST",
-                "type": "STAR",
-                "tier": 5,
-                "ship": true
-            }
-        ]
-    },
-    "CAPITALPROFUNDITY": {
-        "guideId": "PROFUNDITY_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "ADMIRALRADDUS",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "CASSIANANDOR",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "DASHRENDAR",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "MONMOTHMA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BISTAN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "JYNERSO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "HERASYNDULLAS3",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "OUTRIDER",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "UWINGROGUEONE",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "UWINGSCARIF",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "XWINGRED2",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "XWINGRED3",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "YWINGREBEL",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "GHOST",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            }
-        ]
-    },
-    "CAPITALLEVIATHAN": {
-        "guideId": "LEVIATHAN_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "DARTHREVAN",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "DARTHMALAK",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "SITHTROOPER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "FOSITHTROOPER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "MAUL",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "HK47",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BASTILASHAN",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "SITHASSASSIN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "50RT",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "FURYCLASSINTERCEPTOR",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "SITHSUPREMACYCLASS",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "TIEDAGGER",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "SITHBOMBER",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "SITHINFILTRATOR",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "SITHFIGHTER",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            },
-            {
-                "defId": "EBONHAWK",
-                "type": "STAR",
-                "tier": 4,
-                "ship": true
-            }
-        ]
-    },
-    "LORDVADER": {
-        "guideId": "GLV_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "BADBATCHHUNTER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BADBATCHTECH",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BADBATCHWRECKER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "TUSKENRAIDER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "PADMEAMIDALA",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "EMBO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "CT210408",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BADBATCHECHO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "COUNTDOOKU",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "ZAMWESELL",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "YWINGCLONEWARS",
-                "type": "STAR",
-                "tier": 7,
-                "ship": true
-            },
-            {
-                "defId": "GRANDMOFFTARKIN",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "ARCTROOPER501ST",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "GENERALSKYWALKER",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "NUTEGUNRAY",
-                "type": "RELIC",
-                "tier": 7
-            }
-        ]
-    },
-    "JEDIMASTERKENOBI": {
-        "guideId": "JMK_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "GENERALKENOBI",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "CAPITALNEGOTIATOR",
-                "type": "STAR",
-                "tier": 6,
-                "ship": true
-            },
-            {
-                "defId": "MACEWINDU",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "AAYLASECURA",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "BOKATAN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "QUIGONJINN",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "MAGNAGUARD",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "CLONESERGEANTPHASEI",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "WATTAMBOR",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GRIEVOUS",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "CADBANE",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "CC2224",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "JANGOFETT",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "SHAAKTI",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GRANDMASTERYODA",
-                "type": "RELIC",
-                "tier": 8
-            }
-        ]
-    },
-    "GRANDMASTERLUKE": {
-        "guideId": "JMLS_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "OLDBENKENOBI",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "REYJEDITRAINING",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "C3POLEGENDARY",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "MONMOTHMA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "C3POCHEWBACCA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "JEDIKNIGHTLUKE",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "R2D2_LEGENDARY",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "HANSOLO",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "CHEWBACCALEGENDARY",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "YWINGREBEL",
-                "type": "STAR",
-                "tier": 6,
-                "ship": true
-            },
-            {
-                "defId": "PRINCESSLEIA",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "HERMITYODA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "WEDGEANTILLES",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "BIGGSDARKLIGHTER",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "ADMINISTRATORLANDO",
-                "type": "RELIC",
-                "tier": 5
-            }
-        ]
-    },
-    "SITHPALPATINE": {
-        "guideId": "SEE_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "EMPERORPALPATINE",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "VADER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "ROYALGUARD",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "ADMIRALPIETT",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "DIRECTORKRENNIC",
-                "type": "RELIC",
-                "tier": 4
-            },
-            {
-                "defId": "DARTHSIDIOUS",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "MAUL",
-                "type": "RELIC",
-                "tier": 4
-            },
-            {
-                "defId": "COUNTDOOKU",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "SITHMARAUDER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "TIEBOMBERIMPERIAL",
-                "type": "STAR",
-                "tier": 6,
-                "ship": true
-            },
-            {
-                "defId": "ANAKINKNIGHT",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GRANDADMIRALTHRAWN",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "GRANDMOFFTARKIN",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "VEERS",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "COLONELSTARCK",
-                "type": "RELIC",
-                "tier": 3
-            }
-        ]
-    },
-    "SUPREMELEADERKYLOREN": {
-        "guideId": "SLKR_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "KYLORENUNMASKED",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "FIRSTORDERTROOPER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "FIRSTORDEROFFICERMALE",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "KYLOREN",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "PHASMA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "FIRSTORDEREXECUTIONER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "SMUGGLERHAN",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "FOSITHTROOPER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "FIRSTORDERSPECIALFORCESPILOT",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "GENERALHUX",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "FIRSTORDERTIEPILOT",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "EMPERORPALPATINE",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "CAPITALFINALIZER",
-                "type": "STAR",
-                "tier": 5,
-                "ship": true
-            }
-        ]
-    },
-    "GLREY": {
-        "guideId": "REY_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "REYJEDITRAINING",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "FINN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "RESISTANCETROOPER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "REY",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "RESISTANCEPILOT",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "POE",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "EPIXFINN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "AMILYNHOLDO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "ROSETICO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "EPIXPOE",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BB8",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "SMUGGLERCHEWBACCA",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "CAPITALRADDUS",
-                "type": "STAR",
-                "tier": 5,
-                "ship": true
-            }
-        ]
-    },
     "C3POLEGENDARY": {
         "type": "FACTION",
         "faction": {
@@ -3485,254 +2477,90 @@
             }
         ]
     },
-    "GLLEIA": {
-        "guideId": "GLLEIA_JOURNEY_GUIDE_REQUIREMENT",
+    "GLHONDO": {
+        "guideId": "GLHONDO_JOURNEY_GUIDE_REQUIREMENT",
         "type": "AUTO",
         "reqs": [
             {
-                "defId": "CAPTAINREX",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "PRINCESSKNEESAA",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "WICKET",
+                "defId": "ITHANO",
                 "type": "RELIC",
                 "tier": 3
             },
             {
-                "defId": "ADMINISTRATORLANDO",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "ADMIRALACKBAR",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "SCOUTTROOPER_V3",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "R2D2_LEGENDARY",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "HOTHHAN",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "HOTHLEIA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "CHIEFCHIRPA",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "CAPTAINDROGAN",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "COMMANDERLUKESKYWALKER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BOUSHH",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "C3POCHEWBACCA",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "LOBOT",
-                "type": "RELIC",
-                "tier": 3
-            }
-        ]
-    },
-    "MANDALORBOKATAN": {
-        "guideId": "MANDALORBOKATAN_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "KELLERANBEQ",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "PAZVIZSLA",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "IG12",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "THEMANDALORIANBESKARARMOR",
-                "type": "RELIC",
-                "tier": 7
-            }
-        ]
-    },
-    "JARJARBINKS": {
-        "guideId": "BOMBAD_GENERAL_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "BOSSNASS",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "CAPTAINTARPALS",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "BOOMADIER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "GUNGANPHALANX",
-                "type": "RELIC",
-                "tier": 5
-            }
-        ]
-    },
-    "GLAHSOKA": {
-        "guideId": "GLAHSOKA_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "AHSOKATANO",
+                "defId": "HONDO",
                 "type": "RELIC",
                 "tier": 9
             },
             {
-                "defId": "GENERALSKYWALKER",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "ASAJVENTRESS",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "NIGHTTROOPER",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "COMMANDERAHSOKA",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "CAPTAINENOCH",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "DEATHTROOPERPERIDEA",
+                "defId": "SMUGGLERCHEWBACCA",
                 "type": "RELIC",
                 "tier": 7
             },
             {
                 "defId": "EZRABRIDGERS3",
                 "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "QUIGGOLD",
+                "type": "RELIC",
                 "tier": 5
             },
             {
-                "defId": "FULCRUMAHSOKA",
+                "defId": "KIX",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "GENERALSKYWALKER",
                 "type": "RELIC",
                 "tier": 9
             },
             {
-                "defId": "CT7567",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "BARRISSOFFEE",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "PADAWANSABINE",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GENERALSYNDULLA",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "PLOKOON",
+                "defId": "REY",
                 "type": "RELIC",
                 "tier": 8
             },
             {
-                "defId": "HUYANG",
+                "defId": "BRUTUS",
                 "type": "RELIC",
                 "tier": 7
             },
             {
-                "defId": "JEDISTARFIGHTERAHSOKATANO",
+                "defId": "VANE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GENERALKENOBI",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "CHIRRUTIMWE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CAPTAINSILVO",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "COUNTDOOKU",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "BOSSK",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "MILLENNIUMFALCONEP7",
                 "type": "STAR",
                 "tier": 7,
                 "ship": true
-            }
-        ]
-    },
-    "BAYLANSKOLL": {
-        "guideId": "ONE_MUST_DESTROY_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "SHINHATI",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "MARROK",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "MORGANELSBETH",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GREATMOTHERS",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GRANDADMIRALTHRAWN",
-                "type": "RELIC",
-                "tier": 7
             }
         ]
     },
@@ -3823,110 +2651,212 @@
             }
         ]
     },
-    "JEDIMASTERMACEWINDU": {
-        "guideId": "BESET_ON_ALL_SIDES_JOURNEY_GUIDE_REQUIREMENT",
+    "GLLEIA": {
+        "guideId": "GLLEIA_JOURNEY_GUIDE_REQUIREMENT",
         "type": "AUTO",
         "reqs": [
             {
-                "defId": "APPO",
+                "defId": "CAPTAINREX",
                 "type": "RELIC",
-                "tier": 5
+                "tier": 7
             },
             {
-                "defId": "OPERATIVE",
+                "defId": "PRINCESSKNEESAA",
                 "type": "RELIC",
-                "tier": 5
+                "tier": 7
             },
             {
-                "defId": "DISGUISEDCLONETROOPER",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "SCORCH",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "VANGUARDTEMPLEGUARD",
-                "type": "RELIC",
-                "tier": 5
-            },
-            {
-                "defId": "DEPABILLABA",
-                "type": "RELIC",
-                "tier": 5
-            }
-        ]
-    },
-    "PIRATEHONDO": {
-        "guideId": "GLHONDO_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "ITHANO",
+                "defId": "WICKET",
                 "type": "RELIC",
                 "tier": 3
             },
             {
-                "defId": "HONDO",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "SMUGGLERCHEWBACCA",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "EZRABRIDGERS3",
-                "type": "RELIC",
-                "tier": 6
-            },
-            {
-                "defId": "QUIGGOLD",
+                "defId": "ADMINISTRATORLANDO",
                 "type": "RELIC",
                 "tier": 5
             },
             {
-                "defId": "KIX",
+                "defId": "ADMIRALACKBAR",
                 "type": "RELIC",
-                "tier": 6
+                "tier": 3
             },
             {
-                "defId": "GENERALSKYWALKER",
+                "defId": "SCOUTTROOPER_V3",
                 "type": "RELIC",
-                "tier": 9
+                "tier": 7
             },
             {
-                "defId": "REY",
+                "defId": "R2D2_LEGENDARY",
                 "type": "RELIC",
                 "tier": 8
             },
             {
-                "defId": "BRUTUS",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "VANE",
-                "type": "RELIC",
-                "tier": 7
-            },
-            {
-                "defId": "GENERALKENOBI",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "CHIRRUTIMWE",
+                "defId": "HOTHHAN",
                 "type": "RELIC",
                 "tier": 5
             },
             {
-                "defId": "CAPTAINSILVO",
+                "defId": "HOTHLEIA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CHIEFCHIRPA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "CAPTAINDROGAN",
                 "type": "RELIC",
                 "tier": 7
+            },
+            {
+                "defId": "COMMANDERLUKESKYWALKER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BOUSHH",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "C3POCHEWBACCA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "LOBOT",
+                "type": "RELIC",
+                "tier": 3
+            }
+        ]
+    },
+    "JABBATHEHUTT": {
+        "guideId": "JABBA_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "KRRSANTAN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "HANSOLO",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "GAMORREANGUARD",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "OUTRIDER",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "GREEDO",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "UNDERCOVERLANDO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "JEDIKNIGHTLUKE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "JAWA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "URORRURRR",
+                "type": "RELIC",
+                "tier": 4
+            },
+            {
+                "defId": "C3POLEGENDARY",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BOUSHH",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "AURRA_SING",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "FENNECSHAND",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BOBAFETT",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "HUMANTHUG",
+                "type": "RELIC",
+                "tier": 3
+            }
+        ]
+    },
+    "LORDVADER": {
+        "guideId": "GLV_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "BADBATCHHUNTER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BADBATCHTECH",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BADBATCHWRECKER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "TUSKENRAIDER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "PADMEAMIDALA",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "EMBO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CT210408",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BADBATCHECHO",
+                "type": "RELIC",
+                "tier": 5
             },
             {
                 "defId": "COUNTDOOKU",
@@ -3934,102 +2864,741 @@
                 "tier": 8
             },
             {
-                "defId": "BOSSK",
-                "type": "RELIC",
-                "tier": 8
-            },
-            {
-                "defId": "MILLENNIUMFALCONEP7",
-                "type": "STAR",
-                "tier": 7,
-                "ship": true
-            }
-        ]
-    },
-    "GLHONDO": {
-        "guideId": "GLHONDO_JOURNEY_GUIDE_REQUIREMENT",
-        "type": "AUTO",
-        "reqs": [
-            {
-                "defId": "ITHANO",
-                "type": "RELIC",
-                "tier": 3
-            },
-            {
-                "defId": "HONDO",
-                "type": "RELIC",
-                "tier": 9
-            },
-            {
-                "defId": "SMUGGLERCHEWBACCA",
+                "defId": "ZAMWESELL",
                 "type": "RELIC",
                 "tier": 7
             },
             {
-                "defId": "EZRABRIDGERS3",
-                "type": "RELIC",
-                "tier": 6
+                "defId": "YWINGCLONEWARS",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
             },
             {
-                "defId": "QUIGGOLD",
+                "defId": "GRANDMOFFTARKIN",
                 "type": "RELIC",
-                "tier": 5
+                "tier": 7
             },
             {
-                "defId": "KIX",
+                "defId": "ARCTROOPER501ST",
                 "type": "RELIC",
-                "tier": 6
+                "tier": 8
             },
             {
                 "defId": "GENERALSKYWALKER",
                 "type": "RELIC",
-                "tier": 9
+                "tier": 8
             },
             {
-                "defId": "REY",
+                "defId": "NUTEGUNRAY",
+                "type": "RELIC",
+                "tier": 7
+            }
+        ]
+    },
+    "JEDIMASTERKENOBI": {
+        "guideId": "JMK_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "GENERALKENOBI",
                 "type": "RELIC",
                 "tier": 8
             },
             {
-                "defId": "BRUTUS",
-                "type": "RELIC",
-                "tier": 7
+                "defId": "CAPITALNEGOTIATOR",
+                "type": "STAR",
+                "tier": 6,
+                "ship": true
             },
             {
-                "defId": "VANE",
+                "defId": "MACEWINDU",
                 "type": "RELIC",
-                "tier": 7
+                "tier": 3
             },
             {
-                "defId": "GENERALKENOBI",
+                "defId": "AAYLASECURA",
                 "type": "RELIC",
-                "tier": 9
+                "tier": 3
             },
             {
-                "defId": "CHIRRUTIMWE",
+                "defId": "BOKATAN",
                 "type": "RELIC",
                 "tier": 5
             },
             {
-                "defId": "CAPTAINSILVO",
+                "defId": "QUIGONJINN",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "MAGNAGUARD",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CLONESERGEANTPHASEI",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "WATTAMBOR",
                 "type": "RELIC",
                 "tier": 7
             },
             {
-                "defId": "COUNTDOOKU",
+                "defId": "GRIEVOUS",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "CADBANE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CC2224",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "JANGOFETT",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "SHAAKTI",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GRANDMASTERYODA",
                 "type": "RELIC",
                 "tier": 8
+            }
+        ]
+    },
+    "GRANDMASTERLUKE": {
+        "guideId": "JMLS_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "OLDBENKENOBI",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "REYJEDITRAINING",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "C3POLEGENDARY",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "MONMOTHMA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "C3POCHEWBACCA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "JEDIKNIGHTLUKE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "R2D2_LEGENDARY",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "HANSOLO",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "CHEWBACCALEGENDARY",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "YWINGREBEL",
+                "type": "STAR",
+                "tier": 6,
+                "ship": true
+            },
+            {
+                "defId": "PRINCESSLEIA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "HERMITYODA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "WEDGEANTILLES",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "BIGGSDARKLIGHTER",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "ADMINISTRATORLANDO",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
+    },
+    "SITHPALPATINE": {
+        "guideId": "SEE_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "EMPERORPALPATINE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "VADER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "ROYALGUARD",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "ADMIRALPIETT",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "DIRECTORKRENNIC",
+                "type": "RELIC",
+                "tier": 4
+            },
+            {
+                "defId": "DARTHSIDIOUS",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "MAUL",
+                "type": "RELIC",
+                "tier": 4
+            },
+            {
+                "defId": "COUNTDOOKU",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "SITHMARAUDER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "TIEBOMBERIMPERIAL",
+                "type": "STAR",
+                "tier": 6,
+                "ship": true
+            },
+            {
+                "defId": "ANAKINKNIGHT",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GRANDADMIRALTHRAWN",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "GRANDMOFFTARKIN",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "VEERS",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "COLONELSTARCK",
+                "type": "RELIC",
+                "tier": 3
+            }
+        ]
+    },
+    "SUPREMELEADERKYLOREN": {
+        "guideId": "SLKR_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "KYLORENUNMASKED",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "FIRSTORDERTROOPER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FIRSTORDEROFFICERMALE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "KYLOREN",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "PHASMA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FIRSTORDEREXECUTIONER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "SMUGGLERHAN",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "FOSITHTROOPER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FIRSTORDERSPECIALFORCESPILOT",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "GENERALHUX",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FIRSTORDERTIEPILOT",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "EMPERORPALPATINE",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "CAPITALFINALIZER",
+                "type": "STAR",
+                "tier": 5,
+                "ship": true
+            }
+        ]
+    },
+    "GLREY": {
+        "guideId": "REY_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "REYJEDITRAINING",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "FINN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "RESISTANCETROOPER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "REY",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "RESISTANCEPILOT",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "POE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "EPIXFINN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "AMILYNHOLDO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "ROSETICO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "EPIXPOE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BB8",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "SMUGGLERCHEWBACCA",
+                "type": "RELIC",
+                "tier": 3
+            },
+            {
+                "defId": "CAPITALRADDUS",
+                "type": "STAR",
+                "tier": 5,
+                "ship": true
+            }
+        ]
+    },
+    "CAPITALEXECUTOR": {
+        "guideId": "EXECUTOR_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "VADER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "ADMIRALPIETT",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "BOBAFETT",
+                "type": "RELIC",
+                "tier": 8
+            },
+            {
+                "defId": "DENGAR",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "IG88",
+                "type": "RELIC",
+                "tier": 5
             },
             {
                 "defId": "BOSSK",
                 "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "TIEFIGHTERPILOT",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "TIEADVANCED",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "TIEBOMBERIMPERIAL",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "HOUNDSTOOTH",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "SLAVE1",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "IG2000",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "TIEFIGHTERIMPERIAL",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "RAZORCREST",
+                "type": "STAR",
+                "tier": 5,
+                "ship": true
+            }
+        ]
+    },
+    "CAPITALPROFUNDITY": {
+        "guideId": "PROFUNDITY_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "ADMIRALRADDUS",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "CASSIANANDOR",
+                "type": "RELIC",
                 "tier": 8
             },
             {
-                "defId": "MILLENNIUMFALCONEP7",
+                "defId": "DASHRENDAR",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "MONMOTHMA",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BISTAN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "JYNERSO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "HERASYNDULLAS3",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "OUTRIDER",
                 "type": "STAR",
-                "tier": 7,
+                "tier": 4,
                 "ship": true
+            },
+            {
+                "defId": "UWINGROGUEONE",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "UWINGSCARIF",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "XWINGRED2",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "XWINGRED3",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "YWINGREBEL",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "GHOST",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            }
+        ]
+    },
+    "CAPITALLEVIATHAN": {
+        "guideId": "LEVIATHAN_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "DARTHREVAN",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "DARTHMALAK",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "SITHTROOPER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "FOSITHTROOPER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "MAUL",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "HK47",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "BASTILASHAN",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "SITHASSASSIN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "50RT",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FURYCLASSINTERCEPTOR",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "SITHSUPREMACYCLASS",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "TIEDAGGER",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "SITHBOMBER",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "SITHINFILTRATOR",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "SITHFIGHTER",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            },
+            {
+                "defId": "EBONHAWK",
+                "type": "STAR",
+                "tier": 4,
+                "ship": true
+            }
+        ]
+    },
+    "MANDALORBOKATAN": {
+        "guideId": "MANDALORBOKATAN_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "KELLERANBEQ",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "PAZVIZSLA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "IG12",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "THEMANDALORIANBESKARARMOR",
+                "type": "RELIC",
+                "tier": 7
+            }
+        ]
+    },
+    "BAYLANSKOLL": {
+        "guideId": "ONE_MUST_DESTROY_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "SHINHATI",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "MARROK",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "MORGANELSBETH",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GREATMOTHERS",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "GRANDADMIRALTHRAWN",
+                "type": "RELIC",
+                "tier": 7
             }
         ]
     },
@@ -4066,6 +3635,182 @@
                 "defId": "VADERDUELSEND",
                 "type": "RELIC",
                 "tier": 6
+            }
+        ]
+    },
+    "JEDIMASTERMACEWINDU": {
+        "guideId": "BESET_ON_ALL_SIDES_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "APPO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "OPERATIVE",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "DISGUISEDCLONETROOPER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "SCORCH",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "VANGUARDTEMPLEGUARD",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "DEPABILLABA",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
+    },
+    "JARJARBINKS": {
+        "guideId": "BOMBAD_GENERAL_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "BOSSNASS",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "CAPTAINTARPALS",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BOOMADIER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "GUNGANPHALANX",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
+    },
+    "DOCTORAPHRA": {
+        "guideId": "DOCTORAPHRA_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "HONDO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "TRIPLEZERO",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "BT1",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "SANASTARROS",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
+    },
+    "GRANDINQUISITOR": {
+        "guideId": "GRANDINQUISITOR_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "SECONDSISTER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "NINTHSISTER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "SEVENTHSISTER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "EIGHTHBROTHER",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "FIFTHBROTHER",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
+    },
+    "STARKILLER": {
+        "guideId": "STARKILLER_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "DASHRENDAR",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "KYLEKATARN",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "DARTHTALON",
+                "type": "RELIC",
+                "tier": 5
+            },
+            {
+                "defId": "MARAJADE",
+                "type": "RELIC",
+                "tier": 5
+            }
+        ]
+    },
+    "JEDIKNIGHTCAL": {
+        "guideId": "CALKESTISSURVIVOR_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "CALKESTIS",
+                "type": "GEAR",
+                "tier": 12
+            },
+            {
+                "defId": "CEREJUNDA",
+                "type": "GEAR",
+                "tier": 12
+            },
+            {
+                "defId": "MERRIN",
+                "type": "GEAR",
+                "tier": 12
+            },
+            {
+                "defId": "TARFFUL",
+                "type": "GEAR",
+                "tier": 12
+            },
+            {
+                "defId": "SAWGERRERA",
+                "type": "GEAR",
+                "tier": 12
             }
         ]
     }

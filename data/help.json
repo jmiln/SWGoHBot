@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-05-04T19:16:15.986Z",
+        "generatedAt": "2026-05-20T21:46:02.346Z",
         "totalCommands": 45,
         "categories": 4
     },
@@ -1511,7 +1511,7 @@
                         "type": 4,
                         "description": "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
                         "minValue": 0,
-                        "maxValue": 1440
+                        "maxValue": 1439
                     }
                 ],
                 "permLevel": 0,
