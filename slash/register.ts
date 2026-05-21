@@ -73,14 +73,14 @@ export default class Register extends Command {
             // If they don't exist in the DB yet, stick em with a default config
             userConfig = JSON.parse(JSON.stringify(constants.defaultUserConf)) as Partial<UserConfig> as UserConfig;
             userConfig.id = user.id;
-        } else if (userConfig.accounts.find((a) => a.allyCode === allyCode && a.primary)) {
+        } else if (userConfig.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10) && a.primary)) {
             // This ally code is already registered & primary
             return super.error(interaction, language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
-        } else if (userConfig.accounts.find((a) => a.allyCode === allyCode && !a.primary)) {
+        } else if (userConfig.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10) && !a.primary)) {
             // This ally code is already registered but not primary, so just swap it over
             userConfig.accounts = userConfig.accounts.map((a) => {
                 if (a.primary) a.primary = false;
-                if (a.allyCode === allyCode) a.primary = true;
+                if (a.allyCode === Number.parseInt(allyCode, 10)) a.primary = true;
                 return a;
             });
             userConfig = await userReg.updateUser(user.id, userConfig);
@@ -110,7 +110,7 @@ export default class Register extends Command {
                 return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE") + allyCode);
             }
             userConfig.accounts.push({
-                allyCode: allyCode,
+                allyCode: Number.parseInt(allyCode, 10),
                 name: player.name,
                 primary: true,
             });

@@ -89,8 +89,8 @@ export default class Need extends Command {
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         const shardsLeftAtStar = { 0: 330, 1: 320, 2: 305, 3: 280, 4: 250, 5: 185, 6: 100 };
 
-        let allyCode = interaction.options.getString("allycode");
-        allyCode = await getAllyCode(interaction, allyCode, true);
+        const acInput = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, acInput, true);
         if (!allyCode) {
             return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
         }

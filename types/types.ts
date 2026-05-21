@@ -246,7 +246,7 @@ export interface UserConfig {
     bonusServer: string;
 }
 export interface UserAcct {
-    allyCode: string;
+    allyCode: number;
     name: string;
     primary: boolean;
     lastCharRank?: number;

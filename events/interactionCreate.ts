@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { type AutocompleteInteraction, type ChatInputCommandInteraction, Events, MessageFlags } from "discord.js";
+import { type AutocompleteInteraction, type ChatInputCommandInteraction, DiscordAPIError, Events, MessageFlags } from "discord.js";
 import Language from "../base/Language.ts";
 import type slashCommand from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
@@ -207,12 +207,12 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
                 filtered = user.accounts
                     .filter((account) => {
                         const nameMatch = account.name.toLowerCase().includes(searchKey);
-                        const codeMatch = account.allyCode.includes(searchKey);
+                        const codeMatch = account.allyCode.toString().includes(searchKey);
                         return nameMatch || codeMatch;
                     })
                     .map((account) => ({
                         name: `${account.name} - ${account.allyCode}`,
-                        value: account.allyCode,
+                        value: account.allyCode.toString(),
                     }));
             }
         } else {
@@ -286,6 +286,10 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
     try {
         await cmd.run(ctx);
     } catch (err) {
+        // Interaction already acknowledged - shard replay or duplicate delivery; first handler is serving the user
+        if (err instanceof DiscordAPIError && err.code === 40060) {
+            return;
+        }
         commandError = err instanceof Error ? err : new Error(String(err));
         logger.error(String(err));
         // Special handling for test command

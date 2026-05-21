@@ -126,6 +126,36 @@ describe("Register", () => {
         );
     });
 
+    it("should store ally code as a number, not a string", async () => {
+        const player = createMockPlayer({
+            allyCode: 123456789,
+            name: "NumberPlayer",
+            stats: [
+                { nameKey: "STAT_GALACTIC_POWER_ACQUIRED_NAME", value: 5000000 },
+                { nameKey: "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME", value: 3000000 },
+                { nameKey: "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME", value: 2000000 },
+            ],
+        });
+        mockSwapi.setPlayerData(player);
+
+        const interaction = createMockInteraction({
+            guild: {
+                id: "987654321",
+                name: "Test Guild",
+                members: { cache: { has: () => true } },
+            } as any,
+            optionsData: { allycode: "123456789" },
+        });
+        const ctx = createCommandContext({ interaction });
+        const command = new Register();
+        await command.run(ctx);
+
+        const user = await userReg.getUser(interaction.user.id);
+        assert.ok(user, "Expected user to be registered");
+        assert.strictEqual(typeof user.accounts[0].allyCode, "number", "allyCode must be stored as a number");
+        assert.strictEqual(user.accounts[0].allyCode, 123456789);
+    });
+
     it("should return error when API returns empty result for a valid ally code", async () => {
         // Do not set any player data — unitStats will return an empty array
 
