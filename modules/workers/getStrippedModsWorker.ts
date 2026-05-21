@@ -48,6 +48,6 @@ export default async function ({ playerId, modMap }: { playerId: number; modMap:
                 }));
         })
         .catch((err: Error) => {
-            logger.error(`[getStrippedModsWorker] Error: ${err instanceof Error ? err.message : String(err)}`);
+            logger.error(`[getStrippedModsWorker] Error fetching player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
         });
 }
