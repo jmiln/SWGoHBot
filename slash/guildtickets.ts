@@ -132,7 +132,7 @@ export default class GuildTickets extends Command {
             const sortBy = interaction.options.getString("sortby");
             const tickets = interaction.options.getInteger("tickets");
             const updateType = interaction.options.getString("updates");
-            let allyCode = interaction.options.getString("allycode");
+            const acInput = interaction.options.getString("allycode");
 
             // GuildTickets -> activate/ deactivate
             if (isEnabled !== null) {
@@ -151,21 +151,22 @@ export default class GuildTickets extends Command {
                 gt.updateType = updateType;
                 updatedArr.push(`Update: **${updateTypeStrings[updateType]}**`);
             }
-            if (allyCode) {
+            if (acInput) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!isAllyCode(allyCode) && allyCode !== "me")
+                if (!isAllyCode(acInput) && acInput !== "me")
                     return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned ally code
-                allyCode = await getAllyCode(interaction, allyCode);
+                const allyCode = await getAllyCode(interaction, acInput);
+                if (!allyCode) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
-                const player = await swgohAPI.unitStats(Number.parseInt(allyCode, 10));
+                const player = await swgohAPI.unitStats(allyCode);
                 if (!player?.length) {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gt.allyCode = Number.parseInt(allyCode, 10);
+                gt.allyCode = allyCode;
                 updatedArr.push(`Ally Code: **${allyCode}**`);
             }
             if (showMax !== null) {

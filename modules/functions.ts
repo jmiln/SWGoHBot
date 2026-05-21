@@ -862,7 +862,7 @@ export async function getAllyCode(interaction: ChatInputCommandInteraction, user
         userAcct = await userReg.getUser(userStr.replace(/[^\d]*/g, ""));
     } else if (isAllyCode(userStr)) {
         // Otherwise, just scrap everything but numbers, and send it back
-        return userStr.replace(/[^\d]*/g, "");
+        return Number.parseInt(userStr.replace(/[^\d]*/g, ""), 10);
     }
 
     if (userAcct?.accounts?.length) {

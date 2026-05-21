@@ -207,12 +207,12 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
                 filtered = user.accounts
                     .filter((account) => {
                         const nameMatch = account.name.toLowerCase().includes(searchKey);
-                        const codeMatch = account.allyCode.includes(searchKey);
+                        const codeMatch = account.allyCode.toString().includes(searchKey);
                         return nameMatch || codeMatch;
                     })
                     .map((account) => ({
                         name: `${account.name} - ${account.allyCode}`,
-                        value: account.allyCode,
+                        value: account.allyCode.toString(),
                     }));
             }
         } else {

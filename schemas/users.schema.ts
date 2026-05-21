@@ -30,7 +30,7 @@ export const ArenaWatchAcctSchema = z.object({
  * Schema for user account entries
  */
 export const UserAcctSchema = z.object({
-    allyCode: z.string(),
+    allyCode: z.number(),
     name: z.string(),
     primary: z.boolean(),
     lastCharRank: z.number().optional(),

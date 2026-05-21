@@ -76,7 +76,7 @@ export default class GuildUpdate extends Command {
             const updatedArr = [];
             const isEnabled = interaction.options.getBoolean("enabled");
             const channel = interaction.options.getChannel("channel");
-            let allyCode = interaction.options.getString("allycode");
+            const acInput = interaction.options.getString("allycode");
 
             if (isEnabled !== null) {
                 gu.enabled = isEnabled;
@@ -90,20 +90,21 @@ export default class GuildUpdate extends Command {
                 gu.channel = channel.id;
                 updatedArr.push(`Channel: <#${channel.id}>`);
             }
-            if (allyCode) {
+            if (acInput) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!isAllyCode(allyCode)) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!isAllyCode(acInput)) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab a cleaned allyCode
-                allyCode = await getAllyCode(interaction, allyCode);
+                const allyCode = await getAllyCode(interaction, acInput);
+                if (!allyCode) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
-                const player = await swgohAPI.unitStats(Number.parseInt(allyCode, 10));
+                const player = await swgohAPI.unitStats(allyCode);
                 if (!player?.length) {
                     // Invalid code
                     return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
                 }
-                gu.allyCode = Number.parseInt(allyCode, 10);
+                gu.allyCode = allyCode;
                 updatedArr.push(`Ally Code: **${allyCode}**`);
             }
 
@@ -111,7 +112,7 @@ export default class GuildUpdate extends Command {
             if (!gu.allyCode) {
                 const primaryAcct = user.accounts?.find((a) => a.primary);
                 if (primaryAcct?.allyCode) {
-                    gu.allyCode = Number.parseInt(primaryAcct.allyCode, 10);
+                    gu.allyCode = primaryAcct.allyCode;
                     updatedArr.push(`Ally Code: **${gu.allyCode}** (from your primary account)`);
                 }
             }

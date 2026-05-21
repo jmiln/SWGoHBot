@@ -259,13 +259,13 @@ export default class Guilds extends Command {
             const user = await userReg.getUser(interaction.user.id);
             const showAll = interaction.options.getBoolean("show_all") || false;
             const maxTickets = user?.guildTickets?.tickets || 600;
-            return await guildTickets(Number.parseInt(allyCode, 10), maxTickets, showAll);
+            return await guildTickets(allyCode, maxTickets, showAll);
         }
 
         let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await swgohAPI.guild(Number.parseInt(allyCode, 10), cooldown);
+            guild = await swgohAPI.guild(allyCode, cooldown);
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
             logger.error(`[Guilds] Failed to get guild: ${errorMessage}`);
@@ -1032,7 +1032,7 @@ export default class Guilds extends Command {
             }
 
             // Bulk-fetch all registered users for every ally code in one query
-            const validAllyCodes = sortedGuild.filter((p) => p.allyCode).map((p) => p.allyCode.toString());
+            const validAllyCodes = sortedGuild.filter((p) => p.allyCode).map((p) => p.allyCode);
             const allyCodeUserMap = await userReg.getUsersByAllyCodes(validAllyCodes);
 
             // Collect all Discord IDs that appear in the results
@@ -1057,7 +1057,7 @@ export default class Guilds extends Command {
             // Map ally codes back to the matching in-guild Discord user
             for (const p of sortedGuild) {
                 if (!p.allyCode) continue;
-                const registeredUsers = allyCodeUserMap.get(p.allyCode.toString());
+                const registeredUsers = allyCodeUserMap.get(p.allyCode);
                 if (!registeredUsers?.length) continue;
                 for (const u of registeredUsers) {
                     if (guildMembers?.has(u.id)) {

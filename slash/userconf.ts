@@ -183,7 +183,7 @@ export default class UserConf extends Command {
                 case "add": {
                     // Add an ally code to the user's list
                     // Make sure it's not in there already, then stick it in.
-                    if (user.accounts.map((a) => a.allyCode).includes(allyCode)) {
+                    if (user.accounts.map((a) => a.allyCode).includes(Number.parseInt(allyCode, 10))) {
                         // Make sure the specified code is not already registered
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
@@ -198,7 +198,7 @@ export default class UserConf extends Command {
                             return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE"));
                         }
                         user.accounts.push({
-                            allyCode: allyCode,
+                            allyCode: Number.parseInt(allyCode, 10),
                             name: player.name,
                             primary: !user.accounts.length,
                         });
@@ -231,7 +231,7 @@ export default class UserConf extends Command {
                     // Remove specified ally code from the list,
                     // - If it was not in the list, let em know
                     // - If the chosen one was the primary, set the 1st
-                    const acc = user.accounts.find((a) => a.allyCode === allyCode);
+                    const acc = user.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10));
                     if (!acc) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
@@ -247,7 +247,7 @@ export default class UserConf extends Command {
                 }
                 case "make_primary": {
                     // Set the specified ally code to be the primary one
-                    const acc = user.accounts.find((a) => a.allyCode === allyCode);
+                    const acc = user.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10));
                     if (!acc) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
@@ -257,7 +257,7 @@ export default class UserConf extends Command {
                     const prim = user.accounts.find((a) => a.primary);
                     user.accounts = user.accounts.map((a) => {
                         if (a.primary) a.primary = false;
-                        if (a.allyCode === allyCode) a.primary = true;
+                        if (a.allyCode === Number.parseInt(allyCode, 10)) a.primary = true;
                         return a;
                     });
                     await userReg.updateUser(userID, user);
@@ -505,7 +505,7 @@ export default class UserConf extends Command {
             const outArr = user.accounts
                 .filter((account) => {
                     const nameMatch = account.name.toLowerCase().includes(searchKey);
-                    const codeMatch = account.allyCode.includes(searchKey);
+                    const codeMatch = account.allyCode.toString().includes(searchKey);
                     return nameMatch || codeMatch;
                 })
                 .map((account) => ({

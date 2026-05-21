@@ -141,7 +141,7 @@ class PatreonFuncs {
                 let attempts = 0;
                 while (attempts < 3) {
                     try {
-                        const playerRes = await swgohAPI.getPlayersArena(Number.parseInt(acc.allyCode, 10));
+                        const playerRes = await swgohAPI.getPlayersArena(acc.allyCode);
                         player = playerRes?.[0] || null;
                         break;
                     } catch (e) {
@@ -1074,7 +1074,10 @@ const patreonFuncs = new PatreonFuncs();
  *   const player = await fetchPlayerWithCooldown(interaction, allyCode);
  *   if (!player?.roster) return super.error(interaction, "...");
  */
-export async function fetchPlayerWithCooldown(interaction: ChatInputCommandInteraction, allyCode: string): Promise<SWAPIPlayer | null> {
+export async function fetchPlayerWithCooldown(
+    interaction: ChatInputCommandInteraction,
+    allyCode: number | string,
+): Promise<SWAPIPlayer | null> {
     const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
     try {
         return await swgohAPI.player(allyCode, cooldown);

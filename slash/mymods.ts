@@ -123,8 +123,8 @@ export default class MyMods extends Command {
 
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         const subCommand = interaction.options.getSubcommand();
-        let allyCode = interaction.options.getString("allycode");
-        allyCode = await getAllyCode(interaction, allyCode);
+        const acInput = interaction.options.getString("allycode");
+        const allyCode = await getAllyCode(interaction, acInput);
 
         if (!allyCode) {
             return super.error(interaction, "I could not find a match for the provided ally code.");
