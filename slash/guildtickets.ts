@@ -164,7 +164,7 @@ export default class GuildTickets extends Command {
                 const player = await swgohAPI.unitStats(allyCode);
                 if (!player?.length) {
                     // Invalid code
-                    return super.error(interaction, "I could not find a match for your ally code. Please double check that it is correct.");
+                    return super.error(interaction, language.get("BASE_ALLY_CODE_NO_MATCH"));
                 }
                 gt.allyCode = allyCode;
                 updatedArr.push(`Ally Code: **${allyCode}**`);

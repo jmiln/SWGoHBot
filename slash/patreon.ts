@@ -50,7 +50,7 @@ export default class Patreon extends Command {
         super(Patreon.metadata);
     }
 
-    async run({ interaction }: CommandContext) {
+    async run({ interaction, language }: CommandContext) {
         const subCom = interaction.options.getSubcommand() || "none";
         const fields = [];
         let description = null;
@@ -114,7 +114,7 @@ export default class Patreon extends Command {
                     tier: Math.floor(pat.amount_cents / 100),
                 };
                 if (!interaction.guild) {
-                    return super.error(interaction, "This action must be performed in a server.");
+                    return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
                 }
                 const res = await addServerSupporter({ guildId: interaction.guild.id, userInfo });
                 if (res.user?.error || res.guild?.error) {

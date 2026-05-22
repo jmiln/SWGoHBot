@@ -228,11 +228,9 @@ export default class Event extends Command {
 
     async run({ interaction, language, permLevel }: CommandContext) {
         if (!interaction?.guild) {
-            return super.error(interaction, "Sorry, but this command is not available in DMs.");
+            return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         }
-        if (!interaction?.guild?.id) {
-            return super.error(interaction, "Sorry, but I'm having trouble accessing your guild's info.");
-        }
+
         const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
         // const exampleEvent = {
@@ -668,7 +666,6 @@ export default class Event extends Command {
             return messStr.replace(/`/g, "");
         }
 
-        // TODO When running validateEvents, check against the guild's other events as well as the ones being entered now
         function validateEvents(eventArr: GuildConfigEvent[], guildEvArray: GuildConfigEvent[]) {
             const now = Date.now();
             const MAX_MSG_SIZE = 1000;

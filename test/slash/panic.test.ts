@@ -46,6 +46,6 @@ describe("Panic", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Panic();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find a valid allycode");
+        assertErrorReply(interaction, "BASE_INVALID_ALLY_CODE");
     });
 });

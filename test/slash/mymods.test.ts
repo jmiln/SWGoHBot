@@ -48,7 +48,7 @@ describe("MyMods", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyMods();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find a match");
+        assertErrorReply(interaction, "BASE_INVALID_ALLY_CODE");
     });
 
     it("should reply with content when character is not found in search", async () => {

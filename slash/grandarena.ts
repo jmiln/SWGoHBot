@@ -66,7 +66,7 @@ export default class GrandArena extends Command {
     async run({ interaction, language }: CommandContext) {
         const problemArr = [];
 
-        await interaction.reply({ content: "> Please wait while I look up the info." });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         // Load unit checklist
         const unitChecklist = await getUnitChecklist();

@@ -5,7 +5,7 @@ import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import Aliases from "../../slash/aliases.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
-import { createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 
 /**
  * Helper function to extract description from a reply embed.
@@ -46,7 +46,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             // Verify the alias was saved to MongoDB
             const savedData = await cache.get(
@@ -84,7 +84,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             // Verify the alias was saved to MongoDB
             const savedData = await cache.get(
@@ -112,7 +112,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -149,7 +149,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -188,7 +188,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             // Verify the alias was removed
             const savedData = await cache.get(
@@ -236,7 +236,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -274,7 +274,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             // Verify aliases are sorted after removal
             const savedData = await cache.get(
@@ -315,7 +315,7 @@ describe("Aliases Command Functionality", () => {
                 false
             );
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -341,7 +341,7 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run({ interaction, language: (interaction as any).language });
+            await command.run(createCommandContext({ interaction }));
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
@@ -362,13 +362,14 @@ describe("Aliases Command Functionality", () => {
                 },
             });
 
-            await command.run({ interaction, language: (interaction as any).language });
+            const ctx = createCommandContext({ interaction });
+            await command.run(ctx);
 
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description4 = getReplyDescription(replies[0]);
             assert.ok(
-                description4?.includes("only usable in servers"),
+                description4?.includes("BASE_COMMAND_UNAVAILABLE"),
                 "Expected error about guild-only command"
             );
         });

@@ -34,13 +34,13 @@ export default class Panic extends Command {
         super(Panic.metadata);
     }
 
-    async run({ interaction }: CommandContext) {
+    async run({ interaction, language }: CommandContext) {
         const searchUnit = interaction.options.getString("unit");
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac);
 
         if (!allyCode) {
-            return super.error(interaction, "I could not find a valid allycode. Please make sure you've type it in correctly.");
+            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE"));
         }
 
         const thisReq = journeyReqs?.[searchUnit] || null;
@@ -50,7 +50,7 @@ export default class Panic extends Command {
         const targetUnit =
             characters.find((unit) => unit.uniqueName === searchUnit) || ships.find((unit) => unit.uniqueName === searchUnit);
 
-        await interaction.reply({ content: "Please wait while I process your request." });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         // Grab the player's info
         const player = await fetchPlayerWithCooldown(interaction, allyCode);

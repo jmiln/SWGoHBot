@@ -92,7 +92,7 @@ export default class Need extends Command {
         const acInput = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, acInput, true);
         if (!allyCode) {
-            return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
+            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE"));
         }
 
         const battle = interaction.options.getString("battle");
@@ -104,7 +104,7 @@ export default class Need extends Command {
         if (!battle && !faction1 && !faction2 && !keyword && !shop) {
             return super.error(interaction, "You need to specify a location or faction.");
         }
-        await interaction.reply({ content: "Please wait while I look up your data." });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
 

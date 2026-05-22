@@ -368,7 +368,7 @@ export default class Guilds extends Command {
                         {
                             description: codeBlock(errorMessage),
                             title: "Something Broke while getting your guild's characters",
-                            footer: { text: "Please try again in a bit" },
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
                             color: constants.colors.red,
                         },
                     ],
@@ -449,7 +449,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: ` ${codeBlock(err instanceof Error ? err.message : String(err))}`,
-                            footer: { text: "Please try again in a bit" },
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
                         },
                     ],
                 });
@@ -568,7 +568,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: codeBlock(errorMessage),
-                            footer: { text: "Please try again in a bit." },
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
                         },
                     ],
                 });
@@ -914,7 +914,7 @@ export default class Guilds extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: codeBlock(errorMessage),
-                            footer: { text: "Please try again in a bit." },
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
                         },
                     ],
                 });
@@ -1157,7 +1157,7 @@ export default class Guilds extends Command {
                             description: codeBlock(errorMessage),
                             title: "Something Broke while getting your guild's characters",
                             color: constants.colors.brightred,
-                            footer: { text: "Please try again in a bit." },
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
                         },
                     ],
                 });

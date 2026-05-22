@@ -48,7 +48,7 @@ describe("Need", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Need();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find a valid ally code");
+        assertErrorReply(interaction, "BASE_INVALID_ALLY_CODE");
     });
 
     it("should display a need list for a battle filter", async () => {

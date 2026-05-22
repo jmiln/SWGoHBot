@@ -151,7 +151,7 @@ export default class Shardtimes extends Command {
 
     async run({ interaction, language, guildSettings, permLevel }: CommandContext) {
         // Shard ID will be guild.id-channel.id
-        if (!interaction?.guild || !interaction?.channel) return super.error(interaction, "This command is not available in DMs.");
+        if (!interaction?.guild || !interaction?.channel) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
 
         const shardArr = await getGuildShardTimes({ guildId: interaction.guild.id });

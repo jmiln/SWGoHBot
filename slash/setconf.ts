@@ -126,7 +126,7 @@ export default class SetConf extends Command {
 
     async run({ interaction, language }: CommandContext) {
         if (!interaction?.guild?.id) {
-            return super.error(interaction, "Sorry, but this command is only usable in servers");
+            return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         }
 
         const guildConf = await getGuildSettings({ guildId: interaction.guild.id });

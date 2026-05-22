@@ -127,7 +127,7 @@ export default class MyMods extends Command {
         const allyCode = await getAllyCode(interaction, acInput);
 
         if (!allyCode) {
-            return super.error(interaction, "I could not find a match for the provided ally code.");
+            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE"));
         }
         await interaction.reply({ content: language.get("COMMAND_MYMODS_WAIT") });
 

@@ -196,7 +196,7 @@ export default class Charactergear extends Command {
             const playerChar = player.roster.find((c) => c.defId === character.uniqueName);
 
             if (!playerChar) {
-                return super.error(interaction, "Looks like you don't have this character unlocked");
+                return super.error(interaction, language.get("BASE_SWGOH_LOCKED_CHAR"));
             }
 
             // They do have the character unlocked.

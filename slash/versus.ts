@@ -73,7 +73,7 @@ export default class Versus extends Command {
          *  -- If character is invalid, spit out an error
          */
 
-        await interaction.reply({ content: "Please wait while I process your data." });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         const user1AC = await getAllyCode(interaction, user1str, false);
         const user2AC = await getAllyCode(interaction, user2str, false);

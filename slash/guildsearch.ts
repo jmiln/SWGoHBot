@@ -174,7 +174,7 @@ export default class GuildSearch extends Command {
         const allyCode = await getAllyCode(interaction, ac, true);
 
         if (!allyCode) {
-            return super.error(interaction, "I could not find a valid ally code for you. Please make sure to supply one.");
+            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE"));
         }
 
         // Get the integer options

@@ -41,7 +41,7 @@ export default class TerritoryWar extends Command {
     async run({ interaction, language }: CommandContext) {
         const problemArr = [];
 
-        await interaction.reply({ content: "> Please wait while I look up the info." });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
         // Get the first user's ally code if possible

@@ -136,9 +136,9 @@ export default class StrikeCommand extends Command {
         super(StrikeCommand.metadata);
     }
 
-    async run({ interaction, permLevel }: CommandContext) {
+    async run({ interaction, language, permLevel }: CommandContext) {
         if (!interaction.guild) {
-            return super.error(interaction, "This command can only be used in a server.");
+            return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         }
 
         const action = interaction.options.getSubcommand();

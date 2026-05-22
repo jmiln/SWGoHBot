@@ -43,7 +43,7 @@ describe("SetConf", () => {
         const ctx = createCommandContext({ interaction });
         const command = new SetConf();
         await command.run(ctx);
-        assertErrorReply(interaction, "only usable in servers");
+        assertErrorReply(interaction, "BASE_COMMAND_UNAVAILABLE");
     });
 
     it("should return error when set subcommand has no options to update", async () => {

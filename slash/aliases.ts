@@ -93,9 +93,9 @@ export default class Aliases extends Command {
         }
     }
 
-    async run({ interaction }: CommandContext) {
+    async run({ interaction, language }: CommandContext) {
         // Make sure this is running in a server, since it doesn't do any good in DMs
-        if (!interaction?.guild?.id) return super.error(interaction, "Sorry, but this command is only usable in servers");
+        if (!interaction?.guild?.id) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
 
         const action = interaction.options.getSubcommand();
         const searchUnit = interaction.options.getString("unit");

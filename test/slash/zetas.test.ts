@@ -50,7 +50,7 @@ describe("Zetas", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Zetas();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find a match");
+        assertErrorReply(interaction, "BASE_ALLY_CODE_NO_MATCH");
     });
 
     it("should return error for an invalid character filter", async () => {

@@ -49,7 +49,7 @@ describe("MyCharacter", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyCharacter();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find a valid ally code");
+        assertErrorReply(interaction, "BASE_INVALID_ALLY_CODE");
     });
 
     it("should return error when character search yields no matches", async () => {

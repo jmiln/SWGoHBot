@@ -39,7 +39,7 @@ export default class MyArena extends Command {
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac);
 
-        await interaction.reply({ content: "> Please wait while I look up your info" });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         if (!allyCode) {
             return super.error(

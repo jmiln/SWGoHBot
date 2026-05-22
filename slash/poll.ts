@@ -82,12 +82,7 @@ export default class Poll extends Command {
         const action = interaction.options.getSubcommand();
 
         if (!interaction.guild || !interaction.channel) {
-            // This is not available in DMs
-            // TODO Lang this
-            return super.error(
-                interaction,
-                "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.",
-            );
+            return super.error(interaction, language.get("COMMAND_POLL_NO_DM"));
         }
 
         const poll = {

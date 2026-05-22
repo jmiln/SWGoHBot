@@ -75,10 +75,10 @@ export default class Zetas extends Command {
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac);
         if (!allyCode) {
-            return super.error(interaction, "I could not find a match for the provided ally code.");
+            return super.error(interaction, language.get("BASE_ALLY_CODE_NO_MATCH"));
         }
 
-        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH", "zetas") });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         const subCommand = interaction.options.getSubcommand(true);
 
@@ -269,9 +269,8 @@ export default class Zetas extends Command {
 
             try {
                 guild = await swgohAPI.guild(player.allyCode, cooldown);
-                // TODO  Lang this
-                if (!guild) return super.error(interaction, "Cannot find guild");
-                if (!guild.roster) return super.error(interaction, "Cannot find your guild's roster");
+                if (!guild) return super.error(interaction, language.get("COMMAND_ZETA_NO_GUILD"));
+                if (!guild.roster) return super.error(interaction, language.get("COMMAND_ZETA_NO_GUILD_ROSTER"));
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`[Zetas] Failed to get guild: ${errorMessage}`);

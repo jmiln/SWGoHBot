@@ -95,7 +95,7 @@ describe("GuildSearch Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description = getReplyDescription(replies[0]);
-            assert.ok(description?.includes("could not find a valid ally code"), "Expected error about no ally code");
+            assert.ok(description?.includes("BASE_INVALID_ALLY_CODE"), "Expected error about no ally code");
         });
     });
 

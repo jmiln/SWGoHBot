@@ -70,7 +70,7 @@ describe("Shardtimes", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Shardtimes();
         await command.run(ctx);
-        assertErrorReply(interaction, "not available in DMs");
+        assertErrorReply(interaction, "BASE_COMMAND_UNAVAILABLE");
     });
 
     describe("view subcommand", () => {

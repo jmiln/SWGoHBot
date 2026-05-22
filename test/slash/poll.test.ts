@@ -64,7 +64,7 @@ describe("Poll", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Poll();
         await command.run(ctx);
-        assertErrorReply(interaction, "not available in DMs");
+        assertErrorReply(interaction, "COMMAND_POLL_NO_DM");
     });
 
     describe("create subcommand", () => {

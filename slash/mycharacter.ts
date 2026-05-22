@@ -80,7 +80,7 @@ export default class MyCharacter extends Command {
         const allyCode = await getAllyCode(interaction, ac);
 
         if (!allyCode) {
-            return super.error(interaction, "I could not find a valid ally code. Please make sure you're using a valid code.");
+            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE"));
         }
 
         // Get any matching units
@@ -97,7 +97,7 @@ export default class MyCharacter extends Command {
         // If there's nothing wrong above, grab the single unit and go from there
         const unit = units[0];
 
-        await interaction.reply({ content: "Please wait while I look up your profile." });
+        await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) {

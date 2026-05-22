@@ -161,7 +161,7 @@ export default class GuildQuality extends Command {
                         {
                             title: "Something Broke while getting your guild's characters",
                             description: ` ${codeBlock(err)}`,
-                            footer: { text: "Please try again in a bit" },
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
                         },
                     ],
                 });

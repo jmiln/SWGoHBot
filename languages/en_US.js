@@ -82,7 +82,7 @@ export default class extends Language {
             BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Something went wrong, please make sure your account is synced correctly.",
             BASE_SWGOH_LAST_UPDATED: (date) => `Last updated ${date}`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Please wait while I get your ${dType ? dType : "data"}`,
+            BASE_SWGOH_PLS_WAIT_FETCH: "Please wait while I process your request.",
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
             BASE_SWGOH_LOCKED_CHAR: "Sorry, but it looks like you don't have this character unlocked",
@@ -93,7 +93,7 @@ export default class extends Language {
             COMMAND_INVALID_BOOL: "Invalid value, try true or false",
             COMMAND_MISSING_PERMS: "Sorry, but you don't have the correct permissions to use that.",
             BASE_CANNOT_DM: "Sorry, but I could not send you a message. Please make sure you have it set to let people in this server send you messages.",
-            BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a guild.",
+            BASE_COMMAND_UNAVAILABLE: "This command is unavailable via private message. Please run this command in a server.",
             BASE_COMMAND_HELP_HEADER: (name) => `Help for ${name}`,
             BASE_COMMAND_HELP_HEADER_CONT: (name) => `Continued help for ${name}`,
             BASE_CONT_STRING: "(cont)",
@@ -187,6 +187,8 @@ export default class extends Language {
             BASE_SOMETHING_BROKE_GUILD: "Something broke while getting your guild",
             BASE_SOMETHING_BROKE_GUILD_ROSTER: "Something broke while getting your guild's roster",
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
+            BASE_INVALID_ALLY_CODE: "I could not find a valid ally code. Please make sure you've entered it correctly.",
+            BASE_ALLY_CODE_NO_MATCH: "I could not find a match for that ally code. Please double check that it is correct.",
 
             // Abilities Command
             COMMAND_CHARACTER_NEED_CHARACTER: "Missing character. \nUsage is `/character character: <characterName>`",
@@ -1264,6 +1266,7 @@ export default class extends Language {
             COMMAND_POLL_REGISTERED: (opt) => `Choice for **${opt}** registered`,
             COMMAND_POLL_CHOICE: (opt, optCount, choice) => `\`[${opt}]\` ${choice}: **${optCount} vote${optCount === 1 ? "" : "s"}**\n`,
             COMMAND_POLL_FOOTER: "Use `/poll vote <choice>` to vote",
+            COMMAND_POLL_NO_DM: "Sorry, but this command is not available in DMs. If you are voting with `/poll vote`, it will only show for you.",
             COMMAND_POLL_HELP: {
                 description: "Lets you start a poll with multiple options.",
                 actions: [
@@ -1871,6 +1874,8 @@ export default class extends Language {
             COMMAND_ZETA_REC_AUTH: (zetaLen, pName) => `Top ${zetaLen}zetas for ${pName}`,
             COMMAND_ZETA_CONFLICTING_FLAGS: "Sorry, but you cannot use the -r and -g flags together.",
             COMMAND_ZETA_WAIT_GUILD: "Please wait while I look through your guild's zetas",
+            COMMAND_ZETA_NO_GUILD: "Cannot find guild",
+            COMMAND_ZETA_NO_GUILD_ROSTER: "Cannot find your guild's roster",
             COMMAND_ZETA_ZETAS_HEADER: (name, count) => `${name}'s Zetas (${count})`,
             COMMAND_ZETA_GUILD_HEADER: (name) => `${name}'s Zetas'`,
             COMMAND_ZETA_GUILD_CHAR_HEADER: (name) => `${name}'s Zetas'`,
