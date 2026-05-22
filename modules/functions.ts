@@ -775,10 +775,9 @@ export async function announceMsg({
         !chan?.send ||
         !chan?.permissionsFor(client.user)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.ViewChannel])
     ) {
+        logger.warn(`[announceMsg] Cannot send to channel in guild ${guild.name} (${guild.id}): configured channel = "${announceChan}"`);
         return;
     }
-    // TODO Should probably log this / tell users about the issue somehow?
-    // return logger.error(`[AnnounceMsg] I was not able to send a msg in guild ${guild.name} (${guild.id}) \nMsg: ${announceMsg}\nConf: ${inspect(guildConf)}`);
 
     // If everything is ok, go ahead and try sending the message
     await chan.send(announceMessage).catch((err) => {

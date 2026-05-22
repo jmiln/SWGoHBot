@@ -1753,8 +1753,7 @@ function processRecipes(recipeIn: comlinkComponents["Recipe"][]) {
 function processUnits(unitsIn: comlinkComponents["UnitDef"][]): ProcessedUnit[] {
     return unitsIn
         .filter((unit) => {
-            // @ts-expect-error - The generated type for obtainableTime *should* be string, but is number
-            if (unit.rarity !== 7 || !unit.obtainable || (unit.obtainableTime !== 0 && unit.obtainableTime !== "0")) return false;
+            if (unit.rarity !== 7 || !unit.obtainable || Number(unit.obtainableTime as unknown) !== 0) return false;
             return true;
         })
         .map((unit) => {

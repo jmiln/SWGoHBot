@@ -914,12 +914,16 @@ class PatreonFuncs {
                             // @ts-expect-error  (Won't shut up about partial messages or void, etc)
                             targetMsg = await msg
                                 .edit({ embeds: [outEmbed] })
-                                .catch((err) => console.error("[PF sendBroadcastMsg edit]", err?.toString()));
+                                .catch((err: unknown) =>
+                                    logger.error(`[PF sendBroadcastMsg edit] ${err instanceof Error ? err.message : String(err)}`),
+                                );
                         } else {
                             // @ts-expect-error  (Won't shut up about partial messages or void, etc)
                             targetMsg = await channel
                                 .send({ embeds: [outEmbed] })
-                                .catch((err) => console.error("[PF sendBroadcastMsg send]", err));
+                                .catch((err: unknown) =>
+                                    logger.error(`[PF sendBroadcastMsg send] ${err instanceof Error ? err.message : String(err)}`),
+                                );
                         }
                     }
                 }
