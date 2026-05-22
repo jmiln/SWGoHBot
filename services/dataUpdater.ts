@@ -347,7 +347,14 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
 
 async function runGameDataUpdaters(metadata: Metadata, comlinkStub: ComlinkStub) {
     debugLog("Running gameData updater");
-    const time = new Date().toString().split(" ").slice(1, 5);
+    const timestamp = Intl.DateTimeFormat("en", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        timeZone: env.LOG_TIMEZONE,
+    }).format(new Date());
     const log = [];
 
     const locales = await getLocalizationData(comlinkStub, metadata.latestLocalizationBundleVersion);
@@ -373,10 +380,10 @@ async function runGameDataUpdaters(metadata: Metadata, comlinkStub: ComlinkStub)
     }
 
     if (log.length) {
-        logger.log(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}`);
+        logger.log(`Ran updater - ${timestamp}`);
         logger.log(log.join("\n"));
     } else {
-        debugLog(`Ran updater - ${time[0]} ${time[1]}, ${time[2]} - ${time[3]}  ##  Nothing updated`);
+        debugLog(`Ran updater - ${timestamp}  ##  Nothing updated`);
     }
     debugLog("Finished running gameData updaters");
 }

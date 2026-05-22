@@ -454,8 +454,7 @@ export default class Shardtimes extends Command {
 
         function timeTil(zone: string | number, timeToAdd: number, type: string) {
             const nowTime = Date.now();
-            const hrMS = 1000 * 60 * 60;
-            const dayMS = 1000 * 60 * 60 * 24;
+            const { hrMS, dayMS } = constants;
 
             let targetTime: number;
             if (type === "zone" && typeof zone === "string") {

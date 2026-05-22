@@ -1,4 +1,5 @@
 import { env } from "../config/config.ts";
+import constants from "../data/constants/constants.ts";
 import cache from "./cache.ts";
 import logger from "./Logger.ts";
 
@@ -101,7 +102,7 @@ class DatabaseCleanup {
      * @returns Deletion summary
      */
     async cleanOldPlayerStats(daysOld = 7): Promise<string> {
-        const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
+        const cutoffTime = Date.now() - daysOld * constants.dayMS;
 
         const result = await cache.delete(env.MONGODB_SWAPI_DB, "playerStats", {
             updated: { $lt: cutoffTime },
@@ -116,7 +117,7 @@ class DatabaseCleanup {
      * @returns Deletion summary
      */
     async cleanOldGuilds(daysOld = 7): Promise<string> {
-        const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
+        const cutoffTime = Date.now() - daysOld * constants.dayMS;
 
         const result = await cache.delete(env.MONGODB_SWAPI_DB, "guilds", {
             updated: { $lt: cutoffTime },
@@ -147,7 +148,7 @@ class DatabaseCleanup {
         emptyRosters: number;
         totalToClean: number;
     }> {
-        const cutoffTime = Date.now() - daysOld * 24 * 60 * 60 * 1000;
+        const cutoffTime = Date.now() - daysOld * constants.dayMS;
 
         const [oldPlayerStats, oldGuilds, emptyRosters] = await Promise.all([
             cache.count(env.MONGODB_SWAPI_DB, "playerStats", { updated: { $lt: cutoffTime } }),
