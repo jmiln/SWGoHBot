@@ -342,61 +342,27 @@ export function getCurrentWeekday(zone?: string): string {
     return Intl.DateTimeFormat("en", { weekday: "long", timeZone: tz }).format(new Date());
 }
 
-// Get the offset for a given timezone, based on:
-// https://stackoverflow.com/a/64263359
 export function getTimezoneOffset(zone: string): number | null {
     if (!isValidZone(zone)) {
         logger.error("[functions/getTimezoneOffset] Missing or invalid timezone");
         return null;
     }
-    const timeZoneName =
-        Intl.DateTimeFormat("ia", { timeZoneName: "short", timeZone: zone })
-            .formatToParts()
-            .find((i) => i.type === "timeZoneName")?.value || "";
-    const offset = timeZoneName.slice(3);
-    if (!offset) return 0;
-
-    const matchData = offset.match(/([+-])(\d+)(?::(\d+))?/);
-    if (!matchData) throw new Error(`[functions/getTimezoneOffset] Cannot parse timezone name: ${timeZoneName}`);
-
-    const [, sign, hour, minute] = matchData;
-    let result = Number.parseInt(hour, 10) * 60;
-    if (sign === "-") result *= -1;
-    if (minute) result += Number.parseInt(minute, 10);
-
-    return result;
+    return Temporal.Now.zonedDateTimeISO(zone).offsetNanoseconds / (1e9 * 60);
 }
 
 export function getSetTimeForTimezone(mmddyyyy_HHmm: string, zone: string): number {
-    const offset = getTimezoneOffset(zone);
-    const [month, day, year, hour, min] = mmddyyyy_HHmm.split(/[/\s:]/).map((i) => Number.parseInt(i, 10));
+    const [month, day, year, hour, minute] = mmddyyyy_HHmm.split(/[/\s:]/).map((i) => Number.parseInt(i, 10));
     if (year.toString().length !== 4) throw Error("[getSetTimeForTimezone] Year MUST be 4 numbers long");
-    const utcAtTarget = Date.UTC(year, month - 1, day, hour, min);
-    return utcAtTarget - (offset ?? 0) * constants.minMS;
+    return Temporal.ZonedDateTime.from({ timeZone: zone, year, month, day, hour, minute, second: 0, millisecond: 0 }).toInstant()
+        .epochMilliseconds;
 }
 
 export function getUTCFromOffset(offset: number): number {
-    const date = new Date();
-    return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - offset * constants.minMS;
+    return Temporal.Now.plainDateISO("UTC").toZonedDateTime("UTC").toInstant().epochMilliseconds - offset * constants.minMS;
 }
 
 export function getStartOfDay(zone: string): Date {
-    const now = new Date();
-    const parts = new Intl.DateTimeFormat("en-US", {
-        timeZone: zone,
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: false,
-    }).formatToParts(now);
-
-    const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? "0");
-    const hours = get("hour") === 24 ? 0 : get("hour");
-    const elapsedMs = (hours * 3600 + get("minute") * 60 + get("second")) * 1000 + now.getMilliseconds();
-    return new Date(now.getTime() - elapsedMs);
+    return new Date(Temporal.Now.plainDateISO(zone).toZonedDateTime(zone).toInstant().epochMilliseconds);
 }
 
 /*
