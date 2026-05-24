@@ -40,7 +40,7 @@ describe("Versus", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Versus();
         await command.run(ctx);
-        assertErrorReply(interaction, "Both ally codes were invalid");
+        assertErrorReply(interaction, "COMMAND_VERSUS_BOTH_INVALID");
     });
 
     it("should return error when allycode_1 is missing but allycode_2 is provided", async () => {
@@ -48,7 +48,7 @@ describe("Versus", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Versus();
         await command.run(ctx);
-        assertErrorReply(interaction, "Ally code #1 was invalid");
+        assertErrorReply(interaction, "COMMAND_VERSUS_AC1_INVALID");
     });
 
     it("should return error when character is not found", async () => {

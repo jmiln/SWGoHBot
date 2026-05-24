@@ -55,7 +55,7 @@ describe("Faction", () => {
         const ctx = createCommandContext({ interaction });
         await command.run(ctx);
 
-        assertErrorReply(interaction, "need to select a faction");
+        assertErrorReply(interaction, "COMMAND_FACTION_NO_FACTION");
     });
 
     // Functionality tests - faction selection

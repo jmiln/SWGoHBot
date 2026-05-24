@@ -62,7 +62,7 @@ export default class Charactergear extends Command {
         const MAX_GEAR = 13;
 
         if (gearLvl < 0 || gearLvl > MAX_GEAR) {
-            return super.error(interaction, `${gearLvl} is not a valid gear level. It must be between 1 and ${MAX_GEAR}`);
+            return super.error(interaction, language.get("COMMAND_CHARACTERGEAR_INVALID_LEVEL", gearLvl, MAX_GEAR));
         }
 
         const chars = findChar(searchChar, characters);
@@ -80,7 +80,7 @@ export default class Charactergear extends Command {
         try {
             char = await swgohAPI.getCharacter(character.uniqueName);
         } catch (_) {
-            return super.error(interaction, "There was an error fetching character data. Please try again later.");
+            return super.error(interaction, language.get("COMMAND_CHARACTERGEAR_FETCH_ERROR"));
         }
 
         if (!allyCode) {
@@ -202,7 +202,7 @@ export default class Charactergear extends Command {
             // They do have the character unlocked.
             // Need to filter out the gear that they already have assigned to the character, then show them what's left
             if (gearLvl && gearLvl < playerChar.gear) {
-                return super.error(interaction, "Looks like you already have all the gear equipped for that level", {
+                return super.error(interaction, language.get("COMMAND_CHARACTERGEAR_ALL_EQUIPPED"), {
                     title: "Already There",
                 });
             }

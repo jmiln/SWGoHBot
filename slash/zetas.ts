@@ -105,7 +105,7 @@ export default class Zetas extends Command {
         });
         if (!player) return super.error(interaction, language.get("BASE_SWGOH_NO_ACCT"));
 
-        if (!player?.roster) return super.error(interaction, "I cannot get this player's info right now. Please try again later");
+        if (!player?.roster) return super.error(interaction, language.get("COMMAND_ZETAS_PLAYER_ERROR"));
 
         // Filter out all the ships, so it only has to check through characters
         player.roster = player.roster.filter((ch) => ch.combatType === 1);

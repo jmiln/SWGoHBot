@@ -190,7 +190,7 @@ export default class Shardtimes extends Command {
 
             if (timezone && timeTil) {
                 // Warn em if they try using both a timezone and the time_until, since they can only use one
-                return super.error(interaction, "You may not use both **timezone** and **time_until**, please choose one or the other");
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_CONFLICTING_OPTIONS"));
             }
             if (!timezone && !timeTil) {
                 // Warn em if they don't give a timezone or time_until
@@ -383,7 +383,7 @@ export default class Shardtimes extends Command {
             const shardOut = {};
 
             if (!shardTimes?.times || !Object.keys(shardTimes.times)?.length) {
-                return super.error(interaction, "Sorry, but it looks like you don't have anyone registered to watch");
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_NO_WATCHERS"));
             }
 
             for (const user of Object.keys(shardTimes.times)) {

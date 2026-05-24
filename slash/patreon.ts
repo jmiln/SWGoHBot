@@ -128,13 +128,13 @@ export default class Patreon extends Command {
                 // TODO Better wording?
                 //  - You are now supporting this server?
                 //  - You have now selected this server to share your sub benefits with
-                return super.success(interaction, "Server set as your primary to share your subscriber benefits with!");
+                return super.success(interaction, language.get("COMMAND_PATREON_SERVER_SET"));
             }
             case "unset_server": {
                 // Remove the user from whichever server they have set as their bonusServer, and clear the bonusServer from their settings
                 const userConf = await userReg.getUser(interaction.user.id);
                 if (!userConf?.bonusServer?.length) {
-                    return super.error(interaction, "Sorry, but it doesn't look like you have a bonus server set");
+                    return super.error(interaction, language.get("COMMAND_PATREON_NO_BONUS_SERVER"));
                 }
 
                 const clearRes = await clearSupporterInfo({ userId: interaction.user.id });
@@ -148,7 +148,7 @@ export default class Patreon extends Command {
                     );
                 }
                 // TODO Better wording?
-                return super.success(interaction, "I've removed the server you'd set to share with.");
+                return super.success(interaction, language.get("COMMAND_PATREON_SERVER_REMOVED"));
             }
             default: {
                 const pat = await patreonFuncs.getPatronUser(interaction.user.id);

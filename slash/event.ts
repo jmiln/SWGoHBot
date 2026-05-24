@@ -296,7 +296,7 @@ export default class Event extends Command {
 
                 const validEV = validateEvents([newEv], guildEvents)[0];
                 if (!validEV) {
-                    return super.error(interaction, "Something broke while trying to validate your event.");
+                    return super.error(interaction, language.get("COMMAND_EVENT_VALIDATE_ERROR"));
                 }
                 if (!validEV?.valid) {
                     return super.error(interaction, validEV.str);

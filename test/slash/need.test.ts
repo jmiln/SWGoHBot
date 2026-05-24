@@ -40,7 +40,7 @@ describe("Need", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Need();
         await command.run(ctx);
-        assertErrorReply(interaction, "You need to specify a location or faction.");
+        assertErrorReply(interaction, "COMMAND_NEED_NO_LOCATION");
     });
 
     it("should return error when no allycode is registered and none provided", async () => {

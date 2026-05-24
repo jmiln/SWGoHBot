@@ -97,7 +97,7 @@ export default class ArenaAlert extends Command {
         // Grab the user's info
         const user = (await cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: userID })) as UserConfig;
         if (!user) {
-            return super.error(interaction, "I couldn't find your data. Please try again.");
+            return super.error(interaction, language.get("COMMAND_ARENAALERT_DATA_NOT_FOUND"));
         }
 
         if (!enabledms && !arena && !payoutResult && payoutWarning === null) {
@@ -129,13 +129,13 @@ export default class ArenaAlert extends Command {
         });
 
         if (!changelog.length) {
-            return super.success(interaction, "It looks like nothing was updated.");
+            return super.success(interaction, language.get("COMMAND_ARENAALERT_NOTHING_UPDATED"));
         }
         try {
             await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userID }, updatedUser);
         } catch (e) {
             logger.error(`[arenaalert] Failed to save settings for user ${userID}: ${e}`);
-            return super.error(interaction, "Failed to save your settings. Please try again.");
+            return super.error(interaction, language.get("COMMAND_ARENAALERT_SAVE_FAILED"));
         }
         return super.success(interaction, changelog.join("\n"));
     }

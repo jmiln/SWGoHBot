@@ -71,7 +71,7 @@ export default class Randomchar extends Command {
             // If there is a valid ally code provided, grab the user's roster
             const player = await fetchPlayerWithCooldown(interaction, allyCode);
             if (!player) {
-                return super.error(interaction, "Sorry, I couldn't fetch player data right now.", {
+                return super.error(interaction, language.get("COMMAND_RANDOMCHAR_FETCH_ERROR"), {
                     title: language.get("BASE_SOMETHING_BROKE"),
                 });
             }
@@ -112,7 +112,7 @@ export default class Randomchar extends Command {
         } else {
             // No chars available or not using allycode
             if (!chars.length) {
-                return super.error(interaction, "No characters available to select from.");
+                return super.error(interaction, language.get("COMMAND_RANDOMCHAR_NO_CHARS"));
             }
             // chars is BotUnit[] when no allycode
             const botChars = chars as BotUnit[];

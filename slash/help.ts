@@ -41,7 +41,7 @@ export default class Help extends Command {
         super(Help.metadata);
     }
 
-    async run({ interaction }: CommandContext) {
+    async run({ interaction, language }: CommandContext) {
         const search = interaction.options.getString("command");
         const category = interaction.options.getString("category");
         const isDetailed = interaction.options.getBoolean("details");
@@ -116,7 +116,7 @@ export default class Help extends Command {
                 }
             }
 
-            if (!foundCommand) return super.error(interaction, "I couldn't find a match for that command name.");
+            if (!foundCommand) return super.error(interaction, language.get("COMMAND_HELP_NOT_FOUND"));
 
             const cmdArr = formatCmdHelp(foundCommand.usage, foundCommand.name, foundCommand.description);
 

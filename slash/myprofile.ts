@@ -29,17 +29,17 @@ export default class MyProfile extends Command {
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac, true);
         if (!allyCode) {
-            return super.error(interaction, `Sorry, but ${ac} is not a valid ally code`);
+            return super.error(interaction, language.get("COMMAND_MYPROFILE_INVALID_ALLY", ac));
         }
         await interaction.reply({ content: `> Please wait while I look up the profile for ${allyCode}` });
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) {
-            return super.error(interaction, "Please make sure you are registered with a valid ally code");
+            return super.error(interaction, language.get("COMMAND_MYPROFILE_NO_ALLY_CODE"));
         }
 
         if (!player?.stats?.length) {
-            return super.error(interaction, "Sorry, but I could not find that player right now.");
+            return super.error(interaction, language.get("COMMAND_MYPROFILE_PLAYER_NOT_FOUND"));
         }
 
         const gpFullStat = player.stats.find((s) => s.nameKey === "Galactic Power:" || s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME");

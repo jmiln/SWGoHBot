@@ -81,7 +81,6 @@ export default class extends Language {
             BASE_SWGOH_CHAR_LIST: (chars) => `Sua busca retornou muitos resultados, por favor seja mais específico. \nSegue uma lista dos resultados mais próximos.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Algo deu errado, por favor verifique se sua conta está sincronizada corretamente.",
             BASE_SWGOH_LAST_UPDATED: (date) => `Última atualização na ${date} passada`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Por favor, aguarde enquanto eu recupero seu(s) ${dType ? dType : "dados"}`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**Ajuda extendida para ${command.help.name}** \n**Uso**: ${command.help.usage} \n${command.help.extended}`,

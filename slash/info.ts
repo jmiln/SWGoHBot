@@ -72,7 +72,7 @@ export default class Info extends Command {
         if (subcommand === "stats") {
             return this.runStats({ interaction, language });
         }
-        return this.runCmdstats({ interaction });
+        return this.runCmdstats({ interaction, language });
     }
 
     private async runStats({ interaction, language }: CommandContext) {
@@ -112,11 +112,11 @@ export default class Info extends Command {
             });
         } catch (error) {
             logger.error(`[slash/info] stats error: ${String(error)}`);
-            return super.error(interaction, "An error occurred while fetching bot information.");
+            return super.error(interaction, language.get("COMMAND_INFO_BOT_ERROR"));
         }
     }
 
-    private async runCmdstats({ interaction }: Pick<CommandContext, "interaction">) {
+    private async runCmdstats({ interaction, language }: Pick<CommandContext, "interaction" | "language">) {
         try {
             const commandArg = interaction.options.getString("command");
             const now = Date.now();
@@ -128,7 +128,7 @@ export default class Info extends Command {
             return await this.replyCmdList(interaction, startTime, now);
         } catch (error) {
             logger.error(`[slash/info] cmdstats error: ${String(error)}`);
-            return super.error(interaction, "An error occurred while fetching command stats.");
+            return super.error(interaction, language.get("COMMAND_INFO_STATS_ERROR"));
         }
     }
 

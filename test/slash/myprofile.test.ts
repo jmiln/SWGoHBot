@@ -36,7 +36,7 @@ describe("MyProfile", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyProfile();
         await command.run(ctx);
-        assertErrorReply(interaction, "not a valid ally code");
+        assertErrorReply(interaction, "COMMAND_MYPROFILE_INVALID_ALLY");
     });
 
     it("should return error when player data cannot be fetched", async () => {
@@ -46,7 +46,7 @@ describe("MyProfile", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyProfile();
         await command.run(ctx);
-        assertErrorReply(interaction, "Please make sure you are registered");
+        assertErrorReply(interaction, "COMMAND_MYPROFILE_NO_ALLY_CODE");
     });
 
     it("should display player profile with stats and GP", async () => {
@@ -100,6 +100,6 @@ describe("MyProfile", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyProfile();
         await command.run(ctx);
-        assertErrorReply(interaction, "could not find that player");
+        assertErrorReply(interaction, "COMMAND_MYPROFILE_PLAYER_NOT_FOUND");
     });
 });

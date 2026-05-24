@@ -51,7 +51,7 @@ export default class GuildUpdate extends Command {
         const user = await userReg.getUser(userID);
 
         if (!user) {
-            return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+            return super.error(interaction, language.get("BASE_DATA_NOT_FOUND"));
         }
         let gu = user.guildUpdate;
         const defGU = {
@@ -130,7 +130,7 @@ export default class GuildUpdate extends Command {
                     ],
                 });
             }
-            return super.error(interaction, "Please provide at least one option to update (enabled, channel, or ally code).");
+            return super.error(interaction, language.get("COMMAND_GUILDUPDATE_NO_OPTIONS"));
         }
         if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)
@@ -149,6 +149,6 @@ export default class GuildUpdate extends Command {
         }
 
         // If we reach here, no valid subcommand was found
-        return super.error(interaction, "Invalid subcommand");
+        return super.error(interaction, language.get("COMMAND_GUILDUPDATE_INVALID_SUBCOMMAND"));
     }
 }

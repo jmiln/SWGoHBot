@@ -54,6 +54,6 @@ describe("SetConf", () => {
         const ctx = createCommandContext({ interaction });
         const command = new SetConf();
         await command.run(ctx);
-        assertErrorReply(interaction, "nothing needed to be updated");
+        assertErrorReply(interaction, "COMMAND_SETCONF_NOTHING_UPDATED");
     });
 });

@@ -79,15 +79,15 @@ export default class Versus extends Command {
         const user2AC = await getAllyCode(interaction, user2str, false);
 
         if (!user1AC && !user2AC) {
-            return super.error(interaction, "Both ally codes were invalid");
+            return super.error(interaction, language.get("COMMAND_VERSUS_BOTH_INVALID"));
         }
         if (!user1AC) {
             // Spit out an error because the interaction author is not registered
-            return super.error(interaction, "Ally code #1 was invalid");
+            return super.error(interaction, language.get("COMMAND_VERSUS_AC1_INVALID"));
         }
         if (!user2AC) {
             // Something went wrong with user2, let's spit out an error
-            return super.error(interaction, "Ally code #2 was invalid");
+            return super.error(interaction, language.get("COMMAND_VERSUS_AC2_INVALID"));
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
@@ -104,9 +104,9 @@ export default class Versus extends Command {
         const char = charRes?.[0] || null;
 
         const user1 = await fetchPlayerWithCooldown(interaction, user1AC);
-        if (!user1) return super.error(interaction, "Something broke when getting user 1");
+        if (!user1) return super.error(interaction, language.get("COMMAND_VERSUS_USER1_ERROR"));
         const user2 = await fetchPlayerWithCooldown(interaction, user2AC);
-        if (!user2) return super.error(interaction, "Something broke when getting user 2");
+        if (!user2) return super.error(interaction, language.get("COMMAND_VERSUS_USER2_ERROR"));
         const errArr = [];
         if (!user1?.roster?.length) {
             errArr.push("User 1 is missing pieces, please try again later.");
@@ -123,7 +123,7 @@ export default class Versus extends Command {
         const char2 = user2.roster.find((c) => c.defId === char.uniqueName);
 
         if (!char1 && !char2) {
-            return super.error(interaction, "Neither user seems to have that character unlocked!");
+            return super.error(interaction, language.get("COMMAND_VERSUS_NOT_UNLOCKED"));
         }
 
         const isShip = (char1 ? char1.combatType : char2.combatType) !== 1;

@@ -66,7 +66,7 @@ describe("Aliases Command Functionality", () => {
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description = getReplyDescription(replies[0]);
             assert.ok(
-                description?.includes("successfully submitted"),
+                description?.includes("COMMAND_ALIASES_ADDED"),
                 "Expected success message"
             );
 
@@ -121,7 +121,7 @@ describe("Aliases Command Functionality", () => {
             assert.ok(replies[0].embeds[0], "Expected at least one embed");
             const description = replies[0].embeds[0].data?.description || replies[0].embeds[0].description;
             assert.ok(
-                description?.includes("couldn't find a matching unit"),
+                description?.includes("COMMAND_ALIASES_UNIT_NOT_FOUND"),
                 "Expected error message about unit not found"
             );
         });
@@ -155,7 +155,7 @@ describe("Aliases Command Functionality", () => {
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description1 = getReplyDescription(replies[0]);
             assert.ok(
-                description1?.includes("alias is already in use"),
+                description1?.includes("COMMAND_ALIASES_IN_USE"),
                 "Expected error message about duplicate alias"
             );
 
@@ -206,7 +206,7 @@ describe("Aliases Command Functionality", () => {
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description2 = getReplyDescription(replies[0]);
             assert.ok(
-                description2?.includes("successfully removed"),
+                description2?.includes("COMMAND_ALIASES_REMOVED"),
                 "Expected success message"
             );
 
@@ -242,7 +242,7 @@ describe("Aliases Command Functionality", () => {
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description3 = getReplyDescription(replies[0]);
             assert.ok(
-                description3?.includes("isn't a current alias"),
+                description3?.includes("COMMAND_ALIASES_NOT_FOUND"),
                 "Expected error message about alias not existing"
             );
 

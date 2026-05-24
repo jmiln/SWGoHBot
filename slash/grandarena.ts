@@ -166,7 +166,7 @@ export default class GrandArena extends Command {
                     characters.filter((c) => c.factions.find((ch) => ch.toLowerCase() === thisFaction)).map((c) => c.uniqueName),
                 );
             } else {
-                return super.error(interaction, `Sorry, but I did not find a match for the faction: \`${faction}\``);
+                return super.error(interaction, language.get("COMMAND_GRANDARENA_FACTION_NOT_FOUND", faction));
             }
         }
 

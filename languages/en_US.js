@@ -189,6 +189,7 @@ export default class extends Language {
             BASE_PLEASE_TRY_AGAIN: "Please try again in a bit.",
             BASE_INVALID_ALLY_CODE: "I could not find a valid ally code. Please make sure you've entered it correctly.",
             BASE_ALLY_CODE_NO_MATCH: "I could not find a match for that ally code. Please double check that it is correct.",
+            BASE_DATA_NOT_FOUND: "Sorry, but something went wrong and I couldn't find your data. Please try again.",
 
             // Abilities Command
             COMMAND_CHARACTER_NEED_CHARACTER: "Missing character. \nUsage is `/character character: <characterName>`",
@@ -243,6 +244,9 @@ export default class extends Language {
             },
 
             // ArenaAlert Command
+            COMMAND_ARENAALERT_DATA_NOT_FOUND:   "I couldn't find your data. Please try again.",
+            COMMAND_ARENAALERT_NOTHING_UPDATED:  "It looks like nothing was updated.",
+            COMMAND_ARENAALERT_SAVE_FAILED:      "Failed to save your settings. Please try again.",
             COMMAND_ARENAALERT_PATREON_ONLY:    "Sorry, but this command/ feature is only available as a thank you to Patreon supporters through https://www.patreon.com/swgohbot",
             COMMAND_ARENAALERT_MISSING_DM:      "Missing option. Try all/primary/off.",
             COMMAND_ARENAALERT_INVALID_DM:      "Invalid option. Try all/primary/off.",
@@ -388,6 +392,7 @@ export default class extends Language {
             COMMAND_CHALLENGES_SHIP_ENHANCEMENT: "Ship Enhancement Droids",
             COMMAND_CHALLENGES_SHIP_BUILDING   : "Ship Building Materials",
             COMMAND_CHALLENGES_SHIP_ABILITY    : "Ship Ability Materials",
+            COMMAND_CHALLENGES_UNKNOWN_DAY: "Unknown day.",
             COMMAND_CHALLENGES_MISSING_DAY: "You need to specify a day",
             COMMAND_CHALLENGES_HELP: {
                 description: "Shows the daily guild challenges.",
@@ -418,6 +423,9 @@ export default class extends Language {
 
             // Character gear Command
             COMMAND_CHARACTERGEAR_INVALID_GEAR: "Invalid gear level. Valid gears are between 1 & 12.",
+            COMMAND_CHARACTERGEAR_INVALID_LEVEL: (level, max) => `${level} is not a valid gear level. It must be between 1 and ${max}`,
+            COMMAND_CHARACTERGEAR_FETCH_ERROR: "There was an error fetching character data. Please try again later.",
+            COMMAND_CHARACTERGEAR_ALL_EQUIPPED: "Looks like you already have all the gear equipped for that level",
             COMMAND_CHARACTERGEAR_GEAR_ALL: (name, gearString) => ` * ${name} * \n### All Gear Needed ### \n${gearString}`,
             COMMAND_CHARACTERGEAR_GEAR_NA: "This gear has not been entered yet",
             COMMAND_CHARACTERGEAR_HELP: {
@@ -573,6 +581,7 @@ export default class extends Language {
             COMMAND_EVENT_TRIGGER_NEED_NAME: "You must give an event name to trigger.",
 
             // Event Command (Other)
+            COMMAND_EVENT_VALIDATE_ERROR: "Something broke while trying to validate your event.",
             COMMAND_EVENT_TOO_MANY_EVENTS: "Sorry, but you can only have up to 50 events",
 
             // Event Command (Edit)
@@ -661,6 +670,9 @@ export default class extends Language {
             // Faction Command
             COMMAND_FACTION_MISSING_FACTION: "Missing faction",
             COMMAND_FACTION_INVALID_FACTION: "Invalid faction",
+            COMMAND_FACTION_NO_FACTION: "You need to select a faction to search for",
+            COMMAND_FACTION_TOO_MANY_RESULTS: "Your query came up with too many results, please try and be more specific",
+            COMMAND_FACTION_ROSTER_ERROR: "I couldn't get that player's roster. Please try again later.",
             COMMAND_FACTION_CODE_OUT: (searchName, charString) => `# Characters in the ${searchName} faction # \n${charString}`,
             COMMAND_FACTION_USAGE: "Usage is `/faction faction: <faction>`",
             COMMAND_FACTION_HELP: {
@@ -699,6 +711,8 @@ export default class extends Language {
             COMMAND_FARM_FLEET: "Fleet ",
             COMMAND_FARM_CANTINA: "Cantina ",
             COMMAND_FARM_ENERGY_PER: " energy per attempt",
+            COMMAND_FARM_UNIT_ERROR: "[FARM] Broke trying to get the unit.",
+            COMMAND_FARM_LOCATION_ERROR: (name) => `I couldn't get the location data for *${name}*`,
             COMMAND_FARM_CHAR_UNAVAILABLE: "Looks like that character is not currently farmable, or only available through an event.",
             COMMAND_FARM_EVENT_CHARS: {
                 // Heroes Journey
@@ -734,6 +748,7 @@ export default class extends Language {
             },
 
             // Grand Arena Command
+            COMMAND_GRANDARENA_FACTION_NOT_FOUND: (faction) => `Sorry, but I did not find a match for the faction: \`${faction}\``,
             COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Invalid user ${userNum}`,
             COMMAND_GRANDARENA_UNREGISTERED: "In order to use the `me` keyword, you need to have an allycode registered with the bot.\nCheck out `/register` or `/userconf`",
             COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Could not find a match for "${char}"`,
@@ -804,6 +819,12 @@ export default class extends Language {
             ].join("\n"),
             COMMAND_GUILDS_FOOTER: "`/guilds roster` for a list of your guild members and their gp.\n`/guilds roster show_allycode: true` for a list with their ally codes instead.",
             COMMAND_GUILDS_TWS_HEADER: (guildName) => `${guildName}'s Territory War Summary`,
+            COMMAND_GUILDS_GEAR_ERROR: (e) => `Issue with guildGear: ${e}`,
+            COMMAND_GUILDS_MODS_ERROR: (e) => `Issue with guildMods: ${e}`,
+            COMMAND_GUILDS_RELICS_ERROR: (e) => `Issue with guildRelics: ${e}`,
+            COMMAND_GUILDS_ROSTER_ERROR: (e) => `Issue with guildRoster: ${e}`,
+            COMMAND_GUILDS_ROSTER2_ERROR: (e) => `Issue with guildRoster 2: ${e}`,
+            COMMAND_GUILDS_TW_ERROR: (e) => `Issue with twSummary: ${e}`,
             COMMAND_GUILDS_HELP: {
                 description: "Shows everyone that's in your guild/ some basic stats.",
                 actions: [
@@ -834,6 +855,8 @@ export default class extends Language {
             },
 
             // GuildSearch Command
+            COMMAND_GUILDSEARCH_INVALID_TOP: "Invalid argument for top. Must be between 1 and 50",
+            COMMAND_GUILDSEARCH_NOT_IN_GUILD: "Sorry, but it looks like that player is not in a guild",
             COMMAND_GUILDSEARCH_SHIP_STATS: "Sorry, but I cannot get the stats for ships at this time.",
             COMMAND_GUILDSEARCH_CONFLICTING: (args) => `You have conflicting arguments, the following are not compatible with each other. ${args}`,
             COMMAND_GUILDSEARCH_GEAR_SUM: "Char Gear Summary",
@@ -919,7 +942,12 @@ export default class extends Language {
                 ]
             },
 
+            // GuildTickets Command
+            COMMAND_GUILDTICKETS_NO_OPTIONS: "No options provided. Please specify at least one setting to update.",
+
             // Guild Update Command
+            COMMAND_GUILDUPDATE_NO_OPTIONS: "Please provide at least one option to update (enabled, channel, or ally code).",
+            COMMAND_GUILDUPDATE_INVALID_SUBCOMMAND: "Invalid subcommand",
             COMMAND_GUILDUPDATE_HELP: {
                 description: "Modify and view the settings for the guild update watcher.",
                 actions: [
@@ -940,6 +968,9 @@ export default class extends Language {
                 ]
             },
 
+            // Help Command
+            COMMAND_HELP_NOT_FOUND: "I couldn't find a match for that command name.",
+
             // Help Command (Disabled/ not converted to slash command)
             // COMMAND_HELP_HEADER: (prefix) => `= Command List =\n\n[Use ${prefix}help <commandname> for details]\n`,
             // COMMAND_HELP_OUTPUT: (command, prefix) => `= ${command.help.name} = \n${command.help.description} \nAliases:: ${command.conf.aliases.join(", ")}\nUsage:: ${prefix}${command.help.usage}`,
@@ -958,6 +989,8 @@ export default class extends Language {
             // },
 
             // Info Command
+            COMMAND_INFO_BOT_ERROR: "An error occurred while fetching bot information.",
+            COMMAND_INFO_STATS_ERROR: "An error occurred while fetching command stats.",
             COMMAND_INFO_OUTPUT: (shardID) => ({
                 "header"      : "== Bot Information ==",
                 "shardHeader" : `== Bot Information [${shardID}] ==`,
@@ -1050,6 +1083,9 @@ export default class extends Language {
             },
 
             // MyArena Command
+            COMMAND_MYARENA_PLAYER_ERROR: "Something broke, please try again in a bit",
+            COMMAND_MYARENA_INFO_ERROR: "Something broke when getting your info, please try again in a bit.",
+            COMMAND_MYARENA_ARENA_ERROR: "Something broke when getting your arena info, please try again in a bit.",
             COMMAND_MYARENA_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
             COMMAND_MYARENA_NO_CHAR: "Something went wrong, I could not get your characters.",
             COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
@@ -1071,6 +1107,10 @@ export default class extends Language {
             },
 
             // MyCharacter Command
+            COMMAND_MYCHARACTER_FETCH_ERROR: "Sorry, I couldn't fetch player data right now. Please try again later.",
+            COMMAND_MYCHARACTER_ALLY_NOT_FOUND: "I could not find any player with that ally code, please double check that it's correct",
+            COMMAND_MYCHARACTER_NO_STATS: "Something went wrong. Please make sure you have that character unlocked",
+            COMMAND_MYCHARACTER_STATS_ERROR: "Something went wrong, I couldn't get the stats for that character",
             COMMAND_MYCHARACTER_ABILITIES: "Abilities",
             COMMAND_MYCHARACTER_HELP: ({
                 description: "Shows the general stats about the selected character.",
@@ -1089,6 +1129,9 @@ export default class extends Language {
             }),
 
             // MyMods Command
+            COMMAND_MYMODS_ROSTER_ERROR: "Unable to retrieve roster.",
+            COMMAND_MYMODS_CHAR_NOT_UNLOCKED: "Looks like you don't have that character activated yet.",
+            COMMAND_MYMODS_ALL_GOOD: "It looks like your characters all have well leveled mods!",
             COMMAND_MYMODS_NO_MODS: (charName) => `Sorry, but I couldn't find any mods for your ${charName}`,
             COMMAND_MYMODS_MISSING_MODS: "Sorry, but I can't find your mods right now. Please wait a bit then try again.",
             COMMAND_MYMODS_LAST_UPDATED: (lastUpdated) => `Mods last updated: ${lastUpdated} ago`,
@@ -1122,6 +1165,9 @@ export default class extends Language {
             }),
 
             // MyProfile Command
+            COMMAND_MYPROFILE_INVALID_ALLY: (ac) => `Sorry, but ${ac} is not a valid ally code`,
+            COMMAND_MYPROFILE_NO_ALLY_CODE: "Please make sure you are registered with a valid ally code",
+            COMMAND_MYPROFILE_PLAYER_NOT_FOUND: "Sorry, but I could not find that player right now.",
             COMMAND_MYPROFILE_NO_USER: (user) => `Sorry, but I can't find any arena data for ${user}. Please make sure that account is synced`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s profile (${allyCode})`,
             COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arena data as of: ${date}`,
@@ -1174,6 +1220,9 @@ export default class extends Language {
             },
 
             // Need Command
+            COMMAND_NEED_NO_LOCATION: "You need to specify a location or faction.",
+            COMMAND_NEED_PLAYER_NOT_FOUND: "I couldn't find that player, please make sure you've got the correct ally code.",
+            COMMAND_NEED_ROSTER_NOT_FOUND: "I couldn't find your roster.",
             COMMAND_NEED_MISSING_USER: "In order to use this command, you must either register or enter an ally code.",
             COMMAND_NEED_MISSING_SEARCH: (search) => `Cannot find any matches for ${search}`,
             COMMAND_NEED_CHAR_HEADER: "__Characters:__",
@@ -1248,7 +1297,19 @@ export default class extends Language {
                 ]
             },
 
+            // Panic Command
+            COMMAND_PANIC_UNIT_NOT_FOUND: (unit) => `Please select one of the autocompleted options, I couldn't find a match for ${unit}`,
+            COMMAND_PANIC_IMAGE_ERROR: "Sorry, but something went wrong generating the image. Please try again later.",
+            COMMAND_PANIC_GENERIC_ERROR: "Sorry, but something went wrong. Please try again later.",
+
+            // Patreon Command
+            COMMAND_PATREON_SERVER_SET: "Server set as your primary to share your subscriber benefits with!",
+            COMMAND_PATREON_NO_BONUS_SERVER: "Sorry, but it doesn't look like you have a bonus server set",
+            COMMAND_PATREON_SERVER_REMOVED: "I've removed the server you'd set to share with.",
+
             // Polls Command
+            COMMAND_POLL_NO_ACTIVE: "Sorry, but there is no poll active in this channel.",
+            COMMAND_POLL_DELETED: "> Poll deleted.",
             COMMAND_POLL_NO_ARG: "You need to provide either an option to vote on, or an action (create/view/etc).",
             COMMAND_POLL_TITLE_TOO_LONG: "Sorry, but your title/ question must be fewer than 256 characters.",
             COMMAND_POLL_ALREADY_RUNNING: "Sorry, but you can only run one poll at a time. Please end the current one first.",
@@ -1314,6 +1375,7 @@ export default class extends Language {
             },
 
             // RaidDamage Command
+            COMMAND_RAIDDAMAGE_NOT_FOUND: "I cannot find that raid, please try again",
             COMMAND_RAIDDAMAGE_DMG: "damage",
             COMMAND_RAIDDAMAGE_MISSING_RAID: "Missing Raid",
             COMMAND_RAIDDAMAGE_INVALID_RAID: "Invalid Raid",
@@ -1345,6 +1407,8 @@ export default class extends Language {
             },
 
             // Randomchar Command
+            COMMAND_RANDOMCHAR_FETCH_ERROR: "Sorry, I couldn't fetch player data right now.",
+            COMMAND_RANDOMCHAR_NO_CHARS: "No characters available to select from.",
             COMMAND_RANDOMCHAR_INVALID_NUM: (maxChar) => `Sorry, but you need a number from 1-${maxChar} there.`,
             COMMAND_RANDOMCHAR_HELP: {
                 description: "Picks up to 5 random characters to form a squad.",
@@ -1464,6 +1528,16 @@ export default class extends Language {
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Sorry, but ${value} is not a currently supported language. \nCurrently supported languages are: \`${langList}\``,
             COMMAND_SETCONF_INVALID_WEBHOOK: "Sorry, but that's not a valid webhook url. Copy the one that Discord gives you when you set it up",
             COMMAND_SETCONF_RESET: "Your config has been reset",
+            COMMAND_SETCONF_TW_NO_UNITS: "You have no units in your list",
+            COMMAND_SETCONF_TW_NO_UNIT_SPECIFIED: "You must specify a unit to add or remove",
+            COMMAND_SETCONF_UNIT_IN_LIST: (defId) => `Trying to add ${defId}. This unit is already in your list`,
+            COMMAND_SETCONF_UNIT_ADDED: (defId) => `Added ${defId} to your list`,
+            COMMAND_SETCONF_UNIT_IN_BLACKLIST: (defId) => `Trying to add ${defId}. This unit is already in your blacklist`,
+            COMMAND_SETCONF_UNIT_ADDED_BLACKLIST: (defId) => `Added ${defId} to your blacklist`,
+            COMMAND_SETCONF_UNIT_REMOVED: (defId) => `Removed ${defId} from your list`,
+            COMMAND_SETCONF_NOT_IN_BLACKLIST: (defId) => `Trying to remove ${defId}. This unit is not in your blacklist`,
+            COMMAND_SETCONF_UNIT_REMOVED_BLACKLIST: (defId) => `Removed ${defId} from your blacklist`,
+            COMMAND_SETCONF_NOTHING_UPDATED: "It looks like nothing needed to be updated",
             COMMAND_SETCONF_HELP: {
                 description: "Used to set the bot's config settings.",
                 actions: [
@@ -1572,6 +1646,8 @@ export default class extends Language {
             },
 
             // Shard times command
+            COMMAND_SHARDTIMES_CONFLICTING_OPTIONS: "You may not use both **timezone** and **time_until**, please choose one or the other",
+            COMMAND_SHARDTIMES_NO_WATCHERS: "Sorry, but it looks like you don't have anyone registered to watch",
             COMMAND_SHARDTIMES_MISSING_USER: "I need a user, please enter \"me\", mention someone here, or input their Discord ID.",
             COMMAND_SHARDTIMES_MISSING_ROLE: "Sorry, but you can only add yourself unless you have an admin role.",
             COMMAND_SHARDTIMES_INVALID_USER: "Invalid user, please enter \"me\", mention someone here, or input their discord ID.",
@@ -1692,6 +1768,16 @@ export default class extends Language {
                 ]
             },
 
+            COMMAND_STRIKE_NO_ADMIN: "You need the admin role to use this command.",
+            COMMAND_STRIKE_ALLY_NOT_FOUND: (ac) => `No player found for ally code ${ac}.`,
+            COMMAND_STRIKE_ADDED: (name, reason, expiry) => `Strike added for **${name}**\nReason: ${reason}${expiry}`,
+            COMMAND_STRIKE_NO_STRIKES_FOUND: "No strikes found for that player.",
+            COMMAND_STRIKE_NOT_FOUND: "Strike not found.",
+            COMMAND_STRIKE_ALREADY_REVOKED: "This strike has already been revoked.",
+            COMMAND_STRIKE_REVOKED: "Strike revoked. It will remain visible in the member's history.",
+            COMMAND_STRIKE_CLEARED: (name) => `All strikes cleared for **${name}**.`,
+            COMMAND_STRIKE_GUILD_NOT_FOUND: "Guild not found in cache. The guild may not have been fetched yet.",
+
             // Test command (in .gitignore)
             COMMAND_TEST_HELP: {
                 description: "A command to test things out.",
@@ -1744,6 +1830,15 @@ export default class extends Language {
                 ]
             },
 
+            // Aliases
+            COMMAND_ALIASES_FIELDS_REQUIRED: "Both fields MUST be filled in. Please try again.",
+            COMMAND_ALIASES_UNIT_NOT_FOUND: (key) => `I couldn't find a matching unit for '${key}'`,
+            COMMAND_ALIASES_IN_USE: (unit) => `This alias is already in use for ***${unit}***`,
+            COMMAND_ALIASES_ADDED: (alias, unit) => `Your alias (${alias}) for ***${unit}*** has been successfully submitted`,
+            COMMAND_ALIASES_SUBMIT_ERROR: (error) => `There was an issue when submitting that: \n${error}`,
+            COMMAND_ALIASES_NOT_FOUND: "That isn't a current alias.",
+            COMMAND_ALIASES_REMOVED: (alias) => `Your alias (${alias}) has been successfully removed.`,
+
             // UserConf
             COMMAND_USERCONF_CANNOT_VIEW_OTHER: "Sorry, but you cannot view other's configs",
             COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED: "You already have this ally code registered",
@@ -1781,6 +1876,8 @@ export default class extends Language {
             COMMAND_USERCONF_ARENA_INVALID_BOOL: "Invalid option. Try `yes/no`, `true/false` or `on/off`",
             COMMAND_USERCONF_ARENA_UPDATED: "Your settings have been updated.",
             COMMAND_USERCONF_LANG_UPDATED: (type, newLang) => `Your ${type} setting has been updated to ${newLang}`,
+            COMMAND_USERCONF_INVALID_ALLY: (ac) => `${ac} is not a valid ally code, please double check your digits.`,
+            COMMAND_USERCONF_NOTHING_UPDATED: "Nothing was updated. \nPlease make sure you choose one of the options to change.",
             COMMAND_USERCONF_HELP: {
                 description: "All the needed utilities to manage your info in the bot.",
                 actions: [
@@ -1834,6 +1931,12 @@ export default class extends Language {
             },
 
             // Versus Command
+            COMMAND_VERSUS_BOTH_INVALID: "Both ally codes were invalid",
+            COMMAND_VERSUS_AC1_INVALID: "Ally code #1 was invalid",
+            COMMAND_VERSUS_AC2_INVALID: "Ally code #2 was invalid",
+            COMMAND_VERSUS_USER1_ERROR: "Something broke when getting user 1",
+            COMMAND_VERSUS_USER2_ERROR: "Something broke when getting user 2",
+            COMMAND_VERSUS_NOT_UNLOCKED: "Neither user seems to have that character unlocked!",
             COMMAND_VERSUS_HELP: {
                 description: "Compare a character from two players",
                 actions: [
@@ -1850,6 +1953,7 @@ export default class extends Language {
             },
 
             // Whois command
+            COMMAND_WHOIS_NAME_TOO_LONG: "Invalid name, max length is 50 characters",
             COMMAND_WHOIS_HELP: {
                 description: "Find ally codes from a given name.",
                 actions: [
@@ -1865,6 +1969,7 @@ export default class extends Language {
             },
 
             // Zetas Command
+            COMMAND_ZETAS_PLAYER_ERROR: "I cannot get this player's info right now. Please try again later",
             COMMAND_ZETA_NO_USER: "Sorry, but I don't have that user listed anywhere.",
             COMMAND_ZETA_NO_ZETAS: "You don't seem to have any abilities zetad.",
             COMMAND_ZETA_OUT_DESC: `\`${"-".repeat(30)}\`\n\`[L]\` Leader | \`[S]\` Special | \`[U]\` Unique\n\`${"-".repeat(30)}\``,

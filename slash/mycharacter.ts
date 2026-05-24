@@ -101,13 +101,13 @@ export default class MyCharacter extends Command {
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player) {
-            return super.error(interaction, "Sorry, I couldn't fetch player data right now. Please try again later.", {
+            return super.error(interaction, language.get("COMMAND_MYCHARACTER_FETCH_ERROR"), {
                 title: language.get("BASE_SOMETHING_BROKE"),
             });
         }
 
         if (!player?.roster || !player?.updated) {
-            return super.error(interaction, "I could not find any player with that ally code, please double check that it's correct");
+            return super.error(interaction, language.get("COMMAND_MYCHARACTER_ALLY_NOT_FOUND"));
         }
 
         const pName = player.name;
@@ -233,8 +233,8 @@ export default class MyCharacter extends Command {
             "Deflection Chance": "DEFLECTION",
         };
 
-        if (!stats) return super.error(interaction, "Something went wrong. Please make sure you have that character unlocked");
-        if (!stats.final) return super.error(interaction, "Something went wrong, I couldn't get the stats for that character");
+        if (!stats) return super.error(interaction, language.get("COMMAND_MYCHARACTER_NO_STATS"));
+        if (!stats.final) return super.error(interaction, language.get("COMMAND_MYCHARACTER_STATS_ERROR"));
 
         let keys = Object.keys(stats.final);
         if (keys.indexOf("undefined") >= 0) keys = keys.slice(0, keys.indexOf("undefined"));

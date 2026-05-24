@@ -6,6 +6,7 @@ import {
     EmbedBuilder,
     InteractionContextType,
 } from "discord.js";
+import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
@@ -146,24 +147,24 @@ export default class StrikeCommand extends Command {
 
         const adminActions = ["add", "revoke", "clear"];
         if (adminActions.includes(action) && (permLevel ?? 0) < constants.permMap.GUILD_ADMIN) {
-            return super.error(interaction, "You need the admin role to use this command.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_NO_ADMIN"));
         }
 
         switch (action) {
             case "add":
-                return this.handleAdd(interaction, guildId);
+                return this.handleAdd(interaction, guildId, language);
             case "revoke":
-                return this.handleRevoke(interaction, guildId);
+                return this.handleRevoke(interaction, guildId, language);
             case "clear":
-                return this.handleClear(interaction, guildId);
+                return this.handleClear(interaction, guildId, language);
             case "view":
-                return this.handleView(interaction, guildId);
+                return this.handleView(interaction, guildId, language);
             case "list":
-                return this.handleList(interaction, guildId);
+                return this.handleList(interaction, guildId, language);
         }
     }
 
-    private async handleAdd(interaction: ChatInputCommandInteraction, guildId: string) {
+    private async handleAdd(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
         const allyCode = interaction.options.getInteger("allycode", true);
         const reason = interaction.options.getString("reason", true);
         const expiresDays = interaction.options.getInteger("expires");
@@ -185,7 +186,7 @@ export default class StrikeCommand extends Command {
         } else {
             const swapiPlayer = await swgohAPI.player(allyCode);
             if (!swapiPlayer) {
-                return super.error(interaction, `No player found for ally code ${allyCode}.`);
+                return super.error(interaction, language.get("COMMAND_STRIKE_ALLY_NOT_FOUND", allyCode));
             }
             playerName = swapiPlayer.name;
             playerGuildId = swapiPlayer.guildId;
@@ -210,10 +211,10 @@ export default class StrikeCommand extends Command {
         await addStrike({ guildId, playerInfo, strike });
 
         const expiryText = typeof expiresDays === "number" ? ` (expires in ${expiresDays} days)` : "";
-        return super.success(interaction, `Strike added for **${playerName}**\nReason: ${reason}${expiryText}`, { title: "Strike Added" });
+        return super.success(interaction, language.get("COMMAND_STRIKE_ADDED", playerName, reason, expiryText), { title: "Strike Added" });
     }
 
-    private async handleRevoke(interaction: ChatInputCommandInteraction, guildId: string) {
+    private async handleRevoke(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
         const allyCode = interaction.options.getInteger("allycode", true);
         const strikeId = interaction.options.getString("strike_id", true);
         const revokedBy = interaction.user.id;
@@ -221,39 +222,39 @@ export default class StrikeCommand extends Command {
         const result = await revokeStrike({ guildId, allyCode, strikeId, revokedBy });
 
         if (result === "no_player") {
-            return super.error(interaction, "No strikes found for that player.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_NO_STRIKES_FOUND"));
         }
         if (result === "not_found") {
-            return super.error(interaction, "Strike not found.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_NOT_FOUND"));
         }
         if (result === "already_revoked") {
-            return super.error(interaction, "This strike has already been revoked.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_ALREADY_REVOKED"));
         }
 
-        return super.success(interaction, "Strike revoked. It will remain visible in the member's history.", { title: "Strike Revoked" });
+        return super.success(interaction, language.get("COMMAND_STRIKE_REVOKED"), { title: "Strike Revoked" });
     }
 
-    private async handleClear(interaction: ChatInputCommandInteraction, guildId: string) {
+    private async handleClear(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
         const allyCode = interaction.options.getInteger("allycode", true);
 
         const record = await getPlayerStrikes({ guildId, allyCode });
         if (!record) {
-            return super.error(interaction, "No strikes found for that player.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_NO_STRIKES_FOUND"));
         }
 
         const cleared = await clearStrikes({ guildId, allyCode });
         if (!cleared) {
-            return super.error(interaction, "No strikes found for that player.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_NO_STRIKES_FOUND"));
         }
-        return super.success(interaction, `All strikes cleared for **${record.playerName}**.`, { title: "Strikes Cleared" });
+        return super.success(interaction, language.get("COMMAND_STRIKE_CLEARED", record.playerName), { title: "Strikes Cleared" });
     }
 
-    private async handleView(interaction: ChatInputCommandInteraction, guildId: string) {
+    private async handleView(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
         const allyCode = interaction.options.getInteger("allycode", true);
         const record = await getPlayerStrikes({ guildId, allyCode });
 
         if (!record) {
-            return super.error(interaction, "No strikes found for that player.");
+            return super.error(interaction, language.get("COMMAND_STRIKE_NO_STRIKES_FOUND"));
         }
 
         const now = Date.now();
@@ -288,7 +289,7 @@ export default class StrikeCommand extends Command {
         return interaction.reply({ embeds: [embed] });
     }
 
-    private async handleList(interaction: ChatInputCommandInteraction, guildId: string) {
+    private async handleList(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
         const guildFilter = interaction.options.getString("guild");
         const sortBy = interaction.options.getString("sort") ?? "name";
 
@@ -303,7 +304,7 @@ export default class StrikeCommand extends Command {
                 roster?: GuildMember[];
             } | null;
             if (!cachedGuild) {
-                return super.error(interaction, "Guild not found in cache. The guild may not have been fetched yet.");
+                return super.error(interaction, language.get("COMMAND_STRIKE_GUILD_NOT_FOUND"));
             }
 
             const allStrikes = await getAllStrikes({ guildId });

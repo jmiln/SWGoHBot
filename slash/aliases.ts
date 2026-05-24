@@ -5,6 +5,7 @@ import {
     type ChatInputCommandInteraction,
     InteractionContextType,
 } from "discord.js";
+import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -108,27 +109,33 @@ export default class Aliases extends Command {
 
         if (action === "add") {
             // Make sure both fields were filled. They're both marked required so it shouldn't hit this, but just in case.
-            if (!searchUnit || !alias) return super.error(interaction, "Both fields MUST be filled in. Please try again.");
+            if (!searchUnit || !alias) return super.error(interaction, language.get("COMMAND_ALIASES_FIELDS_REQUIRED"));
 
-            return this.handleAddAlias(interaction, alias, searchUnit, guildAliases);
+            return this.handleAddAlias(interaction, language, alias, searchUnit, guildAliases);
         }
         if (action === "remove") {
-            return this.handleRemoveAlias(interaction, alias, guildAliases);
+            return this.handleRemoveAlias(interaction, language, alias, guildAliases);
         }
         return interaction.reply({
             content: `>>> ${`- ${guildAliases.map((al: GuildAlias) => `${al.alias} - ${al.name}`).join("\n- ")}`}`,
         });
     }
 
-    private async handleAddAlias(interaction: ChatInputCommandInteraction, alias: string, unitKey: string, guildAliases: GuildAlias[]) {
+    private async handleAddAlias(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        alias: string,
+        unitKey: string,
+        guildAliases: GuildAlias[],
+    ) {
         const unit = characters.find((c) => c.uniqueName === unitKey) || ships.find((s) => s.uniqueName === unitKey);
 
         if (!unit) {
-            return super.error(interaction, `I couldn't find a matching unit for '${unitKey}'`);
+            return super.error(interaction, language.get("COMMAND_ALIASES_UNIT_NOT_FOUND", unitKey));
         }
 
         if (guildAliases.some((al) => al.alias === alias)) {
-            return super.error(interaction, `This alias is already in use for ***${unit.name}***`);
+            return super.error(interaction, language.get("COMMAND_ALIASES_IN_USE", unit.name));
         }
 
         guildAliases.push({ alias, defId: unit.uniqueName, name: unit.name });
@@ -141,16 +148,21 @@ export default class Aliases extends Command {
                 { aliases: guildAliases } as never,
                 false,
             );
-            return super.success(interaction, `Your alias (${alias}) for ***${unit.name}*** has been successfully submitted`);
+            return super.success(interaction, language.get("COMMAND_ALIASES_ADDED", alias, unit.name));
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
-            return super.error(interaction, `There was an issue when submitting that: \n${errorMessage}`);
+            return super.error(interaction, language.get("COMMAND_ALIASES_SUBMIT_ERROR", errorMessage));
         }
     }
 
-    private async handleRemoveAlias(interaction: ChatInputCommandInteraction, alias: string, guildAliases: GuildAlias[]) {
+    private async handleRemoveAlias(
+        interaction: ChatInputCommandInteraction,
+        language: Language,
+        alias: string,
+        guildAliases: GuildAlias[],
+    ) {
         if (!guildAliases.some((al) => al.alias === alias)) {
-            return super.error(interaction, "That isn't a current alias.");
+            return super.error(interaction, language.get("COMMAND_ALIASES_NOT_FOUND"));
         }
 
         const filteredAliases = guildAliases.filter((al) => al.alias !== alias).sort((a, b) => (a.alias > b.alias ? 1 : -1));
@@ -162,10 +174,10 @@ export default class Aliases extends Command {
                 { aliases: filteredAliases } as never,
                 false,
             );
-            return super.success(interaction, `Your alias (${alias}) has been successfully removed.`);
+            return super.success(interaction, language.get("COMMAND_ALIASES_REMOVED", alias));
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
-            return super.error(interaction, `There was an issue when submitting that: \n${errorMessage}`);
+            return super.error(interaction, language.get("COMMAND_ALIASES_SUBMIT_ERROR", errorMessage));
         }
     }
 }

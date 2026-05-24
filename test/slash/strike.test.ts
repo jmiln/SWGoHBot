@@ -69,13 +69,13 @@ describe("Strike command", () => {
         it("returns permission error for non-admin", async () => {
             const { interaction, ctx } = makeCtx("add", { allycode: PLAYER_AC, reason: "test" }, USER_PERM);
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "admin role");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NO_ADMIN");
         });
 
         it("returns error when player not found in cache or swapi", async () => {
             const { interaction, ctx } = makeCtx("add", { allycode: PLAYER_AC, reason: "test" });
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "No player found");
+            assertErrorReply(interaction, "COMMAND_STRIKE_ALLY_NOT_FOUND");
         });
 
         it("adds a strike for player found via swapi but not in cache", async () => {
@@ -118,13 +118,13 @@ describe("Strike command", () => {
         it("returns permission error for non-admin", async () => {
             const { interaction, ctx } = makeCtx("revoke", { allycode: PLAYER_AC, strike_id: "abc" }, USER_PERM);
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "admin role");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NO_ADMIN");
         });
 
         it("returns error when player has no record", async () => {
             const { interaction, ctx } = makeCtx("revoke", { allycode: PLAYER_AC, strike_id: "abc" });
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "No strikes found");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NO_STRIKES_FOUND");
         });
 
         it("returns error when strike_id is not found", async () => {
@@ -134,7 +134,7 @@ describe("Strike command", () => {
 
             const { interaction, ctx } = makeCtx("revoke", { allycode: PLAYER_AC, strike_id: "wrong-id" });
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "Strike not found");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NOT_FOUND");
         });
 
         it("returns error when strike is already revoked", async () => {
@@ -146,7 +146,7 @@ describe("Strike command", () => {
             await new Strike().run(makeCtx("revoke", { allycode: PLAYER_AC, strike_id: strikeId }).ctx);
             const { interaction, ctx } = makeCtx("revoke", { allycode: PLAYER_AC, strike_id: strikeId });
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "already been revoked");
+            assertErrorReply(interaction, "COMMAND_STRIKE_ALREADY_REVOKED");
         });
 
         it("revokes an expired strike — strike remains in record with removedAt set", async () => {
@@ -188,13 +188,13 @@ describe("Strike command", () => {
         it("returns permission error for non-admin", async () => {
             const { interaction, ctx } = makeCtx("clear", { allycode: PLAYER_AC }, USER_PERM);
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "admin role");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NO_ADMIN");
         });
 
         it("returns error when player has no record", async () => {
             const { interaction, ctx } = makeCtx("clear", { allycode: PLAYER_AC });
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "No strikes found");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NO_STRIKES_FOUND");
         });
 
         it("clears all strikes for a player", async () => {
@@ -214,7 +214,7 @@ describe("Strike command", () => {
         it("returns error when player has no record", async () => {
             const { interaction, ctx } = makeCtx("view", { allycode: PLAYER_AC });
             await new Strike().run(ctx);
-            assertErrorReply(interaction, "No strikes found");
+            assertErrorReply(interaction, "COMMAND_STRIKE_NO_STRIKES_FOUND");
         });
 
         it("shows active strikes section", async () => {

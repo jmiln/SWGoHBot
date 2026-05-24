@@ -212,7 +212,7 @@ describe("Poll", () => {
             const ctx = createCommandContext({ interaction });
             const command = new Poll();
             await command.run(ctx);
-            assertErrorReply(interaction, "no poll active");
+            assertErrorReply(interaction, "COMMAND_POLL_NO_ACTIVE");
         });
     });
 
@@ -245,7 +245,7 @@ describe("Poll", () => {
             const ctx = createCommandContext({ interaction, permLevel: 6 });
             const command = new Poll();
             await command.run(ctx);
-            assertErrorReply(interaction, "no poll active");
+            assertErrorReply(interaction, "COMMAND_POLL_NO_ACTIVE");
         });
     });
 });

@@ -49,6 +49,6 @@ describe("UserConf", () => {
         const ctx = createCommandContext({ interaction });
         const command = new UserConf();
         await command.run(ctx);
-        assertErrorReply(interaction, "is not a valid ally code");
+        assertErrorReply(interaction, "COMMAND_REGISTER_INVALID_ALLY");
     });
 });

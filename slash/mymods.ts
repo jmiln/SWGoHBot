@@ -133,7 +133,7 @@ export default class MyMods extends Command {
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player?.roster) {
-            return super.error(interaction, "Unable to retrieve roster.", {
+            return super.error(interaction, language.get("COMMAND_MYMODS_ROSTER_ERROR"), {
                 title: language.get("BASE_SOMETHING_BROKE"),
             });
         }
@@ -158,7 +158,7 @@ export default class MyMods extends Command {
 
             const thisChar = player.roster.find((c) => c.defId === character.uniqueName);
             if (!thisChar) {
-                return super.error(interaction, "Looks like you don't have that character activated yet.");
+                return super.error(interaction, language.get("COMMAND_MYMODS_CHAR_NOT_UNLOCKED"));
             }
 
             const langChar = await swgohAPI.langChar(thisChar, swgohLanguage);
@@ -412,7 +412,7 @@ export default class MyMods extends Command {
                     outArr.push(`\`[${missingMods}][${lowerLvl}]\` ${charName}`);
                 }
             }
-            if (!outArr.length) return super.success(interaction, "It looks like your characters all have well leveled mods!");
+            if (!outArr.length) return super.success(interaction, language.get("COMMAND_MYMODS_ALL_GOOD"));
 
             const topDesc = "`[x]: Number of mods missing     `\n`[▼]: Number of mods below lvl 15`";
             return super.success(interaction, `${topDesc}\n\n__**\`[x][▼]\` Name**__\n${outArr.join("\n")}\n${footerStr}`, {

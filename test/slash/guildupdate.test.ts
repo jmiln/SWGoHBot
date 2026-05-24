@@ -36,6 +36,6 @@ describe("GuildUpdate", () => {
         const ctx = createCommandContext({ interaction });
         const command = new GuildUpdate();
         await command.run(ctx);
-        assertErrorReply(interaction, "something went wrong");
+        assertErrorReply(interaction, "BASE_DATA_NOT_FOUND");
     });
 });

@@ -118,8 +118,7 @@ describe("GuildSearch Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             const lastReply = replies[replies.length - 1];
             const description = getReplyDescription(lastReply);
-            assert.ok(description?.includes("Invalid argument for top"), "Expected error about invalid top value");
-            assert.ok(description?.includes("1") && description?.includes("50"), "Expected error to mention valid range");
+            assert.ok(description?.includes("COMMAND_GUILDSEARCH_INVALID_TOP"), "Expected error about invalid top value");
         });
 
         it("should reject invalid top values below minimum with specific error message", async () => {            const command = new GuildSearch();
@@ -139,7 +138,7 @@ describe("GuildSearch Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             const lastReply = replies[replies.length - 1];
             const description = getReplyDescription(lastReply);
-            assert.ok(description?.includes("Invalid argument for top"), "Expected error about invalid top value");
+            assert.ok(description?.includes("COMMAND_GUILDSEARCH_INVALID_TOP"), "Expected error about invalid top value");
         });
 
         it("should reject invalid rarity values with specific error message", async () => {            const command = new GuildSearch();
@@ -184,8 +183,8 @@ describe("GuildSearch Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             const lastReply = replies[replies.length - 1];
             const description = getReplyDescription(lastReply);
-            // Should NOT have the "Invalid argument for top" error
-            assert.ok(!description?.includes("Invalid argument for top"), "Should not error on valid top value");
+            // Should NOT have the "COMMAND_GUILDSEARCH_INVALID_TOP" error
+            assert.ok(!description?.includes("COMMAND_GUILDSEARCH_INVALID_TOP"), "Should not error on valid top value");
         });
 
         it("should accept valid rarity values", async () => {            const command = new GuildSearch();

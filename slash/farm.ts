@@ -47,7 +47,7 @@ export default class Farm extends Command {
 
         const unit = await swgohAPI.units(character.uniqueName, swgohLanguage);
         if (!unit) {
-            return super.error(interaction, "[FARM] Broke trying to get the unit.");
+            return super.error(interaction, language.get("COMMAND_FARM_UNIT_ERROR"));
         }
 
         const outList = [];
@@ -59,7 +59,7 @@ export default class Farm extends Command {
         }
 
         if (!unitLocs) {
-            return super.error(interaction, `I couldn't get the location data for *${character.name}*`);
+            return super.error(interaction, language.get("COMMAND_FARM_LOCATION_ERROR", character.name));
         }
 
         type LangLoc = { id: string; language: string; langKey: string };

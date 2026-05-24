@@ -387,7 +387,7 @@ export default class ArenaWatch extends Command {
         }
 
         const user: UserConfig = await userReg.getUser(interaction.user.id);
-        if (!user) return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+        if (!user) return super.error(interaction, language.get("BASE_DATA_NOT_FOUND"));
 
         const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {

@@ -287,7 +287,7 @@ export default class Guilds extends Command {
                     return await guildGear();
                 } catch (err) {
                     const errorMessage = err instanceof Error ? err.message : String(err);
-                    return super.error(interaction, `Issue with guildGear: ${errorMessage}`);
+                    return super.error(interaction, language.get("COMMAND_GUILDS_GEAR_ERROR", errorMessage));
                 }
             }
             case "mods": {
@@ -296,7 +296,7 @@ export default class Guilds extends Command {
                     return await guildMods();
                 } catch (err) {
                     const errorMessage = err instanceof Error ? err.message : String(err);
-                    return super.error(interaction, `Issue with guildMods: ${errorMessage}`);
+                    return super.error(interaction, language.get("COMMAND_GUILDS_MODS_ERROR", errorMessage));
                 }
             }
             case "relics": {
@@ -305,7 +305,7 @@ export default class Guilds extends Command {
                     return await guildRelics();
                 } catch (err) {
                     const errorMessage = err instanceof Error ? err.message : String(err);
-                    return super.error(interaction, `Issue with guildRelics: ${errorMessage}`);
+                    return super.error(interaction, language.get("COMMAND_GUILDS_RELICS_ERROR", errorMessage));
                 }
             }
             case "roster": {
@@ -317,14 +317,14 @@ export default class Guilds extends Command {
                         } catch (err) {
                             const errorMessage = err instanceof Error ? err.message : String(err);
                             logger.error(`[slash/guilds] guildRoster error: ${errorMessage}`);
-                            return super.error(interaction, `Issue with guildRoster: ${errorMessage}`);
+                            return super.error(interaction, language.get("COMMAND_GUILDS_ROSTER_ERROR", errorMessage));
                         }
                     } else {
                         return await guildSidedGP();
                     }
                 } catch (err) {
                     const errorMessage = err instanceof Error ? err.message : String(err);
-                    return super.error(interaction, `Issue with guildRoster 2: ${errorMessage}`);
+                    return super.error(interaction, language.get("COMMAND_GUILDS_ROSTER2_ERROR", errorMessage));
                 }
             }
             case "tw_summary": {
@@ -333,7 +333,7 @@ export default class Guilds extends Command {
                     return await twSummary();
                 } catch (err) {
                     const errorMessage = err instanceof Error ? err.message : String(err);
-                    return super.error(interaction, `Issue with twSummary: ${errorMessage}`);
+                    return super.error(interaction, language.get("COMMAND_GUILDS_TW_ERROR", errorMessage));
                 }
             }
             default: {

@@ -50,7 +50,7 @@ describe("MyArena", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyArena();
         await command.run(ctx);
-        assertErrorReply(interaction, "Something broke");
+        assertErrorReply(interaction, "COMMAND_MYARENA_PLAYER_ERROR");
     });
 
     it("should display arena squads with unit names", async () => {

@@ -104,7 +104,7 @@ export default class Poll extends Command {
         }
         if (!oldPoll && action !== "create") {
             // If they're tyring to use a poll that doesn't exist, let them know
-            return super.error(interaction, "Sorry, but there is no poll active in this channel.");
+            return super.error(interaction, language.get("COMMAND_POLL_NO_ACTIVE"));
         }
 
         // Make sure it's a mod or someone with the appropriate perms trying to create it
@@ -156,7 +156,7 @@ export default class Poll extends Command {
                 try {
                     pollsArr.splice(targetIndex, 1);
                     await setGuildPolls({ guildId: interaction.guild.id, pollsOut: pollsArr });
-                    return super.success(interaction, "> Poll deleted.");
+                    return super.success(interaction, language.get("COMMAND_POLL_DELETED"));
                 } catch (_) {
                     return super.error(interaction, language.get("COMMAND_POLL_FINAL_ERROR", poll.question));
                 }

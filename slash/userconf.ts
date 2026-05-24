@@ -175,7 +175,7 @@ export default class UserConf extends Command {
 
             let allyCode = interaction.options.getString("allycode");
             if (!isAllyCode(allyCode)) {
-                return super.error(interaction, `${allyCode} is not a valid ally code, please double check your digits.`);
+                return super.error(interaction, language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
             }
             allyCode = allyCode.replace(/[^\d]*/g, "");
 
@@ -312,7 +312,7 @@ export default class UserConf extends Command {
                             `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map((update) => ` * ${update}`).join("\n"))}`,
                         );
                     }
-                    return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
+                    return super.error(interaction, language.get("COMMAND_USERCONF_NOTHING_UPDATED"));
                 }
                 case "lang": {
                     // Work through bot_language & swgoh_language
@@ -339,7 +339,7 @@ export default class UserConf extends Command {
                             `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map((update) => ` * ${update}`).join("\n"))}`,
                         );
                     }
-                    return super.error(interaction, "Nothing was updated. \nPlease make sure you choose one of the options to change.");
+                    return super.error(interaction, language.get("COMMAND_USERCONF_NOTHING_UPDATED"));
                 }
                 case "view": {
                     // Just display all the valid info here

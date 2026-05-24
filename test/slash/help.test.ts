@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import Help from "../../slash/help.ts";
-import { createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
 describe("Help", () => {
@@ -64,9 +64,10 @@ describe("Help", () => {
         });
 
         const command = new Help();
-        await command.run({ interaction, language: (interaction as any).language });
+        const ctx = createCommandContext({ interaction });
+        await command.run(ctx);
 
-        assertErrorReply(interaction, "couldn't find a match");
+        assertErrorReply(interaction, "COMMAND_HELP_NOT_FOUND");
     });
 
     it("should show detailed usage when details flag is true", async () => {        const interaction = createMockInteraction({

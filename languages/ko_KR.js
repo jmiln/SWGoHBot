@@ -81,7 +81,6 @@ export default class extends Language {
             BASE_SWGOH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 검색어를 조금 더 자세히 지정해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "문제가 발생했습니다. 계정이 정확히 연동됐는지 확인해주십시오.",
             BASE_SWGOH_LAST_UPDATED: (date) => `${date} 전에 마지막으로 갱신되었습니다`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `${dType ? dType : "data"}를 가져오기까지 잠시만 기다려주십시오`,
 
             // Generic (Not tied to a command)
             COMMAND_EXTENDED_HELP: (command) => `**${command.help.name}에 대한 더 자세한 도움말** \n**사용법**: ${command.help.usage} \n${command.help.extended}`,

@@ -98,7 +98,7 @@ export default class GuildTickets extends Command {
         const user = await userReg.getUser(userID);
 
         if (!user) {
-            return super.error(interaction, "Sorry, but something went wrong and I couldn't find your data. Please try again.");
+            return super.error(interaction, language.get("BASE_DATA_NOT_FOUND"));
         }
         let gt = user.guildTickets;
         const defGT = {
@@ -195,7 +195,7 @@ export default class GuildTickets extends Command {
                     ],
                 });
             }
-            return super.error(interaction, "No options provided. Please specify at least one setting to update.");
+            return super.error(interaction, language.get("COMMAND_GUILDTICKETS_NO_OPTIONS"));
         }
         if (subCommand === "view") {
             // Show the current settings for this (Also maybe in ;uc, but a summarized version?)

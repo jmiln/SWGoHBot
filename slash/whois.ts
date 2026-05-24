@@ -24,10 +24,10 @@ export default class WhoIs extends Command {
         super(WhoIs.metadata);
     }
 
-    async run({ interaction }: CommandContext) {
+    async run({ interaction, language }: CommandContext) {
         const PLAYER_LIMIT = 25;
         const name = interaction.options.getString("name");
-        if (name.length > 50) return super.error(interaction, "Invalid name, max length is 50 characters");
+        if (name.length > 50) return super.error(interaction, language.get("COMMAND_WHOIS_NAME_TOO_LONG"));
 
         await interaction.deferReply();
 

@@ -79,7 +79,7 @@ describe("Shardtimes", () => {
             const ctx = createCommandContext({ interaction });
             const command = new Shardtimes();
             await command.run(ctx);
-            assertErrorReply(interaction, "don't have anyone registered");
+            assertErrorReply(interaction, "COMMAND_SHARDTIMES_NO_WATCHERS");
         });
 
         it("returns an embed with fields when shard times exist", async () => {
@@ -151,7 +151,7 @@ describe("Shardtimes", () => {
             const ctx = createCommandContext({ interaction });
             const command = new Shardtimes();
             await command.run(ctx);
-            assertErrorReply(interaction, "may not use both");
+            assertErrorReply(interaction, "COMMAND_SHARDTIMES_CONFLICTING_OPTIONS");
         });
 
         it("returns error when neither timezone nor time_until is specified", async () => {

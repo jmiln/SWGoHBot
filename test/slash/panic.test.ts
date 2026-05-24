@@ -35,7 +35,7 @@ describe("Panic", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Panic();
         await command.run(ctx);
-        assertErrorReply(interaction, "Please select one of the autocompleted options");
+        assertErrorReply(interaction, "COMMAND_PANIC_UNIT_NOT_FOUND");
     });
 
     it("should return error when no allycode is registered and none provided", async () => {

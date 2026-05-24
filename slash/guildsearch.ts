@@ -180,7 +180,7 @@ export default class GuildSearch extends Command {
         // Get the integer options
         const top = interaction.options.getInteger("top");
         if (top && (Number.isNaN(top) || top <= 0 || top > 50)) {
-            return super.error(interaction, "Invalid argument for top. Must be between 1 and 50");
+            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_INVALID_TOP"));
         }
 
         const starLvl = interaction.options.getInteger("rarity") || 0;
@@ -237,7 +237,7 @@ export default class GuildSearch extends Command {
             guild = await swgohAPI.guild(Number.parseInt(allyCode, 10), cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
-                return super.error(interaction, "Sorry, but it looks like that player is not in a guild");
+                return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NOT_IN_GUILD"));
             }
             return super.error(interaction, `${codeBlock(e)}Please try again in a bit.`, {
                 title: "Something Broke while getting your guild's roster",

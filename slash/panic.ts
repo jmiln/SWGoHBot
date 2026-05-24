@@ -45,7 +45,7 @@ export default class Panic extends Command {
 
         const thisReq = journeyReqs?.[searchUnit] || null;
         if (!thisReq) {
-            return super.error(interaction, `Please select one of the autocompleted options, I couldn't find a match for ${searchUnit}`);
+            return super.error(interaction, language.get("COMMAND_PANIC_UNIT_NOT_FOUND", searchUnit));
         }
         const targetUnit =
             characters.find((unit) => unit.uniqueName === searchUnit) || ships.find((unit) => unit.uniqueName === searchUnit);
@@ -144,11 +144,11 @@ export default class Panic extends Command {
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : String(err);
             logger.error(`[slash/panic] Failed to generate image: ${errorMessage}`);
-            return super.error(interaction, "Sorry, but something went wrong generating the image. Please try again later.");
+            return super.error(interaction, language.get("COMMAND_PANIC_IMAGE_ERROR"));
         }
 
         if (!imageOut) {
-            return super.error(interaction, "Sorry, but something went wrong.  Please try again later.");
+            return super.error(interaction, language.get("COMMAND_PANIC_GENERIC_ERROR"));
         }
 
         return interaction.editReply({

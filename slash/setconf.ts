@@ -158,7 +158,7 @@ export default class SetConf extends Command {
                     if (!guildTWList[key].length) continue;
                     outArr.push(`* **${key}**: \n${guildTWList[key].map((defId: string) => `  - ${getCharName(defId)}`).join("\n")}`);
                 }
-                if (!outArr.length) return super.error(interaction, "You have no units in your list");
+                if (!outArr.length) return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNITS"));
                 return super.success(interaction, outArr.join("\n"), { title: "Your current list:" });
             }
 
@@ -167,7 +167,7 @@ export default class SetConf extends Command {
             const removeUnitDefId = interaction.options.getString("remove_unit");
 
             if (!addUnitDefId && !removeUnitDefId) {
-                return super.error(interaction, "You must specify a unit to add or remove");
+                return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNIT_SPECIFIED"));
             }
 
             if (addUnitDefId) {
@@ -175,7 +175,7 @@ export default class SetConf extends Command {
                     for (const key of Object.keys(guildTWList)) {
                         if (key === "Blacklist") continue;
                         if (guildTWList[key].includes(addUnitDefId)) {
-                            return super.error(interaction, `Trying to add ${addUnitDefId}. This unit is already in your list`);
+                            return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_LIST", addUnitDefId));
                         }
                     }
                     const thisChar = characters.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
@@ -200,7 +200,7 @@ export default class SetConf extends Command {
 
                     try {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, `Added ${addUnitDefId} to your list`);
+                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_ADDED", addUnitDefId));
                     } catch (err) {
                         return super.error(
                             interaction,
@@ -210,12 +210,12 @@ export default class SetConf extends Command {
                 } else if (subCommand === "blacklist") {
                     if (!guildTWList.Blacklist) guildTWList.Blacklist = [];
                     if (guildTWList.Blacklist?.includes(addUnitDefId)) {
-                        return super.error(interaction, `Trying to add ${addUnitDefId}. This unit is already in your blacklist`);
+                        return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_BLACKLIST", addUnitDefId));
                     }
                     guildTWList.Blacklist.push(addUnitDefId);
                     try {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, `Added ${addUnitDefId} to your blacklist`);
+                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_ADDED_BLACKLIST", addUnitDefId));
                     } catch (err) {
                         return super.error(
                             interaction,
@@ -235,7 +235,7 @@ export default class SetConf extends Command {
                     }
                     try {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, `Removed ${removeUnitDefId} from your list`);
+                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_REMOVED", removeUnitDefId));
                     } catch (err) {
                         return super.error(
                             interaction,
@@ -244,12 +244,12 @@ export default class SetConf extends Command {
                     }
                 } else if (subCommand === "blacklist") {
                     if (!guildTWList.Blacklist.includes(removeUnitDefId)) {
-                        return super.error(interaction, `Trying to remove ${removeUnitDefId}. This unit is not in your blacklist`);
+                        return super.error(interaction, language.get("COMMAND_SETCONF_NOT_IN_BLACKLIST", removeUnitDefId));
                     }
                     guildTWList.Blacklist = guildTWList.Blacklist.filter((u) => u !== removeUnitDefId);
                     try {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
-                        return super.success(interaction, `Removed ${removeUnitDefId} from your blacklist`);
+                        return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_REMOVED_BLACKLIST", removeUnitDefId));
                     } catch (err) {
                         return super.error(
                             interaction,
@@ -358,7 +358,7 @@ export default class SetConf extends Command {
             await setGuildSettings({ guildId: interaction.guild.id, settings: guildConf });
             return super.success(interaction, codeBlock(changeLog.map((c) => `* ${c}`).join("\n")));
         }
-        return super.error(interaction, "It looks like nothing needed to be updated");
+        return super.error(interaction, language.get("COMMAND_SETCONF_NOTHING_UPDATED"));
     }
 
     async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {

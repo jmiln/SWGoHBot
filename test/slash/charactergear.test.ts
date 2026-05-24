@@ -17,8 +17,7 @@ describe("Charactergear", () => {
         const embedData = embed.data || embed;
 
         const errorMsg = embedData.description || "";
-        assert.ok(errorMsg.includes("not a valid gear level"), "Expected invalid gear level error");
-        assert.ok(errorMsg.includes("-1"), "Expected error to mention the invalid value");
+        assert.ok(errorMsg.includes("COMMAND_CHARACTERGEAR_INVALID_LEVEL"), "Expected invalid gear level error");
     });
 
     it("should validate gear level - reject values above 13", async () => {        const interaction = createMockInteraction({
@@ -34,8 +33,7 @@ describe("Charactergear", () => {
         const embedData = embed.data || embed;
 
         const errorMsg = embedData.description || "";
-        assert.ok(errorMsg.includes("not a valid gear level"), "Expected invalid gear level error");
-        assert.ok(errorMsg.includes("15"), "Expected error to mention the invalid value");
+        assert.ok(errorMsg.includes("COMMAND_CHARACTERGEAR_INVALID_LEVEL"), "Expected invalid gear level error");
     });
 
     it("should accept valid gear levels (1-13)", async () => {        const interaction = createMockInteraction({

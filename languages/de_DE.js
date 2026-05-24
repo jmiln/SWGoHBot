@@ -86,7 +86,6 @@ export default class extends Language {
             BASE_SWGOH_CHAR_LIST: (chars) => `Deine Suche ergab zu viele Treffer, bitte sei spezifischer. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Etwas ist schief gegangen, bitte sicherstellen dass dein Account korrekt synchronisiert wurde.",
             BASE_SWGOH_LAST_UPDATED: (date) => `Zuletzt aktualisiert vor ${date}`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Bitte warten waehrend ich aktualisiere ${dType ? dType : "Daten"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
             BASE_SWGOH_NAMECHAR_HEADER_NUM: (name, char, num) => `${name}'s ${char} (${num})`,
             BASE_SWGOH_LOCKED_CHAR: "Entschuldige, aber sieht so aus als ob du diesen Charakter noch nicht freigeschalten hast",

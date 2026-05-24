@@ -102,17 +102,17 @@ export default class Need extends Command {
         const shop = interaction.options.getString("shop");
 
         if (!battle && !faction1 && !faction2 && !keyword && !shop) {
-            return super.error(interaction, "You need to specify a location or faction.");
+            return super.error(interaction, language.get("COMMAND_NEED_NO_LOCATION"));
         }
         await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
 
         if (!player) {
-            return super.error(interaction, "I couldn't find that player, please make sure you've got the corect ally code.");
+            return super.error(interaction, language.get("COMMAND_NEED_PLAYER_NOT_FOUND"));
         }
         if (!player.roster) {
-            return super.error(interaction, "I couldn't find your roster.");
+            return super.error(interaction, language.get("COMMAND_NEED_ROSTER_NOT_FOUND"));
         }
 
         let units = [];

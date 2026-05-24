@@ -83,7 +83,6 @@ export default class extends Language {
             BASE_SWGOH_CHAR_LIST: (chars) => `Tu búsqueda ha obtenido demasiados resultados, por favor se mas especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
             BASE_SWGOH_NO_ACCT: "Algo ha salido mal, por favor comprueba que tu cuenta se haya sincronizado correctamente.",
             BASE_SWGOH_LAST_UPDATED: (date) => `Última actualización hace ${date} min`,
-            BASE_SWGOH_PLS_WAIT_FETCH: (dType) => `Por favor espera mientras obtengo tu ${dType ? dType : "data"}`,
             BASE_SWGOH_NAMECHAR_HEADER: (name, char) => `${name}'s ${char}`,
 
             // Generic (Not tied to a command)

@@ -52,7 +52,7 @@ export default class Faction extends Command {
         const query = interaction.options.getString("faction");
 
         if (!query) {
-            return super.error(interaction, "You need to select a faction to search for");
+            return super.error(interaction, language.get("COMMAND_FACTION_NO_FACTION"));
         }
 
         const wantsLeader = interaction.options.getBoolean("leader");
@@ -88,7 +88,7 @@ export default class Faction extends Command {
             });
         }
         if (chars.length > 40) {
-            return super.error(interaction, "Your query came up with too many results, please try and be more specific");
+            return super.error(interaction, language.get("COMMAND_FACTION_TOO_MANY_RESULTS"));
         }
         chars = chars.sort((a, b) => (a.nameKey.toLowerCase() > b.nameKey.toLowerCase() ? 1 : -1));
 
@@ -133,7 +133,7 @@ export default class Faction extends Command {
             const charDefIds = chars.map((c) => c.baseId);
             const player = await fetchPlayerWithCooldown(interaction, allyCode);
             if (!player?.roster?.length) {
-                return super.error(interaction, "I couldn't get that player's roster. Please try again later.");
+                return super.error(interaction, language.get("COMMAND_FACTION_ROSTER_ERROR"));
             }
             const playerChars: SWAPIUnit[] = [];
             for (const c of charDefIds) {
