@@ -253,7 +253,7 @@ export default class Event extends Command {
             ["create", "createjson", "delete", "edit", "trigger"].includes(action.toLowerCase()) &&
             permLevel < constants.permMap.GUILD_ADMIN
         ) {
-            return super.error(interaction, language.get("COMMAND_EVENT_INVALID_PERMS"));
+            return super.error(interaction, language.get("BASE_MISSING_ADMIN_PERM"));
         }
 
         const guildEvents: GuildConfigEvent[] = await getGuildEvents({ guildId: interaction.guild.id });

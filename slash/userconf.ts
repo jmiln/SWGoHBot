@@ -175,7 +175,7 @@ export default class UserConf extends Command {
 
             let allyCode = interaction.options.getString("allycode");
             if (!isAllyCode(allyCode)) {
-                return super.error(interaction, language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
+                return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE_AC", allyCode));
             }
             allyCode = allyCode.replace(/[^\d]*/g, "");
 
@@ -195,7 +195,7 @@ export default class UserConf extends Command {
                         const playerRes = await swgohAPI.unitStats(Number(allyCode), cooldown);
                         const player = playerRes?.[0] || null;
                         if (!player) {
-                            return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE"));
+                            return super.error(interaction, language.get("BASE_REGISTRATION_FAILURE"));
                         }
                         user.accounts.push({
                             allyCode: Number.parseInt(allyCode, 10),
@@ -216,7 +216,7 @@ export default class UserConf extends Command {
                                 ),
                             ),
                             {
-                                title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
+                                title: language.get("BASE_REGISTRATION_SUCCESS", player.name),
                             },
                         );
                     } catch (e) {
@@ -388,18 +388,16 @@ export default class UserConf extends Command {
                     } else {
                         // Arena Alert settings
                         fields.push({
-                            name: language.get("COMMAND_USERCONF_VIEW_ARENA_HEADER"),
+                            name: language.get("BASE_ARENA_VIEW_HEADER"),
                             value: [
-                                `>>> ${language.get("COMMAND_USERCONF_VIEW_ARENA_DM")}: **${
+                                `>>> ${language.get("BASE_ARENA_VIEW_DM")}: **${
                                     user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"
                                 }**`,
-                                `${language.get("COMMAND_USERCONF_VIEW_ARENA_SHOW")}: **${user.arenaAlert.arena}**`,
-                                `${language.get("COMMAND_USERCONF_VIEW_ARENA_WARNING")}: **${
+                                `${language.get("BASE_ARENA_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
+                                `${language.get("BASE_ARENA_VIEW_WARNING")}: **${
                                     user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"
                                 }**`,
-                                `${language.get("COMMAND_USERCONF_VIEW_ARENA_RESULT")}: **${
-                                    user.arenaAlert.enablePayoutResult ? "ON" : "OFF"
-                                }**`,
+                                `${language.get("BASE_ARENA_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`,
                             ].join("\n"),
                         });
 

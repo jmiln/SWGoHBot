@@ -66,7 +66,7 @@ export default class GuildUpdate extends Command {
         // GuildUpdate -> activate/ deactivate
         const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
-            return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
+            return super.error(interaction, language.get("BASE_PATREON_ONLY"));
         }
 
         // Whether it's setting values or view
@@ -84,7 +84,7 @@ export default class GuildUpdate extends Command {
             }
             if (channel) {
                 if (permLevel < 3) {
-                    return super.error(interaction, language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+                    return super.error(interaction, language.get("BASE_MISSING_LOG_CHANNEL_PERM"));
                 }
                 // This would be at lease MANAGE_CHANNEL perms, or the adminrole under the guildconf
                 gu.channel = channel.id;
@@ -92,11 +92,11 @@ export default class GuildUpdate extends Command {
             }
             if (acInput) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
-                if (!isAllyCode(acInput)) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!isAllyCode(acInput)) return super.error(interaction, language.get("BASE_INVALID_AC_SHORT"));
 
                 // Grab a cleaned allyCode
                 const allyCode = await getAllyCode(interaction, acInput);
-                if (!allyCode) return super.error(interaction, language.get("COMMAND_ARENAWATCH_INVALID_AC"));
+                if (!allyCode) return super.error(interaction, language.get("BASE_INVALID_AC_SHORT"));
 
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
                 const player = await swgohAPI.unitStats(allyCode);

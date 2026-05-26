@@ -273,7 +273,7 @@ export default class SetConf extends Command {
                 if (!settingStr) continue;
                 if (key === "timezone" && !isValidZone(settingStr)) {
                     // If it's not a valid timezone, let em know
-                    errors.push(language.get("COMMAND_SETCONF_TIMEZONE_NEED_ZONE"));
+                    errors.push(language.get("BASE_INVALID_TIMEZONE"));
                     continue;
                 }
             } else if (keyType === ApplicationCommandOptionType.Integer) {

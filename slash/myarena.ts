@@ -49,10 +49,10 @@ export default class MyArena extends Command {
         }
 
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
-        if (!player) return super.error(interaction, language.get("COMMAND_MYARENA_PLAYER_ERROR"));
+        if (!player) return super.error(interaction, language.get("BASE_SOMETHING_BROKE"));
 
         if (!player?.arena) {
-            return super.error(interaction, language.get("COMMAND_MYARENA_INFO_ERROR"));
+            return super.error(interaction, language.get("BASE_SOMETHING_BROKE"));
         }
 
         const fields = [];
@@ -70,7 +70,7 @@ export default class MyArena extends Command {
         } else {
             // If it's set to show stats, grab all the stats for each unit in the character arena team
             if (!player.arena?.char?.squad?.length) {
-                return super.error(interaction, language.get("COMMAND_MYARENA_ARENA_ERROR"));
+                return super.error(interaction, language.get("BASE_SOMETHING_BROKE"));
             }
 
             const playerStats = player;

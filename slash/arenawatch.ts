@@ -383,7 +383,7 @@ export default class ArenaWatch extends Command {
 
         // Need to make sure that the user has the correct permissions to set this up
         if (permLevel < constants.permMap.GUILD_ADMIN) {
-            return super.error(interaction, language.get("COMMAND_ARENAWATCH_MISSING_PERM"));
+            return super.error(interaction, language.get("BASE_MISSING_LOG_CHANNEL_PERM"));
         }
 
         const user: UserConfig = await userReg.getUser(interaction.user.id);
@@ -391,7 +391,7 @@ export default class ArenaWatch extends Command {
 
         const pat = await patreonFuncs.getPatronUser(interaction.user.id);
         if (!pat || pat.amount_cents < 100) {
-            return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
+            return super.error(interaction, language.get("BASE_PATREON_ONLY"));
         }
 
         const codeCap = pat?.awAccounts || 1;

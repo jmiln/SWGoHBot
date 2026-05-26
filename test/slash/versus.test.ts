@@ -64,7 +64,7 @@ describe("Versus", () => {
         const ctx = createCommandContext({ interaction });
         const command = new Versus();
         await command.run(ctx);
-        assertErrorReply(interaction, "COMMAND_GRANDARENA_INVALID_CHAR");
+        assertErrorReply(interaction, "BASE_CHAR_NO_MATCH");
     });
 
     it("should display a stat comparison when both players have the character", async () => {

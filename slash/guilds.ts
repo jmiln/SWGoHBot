@@ -231,7 +231,7 @@ export default class Guilds extends Command {
     }
 
     async run({ interaction, language }: CommandContext) {
-        await interaction.reply({ content: language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
+        await interaction.reply({ content: language.get("BASE_GUILD_PLEASE_WAIT") as string });
 
         const subCommand = interaction.options.getSubcommand();
         if (!subCommand) {
@@ -276,7 +276,7 @@ export default class Guilds extends Command {
         }
 
         if (!guild) {
-            return super.error(interaction, `Couldn't get guild. ${language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild. ${language.get("BASE_GUILD_NOT_FOUND")}`);
         }
 
         // Switch out depending on the subcommand

@@ -138,7 +138,7 @@ describe("Shardtimes", () => {
             const ctx = createCommandContext({ interaction });
             const command = new Shardtimes();
             await command.run(ctx);
-            assertErrorReply(interaction, "COMMAND_SHARDTIMES_INVALID_TIMEZONE");
+            assertErrorReply(interaction, "BASE_INVALID_TIMEZONE");
         });
 
         it("returns error when both timezone and time_until are specified", async () => {

@@ -145,6 +145,11 @@ export default class extends Language {
                 "UNITSTATRESISTANCE": "Tenacidad %",
                 "UNITSTATSPEED": "Velocidad"
             },
+            BASE_MISSING_ADMIN_PERM: "Lo siento, pero tal vez no eres administrador, o el líder de tu servidor no ha establecido bien la configuración. \nNo puedes añadir o eliminar un evento a no ser que tengas configurado el rol de administrador.",
+            BASE_GUILD_NOT_FOUND: "No he podido encontrar este gremio.",
+            BASE_GUILD_PLEASE_WAIT: "Por favor espera mientras sincronizo la información de tu gremio.",
+            BASE_SWGOH_CHAR_LIST_ASCIIDOC: (chars) => `La búsqueda ha encontrado demasiados resultados, por favor se más especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
+            BASE_REGISTRATION_FAILURE: "Registro fallido, por favor asegurate que tu código de aliado sea correcto.",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Se necesita un personaje. Su uso es \`${prefix}abilities <NombrePersonaje>\``,
@@ -289,7 +294,6 @@ export default class extends Language {
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Las acciones validas són \`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: "Lo siento, pero tal vez no eres administrador, o el líder de tu servidor no ha establecido bien la configuración. \nNo puedes añadir o eliminar un evento a no ser que tengas configurado el rol de administrador.",
             COMMAND_EVENT_ONE_REPEAT: "Lo siento, pero no puedes usar ambos `repeat` and `repeatDay` en un mismo evento. Por favor selecciona una u otra opción",
             COMMAND_EVENT_INVALID_REPEAT: "La repetición está en un formato erróneo. Ejemplo: `5d3h8m` para 5 días, 3 horas y 8 minutos",
             COMMAND_EVENT_USE_COMMAS: "Por favor, usa una coma separada de los números para el repeatDay. Ejemplo: `1,2,1,3,4`",
@@ -387,8 +391,6 @@ export default class extends Language {
 
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: "Para más información sobre un gremio especifico:",
-            COMMAND_GUILDS_NO_GUILD: "No he podido encontrar este gremio.",
-            COMMAND_GUILDS_PLEASE_WAIT: "Por favor espera mientras sincronizo la información de tu gremio.",
             COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Miembros de ${guild}`,
             COMMAND_GUILDS_GUILD_GP_HEADER: "Gremio PG Registrado",
             COMMAND_GUILDS_GUILD_GP: (total, average) => `PG Total: ${total}\nMedia : ${average}`,
@@ -421,11 +423,7 @@ export default class extends Language {
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: "Solo puedes seleccionar una estrella del nivel 1 al 7",
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Lo Siento, pero \`${sortType}\` no es un metodo de clasificación admitido. Solo \`${filters.join(", ")}\` esta permitido.`,
-            COMMAND_GUILDSEARCH_MISSING_CHAR: "Necesitas introducir un personaje para la busqueda",
-            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `No he encontrado ningún resultado de ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `La búsqueda ha encontrado demasiados resultados, por favor se más especifico. \nAquí tienes una lista de las coincidencias más cercanas.\n\`\`\`${chars}\`\`\``,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Parece que nadie de tu gremio tiene un personaje con ${starLvl} estrellas.`,
-            COMMAND_GUILDSEARCH_NO_CHAR: "Nadie de tu gremio parece tener este personaje.",
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Sin Activar (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} estrella (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Por favor espera mientras busco la información de tu gremio.",
@@ -549,12 +547,10 @@ export default class extends Language {
             },
 
             // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para ${user}. Por favor asegúrate que esa cuenta esté sincronizada.`,
             COMMAND_MYARENA_NO_CHAR: "Algo ha salido mal, no puedo obtener tus personajes.",
             COMMAND_MYARENA_ARENA: (rank) => `Arena de Escuadrones (Puesto: ${rank})`,
             COMMAND_MYARENA_FLEET: (rank) => `Arena de Flotas (Puesto: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
-            COMMAND_MYARENA_EMBED_FOOTER: (date) => `información de la Arena actualizada: ${date}`,
             COMMAND_MYARENA_HELP: {
                 description: " Muestra el puesto actual del jugador en Arena y sus escuadrones.",
                 actions: [
@@ -605,9 +601,7 @@ export default class extends Language {
             }),
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `Lo siento, pero no puedo encontrar ninguna información de la Arena para ${user}. Por favor asegúrese que esa cuenta esté sincronizada.`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `Perfil de ${playerName} (${allyCode})`,
-            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `información de la Arena actualizada: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Gremio:** ${guildName}\n**Nivel:** ${level}\n**Puesto en Arena:** ${charRank}\n**Posición de Naves:** ${shipRank}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Personajes (${charList.length})`,
@@ -757,11 +751,10 @@ export default class extends Language {
             // Register Command
             COMMAND_REGISTER_MISSING_ARGS: "Necesitas proporcionar un id de usuario (mención o ID), y un código de aliado",
             COMMAND_REGISTER_MISSING_ALLY: "Necesitas proporcionar un código de aliado para vincularlo con tu cuenta.",
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Lo siento, pero ${allyCode} no es un código de aliado válido`,
+            BASE_INVALID_ALLY_CODE_AC: (allyCode) => `Lo siento, pero ${allyCode} no es un código de aliado válido`,
             COMMAND_REGISTER_PLEASE_WAIT: "Por favor espera un poco mientras sincronizo tus datos.",
             COMMAND_REGISTER_ADD_NO_SERVER: "Solo puedes añadir los usuarios que esten en tu servidor.",
             COMMAND_REGISTER_ALREADY_ADDED: (prefix=";") => `Este usuario ya esta registrado! Por favor usa \`${prefix}register update <usuario>\`.`,
-            COMMAND_REGISTER_FAILURE: "Registro fallido, por favor asegurate que tu código de aliado sea correcto.",
             COMMAND_REGISTER_SUCCESS: (user) => `El registro de \`${user}\` ha sido exitoso!`,
             COMMAND_REGISTER_UPDATE_FAILURE: "Algo salió mal, asegurate que tu código de aliado registrado sea correcto.",
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Perfil de \`${user}\` actualizado.`,
@@ -869,7 +862,7 @@ export default class extends Language {
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Lo siento, pero ${roleName} ya se encuentra actualmente.`,
             COMMAND_SETCONF_PREFIX_TOO_LONG: "Lo siento, pero no puedes tener espacio en tu prefijo.",
             COMMAND_SETCONF_WELCOME_NEED_CHAN: "Lo siento, pero tu canal de eventos o bien no ha sido establecida o ya no es actualmente válida.\nEstablécelo con `announceChan` en un canal válido e inténtalo de nuevo.`",
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: "Zona horaria inválida, mira aquí https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites, luego introduce lo que aparece en la columna TZ.",
+            BASE_INVALID_TIMEZONE: "Zona horaria inválida, mira aquí https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites, luego introduce lo que aparece en la columna TZ.",
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Lo siento, pero no he podido encontrar el canal ${chanName}. Intentalo de nuevo.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "Lo siento, pero no tengo permiso para enviar un mensaje ahí. Por favor cambia los permisos o bien elige otro canal.",
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Lo siento, pero ${value} no es un lenguaje soportado actualmente. \nLos lenguajes soportados actualmente son: \`${langList}\``,
@@ -980,7 +973,6 @@ export default class extends Language {
             COMMAND_SHARDTIMES_MISSING_ROLE: "Lo siento, pero solo puedes agregarte a ti mismo a menos que tengas un rol de Admin.",
             COMMAND_SHARDTIMES_INVALID_USER: "Usuario inválido, por favor introduce \"me\", menciona a alguien aquí o introduce su ID del Discord.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "Necesitas ingresar una zona horaria.",
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Zona horaria inválida, busca aquí https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ny encuentra la que necesites, después introduce lo que aparece en la columna TZ.",
             COMMAND_SHARDTIMES_USER_ADDED: "Usuario agregado con éxito!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `Usuario actualizado de ${from} a ${to}.`,
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Algo salió mal mientras se agregaba este usuario. Por favor inténtalo de nuevo.",
@@ -1123,7 +1115,6 @@ export default class extends Language {
             COMMAND_TIME_CURRENT: (time, zone) => `La hora actual es: ${time} en ${zone}`,
             COMMAND_TIME_INVALID_ZONE: (time, zone) => `Zona horaria inválida, esta es la hora de tu gremio  ${time} en ${zone}`,
             COMMAND_TIME_NO_ZONE: (time) => `La hora actual es: ${time} UTC`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `La hora actual es: ${time} en ${zone} time`,
             COMMAND_TIME_HELP: {
                 description: "Permite comprobar el tiempo de la zona horaria configurada del gremio.",
                 actions: [

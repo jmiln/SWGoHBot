@@ -36,7 +36,7 @@ describe("MyProfile", () => {
         const ctx = createCommandContext({ interaction });
         const command = new MyProfile();
         await command.run(ctx);
-        assertErrorReply(interaction, "COMMAND_MYPROFILE_INVALID_ALLY");
+        assertErrorReply(interaction, "BASE_INVALID_ALLY_CODE_AC");
     });
 
     it("should return error when player data cannot be fetched", async () => {

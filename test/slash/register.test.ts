@@ -121,7 +121,7 @@ describe("Register", () => {
         const embedData = embed.data || embed;
         // Author name should be the success header key (mock language returns key as-is)
         assert.ok(
-            embedData.author?.name?.includes("COMMAND_REGISTER_SUCCESS_HEADER"),
+            embedData.author?.name?.includes("BASE_REGISTRATION_SUCCESS"),
             `Expected success header in embed, got: ${embedData.author?.name}`,
         );
     });
@@ -178,9 +178,9 @@ describe("Register", () => {
             const embeds = r.embeds || [];
             return embeds.some((e: any) => {
                 const d = e.data || e;
-                return (d.description || "").includes("COMMAND_REGISTER_FAILURE");
+                return (d.description || "").includes("BASE_REGISTRATION_FAILURE");
             });
         });
-        assert.ok(hasFailureMsg, "Expected COMMAND_REGISTER_FAILURE in one of the replies");
+        assert.ok(hasFailureMsg, "Expected BASE_REGISTRATION_FAILURE in one of the replies");
     });
 });

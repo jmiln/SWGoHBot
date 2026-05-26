@@ -183,12 +183,47 @@ export default class extends Language {
                 RESISTANCE: "Resistenz",
                 DEFLECTION: "Ablenkungschance"
             },
+            BASE_ARENA_VIEW_HEADER: "Arena Rang PNs",
+            BASE_ARENA_VIEW_DM: "PN wenn Rang verloren",
+            BASE_ARENA_VIEW_SHOW: "Zeigt Arena",
+            BASE_ARENA_VIEW_WARNING: "Payout Meldung",
+            BASE_ARENA_VIEW_RESULT: "Payout Ergebnis Meldung",
             BASE_LEVEL_SHORT: "lvl",
             BASE_GEAR_SHORT: "Ausruestung",
             BASE_SOMETHING_BROKE: "Etwas funktioniert nicht",
             BASE_SOMETHING_BROKE_GUILD: "Etwas hat beim holen deiner Gildeninformationen nicht geklappt",
             BASE_SOMETHING_BROKE_GUILD_ROSTER: "Etwas hat beim holen der Gilden-Mitgliederliste nicht geklappt",
             BASE_PLEASE_TRY_AGAIN: "Bitte versuche es etwas später nocheinmal.",
+            BASE_MISSING_ADMIN_PERM: "Entschuldigung, aber entweder bist du kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
+            BASE_GUILD_NOT_FOUND: "Ich kann diese Gilde nicht finden.",
+            BASE_GUILD_PLEASE_WAIT: "Bitte warten waehrend ich die Info zu deiner Gilde aktualisiere",
+            BASE_SWGOH_CHAR_LIST_ASCIIDOC: (chars) => `Deine Suche hat zu viele Treffer ergeben. Bitte spezifizieren. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
+            BASE_REGISTRATION_FAILURE: "Registrierung fehlgeschlagen, bitte sicherstellen dass der Buendniscode korrekt ist.",
+            BASE_REGISTRATION_SUCCESS: (user) => `Registrierung fuer ${user} erfolgreich!`,
+            BASE_GA_INVALID_USER: (userNum) => `Ungueltiger Spieler ${userNum}`,
+            BASE_GA_VS_HEADER: (p1, p2) => `Grosse Arena ${p1} vs ${p2}`,
+            BASE_GA_COMP_NAMES: {
+                charGP: "Char GM",
+                shipGP: "Schiff GM",
+                cArena: "C Arena",
+                sArena: "S Arena",
+                zetas: "Zetas",
+                star6: "6 Sterne",
+                star7: "7 Sterne",
+                g11: "Gear 11",
+                g12: "Gear 12",
+                g13: "Gear 13",
+                "mods6": "6*  Mods",
+                "spd10": "10+  Tempo",
+                "spd15": "15+  Tempo",
+                "spd20": "20+  Tempo",
+                "off100": "100+ Ang",
+                "level": "Level",
+                "gearLvl": "Gear Lvl",
+                "starLvl": "Stern Lvl",
+                "speed": "Tempo"
+            },
+            BASE_CHAR_NO_MATCH: (char) => `Keine Ergebnisse gefunden fuer "${char}"`,
 
             // Abilities Command
             COMMAND_CHARACTER_NEED_CHARACTER: (prefix) => `Ein Charakter wird benoetigt. \n Verwendung \`${prefix}abilities <CharakterName auf englisch>\``,
@@ -361,7 +396,6 @@ export default class extends Language {
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Gueltige Aktionen sind\`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: "Entschuldigung, aber entweder bist du kein Admin, oder der Server Admin hat die noetigen Konfigurationen nicht vorgenommen..\nDu kannst keine Events erstellen oder entfernen, solange du keine Admin Rolle inne hast.",
             COMMAND_EVENT_ONE_REPEAT: "Entschuldigung, aber du musst entweder `repeat` oder `repeatDay` in einem Event nutzen. Bitte benutze das Eine oder das Andere.",
             COMMAND_EVENT_INVALID_REPEAT: "Die Wiederholung ist im falschen Format. Beispiel: ˋ5d3h8mˋ steht fuer 5 Tage 3 Stunden und 8 Minuten",
             COMMAND_EVENT_USE_COMMAS: "Bitte benutze Komma getrennte Nummern fuer repeatDay. Beispiel: `1,2,1,3,4`",
@@ -584,32 +618,8 @@ export default class extends Language {
             },
 
             // Grand Arena Command
-            COMMAND_GRANDARENA_INVALID_USER: (userNum) => `Ungueltiger Spieler ${userNum}`,
-            COMMAND_GRANDARENA_INVALID_CHAR: (char) => `Keine Ergebnisse gefunden fuer "${char}"`,
-            COMMAND_GRANDARENA_COMP_NAMES: {
-                charGP: "Char GM",
-                shipGP: "Schiff GM",
-                cArena: "C Arena",
-                sArena: "S Arena",
-                zetas: "Zetas",
-                star6: "6 Sterne",
-                star7: "7 Sterne",
-                g11: "Gear 11",
-                g12: "Gear 12",
-                g13: "Gear 13",
-                "mods6": "6*  Mods",
-                "spd10": "10+  Tempo",
-                "spd15": "15+  Tempo",
-                "spd20": "20+  Tempo",
-                "off100": "100+ Ang",
-                "level": "Level",
-                "gearLvl": "Gear Lvl",
-                "starLvl": "Stern Lvl",
-                "speed": "Tempo"
-            },
             COMMAND_GRANDARENA_EXTRAS_HEADER:"Extras",
             COMMAND_GRANDARENA_EXTRAS: (extraCount) => `Es gibt ${extraCount} Charaktere mehr die deiner Suche entsprechen aber nicht angezeigt werden koennen.`,
-            COMMAND_GRANDARENA_OUT_HEADER: (p1, p2) => `Grosse Arena ${p1} vs ${p2}`,
             COMMAND_GRANDARENA_OUT_DESC: (overview, modOverview) => `**Statistik:**${overview}**Mod Statistik:**${modOverview}`,
             COMMAND_GRANDARENA_HELP: {
                 description: "Vergleicht 2 Spieler fuer die Grosse Arena.",
@@ -629,8 +639,6 @@ export default class extends Language {
 
             // Guilds Command
             COMMAND_GUILDS_MORE_INFO: "Fuer mehr Info zu einer spezifischen Gilde:",
-            COMMAND_GUILDS_NO_GUILD: "Ich kann diese Gilde nicht finden.",
-            COMMAND_GUILDS_PLEASE_WAIT: "Bitte warten waehrend ich die Info zu deiner Gilde aktualisiere",
             COMMAND_GUILDS_USERS_IN_GUILD: (users, guild) => `${users} Spieler bei ${guild}`,
             COMMAND_GUILDS_GUILD_GP_HEADER: "Registrierte GM",
             COMMAND_GUILDS_GUILD_GP: (total, average) => `Gesamt GM: ${total}\nDurchschnitt : ${average}`,
@@ -685,11 +693,7 @@ export default class extends Language {
             COMMAND_GUILDSEARCH_INVALID_SORT: (opts) => `Ungueltige Sortierung. Verwende: \`${opts}\``,
             COMMAND_GUILDSEARCH_BAD_STAR: "Du kannst nur ein Sternen-Level von 1-7 waehlen",
             COMMAND_GUILDSEARCH_BAD_SORT: (sortType, filters) => `Entschuldigung, aber \`${sortType}\` ist keine gueltige Sortierreihenfolge. Nur \`${filters.join(", ")}\` ist moeglich.`,
-            COMMAND_GUILDSEARCH_MISSING_CHAR: "Du musst einen Charakter angeben",
-            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `Ich habe keine Ergebnisse gefunden fuer ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `Deine Suche hat zu viele Treffer ergeben. Bitte spezifizieren. \nHier ist eine Liste mit den besten Treffern.\n\`\`\`${chars}\`\`\``,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Niemand in deiner Gilde scheint diesen Charakter auf ${starLvl} Sterne zu haben.`,
-            COMMAND_GUILDSEARCH_NO_CHAR: "Niemand in deiner Gilde scheint diesen Charakter zu haben.",
             COMMAND_GUILDSEARCH_NOT_ACTIVATED: (count) => `Nicht aktiviert (${count})`,
             COMMAND_GUILDSEARCH_STAR_HEADER: (star, count) => `${star} Sterne (${count})`,
             COMMAND_GUILDSEARCH_PLEASE_WAIT: "Bitte warten waehrend ich die Sammlung deiner Gilde durchsuche.",
@@ -872,12 +876,10 @@ export default class extends Language {
             },
 
             // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden für den Spieler ${user}. Bitte sicherstellen, dass der Account synchronisiert ist.`,
             COMMAND_MYARENA_NO_CHAR: "Etwas ist schief gegangen, ich konnte deine Charaktere nicht holen.",
             COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rang: ${rank})`,
             COMMAND_MYARENA_FLEET: (rank) => `Flotten Arena (Rang: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
-            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Arena Daten sind vom: ${date}`,
             COMMAND_MYARENA_HELP: {
                 description: "Zeigt den gegenwaertigen Rang der Arena und das aktuelle Team eines Spielers an.",
                 actions: [
@@ -944,9 +946,7 @@ export default class extends Language {
             }),
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `Entschuldigung, aber ich kann keine Arena Informationen finden fuer ${user}. Bitte sicherstellen dass der Account synchronisiert ist`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}'s Profil (${allyCode})`,
-            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Arenadaten vom: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank, gpFull) => `**Gilde:** ${guildName}\n**Level:** ${level}\n**Arena Rang:** ${charRank}\n**Flotten Rang:** ${shipRank}\n**Gesamt GM:** ${gpFull}`,
             COMMAND_MYPROFILE_MODS: (mods) => ({
                 header: "Mod Uebersicht",
@@ -1187,12 +1187,10 @@ export default class extends Language {
 
             // Register Command
             COMMAND_REGISTER_MISSING_ALLY: "Du musst einen Buendniscode angeben mit dem du das Konto verknuepfen willst.",
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
+            BASE_INVALID_ALLY_CODE_AC: (allyCode) => `Entschuldigung, aber ${allyCode} ist kein gueltiger Buendniscode`,
             COMMAND_REGISTER_ALREADY_REGISTERED: "Das ist bereits dein registrierter Buendniscode!",
             COMMAND_REGISTER_ADD_NO_SERVER: "Du kannst nur User angeben die bereits auf diesem Server sind.",
             COMMAND_REGISTER_PLEASE_WAIT: "Bitte warten waehrend ich die Daten synchronisiere.",
-            COMMAND_REGISTER_FAILURE: "Registrierung fehlgeschlagen, bitte sicherstellen dass der Buendniscode korrekt ist.",
-            COMMAND_REGISTER_SUCCESS_HEADER: (user) => `Registrierung fuer ${user} erfolgreich!`,
             COMMAND_REGISTER_SUCCESS_DESC: (user, allyCode, gp) => [
                 `Buendniscode :: ${allyCode}`,
                 `Gilde    :: ${user.guildName || "N/A"}`,
@@ -1282,7 +1280,7 @@ export default class extends Language {
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Entschuldige, aber ${roleName} ist bereits vorhanden.`,
             COMMAND_SETCONF_PREFIX_TOO_LONG: "Entschuldigung, aber es duerfen keine Leerzeichen im Praefix verwendet werden",
             COMMAND_SETCONF_WELCOME_NEED_CHAN: "Entschuldige, aber der Ankuendigungskanal ist nicht definiert oder nicht mehr gueltig.\nSetze `announceChan` auf einen gueltigen Kanal und versuche es erneut`",
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: "Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an",
+            BASE_INVALID_TIMEZONE: "Ungueltige Zeitzone, gehe zu https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nund suche die du brauchst und gib den Inhalt gemaess der Spalte TZ an",
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Entschuldige, aber ich kann diesen Kanal nicht finden ${chanName}. Bitte versuche es erneut.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "Entschuldige, aber du hast keine Berechtigung diese Nachricht hier zu senden. Entweder muessen die Berechtigungen angepasst werden oder waehle einen anderen Kanal.",
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Entschuldige, aber ${value} ist aktuell keine gueltige Sprache. \nUnterstuetzte Sprachen sind: \`${langList}\``,
@@ -1393,7 +1391,6 @@ export default class extends Language {
             COMMAND_SHARDTIMES_MISSING_ROLE: "Ohne Adminrechte, kannst Du nur Dich selbst angeben..",
             COMMAND_SHARDTIMES_INVALID_USER: "Ungueltiger Benutzer, bitte \"me\" verwenden, einen Benutzer benennen oder eine Discord ID einfuegen.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "Bitte eine Zeitzone eintragen.",
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Ungueltige Zeitzone, bitte hier pruefen https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \nwelche benoetigt wird, dann eintragen, was in der TZ-Spalte gennant wird",
             COMMAND_SHARDTIMES_INVALID_TIME_TIL: "Ungueltige Zeitangabe bis zum Payout, es muss im folgenden Format angegeben werden `00:00`, d.h. wenn bspw. **13** Minuten bis zum Payout fehlen, dann gibst du `00:13` an",
             COMMAND_SHARDTIMES_USER_ADDED: "Benutzer erfolgreich hinzugefuegt!",
             COMMAND_SHARDTIMES_USER_MOVED: (from, to) => `User aktualisiert von ${from} nach ${to}.`,
@@ -1555,7 +1552,6 @@ export default class extends Language {
             COMMAND_TIME_CURRENT: (time, zone) => `Aktuelle Uhrzeit is: ${time} in ${zone} Zeit`,
             COMMAND_TIME_INVALID_ZONE: (time, zone) => `Ungueltige Zeitzone, fuer deine Gilde ist es jetzt ${time} in ${zone} Zeit`,
             COMMAND_TIME_NO_ZONE: (time) => `Aktuelle Uhrzeit: ${time} UTC Zeit`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `Aktuelle Uhrzeit: ${time} in ${zone} Zeit`,
             COMMAND_TIME_HELP: {
                 description: "Wird benutzt um die aktuelle Uhrzeit und die eingestellte Zeitzone zu ueberpruefen.",
                 actions: [
@@ -1609,23 +1605,8 @@ export default class extends Language {
             COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC: "Keine verknuepften Buendniscodes.",
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Standardwerte",
             COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Setzt Standardwerte fuer deine Kommandos.",
-            COMMAND_USERCONF_VIEW_ARENA_HEADER: "Arena Rang PNs",
-            COMMAND_USERCONF_VIEW_ARENA_DM: "PN wenn Rang verloren",
-            COMMAND_USERCONF_VIEW_ARENA_SHOW: "Zeigt Arena",
-            COMMAND_USERCONF_VIEW_ARENA_WARNING: "Payout Meldung",
-            COMMAND_USERCONF_VIEW_ARENA_RESULT: "Payout Ergebnis Meldung",
             COMMAND_USERCONF_VIEW_LANG_HEADER: "Spracheinstellung",
-            COMMAND_USERCONF_ARENA_PATREON_ONLY: "Dieses Feature ist nur verfuegbar fuer Unterstuetzer auf https://www.patreon.com/swgohbot",
-            COMMAND_USERCONF_ARENA_MISSING_DM: "Fehlende Option. Versuche all/primary/off.",
-            COMMAND_USERCONF_ARENA_INVALID_DM: "Ungueltige Option. Versuche all/primary/off.",
-            COMMAND_USERCONF_ARENA_MISSING_ARENA: "Fehlende arena, Du musst eine der folgenden waehlen: `char, fleet, both`",
-            COMMAND_USERCONF_ARENA_INVALID_ARENA: "Ungueltige arena, Du musst eine der folgenden waehlen: `char, fleet, both`",
-            COMMAND_USERCONF_ARENA_MISSING_WARNING: "Fehlende Nummer, Versuche `0` um zu deaktivieren, oder eine Anzahl von Minuten bevor die Warnung erscheinen soll.",
-            COMMAND_USERCONF_ARENA_INVALID_WARNING: "Ungueltige Nummer, Versuche `0` um zu deaktivieren, oder eine Anzahl von Minuten bevor die Warnung erscheinen soll.",
             COMMAND_USERCONF_ARENA_INVALID_NUMBER: "Ungueltige Nummer, deine Nummer muss zwischen 0 (deaktiviert), und 1440 (ein Tag) sein.",
-            COMMAND_USERCONF_ARENA_INVALID_OPTION: "Versuche eine der folgenden: `enableDMs, arena, payoutResult, payoutWarning`",
-            COMMAND_USERCONF_ARENA_INVALID_BOOL: "Ungueltige Option. Versuche `yes/no`, `true/false` oder `on/off`",
-            COMMAND_USERCONF_ARENA_UPDATED: "Deine Einstellungen wurden aktualisiert.",
             COMMAND_USERCONF_LANG_UPDATED: (type, newLang) => `Deine ${type} wurde aktualisiert auf ${newLang}`,
             COMMAND_USERCONF_HELP: {
                 description: "Alle Utilities um deine Informationen im Bot zu verwalten.",
@@ -1700,7 +1681,6 @@ export default class extends Language {
             COMMAND_ZETA_WAIT_GUILD: "Bitte warten waehrend ich die Zetas deiner Gilde durchsuche",
             COMMAND_ZETA_ZETAS_HEADER: (name, count) => `${name}'s Zetas (${count})`,
             COMMAND_ZETA_GUILD_HEADER: (name) => `${name}'s Zetas'`,
-            COMMAND_ZETA_GUILD_CHAR_HEADER: (name) => `${name}'s Zetas'`,
             COMMAND_ZETAS_HELP: {
                 description: "Zeigt die Faehigkeiten die mit Zeta hochgestuft wurden.",
                 actions: [

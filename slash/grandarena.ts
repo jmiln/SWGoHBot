@@ -76,9 +76,9 @@ export default class GrandArena extends Command {
         const user1AC = await getAllyCode(interaction, user1Str);
         if (!user1AC) {
             if (user1Str === "me") {
-                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("BASE_UNREGISTERED_ALLYCODE"));
             } else {
-                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+                problemArr.push(language.get("BASE_GA_INVALID_USER", 1));
             }
         }
 
@@ -87,9 +87,9 @@ export default class GrandArena extends Command {
         const user2AC = await getAllyCode(interaction, user2Str);
         if (!user2AC) {
             if (user2Str === "me") {
-                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("BASE_UNREGISTERED_ALLYCODE"));
             } else {
-                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+                problemArr.push(language.get("BASE_GA_INVALID_USER", 2));
             }
         }
 
@@ -106,7 +106,7 @@ export default class GrandArena extends Command {
                 }
                 if (!chars.length) {
                     // It could not find any matches, so let em know
-                    problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_CHAR", char));
+                    problemArr.push(language.get("BASE_CHAR_NO_MATCH", char));
                 } else {
                     // It found at least one matching character
                     for (const ch of chars) {
@@ -146,7 +146,7 @@ export default class GrandArena extends Command {
         const checkArr = {};
 
         // Localized labels for each row
-        const labels = language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as { [key: string]: string };
+        const labels = language.get("BASE_GA_COMP_NAMES") as unknown as { [key: string]: string };
 
         // An array to stick all the fields in as we go.
         const fields = [];
@@ -525,7 +525,7 @@ export default class GrandArena extends Command {
             embeds: [
                 {
                     author: {
-                        name: language.get("COMMAND_GRANDARENA_OUT_HEADER", user1.name, user2.name) as string,
+                        name: language.get("BASE_GA_VS_HEADER", user1.name, user2.name) as string,
                     },
                     fields: [...fields, { name: constants.zws, value: footerStr }],
                 },

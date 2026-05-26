@@ -223,10 +223,10 @@ export default class GuildSearch extends Command {
 
         if (!unitList?.length) {
             // No character found, so error
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NO_RESULTS", searchStr));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchStr));
         }
         if (unitList.length > 1) {
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charListFromSearch(unitList)));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST_ASCIIDOC", charListFromSearch(unitList)));
         }
 
         // If there's just one match, use it

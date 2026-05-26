@@ -49,9 +49,9 @@ export default class TerritoryWar extends Command {
         const user1 = await getAllyCode(interaction, user1str);
         if (!user1) {
             if (user1str === "me") {
-                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("BASE_UNREGISTERED_ALLYCODE"));
             } else {
-                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 1));
+                problemArr.push(language.get("BASE_GA_INVALID_USER", 1));
             }
         }
 
@@ -60,9 +60,9 @@ export default class TerritoryWar extends Command {
         const user2 = await getAllyCode(interaction, user2str);
         if (!user2) {
             if (user2str === "me") {
-                problemArr.push(language.get("COMMAND_GRANDARENA_UNREGISTERED"));
+                problemArr.push(language.get("BASE_UNREGISTERED_ALLYCODE"));
             } else {
-                problemArr.push(language.get("COMMAND_GRANDARENA_INVALID_USER", 2));
+                problemArr.push(language.get("BASE_GA_INVALID_USER", 2));
             }
         }
 
@@ -155,7 +155,7 @@ export default class TerritoryWar extends Command {
         await interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
 
         // Localized labels for each row
-        const labels = language.get("COMMAND_GRANDARENA_COMP_NAMES") as unknown as {
+        const labels = language.get("BASE_GA_COMP_NAMES") as unknown as {
             charGP: string;
             shipGP: string;
             zetas: string;
@@ -471,7 +471,7 @@ export default class TerritoryWar extends Command {
         });
         const embed = {
             author: {
-                // name: language.get("COMMAND_GRANDARENA_OUT_HEADER", guild1.name, guild2.name)
+                // name: language.get("BASE_GA_VS_HEADER", guild1.name, guild2.name)
                 name: `Territory War, ${guild1.name} (${guild1.roster.length}) vs ${guild2.name} (${guild2.roster.length})`,
             },
             fields: fields,

@@ -93,7 +93,7 @@ export default class Zetas extends Command {
                 return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
             }
             if (foundCharacters.length > 1) {
-                return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charListFromSearch(foundCharacters)));
+                return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST_ASCIIDOC", charListFromSearch(foundCharacters)));
             }
             character = foundCharacters[0];
         }

@@ -114,6 +114,9 @@ export default class extends Language {
                 SPEED:      "Velocidade",
                 TENACITY:   "Tenacidade"
             },
+            BASE_MISSING_ADMIN_PERM: "Desculpe-me, mas ou você não é um administrador ou o líder do servidor não realizou a configuração do bot.\n Você não pode adicionar ou remover eventos a não ser que você tenha configurado a permissão de administrador.",
+            BASE_SWGOH_CHAR_LIST_ASCIIDOC: (chars) => `A sua busca retornou muitos resultados, Por favor, seja mais específico. \nSegue uma lista dos resultados mais próximos.\n\`\`\`${chars}\`\`\``,
+            BASE_REGISTRATION_FAILURE: "Registration failed, please make sure your ally code is correct.",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `Necessário informar um personagem. Use \`${prefix}abilities <nome do personagem>\``,
@@ -258,7 +261,6 @@ export default class extends Language {
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `Ações válidas são \`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: "Desculpe-me, mas ou você não é um administrador ou o líder do servidor não realizou a configuração do bot.\n Você não pode adicionar ou remover eventos a não ser que você tenha configurado a permissão de administrador.",
             COMMAND_EVENT_ONE_REPEAT: "Desculpe-me, mas você não pode utilizar as opções `repeat` e `repeatDay` ao mesmo tempo em um evento. Por favor, utiliza apenas uma das opções",
             COMMAND_EVENT_INVALID_REPEAT: "A repetição está em formato inválido. Exemplo: `5d3h8m` para 5 dias, 3 horas e 8 minutos",
             COMMAND_EVENT_USE_COMMAS: "Por favor, use uma lista separada por virgulas para o repeatDay. Exemplo: `1,2,1,3,4`",
@@ -370,12 +372,8 @@ export default class extends Language {
 
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: "Você só pode escolher um nível de estrelas entre 1 e 7",
-            COMMAND_GUILDSEARCH_MISSING_CHAR: "Você precisa fornecer o nome de um personagem para procurar",
-            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `Nenhum resultado encontrado para o personagem ${character}`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `A sua busca retornou muitos resultados, Por favor, seja mais específico. \nSegue uma lista dos resultados mais próximos.\n\`\`\`${chars}\`\`\``,
             COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum="") => `${tier} Estrelas (${num}) ${setNum.length > 0 ? setNum : ""}`,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `Ninguém na sua guilda parece ter esse personagem com ${starLvl} estrelas.`,
-            COMMAND_GUILDSEARCH_NO_CHAR: "Ninguém na sua guilda parece ter esse personagem.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "Exibe o nível de estrelas do personagem escolhido de todo mundo da guilda.",
                 actions: [
@@ -511,12 +509,10 @@ export default class extends Language {
             },
 
             // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `Desculpe-me, mas não consigo encontrar os dados da arena do usuário ${user}. Por favor, verifique se a conta está sincronizada`,
             COMMAND_MYARENA_NO_CHAR: "Algo deu errado, não consigo recuperar seus personagens.",
             COMMAND_MYARENA_ARENA: (rank) => `Arena de Personagens (Rank: ${rank})`,
             COMMAND_MYARENA_FLEET: (rank) => `Arena de Naves (Rank: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `Arena de ${playerName}`,
-            COMMAND_MYARENA_EMBED_FOOTER: (date) => `Dados da Arena referentes a: ${date}`,
             COMMAND_MYARENA_HELP: {
                 description: "Mostra a posição corrente do usuário na arena e seus times\\esquadrões.",
                 actions: [
@@ -567,9 +563,7 @@ export default class extends Language {
             }),
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `Desculpe-me, mas não consigo encontrar os dados da arena do usuário ${user}. Por favor, verifique se sua conta está sincronizada`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `Perfil de ${playerName} (${allyCode})`,
-            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `Dados da Arena obtidos em: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**Guilda:** ${guildName}\n**Nível:** ${level}\n**Posição na Arena:** ${charRank}\n**Posição na Arena das Naves:** ${shipRank}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Characters (${charList.length})`,
@@ -719,9 +713,8 @@ export default class extends Language {
             // Register Command
             COMMAND_REGISTER_MISSING_ARGS: "Você deve fornecer um userID (mention ou ID), e um código de aliança",
             COMMAND_REGISTER_MISSING_ALLY: "Você deve fornecer um código de aliança para ligar sua conta.",
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `Desculpe-me, mas ${allyCode} não é um código de aliança válido`,
+            BASE_INVALID_ALLY_CODE_AC: (allyCode) => `Desculpe-me, mas ${allyCode} não é um código de aliança válido`,
             COMMAND_REGISTER_PLEASE_WAIT: "Por favor, aguarde enquanto eu sincronizo seus dados.",
-            COMMAND_REGISTER_FAILURE: "Registration failed, please make sure your ally code is correct.",
             COMMAND_REGISTER_SUCCESS: (user) => `Registro do usuário \`${user}\` realizado com sucesso!`,
             COMMAND_REGISTER_UPDATE_FAILURE: "Algo deu errado, certifique-se que seu código de aliança registrado está correto",
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `Perfil de \`${user}\` atualizado.`,
@@ -809,7 +802,7 @@ export default class extends Language {
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `Descuple-me, mas ${roleName} já está selecionada.`,
             COMMAND_SETCONF_PREFIX_TOO_LONG: "Desculpe-me, mas você não pode ter espaços no seu prefixo",
             COMMAND_SETCONF_WELCOME_NEED_CHAN: "Desculpe-me, mas seu canal de anúncios ou não existe ou não é mais válido.\nConfigure `announceChan` com um canal válido e tente novamente.`",
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: "Fuso horário inválido, acesse https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ne e encontre seu fuso, depois digite o valor referente a coluna TZ",
+            BASE_INVALID_TIMEZONE: "Fuso horário inválido, acesse https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ne e encontre seu fuso, depois digite o valor referente a coluna TZ",
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `Desculpe-me, mas não consigo encontrar o canal ${chanName}. Por favor, tente novamente.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "Desculpe-me, mas não tenho permissão para mandar mensagens nesse canal. Por favor, modifique o canal ou atribua as permissões necessárias.",
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `Desculpe-me, mas ${value} não é uma linguagem atualmente suportada. \nAs linguagens atualmente suportadas são: \`${langList}\``,
@@ -920,7 +913,6 @@ export default class extends Language {
             COMMAND_SHARDTIMES_MISSING_ROLE: "Desculpe-me, mas você só pode adicionar você mesmo a não quer que tenha o cargo de administrador.",
             COMMAND_SHARDTIMES_INVALID_USER: "Usuário inválido, por favor digite \"me\", mencione alguém ou insira o ID Discord.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "Você precisa digitar um fuso horário.",
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: "Fuso horário inválido, acesse https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \ne localize seu fuso horário, depois entre com a informação disponível na colna TZ",
             COMMAND_SHARDTIMES_USER_ADDED: "Usuáiro adicionado com sucesso!",
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "Algo deu errado enquanto o usuário era adicionado. Por favor, tente novamente.",
             COMMAND_SHARDTIMES_REM_MISSING_PERMS: "Desculpe-me, mas você só pode remover você mesmo a não ser que tenha o cargo de administrador.",
@@ -1033,7 +1025,6 @@ export default class extends Language {
             COMMAND_TIME_CURRENT: (time, zone) => `A hora atual é: ${time} no fuso horário ${zone}`,
             COMMAND_TIME_INVALID_ZONE: (time, zone) => `Fuso horário inválido, essa é a hora atual da sua guilda ${time} no fuso horário ${zone}`,
             COMMAND_TIME_NO_ZONE: (time) => `O horário atual é: ${time} UTC`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `O horário atual é: ${time} no fuso horário ${zone}`,
             COMMAND_TIME_HELP: {
                 description: "Usado para verificar o horário no fuso horário da sua guilda",
                 actions: [

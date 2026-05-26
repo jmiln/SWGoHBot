@@ -305,7 +305,7 @@ describe("Event", () => {
         // Should not show permission error
         const reply = replies[0];
         const content = reply.content || "";
-        assert.ok(!content.includes("COMMAND_EVENT_INVALID_PERMS"), "View should not require GUILD_ADMIN");
+        assert.ok(!content.includes("BASE_MISSING_ADMIN_PERM"), "View should not require GUILD_ADMIN");
     });
 
     it("should reject createjson with invalid JSON", async () => {        const interaction = createMockInteraction({

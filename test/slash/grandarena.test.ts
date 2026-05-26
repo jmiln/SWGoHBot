@@ -95,7 +95,7 @@ describe("GrandArena Functionality", () => {
         const embedData = embed?.data || embed;
 
         // The test language mock returns the language key itself; verify the correct key is used
-        assert.ok(embedData?.author?.name?.includes("COMMAND_GRANDARENA_OUT_HEADER"), "Expected embed author to use grandarena output header language key");
+        assert.ok(embedData?.author?.name?.includes("BASE_GA_VS_HEADER"), "Expected embed author to use grandarena output header language key");
 
         // Verify the General Overview field contains GP values derived from the mock roster
         const overviewField = embedData?.fields?.find((f: any) => f.name === "General Overview");

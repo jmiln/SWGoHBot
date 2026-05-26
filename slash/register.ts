@@ -46,7 +46,7 @@ export default class Register extends Command {
                 interaction,
                 `**${allyCode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`,
             );
-            // return super.error(interaction, language.get("COMMAND_REGISTER_INVALID_ALLY", allyCode));
+            // return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE_AC", allyCode));
         }
         // Wipe out any non-number characters just in case
         allyCode = allyCode.replace(/[^\d]*/g, "");
@@ -89,7 +89,7 @@ export default class Register extends Command {
                 interaction,
                 codeBlock("asciiDoc", language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g)?.join("-"))),
                 {
-                    title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", u.name),
+                    title: language.get("BASE_REGISTRATION_SUCCESS", u.name),
                 },
             );
         } else {
@@ -107,7 +107,7 @@ export default class Register extends Command {
             const playerRes: SWAPIPlayer[] = await swgohAPI.unitStats(Number.parseInt(allyCode, 10), cooldown);
             const player = playerRes?.[0] || null;
             if (!player) {
-                return super.error(interaction, language.get("COMMAND_REGISTER_FAILURE") + allyCode);
+                return super.error(interaction, language.get("BASE_REGISTRATION_FAILURE") + allyCode);
             }
             userConfig.accounts.push({
                 allyCode: Number.parseInt(allyCode, 10),
@@ -127,7 +127,7 @@ export default class Register extends Command {
                     ),
                 ),
                 {
-                    title: language.get("COMMAND_REGISTER_SUCCESS_HEADER", player.name),
+                    title: language.get("BASE_REGISTRATION_SUCCESS", player.name),
                 },
             );
         } catch (e) {

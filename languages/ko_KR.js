@@ -114,6 +114,9 @@ export default class extends Language {
                 SPEED:      "속도",
                 TENACITY:   "인내"
             },
+            BASE_MISSING_ADMIN_PERM: "죄송합니다만 관리자가 아니시거나, 서버 관리자가 적절한 설정을 하지 않은 상태입니다.\n관리자 역할이 설정되어 있지 않으면 이벤트를 추가하거나 삭제할 수 없습니다.",
+            BASE_SWGOH_CHAR_LIST_ASCIIDOC: (chars) => `검색 결과가 너무 많습니다. 조금 더 자세하게 검색해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
+            BASE_REGISTRATION_FAILURE: "등록이 실패하였습니다. 동맹 코드가 맞는지 확인하여주십시오",
 
             // Abilities Command
             COMMAND_ABILITIES_NEED_CHARACTER: (prefix) => `캐릭터가 필요합니다. 다음과 같이 사용하십시오. \`${prefix}abilities <characterName>\``,
@@ -277,7 +280,6 @@ export default class extends Language {
 
             // Event Command (Create)
             COMMAND_EVENT_INVALID_ACTION: (actions) => `다음과 같은 일을 할 수 있습니다 \`${actions}\`.`,
-            COMMAND_EVENT_INVALID_PERMS: "죄송합니다만 관리자가 아니시거나, 서버 관리자가 적절한 설정을 하지 않은 상태입니다.\n관리자 역할이 설정되어 있지 않으면 이벤트를 추가하거나 삭제할 수 없습니다.",
             COMMAND_EVENT_ONE_REPEAT: "죄송합니다만 하나의 이벤트에서 `repeat`와 `repeatDay`를 동시에 사용할 수 없습니다. 둘중 하나를 선택하십시오",
             COMMAND_EVENT_INVALID_REPEAT: "반복을 지정하는 형식이 잘못되었습니다. 예: `5d3h8m` 5일 3시간 8분",
             COMMAND_EVENT_USE_COMMAS: "repeadDay에서 콤마를 사용하여 숫자를 분리해주십시오. 예: `1,2,1,3,4`",
@@ -389,12 +391,8 @@ export default class extends Language {
 
             // GuildSearch Command
             COMMAND_GUILDSEARCH_BAD_STAR: "1-7 까지만 선택할 수 있습니다",
-            COMMAND_GUILDSEARCH_MISSING_CHAR: "확인을 원하는 캐릭터의 이름을 입력하십시오",
-            COMMAND_GUILDSEARCH_NO_RESULTS: (character) => `${character}에 대한 결과가 없습니다`,
-            COMMAND_GUILDSEARCH_CHAR_LIST: (chars) => `검색 결과가 너무 많습니다. 조금 더 자세하게 검색해주십시오. \n가장 비슷한 결과는 다음과 같습니다.\n\`\`\`${chars}\`\`\``,
             COMMAND_GUILDSEARCH_FIELD_HEADER: (tier, num, setNum="") => `${tier} Star (${num}) ${setNum.length > 0 ? setNum : ""}`,
             COMMAND_GUILDSEARCH_NO_CHAR_STAR: (starLvl) => `${starLvl}성 캐릭터를 가진 사람이 길드 내에 없습니다.`,
-            COMMAND_GUILDSEARCH_NO_CHAR: "길드내에 이 캐릭터를 가진 사람이 없습니다.",
             COMMAND_GUILDSEARCH_HELP: {
                 description: "길드 내에서 지정된 캐릭터를 가진 사람들의 목록을 보여줍니다",
                 actions: [
@@ -530,12 +528,10 @@ export default class extends Language {
             },
 
             // MyArena Command
-            COMMAND_MYARENA_NO_USER: (user) => `죄송합니다만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
             COMMAND_MYARENA_NO_CHAR: "문제가 생겼습니다. 캐릭터 자료를 가져올 수가 없습니다.",
             COMMAND_MYARENA_ARENA: (rank) => `분대 아레나 (순위: ${rank})`,
             COMMAND_MYARENA_FLEET: (rank) => `함대 아레나 (순위: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}의 아레나`,
-            COMMAND_MYARENA_EMBED_FOOTER: (date) => `아레나 정보 시점: ${date}`,
             COMMAND_MYARENA_HELP: {
                 description: "사용자의 아레나 순위와 팀 구성을 보여줍니다.",
                 actions: [
@@ -551,9 +547,7 @@ export default class extends Language {
             },
 
             // MyProfile Command
-            COMMAND_MYPROFILE_NO_USER: (user) => `죄송합니다만 ${user}에 대한 아레나 자료를 찾을 수 없습니다. 계정이 연동되었는지 확인하십시오`,
             COMMAND_MYPROFILE_EMBED_HEADER: (playerName, allyCode) => `${playerName}의 프로파일 (${allyCode})`,
-            COMMAND_MYPROFILE_EMBED_FOOTER: (date) => `아레나 정보 시점: ${date}`,
             COMMAND_MYPROFILE_DESC: (guildName, level, charRank, shipRank) => `**길드:** ${guildName}\n**레벨:** ${level}\n**분대 아레나 순위:** ${charRank}\n**암대 아레나 순위:** ${shipRank}`,
             COMMAND_MYPROFILE_CHARS: (gpChar, charList, zetaCount) => ({
                 header: `Characters (${charList.length})`,
@@ -703,9 +697,8 @@ export default class extends Language {
             // Register Command
             COMMAND_REGISTER_MISSING_ARGS: "사용자 아이디와 동맹 코드가 필요합니다",
             COMMAND_REGISTER_MISSING_ALLY: "계정을 연동하려면 동맹 코드를 입력해야 합니다.",
-            COMMAND_REGISTER_INVALID_ALLY: (allyCode) => `죄송합니다만 ${allyCode} 는 유효한 동맹코드가 아닙니다`,
+            BASE_INVALID_ALLY_CODE_AC: (allyCode) => `죄송합니다만 ${allyCode} 는 유효한 동맹코드가 아닙니다`,
             COMMAND_REGISTER_PLEASE_WAIT: "계정 자료를 동기화 하는 동안 잠시 기다려주십시오.",
-            COMMAND_REGISTER_FAILURE: "등록이 실패하였습니다. 동맹 코드가 맞는지 확인하여주십시오",
             COMMAND_REGISTER_SUCCESS: (user) => ` \`${user}\` 등록이 성공하였습니다!`,
             COMMAND_REGISTER_UPDATE_FAILURE: "문제가 생겼습니다. 동맹 코드가 맞는지 확인하여주십시오",
             COMMAND_REGISTER_UPDATE_SUCCESS: (user) => `\`${user}\`에 대한 프로파일이 갱신되었습니다.`,
@@ -793,7 +786,7 @@ export default class extends Language {
             COMMAND_SETCONF_ADMINROLE_ROLE_EXISTS: (roleName) => `죄송합니다만 ${roleName} 역할이 이미 존재합니다.`,
             COMMAND_SETCONF_PREFIX_TOO_LONG: "죄송합니다만 접두사(prefix)에는 공백을 둘 수 없습니다",
             COMMAND_SETCONF_WELCOME_NEED_CHAN: "죄송합니다만 안내 채널이 설정되지 않았거나 더이상 유효하지 않습니다.\n`announceChan` 명령으로 유효한 채널을 설정한 후에 다시 시도하십시오.`",
-            COMMAND_SETCONF_TIMEZONE_NEED_ZONE: "타임존이 잘못되었습니다, 다음 사이트를 확인하십시오 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \n원하는 항목을 찾고, TZ 칼럼에 있는 내용을 입력하십시오",
+            BASE_INVALID_TIMEZONE: "타임존이 잘못되었습니다, 다음 사이트를 확인하십시오 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \n원하는 항목을 찾고, TZ 칼럼에 있는 내용을 입력하십시오",
             COMMAND_SETCONF_ANNOUNCECHAN_NEED_CHAN: (chanName) => `죄송합니다만 ${chanName} 채널을 찾을 수 없습니다. 다시 시도해보십시오.`,
             COMMAND_SETCONF_ANNOUNCECHAN_NO_PERMS: "죄송합니다만 해당 채널에 안내할 권한이 없습니다. 권한 설정을 변경하시거나 다른 채널을 선택하십시오.",
             COMMAND_SETCONF_INVALID_LANG: (value, langList) => `죄송합니다만 ${value} 은(는) 현재 지원되는 언어가 아닙니다. \n현재 지원되는 언어는 다음과 같습니다: \`${langList}\``,
@@ -904,7 +897,6 @@ export default class extends Language {
             COMMAND_SHARDTIMES_MISSING_ROLE: "관리자 권한이 없는 경우 본인만 추가할 수 있습니다.",
             COMMAND_SHARDTIMES_INVALID_USER: "잘못된 사용자입니다. \"me\", 다른 사용자이름, 또는 디스코드 아이디를 입력하십시오.",
             COMMAND_SHARDTIMES_MISSING_TIMEZONE: "'타임존 지정이 필요합니다'.",
-            COMMAND_SHARDTIMES_INVALID_TIMEZONE: "잘못된 타임존입니다. 다음 사이트를 확인하십시오 https://en.wikipedia.org/wiki/List_of_tz_database_time_zones \n원하는 항목을 찾고, TZ 칼럼에 있는 내용을 입력하십시오",
             COMMAND_SHARDTIMES_USER_ADDED: "사용자 추가에 성공하였습니다!",
             COMMAND_SHARDTIMES_USER_NOT_ADDED: "사용자 추가에 문제가 생겼습니다. 다시 시도해주십시오.",
             COMMAND_SHARDTIMES_REM_MISSING_PERMS: "관리자 권한이 없는 경우 본인만 삭제할 수 있습니다.",
@@ -1017,7 +1009,6 @@ export default class extends Language {
             COMMAND_TIME_CURRENT: (time, zone) => `현재 시간: ${time} 타임존 ${zone}`,
             COMMAND_TIME_INVALID_ZONE: (time, zone) => `잘못된 타임존입니다. 현재 시간은 길드 타임존 ${zone}에서 ${time} 입니다`,
             COMMAND_TIME_NO_ZONE: (time) => `현재 시간: ${time} UTC`,
-            COMMAND_TIME_WITH_ZONE: (time, zone) => `현재시간: ${time} 타임존 ${zone}`,
             COMMAND_TIME_HELP: {
                 description: "길드에 설정된 타임존에서 현재 시간을 확인합니다.",
                 actions: [

@@ -38,7 +38,7 @@ export default class GuildQuality extends Command {
     }
 
     async run({ interaction, language }: CommandContext) {
-        await interaction.reply({ content: language.get("COMMAND_GUILDS_PLEASE_WAIT") as string });
+        await interaction.reply({ content: language.get("BASE_GUILD_PLEASE_WAIT") as string });
 
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac, true);
@@ -65,13 +65,13 @@ export default class GuildQuality extends Command {
         }
 
         if (!guild) {
-            return super.error(interaction, `Couldn't get guild. ${language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild. ${language.get("BASE_GUILD_NOT_FOUND")}`);
         }
 
         const rosterQualities = await getGuildRosterQualities(guild);
 
         if (!rosterQualities?.length) {
-            return super.error(interaction, `Couldn't get guild stats. ${language.get("COMMAND_GUILDS_NO_GUILD")}`);
+            return super.error(interaction, `Couldn't get guild stats. ${language.get("BASE_GUILD_NOT_FOUND")}`);
         }
 
         const outArr = ["`ModQ | GearQ | TotalQ | CharGP | Name  `"];

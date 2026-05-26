@@ -210,7 +210,7 @@ export default class Shardtimes extends Command {
                     timezone = Number.parseInt(`${match[1]}${Number.parseInt(match[2], 10) * 60 + Number.parseInt(match[3], 10)}`, 10);
                 } else {
                     // Grumble that it's an invalid tz
-                    return super.error(interaction, language.get("COMMAND_SHARDTIMES_INVALID_TIMEZONE"));
+                    return super.error(interaction, language.get("BASE_INVALID_TIMEZONE"));
                 }
             } else {
                 zoneType = "hhmm";
@@ -326,7 +326,7 @@ export default class Shardtimes extends Command {
             // Make sure the person has the correct perms to copy it (admin/ mod)
             if (permLevel < constants.permMap.GUILD_ADMIN) {
                 // Permlevel 3 is the adminRole of the server, so anyone under that shouldn"t be able to do this
-                return super.error(interaction, language.get("COMMAND_EVENT_INVALID_PERMS"));
+                return super.error(interaction, language.get("BASE_MISSING_ADMIN_PERM"));
             }
 
             // Make sure there are times to copy from

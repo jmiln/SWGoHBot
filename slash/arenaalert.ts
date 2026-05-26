@@ -91,7 +91,7 @@ export default class ArenaAlert extends Command {
         // Make sure the user is a patreon
         const pat = await patreonFuncs.getPatronUser(userID);
         if (!pat || pat.amount_cents < 100) {
-            return super.error(interaction, language.get("COMMAND_ARENAALERT_PATREON_ONLY"));
+            return super.error(interaction, language.get("BASE_PATREON_ONLY"));
         }
 
         // Grab the user's info
@@ -105,16 +105,16 @@ export default class ArenaAlert extends Command {
             return interaction.reply({
                 embeds: [
                     {
-                        title: language.get("COMMAND_ARENAALERT_VIEW_HEADER"),
+                        title: language.get("BASE_ARENA_VIEW_HEADER"),
                         description: [
-                            `${language.get("COMMAND_ARENAALERT_VIEW_DM")}: **${
+                            `${language.get("BASE_ARENA_VIEW_DM")}: **${
                                 user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"
                             }**`,
-                            `${language.get("COMMAND_ARENAALERT_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
-                            `${language.get("COMMAND_ARENAALERT_VIEW_WARNING")}: **${
+                            `${language.get("BASE_ARENA_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
+                            `${language.get("BASE_ARENA_VIEW_WARNING")}: **${
                                 user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"
                             }**`,
-                            `${language.get("COMMAND_ARENAALERT_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`,
+                            `${language.get("BASE_ARENA_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`,
                         ].join("\n"),
                     },
                 ],

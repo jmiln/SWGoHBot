@@ -94,11 +94,11 @@ export default class Versus extends Command {
         const { units: charRes } = findCharOrShip(character, characters, ships);
         if (!charRes.length) {
             // Didn't find any matches
-            return super.error(interaction, language.get("COMMAND_GRANDARENA_INVALID_CHAR", character));
+            return super.error(interaction, language.get("BASE_CHAR_NO_MATCH", character));
         }
         if (charRes.length > 1) {
             // If found more than 1 match
-            return super.error(interaction, language.get("COMMAND_GUILDSEARCH_CHAR_LIST", charListFromSearch(charRes)));
+            return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST_ASCIIDOC", charListFromSearch(charRes)));
         }
         // It only found one match
         const char = charRes?.[0] || null;
