@@ -54,11 +54,7 @@ export default class Panic extends Command {
 
         // Grab the player's info
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
-        if (!player?.roster)
-            return super.error(
-                interaction,
-                "Sorry, but I'm having a hard time loading your roster. Please double check your ally code or try again in a bit.",
-            );
+        if (!player?.roster) return super.error(interaction, language.get("COMMAND_PANIC_ROSTER_ERROR"));
 
         const reqsOut = [];
         for (const unitReq of thisReq.reqs) {

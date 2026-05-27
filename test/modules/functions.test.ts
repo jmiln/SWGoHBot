@@ -414,7 +414,7 @@ describe("formatDuration", () => {
 describe("getUTCFromOffset", () => {
     it("returns UTC midnight for offset 0", () => {
         const d = new Date();
-        const utcMidnight = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+        const utcMidnight = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
         assert.strictEqual(getUTCFromOffset(0), utcMidnight);
     });
 

@@ -1274,6 +1274,7 @@ export default class extends Language {
 
             // Panic Command
             COMMAND_PANIC_UNIT_NOT_FOUND: (unit) => `Please select one of the autocompleted options, I couldn't find a match for ${unit}`,
+            COMMAND_PANIC_ROSTER_ERROR: "Sorry, but I'm having a hard time loading your roster. Please double check your ally code or try again in a bit.",
             COMMAND_PANIC_IMAGE_ERROR: "Sorry, but something went wrong generating the image. Please try again later.",
             COMMAND_PANIC_GENERIC_ERROR: "Sorry, but something went wrong. Please try again later.",
 
