@@ -11,7 +11,11 @@ interface ModMap {
     };
 }
 
+type ComlinkError = Error & { status?: number; statusCode?: number; response?: { statusCode?: number } };
+
 const PLAYER_FETCH_TIMEOUT_MS = 30_000;
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 3_000;
 
 // Cache stub instance per worker thread to avoid recreating for each player
 let cachedStub: ComlinkStub | null = null;
@@ -27,13 +31,31 @@ function getComlinkStub(): ComlinkStub {
     return cachedStub;
 }
 
-export async function fetchPlayerData(stub: ComlinkStub, playerId: number, modMap: ModMap, timeoutMs = PLAYER_FETCH_TIMEOUT_MS) {
-    const timeoutPromise = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error(`getPlayer(${playerId}) timed out after ${timeoutMs}ms`)), timeoutMs),
-    );
+function getStatusCode(err: unknown): number | undefined {
+    if (!(err instanceof Error)) return undefined;
+    const e = err as ComlinkError;
+    return e.response?.statusCode ?? e.status ?? e.statusCode;
+}
 
-    return Promise.race([stub.getPlayer(null, playerId.toString()) as Promise<ComlinkPlayer>, timeoutPromise])
-        .then((res: ComlinkPlayer) => {
+function isRetryable(err: unknown): boolean {
+    const code = getStatusCode(err);
+    return code === 502 || code === 503;
+}
+
+export async function fetchPlayerData(
+    stub: ComlinkStub,
+    playerId: number,
+    modMap: ModMap,
+    timeoutMs = PLAYER_FETCH_TIMEOUT_MS,
+    retryDelayMs = RETRY_DELAY_MS,
+) {
+    for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        const timeoutPromise = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error(`getPlayer(${playerId}) timed out after ${timeoutMs}ms`)), timeoutMs),
+        );
+
+        try {
+            const res = await Promise.race([stub.getPlayer(null, playerId.toString()) as Promise<ComlinkPlayer>, timeoutPromise]);
             return res?.rosterUnit
                 .filter((unit) => unit?.equippedStatMod?.length)
                 .map((unit) => ({
@@ -50,17 +72,19 @@ export async function fetchPlayerData(stub: ComlinkStub, playerId: number, modMa
                         })
                         .filter((mod) => mod !== null),
                 }));
-        })
-        .catch((err: unknown) => {
+        } catch (err: unknown) {
+            if (attempt < MAX_RETRIES && isRetryable(err)) {
+                logger.warn(`[getStrippedModsWorker] 502 for player ${playerId}, retrying (${attempt + 1}/${MAX_RETRIES})...`);
+                await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+                continue;
+            }
             const message = err instanceof Error ? err.message : String(err);
-            const status =
-                err instanceof Error
-                    ? ((err as { status?: number; statusCode?: number }).status ??
-                      (err as { status?: number; statusCode?: number }).statusCode)
-                    : undefined;
-            const statusStr = status != null ? ` [status ${status}]` : "";
+            const code = getStatusCode(err);
+            const statusStr = code != null ? ` [status ${code}]` : "";
             logger.error(`[getStrippedModsWorker] Error fetching player ${playerId}:${statusStr} ${message}`);
-        });
+            return undefined;
+        }
+    }
 }
 
 export default async function ({ playerId, modMap }: { playerId: number; modMap: ModMap }) {

@@ -32,6 +32,25 @@ function makeFailingStub(err: Error, delayMs = 0) {
     };
 }
 
+// Stub that fails for the first `failCount` calls, then succeeds with `payload`
+function makeRetryStub(failCount: number, err: Error, payload: unknown) {
+    let calls = 0;
+    return {
+        calls: () => calls,
+        getPlayer: (_allyCode: null, _playerId: string) => {
+            calls++;
+            if (calls <= failCount) return Promise.reject(err);
+            return Promise.resolve(payload);
+        },
+    };
+}
+
+function make502Error() {
+    return Object.assign(new Error("Response code 502 (Bad Gateway)"), {
+        response: { statusCode: 502 },
+    });
+}
+
 describe("fetchPlayerData", () => {
     it("returns stripped units for a player with mods", async () => {
         const stub = makeStub({ rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed", "mod_health"])] });
@@ -91,12 +110,51 @@ describe("fetchPlayerData", () => {
         assert.strictEqual(result, undefined);
     });
 
-    it("returns undefined when comlink throws an error with a status code", async () => {
+    it("returns undefined when comlink throws an error with a status code on the error itself", async () => {
         const err = Object.assign(new Error("Bad Gateway"), { status: 502 });
         const stub = makeFailingStub(err);
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP);
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
 
         assert.strictEqual(result, undefined);
+    });
+
+    it("returns undefined when comlink throws a got-style error with response.statusCode", async () => {
+        const stub = makeFailingStub(make502Error());
+
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+
+        assert.strictEqual(result, undefined);
+    });
+
+    it("retries on 502 and returns data on the second attempt", async () => {
+        const payload = { rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed"])] };
+        const stub = makeRetryStub(1, make502Error(), payload);
+
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+
+        assert.strictEqual(result?.length, 1);
+        assert.strictEqual(result?.[0].defId, "DARTHVADER");
+        assert.strictEqual(stub.calls(), 2);
+    });
+
+    it("gives up after max retries and returns undefined", async () => {
+        const stub = makeRetryStub(99, make502Error(), null);
+
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+
+        assert.strictEqual(result, undefined);
+        // 1 initial attempt + 2 retries = 3 total
+        assert.strictEqual(stub.calls(), 3);
+    });
+
+    it("does not retry on non-502 errors", async () => {
+        const err = Object.assign(new Error("Not Found"), { response: { statusCode: 404 } });
+        const stub = makeRetryStub(99, err, null);
+
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+
+        assert.strictEqual(result, undefined);
+        assert.strictEqual(stub.calls(), 1);
     });
 });
