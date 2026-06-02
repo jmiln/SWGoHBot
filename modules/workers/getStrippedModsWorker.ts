@@ -11,6 +11,8 @@ interface ModMap {
     };
 }
 
+const PLAYER_FETCH_TIMEOUT_MS = 30_000;
+
 // Cache stub instance per worker thread to avoid recreating for each player
 let cachedStub: ComlinkStub | null = null;
 
@@ -25,10 +27,12 @@ function getComlinkStub(): ComlinkStub {
     return cachedStub;
 }
 
-export default async function ({ playerId, modMap }: { playerId: number; modMap: ModMap }) {
-    const comlinkStub = getComlinkStub();
-    return await comlinkStub
-        .getPlayer(null, playerId.toString())
+export async function fetchPlayerData(stub: ComlinkStub, playerId: number, modMap: ModMap, timeoutMs = PLAYER_FETCH_TIMEOUT_MS) {
+    const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error(`getPlayer(${playerId}) timed out after ${timeoutMs}ms`)), timeoutMs),
+    );
+
+    return Promise.race([stub.getPlayer(null, playerId.toString()) as Promise<ComlinkPlayer>, timeoutPromise])
         .then((res: ComlinkPlayer) => {
             return res?.rosterUnit
                 .filter((unit) => unit?.equippedStatMod?.length)
@@ -47,7 +51,18 @@ export default async function ({ playerId, modMap }: { playerId: number; modMap:
                         .filter((mod) => mod !== null),
                 }));
         })
-        .catch((err: Error) => {
-            logger.error(`[getStrippedModsWorker] Error fetching player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
+        .catch((err: unknown) => {
+            const message = err instanceof Error ? err.message : String(err);
+            const status =
+                err instanceof Error
+                    ? ((err as { status?: number; statusCode?: number }).status ??
+                      (err as { status?: number; statusCode?: number }).statusCode)
+                    : undefined;
+            const statusStr = status != null ? ` [status ${status}]` : "";
+            logger.error(`[getStrippedModsWorker] Error fetching player ${playerId}:${statusStr} ${message}`);
         });
+}
+
+export default async function ({ playerId, modMap }: { playerId: number; modMap: ModMap }) {
+    return fetchPlayerData(getComlinkStub(), playerId, modMap);
 }
