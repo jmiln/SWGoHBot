@@ -33,10 +33,10 @@ describe("UserConf", () => {
         assert.ok(subNames.includes("make_primary"), "Expected make_primary subcommand");
     });
 
-    it("should have arenaalert, lang, and view subcommands", () => {
+    it("should have lang and view subcommands but not arenaalert", () => {
         const command = new UserConf();
         const optionNames = command.commandData.options.map((o: any) => o.name);
-        assert.ok(optionNames.includes("arenaalert"), "Expected arenaalert subcommand");
+        assert.ok(!optionNames.includes("arenaalert"), "arenaalert moved to /arenaalert command");
         assert.ok(optionNames.includes("lang"), "Expected lang subcommand");
         assert.ok(optionNames.includes("view"), "Expected view subcommand");
     });
