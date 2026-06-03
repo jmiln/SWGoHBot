@@ -245,6 +245,11 @@ export interface UserConfig {
     };
     bonusServer: string;
 }
+export interface ArenaHistEntry {
+    rank: number;
+    ts: number;
+}
+
 export interface UserAcct {
     allyCode: number;
     name: string;
@@ -253,6 +258,8 @@ export interface UserAcct {
     lastCharClimb?: number;
     lastShipRank?: number;
     lastShipClimb?: number;
+    charHist?: ArenaHistEntry[];
+    shipHist?: ArenaHistEntry[];
 }
 export interface ArenaWatchAcct {
     allyCode: number;

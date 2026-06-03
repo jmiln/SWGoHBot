@@ -74,47 +74,6 @@ export default class UserConf extends Command {
                 ],
             },
             {
-                name: "arenaalert",
-                type: ApplicationCommandOptionType.Subcommand,
-                description: "Set up your arena alerts",
-                options: [
-                    // Need enabledms, arena, payoutresult, payoutwarning
-                    {
-                        name: "enable_dms",
-                        description: "Set it to send DMs for various alerts",
-                        type: ApplicationCommandOptionType.String,
-                        choices: [
-                            { name: "all", value: "all" },
-                            { name: "primary", value: "primary" },
-                            { name: "off", value: "off" },
-                        ],
-                    },
-                    {
-                        name: "arena",
-                        description: "Choose which arena to watch",
-                        type: ApplicationCommandOptionType.String,
-                        choices: [
-                            { name: "char", value: "char" },
-                            { name: "fleet", value: "fleet" },
-                            { name: "both", value: "both" },
-                            { name: "none", value: "none" },
-                        ],
-                    },
-                    {
-                        name: "payout_result",
-                        description: "Set it to send you the final rank at your payout",
-                        type: ApplicationCommandOptionType.Boolean,
-                    },
-                    {
-                        name: "payout_warning",
-                        description: "Set it to warn you before your payout, 1-1440min, 0 to disable",
-                        type: ApplicationCommandOptionType.Integer,
-                        minValue: 0,
-                        maxValue: 1440,
-                    },
-                ],
-            },
-            {
                 name: "lang",
                 type: ApplicationCommandOptionType.Subcommand,
                 description: "Change your language settings",
@@ -160,7 +119,6 @@ export default class UserConf extends Command {
         const subCommand = interaction.options.getSubcommand();
 
         const userID = interaction.user.id;
-        const cooldown = await patreonFuncs.getPlayerCooldown(userID, interaction?.guild?.id);
 
         let user: UserConfig = await userReg.getUser(userID);
         if (!user) {
@@ -183,6 +141,7 @@ export default class UserConf extends Command {
                 case "add": {
                     // Add an ally code to the user's list
                     // Make sure it's not in there already, then stick it in.
+                    const cooldown = await patreonFuncs.getPlayerCooldown(userID, interaction?.guild?.id);
                     if (user.accounts.map((a) => a.allyCode).includes(Number.parseInt(allyCode, 10))) {
                         // Make sure the specified code is not already registered
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
@@ -270,50 +229,6 @@ export default class UserConf extends Command {
         } else {
             // They're not trying to work with the ally codes, so do other stuff
             switch (subCommand) {
-                case "arenaalert": {
-                    // Work through enabledms, arena, payout result/ warning
-                    const updateLog = [];
-
-                    // isEnabled: all, primary, off
-                    const enableDMs = interaction.options.getString("enable_dms");
-                    if (enableDMs) {
-                        user.arenaAlert.enableRankDMs = enableDMs;
-                        updateLog.push(`Changed EnableDMS to ${enableDMs}`);
-                    }
-
-                    // arena: char, fleet, both, none
-                    const arena = interaction.options.getString("arena");
-                    if (arena) {
-                        user.arenaAlert.arena = arena;
-                        updateLog.push(`Changed Arena to ${arena}`);
-                    }
-
-                    // payoutResult: true/ false
-                    const payoutResult = interaction.options.getBoolean("payout_result");
-                    if (payoutResult !== null) {
-                        user.arenaAlert.enablePayoutResult = payoutResult;
-                        updateLog.push(`Changed PayoutResult to ${payoutResult}`);
-                    }
-
-                    // payoutWarning: int between 1 & 1440 (1 min to 1 day)
-                    const payoutWarning = interaction.options.getInteger("payout_warning");
-                    if (payoutWarning !== null && (payoutWarning < 0 || payoutWarning > 1440)) {
-                        return super.error(interaction, language.get("COMMAND_USERCONF_ARENA_INVALID_NUMBER"));
-                    }
-                    if (payoutWarning !== null) {
-                        user.arenaAlert.payoutWarning = payoutWarning;
-                        updateLog.push(`Changed PayoutWarning to ${payoutWarning}`);
-                    }
-
-                    if (updateLog.length) {
-                        await userReg.updateUser(userID, user);
-                        return super.success(
-                            interaction,
-                            `Updated the following:\n ${codeBlock("asciiDoc", updateLog.map((update) => ` * ${update}`).join("\n"))}`,
-                        );
-                    }
-                    return super.error(interaction, language.get("COMMAND_USERCONF_NOTHING_UPDATED"));
-                }
                 case "lang": {
                     // Work through bot_language & swgoh_language
                     const botLanguage = interaction.options.getString("bot_language") as BotLanguage;
@@ -342,11 +257,12 @@ export default class UserConf extends Command {
                     return super.error(interaction, language.get("COMMAND_USERCONF_NOTHING_UPDATED"));
                 }
                 case "view": {
-                    // Just display all the valid info here
-                    if (!user) {
-                        return super.error(interaction, language.get("COMMAND_USERCONF_VIEW_NO_CONFIG"));
-                    }
+                    const pat = await patreonFuncs.getPatronUser(interaction.user.id);
+                    const isPatron = pat && pat.amount_cents >= 100;
+
                     const fields = [];
+
+                    // Ally codes
                     const MAX_ALLYCODES = 20;
                     let codeTable = user.accounts
                         .slice(0, MAX_ALLYCODES)
@@ -362,50 +278,34 @@ export default class UserConf extends Command {
                                 : language.get("COMMAND_USERCONF_VIEW_ALLYCODES_NO_AC")
                         }`,
                     });
+
+                    // Language settings
                     fields.push({
                         name: language.get("COMMAND_USERCONF_VIEW_LANG_HEADER"),
                         value: [
-                            `>>> Language: **${user.lang ? (user.lang.language ? user.lang.language : "N/A") : "N/A"}**`,
-                            `swgohLanguage: **${
-                                user.lang ? (user.lang.swgohLanguage ? user.lang.swgohLanguage.toUpperCase() : "N/A") : "N/A"
-                            }**`,
+                            `>>> Language: **${user.lang?.language ?? "N/A"}**`,
+                            `swgohLanguage: **${user.lang?.swgohLanguage?.toUpperCase() ?? "N/A"}**`,
                         ].join("\n"),
                     });
 
-                    const pat = await patreonFuncs.getPatronUser(interaction.user.id);
-                    if (!pat || pat.amount_cents < 100) {
-                        // If the user will not have any of the following settings, don't bother showing everything/ tell em what's available
-                        const patreonValue = [
-                            ">>> If you subscribe on [Patreon](https://patreon.com/swgohbot), this will show settings for those parts of the bot as well. https://patreon.com/swgohbot",
-                        ];
-                        for (const cmd of Object.keys(patreonInfo.commands)) {
-                            patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd]]);
-                        }
-                        fields.push({
-                            name: "Patreon settings",
-                            value: patreonValue.join("\n"),
-                        });
-                    } else {
-                        // Arena Alert settings
+                    if (isPatron) {
+                        // Arena Alert — read-only display; configure via /arenaalert
                         fields.push({
                             name: language.get("BASE_ARENA_VIEW_HEADER"),
                             value: [
-                                `>>> ${language.get("BASE_ARENA_VIEW_DM")}: **${
-                                    user.arenaAlert.enableRankDMs ? user.arenaAlert.enableRankDMs : "N/A"
-                                }**`,
+                                `-# ${language.get("COMMAND_USERCONF_VIEW_ARENA_ALERT_CONFIGURE")}`,
+                                `>>> ${language.get("BASE_ARENA_VIEW_DM")}: **${user.arenaAlert.enableRankDMs || "N/A"}**`,
                                 `${language.get("BASE_ARENA_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
-                                `${language.get("BASE_ARENA_VIEW_WARNING")}: **${
-                                    user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"
-                                }**`,
+                                `${language.get("BASE_ARENA_VIEW_WARNING")}: **${user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"}**`,
                                 `${language.get("BASE_ARENA_VIEW_RESULT")}: **${user.arenaAlert.enablePayoutResult ? "ON" : "OFF"}**`,
                             ].join("\n"),
                         });
 
-                        // General AW settings
+                        // ArenaWatch
                         const uAW = user.arenaWatch;
-                        if (uAW && Object.keys(uAW)?.length) {
+                        if (uAW && Object.keys(uAW).length) {
                             fields.push({
-                                name: "Arenawatch",
+                                name: language.get("COMMAND_USERCONF_VIEW_AW_HEADER"),
                                 value: [
                                     `Channel: **${uAW.channel ? `<#${uAW.channel}>` : "N/A"}**`,
                                     `Emotes in log: **${uAW.useEmotesInLog ? "ON" : "OFF"}**`,
@@ -421,19 +321,17 @@ export default class UserConf extends Command {
                                 ].join("\n"),
                             });
 
-                            // AW Allycodes
                             fields.push({
-                                name: "Arenawatch Allycodes",
+                                name: language.get("COMMAND_USERCONF_VIEW_AW_ALLYCODES_HEADER"),
                                 value: `\`\`\`${user.arenaWatch.allyCodes
                                     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
                                     .map((ac) => `${ac.allyCode} | ${ac.name}`)
                                     .join("\n")}\`\`\``,
                             });
 
-                            // The AW payout stuff
                             const po = user.arenaWatch.payout;
                             fields.push({
-                                name: "Arenawatch Payouts",
+                                name: language.get("COMMAND_USERCONF_VIEW_AW_PAYOUTS_HEADER"),
                                 value: [
                                     `>>> Fleet Enabled: **${po.fleet.enabled ? "ON" : "OFF"}**`,
                                     `Fleet Channel: **${po.fleet.channel ? `<#${po.fleet.channel}>` : "N/A"}**`,
@@ -444,10 +342,10 @@ export default class UserConf extends Command {
                             });
                         }
 
-                        // Guild Update settings
-                        if (user.guildUpdate && Object.keys(user.guildUpdate)?.length) {
+                        // Guild Updates
+                        if (user.guildUpdate && Object.keys(user.guildUpdate).length) {
                             fields.push({
-                                name: "Guild Updates",
+                                name: language.get("COMMAND_USERCONF_VIEW_GU_HEADER"),
                                 value: [
                                     `>>> Enabled:  **${user.guildUpdate.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildUpdate.channel ? `<#${user.guildUpdate.channel}>` : "N/A"}`,
@@ -456,10 +354,10 @@ export default class UserConf extends Command {
                             });
                         }
 
-                        // Guild Tickets settings
-                        if (user.guildTickets && Object.keys(user.guildTickets)?.length) {
+                        // Guild Tickets
+                        if (user.guildTickets && Object.keys(user.guildTickets).length) {
                             fields.push({
-                                name: "Guild Tickets",
+                                name: language.get("COMMAND_USERCONF_VIEW_GT_HEADER"),
                                 value: [
                                     `>>> Enabled:  **${user.guildTickets.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildTickets.channel ? `<#${user.guildTickets.channel}>` : "N/A"}`,
@@ -468,6 +366,36 @@ export default class UserConf extends Command {
                                 ].join("\n"),
                             });
                         }
+
+                        // Patreon status for subscribers
+                        const tierThresholds = Object.keys(patreonInfo.tiers)
+                            .map(Number)
+                            .filter((t) => t > 0);
+                        const tierNum = tierThresholds.filter((t) => pat.amount_cents / 100 >= t).reduce((a, b) => Math.max(a, b), 0);
+                        const tier = patreonInfo.tiers[tierNum];
+                        const bonusGuildName = user.bonusServer
+                            ? (interaction.client.guilds.cache.get(user.bonusServer)?.name ?? user.bonusServer)
+                            : language.get("COMMAND_USERCONF_VIEW_PATREON_NONE_SET");
+                        const patreonLines = [
+                            `>>> ${language.get("COMMAND_USERCONF_VIEW_PATREON_TIER", tier.name, tierNum)}`,
+                            language.get("COMMAND_USERCONF_VIEW_PATREON_BONUS_SERVER", bonusGuildName),
+                        ];
+                        if (tier.benefits) {
+                            patreonLines.push("", language.get("COMMAND_USERCONF_VIEW_PATREON_BENEFITS_HEADER"));
+                            for (const [name, desc] of Object.entries(tier.benefits)) {
+                                patreonLines.push(`**${name}**: ${desc}`);
+                            }
+                        }
+                        fields.push({ name: language.get("COMMAND_USERCONF_VIEW_PATREON_HEADER"), value: patreonLines.join("\n") });
+                    } else {
+                        // Non-subscriber: show promo in the Patreon section
+                        const patreonValue = [
+                            ">>> If you subscribe on [Patreon](https://patreon.com/swgohbot), this will show settings for those parts of the bot as well. https://patreon.com/swgohbot",
+                        ];
+                        for (const cmd of Object.keys(patreonInfo.commands)) {
+                            patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd]]);
+                        }
+                        fields.push({ name: language.get("COMMAND_USERCONF_VIEW_PATREON_HEADER"), value: patreonValue.join("\n") });
                     }
 
                     const u = await interaction.client.users.fetch(userID);

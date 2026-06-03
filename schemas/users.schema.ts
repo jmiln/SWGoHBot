@@ -37,6 +37,8 @@ export const UserAcctSchema = z.object({
     lastCharClimb: z.number().optional(),
     lastShipRank: z.number().optional(),
     lastShipClimb: z.number().optional(),
+    charHist: z.array(z.object({ rank: z.number(), ts: z.number() })).optional(),
+    shipHist: z.array(z.object({ rank: z.number(), ts: z.number() })).optional(),
 });
 
 /**
@@ -112,5 +114,4 @@ export const UserConfigSchema = z.object({
 
 // Export inferred types
 export type UserConfig = z.infer<typeof UserConfigSchema>;
-export type UserAcct = z.infer<typeof UserAcctSchema>;
 export type ArenaWatchAcct = z.infer<typeof ArenaWatchAcctSchema>;

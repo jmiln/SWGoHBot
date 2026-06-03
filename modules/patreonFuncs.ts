@@ -5,13 +5,39 @@ import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import patreonModule from "../data/patreon.ts";
 import type { RawGuild, SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { ActivePatron, ArenaWatchAcct, PatronUser, PlayerArenaRes, PlayerUpdates, UserAcct, UserConfig } from "../types/types.ts";
+import type {
+    ActivePatron,
+    ArenaHistEntry,
+    ArenaWatchAcct,
+    PatronUser,
+    PlayerArenaRes,
+    PlayerUpdates,
+    UserAcct,
+    UserConfig,
+} from "../types/types.ts";
 import cache from "./cache.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
 import swgohAPI from "./swapi.ts";
 import userReg from "./users.ts";
+
+export function updateArenaHistory(hist: ArenaHistEntry[] | undefined, rank: number): ArenaHistEntry[] {
+    const entries = hist ? [...hist] : [];
+    entries.push({ rank, ts: Date.now() });
+    entries.sort((a, b) => a.ts - b.ts);
+    if (entries.length > 90) entries.shift(); // oldest entry is always index 0 after sort
+    return entries;
+}
+
+// Returns true when a new payout entry should be written. Prevents duplicate entries when
+// the poll cycle fires multiple times within the same payout minute.
+export function shouldWriteHistory(hist: ArenaHistEntry[] | undefined): boolean {
+    if (!hist?.length) return true;
+    // updateArenaHistory always persists a sorted array, so at(-1) is the newest entry.
+    const lastTs = hist.at(-1)?.ts ?? 0;
+    return Date.now() - lastTs > 5 * constants.minMS;
+}
 
 const tiers = patreonModule.tiers;
 
@@ -122,9 +148,6 @@ class PatreonFuncs {
             if (!user.arenaAlert.arena) {
                 user.arenaAlert.arena = "none";
             }
-
-            // If they don't want any alerts
-            if (user.arenaAlert.enableRankDMs === "off" || user.arenaAlert.arena === "none") continue;
 
             const accountsToCheck = structuredClone(user.accounts);
 
@@ -994,11 +1017,15 @@ class PatreonFuncs {
         const config = arenaConfig[arenaType];
         const arenaData = arenaType === "char" ? player.arena?.char : player.arena?.ship;
 
-        if (!arenaData?.rank) return;
+        if (arenaData?.rank == null) return;
 
-        if ([config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")) {
-            const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
-            const minTil = Math.floor(timeLeft / constants.minMS);
+        const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
+        const minTil = Math.floor(timeLeft / constants.minMS);
+
+        if (
+            user.arenaAlert.enableRankDMs !== "off" &&
+            [config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")
+        ) {
             const payoutTime = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
 
             const pUser = await this.client.users.fetch(patron.discordID);
@@ -1056,6 +1083,14 @@ class PatreonFuncs {
                 } catch (e) {
                     logger.error(`[getRanks] Error processing ${config.displayName} arena alerts: ${e}`);
                 }
+            }
+        }
+
+        // Record payout rank in history for all patreon subscribers, regardless of alert settings
+        if (minTil === 0) {
+            const histKey = arenaType === "char" ? "charHist" : "shipHist";
+            if (shouldWriteHistory(acc[histKey])) {
+                acc[histKey] = updateArenaHistory(acc[histKey], arenaData.rank);
             }
         }
 
