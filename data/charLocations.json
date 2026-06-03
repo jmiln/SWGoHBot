@@ -990,6 +990,17 @@
         ]
     },
     {
+        "name": "Colonel Ward",
+        "defId": "BISHOP",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_BISHOP_NAME",
+                "name": "Eyes On The Outer Rim Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Commander Ahsoka Tano",
         "defId": "COMMANDERAHSOKA",
         "locations": [
@@ -2027,6 +2038,11 @@
                 "name": "Tales From The Outer Rim Ii Marquee Event"
             }
         ]
+    },
+    {
+        "name": "Grogu & Anzellans",
+        "defId": "GOPHERANTS",
+        "locations": []
     },
     {
         "name": "Gungan Boomadier",
@@ -3797,6 +3813,11 @@
         ]
     },
     {
+        "name": "Rotta the Hutt",
+        "defId": "RACCOON",
+        "locations": []
+    },
+    {
         "name": "Royal Guard",
         "defId": "ROYALGUARD",
         "locations": [
@@ -4561,6 +4582,10 @@
         "name": "Vel Sartha",
         "defId": "VEL",
         "locations": [
+            {
+                "type": "Cantina",
+                "locId": "CANTINA"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_VEL_NAME",

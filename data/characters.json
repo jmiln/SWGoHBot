@@ -1332,9 +1332,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -1652,7 +1652,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Speed x4",
                 "Crit. Chance x2"
@@ -1973,6 +1973,22 @@
             ]
         },
         "avatarName": "charui_colonel_stark"
+    },
+    {
+        "name": "Colonel Ward",
+        "uniqueName": "BISHOP",
+        "aliases": [
+            "Colonel Ward"
+        ],
+        "avatarName": "charui_colonelward",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_colonelward.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_NEWREPUBLIC_DESC",
+            "CATEGORY_ROLESUPPORT_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Commander Ahsoka Tano",
@@ -3932,9 +3948,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4057,6 +4073,24 @@
             ]
         },
         "avatarName": "charui_greefkarga"
+    },
+    {
+        "name": "Grogu & Anzellans",
+        "uniqueName": "GOPHERANTS",
+        "aliases": [
+            "Grogu & Anzellans"
+        ],
+        "avatarName": "charui_gopherants",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gopherants.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_MANDALORIAN_DESC",
+            "CATEGORY_NEWREPUBLIC_DESC",
+            "CATEGORY_ROLEHEALER_DESC",
+            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+        ],
+        "mods": {},
+        "crew": []
     },
     {
         "name": "Gungan Boomadier",
@@ -4985,9 +5019,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Health",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Offense x4"
@@ -7581,6 +7615,23 @@
         "avatarName": "charui_rose"
     },
     {
+        "name": "Rotta the Hutt",
+        "uniqueName": "RACCOON",
+        "aliases": [
+            "Rotta the Hutt"
+        ],
+        "avatarName": "charui_rotta",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rotta.png",
+        "side": "light",
+        "factions": [
+            "CATEGORY_HUTTCARTEL_DESC",
+            "CATEGORY_ROLEATTACKER_DESC",
+            "CATEGORY_ROLELEADER_DESC"
+        ],
+        "mods": {},
+        "crew": []
+    },
+    {
         "name": "Royal Guard",
         "uniqueName": "ROYALGUARD",
         "aliases": [
@@ -8324,7 +8375,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ]
         },
         "avatarName": "charui_trooperstorm_han"
@@ -8899,7 +8950,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
