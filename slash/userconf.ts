@@ -291,8 +291,9 @@ export default class UserConf extends Command {
                     if (isPatron) {
                         // Arena Alert — read-only display; configure via /arenaalert
                         fields.push({
-                            name: `${language.get("BASE_ARENA_VIEW_HEADER")} — ${language.get("COMMAND_USERCONF_VIEW_ARENA_ALERT_CONFIGURE")}`,
+                            name: language.get("BASE_ARENA_VIEW_HEADER"),
                             value: [
+                                `-# ${language.get("COMMAND_USERCONF_VIEW_ARENA_ALERT_CONFIGURE")}`,
                                 `>>> ${language.get("BASE_ARENA_VIEW_DM")}: **${user.arenaAlert.enableRankDMs || "N/A"}**`,
                                 `${language.get("BASE_ARENA_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
                                 `${language.get("BASE_ARENA_VIEW_WARNING")}: **${user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"}**`,
