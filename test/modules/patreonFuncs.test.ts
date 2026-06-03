@@ -2,9 +2,9 @@ import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { type Client } from "discord.js";
 import { MongoClient } from "mongodb";
-import {env} from "../../config/config.ts";
+import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
-import { PatreonFuncs } from "../../modules/patreonFuncs.ts";
+import { PatreonFuncs, shouldWriteHistory, updateArenaHistory } from "../../modules/patreonFuncs.ts";
 import type { PatronUser } from "../../types/types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
@@ -284,7 +284,7 @@ describe("PatreonFuncs Module", () => {
 
     });
 
-    describe("edge cases", () => {
+    describe("edge cases (patreon)", () => {
         it("handles patron with exactly $1", async () => {
             const patron: PatronUser = {
                 discordID: "exactly_1",
@@ -347,5 +347,90 @@ describe("PatreonFuncs Module", () => {
             assert.ok(result.playerTime !== undefined);
             assert.ok(result.guildTime !== undefined);
         });
+    });
+});
+
+describe("updateArenaHistory()", () => {
+    it("creates a new entry from undefined input", () => {
+        const result = updateArenaHistory(undefined, 42);
+        assert.strictEqual(result.length, 1);
+        assert.strictEqual(result[0].rank, 42);
+        assert.ok(typeof result[0].ts === "number");
+    });
+
+    it("pushes a new entry onto an existing array", () => {
+        const existing = [{ rank: 10, ts: 1000 }];
+        const result = updateArenaHistory(existing, 8);
+        assert.strictEqual(result.length, 2);
+    });
+
+    it("does not mutate the input array", () => {
+        const existing = [{ rank: 10, ts: 1000 }];
+        updateArenaHistory(existing, 8);
+        assert.strictEqual(existing.length, 1);
+    });
+
+    it("sorts entries by timestamp ascending", () => {
+        // existing entries have small ts values; new entry gets Date.now() which is far larger
+        const existing = [
+            { rank: 5, ts: 3000 },
+            { rank: 3, ts: 1000 },
+        ];
+        const result = updateArenaHistory(existing, 7);
+        assert.strictEqual(result.length, 3);
+        assert.ok(result[0].ts <= result[1].ts);
+        assert.ok(result[1].ts <= result[2].ts);
+        assert.strictEqual(result[2].rank, 7); // new entry has largest ts so lands last
+    });
+
+    it("caps at 90 entries by shifting the oldest", () => {
+        // ts values 1..90 are far in the past; new entry gets Date.now() so it lands last
+        const existing = Array.from({ length: 90 }, (_, i) => ({ rank: i + 1, ts: i + 1 }));
+        const result = updateArenaHistory(existing, 99);
+        assert.strictEqual(result.length, 90);
+        assert.ok(result.every((e) => e.ts !== 1)); // ts=1 (oldest) was shifted off
+        assert.strictEqual(result[0].ts, 2); // ts=2 is now the oldest
+        assert.ok(result.some((e) => e.rank === 99));
+    });
+
+    it("keeps 90 entries when input has exactly 89", () => {
+        const existing = Array.from({ length: 89 }, (_, i) => ({ rank: i + 1, ts: i + 1 }));
+        const result = updateArenaHistory(existing, 99);
+        assert.strictEqual(result.length, 90);
+    });
+
+    it("handles an empty array input", () => {
+        const result = updateArenaHistory([], 15);
+        assert.strictEqual(result.length, 1);
+        assert.strictEqual(result[0].rank, 15);
+    });
+});
+
+describe("shouldWriteHistory()", () => {
+    it("returns true for undefined input (no history yet)", () => {
+        assert.strictEqual(shouldWriteHistory(undefined), true);
+    });
+
+    it("returns true for empty array", () => {
+        assert.strictEqual(shouldWriteHistory([]), true);
+    });
+
+    it("returns true when last entry is older than 5 minutes", () => {
+        const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+        assert.strictEqual(shouldWriteHistory([{ rank: 5, ts: tenMinutesAgo }]), true);
+    });
+
+    it("returns false when last entry is within the 5-minute dedup window", () => {
+        const oneMinuteAgo = Date.now() - 60 * 1000;
+        assert.strictEqual(shouldWriteHistory([{ rank: 5, ts: oneMinuteAgo }]), false);
+    });
+
+    it("reads the last entry (newest) not an arbitrary element", () => {
+        // Array sorted ascending by ts: last element is newest.
+        // If shouldWriteHistory correctly uses at(-1), it sees the recent entry and returns false.
+        // If it used at(0) by mistake, it would see the old entry and return true.
+        const old = { rank: 3, ts: 1 };
+        const recent = { rank: 5, ts: Date.now() - 60 * 1000 };
+        assert.strictEqual(shouldWriteHistory([old, recent]), false);
     });
 });
