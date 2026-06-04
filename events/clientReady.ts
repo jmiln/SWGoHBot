@@ -94,8 +94,7 @@ function setupDataUpdateTasks(shardId: number): void {
             isRunning = true;
             try {
                 // Run every minute
-                await patreonFuncs.getRanks();
-                await patreonFuncs.shardRanks();
+                await patreonFuncs.arenaTick();
 
                 const now = new Date();
                 const currentMinute = now.getMinutes();

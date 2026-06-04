@@ -4,8 +4,9 @@ import { type Client } from "discord.js";
 import { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
-import { PatreonFuncs, shouldWriteHistory, updateArenaHistory } from "../../modules/patreonFuncs.ts";
-import type { PatronUser } from "../../types/types.ts";
+import { PatreonFuncs, shouldWriteHistory, updateArenaHistory, collectAllyCodes } from "../../modules/patreonFuncs.ts";
+import userReg from "../../modules/users.ts";
+import type { ActivePatron, ArenaWatchAcct, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
 describe("PatreonFuncs Module", () => {
@@ -21,6 +22,7 @@ describe("PatreonFuncs Module", () => {
         client = await getMongoClient();
 
         cache.init(client);
+        userReg.init(cache);
 
         // Create mock Discord client
         mockClient = {
@@ -348,6 +350,52 @@ describe("PatreonFuncs Module", () => {
             assert.ok(result.guildTime !== undefined);
         });
     });
+
+    describe("processArenaAlerts()", () => {
+        beforeEach(async () => {
+            try {
+                await client.db(testDbName).collection("users").deleteMany({ id: "hist_test_user" });
+            } catch (e) {
+                // ignore
+            }
+        });
+
+        it("updates lastCharRank and lastShipRank for a patron with no arenaAlert config", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            // User has accounts but NO arenaAlert — history/rank tracking should still run
+            const user = {
+                id: "hist_test_user",
+                accounts: [{
+                    allyCode: 999888777,
+                    name: "HistPlayer",
+                    primary: true,
+                    lastCharRank: 0,
+                    lastCharClimb: 0,
+                    lastShipRank: 0,
+                    lastShipClimb: 0,
+                }],
+            } as unknown as UserConfig;
+            await cache.put(testDbName, "users", { id: "hist_test_user" }, user);
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [999888777, {
+                    name: "HistPlayer",
+                    allyCode: 999888777,
+                    arena: { char: { rank: 42 }, ship: { rank: 15 } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap);
+
+            const updated = await client.db(testDbName).collection("users").findOne({ id: "hist_test_user" });
+            assert.ok(updated, "user should exist in DB after processArenaAlerts");
+            assert.strictEqual(updated.accounts[0].lastCharRank, 42, "lastCharRank should be updated");
+            assert.strictEqual(updated.accounts[0].lastShipRank, 15, "lastShipRank should be updated");
+        });
+    });
 });
 
 describe("updateArenaHistory()", () => {
@@ -432,5 +480,77 @@ describe("shouldWriteHistory()", () => {
         const old = { rank: 3, ts: 1 };
         const recent = { rank: 5, ts: Date.now() - 60 * 1000 };
         assert.strictEqual(shouldWriteHistory([old, recent]), false);
+    });
+});
+
+describe("collectAllyCodes()", () => {
+    it("returns empty array when no eligible patrons (below tier 1)", () => {
+        const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 50 }];
+        const userMap = new Map<string, UserConfig>([
+            ["u1", { id: "u1", accounts: [{ allyCode: 111, name: "A", primary: true }] } as UserConfig],
+        ]);
+        assert.deepStrictEqual(collectAllyCodes(patrons, userMap), []);
+    });
+
+    it("collects ally codes from user.accounts for eligible patrons", () => {
+        const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
+        const userMap = new Map<string, UserConfig>([
+            ["u1", {
+                id: "u1",
+                accounts: [
+                    { allyCode: 111, name: "A", primary: true },
+                    { allyCode: 222, name: "B", primary: false },
+                ],
+            } as UserConfig],
+        ]);
+        const result = collectAllyCodes(patrons, userMap);
+        assert.strictEqual(result.length, 2);
+        assert.ok(result.includes(111));
+        assert.ok(result.includes(222));
+    });
+
+    it("collects ally codes from arenaWatch.allyCodes", () => {
+        const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
+        const userMap = new Map<string, UserConfig>([
+            ["u1", {
+                id: "u1",
+                accounts: [],
+                arenaWatch: { allyCodes: [{ allyCode: 333, name: "C", mention: "", lastChar: 0, lastShip: 0, poOffset: 0 } satisfies ArenaWatchAcct] },
+            } as UserConfig],
+        ]);
+        const result = collectAllyCodes(patrons, userMap);
+        assert.ok(result.includes(333));
+    });
+
+    it("deduplicates a code that appears in both accounts and arenaWatch", () => {
+        const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
+        const userMap = new Map<string, UserConfig>([
+            ["u1", {
+                id: "u1",
+                accounts: [{ allyCode: 111, name: "A", primary: true }],
+                arenaWatch: { allyCodes: [{ allyCode: 111, name: "A", mention: "", lastChar: 0, lastShip: 0, poOffset: 0 } satisfies ArenaWatchAcct] },
+            } as UserConfig],
+        ]);
+        const result = collectAllyCodes(patrons, userMap);
+        assert.strictEqual(result.filter((c) => c === 111).length, 1);
+    });
+
+    it("deduplicates a code watched by two different patrons", () => {
+        const patrons: ActivePatron[] = [
+            { discordID: "u1", amount_cents: 100 },
+            { discordID: "u2", amount_cents: 100 },
+        ];
+        const userMap = new Map<string, UserConfig>([
+            ["u1", { id: "u1", accounts: [{ allyCode: 555, name: "X", primary: true }] } as UserConfig],
+            ["u2", { id: "u2", accounts: [], arenaWatch: { allyCodes: [{ allyCode: 555, name: "X", mention: "", lastChar: 0, lastShip: 0, poOffset: 0 } satisfies ArenaWatchAcct] } } as UserConfig],
+        ]);
+        const result = collectAllyCodes(patrons, userMap);
+        assert.strictEqual(result.filter((c) => c === 555).length, 1);
+    });
+
+    it("skips patrons with no user record in the map", () => {
+        const patrons: ActivePatron[] = [{ discordID: "ghost", amount_cents: 100 }];
+        const userMap = new Map<string, UserConfig>();
+        assert.deepStrictEqual(collectAllyCodes(patrons, userMap), []);
     });
 });

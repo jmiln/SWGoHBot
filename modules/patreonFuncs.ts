@@ -52,6 +52,22 @@ const TIER_1_CENTS = 100; // $1
 const TIER_5_CENTS = 500; // $5
 const TIER_10_CENTS = 1000; // $10
 
+export function collectAllyCodes(patrons: ActivePatron[], userMap: Map<string, UserConfig>): number[] {
+    const codes = new Set<number>();
+    for (const patron of patrons) {
+        if (patron.amount_cents < TIER_1_CENTS) continue;
+        const user = userMap.get(patron.discordID);
+        if (!user) continue;
+        for (const acc of user.accounts ?? []) {
+            codes.add(acc.allyCode);
+        }
+        for (const awAcct of user.arenaWatch?.allyCodes ?? []) {
+            codes.add(awAcct.allyCode);
+        }
+    }
+    return [...codes];
+}
+
 class PatreonFuncs {
     private client!: Client<true>;
 
@@ -60,6 +76,36 @@ class PatreonFuncs {
      */
     init(client: Client<true>): void {
         this.client = client;
+    }
+
+    private async buildPlayerMap(allyCodes: number[]): Promise<Map<number, PlayerArenaRes>> {
+        const map = new Map<number, PlayerArenaRes>();
+        if (!allyCodes.length) return map;
+        const chunks = chunkArray(allyCodes, 50);
+        for (const chunk of chunks) {
+            let attempts = 0;
+            while (attempts < 3) {
+                try {
+                    const results = await swgohAPI.getPlayersArena(chunk);
+                    for (const player of results ?? []) {
+                        map.set(player.allyCode, player);
+                    }
+                    break;
+                } catch (e) {
+                    const code = e instanceof Error && "code" in e ? (e as Error & { code: unknown }).code : null;
+                    if (code === 6 && attempts < 2) {
+                        await wait(1000 * (attempts + 1));
+                        attempts++;
+                    } else {
+                        logger.error(
+                            `[buildPlayerMap] Failed to fetch chunk of ${chunk.length} codes: ${e instanceof Error ? e.message : String(e)}`,
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+        return map;
     }
 
     // Check if a given user is a patron, and if so, return their info
@@ -129,93 +175,96 @@ class PatreonFuncs {
         };
     }
 
-    // Check for updated ranks
-    async getRanks(): Promise<void> {
+    private async processArenaAlerts(patron: ActivePatron, user: UserConfig, playerMap: Map<number, PlayerArenaRes>): Promise<void> {
+        if (user.arenaAlert) {
+            if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
+            if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
+        }
+
+        const accountsToCheck = structuredClone(user.accounts);
+
+        for (const [ix, acc] of accountsToCheck.entries()) {
+            if (
+                ((user.accounts.length > 1 && patron.amount_cents < TIER_5_CENTS) || user.arenaAlert?.enableRankDMs === "primary") &&
+                !acc.primary
+            ) {
+                continue;
+            }
+
+            if (!acc.lastCharRank) {
+                acc.lastCharRank = 0;
+                acc.lastCharClimb = 0;
+            }
+            if (!acc.lastShipRank) {
+                acc.lastShipRank = 0;
+                acc.lastShipClimb = 0;
+            }
+
+            const player = playerMap.get(acc.allyCode) ?? null;
+
+            if (!player) {
+                logger.log(`[processArenaAlerts] Missing player data for ${acc.allyCode}`);
+                continue;
+            }
+            if (!player.arena) {
+                logger.log(`[processArenaAlerts] No arena data for ${acc.allyCode}: ${JSON.stringify(player)}`);
+                continue;
+            }
+
+            const pCharRank = player.arena.char?.rank;
+            const pShipRank = player.arena.ship?.rank;
+            if (!pCharRank && pCharRank !== 0 && !pShipRank && pShipRank !== 0) {
+                logger.error(`[processArenaAlerts] No arena ranks for ${acc.allyCode}: ${JSON.stringify(player)}`);
+                continue;
+            }
+
+            // Record payout history — runs for all patrons regardless of arenaAlert config
+            for (const arenaType of ["char", "ship"] as const) {
+                const arenaData = arenaType === "char" ? player.arena.char : player.arena.ship;
+                if (arenaData?.rank == null) continue;
+                const hrDiff = arenaType === "char" ? ARENA_OFFSETS.char : ARENA_OFFSETS.fleet;
+                const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, hrDiff);
+                const minTil = Math.floor(timeLeft / constants.minMS);
+                if (minTil === 0) {
+                    const histKey = arenaType === "char" ? "charHist" : "shipHist";
+                    if (shouldWriteHistory(acc[histKey])) {
+                        acc[histKey] = updateArenaHistory(acc[histKey], arenaData.rank);
+                    }
+                }
+            }
+
+            // DM alerts — gated on arenaAlert being configured
+            await this.handleArenaAlerts("char", player, acc, user, patron);
+            await this.handleArenaAlerts("ship", player, acc, user, patron);
+
+            user.accounts[ix] = acc;
+        }
+        await userReg.updateUser(patron.discordID, user);
+    }
+
+    // Single per-minute arena cycle: batch-fetch all ally codes, then run alerts and shard processing
+    async arenaTick(): Promise<void> {
         const patrons = await this.getActivePatrons();
         const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
         const userMap = await userReg.getUsersByIds(eligibleIds);
+        const allyCodes = collectAllyCodes(patrons, userMap);
+        const playerMap = await this.buildPlayerMap(allyCodes);
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
-            const user: UserConfig = userMap.get(patron.discordID);
-            // If they're not registered with anything or don't have any ally codes
-            if (!user?.accounts?.length) continue;
-
-            // If arenaAlert is missing on old DB records, skip
-            if (!user.arenaAlert) continue;
-
-            // Check for missing values
-            if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
-            if (!user.arenaAlert.arena) {
-                user.arenaAlert.arena = "none";
+            const user = userMap.get(patron.discordID);
+            if (!user) continue;
+            if (user.accounts?.length) {
+                await this.processArenaAlerts(patron, user, playerMap).catch((err) => {
+                    logger.error(
+                        `[arenaTick] processArenaAlerts error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                    );
+                });
             }
-
-            const accountsToCheck = structuredClone(user.accounts);
-
-            for (const [ix, acc] of accountsToCheck.entries()) {
-                // If the user only has em enabled for the primary ac, ignore the rest
-                if (
-                    ((user.accounts.length > 1 && patron.amount_cents < TIER_5_CENTS) || user.arenaAlert.enableRankDMs === "primary") &&
-                    !acc.primary
-                ) {
-                    continue;
-                }
-
-                let player: PlayerArenaRes;
-                let attempts = 0;
-                while (attempts < 3) {
-                    try {
-                        const playerRes = await swgohAPI.getPlayersArena(acc.allyCode);
-                        player = playerRes?.[0] || null;
-                        break;
-                    } catch (e) {
-                        const code = e instanceof Error && "code" in e ? (e as Error & { code: unknown }).code : null;
-                        if (code === 6 && attempts < 2) {
-                            // RATEEXCEEDED — back off and retry
-                            await wait(1000 * (attempts + 1));
-                            attempts++;
-                        } else {
-                            logger.error(
-                                `[patreonFuncs/getRanks] Failed to fetch arena data for ally code ${acc.allyCode}: ${e instanceof Error ? e.message : String(e)}`,
-                            );
-                            break;
-                        }
-                    }
-                }
-                if (!acc.lastCharRank) {
-                    acc.lastCharRank = 0;
-                    acc.lastCharClimb = 0;
-                }
-                if (!acc.lastShipRank) {
-                    acc.lastShipRank = 0;
-                    acc.lastShipClimb = 0;
-                }
-
-                // Log if the bot cannot get data for a player
-                if (!player) {
-                    logger.log(`[patreonFuncs/getRanks] Missing player object for ${acc.allyCode}`);
-                    continue;
-                }
-                if (!player?.arena) {
-                    logger.log(`[patreonFuncs/getRanks] No player arena: ${JSON.stringify(player)}`);
-                    continue;
-                }
-                const pCharRank = player?.arena?.char?.rank;
-                const pShipRank = player?.arena?.ship?.rank;
-                if (!pCharRank && pCharRank !== 0 && !pShipRank && pShipRank !== 0) {
-                    logger.error(`[patreonFuncs/getRanks] No arena ranks: ${JSON.stringify(player)}`);
-                    continue;
-                }
-
-                // Handle character arena alerts
-                await this.handleArenaAlerts("char", player, acc, user, patron);
-
-                // Handle ship arena alerts
-                await this.handleArenaAlerts("ship", player, acc, user, patron);
-
-                // Save this back to the user
-                user.accounts[ix] = acc;
-            }
-            await userReg.updateUser(patron.discordID, user);
+            await this.processShardPatron(patron, user, playerMap).catch((err) => {
+                logger.error(
+                    `[arenaTick] processShardPatron error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                );
+            });
         }
     }
 
@@ -268,25 +317,10 @@ class PatreonFuncs {
         }
     }
 
-    // Check for updated ranks across up to 50 players
-    async shardRanks(): Promise<void> {
-        const patrons = await this.getActivePatrons();
-        const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
-        const userMap = await userReg.getUsersByIds(eligibleIds);
-        for (const patron of patrons) {
-            if (patron.amount_cents < TIER_1_CENTS) continue;
-            await this.processShardPatron(patron, userMap.get(patron.discordID) ?? null).catch((err) => {
-                const msg = err instanceof Error ? err.message : String(err);
-                logger.error(`[shardRanks] Error processing patron ${patron.discordID}: ${msg}`);
-            });
-        }
-    }
-
     // Process a single patron's arena rank notifications. Extracted so errors in one patron
-    // don't abort the entire shardRanks loop and cause everyone after them to be skipped.
-    private async processShardPatron(patron: ActivePatron, user: UserConfig | null): Promise<void> {
-        // If they're not registered with anything or don't have any ally codes
-        if (!user?.accounts?.length || !user.arenaWatch) return;
+    // don't abort the entire arenaTick loop and cause everyone after them to be skipped.
+    private async processShardPatron(patron: ActivePatron, user: UserConfig | null, playerMap: Map<number, PlayerArenaRes>): Promise<void> {
+        if (!user?.arenaWatch) return;
         const aw = user.arenaWatch;
 
         // Fill in missing arena sub-configs with disabled defaults so the rest of the function
@@ -310,10 +344,10 @@ class PatreonFuncs {
         else acctCount = constants.arenaWatchConfig.tier3;
 
         const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
-        const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode || null);
-        if (!allyCodes?.length) return;
+        const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode);
+        if (!allyCodes.length) return;
 
-        const newPlayers = await swgohAPI.getPlayersArena(allyCodes);
+        const newPlayers = allyCodes.map((c) => playerMap.get(c) ?? null).filter((p): p is PlayerArenaRes => p != null);
 
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
         const compChar = [];
@@ -1023,6 +1057,7 @@ class PatreonFuncs {
         const minTil = Math.floor(timeLeft / constants.minMS);
 
         if (
+            user.arenaAlert &&
             user.arenaAlert.enableRankDMs !== "off" &&
             [config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")
         ) {
@@ -1043,7 +1078,7 @@ class PatreonFuncs {
                                     },
                                 ],
                             })
-                            .catch((err) => logger.error(`[getRanks] Failed to send payout warning: ${err}`));
+                            .catch((err) => logger.error(`[handleArenaAlerts] Failed to send payout warning: ${err}`));
                     }
 
                     // Payout result
@@ -1058,7 +1093,7 @@ class PatreonFuncs {
                                     },
                                 ],
                             })
-                            .catch((err) => logger.error(`[getRanks] Failed to send payout result: ${err}`));
+                            .catch((err) => logger.error(`[handleArenaAlerts] Failed to send payout result: ${err}`));
                     }
 
                     // Rank drop alert
@@ -1078,19 +1113,11 @@ class PatreonFuncs {
                                     },
                                 ],
                             })
-                            .catch((err) => logger.error(`[getRanks] Failed to send rank drop alert: ${err}`));
+                            .catch((err) => logger.error(`[handleArenaAlerts] Failed to send rank drop alert: ${err}`));
                     }
                 } catch (e) {
-                    logger.error(`[getRanks] Error processing ${config.displayName} arena alerts: ${e}`);
+                    logger.error(`[handleArenaAlerts] Error processing ${config.displayName} arena alerts: ${e}`);
                 }
-            }
-        }
-
-        // Record payout rank in history for all patreon subscribers, regardless of alert settings
-        if (minTil === 0) {
-            const histKey = arenaType === "char" ? "charHist" : "shipHist";
-            if (shouldWriteHistory(acc[histKey])) {
-                acc[histKey] = updateArenaHistory(acc[histKey], arenaData.rank);
             }
         }
 
