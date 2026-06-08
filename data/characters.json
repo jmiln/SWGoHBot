@@ -1332,9 +1332,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -3478,8 +3478,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Health x2",
-                "Health x2",
+                "Defense x2",
+                "Defense x2",
                 "Defense x2"
             ]
         },
@@ -5918,9 +5918,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Crit. Chance x2",
+                "Crit. Damage x4"
             ]
         },
         "avatarName": "charui_luke_ep4"
@@ -8719,9 +8718,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -8950,7 +8949,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Potency x2"

@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-06-03T16:24:23.266Z",
+        "generatedAt": "2026-06-07T22:02:24.700Z",
         "totalCommands": 45,
         "categories": 4
     },
@@ -494,7 +494,6 @@
                     "**/userconf** allycodes add <allycode>",
                     "**/userconf** allycodes remove <allycode>",
                     "**/userconf** allycodes make_primary <allycode>",
-                    "**/userconf** arenaalert [enable_dms] [arena] [payout_result] [payout_warning]",
                     "**/userconf** lang [bot_language] [swgoh_language]",
                     "**/userconf** view"
                 ],
@@ -544,67 +543,6 @@
                                         "autocomplete": true
                                     }
                                 ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "arenaalert",
-                        "type": 1,
-                        "description": "Set up your arena alerts",
-                        "options": [
-                            {
-                                "name": "enable_dms",
-                                "description": "Set it to send DMs for various alerts",
-                                "type": 3,
-                                "choices": [
-                                    {
-                                        "name": "all",
-                                        "value": "all"
-                                    },
-                                    {
-                                        "name": "primary",
-                                        "value": "primary"
-                                    },
-                                    {
-                                        "name": "off",
-                                        "value": "off"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "arena",
-                                "description": "Choose which arena to watch",
-                                "type": 3,
-                                "choices": [
-                                    {
-                                        "name": "char",
-                                        "value": "char"
-                                    },
-                                    {
-                                        "name": "fleet",
-                                        "value": "fleet"
-                                    },
-                                    {
-                                        "name": "both",
-                                        "value": "both"
-                                    },
-                                    {
-                                        "name": "none",
-                                        "value": "none"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "payout_result",
-                                "description": "Set it to send you the final rank at your payout",
-                                "type": 5
-                            },
-                            {
-                                "name": "payout_warning",
-                                "description": "Set it to warn you before your payout, 1-1440min, 0 to disable",
-                                "type": 4,
-                                "minValue": 0,
-                                "maxValue": 1440
                             }
                         ]
                     },
