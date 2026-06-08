@@ -111,7 +111,3 @@ export const UserConfigSchema = z.object({
     bonusServer: z.string().optional(),
     patreonAmountCents: z.number().optional(),
 });
-
-// Export inferred types
-export type UserConfig = z.infer<typeof UserConfigSchema>;
-export type ArenaWatchAcct = z.infer<typeof ArenaWatchAcctSchema>;

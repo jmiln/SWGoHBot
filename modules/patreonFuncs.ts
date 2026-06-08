@@ -26,7 +26,7 @@ export function updateArenaHistory(hist: ArenaHistEntry[] | undefined, rank: num
     const entries = hist ? [...hist] : [];
     entries.push({ rank, ts: Date.now() });
     entries.sort((a, b) => a.ts - b.ts);
-    if (entries.length > 90) entries.shift(); // oldest entry is always index 0 after sort
+    while (entries.length > 90) entries.shift(); // oldest entries are always at index 0 after sort
     return entries;
 }
 
@@ -218,24 +218,26 @@ class PatreonFuncs {
                 continue;
             }
 
-            // Record payout history — runs for all patrons regardless of arenaAlert config
+            // Record payout history (runs for all patrons regardless of arenaAlert config) and
+            // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
+            // getTimeLeft() involves a Temporal lookup, so compute it once and share it.
             for (const arenaType of ["char", "ship"] as const) {
                 const arenaData = arenaType === "char" ? player.arena.char : player.arena.ship;
                 if (arenaData?.rank == null) continue;
                 const hrDiff = arenaType === "char" ? ARENA_OFFSETS.char : ARENA_OFFSETS.fleet;
                 const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, hrDiff);
                 const minTil = Math.floor(timeLeft / constants.minMS);
+
                 if (minTil === 0) {
                     const histKey = arenaType === "char" ? "charHist" : "shipHist";
                     if (shouldWriteHistory(acc[histKey])) {
                         acc[histKey] = updateArenaHistory(acc[histKey], arenaData.rank);
                     }
                 }
-            }
 
-            // DM alerts — gated on arenaAlert being configured
-            await this.handleArenaAlerts("char", player, acc, user, patron);
-            await this.handleArenaAlerts("ship", player, acc, user, patron);
+                // DM alerts — gated on arenaAlert being configured
+                await this.handleArenaAlerts(arenaType, player, acc, user, patron, timeLeft, minTil);
+            }
 
             user.accounts[ix] = acc;
         }
@@ -344,10 +346,7 @@ class PatreonFuncs {
         else acctCount = constants.arenaWatchConfig.tier3;
 
         const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
-        const allyCodes: number[] = accountsToCheck.map((a) => a.allyCode);
-        if (!allyCodes.length) return;
-
-        const newPlayers = allyCodes.map((c) => playerMap.get(c) ?? null).filter((p): p is PlayerArenaRes => p != null);
+        if (!accountsToCheck.length) return;
 
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
         const compChar = [];
@@ -355,7 +354,7 @@ class PatreonFuncs {
         let charOut = [];
         let shipOut = [];
         for (const [ix, player] of accountsToCheck.entries()) {
-            const newPlayer = newPlayers.find((p) => p.allyCode === player.allyCode);
+            const newPlayer = playerMap.get(player.allyCode) ?? null;
             if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
                 // Both, since low level players can have just char arena I believe
                 continue;
@@ -1012,11 +1011,11 @@ class PatreonFuncs {
 
     private getTimeLeft(offset: number, hrDiff: number) {
         const now = Date.now();
-        let then = getUTCFromOffset(offset) + hrDiff * constants.hrMS;
-        if (then < now) {
-            then = then + constants.dayMS;
-        }
-        return then - now;
+        const then = getUTCFromOffset(offset) + hrDiff * constants.hrMS;
+        // Normalize into [0, dayMS) — a single `+= dayMS` isn't enough when the raw
+        // target lands more than a day away (e.g. large positive offsets push char's
+        // 18h mark past tomorrow's UTC midnight, showing 26h+ until payout)
+        return (((then - now) % constants.dayMS) + constants.dayMS) % constants.dayMS;
     }
 
     // Helper function to handle arena alerts for both character and ship arenas
@@ -1026,12 +1025,13 @@ class PatreonFuncs {
         acc: UserAcct,
         user: UserConfig,
         patron: { discordID: string },
+        timeLeft: number,
+        minTil: number,
     ) {
         const arenaConfig = {
             char: {
                 alertType: "both" as const,
                 altType: "char" as const,
-                hrDiff: ARENA_OFFSETS.char,
                 rankKey: "lastCharRank" as const,
                 climbKey: "lastCharClimb" as const,
                 displayName: "character",
@@ -1040,7 +1040,6 @@ class PatreonFuncs {
             ship: {
                 alertType: "both" as const,
                 altType: "fleet" as const,
-                hrDiff: ARENA_OFFSETS.fleet,
                 rankKey: "lastShipRank" as const,
                 climbKey: "lastShipClimb" as const,
                 displayName: "ship",
@@ -1052,9 +1051,6 @@ class PatreonFuncs {
         const arenaData = arenaType === "char" ? player.arena?.char : player.arena?.ship;
 
         if (arenaData?.rank == null) return;
-
-        const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, config.hrDiff);
-        const minTil = Math.floor(timeLeft / constants.minMS);
 
         if (
             user.arenaAlert &&
