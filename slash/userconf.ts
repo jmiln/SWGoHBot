@@ -436,7 +436,7 @@ export default class UserConf extends Command {
                 })
                 .map((account) => ({
                     name: `${account.name} - ${account.allyCode}`,
-                    value: account.allyCode,
+                    value: account.allyCode.toString(),
                 }))
                 .slice(0, 24); // Discord's autocomplete limit
 
