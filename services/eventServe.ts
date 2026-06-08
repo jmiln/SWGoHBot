@@ -2,6 +2,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { MongoClient } from "mongodb";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
+import { convertMS } from "../modules/functions.ts";
 import {
     addGuildEvent,
     deleteGuildEvent,
@@ -240,15 +241,6 @@ async function getEventsByFilter(guildId: string, filter: string | string[]) {
     const filterArr = Array.isArray(filter) ? filter : [filter];
     const events = await getGuildEvents({ guildId });
     return events.filter((ev) => filterArr.every((e) => `${ev.message} ${ev.name}`.includes(e)));
-}
-
-function convertMS(milliseconds: number) {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const totalMin = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const hour = Math.floor(totalMin / 60);
-    const minute = totalMin % 60;
-    return { hour, minute, totalMin, seconds };
 }
 
 init();

@@ -2,7 +2,16 @@ import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from 
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import { findChar, findFaction, getAllyCode, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
+import {
+    findChar,
+    findFaction,
+    getAllyCode,
+    getGearStr,
+    makeTable,
+    shortenNum,
+    summarizeCharLevels,
+    updatedFooterStr,
+} from "../modules/functions.ts";
 import { getUnitChecklist } from "../modules/guildConfig/twlist.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -627,16 +636,3 @@ const getDiv = (gpIn: number) => {
     }
     return gpMap[divKeys[0]];
 };
-
-function getGearStr(charIn: SWAPIUnit) {
-    // If the character is not unlocked
-    if (!charIn?.gear) return "N/A";
-
-    let charGearOut = charIn.gear.toString();
-    if (charIn.equipped?.length) {
-        charGearOut += `+${charIn.equipped.length}`;
-    } else if (charIn?.relic?.currentTier > 2) {
-        charGearOut += `r${charIn.relic.currentTier - 2}`;
-    }
-    return charGearOut;
-}

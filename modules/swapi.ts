@@ -6,7 +6,7 @@ import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
-import { readJSON } from "../modules/functions.ts";
+import { convertMS, readJSON } from "../modules/functions.ts";
 import type {
     ComlinkAbility,
     ComlinkMod,
@@ -1226,17 +1226,3 @@ const swapi = new SWAPI();
 
 export default swapi;
 export { SWAPI };
-
-const convertMS = (milliseconds: number) => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const totalMin = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    const hour = Math.floor(totalMin / 60);
-    const minute = totalMin % 60;
-    return {
-        hour: hour,
-        minute: minute,
-        totalMin: totalMin,
-        seconds: seconds,
-    };
-};
