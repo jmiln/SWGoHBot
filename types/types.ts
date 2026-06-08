@@ -295,12 +295,10 @@ export interface PatreonMember {
     };
     relationships?: {
         currently_entitled_tiers?: {
-            data?: [
-                {
-                    id: string;
-                    type: string;
-                },
-            ];
+            data?: {
+                id: string;
+                type: string;
+            }[];
         };
         user?: {
             data?: {

@@ -285,7 +285,8 @@ class PatreonFuncs {
 
             // Make sure at least one of the alerts is enabled, no point otherwise
             if (!aw?.payout) continue;
-            if ((!aw.payout?.char.enabled || !aw.payout.char.channel) && (!aw.payout?.fleet.enabled || !aw.payout.fleet.channel)) continue;
+            if ((!aw.payout?.char?.enabled || !aw.payout?.char?.channel) && (!aw.payout?.fleet?.enabled || !aw.payout?.fleet?.channel))
+                continue;
 
             // Make a copy just in case, so nothing goes wonky
             let acctCount = 0;

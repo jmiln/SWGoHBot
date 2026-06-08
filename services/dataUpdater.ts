@@ -2108,7 +2108,7 @@ async function processJourneyReqs(gameData: GameData) {
                 const splitDesc = ev.descKey.split("_");
                 const tier = Number.parseInt(splitDesc.pop(), 10);
                 const type = splitDesc.pop();
-                const defId = ev?.actionLinkDef?.link.split("=").pop();
+                const defId = ev?.actionLinkDef?.link?.split("=").pop();
                 if (defId) {
                     if (shipDefIds.has(defId)) {
                         tempOut.reqs.push({ defId, type, tier, ship: true });

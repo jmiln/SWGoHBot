@@ -88,14 +88,36 @@ function setupDataUpdateTasks(shardId: number): void {
     let isRunning = false;
     let lastGuildsUpdateHour = -1;
 
+    // arenaTick has its own interval/guard because it has to land on a specific
+    // once-per-day-per-account minute to record payout history. If it shared the
+    // isRunning guard below, a slow shardTimes/guildTickets/guildsUpdate run would
+    // drop the following minute's arenaTick — and since the daily payout cycle and
+    // the polling interval are exact multiples of each other, that dropped minute
+    // recurs at the same point every day, permanently blinding whichever accounts'
+    // payout falls on it.
+    let arenaTickRunning = false;
+
     setTimeout(() => {
+        const arenaTickIntervalId = setInterval(async () => {
+            if (arenaTickRunning) return;
+            arenaTickRunning = true;
+            try {
+                await patreonFuncs.arenaTick();
+            } catch (err) {
+                const message = err instanceof Error ? err.message : String(err);
+                logger.error(`[${shardId}] Error in arenaTick: ${message}`);
+                logger.error(err.stack);
+            } finally {
+                arenaTickRunning = false;
+            }
+        }, MINUTE_MS);
+
+        activeIntervals.push(arenaTickIntervalId);
+
         const intervalId = setInterval(async () => {
             if (isRunning) return;
             isRunning = true;
             try {
-                // Run every minute
-                await patreonFuncs.arenaTick();
-
                 const now = new Date();
                 const currentMinute = now.getMinutes();
                 const currentHour = now.getHours();
