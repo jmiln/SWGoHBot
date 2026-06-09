@@ -103,7 +103,7 @@ export default class GuildQuality extends Command {
         const infoStr = [
             " Mod Quality: Number of +15 Speeds / (squad GP / 100000)",
             " Gear Quality: (Number of G12+ + G13 Bonus Score) / (Total GP / 100000)",
-            " G13 Bonus score: 1 + (0.2 bonus per relic tier) (ex: r0 = 1, r1 = 1.2, ..., r7 = 2.4)",
+            " G13 Bonus score: 1 + (0.2 bonus per relic tier) (ex: r0 = 1, r1 = 1.2, ..., r10 = 3.0)",
             " Total Quality: Mod Quality + Gear Quality",
         ].join("\n");
         fields.push({
@@ -197,7 +197,7 @@ export default class GuildQuality extends Command {
                     g12Plus += 1;
                 }
                 if (ch.gear >= 13) {
-                    const relicTier = ch?.relic?.currentTier || 0;
+                    const relicTier = Math.max(0, (ch?.relic?.currentTier ?? 0) - 2);
                     accumulatedCharScore += 1 + 0.2 * relicTier;
                 }
             }
