@@ -43,7 +43,6 @@ export default class GuildQuality extends Command {
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac, true);
 
-        // If it hasn't found a valid ally code, grumble at the user, since that's required
         if (!allyCode) {
             return super.error(
                 interaction,
@@ -74,22 +73,33 @@ export default class GuildQuality extends Command {
             return super.error(interaction, `Couldn't get guild stats. ${language.get("BASE_GUILD_NOT_FOUND")}`);
         }
 
-        const outArr = ["`ModQ | GearQ | TotalQ | CharGP | Name  `"];
-        for (const playerQ of rosterQualities.sort((a, b) => b.totalQuality - a.totalQuality)) {
-            const gearQStr = playerQ.gearQuality.toFixed(2);
-            const totalQStr = playerQ.totalQuality.toFixed(2).toString().padStart(6);
-            const charGPStr = (playerQ.charGP / 1_000_000).toFixed(1);
-
-            outArr.push(`\`${playerQ.modQuality.toFixed(2)} |  ${gearQStr} | ${totalQStr} |  ${charGPStr}M  |\` ${playerQ.name}`);
-        }
+        const outArr = [
+            "`ModQ | GearQ | TotalQ | CharGP | Name  `",
+            ...rosterQualities
+                .sort((a, b) => b.totalQuality - a.totalQuality)
+                .map((playerQ) => {
+                    const totalQStr = playerQ.totalQuality.toFixed(2).padStart(6);
+                    const charGPStr = (playerQ.charGP / 1_000_000).toFixed(1);
+                    return `\`${playerQ.modQuality.toFixed(2)} |  ${playerQ.gearQuality.toFixed(2)} | ${totalQStr} |  ${charGPStr}M  |\` ${playerQ.name}`;
+                }),
+        ];
 
         const fields = [];
 
-        const averages = {
-            modQuality: rosterQualities.reduce((a, b) => a + b.modQuality, 0) / rosterQualities.length,
-            gearQuality: rosterQualities.reduce((a, b) => a + b.gearQuality, 0) / rosterQualities.length,
-            totalQuality: rosterQualities.reduce((a, b) => a + b.totalQuality, 0) / rosterQualities.length,
-        };
+        const {
+            modQuality: totalMod,
+            gearQuality: totalGear,
+            totalQuality: totalTotal,
+        } = rosterQualities.reduce(
+            (acc, p) => ({
+                modQuality: acc.modQuality + p.modQuality,
+                gearQuality: acc.gearQuality + p.gearQuality,
+                totalQuality: acc.totalQuality + p.totalQuality,
+            }),
+            { modQuality: 0, gearQuality: 0, totalQuality: 0 },
+        );
+        const count = rosterQualities.length;
+        const averages = { modQuality: totalMod / count, gearQuality: totalGear / count, totalQuality: totalTotal / count };
         const averageStr = [
             `Mod Quality: ${averages.modQuality.toFixed(2)}`,
             `Gear Quality: ${averages.gearQuality.toFixed(2)}`,
@@ -134,84 +144,58 @@ export default class GuildQuality extends Command {
                         name: `${guild.name}'s player quality`,
                     },
                     description: outArr.join("\n"),
-                    fields: fields.length ? fields : null,
+                    fields,
                 },
             ],
         });
 
-        // Mod quality: 15+ speed mods / (charGP / 100_000)
-        // Gear Quality: (Number of G12+ + G13 Bonus Score) / (Total GP / 100000)
-        // G13 Bonus score: 1 + (0.2 bonus per relic tier) (ex: r0 = 1, r1 = 1.2, ..., r7 = 2.4)
-        // Total Quality: Mod Quality + Gear Quality
-
-        // Output: ModQ | GearQ | TotalQ | CharGP | TotalGP | Name
-
         async function getGuildRosterQualities(guild: SWAPIGuild): Promise<PlayerQuality[]> {
-            const playerQualities = [];
-            let guildGG: SWAPIPlayer[];
             try {
-                guildGG = await swgohAPI.unitStats(
+                const guildGG = await swgohAPI.unitStats(
                     guild.roster.map((m) => m.allyCode),
                     cooldown,
                 );
+                return guildGG.map(processPlayerQuality);
             } catch (err) {
-                interaction.editReply({
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                await interaction.editReply({
                     content: null,
                     embeds: [
                         {
                             title: "Something Broke while getting your guild's characters",
-                            description: ` ${codeBlock(err)}`,
-                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") },
+                            description: codeBlock(errorMessage),
+                            footer: { text: language.get("BASE_PLEASE_TRY_AGAIN") as string },
                         },
                     ],
                 });
                 return null;
             }
-            guildGG = guildGG.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
-            for (const player of guildGG) {
-                const thisPlayer = await processPlayerQuality(player);
-                playerQualities.push(thisPlayer);
-            }
-
-            return playerQualities;
         }
 
-        async function processPlayerQuality(player: SWAPIPlayer): Promise<PlayerQuality> {
+        function processPlayerQuality(player: SWAPIPlayer): PlayerQuality {
             const charGP = player?.stats?.find((s) => s.nameKey === "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME")?.value || 0;
             const totalGP = player?.stats?.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME")?.value || 0;
 
-            let spd15Count = 0;
-            let accumulatedCharScore = 0;
-            let g12Plus = 0;
+            const spd15Count = player.roster
+                .flatMap((ch) => ch.mods ?? [])
+                .filter((m) => m.secondaryStat.some((s) => (s.unitStat === 5 || s.unitStat === "UNITSTATSPEED") && s.value >= 15)).length;
 
-            for (const ch of player.roster) {
-                if (ch.mods) {
-                    for (const m of ch.mods) {
-                        const spd = m.secondaryStat.find((s) => (s.unitStat === 5 || s.unitStat === "UNITSTATSPEED") && s.value >= 15);
-                        if (spd?.value >= 15) {
-                            spd15Count += 1;
-                        }
-                    }
-                }
-                if (ch.gear >= 12) {
-                    g12Plus += 1;
-                }
-                if (ch.gear >= 13) {
-                    const relicTier = Math.max(0, (ch?.relic?.currentTier ?? 0) - 2);
-                    accumulatedCharScore += 1 + 0.2 * relicTier;
-                }
-            }
+            const g12Plus = player.roster.filter((ch) => ch.gear >= 12).length;
+
+            const accumulatedCharScore = player.roster
+                .filter((ch) => ch.gear >= 13)
+                .reduce((sum, ch) => sum + 1 + 0.2 * Math.max(0, (ch.relic?.currentTier ?? 0) - 2), 0);
 
             const modQuality = charGP > 0 ? spd15Count / (charGP / 100_000) : 0;
             const gearQuality = (g12Plus + accumulatedCharScore) / (totalGP / 100_000);
             return {
                 name: player.name,
                 allyCode: player.allyCode,
-                modQuality: modQuality,
-                gearQuality: gearQuality,
+                modQuality,
+                gearQuality,
                 totalQuality: modQuality + gearQuality,
-                charGP: charGP,
-                totalGP: totalGP,
+                charGP,
+                totalGP,
             };
         }
     }
