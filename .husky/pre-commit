@@ -75,6 +75,18 @@ else
     FAILED=1
 fi
 
+# Skip tests if earlier checks failed
+if [ $FAILED -ne 0 ]; then
+    echo ""
+    print_section "Pre-Commit Summary"
+    print_error "Some checks failed — skipping tests"
+    echo ""
+    echo "Fix the issues above or use 'git commit --no-verify' to bypass"
+    echo "(only bypass if you're sure the changes are safe)"
+    echo ""
+    exit 1
+fi
+
 # 3. Run Tests (only if source files outside test/ are being committed)
 if echo "$STAGED_TS_FILES" | grep -qv -E '^test/'; then
     print_section "Running Tests"
