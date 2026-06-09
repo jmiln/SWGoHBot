@@ -4,9 +4,10 @@ import { type Client } from "discord.js";
 import { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
+import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import { PatreonFuncs, shouldWriteHistory, updateArenaHistory, collectAllyCodes } from "../../modules/patreonFuncs.ts";
 import userReg from "../../modules/users.ts";
-import type { ActivePatron, ArenaWatchAcct, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
+import type { ActivePatron, ArenaPlayer, ArenaWatchAcct, ArenaWatchConfig, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
 describe("PatreonFuncs Module", () => {
@@ -23,6 +24,7 @@ describe("PatreonFuncs Module", () => {
 
         cache.init(client);
         userReg.init(cache);
+        arenaPlayerRegistry.init(cache);
 
         // Create mock Discord client
         mockClient = {
@@ -40,6 +42,7 @@ describe("PatreonFuncs Module", () => {
         } catch (e) {
             // Ignore cleanup errors
         }
+        await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: { $in: [888777666] } });
         await closeMongoClient();
     });
 
@@ -50,6 +53,7 @@ describe("PatreonFuncs Module", () => {
         } catch (e) {
             // Collection might not exist yet
         }
+        await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: { $in: [888777666] } }).catch(() => {});
     });
 
     describe("init()", () => {
@@ -355,45 +359,43 @@ describe("PatreonFuncs Module", () => {
         beforeEach(async () => {
             try {
                 await client.db(testDbName).collection("users").deleteMany({ id: "hist_test_user" });
+                await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: 888777666 });
             } catch (e) {
                 // ignore
             }
         });
 
-        it("updates lastCharRank and lastShipRank for a patron with no arenaAlert config", async () => {
+        it("updates lastCharRank and lastShipRank in arenaPlayers for a patron with no arenaAlert config", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
             await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
 
             // User has accounts but NO arenaAlert — history/rank tracking should still run
             const user = {
                 id: "hist_test_user",
-                accounts: [{
-                    allyCode: 999888777,
-                    name: "HistPlayer",
-                    primary: true,
-                    lastCharRank: 0,
-                    lastCharClimb: 0,
-                    lastShipRank: 0,
-                    lastShipClimb: 0,
-                }],
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
             } as unknown as UserConfig;
             await cache.put(testDbName, "users", { id: "hist_test_user" }, user);
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [999888777, {
+                [888777666, {
                     name: "HistPlayer",
-                    allyCode: 999888777,
+                    allyCode: 888777666,
                     arena: { char: { rank: 42 }, ship: { rank: 15 } },
                     poUTCOffsetMinutes: 0,
                 }],
             ]);
 
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap);
+            const arenaPlayerMap = new Map<number, ArenaPlayer>();
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap);
 
-            const updated = await client.db(testDbName).collection("users").findOne({ id: "hist_test_user" });
-            assert.ok(updated, "user should exist in DB after processArenaAlerts");
-            assert.strictEqual(updated.accounts[0].lastCharRank, 42, "lastCharRank should be updated");
-            assert.strictEqual(updated.accounts[0].lastShipRank, 15, "lastShipRank should be updated");
+            // Flush arenaPlayerMap to DB (normally done by arenaTick)
+            await arenaPlayerRegistry.batchUpsert([...arenaPlayerMap.values()]);
+
+            const playerDoc = await client.db(testDbName).collection("arenaPlayers").findOne({ allyCode: 888777666 });
+            assert.ok(playerDoc, "arenaPlayers doc should exist after processArenaAlerts");
+            assert.strictEqual(playerDoc.lastCharRank, 42, "lastCharRank should be updated");
+            assert.strictEqual(playerDoc.lastShipRank, 15, "lastShipRank should be updated");
         });
     });
 
@@ -505,7 +507,7 @@ describe("collectAllyCodes()", () => {
     it("returns empty array when no eligible patrons (below tier 1)", () => {
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 50 }];
         const userMap = new Map<string, UserConfig>([
-            ["u1", { id: "u1", accounts: [{ allyCode: 111, name: "A", primary: true }] } as UserConfig],
+            ["u1", { id: "u1", accounts: [111], primaryAllyCode: 111 } as UserConfig],
         ]);
         assert.deepStrictEqual(collectAllyCodes(patrons, userMap), []);
     });
@@ -515,10 +517,8 @@ describe("collectAllyCodes()", () => {
         const userMap = new Map<string, UserConfig>([
             ["u1", {
                 id: "u1",
-                accounts: [
-                    { allyCode: 111, name: "A", primary: true },
-                    { allyCode: 222, name: "B", primary: false },
-                ],
+                accounts: [111, 222],
+                primaryAllyCode: 111,
             } as UserConfig],
         ]);
         const result = collectAllyCodes(patrons, userMap);
@@ -533,7 +533,7 @@ describe("collectAllyCodes()", () => {
             ["u1", {
                 id: "u1",
                 accounts: [],
-                arenaWatch: { allyCodes: [{ allyCode: 333, name: "C", mention: "", lastChar: 0, lastShip: 0, poOffset: 0 } satisfies ArenaWatchAcct] },
+                arenaWatch: { allyCodes: [{ allyCode: 333, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
             } as UserConfig],
         ]);
         const result = collectAllyCodes(patrons, userMap);
@@ -545,8 +545,8 @@ describe("collectAllyCodes()", () => {
         const userMap = new Map<string, UserConfig>([
             ["u1", {
                 id: "u1",
-                accounts: [{ allyCode: 111, name: "A", primary: true }],
-                arenaWatch: { allyCodes: [{ allyCode: 111, name: "A", mention: "", lastChar: 0, lastShip: 0, poOffset: 0 } satisfies ArenaWatchAcct] },
+                accounts: [111], primaryAllyCode: 111,
+                arenaWatch: { allyCodes: [{ allyCode: 111, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
             } as UserConfig],
         ]);
         const result = collectAllyCodes(patrons, userMap);
@@ -559,8 +559,8 @@ describe("collectAllyCodes()", () => {
             { discordID: "u2", amount_cents: 100 },
         ];
         const userMap = new Map<string, UserConfig>([
-            ["u1", { id: "u1", accounts: [{ allyCode: 555, name: "X", primary: true }] } as UserConfig],
-            ["u2", { id: "u2", accounts: [], arenaWatch: { allyCodes: [{ allyCode: 555, name: "X", mention: "", lastChar: 0, lastShip: 0, poOffset: 0 } satisfies ArenaWatchAcct] } } as UserConfig],
+            ["u1", { id: "u1", accounts: [555], primaryAllyCode: 555 } as UserConfig],
+            ["u2", { id: "u2", accounts: [], arenaWatch: { allyCodes: [{ allyCode: 555, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] } } as UserConfig],
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.strictEqual(result.filter((c) => c === 555).length, 1);

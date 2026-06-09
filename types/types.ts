@@ -1,5 +1,6 @@
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
 import type Language from "../base/Language.ts";
+import type { ArenaWatchConfig } from "../schemas/users.schema.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 
 export interface PlayerCooldown {
@@ -197,58 +198,62 @@ export interface PatreonTiers {
 
 export interface UserConfig {
     id: string;
-    accounts: UserAcct[];
+    accounts: number[];
+    primaryAllyCode?: number | null;
     arenaAlert: {
-        enableRankDMs: string;
+        enableRankDMs?: string;
         arena: string;
         payoutWarning: number;
-        enablePayoutResult: boolean;
+        enablePayoutResult?: boolean;
         payoutResult?: string;
     };
     updated: number;
-    lang: {
+    lang?: {
         language?: BotLanguage;
         swgohLanguage?: SWAPILang;
     };
     arenaWatch: {
-        allyCodes: ArenaWatchAcct[];
-        channel?: string;
+        allyCodes: ArenaWatchConfig[];
+        channel?: string | null;
         arena: {
             fleet?: { channel: string; enabled: boolean };
             char?: { channel: string; enabled: boolean };
         };
         payout: {
-            char: { enabled: boolean; channel: string; msgID: string };
-            fleet: { enabled: boolean; channel: string; msgID: string };
+            char: { enabled: boolean; channel: string | null; msgID: string | null };
+            fleet: { enabled: boolean; channel: string | null; msgID: string | null };
         };
         useEmotesInLog?: boolean;
         useMarksInLog?: boolean;
-        report: string;
-        showvs: boolean;
+        report?: string;
+        showvs?: boolean;
     };
-    guildUpdate: {
-        enabled: boolean;
-        channel: string;
-        allyCode: number;
+    guildUpdate?: {
+        enabled?: boolean;
+        channel?: string;
+        allyCode?: number;
     };
-    username: string;
-    guildTickets: {
-        enabled: boolean;
-        channel: string;
-        allyCode: number;
-        sortBy: string;
-        msgId: string;
-        tickets: number;
-        updateType: string;
-        nextChallengesRefresh: string;
-        showMax: boolean;
+    username?: string;
+    guildTickets?: {
+        enabled?: boolean;
+        channel?: string;
+        allyCode?: number;
+        sortBy?: string;
+        msgId?: string;
+        tickets?: number;
+        updateType?: string;
+        nextChallengesRefresh?: string;
+        showMax?: boolean;
     };
-    bonusServer: string;
+    bonusServer?: string;
+    patreonAmountCents?: number;
 }
 export interface ArenaHistEntry {
     rank: number;
     ts: number;
 }
+
+export type { ArenaPlayer } from "../schemas/arenaPlayers.schema.ts";
 
 export interface ArenaHistChartPayload {
     labels: string[];
@@ -299,6 +304,9 @@ export interface ArenaWatchAcct {
     timeTil?: string;
     outString?: string;
 }
+
+export type { ArenaWatchConfig };
+
 export interface TWList {
     [key: string]: {
         [key: string]: string;

@@ -11,7 +11,8 @@ const testDbName = env.MONGODB_SWGOHBOT_DB;
 const makeUserConfig = (id: string, allyCode: number, primary = true): UserConfig =>
     ({
         id,
-        accounts: [{ allyCode, name: "TestPlayer", primary }],
+        accounts: [allyCode],
+        primaryAllyCode: primary ? allyCode : null,
         arenaAlert: { enableRankDMs: "off", arena: "none", payoutWarning: 0, enablePayoutResult: false },
         lang: { language: null, swgohLanguage: null },
     }) as unknown as UserConfig;
@@ -98,7 +99,7 @@ describe("UserReg Module", () => {
 
             const fetched = await userReg.getUser("user-update-2");
             assert.ok(fetched, "Expected user to exist after update");
-            assert.strictEqual(fetched.accounts[0].allyCode, 222222222);
+            assert.strictEqual(fetched.accounts[0], 222222222);
         });
     });
 
@@ -134,10 +135,8 @@ describe("UserReg Module", () => {
         it("leaves other ally codes intact when removing one", async () => {
             const config: UserConfig = {
                 id: "user-rem-ac-3",
-                accounts: [
-                    { allyCode: 111111111, name: "Acct1", primary: true },
-                    { allyCode: 222222222, name: "Acct2", primary: false },
-                ],
+                accounts: [111111111, 222222222],
+                primaryAllyCode: 111111111,
                 arenaAlert: { enableRankDMs: "off", arena: "none", payoutWarning: 0, enablePayoutResult: false },
                 lang: { language: null, swgohLanguage: null },
             } as unknown as UserConfig;
@@ -148,7 +147,24 @@ describe("UserReg Module", () => {
             const fetched = await userReg.getUser("user-rem-ac-3");
             assert.ok(fetched, "Expected user to still exist");
             assert.strictEqual(fetched.accounts.length, 1, "Should still have 1 account");
-            assert.strictEqual(fetched.accounts[0].allyCode, 222222222, "Remaining account should be 222222222");
+            assert.strictEqual(fetched.accounts[0], 222222222, "Remaining account should be 222222222");
+        });
+
+        it("updates primaryAllyCode when the primary account is removed", async () => {
+            const config: UserConfig = {
+                id: "user-rem-ac-4",
+                accounts: [111111111, 222222222],
+                primaryAllyCode: 111111111,
+                arenaAlert: { enableRankDMs: "off", arena: "none", payoutWarning: 0, enablePayoutResult: false },
+                lang: { language: null, swgohLanguage: null },
+            } as unknown as UserConfig;
+            await userReg.updateUser("user-rem-ac-4", config);
+
+            await userReg.removeAllyCode("user-rem-ac-4", 111111111);
+
+            const fetched = await userReg.getUser("user-rem-ac-4");
+            assert.ok(fetched, "User should still exist");
+            assert.strictEqual(fetched.primaryAllyCode, 222222222, "primaryAllyCode should move to remaining account");
         });
     });
 

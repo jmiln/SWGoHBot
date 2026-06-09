@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import patreonFuncs, { buildArenaHistChart } from "../modules/patreonFuncs.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";
 
@@ -69,20 +70,20 @@ export default class ArenaHist extends Command {
         const dateRangeArg = interaction.options.getString("date_range") ?? "7";
         const windowDays = WINDOW_MAP[dateRangeArg] ?? 7;
 
-        const account = allycodeArg
-            ? user.accounts.find((a) => a.allyCode.toString() === allycodeArg)
-            : user.accounts.find((a) => a.primary);
+        const targetAllyCode = allycodeArg ? Number.parseInt(allycodeArg, 10) : (user.primaryAllyCode ?? null);
 
-        if (!account) {
+        if (!targetAllyCode || !user.accounts.includes(targetAllyCode)) {
             return super.error(interaction, language.get("COMMAND_ARENAHIST_NO_ACCOUNT"));
         }
 
+        const playerDoc = await arenaPlayerRegistry.getPlayer(targetAllyCode);
+
         const payload = buildArenaHistChart(
-            account.charHist,
-            account.shipHist,
+            playerDoc?.charHist,
+            playerDoc?.shipHist,
             windowDays,
             Date.now(),
-            `${account.name} (${account.allyCode})`,
+            `${playerDoc?.name ?? targetAllyCode} (${targetAllyCode})`,
         );
 
         if (!payload) {

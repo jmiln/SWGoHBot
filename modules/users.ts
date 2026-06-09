@@ -28,14 +28,14 @@ class UserReg {
 
     async getUsersByAllyCodes(allyCodes: number[]): Promise<Map<number, UserConfig[]>> {
         const users = (await this.cache.get(env.MONGODB_SWGOHBOT_DB, "users", {
-            "accounts.allyCode": { $in: allyCodes },
+            accounts: { $in: allyCodes },
         })) as UserConfig[];
         const map = new Map<number, UserConfig[]>();
         for (const user of users ?? []) {
-            for (const account of user.accounts ?? []) {
-                if (allyCodes.includes(account.allyCode)) {
-                    if (!map.has(account.allyCode)) map.set(account.allyCode, []);
-                    map.get(account.allyCode)?.push(user);
+            for (const allyCode of user.accounts ?? []) {
+                if (allyCodes.includes(allyCode)) {
+                    if (!map.has(allyCode)) map.set(allyCode, []);
+                    map.get(allyCode)?.push(user);
                 }
             }
         }
@@ -44,7 +44,7 @@ class UserReg {
 
     async getUsersFromAlly(allyCode: number) {
         const users = (await this.cache.get(env.MONGODB_SWGOHBOT_DB, "users", {
-            "accounts.allyCode": allyCode,
+            accounts: allyCode,
         })) as UserConfig[];
         return users?.length ? users : null;
     }
@@ -57,9 +57,11 @@ class UserReg {
     async removeAllyCode(userId: string, allyCode: number) {
         const user = (await this.cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: userId })) as UserConfig | null;
         if (!user) throw new Error("Could not find specified user");
-        const exists = user.accounts.find((a) => a.allyCode === allyCode);
-        if (!exists) throw new Error("Specified ally code not linked to this user");
-        user.accounts = user.accounts.filter((a) => a.allyCode !== allyCode);
+        if (!user.accounts.includes(allyCode)) throw new Error("Specified ally code not linked to this user");
+        user.accounts = user.accounts.filter((a) => a !== allyCode);
+        if (user.primaryAllyCode === allyCode) {
+            user.primaryAllyCode = user.accounts[0] ?? null;
+        }
         return await this.cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, user);
     }
 

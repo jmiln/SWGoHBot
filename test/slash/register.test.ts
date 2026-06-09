@@ -2,6 +2,7 @@ import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
+import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
@@ -20,11 +21,14 @@ describe("Register", () => {
         const mongoClient = await getMongoClient();
         cache.init(mongoClient);
         userReg.init(cache);
+        arenaPlayerRegistry.init(cache);
     });
 
     after(async () => {
         try {
-            await (await getMongoClient()).db(testDbName).collection("users").deleteMany({});
+            const client = await getMongoClient();
+            await client.db(testDbName).collection("users").deleteMany({});
+            await client.db(testDbName).collection("arenaPlayers").deleteMany({});
         } catch (_) {
             // Ignore cleanup errors
         }
@@ -37,9 +41,11 @@ describe("Register", () => {
         (swgohAPI as any).unitStats = mockSwapi.unitStats.bind(mockSwapi);
         // Mock getPlayerCooldown to avoid needing a fully initialized patreonFuncs
         (patreonFuncs as any).getPlayerCooldown = async () => ({ player: 180, guild: 360 });
-        // Clear users collection before each test
+        // Clear users and arenaPlayers collections before each test
         try {
-            await (await getMongoClient()).db(testDbName).collection("users").deleteMany({});
+            const client = await getMongoClient();
+            await client.db(testDbName).collection("users").deleteMany({});
+            await client.db(testDbName).collection("arenaPlayers").deleteMany({});
         } catch (_) {
             // Ignore
         }
@@ -152,8 +158,8 @@ describe("Register", () => {
 
         const user = await userReg.getUser(interaction.user.id);
         assert.ok(user, "Expected user to be registered");
-        assert.strictEqual(typeof user.accounts[0].allyCode, "number", "allyCode must be stored as a number");
-        assert.strictEqual(user.accounts[0].allyCode, 123456789);
+        assert.strictEqual(typeof user.accounts[0], "number", "allyCode must be stored as a number");
+        assert.strictEqual(user.accounts[0], 123456789);
     });
 
     it("should return error when API returns empty result for a valid ally code", async () => {

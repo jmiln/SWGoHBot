@@ -1,8 +1,12 @@
 import assert from "node:assert";
-import { afterEach, beforeEach, describe, it } from "node:test";
+import { after, afterEach, before, beforeEach, describe, it } from "node:test";
+import { env } from "../../config/config.ts";
+import cache from "../../modules/cache.ts";
+import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import ArenaWatch, { fillAWSkeleton, processAWChanges } from "../../slash/arenawatch.ts";
 import type { UserConfig } from "../../types/types.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createMockPlayer, MockSWAPI } from "../mocks/mockSwapi.ts";
 
 describe("ArenaWatch", () => {
@@ -38,6 +42,22 @@ describe("ArenaWatch", () => {
             showvs: true,
         };
     }
+
+    before(async () => {
+        const mongoClient = await getMongoClient();
+        cache.init(mongoClient);
+        arenaPlayerRegistry.init(cache);
+    });
+
+    after(async () => {
+        try {
+            const client = await getMongoClient();
+            await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany({});
+        } catch (_) {
+            // Ignore cleanup errors
+        }
+        await closeMongoClient();
+    });
 
     describe("Functionality Tests", () => {
         describe("fillAWSkeleton", () => {
@@ -359,10 +379,7 @@ describe("ArenaWatch", () => {
                 aw.allyCodes = [
                     {
                         allyCode: 123456789,
-                        name: "Test Player",
                         mention: null,
-                        lastChar: 100,
-                        lastShip: 50,
                         poOffset: 0,
                         mark: null,
                     },
@@ -398,9 +415,15 @@ describe("ArenaWatch", () => {
         let mockSwapi: MockSWAPI;
         const originalUnitStats = swgohAPI.unitStats;
 
-        beforeEach(() => {
+        beforeEach(async () => {
             mockSwapi = new MockSWAPI();
             (swgohAPI as any).unitStats = mockSwapi.unitStats.bind(mockSwapi);
+            try {
+                const client = await getMongoClient();
+                await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany({});
+            } catch (_) {
+                // Ignore
+            }
         });
 
         afterEach(() => {
@@ -425,11 +448,13 @@ describe("ArenaWatch", () => {
 
             assert.strictEqual(awRes.allyCodes.length, 1);
             assert.strictEqual(awRes.allyCodes[0].allyCode, 123456789);
-            assert.strictEqual(awRes.allyCodes[0].name, "TestPlayer");
-            assert.strictEqual(awRes.allyCodes[0].lastChar, 50);
-            assert.strictEqual(awRes.allyCodes[0].lastShip, 25);
             assert.strictEqual(awRes.allyCodes[0].poOffset, -300);
             assert.ok(result.outLog.includes("added!"));
+            // Player data is stored in arenaPlayers collection, not in allyCodes entry
+            const playerDoc = await arenaPlayerRegistry.getPlayer(123456789);
+            assert.strictEqual(playerDoc?.name, "TestPlayer");
+            assert.strictEqual(playerDoc?.lastCharRank, 50);
+            assert.strictEqual(playerDoc?.lastShipRank, 25);
         });
 
         it("should store the mark when one is provided", async () => {
@@ -466,10 +491,7 @@ describe("ArenaWatch", () => {
             const aw = createBaseAW();
             aw.allyCodes.push({
                 allyCode: 123456789,
-                name: "TestPlayer",
                 mention: null,
-                lastChar: 100,
-                lastShip: 50,
                 poOffset: 0,
                 mark: null,
             });
@@ -490,10 +512,7 @@ describe("ArenaWatch", () => {
             const aw = createBaseAW();
             aw.allyCodes.push({
                 allyCode: 987654321,
-                name: "ExistingPlayer",
                 mention: null,
-                lastChar: 100,
-                lastShip: 50,
                 poOffset: 0,
                 mark: null,
             });
@@ -550,10 +569,7 @@ describe("ArenaWatch", () => {
             const aw = createBaseAW();
             aw.allyCodes.push({
                 allyCode: 123456789,
-                name: "OldPlayer",
                 mention: null,
-                lastChar: 100,
-                lastShip: 50,
                 poOffset: 0,
                 mark: null,
             });
@@ -571,8 +587,10 @@ describe("ArenaWatch", () => {
 
             assert.strictEqual(awRes.allyCodes.length, 1);
             assert.strictEqual(awRes.allyCodes[0].allyCode, 999888777);
-            assert.strictEqual(awRes.allyCodes[0].name, "UpdatedPlayer");
             assert.ok(result.outLog.includes("updated"));
+            // Player data is stored in arenaPlayers collection, not in allyCodes entry
+            const playerDoc = await arenaPlayerRegistry.getPlayer(999888777);
+            assert.strictEqual(playerDoc?.name, "UpdatedPlayer");
         });
 
         it("should error when editing a code not in the list", async () => {

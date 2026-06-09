@@ -55,6 +55,17 @@ export const indexConfig: DatabaseIndexes = {
             },
         ],
 
+        // Arena player rank and history data — one document per ally code
+        arenaPlayers: [
+            {
+                key: { allyCode: 1 },
+                options: {
+                    name: "idx_arenaplayers_allycode",
+                    unique: true,
+                },
+            },
+        ],
+
         // Guild configurations (settings, events, polls, aliases, etc.)
         guildConfigs: [
             {

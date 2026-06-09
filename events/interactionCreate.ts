@@ -8,6 +8,7 @@ import { characterNameList, factions, journeyNames, shipNameList } from "../data
 import factionMap from "../data/factionMap.ts";
 import { getCommand, getCommandNames } from "../handlers/slashHandler.ts";
 import commandStats from "../modules/commandStats.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -204,15 +205,15 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
             const user = await userReg.getUser(interaction.user.id);
 
             if (user?.accounts?.length) {
+                const acPlayerMap = await arenaPlayerRegistry.batchGet(user.accounts);
                 filtered = user.accounts
-                    .filter((account) => {
-                        const nameMatch = account.name.toLowerCase().includes(searchKey);
-                        const codeMatch = account.allyCode.toString().includes(searchKey);
-                        return nameMatch || codeMatch;
+                    .filter((allyCode) => {
+                        const name = acPlayerMap.get(allyCode)?.name ?? "";
+                        return name.toLowerCase().includes(searchKey) || allyCode.toString().includes(searchKey);
                     })
-                    .map((account) => ({
-                        name: `${account.name} - ${account.allyCode}`,
-                        value: account.allyCode.toString(),
+                    .map((allyCode) => ({
+                        name: `${acPlayerMap.get(allyCode)?.name ?? allyCode} - ${allyCode}`,
+                        value: allyCode.toString(),
                     }));
             }
         } else {

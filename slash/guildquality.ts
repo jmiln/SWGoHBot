@@ -56,7 +56,7 @@ export default class GuildQuality extends Command {
         let guild: SWAPIGuild;
         try {
             // Grab the guild's info from the DB
-            guild = await swgohAPI.guild(Number.parseInt(allyCode, 10), cooldown);
+            guild = await swgohAPI.guild(allyCode, cooldown);
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
             logger.error(`[GuildQuality] Failed to get guild: ${errorMessage}`);

@@ -831,16 +831,13 @@ export async function getAllyCode(interaction: ChatInputCommandInteraction, user
     }
 
     if (userAcct?.accounts?.length) {
-        let account = null;
         if (userStr?.match(otherCodeRegex)) {
             // If it's a -1/ -2 code, try to grab the specified code
             const index = Number.parseInt(userStr.replace("-", ""), 10) - 1;
-            account = userAcct.accounts[index];
-        } else {
-            // If it's a missing ally code, a "me", or for a specified discord ID, just grab the primary if available
-            account = userAcct.accounts.find((a) => a.primary);
+            return userAcct.accounts[index] ?? null;
         }
-        return account ? account.allyCode : null;
+        // If it's a missing ally code, a "me", or for a specified discord ID, just grab the primary if available
+        return userAcct.primaryAllyCode ?? null;
     }
     return null;
 }

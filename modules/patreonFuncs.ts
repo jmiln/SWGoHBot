@@ -17,6 +17,8 @@ import type {
     UserConfig,
 } from "../types/types.ts";
 import cache from "./cache.ts";
+import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
+import type { ArenaPlayer } from "../types/types.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
@@ -134,8 +136,8 @@ export function collectAllyCodes(patrons: ActivePatron[], userMap: Map<string, U
         if (patron.amount_cents < TIER_1_CENTS) continue;
         const user = userMap.get(patron.discordID);
         if (!user) continue;
-        for (const acc of user.accounts ?? []) {
-            codes.add(acc.allyCode);
+        for (const allyCode of user.accounts ?? []) {
+            codes.add(allyCode);
         }
         for (const awAcct of user.arenaWatch?.allyCodes ?? []) {
             codes.add(awAcct.allyCode);
@@ -251,46 +253,51 @@ class PatreonFuncs {
         };
     }
 
-    private async processArenaAlerts(patron: ActivePatron, user: UserConfig, playerMap: Map<number, PlayerArenaRes>): Promise<void> {
+    private async processArenaAlerts(
+        patron: ActivePatron,
+        user: UserConfig,
+        playerMap: Map<number, PlayerArenaRes>,
+        arenaPlayerMap: Map<number, ArenaPlayer>,
+    ): Promise<void> {
         if (user.arenaAlert) {
             if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
             if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
         }
 
-        const accountsToCheck = structuredClone(user.accounts);
-
-        for (const [ix, acc] of accountsToCheck.entries()) {
+        for (const allyCode of user.accounts ?? []) {
             if (
                 ((user.accounts.length > 1 && patron.amount_cents < TIER_5_CENTS) || user.arenaAlert?.enableRankDMs === "primary") &&
-                !acc.primary
+                allyCode !== user.primaryAllyCode
             ) {
                 continue;
             }
 
-            if (!acc.lastCharRank) {
-                acc.lastCharRank = 0;
-                acc.lastCharClimb = 0;
+            const playerDoc = arenaPlayerMap.get(allyCode) ?? { allyCode, name: "" };
+
+            if (!playerDoc.lastCharRank) {
+                playerDoc.lastCharRank = 0;
+                playerDoc.lastCharClimb = 0;
             }
-            if (!acc.lastShipRank) {
-                acc.lastShipRank = 0;
-                acc.lastShipClimb = 0;
+            if (!playerDoc.lastShipRank) {
+                playerDoc.lastShipRank = 0;
+                playerDoc.lastShipClimb = 0;
             }
 
-            const player = playerMap.get(acc.allyCode) ?? null;
+            const player = playerMap.get(allyCode) ?? null;
 
             if (!player) {
-                logger.log(`[processArenaAlerts] Missing player data for ${acc.allyCode}`);
+                logger.log(`[processArenaAlerts] Missing player data for ${allyCode}`);
                 continue;
             }
             if (!player.arena) {
-                logger.log(`[processArenaAlerts] No arena data for ${acc.allyCode}: ${JSON.stringify(player)}`);
+                logger.log(`[processArenaAlerts] No arena data for ${allyCode}: ${JSON.stringify(player)}`);
                 continue;
             }
 
             const pCharRank = player.arena.char?.rank;
             const pShipRank = player.arena.ship?.rank;
             if (!pCharRank && pCharRank !== 0 && !pShipRank && pShipRank !== 0) {
-                logger.error(`[processArenaAlerts] No arena ranks for ${acc.allyCode}: ${JSON.stringify(player)}`);
+                logger.error(`[processArenaAlerts] No arena ranks for ${allyCode}: ${JSON.stringify(player)}`);
                 continue;
             }
 
@@ -305,15 +312,22 @@ class PatreonFuncs {
                 const minTil = Math.floor(timeLeft / constants.minMS);
 
                 const histKey = arenaType === "char" ? "charHist" : "shipHist";
-                acc[histKey] = this.recordHistoryAtPayout(acc[histKey], arenaData.rank, minTil);
+                playerDoc[histKey] = this.recordHistoryAtPayout(playerDoc[histKey], arenaData.rank, minTil);
+
+                if (arenaType === "char") {
+                    playerDoc.lastCharRank = arenaData.rank;
+                } else {
+                    playerDoc.lastShipRank = arenaData.rank;
+                }
 
                 // DM alerts — gated on arenaAlert being configured
-                await this.handleArenaAlerts(arenaType, player, acc, user, patron, timeLeft, minTil);
+                // ArenaPlayer field names match UserAcct for the rank/climb fields handleArenaAlerts accesses
+                await this.handleArenaAlerts(arenaType, player, playerDoc as unknown as UserAcct, user, patron, timeLeft, minTil);
             }
 
-            user.accounts[ix] = acc;
+            arenaPlayerMap.set(allyCode, playerDoc);
         }
-        await userReg.updateUser(patron.discordID, user);
+        // No longer writes user doc — arenaTick flushes arenaPlayerMap after all patrons
     }
 
     // Single per-minute arena cycle: batch-fetch all ally codes, then run alerts and shard processing
@@ -323,21 +337,29 @@ class PatreonFuncs {
         const userMap = await userReg.getUsersByIds(eligibleIds);
         const allyCodes = collectAllyCodes(patrons, userMap);
         const playerMap = await this.buildPlayerMap(allyCodes);
+        const arenaPlayerMap = await arenaPlayerRegistry.batchGet(allyCodes);
+
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = userMap.get(patron.discordID);
             if (!user) continue;
             if (user.accounts?.length) {
-                await this.processArenaAlerts(patron, user, playerMap).catch((err) => {
+                await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap).catch((err) => {
                     logger.error(
                         `[arenaTick] processArenaAlerts error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                     );
                 });
             }
-            await this.processShardPatron(patron, user, playerMap).catch((err) => {
+            await this.processShardPatron(patron, user, playerMap, arenaPlayerMap).catch((err) => {
                 logger.error(
                     `[arenaTick] processShardPatron error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                 );
+            });
+        }
+
+        if (arenaPlayerMap.size) {
+            await arenaPlayerRegistry.batchUpsert([...arenaPlayerMap.values()]).catch((err) => {
+                logger.error(`[arenaTick] batchUpsert error: ${err instanceof Error ? err.message : String(err)}`);
             });
         }
     }
@@ -366,7 +388,7 @@ class PatreonFuncs {
             else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
             else acctCount = constants.arenaWatchConfig.tier3;
 
-            const players = structuredClone(aw.allyCodes.slice(0, acctCount));
+            const players = structuredClone(aw.allyCodes.slice(0, acctCount)) as unknown as ArenaWatchAcct[];
             if (!players?.length) continue;
 
             const [charMsg, fleetMsg] = await Promise.all([
@@ -394,7 +416,12 @@ class PatreonFuncs {
 
     // Process a single patron's arena rank notifications. Extracted so errors in one patron
     // don't abort the entire arenaTick loop and cause everyone after them to be skipped.
-    private async processShardPatron(patron: ActivePatron, user: UserConfig | null, playerMap: Map<number, PlayerArenaRes>): Promise<void> {
+    private async processShardPatron(
+        patron: ActivePatron,
+        user: UserConfig | null,
+        playerMap: Map<number, PlayerArenaRes>,
+        arenaPlayerMap: Map<number, ArenaPlayer>,
+    ): Promise<void> {
         if (!user?.arenaWatch) return;
         const aw = user.arenaWatch;
 
@@ -418,7 +445,7 @@ class PatreonFuncs {
         else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
         else acctCount = constants.arenaWatchConfig.tier3;
 
-        const accountsToCheck: ArenaWatchAcct[] = structuredClone(aw.allyCodes.slice(0, acctCount));
+        const accountsToCheck = structuredClone(aw.allyCodes.slice(0, acctCount)) as unknown as ArenaWatchAcct[];
         if (!accountsToCheck.length) return;
 
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
@@ -438,29 +465,44 @@ class PatreonFuncs {
             if (!player.poOffset || player.poOffset !== newPlayer.poUTCOffsetMinutes) {
                 player.poOffset = newPlayer.poUTCOffsetMinutes;
             }
-            if (newPlayer.arena?.char?.rank != null && (!player.lastChar || newPlayer.arena.char.rank !== player.lastChar)) {
+
+            // Load persisted rank/history from arenaPlayerMap; create a stub if not found
+            const playerDoc = arenaPlayerMap.get(player.allyCode) ?? { allyCode: player.allyCode, name: newPlayer.name };
+
+            // Initialize ephemeral rank fields from persisted data so payout/warn logic has correct values
+            player.lastChar ??= playerDoc.lastCharRank;
+            player.lastShip ??= playerDoc.lastShipRank;
+
+            const prevLastChar = playerDoc.lastCharRank ?? 0;
+            const prevLastShip = playerDoc.lastShipRank ?? 0;
+
+            if (newPlayer.arena?.char?.rank != null && newPlayer.arena.char.rank !== prevLastChar) {
                 const charOverview = {
                     name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                     allyCode: player.allyCode,
-                    oldRank: player.lastChar ?? 0,
+                    oldRank: prevLastChar,
                     newRank: newPlayer.arena.char.rank,
                     mark: player.mark,
                 };
                 compChar.push(charOverview);
                 player.lastChar = newPlayer.arena.char.rank;
-                player.lastCharChange = charOverview.oldRank - charOverview.newRank;
+                player.lastCharChange = prevLastChar - newPlayer.arena.char.rank;
+                playerDoc.lastCharRank = player.lastChar;
+                playerDoc.lastCharChange = player.lastCharChange;
             }
-            if (newPlayer.arena?.ship?.rank != null && (!player.lastShip || newPlayer.arena.ship.rank !== player.lastShip)) {
+            if (newPlayer.arena?.ship?.rank != null && newPlayer.arena.ship.rank !== prevLastShip) {
                 const shipOverview = {
                     name: player.mention ? `<@${player.mention}>` : newPlayer.name,
                     allyCode: player.allyCode,
-                    oldRank: player.lastShip ?? 0,
+                    oldRank: prevLastShip,
                     newRank: newPlayer.arena.ship.rank,
                     mark: player.mark,
                 };
                 compShip.push(shipOverview);
                 player.lastShip = newPlayer.arena.ship.rank;
-                player.lastShipChange = shipOverview.oldRank - shipOverview.newRank;
+                player.lastShipChange = prevLastShip - newPlayer.arena.ship.rank;
+                playerDoc.lastShipRank = player.lastShip;
+                playerDoc.lastShipChange = player.lastShipChange;
             }
 
             const payouts = this.getAllPayoutTimes(player);
@@ -468,8 +510,10 @@ class PatreonFuncs {
             const fleetMinLeft = payouts.fleetDuration;
 
             // Record payout history for all arenaWatch accounts, regardless of notification settings
-            player.charHist = this.recordHistoryAtPayout(player.charHist, player.lastChar, charMinLeft);
-            player.shipHist = this.recordHistoryAtPayout(player.shipHist, player.lastShip, fleetMinLeft);
+            playerDoc.charHist = this.recordHistoryAtPayout(playerDoc.charHist, player.lastChar, charMinLeft);
+            playerDoc.shipHist = this.recordHistoryAtPayout(playerDoc.shipHist, player.lastShip, fleetMinLeft);
+
+            arenaPlayerMap.set(player.allyCode, playerDoc);
 
             if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
                 let pName = player.mention ? `<@${player.mention}>` : player.name;
@@ -579,12 +623,11 @@ class PatreonFuncs {
             }
         }
 
-        // Update lastChar/lastShip after sending so a failed send doesn't permanently lose a rank change.
-        // Match by allyCode rather than index so we never mix up or truncate accounts beyond the tier limit.
+        // Update poOffset in user.arenaWatch.allyCodes after processing — rank/history now live in arenaPlayers collection
         for (const acct of accountsToCheck) {
             const idx = user.arenaWatch.allyCodes.findIndex((a) => a.allyCode === acct.allyCode);
             if (idx !== -1) {
-                user.arenaWatch.allyCodes[idx] = acct;
+                user.arenaWatch.allyCodes[idx].poOffset = acct.poOffset;
             }
         }
         await userReg.updateUser(patron.discordID, user);

@@ -3,6 +3,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
@@ -73,31 +74,28 @@ export default class Register extends Command {
             // If they don't exist in the DB yet, stick em with a default config
             userConfig = JSON.parse(JSON.stringify(constants.defaultUserConf)) as Partial<UserConfig> as UserConfig;
             userConfig.id = user.id;
-        } else if (userConfig.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10) && a.primary)) {
+        } else if (
+            userConfig.accounts.includes(Number.parseInt(allyCode, 10)) &&
+            userConfig.primaryAllyCode === Number.parseInt(allyCode, 10)
+        ) {
             // This ally code is already registered & primary
             return super.error(interaction, language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
-        } else if (userConfig.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10) && !a.primary)) {
-            // This ally code is already registered but not primary, so just swap it over
-            userConfig.accounts = userConfig.accounts.map((a) => {
-                if (a.primary) a.primary = false;
-                if (a.allyCode === Number.parseInt(allyCode, 10)) a.primary = true;
-                return a;
-            });
-            userConfig = await userReg.updateUser(user.id, userConfig);
-            const u = userConfig.accounts.find((a) => a.primary);
+        } else if (userConfig.accounts.includes(Number.parseInt(allyCode, 10))) {
+            // This ally code is already registered but not primary — just promote it to primary
+            const parsedCode = Number.parseInt(allyCode, 10);
+            userConfig.primaryAllyCode = parsedCode;
+            await userReg.updateUser(user.id, userConfig);
+            const playerDoc = await arenaPlayerRegistry.getPlayer(parsedCode);
             return super.success(
                 interaction,
-                codeBlock("asciiDoc", language.get("COMMAND_REGISTER_SUCCESS_DESC", u, u.allyCode?.toString().match(/\d{3}/g)?.join("-"))),
+                codeBlock(
+                    "asciiDoc",
+                    language.get("COMMAND_REGISTER_SUCCESS_DESC", playerDoc, parsedCode.toString().match(/\d{3}/g)?.join("-")),
+                ),
                 {
-                    title: language.get("BASE_REGISTRATION_SUCCESS", u.name),
+                    title: language.get("BASE_REGISTRATION_SUCCESS", playerDoc?.name ?? allyCode),
                 },
             );
-        } else {
-            // They're registered with a different ally code, so turn off all the other primaries
-            userConfig.accounts = userConfig.accounts.map((a) => {
-                a.primary = false;
-                return a;
-            });
         }
 
         // Tell em to wait because it could take a be to find their info
@@ -109,11 +107,10 @@ export default class Register extends Command {
             if (!player) {
                 return super.error(interaction, language.get("BASE_REGISTRATION_FAILURE") + allyCode);
             }
-            userConfig.accounts.push({
-                allyCode: Number.parseInt(allyCode, 10),
-                name: player.name,
-                primary: true,
-            });
+            const parsedAllyCode = Number.parseInt(allyCode, 10);
+            userConfig.accounts.push(parsedAllyCode);
+            userConfig.primaryAllyCode = parsedAllyCode;
+            await arenaPlayerRegistry.upsertPlayer({ allyCode: parsedAllyCode, name: player.name });
             await userReg.updateUser(user.id, userConfig);
             return super.success(
                 interaction,

@@ -121,6 +121,7 @@ export default {
         id: "",
         // Array of allycode/ primary status pairs
         accounts: [],
+        primaryAllyCode: null,
         // Settings for the arena alerts
         arenaAlert: {
             enableRankDMs: "off", // all, primary, off

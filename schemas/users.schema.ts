@@ -1,14 +1,11 @@
 import { z } from "zod";
 
 /**
- * Schema for arena watch account entries
+ * Lean watch-config entry — player data lives in arenaPlayers collection
  */
-export const ArenaWatchAcctSchema = z.object({
+export const ArenaWatchConfigSchema = z.object({
     allyCode: z.number(),
-    name: z.string(),
     mention: z.string().nullable(),
-    lastChar: z.number(),
-    lastShip: z.number(),
     poOffset: z.number(),
     mark: z.string().optional().nullable(),
     warn: z
@@ -18,35 +15,17 @@ export const ArenaWatchAcctSchema = z.object({
         })
         .optional(),
     result: z.string().optional(),
-    lastCharChange: z.number().optional(),
-    lastShipChange: z.number().optional(),
-    // Temporary fields added during processing
-    duration: z.number().optional(),
-    timeTil: z.string().optional(),
-    outString: z.string().optional(),
 });
 
-/**
- * Schema for user account entries
- */
-export const UserAcctSchema = z.object({
-    allyCode: z.number(),
-    name: z.string(),
-    primary: z.boolean(),
-    lastCharRank: z.number().optional(),
-    lastCharClimb: z.number().optional(),
-    lastShipRank: z.number().optional(),
-    lastShipClimb: z.number().optional(),
-    charHist: z.array(z.object({ rank: z.number(), ts: z.number() })).optional(),
-    shipHist: z.array(z.object({ rank: z.number(), ts: z.number() })).optional(),
-});
+export type ArenaWatchConfig = z.infer<typeof ArenaWatchConfigSchema>;
 
 /**
  * Schema for user configuration documents (users collection)
  */
 export const UserConfigSchema = z.object({
     id: z.string(),
-    accounts: z.array(UserAcctSchema),
+    accounts: z.array(z.number()),
+    primaryAllyCode: z.number().nullable().optional(),
     arenaAlert: z.object({
         enableRankDMs: z.string().optional(),
         arena: z.string(),
@@ -62,7 +41,7 @@ export const UserConfigSchema = z.object({
         })
         .optional(),
     arenaWatch: z.object({
-        allyCodes: z.array(ArenaWatchAcctSchema),
+        allyCodes: z.array(ArenaWatchConfigSchema),
         channel: z.string().optional().nullable(),
         arena: z.object({
             fleet: z.object({ channel: z.string(), enabled: z.boolean() }).optional(),

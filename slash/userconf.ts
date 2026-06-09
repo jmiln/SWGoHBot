@@ -11,6 +11,7 @@ import constants from "../data/constants/constants.ts";
 import patreonInfo from "../data/patreon.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
@@ -142,7 +143,7 @@ export default class UserConf extends Command {
                     // Add an ally code to the user's list
                     // Make sure it's not in there already, then stick it in.
                     const cooldown = await patreonFuncs.getPlayerCooldown(userID, interaction?.guild?.id);
-                    if (user.accounts.map((a) => a.allyCode).includes(Number.parseInt(allyCode, 10))) {
+                    if (user.accounts.includes(Number.parseInt(allyCode, 10))) {
                         // Make sure the specified code is not already registered
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_REGISTERED"));
                     }
@@ -156,11 +157,10 @@ export default class UserConf extends Command {
                         if (!player) {
                             return super.error(interaction, language.get("BASE_REGISTRATION_FAILURE"));
                         }
-                        user.accounts.push({
-                            allyCode: Number.parseInt(allyCode, 10),
-                            name: player.name,
-                            primary: !user.accounts.length,
-                        });
+                        const parsedCode = Number.parseInt(allyCode, 10);
+                        user.accounts.push(parsedCode);
+                        if (!user.primaryAllyCode) user.primaryAllyCode = parsedCode;
+                        await arenaPlayerRegistry.upsertPlayer({ allyCode: parsedCode, name: player.name });
                         await userReg.updateUser(userID, user);
                         return super.success(
                             interaction,
@@ -190,39 +190,41 @@ export default class UserConf extends Command {
                     // Remove specified ally code from the list,
                     // - If it was not in the list, let em know
                     // - If the chosen one was the primary, set the 1st
-                    const acc = user.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10));
-                    if (!acc) {
+                    const parsedCode = Number.parseInt(allyCode, 10);
+                    if (!user.accounts.includes(parsedCode)) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
+                    const playerDoc = await arenaPlayerRegistry.getPlayer(parsedCode);
+                    const playerName = playerDoc?.name ?? String(parsedCode);
 
-                    // Filter out the one(s) that match the specified ally code
-                    user.accounts = user.accounts.filter((a) => a.allyCode !== acc.allyCode);
-                    // If none of the remaining accounts are marked as primary, mark the first one as such
-                    if (user.accounts.length && !user.accounts.find((a) => a.primary)) {
-                        user.accounts[0].primary = true;
+                    // Filter out the specified ally code
+                    user.accounts = user.accounts.filter((a) => a !== parsedCode);
+                    // If the removed code was primary, move primary to the first remaining account
+                    if (user.primaryAllyCode === parsedCode) {
+                        user.primaryAllyCode = user.accounts[0] ?? null;
                     }
                     await userReg.updateUser(userID, user);
-                    return super.success(interaction, language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", acc.name, acc.allyCode));
+                    return super.success(interaction, language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", playerName, parsedCode));
                 }
                 case "make_primary": {
                     // Set the specified ally code to be the primary one
-                    const acc = user.accounts.find((a) => a.allyCode === Number.parseInt(allyCode, 10));
-                    if (!acc) {
+                    const parsedCode = Number.parseInt(allyCode, 10);
+                    if (!user.accounts.includes(parsedCode)) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_NOT_REGISTERED"));
                     }
-                    if (acc.primary) {
+                    if (user.primaryAllyCode === parsedCode) {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_ALREADY_PRIMARY"));
                     }
-                    const prim = user.accounts.find((a) => a.primary);
-                    user.accounts = user.accounts.map((a) => {
-                        if (a.primary) a.primary = false;
-                        if (a.allyCode === Number.parseInt(allyCode, 10)) a.primary = true;
-                        return a;
-                    });
+                    const prevPrimary = user.primaryAllyCode ?? null;
+                    user.primaryAllyCode = parsedCode;
                     await userReg.updateUser(userID, user);
+                    const [prevDoc, newDoc] = await Promise.all([
+                        prevPrimary ? arenaPlayerRegistry.getPlayer(prevPrimary) : Promise.resolve(null),
+                        arenaPlayerRegistry.getPlayer(parsedCode),
+                    ]);
                     return super.success(
                         interaction,
-                        language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prim?.name, prim?.allyCode, acc.name, acc.allyCode),
+                        language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prevDoc?.name, prevPrimary, newDoc?.name, parsedCode),
                     );
                 }
             }
@@ -262,11 +264,17 @@ export default class UserConf extends Command {
 
                     const fields = [];
 
-                    // Ally codes
+                    // Ally codes — fetch names for both accounts and arenaWatch entries in one call
+                    const awCodes = user.arenaWatch?.allyCodes?.map((ac) => ac.allyCode) ?? [];
+                    const playerMap = await arenaPlayerRegistry.batchGet([...new Set([...user.accounts, ...awCodes])]);
                     const MAX_ALLYCODES = 20;
                     let codeTable = user.accounts
                         .slice(0, MAX_ALLYCODES)
-                        .map((a, ix) => `\`[${ix + 1}] ${a.allyCode}\`: ${a.primary ? `**${a.name}**` : a.name}`)
+                        .map((ac, ix) => {
+                            const name = playerMap.get(ac)?.name ?? String(ac);
+                            const isPrimary = ac === user.primaryAllyCode;
+                            return `\`[${ix + 1}] ${ac}\`: ${isPrimary ? `**${name}**` : name}`;
+                        })
                         .join("\n");
                     if (user.accounts.length > MAX_ALLYCODES)
                         codeTable += `\n* _Not displaying ${user.accounts.length - MAX_ALLYCODES} codes_`;
@@ -324,8 +332,12 @@ export default class UserConf extends Command {
                             fields.push({
                                 name: language.get("COMMAND_USERCONF_VIEW_AW_ALLYCODES_HEADER"),
                                 value: `\`\`\`${user.arenaWatch.allyCodes
-                                    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
-                                    .map((ac) => `${ac.allyCode} | ${ac.name}`)
+                                    .sort((a, b) => {
+                                        const nameA = playerMap.get(a.allyCode)?.name?.toLowerCase() ?? String(a.allyCode);
+                                        const nameB = playerMap.get(b.allyCode)?.name?.toLowerCase() ?? String(b.allyCode);
+                                        return nameA > nameB ? 1 : -1;
+                                    })
+                                    .map((ac) => `${ac.allyCode} | ${playerMap.get(ac.allyCode)?.name ?? ac.allyCode}`)
                                     .join("\n")}\`\`\``,
                             });
 
@@ -427,16 +439,18 @@ export default class UserConf extends Command {
                 return await interaction.respond([]);
             }
 
+            // Fetch player names from registry for display
+            const acPlayerMap = await arenaPlayerRegistry.batchGet(user.accounts);
+
             // Filter accounts based on search term (match both name and allycode)
             const outArr = user.accounts
-                .filter((account) => {
-                    const nameMatch = account.name.toLowerCase().includes(searchKey);
-                    const codeMatch = account.allyCode.toString().includes(searchKey);
-                    return nameMatch || codeMatch;
+                .filter((allyCode) => {
+                    const name = acPlayerMap.get(allyCode)?.name ?? "";
+                    return name.toLowerCase().includes(searchKey) || allyCode.toString().includes(searchKey);
                 })
-                .map((account) => ({
-                    name: `${account.name} - ${account.allyCode}`,
-                    value: account.allyCode.toString(),
+                .map((allyCode) => ({
+                    name: `${acPlayerMap.get(allyCode)?.name ?? allyCode} - ${allyCode}`,
+                    value: allyCode.toString(),
                 }))
                 .slice(0, 24); // Discord's autocomplete limit
 

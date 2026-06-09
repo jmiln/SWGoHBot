@@ -110,9 +110,8 @@ export default class GuildUpdate extends Command {
 
             // If no allyCode is stored yet, fall back to the user's primary account
             if (!gu.allyCode) {
-                const primaryAcct = user.accounts?.find((a) => a.primary);
-                if (primaryAcct?.allyCode) {
-                    gu.allyCode = primaryAcct.allyCode;
+                if (user.primaryAllyCode) {
+                    gu.allyCode = user.primaryAllyCode;
                     updatedArr.push(`Ally Code: **${gu.allyCode}** (from your primary account)`);
                 }
             }

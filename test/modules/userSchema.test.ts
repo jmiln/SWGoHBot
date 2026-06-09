@@ -6,6 +6,7 @@ import { UserConfigSchema } from "../../schemas/users.schema.ts";
 const BASE_USER = {
     id: "12345",
     accounts: [],
+    primaryAllyCode: null,
     arenaAlert: { arena: "none", payoutWarning: 0 },
     updated: Date.now(),
     arenaWatch: {
@@ -35,93 +36,45 @@ describe("UserConfigSchema", () => {
         assert.strictEqual(result.success, false);
     });
 
-    it("accepts accounts with charHist and shipHist", () => {
-        const user = {
-            ...BASE_USER,
-            accounts: [
-                {
-                    allyCode: 123456789,
-                    name: "TestPlayer",
-                    primary: true,
-                    charHist: [{ rank: 42, ts: 1700000000000 }],
-                    shipHist: [{ rank: 7, ts: 1700000000000 }],
-                },
-            ],
-        };
-        const result = UserConfigSchema.safeParse(user);
+    it("accepts accounts as a flat array of numbers", () => {
+        const result = UserConfigSchema.safeParse({ ...BASE_USER, accounts: [123456789, 987654321] });
         assert.strictEqual(result.success, true);
     });
 
-    it("accepts accounts without charHist or shipHist (optional fields)", () => {
-        const user = {
-            ...BASE_USER,
-            accounts: [{ allyCode: 123456789, name: "TestPlayer", primary: true }],
-        };
-        const result = UserConfigSchema.safeParse(user);
+    it("rejects accounts containing non-numbers", () => {
+        const result = UserConfigSchema.safeParse({ ...BASE_USER, accounts: ["notanumber"] });
+        assert.strictEqual(result.success, false);
+    });
+
+    it("accepts primaryAllyCode as a number", () => {
+        const result = UserConfigSchema.safeParse({ ...BASE_USER, primaryAllyCode: 123456789 });
         assert.strictEqual(result.success, true);
     });
 
-    it("rejects charHist entries missing rank", () => {
-        const user = {
-            ...BASE_USER,
-            accounts: [
-                {
-                    allyCode: 123456789,
-                    name: "TestPlayer",
-                    primary: true,
-                    charHist: [{ ts: 1700000000000 }],
-                },
-            ],
-        };
-        const result = UserConfigSchema.safeParse(user);
-        assert.strictEqual(result.success, false);
+    it("accepts primaryAllyCode as null", () => {
+        const result = UserConfigSchema.safeParse({ ...BASE_USER, primaryAllyCode: null });
+        assert.strictEqual(result.success, true);
     });
 
-    it("rejects charHist entries missing ts", () => {
-        const user = {
+    it("accepts arenaWatch.allyCodes with lean watch-config entries", () => {
+        const result = UserConfigSchema.safeParse({
             ...BASE_USER,
-            accounts: [
-                {
-                    allyCode: 123456789,
-                    name: "TestPlayer",
-                    primary: true,
-                    charHist: [{ rank: 42 }],
-                },
-            ],
-        };
-        const result = UserConfigSchema.safeParse(user);
-        assert.strictEqual(result.success, false);
+            arenaWatch: {
+                ...BASE_USER.arenaWatch,
+                allyCodes: [{ allyCode: 123456789, mention: null, poOffset: -300 }],
+            },
+        });
+        assert.strictEqual(result.success, true);
     });
 
-    it("rejects charHist entries with non-number rank", () => {
-        const user = {
+    it("rejects arenaWatch.allyCodes entries missing allyCode", () => {
+        const result = UserConfigSchema.safeParse({
             ...BASE_USER,
-            accounts: [
-                {
-                    allyCode: 123456789,
-                    name: "TestPlayer",
-                    primary: true,
-                    charHist: [{ rank: "top", ts: 1700000000000 }],
-                },
-            ],
-        };
-        const result = UserConfigSchema.safeParse(user);
-        assert.strictEqual(result.success, false);
-    });
-
-    it("rejects shipHist entries missing ts", () => {
-        const user = {
-            ...BASE_USER,
-            accounts: [
-                {
-                    allyCode: 123456789,
-                    name: "TestPlayer",
-                    primary: true,
-                    shipHist: [{ rank: 7 }],
-                },
-            ],
-        };
-        const result = UserConfigSchema.safeParse(user);
+            arenaWatch: {
+                ...BASE_USER.arenaWatch,
+                allyCodes: [{ mention: null, poOffset: 0 }],
+            },
+        });
         assert.strictEqual(result.success, false);
     });
 });

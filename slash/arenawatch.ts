@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -719,12 +720,15 @@ export async function processAWChanges({
 
                     aw.allyCodes.push({
                         allyCode: c.code,
-                        name: player.name,
                         mention: c.mention,
-                        lastChar: player.arena.char?.rank || null,
-                        lastShip: player.arena.ship?.rank || null,
                         poOffset: player.poUTCOffsetMinutes,
                         mark: mark || null,
+                    });
+                    await arenaPlayerRegistry.upsertPlayer({
+                        allyCode: c.code,
+                        name: player.name,
+                        lastCharRank: player.arena.char?.rank ?? undefined,
+                        lastShipRank: player.arena.ship?.rank ?? undefined,
                     });
                     outLog.push(`${c.code} added!`);
                 }
@@ -769,11 +773,14 @@ export async function processAWChanges({
                 }
                 aw.allyCodes.push({
                     allyCode: ac,
-                    name: player.name,
                     mention: mention,
-                    lastChar: player.arena.char ? player.arena.char.rank : null,
-                    lastShip: player.arena.ship ? player.arena.ship.rank : null,
                     poOffset: player.poUTCOffsetMinutes,
+                });
+                await arenaPlayerRegistry.upsertPlayer({
+                    allyCode: ac,
+                    name: player.name,
+                    lastCharRank: player.arena.char?.rank ?? undefined,
+                    lastShipRank: player.arena.ship?.rank ?? undefined,
                 });
                 outLog.push(`${ac} ${exists ? "updated" : "added"}!`);
                 result.outLog = outLog.join("\n");
@@ -943,31 +950,37 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, 
     if (!allyCode) {
         // If there's any ally codes in the array, go ahead and format them
         const ac = aw.allyCodes.length ? aw.allyCodes : [];
+        const playerMap = await arenaPlayerRegistry.batchGet(ac.map((a) => a.allyCode));
         const acOut = ac
-            // Sort by name
+            // Sort by name or rank
             .sort((a, b) => {
                 if (!view_by) {
-                    return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
+                    const nameA = playerMap.get(a.allyCode)?.name?.toLowerCase() ?? String(a.allyCode);
+                    const nameB = playerMap.get(b.allyCode)?.name?.toLowerCase() ?? String(b.allyCode);
+                    return nameA > nameB ? 1 : -1;
                 }
                 if (view_by === "char_rank") {
-                    return a.lastChar > b.lastChar ? 1 : -1;
+                    return (playerMap.get(a.allyCode)?.lastCharRank ?? 0) > (playerMap.get(b.allyCode)?.lastCharRank ?? 0) ? 1 : -1;
                 }
                 if (view_by === "fleet_rank") {
-                    return a.lastShip > b.lastShip ? 1 : -1;
+                    return (playerMap.get(a.allyCode)?.lastShipRank ?? 0) > (playerMap.get(b.allyCode)?.lastShipRank ?? 0) ? 1 : -1;
                 }
                 return 0;
             })
             // Then format the output strings
             .map((a) => {
+                const pName = playerMap.get(a.allyCode)?.name ?? String(a.allyCode);
                 if (view_by) {
-                    return `\`${((view_by === "char_rank" ? a.lastChar : a.lastShip) || "N/A").toString().padStart(3)}\`  |  ${
+                    const rank =
+                        view_by === "char_rank" ? playerMap.get(a.allyCode)?.lastCharRank : playerMap.get(a.allyCode)?.lastShipRank;
+                    return `\`${(rank || "N/A").toString().padStart(3)}\`  |  ${
                         a.mark ? `${a.mark} ` : ""
-                    }**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                    }**${a.mention ? `<@${a.mention}>` : pName}**`;
                 }
                 const isWarn = a?.warn?.min && a.warn?.arena ? "W" : "";
                 const isRes = a.result ? "R" : "";
                 const tags = isWarn.length || isRes.length ? `\`[${isWarn}${isRes}]\`` : "";
-                return `\`${a.allyCode}\` ${tags} ${a.mark ? `${a.mark} ` : ""}**${a.mention ? `<@${a.mention}>` : a.name}**`;
+                return `\`${a.allyCode}\` ${tags} ${a.mark ? `${a.mark} ` : ""}**${a.mention ? `<@${a.mention}>` : pName}**`;
             });
 
         const fields = [];
@@ -1006,16 +1019,18 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, 
         result.error = `${allyCode} is not a valid ally code.`;
         return result;
     }
-    if (!aw.allyCodes.filter((a) => a.allyCode === Number.parseInt(allyCode, 10)).length) {
+    const parsedCode = Number.parseInt(allyCode, 10);
+    if (!aw.allyCodes.filter((a) => a.allyCode === parsedCode).length) {
         result.error = `${allyCode} is not listed in your registered ally codes.`;
         return result;
     }
 
-    const player = aw.allyCodes.find((p) => p.allyCode === Number.parseInt(allyCode, 10));
+    const player = aw.allyCodes.find((p) => p.allyCode === parsedCode);
+    const playerDoc = await arenaPlayerRegistry.getPlayer(parsedCode);
     result.embedOut = {
         title: `Arena Watch Settings (${allyCode})`,
         description: [
-            `Name: **${player.name}**`,
+            `Name: **${playerDoc?.name ?? allyCode}**`,
             `Mention: **${player.mention ? `<@${player.mention}>` : "N/A"}**`,
             `Payout Result: **${player.result ? player.result : "N/A"}**`,
             `Warn Mins: **${player.warn ? player.warn.min : "N/A"}**`,

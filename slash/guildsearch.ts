@@ -234,7 +234,7 @@ export default class GuildSearch extends Command {
 
         let guild: SWAPIGuild = null;
         try {
-            guild = await swgohAPI.guild(Number.parseInt(allyCode, 10), cooldown);
+            guild = await swgohAPI.guild(allyCode, cooldown);
         } catch (e) {
             if (e.toString().indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NOT_IN_GUILD"));

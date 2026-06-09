@@ -24,6 +24,7 @@ import type { z } from "zod";
 export { defaultSettings as defaultGuildSettings } from "../data/constants/defaultGuildConf.ts";
 
 // Export all schemas
+export * from "./arenaPlayers.schema.ts";
 export * from "./commandStats.schema.ts";
 export * from "./guildConfigs.schema.ts";
 export * from "./guilds.schema.ts";
