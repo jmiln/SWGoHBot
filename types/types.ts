@@ -264,6 +264,7 @@ export interface ArenaHistChartPayload {
     title: string;
     width: number;
     height: number;
+    pointLabels?: boolean;
 }
 
 export interface UserAcct {

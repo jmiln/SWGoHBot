@@ -111,6 +111,7 @@ export function buildArenaHistChart(
         title: `Arena Rank — Last ${windowDays} Days — ${label}`,
         width: 800,
         height: 400,
+        pointLabels: true,
     };
 }
 

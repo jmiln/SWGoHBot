@@ -3,8 +3,7 @@ import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
-import { buildArenaHistChart } from "../modules/patreonFuncs.ts";
-import patreonFuncs from "../modules/patreonFuncs.ts";
+import patreonFuncs, { buildArenaHistChart } from "../modules/patreonFuncs.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";
 
 const WINDOW_MAP: Record<string, number> = {
