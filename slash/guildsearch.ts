@@ -499,7 +499,7 @@ export default class GuildSearch extends Command {
                     unitStr += (ix + 1).toString();
                 }
             });
-            const gpStr = member.gp.toLocaleString();
+            const gpStr = (member.gp ?? 0).toLocaleString();
 
             let uStr = "";
             if (member.rarity > 0) {
