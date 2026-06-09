@@ -7,6 +7,7 @@ import patreonModule from "../data/patreon.ts";
 import type { RawGuild, SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type {
     ActivePatron,
+    ArenaHistChartPayload,
     ArenaHistEntry,
     ArenaWatchAcct,
     PatronUser,
@@ -37,6 +38,80 @@ export function shouldWriteHistory(hist: ArenaHistEntry[] | undefined): boolean 
     // updateArenaHistory always persists a sorted array, so at(-1) is the newest entry.
     const lastTs = hist.at(-1)?.ts ?? 0;
     return Date.now() - lastTs > 5 * constants.minMS;
+}
+
+export function buildArenaHistChart(
+    charHist: ArenaHistEntry[] | undefined,
+    shipHist: ArenaHistEntry[] | undefined,
+    windowDays: number,
+    now: number,
+    label: string,
+): ArenaHistChartPayload | null {
+    const { dayMS } = constants;
+    const tickInterval = windowDays === 90 ? 7 : 1;
+
+    // dates[0] = (windowDays-1) days ago … dates[last] = today
+    const dates: Date[] = [];
+    for (let d = 0; d < windowDays; d++) {
+        dates.push(new Date(now - (windowDays - 1 - d) * dayMS));
+    }
+
+    // Pre-compute UTC midnight for each day once; reused by windowStart, toDataArray (both datasets)
+    const dayBoundaries = dates.map((date) => Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    const windowStart = dayBoundaries[0];
+
+    const filteredChar = (charHist ?? []).filter((e) => e.ts >= windowStart && e.ts <= now);
+    const filteredFleet = (shipHist ?? []).filter((e) => e.ts >= windowStart && e.ts <= now);
+
+    if (!filteredChar.length && !filteredFleet.length) return null;
+
+    // Map entries onto calendar-day positions; days with no entry become null
+    function toDataArray(entries: ArenaHistEntry[]): (number | null)[] {
+        // shouldWriteHistory enforces a 5-minute dedup guard, so at most one entry
+        // per calendar day is stored in practice; find() returning the first match is correct.
+        return dayBoundaries.map((dayStart) => {
+            const dayEnd = dayStart + dayMS;
+            return entries.find((e) => e.ts >= dayStart && e.ts < dayEnd)?.rank ?? null;
+        });
+    }
+
+    // X-axis: weekly ticks for 90d (intermediate labels = ""), daily for 7d/30d
+    const labels = dates.map((date, i) => {
+        if (i % tickInterval !== 0) return "";
+        return date.toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+    });
+
+    const datasets: ArenaHistChartPayload["datasets"] = [];
+
+    if (filteredChar.length) {
+        datasets.push({
+            label: "Char Arena",
+            data: toDataArray(filteredChar),
+            borderColor: "#4a90d9",
+            backgroundColor: "rgba(74,144,217,0.1)",
+            tension: 0.3,
+            fill: false,
+        });
+    }
+
+    if (filteredFleet.length) {
+        datasets.push({
+            label: "Fleet Arena",
+            data: toDataArray(filteredFleet),
+            borderColor: "#e8874a",
+            borderDash: [6, 4],
+            tension: 0.3,
+            fill: false,
+        });
+    }
+
+    return {
+        labels,
+        datasets,
+        title: `Arena Rank — Last ${windowDays} Days — ${label}`,
+        width: 800,
+        height: 400,
+    };
 }
 
 const tiers = patreonModule.tiers;
@@ -228,12 +303,8 @@ class PatreonFuncs {
                 const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, hrDiff);
                 const minTil = Math.floor(timeLeft / constants.minMS);
 
-                if (minTil === 0) {
-                    const histKey = arenaType === "char" ? "charHist" : "shipHist";
-                    if (shouldWriteHistory(acc[histKey])) {
-                        acc[histKey] = updateArenaHistory(acc[histKey], arenaData.rank);
-                    }
-                }
+                const histKey = arenaType === "char" ? "charHist" : "shipHist";
+                acc[histKey] = this.recordHistoryAtPayout(acc[histKey], arenaData.rank, minTil);
 
                 // DM alerts — gated on arenaAlert being configured
                 await this.handleArenaAlerts(arenaType, player, acc, user, patron, timeLeft, minTil);
@@ -391,14 +462,19 @@ class PatreonFuncs {
                 player.lastShipChange = shipOverview.oldRank - shipOverview.newRank;
             }
 
+            const payouts = this.getAllPayoutTimes(player);
+            const charMinLeft = payouts.charDuration;
+            const fleetMinLeft = payouts.fleetDuration;
+
+            // Record payout history for all arenaWatch accounts, regardless of notification settings
+            player.charHist = this.recordHistoryAtPayout(player.charHist, player.lastChar, charMinLeft);
+            player.shipHist = this.recordHistoryAtPayout(player.shipHist, player.lastShip, fleetMinLeft);
+
             if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
-                const payouts = this.getAllPayoutTimes(player);
                 let pName = player.mention ? `<@${player.mention}>` : player.name;
                 if (aw.useMarksInLog && player.mark) {
                     pName = `${player.mark} ${pName}`;
                 }
-                const charMinLeft = Math.floor(payouts.charDuration);
-                const fleetMinLeft = Math.floor(payouts.fleetDuration);
                 if (player.lastChar !== null && charMinLeft === 0 && ["char", "both"].includes(player.result)) {
                     // If they have char payouts turned on, do that here
                     charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
@@ -774,6 +850,11 @@ class PatreonFuncs {
     }
 
     // Private helper methods
+
+    private recordHistoryAtPayout(hist: ArenaHistEntry[] | undefined, rank: number, minLeft: number | null): ArenaHistEntry[] | undefined {
+        if (minLeft !== 0) return hist;
+        return shouldWriteHistory(hist) ? updateArenaHistory(hist, rank) : hist;
+    }
 
     private getPatreonTier(user: { amount_cents: number } | null): number {
         const patreonTiers = Object.keys(tiers).map((t) => Number.parseInt(t, 10));

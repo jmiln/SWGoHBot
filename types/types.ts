@@ -250,6 +250,22 @@ export interface ArenaHistEntry {
     ts: number;
 }
 
+export interface ArenaHistChartPayload {
+    labels: string[];
+    datasets: {
+        label: string;
+        data: (number | null)[];
+        borderColor: string;
+        backgroundColor?: string;
+        tension: number;
+        fill: boolean;
+        borderDash?: number[];
+    }[];
+    title: string;
+    width: number;
+    height: number;
+}
+
 export interface UserAcct {
     allyCode: number;
     name: string;
@@ -273,6 +289,9 @@ export interface ArenaWatchAcct {
     result?: string;
     lastCharChange?: number;
     lastShipChange?: number;
+
+    charHist?: ArenaHistEntry[];
+    shipHist?: ArenaHistEntry[];
 
     // Added in temporarily while processing
     duration?: number;

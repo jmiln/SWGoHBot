@@ -401,6 +401,14 @@ export default class extends Language {
                 ]
             },
 
+            // Arena History Command
+            COMMAND_ARENAHIST_PATREON_TITLE: "Arena History — Patreon Feature",
+            COMMAND_ARENAHIST_PATREON_DESC:  "Arena history graphs plot your char and fleet arena rank over the last 7, 30, or 90 days. Available to Patreon supporters.",
+            COMMAND_ARENAHIST_NO_DATA:        "No arena history recorded yet — history is collected at your daily payout.",
+            COMMAND_ARENAHIST_NO_ACCOUNT:     "That ally code isn't registered to your account.",
+            COMMAND_ARENAHIST_NOT_REGISTERED: "I couldn't find your data. Please register with `/register` first.",
+            COMMAND_ARENAHIST_IMAGE_ERROR:    "Failed to generate the history chart. Please try again shortly.",
+
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Training Droids",
             COMMAND_CHALLENGES_ABILITY : "Ability Mats",
