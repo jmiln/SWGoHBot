@@ -21,10 +21,17 @@ import logger from "../modules/Logger.ts";
 // users whose accounts array is empty or already flat)
 export const oldFormatUserFilter: Filter<Document> = {
     $or: [
-        { "accounts.0": { $type: "object" } },
+        { accounts: { $elemMatch: { $type: "object" } } },
         { "arenaWatch.allyCodes": { $elemMatch: { $or: [{ name: { $exists: true } }, { lastChar: { $exists: true } }, { lastShip: { $exists: true } }] } } },
     ],
 };
+
+// Parse a stored ally code into a positive integer, or null if invalid.
+// A plain NaN check is not enough: Number(null) and Number("") are both 0.
+function parseAllyCode(value: unknown): number | null {
+    const allyCode = Number(value);
+    return Number.isInteger(allyCode) && allyCode > 0 ? allyCode : null;
+}
 
 export async function runMigration(client: MongoClient): Promise<{ found: number; converted: number; failed: number }> {
     const db = client.db(env.MONGODB_SWGOHBOT_DB);
@@ -54,8 +61,11 @@ export async function runMigration(client: MongoClient): Promise<{ found: number
                     continue;
                 }
 
-                const allyCode = Number(acct.allyCode);
-                if (Number.isNaN(allyCode)) continue;
+                const allyCode = parseAllyCode(acct.allyCode);
+                if (allyCode === null) {
+                    logger.warn(`Dropping account with invalid allyCode ${JSON.stringify(acct.allyCode)} from user ${String(doc._id)}`);
+                    continue;
+                }
 
                 newAccounts.push(allyCode);
                 if (acct.primary) primaryAllyCode = allyCode;
@@ -79,8 +89,8 @@ export async function runMigration(client: MongoClient): Promise<{ found: number
             const newAwAllyCodes: Array<Record<string, unknown>> = [];
 
             for (const entry of awAllyCodes) {
-                const allyCode = Number(entry.allyCode);
-                if (!Number.isNaN(allyCode)) {
+                const allyCode = parseAllyCode(entry.allyCode);
+                if (allyCode !== null) {
                     const existing = playerUpserts.get(allyCode) ?? { allyCode };
                     if (typeof entry.name === "string" && entry.name) existing.name = entry.name;
                     // arenaWatch used lastChar/lastShip (not lastCharRank/lastShipRank)
@@ -95,7 +105,8 @@ export async function runMigration(client: MongoClient): Promise<{ found: number
 
                 // Rebuild allyCodes entry without player-data fields. Only carry over keys
                 // that are actually present — an absent poOffset must not be written as null.
-                const cleanEntry: Record<string, unknown> = { allyCode: entry.allyCode };
+                // Store allyCode as a number so it matches the arenaPlayers doc keyed above.
+                const cleanEntry: Record<string, unknown> = { allyCode: allyCode ?? entry.allyCode };
                 if (entry.poOffset != null) cleanEntry.poOffset = entry.poOffset;
                 if (entry.mention != null) cleanEntry.mention = entry.mention;
                 if (entry.mark != null) cleanEntry.mark = entry.mark;
@@ -140,7 +151,9 @@ async function main() {
     const client = new MongoClient(env.MONGODB_URL);
     await client.connect();
     try {
-        await runMigration(client);
+        const { failed } = await runMigration(client);
+        // Surface partial failures to the operator — a clean exit must mean every doc migrated
+        if (failed > 0) process.exitCode = 1;
     } finally {
         await client.close();
     }

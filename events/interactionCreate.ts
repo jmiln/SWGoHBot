@@ -7,10 +7,9 @@ import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, factions, journeyNames, shipNameList } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import { getCommand, getCommandNames } from "../handlers/slashHandler.ts";
-import { getCachedAllyCodeChoices } from "../modules/autocompleteCache.ts";
+import { getCachedAllyCodeChoices, getCachedGuildAliases } from "../modules/autocompleteCache.ts";
 import commandStats from "../modules/commandStats.ts";
 import { permLevel } from "../modules/functions.ts";
-import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
 import userReg from "../modules/users.ts";
@@ -167,8 +166,6 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
     let filtered: Array<{ name: string; value: string }> = [];
 
     try {
-        const aliases = await getGuildAliases({ guildId: interaction?.guild?.id });
-
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
             const journeyFiltered = filterAutocomplete(journeyNames as UnitAutocompleteItem[], focusedOption.value?.toLowerCase());
@@ -205,7 +202,9 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
             filtered = await getCachedAllyCodeChoices(interaction.user.id, searchKey);
         } else {
-            // Process unit/character/ship autocomplete
+            // Process unit/character/ship autocomplete — the only path that needs guild
+            // aliases, served from a short-TTL cache so typing doesn't re-query per keystroke
+            const aliases = await getCachedGuildAliases(interaction?.guild?.id);
             filtered = processUnitAutocomplete(focusedOption, aliases);
         }
     } catch (err) {

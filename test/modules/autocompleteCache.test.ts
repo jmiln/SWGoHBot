@@ -4,8 +4,9 @@ import { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import {
-    ALLYCODE_CACHE_TTL_MS,
+    AUTOCOMPLETE_CACHE_TTL_MS,
     getCachedAllyCodeChoices,
+    getCachedGuildAliases,
     invalidateAllyCodeCache,
 } from "../../modules/autocompleteCache.ts";
 import cache from "../../modules/cache.ts";
@@ -89,6 +90,45 @@ describe("autocompleteCache", () => {
         assert.strictEqual(batchGetCalls, 2);
     });
 
+    describe("getCachedGuildAliases()", () => {
+        const AC_GUILD_ID = "ac_cache_test_guild";
+        const aliasDoc = (alias: string) => [{ alias, name: "Darth Vader", defId: "VADER" }];
+
+        beforeEach(async () => {
+            await client.db(db).collection("guildConfigs").deleteMany({ guildId: AC_GUILD_ID });
+            await client.db(db).collection("guildConfigs").insertOne({ guildId: AC_GUILD_ID, aliases: aliasDoc("dv") });
+        });
+
+        after(async () => {
+            await client.db(db).collection("guildConfigs").deleteMany({ guildId: AC_GUILD_ID });
+        });
+
+        it("returns an empty array without querying when no guildId is given", async () => {
+            assert.deepStrictEqual(await getCachedGuildAliases(undefined), []);
+        });
+
+        it("fetches the guild's aliases and serves repeats from the cache", async (t) => {
+            const start = Date.now();
+            t.mock.timers.enable({ apis: ["Date"], now: start });
+
+            const first = await getCachedGuildAliases(AC_GUILD_ID);
+            assert.deepStrictEqual(first, aliasDoc("dv"));
+
+            // Change the DB inside the TTL window — the cached copy must still be served
+            await client
+                .db(db)
+                .collection("guildConfigs")
+                .updateOne({ guildId: AC_GUILD_ID }, { $set: { aliases: aliasDoc("vader") } });
+            const cached = await getCachedGuildAliases(AC_GUILD_ID);
+            assert.deepStrictEqual(cached, aliasDoc("dv"), "within the TTL the cached aliases must be returned");
+
+            // Past the TTL the fresh data shows up
+            t.mock.timers.setTime(start + AUTOCOMPLETE_CACHE_TTL_MS + 1);
+            const fresh = await getCachedGuildAliases(AC_GUILD_ID);
+            assert.deepStrictEqual(fresh, aliasDoc("vader"), "after the TTL the new aliases must be fetched");
+        });
+    });
+
     it("refetches once the TTL has elapsed", async (t) => {
         const start = Date.now();
         t.mock.timers.enable({ apis: ["Date"], now: start });
@@ -97,12 +137,12 @@ describe("autocompleteCache", () => {
         assert.strictEqual(batchGetCalls, 1);
 
         // Still inside the TTL window — cached
-        t.mock.timers.setTime(start + ALLYCODE_CACHE_TTL_MS - 1);
+        t.mock.timers.setTime(start + AUTOCOMPLETE_CACHE_TTL_MS - 1);
         await getCachedAllyCodeChoices(AC_USER_ID, "");
         assert.strictEqual(batchGetCalls, 1);
 
         // Past the TTL — must refetch
-        t.mock.timers.setTime(start + ALLYCODE_CACHE_TTL_MS + 1);
+        t.mock.timers.setTime(start + AUTOCOMPLETE_CACHE_TTL_MS + 1);
         await getCachedAllyCodeChoices(AC_USER_ID, "");
         assert.strictEqual(batchGetCalls, 2);
     });

@@ -53,6 +53,21 @@ describe("migrateArenaPlayers", () => {
             );
         });
 
+        it("matches users with mixed accounts where the first entry is already flat", async () => {
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_old",
+                    accounts: [474747473, { allyCode: 474747471, name: "MixedFmt", primary: true }],
+                });
+            const matches = await client.db(db).collection("users").find(oldFormatUserFilter).toArray();
+            assert.ok(
+                matches.some((d) => d.id === "mig_user_old"),
+                "mixed accounts arrays must still be migrated",
+            );
+        });
+
         it("does not match new-format users", async () => {
             await client.db(db).collection("users").insertOne({
                 id: "mig_user_new",
@@ -154,6 +169,52 @@ describe("migrateArenaPlayers", () => {
                 const result = ArenaWatchConfigSchema.safeParse(entry);
                 assert.ok(result.success, `migrated entry must satisfy the schema: ${JSON.stringify(entry)} -> ${result.error}`);
             }
+        });
+
+        it("drops entries with nullish allyCodes instead of coercing them to 0", async () => {
+            // Number(null) === 0, so a plain NaN check lets these through as allyCode 0
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_old",
+                    accounts: [
+                        { allyCode: null, name: "Ghost" },
+                        { allyCode: 474747471, name: "Real", primary: true },
+                    ],
+                });
+
+            await runMigration(client);
+
+            const user = await client.db(db).collection("users").findOne({ id: "mig_user_old" });
+            assert.deepStrictEqual(user?.accounts, [474747471], "nullish allyCodes must be dropped, not kept as 0");
+            assert.strictEqual(user?.primaryAllyCode, 474747471);
+
+            const zeroDoc = await client.db(db).collection("arenaPlayers").findOne({ allyCode: 0 });
+            assert.strictEqual(zeroDoc, null, "no arenaPlayers doc may be created with allyCode 0");
+        });
+
+        it("normalizes legacy string allyCodes in watch entries to numbers", async () => {
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_awonly",
+                    accounts: [],
+                    arenaWatch: {
+                        allyCodes: [{ allyCode: "474747472", name: "StringCode", lastChar: 5, poOffset: 60, mention: null }],
+                    },
+                });
+
+            await runMigration(client);
+
+            const user = await client.db(db).collection("users").findOne({ id: "mig_user_awonly" });
+            const entry = user?.arenaWatch?.allyCodes?.[0];
+            assert.strictEqual(entry?.allyCode, 474747472, "watch entry allyCode must be stored as a number");
+
+            // The arenaPlayers doc keys on the numeric code, so the entry must match it
+            const playerDoc = await client.db(db).collection("arenaPlayers").findOne({ allyCode: 474747472 });
+            assert.strictEqual(playerDoc?.name, "StringCode");
         });
 
         it("omits poOffset from cleaned watch entries when the old entry had none", async () => {
