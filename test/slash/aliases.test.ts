@@ -28,7 +28,9 @@ describe("Aliases Command Functionality", () => {
     after(async () => {
         // Clean up test database
         try {
-            await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({});
+            // Scope to this file's mock guild — test files run in parallel against the
+            // shared test DB, so a collection-wide wipe races with other suites' docs
+            await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({ guildId: "987654321" });
         } catch (e) {
             // Ignore cleanup errors
         }
