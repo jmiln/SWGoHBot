@@ -20,7 +20,7 @@ import constants from "../data/constants/constants.ts";
 import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
+import type { ArenaPlayer, BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
 import userReg from "./users.ts";
 
@@ -811,6 +811,25 @@ export async function reloadLanguages(): Promise<Error | null> {
         return err;
     }
     return null;
+}
+
+// Build autocomplete choices for a user's registered ally codes, matching the search key
+// against both the stored player name and the code itself. Pure — callers fetch the
+// playerMap (arenaPlayerRegistry.batchGet) themselves.
+export function buildAllyCodeChoices(
+    allyCodes: number[],
+    playerMap: Map<number, ArenaPlayer>,
+    searchKey: string,
+): { name: string; value: string }[] {
+    return allyCodes
+        .filter((allyCode) => {
+            const name = playerMap.get(allyCode)?.name ?? "";
+            return name.toLowerCase().includes(searchKey) || allyCode.toString().includes(searchKey);
+        })
+        .map((allyCode) => ({
+            name: `${playerMap.get(allyCode)?.name || allyCode} - ${allyCode}`,
+            value: allyCode.toString(),
+        }));
 }
 
 // Get the ally code of someone that's registered

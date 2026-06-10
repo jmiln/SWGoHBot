@@ -117,9 +117,27 @@ export function buildArenaHistChart(
     };
 }
 
-// The rank/climb fields handleArenaAlerts reads and updates — both ArenaPlayer docs and
-// legacy UserAcct entries satisfy this shape
+// The rank/climb fields handleArenaAlerts updates on the arenaPlayers doc
 type ArenaRankTracking = Pick<ArenaPlayer, "lastCharRank" | "lastCharClimb" | "lastShipRank" | "lastShipClimb">;
+
+// Ranks as they stood at the start of an arenaTick. Multiple patrons can track the same
+// ally code (and one patron can both register and watch it), so change detection must
+// compare against this snapshot rather than the live docs — otherwise the first consumer
+// to update a doc suppresses the same rank change for everyone after it.
+export type RankSnapshot = Map<number, ArenaRankTracking>;
+
+export function buildRankSnapshot(arenaPlayerMap: Map<number, ArenaPlayer>): RankSnapshot {
+    const snapshot: RankSnapshot = new Map();
+    for (const [allyCode, doc] of arenaPlayerMap) {
+        snapshot.set(allyCode, {
+            lastCharRank: doc.lastCharRank,
+            lastCharClimb: doc.lastCharClimb,
+            lastShipRank: doc.lastShipRank,
+            lastShipClimb: doc.lastShipClimb,
+        });
+    }
+    return snapshot;
+}
 
 // Merge persisted arenaPlayers data (name/ranks) onto watch-list entries, which only
 // store per-watch settings (mention, poOffset, marks). Returns fresh objects so callers
@@ -129,8 +147,10 @@ export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map
         const doc = playerMap.get(entry.allyCode);
         return {
             ...structuredClone(entry),
-            // structuredClone's lib typing widens `string | null` to optional, so re-assert mention
+            // mention/poOffset can be absent on migrated entries — normalize them here so the
+            // hydrated account always satisfies ArenaWatchAcct
             mention: entry.mention ?? null,
+            poOffset: entry.poOffset ?? 0,
             name: doc?.name || String(entry.allyCode),
             lastChar: doc?.lastCharRank ?? null,
             lastShip: doc?.lastShipRank ?? null,
@@ -289,6 +309,7 @@ class PatreonFuncs {
         playerMap: Map<number, PlayerArenaRes>,
         arenaPlayerMap: Map<number, ArenaPlayer>,
         changedCodes: Set<number>,
+        rankSnapshot: RankSnapshot,
     ): Promise<void> {
         if (user.arenaAlert) {
             if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
@@ -329,14 +350,15 @@ class PatreonFuncs {
                 continue;
             }
 
-            // Record payout history (runs for all patrons regardless of arenaAlert config) and
-            // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
-            // getTimeLeft() involves a Temporal lookup, so compute it once and share it.
             // Refresh the stored name whenever the API provides a non-empty one (renames propagate)
             if (player.name && player.name !== playerDoc.name) {
                 playerDoc.name = player.name;
                 changedCodes.add(allyCode);
             }
+
+            // Record payout history (runs for all patrons regardless of arenaAlert config) and
+            // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
+            // getTimeLeft() involves a Temporal lookup, so compute it once and share it.
             for (const arenaType of ["char", "ship"] as const) {
                 const arenaData = arenaType === "char" ? player.arena.char : player.arena.ship;
                 if (arenaData?.rank == null) continue;
@@ -356,10 +378,13 @@ class PatreonFuncs {
                 const prevRank = playerDoc[rankKey];
                 const prevClimb = playerDoc[climbKey];
 
-                // DM alerts — gated on arenaAlert being configured. Must run BEFORE the stored
-                // rank is touched: handleArenaAlerts compares arenaData.rank against the doc's
-                // lastRank for drop alerts, then updates the rank/climb tracking itself.
-                await this.handleArenaAlerts(arenaType, player, playerDoc, user, patron, timeLeft, minTil);
+                // DM alerts compare against the tick-start snapshot, not the live doc — another
+                // patron tracking the same account may have already updated the doc this tick
+                const snap = rankSnapshot.get(allyCode);
+                await this.handleArenaAlerts(arenaType, player, playerDoc, user, patron, timeLeft, minTil, {
+                    rank: snap?.[rankKey] ?? 0,
+                    climb: snap?.[climbKey] ?? 0,
+                });
 
                 if (playerDoc[rankKey] !== prevRank || playerDoc[climbKey] !== prevClimb) {
                     changedCodes.add(allyCode);
@@ -379,6 +404,9 @@ class PatreonFuncs {
         const allyCodes = collectAllyCodes(patrons, userMap);
         const playerMap = await this.buildPlayerMap(allyCodes);
         const arenaPlayerMap = await arenaPlayerRegistry.batchGet(allyCodes);
+        // Freeze the tick-start ranks before any consumer mutates the shared docs, so every
+        // patron tracking an account sees the same rank change
+        const rankSnapshot = buildRankSnapshot(arenaPlayerMap);
         const changedCodes = new Set<number>();
 
         for (const patron of patrons) {
@@ -386,13 +414,13 @@ class PatreonFuncs {
             const user = userMap.get(patron.discordID);
             if (!user) continue;
             if (user.accounts?.length) {
-                await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes).catch((err) => {
+                await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes, rankSnapshot).catch((err) => {
                     logger.error(
                         `[arenaTick] processArenaAlerts error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                     );
                 });
             }
-            await this.processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes).catch((err) => {
+            await this.processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes, rankSnapshot).catch((err) => {
                 logger.error(
                     `[arenaTick] processShardPatron error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                 );
@@ -415,6 +443,20 @@ class PatreonFuncs {
         const patrons = await this.getActivePatrons();
         const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
         const userMap = await userReg.getUsersByIds(eligibleIds);
+
+        // Gather every watch code up front so the registry is hit once, not once per patron.
+        // Slightly over-fetches for patrons whose payout channels turn out to be disabled.
+        const codesToFetch = new Set<number>();
+        for (const patron of patrons) {
+            if (patron.amount_cents < TIER_1_CENTS) continue;
+            const aw = userMap.get(patron.discordID)?.arenaWatch;
+            if (!aw?.payout) continue;
+            for (const entry of aw.allyCodes.slice(0, getAwAcctCount(patron.amount_cents))) {
+                codesToFetch.add(entry.allyCode);
+            }
+        }
+        const playerDocMap = await arenaPlayerRegistry.batchGet([...codesToFetch]);
+
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = userMap.get(patron.discordID);
@@ -432,7 +474,6 @@ class PatreonFuncs {
             // entries before formatting the payout schedule
             const watchEntries = aw.allyCodes.slice(0, getAwAcctCount(patron.amount_cents));
             if (!watchEntries.length) continue;
-            const playerDocMap = await arenaPlayerRegistry.batchGet(watchEntries.map((a) => a.allyCode));
             const players = hydrateWatchAccounts(watchEntries, playerDocMap);
 
             const [charMsg, fleetMsg] = await Promise.all([
@@ -466,6 +507,7 @@ class PatreonFuncs {
         playerMap: Map<number, PlayerArenaRes>,
         arenaPlayerMap: Map<number, ArenaPlayer>,
         changedCodes: Set<number>,
+        rankSnapshot: RankSnapshot,
     ): Promise<void> {
         if (!user?.arenaWatch) return;
         const aw = user.arenaWatch;
@@ -486,7 +528,9 @@ class PatreonFuncs {
         if (!hasAlerts && !hasPayouts) return;
 
         const acctCount = getAwAcctCount(patron.amount_cents);
-        const accountsToCheck = structuredClone(aw.allyCodes.slice(0, acctCount)) as unknown as ArenaWatchAcct[];
+        // Hydrate names/ranks from the arenaPlayers docs so every account has a usable name
+        // and the persisted rank seeded before the payout/warn logic below runs
+        const accountsToCheck = hydrateWatchAccounts(aw.allyCodes.slice(0, acctCount), arenaPlayerMap);
         if (!accountsToCheck.length) return;
 
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
@@ -508,13 +552,11 @@ class PatreonFuncs {
                 player.poOffset = newPlayer.poUTCOffsetMinutes;
             }
 
-            // player.name was already refreshed above when newPlayer.name was truthy, so the
-            // `player.name` fallback here is the previously-stored name (only relevant when
-            // newPlayer.name is empty).
-            // Load persisted rank/history from arenaPlayerMap; create a stub if not found
+            // Load persisted rank/history from arenaPlayerMap; create a stub if not found.
+            // player.name was hydrated from the doc, falling back to the ally code string.
             const playerDoc = arenaPlayerMap.get(player.allyCode) ?? {
                 allyCode: player.allyCode,
-                name: newPlayer.name || player.name || "",
+                name: newPlayer.name || player.name,
             };
 
             // For a freshly-created stub this is always false (name already matches); this only
@@ -524,16 +566,15 @@ class PatreonFuncs {
                 changedCodes.add(player.allyCode);
             }
 
-            // Initialize ephemeral rank fields from persisted data so payout/warn logic has correct values
-            player.lastChar ??= playerDoc.lastCharRank;
-            player.lastShip ??= playerDoc.lastShipRank;
-
-            const prevLastChar = playerDoc.lastCharRank ?? 0;
-            const prevLastShip = playerDoc.lastShipRank ?? 0;
+            // Compare against the tick-start snapshot, not the live doc — processArenaAlerts
+            // (or another patron watching the same account) may have already updated the doc
+            const snap = rankSnapshot.get(player.allyCode);
+            const prevLastChar = snap?.lastCharRank ?? 0;
+            const prevLastShip = snap?.lastShipRank ?? 0;
 
             if (newPlayer.arena?.char?.rank != null && newPlayer.arena.char.rank !== prevLastChar) {
                 const charOverview = {
-                    name: player.mention ? `<@${player.mention}>` : newPlayer.name,
+                    name: player.mention ? `<@${player.mention}>` : player.name,
                     allyCode: player.allyCode,
                     oldRank: prevLastChar,
                     newRank: newPlayer.arena.char.rank,
@@ -548,7 +589,7 @@ class PatreonFuncs {
             }
             if (newPlayer.arena?.ship?.rank != null && newPlayer.arena.ship.rank !== prevLastShip) {
                 const shipOverview = {
-                    name: player.mention ? `<@${player.mention}>` : newPlayer.name,
+                    name: player.mention ? `<@${player.mention}>` : player.name,
                     allyCode: player.allyCode,
                     oldRank: prevLastShip,
                     newRank: newPlayer.arena.ship.rank,
@@ -1231,6 +1272,8 @@ class PatreonFuncs {
         patron: { discordID: string },
         timeLeft: number,
         minTil: number,
+        // Rank/climb as they stood at the start of the tick — see RankSnapshot
+        prev: { rank: number; climb: number },
     ) {
         const arenaConfig = {
             char: {
@@ -1297,8 +1340,8 @@ class PatreonFuncs {
                     }
 
                     // Rank drop alert
-                    const lastRank = acc[config.rankKey];
-                    const lastClimb = acc[config.climbKey];
+                    const lastRank = prev.rank;
+                    const lastClimb = prev.climb;
                     if (arenaData.rank > lastRank && lastRank > 0) {
                         await pUser
                             .send({
@@ -1321,10 +1364,9 @@ class PatreonFuncs {
             }
         }
 
-        // Update climb and rank tracking
-        const currentClimb = acc[config.climbKey];
-        const currentRank = acc[config.rankKey];
-        acc[config.climbKey] = currentClimb ? (arenaData.rank < currentRank ? arenaData.rank : currentClimb) : arenaData.rank;
+        // Update climb and rank tracking. Computed from the tick-start snapshot so a second
+        // patron tracking the same account produces the identical (idempotent) result.
+        acc[config.climbKey] = prev.climb ? (arenaData.rank < prev.rank ? arenaData.rank : prev.climb) : arenaData.rank;
         acc[config.rankKey] = arenaData.rank;
     }
 }

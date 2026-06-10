@@ -85,7 +85,9 @@ export default class Register extends Command {
             const parsedCode = Number.parseInt(allyCode, 10);
             userConfig.primaryAllyCode = parsedCode;
             await userReg.updateUser(user.id, userConfig);
-            const playerDoc = await arenaPlayerRegistry.getPlayer(parsedCode);
+            // The arenaPlayers doc can be missing (account linked pre-migration, failed upsert) —
+            // the lang string dereferences the player object, so always hand it one
+            const playerDoc = (await arenaPlayerRegistry.getPlayer(parsedCode)) ?? { allyCode: parsedCode, name: allyCode };
             return super.success(
                 interaction,
                 codeBlock(
@@ -93,7 +95,7 @@ export default class Register extends Command {
                     language.get("COMMAND_REGISTER_SUCCESS_DESC", playerDoc, parsedCode.toString().match(/\d{3}/g)?.join("-")),
                 ),
                 {
-                    title: language.get("BASE_REGISTRATION_SUCCESS", playerDoc?.name ?? allyCode),
+                    title: language.get("BASE_REGISTRATION_SUCCESS", playerDoc.name),
                 },
             );
         }

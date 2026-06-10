@@ -272,17 +272,6 @@ export interface ArenaHistChartPayload {
     pointLabels?: boolean;
 }
 
-export interface UserAcct {
-    allyCode: number;
-    name: string;
-    primary: boolean;
-    lastCharRank?: number;
-    lastCharClimb?: number;
-    lastShipRank?: number;
-    lastShipClimb?: number;
-    charHist?: ArenaHistEntry[];
-    shipHist?: ArenaHistEntry[];
-}
 export interface ArenaWatchAcct {
     allyCode: number;
     name: string;

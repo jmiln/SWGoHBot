@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import {
+    buildAllyCodeChoices,
     charListFromSearch,
     chunkArray,
     convertMS,
@@ -29,13 +30,43 @@ import {
     trimFloat,
 } from "../../modules/functions.ts";
 import type { SWAPIPlayer } from "../../types/swapi_types.ts";
-import type { BotUnit } from "../../types/types.ts";
+import type { ArenaPlayer, BotUnit } from "../../types/types.ts";
 import { createMockLanguage } from "../mocks/index.ts";
 
 const ZWS = "\u200b";
 
 const makeUnit = (name: string, uniqueName = name.toLowerCase()): BotUnit =>
     ({ name, uniqueName, side: "light", combatType: 1, aliases: [] }) as unknown as BotUnit;
+
+describe("buildAllyCodeChoices", () => {
+    const playerMap = new Map<number, ArenaPlayer>([
+        [123456789, { allyCode: 123456789, name: "Alpha" }],
+        [987654321, { allyCode: 987654321, name: "Beta" }],
+    ]);
+
+    it("returns all accounts for an empty search key", () => {
+        const choices = buildAllyCodeChoices([123456789, 987654321], playerMap, "");
+        assert.deepStrictEqual(choices, [
+            { name: "Alpha - 123456789", value: "123456789" },
+            { name: "Beta - 987654321", value: "987654321" },
+        ]);
+    });
+
+    it("matches the stored name case-insensitively", () => {
+        const choices = buildAllyCodeChoices([123456789, 987654321], playerMap, "alph");
+        assert.deepStrictEqual(choices, [{ name: "Alpha - 123456789", value: "123456789" }]);
+    });
+
+    it("matches on an ally code substring", () => {
+        const choices = buildAllyCodeChoices([123456789, 987654321], playerMap, "98765");
+        assert.deepStrictEqual(choices, [{ name: "Beta - 987654321", value: "987654321" }]);
+    });
+
+    it("falls back to the ally code as the display name when no doc exists", () => {
+        const choices = buildAllyCodeChoices([555555555], new Map(), "555");
+        assert.deepStrictEqual(choices, [{ name: "555555555 - 555555555", value: "555555555" }]);
+    });
+});
 
 describe("charListFromSearch", () => {
     it("returns names sorted alphabetically", () => {

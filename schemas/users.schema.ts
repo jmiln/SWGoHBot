@@ -5,8 +5,10 @@ import { z } from "zod";
  */
 export const ArenaWatchConfigSchema = z.object({
     allyCode: z.number(),
-    mention: z.string().nullable(),
-    poOffset: z.number(),
+    // mention/poOffset may be absent: the migration omits null/missing values rather than
+    // writing nulls, and arenaTick backfills poOffset from the API on the next pass
+    mention: z.string().nullable().optional(),
+    poOffset: z.number().optional(),
     mark: z.string().optional().nullable(),
     warn: z
         .object({

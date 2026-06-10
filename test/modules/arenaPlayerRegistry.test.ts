@@ -120,5 +120,21 @@ describe("ArenaPlayerRegistry", () => {
             assert.strictEqual(doc?.lastCharRank, 7);
             assert.strictEqual(doc?.lastShipRank, 9, "an undefined key must not null out the stored rank");
         });
+
+        it("round-trips docs fetched via batchGet (arenaTick flush path)", async () => {
+            // arenaTick flushes the very docs batchGet returned — those carry Mongo's _id,
+            // which must never end up inside the $set payload
+            await client.db(db).collection("arenaPlayers").insertOne({ allyCode: 333333333, name: "Cycle", lastCharRank: 4 });
+
+            const fetched = await registry.batchGet([333333333]);
+            const doc = fetched.get(333333333);
+            assert.ok(doc);
+            doc.lastCharRank = 2;
+            await registry.batchUpsert([doc]);
+
+            const stored = await client.db(db).collection("arenaPlayers").findOne({ allyCode: 333333333 });
+            assert.strictEqual(stored?.lastCharRank, 2);
+            assert.ok(!("_id" in (doc as Record<string, unknown>)) || stored?._id, "flush must not corrupt the doc");
+        });
     });
 });

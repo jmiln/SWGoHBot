@@ -4,8 +4,10 @@ import type { ArenaPlayer } from "../types/types.ts";
 
 // The MongoDB driver serializes explicitly-undefined keys as null inside $set
 // (ignoreUndefined is off), which would clobber stored fields. Strip them first.
+// Also drop Mongo's _id (present on docs that came from batchGet) — an immutable
+// field must never ride along in a $set payload, same as cache.put does.
 function stripUndefined(data: ArenaPlayer): ArenaPlayer {
-    return Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined)) as ArenaPlayer;
+    return Object.fromEntries(Object.entries(data).filter(([key, value]) => value !== undefined && key !== "_id")) as ArenaPlayer;
 }
 
 export class ArenaPlayerRegistry {

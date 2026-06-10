@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { env } from "../../config/config.ts";
+import EnUS from "../../languages/en_US.js";
 import cache from "../../modules/cache.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
@@ -173,6 +174,39 @@ describe("Register", () => {
         assert.ok(user, "Expected user to be registered");
         assert.strictEqual(typeof user.accounts[0], "number", "allyCode must be stored as a number");
         assert.strictEqual(user.accounts[0], 123456789);
+    });
+
+    it("should promote an already-linked code to primary even when no arenaPlayers doc exists", async () => {
+        // Account linked before the arenaPlayers migration (or whose upsert failed): the code
+        // is in user.accounts but the arenaPlayers collection has no doc for it.
+        await userReg.updateUser(REG_USER.id, {
+            id: REG_USER.id,
+            accounts: [123456789, 987654321],
+            primaryAllyCode: 987654321,
+        } as any);
+
+        const interaction = createMockInteraction({
+            user: REG_USER,
+            guild: {
+                id: "987654321",
+                name: "Test Guild",
+                members: { cache: { has: () => true } },
+            } as any,
+            optionsData: { allycode: "123456789" },
+        });
+        // The real language dereferences the player object in COMMAND_REGISTER_SUCCESS_DESC,
+        // which is exactly what a null arenaPlayers doc breaks — the mock language hides that
+        const ctx = createCommandContext({ interaction, language: new EnUS() });
+        const command = new Register();
+        await command.run(ctx);
+
+        const user = await userReg.getUser(REG_USER.id);
+        assert.strictEqual(user?.primaryAllyCode, 123456789, "code should have been promoted to primary");
+
+        const replies = (interaction as any)._getReplies();
+        const lastReply = replies[replies.length - 1];
+        const embedData = lastReply?.embeds?.[0]?.data ?? lastReply?.embeds?.[0];
+        assert.ok((embedData?.description ?? "").includes("123-456-789"), `expected success embed, got: ${JSON.stringify(replies)}`);
     });
 
     it("should return error when API returns empty result for a valid ally code", async () => {

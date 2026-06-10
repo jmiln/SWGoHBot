@@ -10,6 +10,7 @@ import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import patreonInfo from "../data/patreon.ts";
 import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
+import { getCachedAllyCodeChoices } from "../modules/autocompleteCache.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
@@ -197,13 +198,8 @@ export default class UserConf extends Command {
                     const playerDoc = await arenaPlayerRegistry.getPlayer(parsedCode);
                     const playerName = playerDoc?.name ?? String(parsedCode);
 
-                    // Filter out the specified ally code
-                    user.accounts = user.accounts.filter((a) => a !== parsedCode);
-                    // If the removed code was primary, move primary to the first remaining account
-                    if (user.primaryAllyCode === parsedCode) {
-                        user.primaryAllyCode = user.accounts[0] ?? null;
-                    }
-                    await userReg.updateUser(userID, user);
+                    // removeAllyCode filters the code out and reassigns primary if needed
+                    await userReg.removeAllyCode(userID, parsedCode);
                     return super.success(interaction, language.get("COMMAND_USERCONF_ALLYCODE_REMOVED_SUCCESS", playerName, parsedCode));
                 }
                 case "make_primary": {
@@ -432,29 +428,9 @@ export default class UserConf extends Command {
         if (subCommandGroup === "allycodes" && ["make_primary", "remove"].includes(subCommand) && focusedOption.name === "allycode") {
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 
-            // Fetch the user's registered accounts
-            const user = await userReg.getUser(interaction.user.id);
-            if (!user?.accounts || user.accounts.length === 0) {
-                // No registered accounts, return empty array
-                return await interaction.respond([]);
-            }
-
-            // Fetch player names from registry for display
-            const acPlayerMap = await arenaPlayerRegistry.batchGet(user.accounts);
-
-            // Filter accounts based on search term (match both name and allycode)
-            const outArr = user.accounts
-                .filter((allyCode) => {
-                    const name = acPlayerMap.get(allyCode)?.name ?? "";
-                    return name.toLowerCase().includes(searchKey) || allyCode.toString().includes(searchKey);
-                })
-                .map((allyCode) => ({
-                    name: `${acPlayerMap.get(allyCode)?.name ?? allyCode} - ${allyCode}`,
-                    value: allyCode.toString(),
-                }))
-                .slice(0, 24); // Discord's autocomplete limit
-
-            await interaction.respond(outArr);
+            // Served from a short-TTL cache so only the first keystroke hits the DB
+            const choices = await getCachedAllyCodeChoices(interaction.user.id, searchKey);
+            await interaction.respond(choices.slice(0, 24)); // Discord's autocomplete limit
         }
     }
 }

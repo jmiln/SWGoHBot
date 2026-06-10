@@ -2,6 +2,7 @@ import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
+import { ArenaWatchConfigSchema } from "../../schemas/users.schema.ts";
 import { oldFormatUserFilter, runMigration } from "../../scripts/migrateArenaPlayers.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
@@ -127,6 +128,32 @@ describe("migrateArenaPlayers", () => {
             // Already-flat accounts must survive the migration untouched
             assert.deepStrictEqual(user?.accounts, [474747473]);
             assert.strictEqual(user?.primaryAllyCode, 474747473);
+        });
+
+        it("produces watch entries that satisfy ArenaWatchConfigSchema", async () => {
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_awonly",
+                    accounts: [],
+                    arenaWatch: {
+                        allyCodes: [
+                            // mention: null gets omitted by the migration; the schema must accept that
+                            { allyCode: 474747471, name: "NullMention", lastChar: 3, mention: null, poOffset: 60 },
+                            // a defensive case: poOffset absent entirely
+                            { allyCode: 474747472, name: "NoOffset", mention: "12345" },
+                        ],
+                    },
+                });
+
+            await runMigration(client);
+
+            const user = await client.db(db).collection("users").findOne({ id: "mig_user_awonly" });
+            for (const entry of user?.arenaWatch?.allyCodes ?? []) {
+                const result = ArenaWatchConfigSchema.safeParse(entry);
+                assert.ok(result.success, `migrated entry must satisfy the schema: ${JSON.stringify(entry)} -> ${result.error}`);
+            }
         });
 
         it("omits poOffset from cleaned watch entries when the old entry had none", async () => {

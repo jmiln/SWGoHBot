@@ -7,7 +7,7 @@ import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { characterNameList, factions, journeyNames, shipNameList } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import { getCommand, getCommandNames } from "../handlers/slashHandler.ts";
-import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
+import { getCachedAllyCodeChoices } from "../modules/autocompleteCache.ts";
 import commandStats from "../modules/commandStats.ts";
 import { permLevel } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
@@ -200,22 +200,10 @@ async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: sla
                     }));
             }
         } else if (focusedOption.name === "allycode" || focusedOption.name.startsWith("allycode_")) {
-            // Process allycode autocomplete - show user's registered allycodes
+            // Process allycode autocomplete - show user's registered allycodes.
+            // Served from a short-TTL cache so only the first keystroke hits the DB.
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
-            const user = await userReg.getUser(interaction.user.id);
-
-            if (user?.accounts?.length) {
-                const acPlayerMap = await arenaPlayerRegistry.batchGet(user.accounts);
-                filtered = user.accounts
-                    .filter((allyCode) => {
-                        const name = acPlayerMap.get(allyCode)?.name ?? "";
-                        return name.toLowerCase().includes(searchKey) || allyCode.toString().includes(searchKey);
-                    })
-                    .map((allyCode) => ({
-                        name: `${acPlayerMap.get(allyCode)?.name ?? allyCode} - ${allyCode}`,
-                        value: allyCode.toString(),
-                    }));
-            }
+            filtered = await getCachedAllyCodeChoices(interaction.user.id, searchKey);
         } else {
             // Process unit/character/ship autocomplete
             filtered = processUnitAutocomplete(focusedOption, aliases);
