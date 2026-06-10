@@ -1,7 +1,7 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode, getPayoutTimeLeft, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -92,16 +92,18 @@ export default class MyArena extends Command {
                     name: unitName,
                 });
             }
-            desc = makeTable(
-                {
-                    pos: { value: "", startWith: "`" },
-                    speed: { value: "Spd", startWith: "[", endWith: "|" },
-                    health: { value: "HP", endWith: "|" },
-                    prot: { value: "Prot", endWith: "]`" },
-                    name: { value: "", align: "left" },
-                },
-                chars,
-            ).join("\n");
+            desc =
+                getPayoutLine(player, "char") +
+                makeTable(
+                    {
+                        pos: { value: "", startWith: "`" },
+                        speed: { value: "Spd", startWith: "[", endWith: "|" },
+                        health: { value: "HP", endWith: "|" },
+                        prot: { value: "Prot", endWith: "]`" },
+                        name: { value: "", align: "left" },
+                    },
+                    chars,
+                ).join("\n");
         }
 
         if (player.warnings) {
@@ -135,9 +137,17 @@ export default class MyArena extends Command {
             }
             return {
                 name: language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA" : "FLEET"}`, player.arena[type].rank),
-                value: `${arenaArr.join("\n")}\n\`------------------------------\``,
+                value: `${getPayoutLine(player, type === "char" ? "char" : "fleet")}${arenaArr.join("\n")}\n\`------------------------------\``,
                 inline: true,
             };
+        }
+
+        // "Payout: <t:..:t> (<t:..:R>)\n" or "" when the offset is missing from the player data
+        function getPayoutLine(player: SWAPIPlayer, arenaType: "char" | "fleet") {
+            if (typeof player.poUTCOffsetMinutes !== "number") return "";
+            const now = Date.now();
+            const payoutAt = Math.floor((now + getPayoutTimeLeft(player.poUTCOffsetMinutes, arenaType, now)) / 1000);
+            return `${language.get("COMMAND_MYARENA_PAYOUT")}: <t:${payoutAt}:t> (<t:${payoutAt}:R>)\n`;
         }
 
         async function getUnitName(player: SWAPIPlayer, defId: string) {

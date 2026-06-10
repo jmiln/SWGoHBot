@@ -361,6 +361,24 @@ export function getUTCFromOffset(offset: number): number {
     return Temporal.Now.plainDateISO("UTC").toZonedDateTime("UTC").toInstant().epochMilliseconds - offset * constants.minMS;
 }
 
+// Arena payout offsets (hours difference from daily reset)
+const ARENA_OFFSETS = {
+    char: 18,
+    fleet: 19,
+} as const;
+
+// How long (in ms) until the next payout for the given arena, based on the
+// player's payout UTC offset (poUTCOffsetMinutes from the game data). Accepts
+// an explicit now so callers deriving an absolute time from the result can use
+// the same base timestamp
+export function getPayoutTimeLeft(poUTCOffsetMinutes: number, arenaType: "char" | "fleet", now: number = Date.now()): number {
+    const then = getUTCFromOffset(poUTCOffsetMinutes) + ARENA_OFFSETS[arenaType] * constants.hrMS;
+    // Normalize into [0, dayMS) — a single `+= dayMS` isn't enough when the raw
+    // target lands more than a day away (e.g. large positive offsets push char's
+    // 18h mark past tomorrow's UTC midnight, showing 26h+ until payout)
+    return (((then - now) % constants.dayMS) + constants.dayMS) % constants.dayMS;
+}
+
 export function getStartOfDay(zone: string): Date {
     return new Date(Temporal.Now.plainDateISO(zone).toZonedDateTime(zone).toInstant().epochMilliseconds);
 }

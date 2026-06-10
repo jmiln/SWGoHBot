@@ -1078,6 +1078,7 @@ export default class extends Language {
             COMMAND_MYARENA_ARENA: (rank) => `Char Arena (Rank: ${rank})`,
             COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
+            COMMAND_MYARENA_PAYOUT: "Payout",
             COMMAND_MYARENA_HELP: {
                 description: "Show user's current arena ranks and their squads.",
                 actions: [

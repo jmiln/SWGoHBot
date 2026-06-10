@@ -1121,24 +1121,6 @@ describe("PatreonFuncs Module", () => {
             assert.ok(field.value.includes("7"), `expected hydrated char rank, got: ${field.value}`);
         });
     });
-
-    describe("getTimeLeft()", () => {
-        const dayMS = 1000 * 60 * 60 * 24;
-
-        it("never returns a duration of a day or more, even when the raw target lands days in the future", () => {
-            // offset -3240 + hrDiff 18h pushes the raw target ~3 days ahead of "now";
-            // a correct implementation always normalizes the result back into [0, dayMS)
-            const timeLeft = (patreonFuncs as any).getTimeLeft(-3240, 18);
-            assert.ok(timeLeft >= 0 && timeLeft < dayMS, `Expected timeLeft within [0, dayMS), got ${timeLeft}`);
-        });
-
-        it("never returns a negative duration, even when the raw target lands days in the past", () => {
-            // offset +3240 + hrDiff 18h pushes the raw target ~3 days behind "now";
-            // a correct implementation always normalizes the result back into [0, dayMS)
-            const timeLeft = (patreonFuncs as any).getTimeLeft(3240, 18);
-            assert.ok(timeLeft >= 0 && timeLeft < dayMS, `Expected timeLeft within [0, dayMS), got ${timeLeft}`);
-        });
-    });
 });
 
 describe("updateArenaHistory()", () => {

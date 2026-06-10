@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
+import { after, before, describe, it } from "node:test";
 import {
     buildAllyCodeChoices,
     charListFromSearch,
@@ -18,6 +18,7 @@ import {
     getTimezoneOffset,
     getUserID,
     getUTCFromOffset,
+    getPayoutTimeLeft,
     isAllyCode,
     isChannelId,
     isUserID,
@@ -469,6 +470,58 @@ describe("getUTCFromOffset", () => {
         const result0 = getUTCFromOffset(0);
         const result1440 = getUTCFromOffset(1440);
         assert.strictEqual(result0 - result1440, dayMS);
+    });
+});
+
+describe("getPayoutTimeLeft", () => {
+    // getPayoutTimeLeft calls Date.now() internally; pin it so the relational
+    // assertions below are exact rather than off by the ms between two calls
+    const realDateNow = Date.now;
+    before(() => {
+        const fixed = realDateNow();
+        Date.now = () => fixed;
+    });
+    after(() => {
+        Date.now = realDateNow;
+    });
+
+    it("returns a value within [0, dayMS) for offset 0", () => {
+        const result = getPayoutTimeLeft(0, "char");
+        assert.ok(result >= 0 && result < dayMS, `Expected 0 <= ${result} < ${dayMS}`);
+    });
+
+    it("fleet payout is exactly one hour after char payout (mod one day)", () => {
+        const charLeft = getPayoutTimeLeft(0, "char");
+        const fleetLeft = getPayoutTimeLeft(0, "fleet");
+        assert.strictEqual((fleetLeft - charLeft + dayMS) % dayMS, hrMS);
+    });
+
+    it("increasing the offset by 60 minutes shifts the payout 60 minutes earlier (mod one day)", () => {
+        const at0 = getPayoutTimeLeft(0, "char");
+        const at60 = getPayoutTimeLeft(60, "char");
+        assert.strictEqual((at0 - at60 + dayMS) % dayMS, 60 * minMS);
+    });
+
+    it("stays within [0, dayMS) for large negative offsets that cross UTC midnight", () => {
+        // UTC+14 (poUTCOffsetMinutes = -840) pushes the raw 18h char target past
+        // tomorrow's UTC midnight - the case the double-mod normalization exists for
+        const result = getPayoutTimeLeft(-840, "char");
+        assert.ok(result >= 0 && result < dayMS, `Expected 0 <= ${result} < ${dayMS}`);
+    });
+
+    it("a full-day offset wraps to the same time left as offset 0", () => {
+        assert.strictEqual(getPayoutTimeLeft(1440, "char"), getPayoutTimeLeft(0, "char"));
+        assert.strictEqual(getPayoutTimeLeft(-1440, "char"), getPayoutTimeLeft(0, "char"));
+    });
+
+    it("accepts an explicit now and matches the internal Date.now() default", () => {
+        assert.strictEqual(getPayoutTimeLeft(0, "char", Date.now()), getPayoutTimeLeft(0, "char"));
+    });
+
+    it("an explicit now one minute earlier yields one more minute left (mod one day)", () => {
+        const atNow = getPayoutTimeLeft(0, "char");
+        const atEarlier = getPayoutTimeLeft(0, "char", Date.now() - minMS);
+        assert.strictEqual((atEarlier - atNow + dayMS) % dayMS, minMS);
     });
 });
 

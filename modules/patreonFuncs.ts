@@ -19,7 +19,7 @@ import type {
 } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
 import cache from "./cache.ts";
-import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
+import { chunkArray, expandSpaces, formatDuration, getPayoutTimeLeft, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
 import swgohAPI from "./swapi.ts";
@@ -159,12 +159,6 @@ export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map
 }
 
 const tiers = patreonModule.tiers;
-
-// Arena payout offsets (hours difference from daily reset)
-const ARENA_OFFSETS = {
-    char: 18,
-    fleet: 19,
-} as const;
 
 // Patron tier thresholds (in cents)
 const TIER_1_CENTS = 100; // $1
@@ -358,12 +352,11 @@ class PatreonFuncs {
 
             // Record payout history (runs for all patrons regardless of arenaAlert config) and
             // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
-            // getTimeLeft() involves a Temporal lookup, so compute it once and share it.
+            // getPayoutTimeLeft() involves a Temporal lookup, so compute it once and share it.
             for (const arenaType of ["char", "ship"] as const) {
                 const arenaData = arenaType === "char" ? player.arena.char : player.arena.ship;
                 if (arenaData?.rank == null) continue;
-                const hrDiff = arenaType === "char" ? ARENA_OFFSETS.char : ARENA_OFFSETS.fleet;
-                const timeLeft = this.getTimeLeft(player.poUTCOffsetMinutes, hrDiff);
+                const timeLeft = getPayoutTimeLeft(player.poUTCOffsetMinutes, arenaType === "char" ? "char" : "fleet");
                 const minTil = Math.floor(timeLeft / constants.minMS);
 
                 const histKey = arenaType === "char" ? "charHist" : "shipHist";
@@ -1118,7 +1111,7 @@ class PatreonFuncs {
         for (const player of players) {
             if (!player.poOffset && player.poOffset !== 0) continue;
 
-            const timeLeft = this.getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
+            const timeLeft = getPayoutTimeLeft(player.poOffset, arena);
             player.duration = Math.floor(timeLeft / constants.minMS);
             player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
         }
@@ -1136,7 +1129,7 @@ class PatreonFuncs {
         };
         for (const arena of ["fleet", "char"] as const) {
             if (!payout.poOffset && payout.poOffset !== 0) continue;
-            const timeLeft = this.getTimeLeft(player.poOffset, ARENA_OFFSETS[arena]);
+            const timeLeft = getPayoutTimeLeft(player.poOffset, arena);
             payout[`${arena}Duration`] = Math.floor(timeLeft / constants.minMS);
             payout[`${arena}TimeTil`] = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
         }
@@ -1252,15 +1245,6 @@ class PatreonFuncs {
             return false;
         }
         return true;
-    }
-
-    private getTimeLeft(offset: number, hrDiff: number) {
-        const now = Date.now();
-        const then = getUTCFromOffset(offset) + hrDiff * constants.hrMS;
-        // Normalize into [0, dayMS) — a single `+= dayMS` isn't enough when the raw
-        // target lands more than a day away (e.g. large positive offsets push char's
-        // 18h mark past tomorrow's UTC midnight, showing 26h+ until payout)
-        return (((then - now) % constants.dayMS) + constants.dayMS) % constants.dayMS;
     }
 
     // Helper function to handle arena alerts for both character and ship arenas
