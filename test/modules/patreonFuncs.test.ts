@@ -5,7 +5,7 @@ import { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
-import { PatreonFuncs, shouldWriteHistory, updateArenaHistory, collectAllyCodes } from "../../modules/patreonFuncs.ts";
+import { PatreonFuncs, shouldWriteHistory, updateArenaHistory, collectAllyCodes, hydrateWatchAccounts } from "../../modules/patreonFuncs.ts";
 import userReg from "../../modules/users.ts";
 import Language from "../../base/Language.ts";
 import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
@@ -617,6 +617,122 @@ describe("PatreonFuncs Module", () => {
             assert.ok(changedCodes.has(888777666), "the rank change must mark the stub changed");
         });
 
+        it("does not write the user doc when no poOffset changed", async () => {
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+
+            // poOffset already matches the API value, so the user doc has nothing to update
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: 888777666, mention: null, poOffset: 0 }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "NoWrite",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 5 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            // The user doc was intentionally never inserted — an unconditional updateUser would upsert it
+            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>());
+
+            const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
+            assert.strictEqual(written, null, "the user doc must not be written when nothing in it changed");
+        });
+
+        it("writes the user doc when a poOffset changed", async () => {
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: 888777666, mention: null, poOffset: 0 }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "OffsetMoved",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 5 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 120,
+                }],
+            ]);
+
+            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>());
+
+            const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
+            assert.ok(written, "the user doc must be written when a poOffset changed");
+            assert.strictEqual(written.arenaWatch.allyCodes[0].poOffset, 120);
+        });
+
+        it("keeps over-limit watch entries in the user doc when writing back", async () => {
+            // Tier 1 only processes the first entry, but the rest must stay stored so they
+            // come back into play if the patron raises their tier
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [
+                        { allyCode: 888777666, mention: null, poOffset: 0 },
+                        { allyCode: 888777667, mention: null, poOffset: 60 },
+                        { allyCode: 888777668, mention: null, poOffset: 120 },
+                    ],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            // poOffset change on the processed entry forces the user-doc write
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "KeepRest",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 5 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 30,
+                }],
+            ]);
+
+            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>());
+
+            const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
+            assert.ok(written, "the poOffset change must trigger a write");
+            assert.strictEqual(written.arenaWatch.allyCodes.length, 3, "over-limit watch entries must not be dropped");
+            assert.strictEqual(written.arenaWatch.allyCodes[0].poOffset, 30);
+            assert.strictEqual(written.arenaWatch.allyCodes[1].poOffset, 60, "unprocessed entries must be untouched");
+            assert.strictEqual(written.arenaWatch.allyCodes[2].poOffset, 120, "unprocessed entries must be untouched");
+        });
+
         it("refreshes the persisted name when the API name differs from an existing doc", async () => {
             const patron: ActivePatron = { discordID: "shard_test_user2", amount_cents: 100 };
 
@@ -655,6 +771,181 @@ describe("PatreonFuncs Module", () => {
             assert.ok(doc, "the existing doc must remain in the map");
             assert.strictEqual(doc.name, "NewApiName", "the persisted name must be refreshed to the new API name");
             assert.ok(changedCodes.has(888777666), "a name refresh must mark the doc changed");
+        });
+    });
+
+    describe("recordHistoryAtPayout()", () => {
+        it("does not write an entry when the rank is nullish at payout", () => {
+            // A watched ship-only (or char-only) account has no rank for the other arena —
+            // an entry of { rank: null } must never land in the history
+            const fromUndefined = (patreonFuncs as any).recordHistoryAtPayout(undefined, undefined, 0);
+            assert.strictEqual(fromUndefined, undefined, "no entry should be created for an undefined rank");
+
+            const existing = [{ rank: 5, ts: 1000 }];
+            const fromNull = (patreonFuncs as any).recordHistoryAtPayout(existing, null, 0);
+            assert.strictEqual(fromNull, existing, "history must be returned unchanged for a null rank");
+        });
+
+        it("still writes an entry for a real rank at payout", () => {
+            const result = (patreonFuncs as any).recordHistoryAtPayout(undefined, 12, 0);
+            assert.strictEqual(result?.length, 1);
+            assert.strictEqual(result?.[0].rank, 12);
+        });
+    });
+
+    describe("processShardPatron() at payout minute", () => {
+        const PO_ALLY_CODE = 888777666;
+
+        beforeEach(async () => {
+            await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: PO_ALLY_CODE });
+        });
+
+        it("does not record a charHist entry when the account has no char rank", async () => {
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+
+            // Compute a poOffset that puts the char payout (~18h offset) ~30s from now,
+            // so charMinLeft === 0 inside processShardPatron. Fractional offsets are fine.
+            const now = Date.now();
+            const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 30000) / 60000;
+
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: PO_ALLY_CODE, mention: null, poOffset }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            // Ship-only account: char rank is null and there is no stored doc
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [PO_ALLY_CODE, {
+                    name: "ShipOnly",
+                    allyCode: PO_ALLY_CODE,
+                    arena: { char: { rank: null }, ship: { rank: 5 } },
+                    poUTCOffsetMinutes: poOffset,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>();
+            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>());
+
+            const doc = arenaPlayerMap.get(PO_ALLY_CODE);
+            assert.ok(doc, "a stub doc should exist for the watched account");
+            assert.strictEqual(doc.charHist, undefined, `no charHist entry should be written, got: ${JSON.stringify(doc.charHist)}`);
+        });
+    });
+
+    describe("formatPayouts()", () => {
+        it("does not crash when a player has no stored rank and renders N/A", () => {
+            const players = [
+                {
+                    allyCode: 777666555,
+                    name: "NoRank",
+                    mention: null,
+                    poOffset: 0,
+                    lastChar: null,
+                    lastShip: null,
+                    duration: 5,
+                    timeTil: "5 minutes until payout.",
+                },
+            ] as unknown as ArenaWatchAcct[];
+
+            const embed = (patreonFuncs as any).formatPayouts(players, "char");
+            assert.ok(embed.fields.length, "expected a payout field");
+            assert.ok(embed.fields[0].value.includes("N/A"), `expected N/A rank, got: ${embed.fields[0].value}`);
+            assert.ok(embed.fields[0].value.includes("NoRank"), `expected player name, got: ${embed.fields[0].value}`);
+        });
+    });
+
+    describe("shardTimes()", () => {
+        const ST_ALLY_CODE = 777666555;
+        const ST_USER_ID = "shardtimes_test_user";
+        let stFuncs: PatreonFuncs;
+        let sentPayloads: { embeds?: { fields?: { name: string; value: string }[] }[] }[];
+
+        before(() => {
+            sentPayloads = [];
+            const fakeChannel = {
+                id: "st-chan",
+                type: 0,
+                guild: {},
+                permissionsFor: () => ({ has: () => true }),
+                send: async (payload: (typeof sentPayloads)[number]) => {
+                    sentPayloads.push(payload);
+                    return { id: "st-msg-1" };
+                },
+            };
+            const channelsCache = {
+                get: (id: string) => (id === "st-chan" ? fakeChannel : undefined),
+                find: (pred: (chan: typeof fakeChannel) => boolean) => (pred(fakeChannel) ? fakeChannel : undefined),
+            };
+            const stClient = {
+                user: { id: "bot123", username: "TestBot" },
+                channels: { cache: channelsCache },
+                shard: {
+                    broadcastEval: async (fn: (client: unknown, ctx: unknown) => unknown, opts: { context: unknown }) => [
+                        await fn({ channels: { cache: channelsCache }, user: { id: "bot123" } }, opts.context),
+                    ],
+                },
+            } as unknown as Client<true>;
+            stFuncs = new PatreonFuncs();
+            stFuncs.init(stClient);
+        });
+
+        beforeEach(async () => {
+            sentPayloads.length = 0;
+            await client.db(testDbName).collection("users").deleteMany({ id: ST_USER_ID });
+            await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: ST_ALLY_CODE });
+        });
+
+        after(async () => {
+            await client.db(testDbName).collection("users").deleteMany({ id: ST_USER_ID });
+            await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: ST_ALLY_CODE });
+        });
+
+        it("sends a payout schedule hydrated with name and rank from the arenaPlayers collection", async () => {
+            const patron: ActivePatron = { discordID: ST_USER_ID, amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: ST_USER_ID }, patron);
+
+            const user = {
+                id: ST_USER_ID,
+                accounts: [],
+                arenaWatch: {
+                    // Post-migration shape: no name/lastChar/lastShip on the watch entry
+                    allyCodes: [{ allyCode: ST_ALLY_CODE, mention: null, poOffset: 0 }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "st-chan", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+            await cache.put(testDbName, "users", { id: ST_USER_ID }, user);
+
+            await client
+                .db(testDbName)
+                .collection("arenaPlayers")
+                .insertOne({ allyCode: ST_ALLY_CODE, name: "Hydrated", lastCharRank: 7, lastShipRank: 3 });
+
+            await stFuncs.shardTimes();
+
+            assert.strictEqual(sentPayloads.length, 1, "expected exactly one payout message");
+            const field = sentPayloads[0]?.embeds?.[0]?.fields?.[0];
+            assert.ok(field, "expected a payout field in the embed");
+            assert.ok(field.value.includes("Hydrated"), `expected hydrated name, got: ${field.value}`);
+            assert.ok(field.value.includes("7"), `expected hydrated char rank, got: ${field.value}`);
         });
     });
 
@@ -762,6 +1053,35 @@ describe("shouldWriteHistory()", () => {
     });
 });
 
+describe("hydrateWatchAccounts()", () => {
+    it("merges name and ranks from arenaPlayers docs onto watch entries", () => {
+        const entries = [{ allyCode: 111, mention: null, poOffset: 60 } as ArenaWatchConfig];
+        const playerMap = new Map<number, ArenaPlayer>([
+            [111, { allyCode: 111, name: "Merged", lastCharRank: 4, lastShipRank: 9 }],
+        ]);
+        const result = hydrateWatchAccounts(entries, playerMap);
+        assert.strictEqual(result.length, 1);
+        assert.strictEqual(result[0].name, "Merged");
+        assert.strictEqual(result[0].lastChar, 4);
+        assert.strictEqual(result[0].lastShip, 9);
+        assert.strictEqual(result[0].poOffset, 60);
+    });
+
+    it("falls back to the ally code as name and null ranks when no doc exists", () => {
+        const entries = [{ allyCode: 222, mention: null, poOffset: 0 } as ArenaWatchConfig];
+        const result = hydrateWatchAccounts(entries, new Map());
+        assert.strictEqual(result[0].name, "222");
+        assert.strictEqual(result[0].lastChar, null);
+        assert.strictEqual(result[0].lastShip, null);
+    });
+
+    it("does not mutate the input entries", () => {
+        const entry = { allyCode: 333, mention: null, poOffset: 0 } as ArenaWatchConfig;
+        hydrateWatchAccounts([entry], new Map());
+        assert.deepStrictEqual(entry, { allyCode: 333, mention: null, poOffset: 0 });
+    });
+});
+
 describe("collectAllyCodes()", () => {
     it("returns empty array when no eligible patrons (below tier 1)", () => {
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 50 }];
@@ -823,6 +1143,27 @@ describe("collectAllyCodes()", () => {
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.strictEqual(result.filter((c) => c === 555).length, 1);
+    });
+
+    it("only collects arenaWatch codes within the patron's tier account limit", () => {
+        // $1 tier => arenaWatchConfig.tier1 (1) watched account; the rest are never
+        // processed, so fetching their game data every tick is wasted work
+        const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
+        const userMap = new Map<string, UserConfig>([
+            ["u1", {
+                id: "u1",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [
+                        { allyCode: 331, mention: null, poOffset: 0 },
+                        { allyCode: 332, mention: null, poOffset: 0 },
+                        { allyCode: 333, mention: null, poOffset: 0 },
+                    ],
+                },
+            } as UserConfig],
+        ]);
+        const result = collectAllyCodes(patrons, userMap);
+        assert.deepStrictEqual(result, [331], "codes past the tier limit must not be collected");
     });
 
     it("skips patrons with no user record in the map", () => {

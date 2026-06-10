@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
@@ -48,7 +47,6 @@ function getReplyFields(reply: any): any[] | undefined {
 
 describe("Guilds Command Functionality", () => {
     let mongoClient: MongoClient;
-    const testDbName = env.MONGODB_SWGOHBOT_DB;
 
     // Store original methods
     const originalGuild = swgohAPI.guild;
@@ -67,11 +65,8 @@ describe("Guilds Command Functionality", () => {
         swgohAPI.unitStats = originalUnitStats;
         swgohAPI.getRawGuild = originalGetRawGuild;
 
-        try {
-            await mongoClient.db(testDbName).collection("users").deleteMany({});
-        } catch (e) {
-            // Ignore cleanup errors
-        }
+        // No users cleanup: this file never writes to the users collection, and a
+        // wholesale deleteMany races concurrent test files that do
         await closeMongoClient();
     });
 

@@ -286,9 +286,9 @@ export interface UserAcct {
 export interface ArenaWatchAcct {
     allyCode: number;
     name: string;
-    mention: string;
-    lastChar: number;
-    lastShip: number;
+    mention: string | null;
+    lastChar: number | null;
+    lastShip: number | null;
     poOffset: number;
     mark?: string;
     warn?: { min?: number; arena?: string };

@@ -43,6 +43,9 @@ describe("ArenaWatch", () => {
         };
     }
 
+    // Scope cleanup to this file's ally codes — concurrent test files share the collection
+    const AW_TEST_PLAYER_FILTER = { allyCode: { $in: [123456789, 987654321, 999888777, 555555555, 611111111, 622222222] } };
+
     before(async () => {
         const mongoClient = await getMongoClient();
         cache.init(mongoClient);
@@ -52,7 +55,7 @@ describe("ArenaWatch", () => {
     after(async () => {
         try {
             const client = await getMongoClient();
-            await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany({});
+            await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany(AW_TEST_PLAYER_FILTER);
         } catch (_) {
             // Ignore cleanup errors
         }
@@ -420,7 +423,7 @@ describe("ArenaWatch", () => {
             (swgohAPI as any).unitStats = mockSwapi.unitStats.bind(mockSwapi);
             try {
                 const client = await getMongoClient();
-                await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany({});
+                await client.db(env.MONGODB_SWGOHBOT_DB).collection("arenaPlayers").deleteMany(AW_TEST_PLAYER_FILTER);
             } catch (_) {
                 // Ignore
             }
@@ -540,21 +543,23 @@ describe("ArenaWatch", () => {
         });
 
         it("should add multiple comma-separated ally codes", async () => {
-            const player1 = createMockPlayer({ allyCode: 111111111, name: "Player1" });
-            const player2 = createMockPlayer({ allyCode: 222222222, name: "Player2" });
+            // 611/622 prefixes — 111111111/222222222 are reserved by arenaPlayerRegistry.test.ts,
+            // which runs concurrently against the same arenaPlayers collection
+            const player1 = createMockPlayer({ allyCode: 611111111, name: "Player1" });
+            const player2 = createMockPlayer({ allyCode: 622222222, name: "Player2" });
             mockSwapi.setPlayerData(player1);
             mockSwapi.setPlayerData(player2);
 
             const aw = createBaseAW();
             const { result, aw: awRes } = await processAWChanges({
                 target: "allycode",
-                interactionOptions: { subCommand: "add", allyCodes: "111111111, 222222222", codeCap: 5 } as any,
+                interactionOptions: { subCommand: "add", allyCodes: "611111111, 622222222", codeCap: 5 } as any,
                 aw,
             });
 
             assert.strictEqual(awRes.allyCodes.length, 2);
-            assert.ok(result.outLog.includes("111111111 added!"));
-            assert.ok(result.outLog.includes("222222222 added!"));
+            assert.ok(result.outLog.includes("611111111 added!"));
+            assert.ok(result.outLog.includes("622222222 added!"));
         });
 
         it("should edit an existing ally code and update player data", async () => {

@@ -1,7 +1,6 @@
 import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
-import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
 import swgohAPI from "../../modules/swapi.ts";
@@ -48,7 +47,6 @@ function getReplyDescription(reply: any): string | undefined {
 
 describe("GuildSearch Command Functionality", () => {
     let mongoClient: MongoClient;
-    const testDbName = env.MONGODB_SWGOHBOT_DB;
 
     before(async () => {
         mongoClient = await getMongoClient();
@@ -57,11 +55,8 @@ describe("GuildSearch Command Functionality", () => {
     });
 
     after(async () => {
-        try {
-            await mongoClient.db(testDbName).collection("users").deleteMany({});
-        } catch (e) {
-            // Ignore cleanup errors
-        }
+        // No users cleanup: this file never writes to the users collection, and a
+        // wholesale deleteMany races concurrent test files that do
         await closeMongoClient();
     });
 

@@ -24,11 +24,19 @@ describe("Register", () => {
         arenaPlayerRegistry.init(cache);
     });
 
+    // Unique interaction user for this file — the shared mock default ("987654321") is
+    // read by other test files that expect it to stay unregistered
+    const REG_USER = { id: "register-test-user", username: "RegTester" } as any;
+
+    // Scope cleanup to this file's ids/codes — concurrent test files share these collections
+    const REG_TEST_USER_FILTER = { id: { $in: ["register-test-user", "other-user-id-999"] } };
+    const REG_TEST_PLAYER_FILTER = { allyCode: { $in: [123456789, 987654321] } };
+
     after(async () => {
         try {
             const client = await getMongoClient();
-            await client.db(testDbName).collection("users").deleteMany({});
-            await client.db(testDbName).collection("arenaPlayers").deleteMany({});
+            await client.db(testDbName).collection("users").deleteMany(REG_TEST_USER_FILTER);
+            await client.db(testDbName).collection("arenaPlayers").deleteMany(REG_TEST_PLAYER_FILTER);
         } catch (_) {
             // Ignore cleanup errors
         }
@@ -41,11 +49,11 @@ describe("Register", () => {
         (swgohAPI as any).unitStats = mockSwapi.unitStats.bind(mockSwapi);
         // Mock getPlayerCooldown to avoid needing a fully initialized patreonFuncs
         (patreonFuncs as any).getPlayerCooldown = async () => ({ player: 180, guild: 360 });
-        // Clear users and arenaPlayers collections before each test
+        // Clear this file's users and arenaPlayers docs before each test
         try {
             const client = await getMongoClient();
-            await client.db(testDbName).collection("users").deleteMany({});
-            await client.db(testDbName).collection("arenaPlayers").deleteMany({});
+            await client.db(testDbName).collection("users").deleteMany(REG_TEST_USER_FILTER);
+            await client.db(testDbName).collection("arenaPlayers").deleteMany(REG_TEST_PLAYER_FILTER);
         } catch (_) {
             // Ignore
         }
@@ -58,6 +66,7 @@ describe("Register", () => {
 
     it("should return error for invalid ally code format", async () => {
         const interaction = createMockInteraction({
+            user: REG_USER,
             optionsData: { allycode: "invalid" },
         });
         const ctx = createCommandContext({ interaction });
@@ -68,6 +77,7 @@ describe("Register", () => {
 
     it("should return error for ally code that is too short", async () => {
         const interaction = createMockInteraction({
+            user: REG_USER,
             optionsData: { allycode: "12345" },
         });
         const ctx = createCommandContext({ interaction });
@@ -80,6 +90,7 @@ describe("Register", () => {
         // Valid allycode format, but user is different and permLevel < GUILD_ADMIN (6)
         const otherUser = { id: "other-user-id-999", username: "OtherUser" } as any;
         const interaction = createMockInteraction({
+            user: REG_USER,
             optionsData: {
                 allycode: "123456789",
                 user: otherUser,
@@ -104,6 +115,7 @@ describe("Register", () => {
         mockSwapi.setPlayerData(player);
 
         const interaction = createMockInteraction({
+            user: REG_USER,
             guild: {
                 id: "987654321",
                 name: "Test Guild",
@@ -145,6 +157,7 @@ describe("Register", () => {
         mockSwapi.setPlayerData(player);
 
         const interaction = createMockInteraction({
+            user: REG_USER,
             guild: {
                 id: "987654321",
                 name: "Test Guild",
@@ -166,6 +179,7 @@ describe("Register", () => {
         // Do not set any player data — unitStats will return an empty array
 
         const interaction = createMockInteraction({
+            user: REG_USER,
             guild: {
                 id: "987654321",
                 name: "Test Guild",

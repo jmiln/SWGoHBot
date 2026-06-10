@@ -11,10 +11,10 @@ import type {
     ArenaHistEntry,
     ArenaPlayer,
     ArenaWatchAcct,
+    ArenaWatchConfig,
     PatronUser,
     PlayerArenaRes,
     PlayerUpdates,
-    UserAcct,
     UserConfig,
 } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
@@ -117,6 +117,27 @@ export function buildArenaHistChart(
     };
 }
 
+// The rank/climb fields handleArenaAlerts reads and updates — both ArenaPlayer docs and
+// legacy UserAcct entries satisfy this shape
+type ArenaRankTracking = Pick<ArenaPlayer, "lastCharRank" | "lastCharClimb" | "lastShipRank" | "lastShipClimb">;
+
+// Merge persisted arenaPlayers data (name/ranks) onto watch-list entries, which only
+// store per-watch settings (mention, poOffset, marks). Returns fresh objects so callers
+// can attach ephemeral fields (duration, timeTil, outString) without mutating the user doc.
+export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map<number, ArenaPlayer>): ArenaWatchAcct[] {
+    return entries.map((entry) => {
+        const doc = playerMap.get(entry.allyCode);
+        return {
+            ...structuredClone(entry),
+            // structuredClone's lib typing widens `string | null` to optional, so re-assert mention
+            mention: entry.mention ?? null,
+            name: doc?.name || String(entry.allyCode),
+            lastChar: doc?.lastCharRank ?? null,
+            lastShip: doc?.lastShipRank ?? null,
+        };
+    });
+}
+
 const tiers = patreonModule.tiers;
 
 // Arena payout offsets (hours difference from daily reset)
@@ -130,6 +151,13 @@ const TIER_1_CENTS = 100; // $1
 const TIER_5_CENTS = 500; // $5
 const TIER_10_CENTS = 1000; // $10
 
+// How many arenaWatch accounts a patron's tier allows
+function getAwAcctCount(amountCents: number): number {
+    if (amountCents < TIER_5_CENTS) return constants.arenaWatchConfig.tier1;
+    if (amountCents < TIER_10_CENTS) return constants.arenaWatchConfig.tier2;
+    return constants.arenaWatchConfig.tier3;
+}
+
 export function collectAllyCodes(patrons: ActivePatron[], userMap: Map<string, UserConfig>): number[] {
     const codes = new Set<number>();
     for (const patron of patrons) {
@@ -139,7 +167,9 @@ export function collectAllyCodes(patrons: ActivePatron[], userMap: Map<string, U
         for (const allyCode of user.accounts ?? []) {
             codes.add(allyCode);
         }
-        for (const awAcct of user.arenaWatch?.allyCodes ?? []) {
+        // Watch entries past the tier limit are never processed, so don't fetch them
+        const acctCount = getAwAcctCount(patron.amount_cents);
+        for (const awAcct of user.arenaWatch?.allyCodes?.slice(0, acctCount) ?? []) {
             codes.add(awAcct.allyCode);
         }
     }
@@ -329,8 +359,7 @@ class PatreonFuncs {
                 // DM alerts — gated on arenaAlert being configured. Must run BEFORE the stored
                 // rank is touched: handleArenaAlerts compares arenaData.rank against the doc's
                 // lastRank for drop alerts, then updates the rank/climb tracking itself.
-                // ArenaPlayer field names match UserAcct for the rank/climb fields handleArenaAlerts accesses
-                await this.handleArenaAlerts(arenaType, player, playerDoc as unknown as UserAcct, user, patron, timeLeft, minTil);
+                await this.handleArenaAlerts(arenaType, player, playerDoc, user, patron, timeLeft, minTil);
 
                 if (playerDoc[rankKey] !== prevRank || playerDoc[climbKey] !== prevClimb) {
                     changedCodes.add(allyCode);
@@ -399,14 +428,12 @@ class PatreonFuncs {
             if ((!aw.payout?.char?.enabled || !aw.payout?.char?.channel) && (!aw.payout?.fleet?.enabled || !aw.payout?.fleet?.channel))
                 continue;
 
-            // Make a copy just in case, so nothing goes wonky
-            let acctCount = 0;
-            if (patron.amount_cents < TIER_5_CENTS) acctCount = constants.arenaWatchConfig.tier1;
-            else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
-            else acctCount = constants.arenaWatchConfig.tier3;
-
-            const players = structuredClone(aw.allyCodes.slice(0, acctCount)) as unknown as ArenaWatchAcct[];
-            if (!players?.length) continue;
+            // Names and ranks live in the arenaPlayers collection now, so hydrate the watch
+            // entries before formatting the payout schedule
+            const watchEntries = aw.allyCodes.slice(0, getAwAcctCount(patron.amount_cents));
+            if (!watchEntries.length) continue;
+            const playerDocMap = await arenaPlayerRegistry.batchGet(watchEntries.map((a) => a.allyCode));
+            const players = hydrateWatchAccounts(watchEntries, playerDocMap);
 
             const [charMsg, fleetMsg] = await Promise.all([
                 aw?.payout?.char?.enabled && aw.payout.char.channel
@@ -458,11 +485,7 @@ class PatreonFuncs {
         // If they don't want any alerts or payouts, skip
         if (!hasAlerts && !hasPayouts) return;
 
-        let acctCount = 0;
-        if (patron.amount_cents < TIER_5_CENTS) acctCount = constants.arenaWatchConfig.tier1;
-        else if (patron.amount_cents < TIER_10_CENTS) acctCount = constants.arenaWatchConfig.tier2;
-        else acctCount = constants.arenaWatchConfig.tier3;
-
+        const acctCount = getAwAcctCount(patron.amount_cents);
         const accountsToCheck = structuredClone(aw.allyCodes.slice(0, acctCount)) as unknown as ArenaWatchAcct[];
         if (!accountsToCheck.length) return;
 
@@ -562,12 +585,12 @@ class PatreonFuncs {
                 if (aw.useMarksInLog && player.mark) {
                     pName = `${player.mark} ${pName}`;
                 }
-                if (player.lastChar !== null && charMinLeft === 0 && ["char", "both"].includes(player.result)) {
+                if (player.lastChar != null && charMinLeft === 0 && ["char", "both"].includes(player.result)) {
                     // If they have char payouts turned on, do that here
                     charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
                 }
                 if (
-                    player.lastChar !== null &&
+                    player.lastChar != null &&
                     player.warn?.min &&
                     ["char", "both"].includes(player.warn.arena) &&
                     charMinLeft === player.warn.min
@@ -575,12 +598,12 @@ class PatreonFuncs {
                     // Warn them of their upcoming payout if this is enabled
                     charOut.push(`${pName}'s **character** arena payout is in ${`${player.warn.min} minutes`}`);
                 }
-                if (player.lastShip !== null && fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
+                if (player.lastShip != null && fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
                     // If they have fleet payouts turned on, do that here
                     shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
                 }
                 if (
-                    player.lastShip !== null &&
+                    player.lastShip != null &&
                     player.warn?.min &&
                     ["fleet", "both"].includes(player.warn.arena) &&
                     fleetMinLeft === player.warn.min
@@ -665,14 +688,21 @@ class PatreonFuncs {
             }
         }
 
-        // Update poOffset in user.arenaWatch.allyCodes after processing — rank/history now live in arenaPlayers collection
+        // Update poOffset in user.arenaWatch.allyCodes after processing — rank/history now live
+        // in the arenaPlayers collection, so poOffset is the only user-doc field this loop can
+        // touch. Only write the doc back when one actually changed.
+        const storedByCode = new Map(user.arenaWatch.allyCodes.map((a) => [a.allyCode, a]));
+        let userChanged = false;
         for (const acct of accountsToCheck) {
-            const idx = user.arenaWatch.allyCodes.findIndex((a) => a.allyCode === acct.allyCode);
-            if (idx !== -1) {
-                user.arenaWatch.allyCodes[idx].poOffset = acct.poOffset;
+            const stored = storedByCode.get(acct.allyCode);
+            if (stored && stored.poOffset !== acct.poOffset) {
+                stored.poOffset = acct.poOffset;
+                userChanged = true;
             }
         }
-        await userReg.updateUser(patron.discordID, user);
+        if (userChanged) {
+            await userReg.updateUser(patron.discordID, user);
+        }
     }
 
     async guildsUpdate(): Promise<void> {
@@ -937,8 +967,13 @@ class PatreonFuncs {
 
     // Private helper methods
 
-    private recordHistoryAtPayout(hist: ArenaHistEntry[] | undefined, rank: number, minLeft: number | null): ArenaHistEntry[] | undefined {
-        if (minLeft !== 0) return hist;
+    private recordHistoryAtPayout(
+        hist: ArenaHistEntry[] | undefined,
+        rank: number | null | undefined,
+        minLeft: number | null,
+    ): ArenaHistEntry[] | undefined {
+        // No rank means the account hasn't played this arena type — never write a null entry
+        if (minLeft !== 0 || rank == null) return hist;
         return shouldWriteHistory(hist) ? updateArenaHistory(hist, rank) : hist;
     }
 
@@ -1005,7 +1040,8 @@ class PatreonFuncs {
         const arenaString = `last${toProperCase(arena === "fleet" ? "ship" : arena)}`;
 
         for (const player of players) {
-            const rankString = player[arenaString].toString().padStart(3);
+            // A watched account may have no stored rank yet (fresh add, arena type not played)
+            const rankString = (player[arenaString] ?? "N/A").toString().padStart(3);
             player.outString = expandSpaces(
                 `**\`${constants.zws} ${rankString} ${constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`,
             );
@@ -1023,7 +1059,7 @@ class PatreonFuncs {
             fieldOut.push({
                 name: `PO in ${key}`,
                 value: time.players
-                    .sort((a: ArenaWatchAcct, b: ArenaWatchAcct) => a[arenaString] - b[arenaString])
+                    .sort((a: ArenaWatchAcct, b: ArenaWatchAcct) => (a[arenaString] ?? 0) - (b[arenaString] ?? 0))
                     .map((p: ArenaWatchAcct) => p.outString)
                     .join("\n"),
             });
@@ -1190,7 +1226,7 @@ class PatreonFuncs {
     private async handleArenaAlerts(
         arenaType: "char" | "ship",
         player: PlayerArenaRes,
-        acc: UserAcct,
+        acc: ArenaRankTracking,
         user: UserConfig,
         patron: { discordID: string },
         timeLeft: number,

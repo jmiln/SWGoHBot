@@ -24,9 +24,13 @@ describe("UserReg Module", () => {
         userReg.init(cache);
     });
 
+    // All ids in this file use the "user-" prefix — scope cleanup to it so concurrent
+    // test files' documents are never wiped mid-run
+    const USERS_TEST_FILTER = { id: { $regex: "^user-" } };
+
     after(async () => {
         try {
-            await (await getMongoClient()).db(testDbName).collection("users").deleteMany({});
+            await (await getMongoClient()).db(testDbName).collection("users").deleteMany(USERS_TEST_FILTER);
         } catch (_) {
             // Ignore cleanup errors
         }
@@ -35,7 +39,7 @@ describe("UserReg Module", () => {
 
     beforeEach(async () => {
         try {
-            await (await getMongoClient()).db(testDbName).collection("users").deleteMany({});
+            await (await getMongoClient()).db(testDbName).collection("users").deleteMany(USERS_TEST_FILTER);
         } catch (_) {
             // Collection may not exist yet
         }

@@ -81,6 +81,19 @@ describe("ArenaPlayerRegistry", () => {
             assert.strictEqual(doc?.name, "New");
             assert.strictEqual(doc?.lastCharRank, 20);
         });
+
+        it("does not overwrite stored fields with null when a key is explicitly undefined", async () => {
+            // The driver serializes `undefined` as null in a $set unless stripped first —
+            // re-adding a watched code without one arena type must not clobber the stored rank
+            await client
+                .db(db)
+                .collection("arenaPlayers")
+                .insertOne({ allyCode: 111111111, name: "Old", lastCharRank: 5, lastShipRank: 9 });
+            await registry.upsertPlayer({ allyCode: 111111111, name: "New", lastCharRank: 7, lastShipRank: undefined });
+            const doc = await client.db(db).collection("arenaPlayers").findOne({ allyCode: 111111111 });
+            assert.strictEqual(doc?.lastCharRank, 7);
+            assert.strictEqual(doc?.lastShipRank, 9, "an undefined key must not null out the stored rank");
+        });
     });
 
     describe("batchUpsert()", () => {
@@ -95,6 +108,17 @@ describe("ArenaPlayerRegistry", () => {
 
         it("is a no-op when given an empty array", async () => {
             await assert.doesNotReject(() => registry.batchUpsert([]));
+        });
+
+        it("does not overwrite stored fields with null when a key is explicitly undefined", async () => {
+            await client
+                .db(db)
+                .collection("arenaPlayers")
+                .insertOne({ allyCode: 222222222, name: "Old", lastCharRank: 5, lastShipRank: 9 });
+            await registry.batchUpsert([{ allyCode: 222222222, name: "New", lastCharRank: 7, lastShipRank: undefined }]);
+            const doc = await client.db(db).collection("arenaPlayers").findOne({ allyCode: 222222222 });
+            assert.strictEqual(doc?.lastCharRank, 7);
+            assert.strictEqual(doc?.lastShipRank, 9, "an undefined key must not null out the stored rank");
         });
     });
 });

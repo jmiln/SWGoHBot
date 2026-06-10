@@ -31,9 +31,10 @@ class UserReg {
             accounts: { $in: allyCodes },
         })) as UserConfig[];
         const map = new Map<number, UserConfig[]>();
+        const wantedCodes = new Set(allyCodes);
         for (const user of users ?? []) {
             for (const allyCode of user.accounts ?? []) {
-                if (allyCodes.includes(allyCode)) {
+                if (wantedCodes.has(allyCode)) {
                     if (!map.has(allyCode)) map.set(allyCode, []);
                     map.get(allyCode)?.push(user);
                 }
