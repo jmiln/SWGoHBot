@@ -50,9 +50,10 @@ export async function fetchPlayerData(
     retryDelayMs = RETRY_DELAY_MS,
 ) {
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-        const timeoutPromise = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error(`getPlayer(${playerId}) timed out after ${timeoutMs}ms`)), timeoutMs),
-        );
+        let timeoutTimer: NodeJS.Timeout | undefined;
+        const timeoutPromise = new Promise<never>((_, reject) => {
+            timeoutTimer = setTimeout(() => reject(new Error(`getPlayer(${playerId}) timed out after ${timeoutMs}ms`)), timeoutMs);
+        });
 
         try {
             const res = await Promise.race([stub.getPlayer(null, playerId.toString()) as Promise<ComlinkPlayer>, timeoutPromise]);
@@ -83,6 +84,9 @@ export async function fetchPlayerData(
             const statusStr = code != null ? ` [status ${code}]` : "";
             logger.error(`[getStrippedModsWorker] Error fetching player ${playerId}:${statusStr} ${message}`);
             return undefined;
+        } finally {
+            // Clear the racing timer so it doesn't keep the event loop (or worker) alive for the full timeout
+            clearTimeout(timeoutTimer);
         }
     }
 }

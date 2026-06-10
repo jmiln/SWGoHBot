@@ -148,6 +148,17 @@ describe("fetchPlayerData", () => {
         assert.strictEqual(stub.calls(), 3);
     });
 
+    it("does not leave a pending timeout timer after resolving", async () => {
+        const countTimeouts = () => process.getActiveResourcesInfo().filter((r) => r === "Timeout").length;
+        const stub = makeStub({ rosterUnit: [] });
+
+        const before = countTimeouts();
+        await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000);
+        const after = countTimeouts();
+
+        assert.strictEqual(after, before, "fetchPlayerData should clear its timeout timer once the request settles");
+    });
+
     it("does not retry on non-502 errors", async () => {
         const err = Object.assign(new Error("Not Found"), { response: { statusCode: 404 } });
         const stub = makeRetryStub(99, err, null);
