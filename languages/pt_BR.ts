@@ -58,8 +58,8 @@ SING: "minuto",
 };
 
 export default class extends Language {
-    constructor(...args) {
-        super(...args);
+    constructor() {
+        super();
 
         this.DAYSOFWEEK = DAYSOFWEEK;
         this.TIMES = TIMES;

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { env } from "../../config/config.ts";
-import EnUS from "../../languages/en_US.js";
+import EnUS from "../../languages/en_US.ts";
 import cache from "../../modules/cache.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";

@@ -4,7 +4,11 @@ export default class Language {
     // Static registry for all language instances
     private static _languages: Record<string, Language> = {};
 
-    language: Record<string, string | ((...args: (string | number | boolean | object)[]) => string)>;
+    // Values can be plain strings, lookup objects (e.g. BASE_MOD_TYPES), or template
+    // functions; params are intentionally untyped (any) so each language file's inline
+    // arrow functions stay unannotated. get() narrows results back to string.
+    // biome-ignore lint/suspicious/noExplicitAny: contextual typing for 7k+ lines of lang strings
+    language: Record<string, string | object | ((...args: any[]) => unknown)>;
     DAYSOFWEEK: Record<string, Record<string, string>>;
     TIMES: Record<string, Record<string, string>>;
 
