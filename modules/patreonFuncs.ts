@@ -9,6 +9,7 @@ import type {
     ActivePatron,
     ArenaHistChartPayload,
     ArenaHistEntry,
+    ArenaPlayer,
     ArenaWatchAcct,
     PatronUser,
     PlayerArenaRes,
@@ -16,9 +17,8 @@ import type {
     UserAcct,
     UserConfig,
 } from "../types/types.ts";
-import cache from "./cache.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
-import type { ArenaPlayer } from "../types/types.ts";
+import cache from "./cache.ts";
 import { chunkArray, expandSpaces, formatDuration, getUTCFromOffset, msgArray, toProperCase, wait } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
@@ -258,6 +258,7 @@ class PatreonFuncs {
         user: UserConfig,
         playerMap: Map<number, PlayerArenaRes>,
         arenaPlayerMap: Map<number, ArenaPlayer>,
+        changedCodes: Set<number>,
     ): Promise<void> {
         if (user.arenaAlert) {
             if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
@@ -274,14 +275,11 @@ class PatreonFuncs {
 
             const playerDoc = arenaPlayerMap.get(allyCode) ?? { allyCode, name: "" };
 
-            if (!playerDoc.lastCharRank) {
-                playerDoc.lastCharRank = 0;
-                playerDoc.lastCharClimb = 0;
-            }
-            if (!playerDoc.lastShipRank) {
-                playerDoc.lastShipRank = 0;
-                playerDoc.lastShipClimb = 0;
-            }
+            // In-memory defaults only — not marked changed; they persist alongside the next real change
+            playerDoc.lastCharRank ??= 0;
+            playerDoc.lastCharClimb ??= 0;
+            playerDoc.lastShipRank ??= 0;
+            playerDoc.lastShipClimb ??= 0;
 
             const player = playerMap.get(allyCode) ?? null;
 
@@ -304,6 +302,11 @@ class PatreonFuncs {
             // Record payout history (runs for all patrons regardless of arenaAlert config) and
             // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
             // getTimeLeft() involves a Temporal lookup, so compute it once and share it.
+            // Refresh the stored name whenever the API provides a non-empty one (renames propagate)
+            if (player.name && player.name !== playerDoc.name) {
+                playerDoc.name = player.name;
+                changedCodes.add(allyCode);
+            }
             for (const arenaType of ["char", "ship"] as const) {
                 const arenaData = arenaType === "char" ? player.arena.char : player.arena.ship;
                 if (arenaData?.rank == null) continue;
@@ -312,17 +315,26 @@ class PatreonFuncs {
                 const minTil = Math.floor(timeLeft / constants.minMS);
 
                 const histKey = arenaType === "char" ? "charHist" : "shipHist";
-                playerDoc[histKey] = this.recordHistoryAtPayout(playerDoc[histKey], arenaData.rank, minTil);
-
-                if (arenaType === "char") {
-                    playerDoc.lastCharRank = arenaData.rank;
-                } else {
-                    playerDoc.lastShipRank = arenaData.rank;
+                const newHist = this.recordHistoryAtPayout(playerDoc[histKey], arenaData.rank, minTil);
+                if (newHist !== playerDoc[histKey]) {
+                    playerDoc[histKey] = newHist;
+                    changedCodes.add(allyCode);
                 }
 
-                // DM alerts — gated on arenaAlert being configured
+                const rankKey = arenaType === "char" ? "lastCharRank" : "lastShipRank";
+                const climbKey = arenaType === "char" ? "lastCharClimb" : "lastShipClimb";
+                const prevRank = playerDoc[rankKey];
+                const prevClimb = playerDoc[climbKey];
+
+                // DM alerts — gated on arenaAlert being configured. Must run BEFORE the stored
+                // rank is touched: handleArenaAlerts compares arenaData.rank against the doc's
+                // lastRank for drop alerts, then updates the rank/climb tracking itself.
                 // ArenaPlayer field names match UserAcct for the rank/climb fields handleArenaAlerts accesses
                 await this.handleArenaAlerts(arenaType, player, playerDoc as unknown as UserAcct, user, patron, timeLeft, minTil);
+
+                if (playerDoc[rankKey] !== prevRank || playerDoc[climbKey] !== prevClimb) {
+                    changedCodes.add(allyCode);
+                }
             }
 
             arenaPlayerMap.set(allyCode, playerDoc);
@@ -338,27 +350,32 @@ class PatreonFuncs {
         const allyCodes = collectAllyCodes(patrons, userMap);
         const playerMap = await this.buildPlayerMap(allyCodes);
         const arenaPlayerMap = await arenaPlayerRegistry.batchGet(allyCodes);
+        const changedCodes = new Set<number>();
 
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = userMap.get(patron.discordID);
             if (!user) continue;
             if (user.accounts?.length) {
-                await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap).catch((err) => {
+                await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes).catch((err) => {
                     logger.error(
                         `[arenaTick] processArenaAlerts error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                     );
                 });
             }
-            await this.processShardPatron(patron, user, playerMap, arenaPlayerMap).catch((err) => {
+            await this.processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes).catch((err) => {
                 logger.error(
                     `[arenaTick] processShardPatron error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
                 );
             });
         }
 
-        if (arenaPlayerMap.size) {
-            await arenaPlayerRegistry.batchUpsert([...arenaPlayerMap.values()]).catch((err) => {
+        // Only write docs that actually changed this tick — the map holds every loaded doc
+        if (changedCodes.size) {
+            const changedDocs = [...changedCodes]
+                .map((code) => arenaPlayerMap.get(code))
+                .filter((doc): doc is ArenaPlayer => doc !== undefined);
+            await arenaPlayerRegistry.batchUpsert(changedDocs).catch((err) => {
                 logger.error(`[arenaTick] batchUpsert error: ${err instanceof Error ? err.message : String(err)}`);
             });
         }
@@ -421,6 +438,7 @@ class PatreonFuncs {
         user: UserConfig | null,
         playerMap: Map<number, PlayerArenaRes>,
         arenaPlayerMap: Map<number, ArenaPlayer>,
+        changedCodes: Set<number>,
     ): Promise<void> {
         if (!user?.arenaWatch) return;
         const aw = user.arenaWatch;
@@ -459,15 +477,29 @@ class PatreonFuncs {
                 // Both, since low level players can have just char arena I believe
                 continue;
             }
-            if (!player.name) {
+            // Refresh the name only when the API provides a non-empty one
+            if (newPlayer.name) {
                 player.name = newPlayer.name;
             }
-            if (!player.poOffset || player.poOffset !== newPlayer.poUTCOffsetMinutes) {
+            if (player.poOffset !== newPlayer.poUTCOffsetMinutes) {
                 player.poOffset = newPlayer.poUTCOffsetMinutes;
             }
 
+            // player.name was already refreshed above when newPlayer.name was truthy, so the
+            // `player.name` fallback here is the previously-stored name (only relevant when
+            // newPlayer.name is empty).
             // Load persisted rank/history from arenaPlayerMap; create a stub if not found
-            const playerDoc = arenaPlayerMap.get(player.allyCode) ?? { allyCode: player.allyCode, name: newPlayer.name };
+            const playerDoc = arenaPlayerMap.get(player.allyCode) ?? {
+                allyCode: player.allyCode,
+                name: newPlayer.name || player.name || "",
+            };
+
+            // For a freshly-created stub this is always false (name already matches); this only
+            // refreshes an existing doc's stale name.
+            if (newPlayer.name && newPlayer.name !== playerDoc.name) {
+                playerDoc.name = newPlayer.name;
+                changedCodes.add(player.allyCode);
+            }
 
             // Initialize ephemeral rank fields from persisted data so payout/warn logic has correct values
             player.lastChar ??= playerDoc.lastCharRank;
@@ -489,6 +521,7 @@ class PatreonFuncs {
                 player.lastCharChange = prevLastChar - newPlayer.arena.char.rank;
                 playerDoc.lastCharRank = player.lastChar;
                 playerDoc.lastCharChange = player.lastCharChange;
+                changedCodes.add(player.allyCode);
             }
             if (newPlayer.arena?.ship?.rank != null && newPlayer.arena.ship.rank !== prevLastShip) {
                 const shipOverview = {
@@ -503,6 +536,7 @@ class PatreonFuncs {
                 player.lastShipChange = prevLastShip - newPlayer.arena.ship.rank;
                 playerDoc.lastShipRank = player.lastShip;
                 playerDoc.lastShipChange = player.lastShipChange;
+                changedCodes.add(player.allyCode);
             }
 
             const payouts = this.getAllPayoutTimes(player);
@@ -510,8 +544,16 @@ class PatreonFuncs {
             const fleetMinLeft = payouts.fleetDuration;
 
             // Record payout history for all arenaWatch accounts, regardless of notification settings
-            playerDoc.charHist = this.recordHistoryAtPayout(playerDoc.charHist, player.lastChar, charMinLeft);
-            playerDoc.shipHist = this.recordHistoryAtPayout(playerDoc.shipHist, player.lastShip, fleetMinLeft);
+            const newCharHist = this.recordHistoryAtPayout(playerDoc.charHist, player.lastChar, charMinLeft);
+            if (newCharHist !== playerDoc.charHist) {
+                playerDoc.charHist = newCharHist;
+                changedCodes.add(player.allyCode);
+            }
+            const newShipHist = this.recordHistoryAtPayout(playerDoc.shipHist, player.lastShip, fleetMinLeft);
+            if (newShipHist !== playerDoc.shipHist) {
+                playerDoc.shipHist = newShipHist;
+                changedCodes.add(player.allyCode);
+            }
 
             arenaPlayerMap.set(player.allyCode, playerDoc);
 

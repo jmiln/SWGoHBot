@@ -89,7 +89,7 @@ describe("ArenaPlayerRegistry", () => {
                 { allyCode: 111111111, name: "Alpha", lastCharRank: 1 },
                 { allyCode: 222222222, name: "Beta", lastCharRank: 2 },
             ]);
-            const count = await client.db(db).collection("arenaPlayers").countDocuments();
+            const count = await client.db(db).collection("arenaPlayers").countDocuments({ allyCode: { $in: [111111111, 222222222] } });
             assert.strictEqual(count, 2);
         });
 

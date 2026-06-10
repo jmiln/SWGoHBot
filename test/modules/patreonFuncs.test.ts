@@ -7,6 +7,9 @@ import cache from "../../modules/cache.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import { PatreonFuncs, shouldWriteHistory, updateArenaHistory, collectAllyCodes } from "../../modules/patreonFuncs.ts";
 import userReg from "../../modules/users.ts";
+import Language from "../../base/Language.ts";
+import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
+import { createMockLanguage } from "../mocks/index.ts";
 import type { ActivePatron, ArenaPlayer, ArenaWatchAcct, ArenaWatchConfig, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
@@ -14,6 +17,7 @@ describe("PatreonFuncs Module", () => {
     let client: MongoClient;
     let patreonFuncs: PatreonFuncs;
     let mockClient: Client<true>;
+    let sentDMs: { embeds?: { description?: string }[] }[];
 
     // This has to use the same database as name as the main bot, since that's what the patreonFuncs module uses
     const testDbName = env.MONGODB_SWGOHBOT_DB;
@@ -26,11 +30,23 @@ describe("PatreonFuncs Module", () => {
         userReg.init(cache);
         arenaPlayerRegistry.init(cache);
 
+        sentDMs = [];
         // Create mock Discord client
         mockClient = {
             user: { id: "bot123", username: "TestBot" },
             guilds: { cache: new Map() },
-        } as any;
+            users: {
+                fetch: async () => ({
+                    send: async (msg: { embeds?: { description?: string }[] }) => {
+                        sentDMs.push(msg);
+                        return msg;
+                    },
+                }),
+            },
+        } as unknown as Client<true>;
+
+        // handleArenaAlerts() formats payout time via the default registered language
+        Language.registerLanguage(defaultSettings.language, createMockLanguage());
 
         patreonFuncs = new PatreonFuncs();
         patreonFuncs.init(mockClient);
@@ -357,6 +373,7 @@ describe("PatreonFuncs Module", () => {
 
     describe("processArenaAlerts()", () => {
         beforeEach(async () => {
+            sentDMs.length = 0;
             try {
                 await client.db(testDbName).collection("users").deleteMany({ id: "hist_test_user" });
                 await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: 888777666 });
@@ -387,7 +404,7 @@ describe("PatreonFuncs Module", () => {
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>();
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap);
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>());
 
             // Flush arenaPlayerMap to DB (normally done by arenaTick)
             await arenaPlayerRegistry.batchUpsert([...arenaPlayerMap.values()]);
@@ -396,6 +413,248 @@ describe("PatreonFuncs Module", () => {
             assert.ok(playerDoc, "arenaPlayers doc should exist after processArenaAlerts");
             assert.strictEqual(playerDoc.lastCharRank, 42, "lastCharRank should be updated");
             assert.strictEqual(playerDoc.lastShipRank, 15, "lastShipRank should be updated");
+        });
+
+        it("sends a rank drop DM when the rank worsens since the stored rank", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            const user = {
+                id: "hist_test_user",
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 0 },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "DropTest",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 10 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            // Stored rank 5, current rank 10 => the player dropped and a DM should fire
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [888777666, { allyCode: 888777666, name: "DropTest", lastCharRank: 5, lastCharClimb: 5 }],
+            ]);
+
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>());
+
+            assert.strictEqual(sentDMs.length, 1, "expected exactly one rank drop DM");
+            const desc = sentDMs[0]?.embeds?.[0]?.description ?? "";
+            assert.ok(desc.includes("dropped from 5 to **10**"), `unexpected DM description: ${desc}`);
+        });
+
+        it("advances climb tracking when the rank improves", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            const user = {
+                id: "hist_test_user",
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 0 },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "ClimbTest",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 3 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [888777666, { allyCode: 888777666, name: "ClimbTest", lastCharRank: 5, lastCharClimb: 5 }],
+            ]);
+
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>());
+
+            const doc = arenaPlayerMap.get(888777666);
+            assert.strictEqual(doc?.lastCharRank, 3, "lastCharRank should track the new rank");
+            assert.strictEqual(doc?.lastCharClimb, 3, "lastCharClimb should advance to the better rank");
+            assert.strictEqual(sentDMs.length, 0, "an improvement must not send a drop DM");
+        });
+
+        it("adds changed ally codes to changedCodes and skips unchanged ones on a repeat run", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            const user = {
+                id: "hist_test_user",
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "ChangedTest",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 42 }, ship: { rank: 15 } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>();
+            const firstRun = new Set<number>();
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, firstRun);
+            assert.ok(firstRun.has(888777666), "first run changed the doc, so it must be marked changed");
+            assert.ok(arenaPlayerMap.has(888777666), "new doc must land in the map so the flush can find it");
+
+            // Second run with identical data: ranks unchanged, history inside the 5-minute
+            // dedup window => nothing changed, nothing should be marked changed.
+            const secondRun = new Set<number>();
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, secondRun);
+            assert.strictEqual(secondRun.size, 0, "unchanged docs must not be marked changed");
+        });
+
+        it("refreshes the stored name when the API reports a rename", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            const user = {
+                id: "hist_test_user",
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "NewName",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 42 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [888777666, { allyCode: 888777666, name: "OldName", lastCharRank: 42, lastCharClimb: 42 }],
+            ]);
+
+            const changedCodes = new Set<number>();
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes);
+
+            assert.strictEqual(arenaPlayerMap.get(888777666)?.name, "NewName");
+            assert.ok(changedCodes.has(888777666), "a rename must mark the doc changed");
+        });
+
+        it("does not clobber the stored name with an empty API name", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            const user = {
+                id: "hist_test_user",
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 42 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [888777666, { allyCode: 888777666, name: "KeepMe", lastCharRank: 42, lastCharClimb: 42 }],
+            ]);
+
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>());
+
+            assert.strictEqual(arenaPlayerMap.get(888777666)?.name, "KeepMe");
+        });
+    });
+
+    describe("processShardPatron()", () => {
+        beforeEach(async () => {
+            await client.db(testDbName).collection("users").deleteMany({ id: { $in: ["shard_test_user", "shard_test_user2"] } }).catch(() => {});
+            await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: 888777666 }).catch(() => {});
+        });
+
+        it("falls back to the stored account name when the API name is empty", async () => {
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+
+            // Payout-only config: hasPayouts true, hasAlerts false => no broadcastEval send paths,
+            // and aw.arena.char.enabled false keeps checkRanks() out of the picture.
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: 888777666, name: "Stored", mention: null, poOffset: 0 }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 5 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>();
+            const changedCodes = new Set<number>();
+            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes);
+
+            const doc = arenaPlayerMap.get(888777666);
+            assert.ok(doc, "a stub doc should be created for the watched account");
+            assert.strictEqual(doc.name, "Stored", "stub must use the stored name, not the empty API name");
+            assert.strictEqual(doc.lastCharRank, 5);
+            assert.ok(changedCodes.has(888777666), "the rank change must mark the stub changed");
+        });
+
+        it("refreshes the persisted name when the API name differs from an existing doc", async () => {
+            const patron: ActivePatron = { discordID: "shard_test_user2", amount_cents: 100 };
+
+            const user = {
+                id: "shard_test_user2",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: 888777666, name: "Stored", mention: null, poOffset: 0 }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "NewApiName",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 5 }, ship: { rank: null } },
+                    poUTCOffsetMinutes: 0,
+                }],
+            ]);
+
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [888777666, { allyCode: 888777666, name: "OldStoredName", lastCharRank: 5, lastCharClimb: 5 }],
+            ]);
+            const changedCodes = new Set<number>();
+            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes);
+
+            const doc = arenaPlayerMap.get(888777666);
+            assert.ok(doc, "the existing doc must remain in the map");
+            assert.strictEqual(doc.name, "NewApiName", "the persisted name must be refreshed to the new API name");
+            assert.ok(changedCodes.has(888777666), "a name refresh must mark the doc changed");
         });
     });
 

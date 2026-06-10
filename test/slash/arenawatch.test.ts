@@ -207,7 +207,7 @@ describe("ArenaWatch", () => {
 
             it("should set report to drop", async () => {
                 const aw = createBaseAW();
-                const { result, aw: awRes } = await processAWChanges({
+                const { aw: awRes } = await processAWChanges({
                     target: "arena_log",
                     interactionOptions: { subCommand: "report", arena: "drop" } as any,
                     aw,
@@ -320,7 +320,7 @@ describe("ArenaWatch", () => {
 
             it("should enable payout for both arenas", async () => {
                 const aw = createBaseAW();
-                const { result, aw: awRes } = await processAWChanges({
+                const { aw: awRes } = await processAWChanges({
                     target: "payout",
                     interactionOptions: { subCommand: "arena", arenaType: "both" } as any,
                     aw,

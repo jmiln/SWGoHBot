@@ -40,6 +40,11 @@ print_section() {
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 }
 
+print_bypass_hint() {
+    echo "Fix the issues above or use 'git commit --no-verify' to bypass"
+    echo "(only bypass if you're sure the changes are safe)"
+}
+
 # Get list of staged TypeScript files
 STAGED_TS_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.ts$' || true)
 
@@ -81,8 +86,7 @@ if [ $FAILED -ne 0 ]; then
     print_section "Pre-Commit Summary"
     print_error "Some checks failed — skipping tests"
     echo ""
-    echo "Fix the issues above or use 'git commit --no-verify' to bypass"
-    echo "(only bypass if you're sure the changes are safe)"
+    print_bypass_hint
     echo ""
     exit 1
 fi
@@ -112,8 +116,7 @@ if [ $FAILED -eq 0 ]; then
 else
     print_error "Some checks failed"
     echo ""
-    echo "Fix the issues above or use 'git commit --no-verify' to bypass"
-    echo "(only bypass if you're sure the changes are safe)"
+    print_bypass_hint
     echo ""
     exit 1
 fi

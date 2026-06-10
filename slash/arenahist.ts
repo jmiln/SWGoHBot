@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import cache from "../modules/cache.ts";
 import logger from "../modules/Logger.ts";
-import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import patreonFuncs, { buildArenaHistChart } from "../modules/patreonFuncs.ts";
 import type { CommandContext, UserConfig } from "../types/types.ts";
 

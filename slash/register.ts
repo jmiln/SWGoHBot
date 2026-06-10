@@ -1,9 +1,9 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
+import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import { isAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
-import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";

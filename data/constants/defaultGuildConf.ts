@@ -52,7 +52,7 @@ export const typedDefaultSettings: TypedDefaultSettings = {
         value: [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
         type: ApplicationCommandOptionType.Integer,
         isArray: true,
-        description: "Set how long before events is should warn you.",
+        description: "Set how long before events it should warn you.",
     },
     language: {
         value: "en_US",
