@@ -55,6 +55,9 @@ export async function addServerSupporter({
 
     if (resOut.guild.error || resOut.user.error) return resOut;
 
+    // Get the userConf for the user running it (also needed further down to set the new bonusServer)
+    const userConf = await cache.getOne<UserConfig>(env.MONGODB_SWGOHBOT_DB, "users", { id: userInfo.userId });
+
     const res = await guildConfigDB.getOne<PatreonSettingsProjection>({ guildId }, {
         patreonSettings: 1,
         _id: 0,
@@ -68,6 +71,17 @@ export async function addServerSupporter({
     if (patSettings.supporters?.find((supp) => supp.userId === userInfo.userId)) {
         resOut.user = { success: false, error: "User already set." };
         return resOut;
+    }
+
+    // If the user is moving from another server, drop their entry there first so the old
+    // guild doesn't keep their benefits until the next reconciliation sweep
+    if (userConf?.bonusServer?.length && userConf.bonusServer !== guildId) {
+        const remRes = await removeServerSupporter({ guildId: userConf.bonusServer, userId: userInfo.userId });
+        // "User not in supporters array" just means there's nothing to clean up — anything else is a real failure
+        if (!remRes.success && remRes.error !== "User not in supporters array") {
+            resOut.guild = { success: false, error: `Could not unlink previous server: ${remRes.error}` };
+            return resOut;
+        }
     }
 
     // If the user isn't there yet, put them in
@@ -87,8 +101,6 @@ export async function addServerSupporter({
     // Set the userconf settings here too
     // ################
 
-    // Get the userConf for the user running it
-    const userConf = await cache.getOne<UserConfig>(env.MONGODB_SWGOHBOT_DB, "users", { id: userInfo.userId });
     if (!userConf) {
         resOut.user = { success: false, error: `Cannot find userConf for <@${userInfo.userId}>` };
     } else {
@@ -134,9 +146,11 @@ export async function removeServerSupporter({
     if (!hasUser) return { success: false, error: "User not in supporters array" };
 
     // Get the list of supporters without the user, then save it as such
+    // (guildPatSettings is the projected doc, so save its inner patreonSettings — saving the
+    // wrapper itself would double-nest the key and wipe the real supporters array)
     guildPatSettings.patreonSettings.supporters = guildPatSettings.patreonSettings.supporters.filter((sup) => sup.userId !== userId);
     return await guildConfigDB
-        .put({ guildId }, { patreonSettings: guildPatSettings }, false)
+        .put({ guildId }, { patreonSettings: guildPatSettings.patreonSettings }, false)
         .then(() => {
             return { success: true, error: null };
         })
@@ -207,15 +221,11 @@ export async function ensureGuildSupporter() {
         // If the supporter list hasn't been modified, go on to the next one
         if (!isModified) continue;
 
-        // Otherwise, resave it
-        return await guildConfigDB
+        // Otherwise, resave it, then keep going so every remaining guild is checked too
+        await guildConfigDB
             .put({ guildId: guild.guildId }, { "patreonSettings.supporters": guild.supporters }, false)
-            .then(() => {
-                return { success: true, error: null };
-            })
             .catch((error: Error) => {
-                logger.error(`[guildConfig/patreonSettings/ensureGuildSupporter] Error updating guild: ${error.message}`);
-                return { success: false, error: error };
+                logger.error(`[guildConfig/patreonSettings/ensureGuildSupporter] Error updating guild ${guild.guildId}: ${error.message}`);
             });
     }
 }
@@ -231,8 +241,23 @@ export async function ensureBonusServerSet({ userId, amount_cents }: { userId: s
     // If they do have one set, try and get that guild's supporter list and make sure they're in there
     const guildSupArr = await getServerSupporters({ guildId: userConf.bonusServer });
 
-    // The user is already in the guild's supporter array, move on
-    if (guildSupArr.find((sup) => sup.userId === userId)) return {};
+    // The user is already in the guild's supporter array, so just make sure their
+    // stored tier still matches their current pledge before moving on
+    const existingSupporter = guildSupArr.find((sup) => sup.userId === userId);
+    if (existingSupporter) {
+        const currentTier = Math.floor(amount_cents / 100);
+        if (existingSupporter.tier === currentTier) return {};
+
+        existingSupporter.tier = currentTier;
+        await guildConfigDB
+            .put({ guildId: userConf.bonusServer }, { "patreonSettings.supporters": guildSupArr }, false)
+            .catch((error: Error) => {
+                logger.error(
+                    `[guildConfig/patreonSettings/ensureBonusServerSet] Error updating tier for guild ${userConf.bonusServer}: ${error.message}`,
+                );
+            });
+        return {};
+    }
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
     const addServerRes: { user: { success: boolean; error: string }; guild: { success: boolean; error: string } } =
@@ -247,7 +272,8 @@ export async function ensureBonusServerSet({ userId, amount_cents }: { userId: s
     return addServerRes;
 }
 
-//  - Get the combined / highest available tier from the supporters of a given server
+//  - Sum the tiers of all of a server's supporters, then snap the total down to the
+//    nearest defined tier bracket (pledges stack: two $5 supporters = the $10 tier)
 const tierNums = Object.keys(patreonTiers.tiers);
 export async function getGuildSupporterTier({ guildId }: { guildId: string }) {
     // If no guildId supplied, return the lowest tier available (0)

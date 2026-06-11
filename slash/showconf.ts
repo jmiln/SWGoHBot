@@ -8,6 +8,9 @@ import type { CommandContext } from "../types/types.ts";
 // Max length for the welcome/part message previews
 const MESSAGE_PREVIEW_LENGTH = 100;
 
+// Discord rejects embed field values longer than this
+const EMBED_FIELD_MAX_LENGTH = 1024;
+
 export default class Showconf extends Command {
     static readonly metadata = {
         name: "showconf",
@@ -62,11 +65,19 @@ export default class Showconf extends Command {
         // Supporters
         const totalSuppTier = await getGuildSupporterTier({ guildId: interaction.guild.id });
         const guildSupporters = await getServerSupporters({ guildId: interaction.guild.id });
-        const supporterList: string[] = [];
-        for (const supp of guildSupporters) {
+        // Members missing from the cache still get listed, as a mention the client can resolve
+        const supporterList = guildSupporters.map((supp) => {
             const user = interaction.guild.members.cache.get(supp.userId);
-            if (!user?.displayName) continue;
-            supporterList.push(user.displayName);
+            return user?.displayName ? user.displayName : `<@${supp.userId}>`;
+        });
+
+        // Cap the field at whole entries so a mention is never cut mid-token
+        let supportersValue = supporterList.length ? supporterList.join(", ") : notAvailable;
+        if (supportersValue.length > EMBED_FIELD_MAX_LENGTH) {
+            while (supporterList.length && `${supporterList.join(", ")}, …`.length > EMBED_FIELD_MAX_LENGTH) {
+                supporterList.pop();
+            }
+            supportersValue = `${supporterList.join(", ")}, …`;
         }
 
         return interaction.reply({
@@ -79,7 +90,7 @@ export default class Showconf extends Command {
                         { name: language.get("COMMAND_SHOWCONF_HEADER_EVENTS"), value: eventsValue },
                         {
                             name: language.get("COMMAND_SHOWCONF_HEADER_SUPPORTERS", totalSuppTier),
-                            value: supporterList.length ? supporterList.join(", ") : notAvailable,
+                            value: supportersValue,
                         },
                     ],
                 },

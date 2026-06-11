@@ -164,4 +164,47 @@ describe("Showconf", () => {
 
         await cache.remove(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID });
     });
+
+    it("should fall back to a mention for supporters missing from the member cache", async () => {
+        const UNCACHED_ID = "333444555666777888";
+        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
+            guildId: TEST_GUILD_ID,
+            patreonSettings: {
+                supporters: [
+                    { userId: SUPPORTER_ID, tier: 5 },
+                    { userId: UNCACHED_ID, tier: 1 },
+                ],
+            },
+        });
+
+        const interaction = makeInteraction();
+        interaction.guild.members.cache.set(SUPPORTER_ID, { displayName: "SomeUser" });
+        await new Showconf().run(createCommandContext({ interaction }));
+
+        const supporters = getField(getEmbed(interaction), "COMMAND_SHOWCONF_HEADER_SUPPORTERS");
+        assert.ok(supporters.value.includes("SomeUser"), "Expected cached supporter display name");
+        assert.ok(supporters.value.includes(`<@${UNCACHED_ID}>`), "Expected mention fallback for uncached supporter");
+
+        await cache.remove(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID });
+    });
+
+    it("should cap the supporters field at Discord's 1024-char field limit", async () => {
+        // Enough uncached supporters that the joined mention list would exceed 1024 chars
+        const supporters = Array.from({ length: 60 }, (_, i) => ({
+            userId: `4440000000000${String(i).padStart(5, "0")}`,
+            tier: 1,
+        }));
+        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
+            guildId: TEST_GUILD_ID,
+            patreonSettings: { supporters },
+        });
+
+        const interaction = makeInteraction();
+        await new Showconf().run(createCommandContext({ interaction }));
+
+        const field = getField(getEmbed(interaction), "COMMAND_SHOWCONF_HEADER_SUPPORTERS");
+        assert.ok(field.value.length <= 1024, `Expected field value <= 1024 chars, got ${field.value.length}`);
+
+        await cache.remove(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID });
+    });
 });
