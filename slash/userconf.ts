@@ -297,7 +297,7 @@ export default class UserConf extends Command {
                         fields.push({
                             name: language.get("BASE_ARENA_VIEW_HEADER"),
                             value: [
-                                `-# ${language.get("COMMAND_USERCONF_VIEW_ARENA_ALERT_CONFIGURE")}`,
+                                `-# ${language.get("COMMAND_USERCONF_VIEW_CONFIGURE_WITH", "arenaalert")}`,
                                 `>>> ${language.get("BASE_ARENA_VIEW_DM")}: **${user.arenaAlert.enableRankDMs || "N/A"}**`,
                                 `${language.get("BASE_ARENA_VIEW_SHOW")}: **${user.arenaAlert.arena}**`,
                                 `${language.get("BASE_ARENA_VIEW_WARNING")}: **${user.arenaAlert.payoutWarning ? `${user.arenaAlert.payoutWarning} min` : "disabled"}**`,
@@ -311,6 +311,7 @@ export default class UserConf extends Command {
                             fields.push({
                                 name: language.get("COMMAND_USERCONF_VIEW_AW_HEADER"),
                                 value: [
+                                    `-# ${language.get("COMMAND_USERCONF_VIEW_CONFIGURE_WITH", "arenawatch")}`,
                                     `Channel: **${uAW.channel ? `<#${uAW.channel}>` : "N/A"}**`,
                                     `Emotes in log: **${uAW.useEmotesInLog ? "ON" : "OFF"}**`,
                                     `Marks in log: **${uAW.useMarksInLog ? "ON" : "OFF"}**`,
@@ -355,6 +356,7 @@ export default class UserConf extends Command {
                             fields.push({
                                 name: language.get("COMMAND_USERCONF_VIEW_GU_HEADER"),
                                 value: [
+                                    `-# ${language.get("COMMAND_USERCONF_VIEW_CONFIGURE_WITH", "guildupdate")}`,
                                     `>>> Enabled:  **${user.guildUpdate.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildUpdate.channel ? `<#${user.guildUpdate.channel}>` : "N/A"}`,
                                     `Allycode: **${user.guildUpdate.allyCode || "N/A"}**`,
@@ -367,6 +369,7 @@ export default class UserConf extends Command {
                             fields.push({
                                 name: language.get("COMMAND_USERCONF_VIEW_GT_HEADER"),
                                 value: [
+                                    `-# ${language.get("COMMAND_USERCONF_VIEW_CONFIGURE_WITH", "guildtickets")}`,
                                     `>>> Enabled:  **${user.guildTickets.enabled ? "ON" : "OFF"}**`,
                                     `Channel:  ${user.guildTickets.channel ? `<#${user.guildTickets.channel}>` : "N/A"}`,
                                     `Allycode: **${user.guildTickets.allyCode || "N/A"}**`,

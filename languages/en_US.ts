@@ -292,6 +292,8 @@ export default class extends Language {
             COMMAND_ARENAALERT_DATA_NOT_FOUND:   "I couldn't find your data. Please try again.",
             COMMAND_ARENAALERT_NOTHING_UPDATED:  "It looks like nothing was updated.",
             COMMAND_ARENAALERT_SAVE_FAILED:      "Failed to save your settings. Please try again.",
+            COMMAND_ARENAALERT_WARN_NO_ARENA:    "Note: DMs are enabled, but no arena is selected. Set `arena` to start getting alerts.",
+            COMMAND_ARENAALERT_WARN_DMS_OFF:     "Note: An arena is selected, but DMs are off. Set `enabledms` to start getting alerts.",
             COMMAND_ARENAALERT_HELP: {
                 description: "Manage your arena alert settings.",
                 actions: [
@@ -1838,7 +1840,7 @@ export default class extends Language {
             COMMAND_USERCONF_VIEW_DEFAULTS_HEADER: "Defaults",
             COMMAND_USERCONF_VIEW_DEFAULTS_NO_DEF: "Set default flags for your commands.",
             COMMAND_USERCONF_VIEW_LANG_HEADER: "Language Settings",
-            COMMAND_USERCONF_VIEW_ARENA_ALERT_CONFIGURE: "configure with `/arenaalert`",
+            COMMAND_USERCONF_VIEW_CONFIGURE_WITH: (cmd) => `configure with \`/${cmd}\``,
             COMMAND_USERCONF_VIEW_PATREON_HEADER: "Patreon",
             COMMAND_USERCONF_VIEW_PATREON_TIER: (name, tier) => `Tier: **${name}** ($${tier}/mo)`,
             COMMAND_USERCONF_VIEW_PATREON_BONUS_SERVER: (name) => `Bonus server: **${name}**`,

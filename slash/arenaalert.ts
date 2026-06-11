@@ -137,7 +137,8 @@ export default class ArenaAlert extends Command {
             logger.error(`[arenaalert] Failed to save settings for user ${userID}: ${e}`);
             return super.error(interaction, language.get("COMMAND_ARENAALERT_SAVE_FAILED"));
         }
-        return super.success(interaction, changelog.join("\n"));
+        const warnings = enabledms || arena ? this.getArenaAlertWarnings(updatedUser.arenaAlert).map((key) => language.get(key)) : [];
+        return super.success(interaction, [...changelog, ...warnings].join("\n"));
     }
 
     private computeArenaAlertChanges(
@@ -184,5 +185,18 @@ export default class ArenaAlert extends Command {
         }
 
         return { changelog, updatedUser };
+    }
+
+    private getArenaAlertWarnings(arenaAlert: UserConfig["arenaAlert"]): string[] {
+        const warnings: string[] = [];
+        const dmsEnabled = arenaAlert.enableRankDMs === "all" || arenaAlert.enableRankDMs === "primary";
+
+        if (dmsEnabled && arenaAlert.arena === "none") {
+            warnings.push("COMMAND_ARENAALERT_WARN_NO_ARENA");
+        }
+        if (!dmsEnabled && arenaAlert.arena !== "none") {
+            warnings.push("COMMAND_ARENAALERT_WARN_DMS_OFF");
+        }
+        return warnings;
     }
 }

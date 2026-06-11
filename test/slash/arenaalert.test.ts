@@ -154,6 +154,74 @@ describe("ArenaAlert", () => {
             assert.ok(result.changelog[0].includes("30"));
             assert.ok(result.changelog[0].includes("0"));
         });
+
+        describe("getArenaAlertWarnings", () => {
+            it("should warn when DMs are enabled but no arena is selected", () => {
+                const command = new ArenaAlert();
+
+                const warnings = (command as any).getArenaAlertWarnings({
+                    enableRankDMs: "all",
+                    arena: "none",
+                    enablePayoutResult: false,
+                    payoutWarning: 0,
+                });
+
+                assert.deepStrictEqual(warnings, ["COMMAND_ARENAALERT_WARN_NO_ARENA"]);
+            });
+
+            it("should warn when an arena is selected but DMs are off", () => {
+                const command = new ArenaAlert();
+
+                const warnings = (command as any).getArenaAlertWarnings({
+                    enableRankDMs: "off",
+                    arena: "char",
+                    enablePayoutResult: false,
+                    payoutWarning: 0,
+                });
+
+                assert.deepStrictEqual(warnings, ["COMMAND_ARENAALERT_WARN_DMS_OFF"]);
+            });
+
+            it("should not warn when both DMs and arena are configured", () => {
+                const command = new ArenaAlert();
+
+                const warnings = (command as any).getArenaAlertWarnings({
+                    enableRankDMs: "primary",
+                    arena: "both",
+                    enablePayoutResult: false,
+                    payoutWarning: 0,
+                });
+
+                assert.deepStrictEqual(warnings, []);
+            });
+
+            it("should not warn when both DMs and arena are off", () => {
+                const command = new ArenaAlert();
+
+                const warnings = (command as any).getArenaAlertWarnings({
+                    enableRankDMs: "off",
+                    arena: "none",
+                    enablePayoutResult: false,
+                    payoutWarning: 0,
+                });
+
+                assert.deepStrictEqual(warnings, []);
+            });
+
+            it("should not warn after a combined change that makes the config functional", () => {
+                const command = new ArenaAlert();
+                const user = createBaseUser();
+                user.arenaAlert.arena = "none";
+
+                const { updatedUser } = (command as any).computeArenaAlertChanges(user, {
+                    enabledms: "all",
+                    arena: "fleet",
+                });
+                const warnings = (command as any).getArenaAlertWarnings(updatedUser.arenaAlert);
+
+                assert.deepStrictEqual(warnings, []);
+            });
+        });
     });
 
     describe("Command Configuration", () => {

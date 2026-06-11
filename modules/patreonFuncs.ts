@@ -353,11 +353,19 @@ class PatreonFuncs {
             // Record payout history (runs for all patrons regardless of arenaAlert config) and
             // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
             // getPayoutTimeLeft() involves a Temporal lookup, so compute it once and share it.
+            // Live data can omit the payout offset — without it the payout math would go NaN,
+            // so payout history/alerts are skipped (null) while rank tracking still runs
+            if (typeof player.poUTCOffsetMinutes !== "number") {
+                logger.log(`[processArenaAlerts] Missing poUTCOffsetMinutes for ${allyCode}; skipping payout history & payout alerts`);
+            }
             for (const arenaType of ["char", "ship"] as const) {
                 const arenaData = arenaType === "char" ? player.arena.char : player.arena.ship;
                 if (arenaData?.rank == null) continue;
-                const timeLeft = getPayoutTimeLeft(player.poUTCOffsetMinutes, arenaType === "char" ? "char" : "fleet");
-                const minTil = Math.floor(timeLeft / constants.minMS);
+                const timeLeft =
+                    typeof player.poUTCOffsetMinutes === "number"
+                        ? getPayoutTimeLeft(player.poUTCOffsetMinutes, arenaType === "char" ? "char" : "fleet")
+                        : null;
+                const minTil = timeLeft === null ? null : Math.floor(timeLeft / constants.minMS);
 
                 const histKey = arenaType === "char" ? "charHist" : "shipHist";
                 const newHist = this.recordHistoryAtPayout(playerDoc[histKey], arenaData.rank, minTil);
@@ -1254,8 +1262,9 @@ class PatreonFuncs {
         acc: ArenaRankTracking,
         user: UserConfig,
         patron: { discordID: string },
-        timeLeft: number,
-        minTil: number,
+        // null when the player data is missing poUTCOffsetMinutes — payout-based alerts are skipped
+        timeLeft: number | null,
+        minTil: number | null,
         // Rank/climb as they stood at the start of the tick — see RankSnapshot
         prev: { rank: number; climb: number },
     ) {
@@ -1288,7 +1297,8 @@ class PatreonFuncs {
             user.arenaAlert.enableRankDMs !== "off" &&
             [config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")
         ) {
-            const payoutTime = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
+            const payoutTime =
+                timeLeft === null ? null : `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
 
             const pUser = await this.client.users.fetch(patron.discordID);
             if (pUser) {
@@ -1336,7 +1346,8 @@ class PatreonFuncs {
                                             arenaData.rank - lastClimb
                                         }** since last climb`,
                                         color: constants.colors.red,
-                                        footer: { text: payoutTime },
+                                        // No payout footer when the payout time is unknown
+                                        ...(payoutTime !== null ? { footer: { text: payoutTime } } : {}),
                                     },
                                 ],
                             })

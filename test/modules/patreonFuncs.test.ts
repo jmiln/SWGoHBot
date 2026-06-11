@@ -447,6 +447,43 @@ describe("PatreonFuncs Module", () => {
             assert.ok(desc.includes("dropped from 5 to **10**"), `unexpected DM description: ${desc}`);
         });
 
+        it("still sends rank drop DMs without a payout footer when poUTCOffsetMinutes is missing", async () => {
+            const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
+
+            const user = {
+                id: "hist_test_user",
+                accounts: [888777666],
+                primaryAllyCode: 888777666,
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 0 },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777666, {
+                    name: "NoOffsetTest",
+                    allyCode: 888777666,
+                    arena: { char: { rank: 10 }, ship: { rank: null } },
+                    // The type requires a number, but live data can omit it - that's the case under test
+                    poUTCOffsetMinutes: undefined as unknown as number,
+                }],
+            ]);
+
+            // Stored rank 5, current rank 10 => the player dropped and a DM should still fire
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [888777666, { allyCode: 888777666, name: "NoOffsetTest", lastCharRank: 5, lastCharClimb: 5 }],
+            ]);
+
+            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+
+            assert.strictEqual(sentDMs.length, 1, "expected the rank drop DM despite the missing payout offset");
+            const embed = sentDMs[0]?.embeds?.[0];
+            assert.ok(embed?.description?.includes("dropped from 5 to **10**"), `unexpected DM description: ${embed?.description}`);
+            // Without the offset there is no payout time - the footer must be omitted, not show a bogus duration
+            assert.strictEqual(embed?.footer, undefined, `expected no payout footer, got: ${JSON.stringify(embed?.footer)}`);
+            // Rank tracking is independent of payout time and must still update
+            assert.strictEqual(arenaPlayerMap.get(888777666)?.lastCharRank, 10, "lastCharRank should still track the new rank");
+        });
+
         it("advances climb tracking when the rank improves", async () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
             await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
