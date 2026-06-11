@@ -5,6 +5,7 @@ import constants from "./data/constants/constants.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
 import eventHandler from "./handlers/eventHandler.ts";
 import slashHandler from "./handlers/slashHandler.ts";
+import arenaPlayerRegistry from "./modules/arenaPlayerRegistry.ts";
 import cache from "./modules/cache.ts";
 import commandStats from "./modules/commandStats.ts";
 import database from "./modules/database.ts";
@@ -102,6 +103,7 @@ const init = async () => {
     // Set up the caching
     cache.init(database.getClient());
     userReg.init(cache);
+    arenaPlayerRegistry.init(cache);
 
     if (env.SWAPI_CLIENT_URL) {
         // Load up the api connector/ helpers
