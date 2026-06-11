@@ -974,7 +974,6 @@ export default class extends Language {
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `Segue a configuração do servidor ${serverName}: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
                 description: "Exibe a informação corrente do servidor.",
                 actions: [

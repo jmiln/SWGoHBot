@@ -69,6 +69,9 @@ export default class extends Language {
         this.language = {
             // Default in case it can't find one.
             BASE_DEFAULT_MISSING: "Trying to use a nonexistent string here. If you see this message, please report it so it can be fixed.",
+            BASE_ON: "ON",
+            BASE_OFF: "OFF",
+            BASE_NA: "N/A",
 
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.",
@@ -1716,7 +1719,21 @@ export default class extends Language {
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `The following is the current configuration for ${serverName}: \`\`\`asciidoc\n\n${configKeys.replace(/_/g, "＿")}\`\`\``,
+            COMMAND_SHOWCONF_TITLE: (serverName: string) => `Configuration for ${serverName}`,
+            COMMAND_SHOWCONF_HEADER_GENERAL: "General",
+            COMMAND_SHOWCONF_HEADER_WELCOME: "Welcome / Part",
+            COMMAND_SHOWCONF_HEADER_EVENTS: "Events",
+            COMMAND_SHOWCONF_HEADER_SUPPORTERS: (tier: number) => (tier > 0 ? `Supporters (Combined tier: $${tier})` : "Supporters"),
+            COMMAND_SHOWCONF_LABEL_ADMIN_ROLES: "Admin roles",
+            COMMAND_SHOWCONF_LABEL_TIMEZONE: "Timezone",
+            COMMAND_SHOWCONF_LABEL_LANGUAGE: "Language",
+            COMMAND_SHOWCONF_LABEL_GAME_DATA: "Game data",
+            COMMAND_SHOWCONF_LABEL_WELCOME: "Welcome",
+            COMMAND_SHOWCONF_LABEL_PART: "Part",
+            COMMAND_SHOWCONF_LABEL_ANNOUNCE_CHAN: "Announce channel",
+            COMMAND_SHOWCONF_LABEL_EVENT_PAGES: "Event pages",
+            COMMAND_SHOWCONF_LABEL_SHARDTIME_VERTICAL: "Shardtime vertical",
+            COMMAND_SHOWCONF_LABEL_COUNTDOWN: "Countdown warnings (min)",
             COMMAND_SHOWCONF_HELP: {
                 description: "Shows the current configs for your server.",
                 actions: [

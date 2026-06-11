@@ -1,11 +1,12 @@
 import { InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { isUserID } from "../modules/functions.ts";
 import { getGuildSupporterTier, getServerSupporters } from "../modules/guildConfig/patreonSettings.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
-import logger from "../modules/Logger.ts";
 import type { CommandContext } from "../types/types.ts";
+
+// Max length for the welcome/part message previews
+const MESSAGE_PREVIEW_LENGTH = 100;
 
 export default class Showconf extends Command {
     static readonly metadata = {
@@ -22,81 +23,67 @@ export default class Showconf extends Command {
     async run({ interaction, language }: CommandContext) {
         const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
-        const outArr = [];
-        if (!guildConf) logger.error(`[slash/showconf] Unable to get guildConf for guild ${interaction.guild.id}`);
+        const notAvailable = language.get("BASE_NA");
+        const onOff = (val: boolean) => `**${language.get(val ? "BASE_ON" : "BASE_OFF")}**`;
+        const truncate = (msg: string) => (msg.length > MESSAGE_PREVIEW_LENGTH ? `${msg.slice(0, MESSAGE_PREVIEW_LENGTH)}…` : msg);
 
-        // TODO Make this show nicer instead of just a basic code block
-        // Change it so adminRoles show the names instead of ID
-        // Change eventCountdown so it shows just a list of numbers instead of as an array, same for the rest, make it look nicer instead of inspected strings and such
+        // General — roles render as mentions when stored as IDs, names stay as-is
+        const roleArr = (guildConf.adminRole ?? []).map((role: string) => (isUserID(role) ? `<@&${role}>` : role)).sort();
+        const generalValue = [
+            `${language.get("COMMAND_SHOWCONF_LABEL_ADMIN_ROLES")}: ${roleArr.length ? roleArr.join(", ") : notAvailable}`,
+            `${language.get("COMMAND_SHOWCONF_LABEL_TIMEZONE")}: ${guildConf.timezone}`,
+            `${language.get("COMMAND_SHOWCONF_LABEL_LANGUAGE")}: ${guildConf.language}  |  ${language.get(
+                "COMMAND_SHOWCONF_LABEL_GAME_DATA",
+            )}: ${guildConf.swgohLanguage}`,
+        ].join("\n");
 
-        // Check out each option in the config file, and set it up in each subarg as needed
-        for (const key of Object.keys(typedDefaultSettings)) {
-            switch (key) {
-                case "adminRole": {
-                    const roleArr = [];
-                    if (guildConf.adminRole?.length) {
-                        for (const role of guildConf.adminRole) {
-                            if (isUserID(role)) {
-                                // If it's a role ID, try and get a name for it
-                                const roleRes = interaction.guild.roles.cache.find((r) => r.id === role);
-                                roleArr.push(roleRes?.name || role);
-                            } else {
-                                roleArr.push(role);
-                            }
-                        }
-                        outArr.push(
-                            `* ${key}: \n${roleArr
-                                .sort()
-                                .map((r) => `  - ${r}`)
-                                .join("\n")}`,
-                        );
-                    } else {
-                        outArr.push(`* ${key}: N/A`);
-                    }
-                    break;
-                }
-                case "announceChan": {
-                    if (guildConf.announceChan?.length) {
-                        const channel = interaction.guild.channels.cache.get(guildConf.announceChan);
-                        let channelName = guildConf.announceChan;
-                        if (channel?.name) channelName = `#${channel?.name} (${channel?.id})`;
-                        outArr.push(`* ${key}: ${channelName || guildConf.announceChan}`);
-                    } else {
-                        outArr.push(`* ${key}: N/A`);
-                    }
-                    break;
-                }
-                case "eventCountdown": {
-                    if (guildConf.eventCountdown?.length) {
-                        outArr.push(`* ${key}: ${guildConf.eventCountdown.join(", ")}`);
-                    } else {
-                        outArr.push(`* ${key}: N/A`);
-                    }
-                    break;
-                }
-                default:
-                    outArr.push(`* ${key}: ${guildConf[key]}`);
-                    break;
-            }
-        }
+        // Welcome / Part — toggle state with the message quoted underneath
+        const welcomeLines = [`${language.get("COMMAND_SHOWCONF_LABEL_WELCOME")}: ${onOff(guildConf.enableWelcome)}`];
+        if (guildConf.welcomeMessage?.length) welcomeLines.push(`> ${truncate(guildConf.welcomeMessage)}`);
+        welcomeLines.push(`${language.get("COMMAND_SHOWCONF_LABEL_PART")}: ${onOff(guildConf.enablePart)}`);
+        if (guildConf.partMessage?.length) welcomeLines.push(`> ${truncate(guildConf.partMessage)}`);
 
-        const supporterList = [];
+        // Events — channel renders as a mention when stored as an ID
+        const announceChan = guildConf.announceChan?.length
+            ? isUserID(guildConf.announceChan)
+                ? `<#${guildConf.announceChan}>`
+                : guildConf.announceChan
+            : notAvailable;
+        const eventsValue = [
+            `${language.get("COMMAND_SHOWCONF_LABEL_ANNOUNCE_CHAN")}: ${announceChan}`,
+            `${language.get("COMMAND_SHOWCONF_LABEL_EVENT_PAGES")}: ${onOff(guildConf.useEventPages)}  |  ${language.get(
+                "COMMAND_SHOWCONF_LABEL_SHARDTIME_VERTICAL",
+            )}: ${onOff(guildConf.shardtimeVertical)}`,
+            `${language.get("COMMAND_SHOWCONF_LABEL_COUNTDOWN")}: ${
+                guildConf.eventCountdown?.length ? guildConf.eventCountdown.join(", ") : notAvailable
+            }`,
+        ].join("\n");
+
+        // Supporters
         const totalSuppTier = await getGuildSupporterTier({ guildId: interaction.guild.id });
         const guildSupporters = await getServerSupporters({ guildId: interaction.guild.id });
+        const supporterList: string[] = [];
         for (const supp of guildSupporters) {
             const user = interaction.guild.members.cache.get(supp.userId);
             if (!user?.displayName) continue;
-
             supporterList.push(user.displayName);
         }
-        outArr.push(
-            `* Current supporters${totalSuppTier > 0 ? ` (Combined tier: $${totalSuppTier})` : ""}: ${
-                supporterList?.length ? "\n" : "N/A"
-            }${supporterList.map((s) => `  - ${s}`).join("\n")}`,
-        );
 
         return interaction.reply({
-            content: language.get("COMMAND_SHOWCONF_OUTPUT", outArr.join("\n"), interaction.guild.name || ""),
+            embeds: [
+                {
+                    title: language.get("COMMAND_SHOWCONF_TITLE", interaction.guild.name || ""),
+                    fields: [
+                        { name: language.get("COMMAND_SHOWCONF_HEADER_GENERAL"), value: generalValue },
+                        { name: language.get("COMMAND_SHOWCONF_HEADER_WELCOME"), value: welcomeLines.join("\n") },
+                        { name: language.get("COMMAND_SHOWCONF_HEADER_EVENTS"), value: eventsValue },
+                        {
+                            name: language.get("COMMAND_SHOWCONF_HEADER_SUPPORTERS", totalSuppTier),
+                            value: supporterList.length ? supporterList.join(", ") : notAvailable,
+                        },
+                    ],
+                },
+            ],
         });
     }
 }

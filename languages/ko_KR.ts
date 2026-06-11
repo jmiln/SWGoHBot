@@ -958,7 +958,6 @@ export default class extends Language {
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `${serverName}에 설정된 내용입니다: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
                 description: "서버 설정을 보여줍니다.",
                 actions: [

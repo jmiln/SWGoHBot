@@ -1472,7 +1472,6 @@ export default class extends Language {
             },
 
             // Showconf Command
-            COMMAND_SHOWCONF_OUTPUT: (configKeys, serverName) => `Dies ist die aktuelle Konfiguration für ${serverName}: \`\`\`${configKeys}\`\`\``,
             COMMAND_SHOWCONF_HELP: {
                 description: "Zeigt die aktuelle Server Konfiguration an.",
                 actions: [
