@@ -1,7 +1,7 @@
 {
     "metadata": {
-        "generatedAt": "2026-06-07T22:02:24.700Z",
-        "totalCommands": 45,
+        "generatedAt": "2026-06-11T17:12:15.878Z",
+        "totalCommands": 46,
         "categories": 4
     },
     "General": {
@@ -1014,7 +1014,7 @@
                             {
                                 "name": "event_countdown",
                                 "type": 4,
-                                "description": "Set how long before events is should warn you.",
+                                "description": "Set how long before events it should warn you.",
                                 "choices": null
                             }
                         ]
@@ -1033,7 +1033,7 @@
                             {
                                 "name": "event_countdown",
                                 "type": 4,
-                                "description": "Set how long before events is should warn you.",
+                                "description": "Set how long before events it should warn you.",
                                 "choices": null
                             }
                         ]
@@ -1450,6 +1450,47 @@
                         "description": "(0-1439) Send you a DM the set number of min before your payout. 0 to turn it off.",
                         "minValue": 0,
                         "maxValue": 1439
+                    }
+                ],
+                "permLevel": 0,
+                "devServerOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "arenahist",
+                "description": "View your arena rank history as a chart",
+                "usage": [
+                    "**/arenahist** [allycode] [date_range]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "type": 3,
+                        "description": "Ally code to view (defaults to primary account)",
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "date_range",
+                        "type": 3,
+                        "description": "Time range to display",
+                        "choices": [
+                            {
+                                "name": "7 days",
+                                "value": "7"
+                            },
+                            {
+                                "name": "30 days",
+                                "value": "30"
+                            },
+                            {
+                                "name": "90 days",
+                                "value": "90"
+                            }
+                        ]
                     }
                 ],
                 "permLevel": 0,

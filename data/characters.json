@@ -3391,7 +3391,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Crit. Damage x4"
@@ -5614,11 +5614,11 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
@@ -8374,7 +8374,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Defense x2"
+                "Health x2"
             ]
         },
         "avatarName": "charui_trooperstorm_han"
@@ -8718,9 +8718,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"

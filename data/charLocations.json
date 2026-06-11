@@ -631,7 +631,13 @@
     {
         "name": "Captain Carson Teva",
         "defId": "CARSONTEVA",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_CARSONTEVA_NAME",
+                "name": "Classified Information Special Marquee Event"
+            }
+        ]
     },
     {
         "name": "Captain Drogan",
@@ -937,6 +943,10 @@
         "name": "Cinta Kaz",
         "defId": "CINTA",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_CINTA_NAME",
