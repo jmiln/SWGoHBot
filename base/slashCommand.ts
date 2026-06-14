@@ -9,13 +9,15 @@ import {
 } from "discord.js";
 import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
-import type { SlashEmbedOptions } from "../types/base_types.ts";
+import type { CommandOption, SlashEmbedOptions } from "../types/base_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 const defCmdData = {
     name: "",
     description: "No description provided.",
-    options: [],
+    // Typed explicitly so it isn't inferred as never[]; metadata is deployed verbatim as the
+    // Discord application command option payload (see scripts/deployCommands.ts).
+    options: [] as CommandOption[],
     defaultPermissions: true,
     devServerOnly: false, // false = global, true = dev_server only
     enabled: true,

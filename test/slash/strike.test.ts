@@ -11,11 +11,15 @@ import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { MockSWAPI, createMockPlayer } from "../mocks/mockSwapi.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
-const GUILD_ID = "987654321";
+// Use IDs unique to this file. The mock defaults (guild 987654321, allyCode 123456789) are shared
+// by dozens of test files that run concurrently against the one MongoDB testcontainer; reusing them
+// here lets a concurrent file clobber this file's guild config / player rows mid-test. Owning our
+// own IDs keeps this suite isolated regardless of run order or concurrency.
+const GUILD_ID = "511100000";
 const ADMIN_PERM = 6;
 const USER_PERM = 0;
-const PLAYER_AC = 123456789;
-const PLAYER_AC_2 = 999999999;
+const PLAYER_AC = 511100001;
+const PLAYER_AC_2 = 511100002;
 
 async function seedPlayer(allyCode: number, name: string) {
     await cache.put(

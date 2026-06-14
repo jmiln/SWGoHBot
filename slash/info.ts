@@ -75,7 +75,7 @@ export default class Info extends Command {
         return this.runCmdstats({ interaction, language });
     }
 
-    private async runStats({ interaction, language }: CommandContext) {
+    private async runStats({ interaction, language }: Pick<CommandContext, "interaction" | "language">) {
         try {
             const db = database.getClient().db(env.MONGODB_SWAPI_DB);
             const swgohPlayerCount = await db.collection("playerStats").estimatedDocumentCount();
