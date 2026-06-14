@@ -6,6 +6,7 @@
         "erasableSyntaxOnly": true,
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
+        "noEmit": true,
         "rewriteRelativeImportExtensions": true,
         "skipLibCheck": true,
         "strict": false,
