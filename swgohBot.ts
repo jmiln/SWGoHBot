@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { RESTJSONErrorCodes as APIErrors, Client, DiscordAPIError, TextChannel } from "discord.js";
+import { RESTJSONErrorCodes as APIErrors, Client, DiscordAPIError, Options, TextChannel } from "discord.js";
 import { env } from "./config/config.ts";
 import constants from "./data/constants/constants.ts";
 import { cleanupIntervals } from "./events/clientReady.ts";
@@ -20,6 +20,28 @@ const client = new Client({
     intents: constants.botIntents,
     partials: constants.partials,
     closeTimeout: 30_000,
+    // Trim caches the bot never reads. Message/reaction/invite/presence/scheduled-event caches are
+    // pure overhead here (no message handling, no presence intent). Fetching/editing older messages
+    // still works via REST regardless of these limits.
+    makeCache: Options.cacheWithLimits({
+        ...Options.DefaultMakeCacheSettings,
+        MessageManager: 0,
+        PresenceManager: 0,
+        ReactionManager: 0,
+        GuildInviteManager: 0,
+        GuildScheduledEventManager: 0,
+    }),
+    // Default sweepers only handle threads. The member cache is otherwise unbounded and never read
+    // directly (events supply the member, interactions supply interaction.member), so sweep it hourly.
+    // The bot's own member is preserved by the filter. UserManager is left intact so the user-count
+    // stat (modules/functions.ts) stays accurate.
+    sweepers: {
+        ...Options.DefaultSweeperSettings,
+        guildMembers: {
+            interval: 3600,
+            filter: () => (member) => member.id !== member.client.user.id,
+        },
+    },
 }) as Client<true>;
 
 // Regex to replace absolute paths with relative paths in error messages
