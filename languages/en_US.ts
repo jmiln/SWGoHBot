@@ -1293,9 +1293,9 @@ export default class extends Language {
             COMMAND_PANIC_GENERIC_ERROR: "Sorry, but something went wrong. Please try again later.",
 
             // Patreon Command
-            COMMAND_PATREON_SERVER_SET: "Server set as your primary to share your subscriber benefits with!",
+            COMMAND_PATREON_SERVER_SET: "Done! Your subscriber benefits are now shared with this server.",
             COMMAND_PATREON_NO_BONUS_SERVER: "Sorry, but it doesn't look like you have a bonus server set",
-            COMMAND_PATREON_SERVER_REMOVED: "I've removed the server you'd set to share with.",
+            COMMAND_PATREON_SERVER_REMOVED: "Done! Your subscriber benefits are no longer shared with this server.",
 
             // Polls Command
             COMMAND_POLL_NO_ACTIVE: "Sorry, but there is no poll active in this channel.",

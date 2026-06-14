@@ -5,6 +5,7 @@ import eventSocket from "../modules/eventSocket.ts";
 import { getShardId, isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
+import patreonSync from "../modules/patreonSync.ts";
 
 // Constants
 const MAX_CONSECUTIVE_FAILURES = 5;
@@ -126,6 +127,11 @@ function setupDataUpdateTasks(shardId: number): void {
                 if (currentMinute % 5 === 0) {
                     await patreonFuncs.shardTimes();
                     await patreonFuncs.guildTickets();
+                }
+
+                // Sync Patreon supporter info every 15 minutes
+                if (currentMinute % 15 === 0) {
+                    await patreonSync.updatePatrons();
                 }
 
                 // Run hourly — guard against re-running if isRunning resets within the same minute

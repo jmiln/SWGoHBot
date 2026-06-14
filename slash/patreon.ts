@@ -125,9 +125,6 @@ export default class Patreon extends Command {
                         }\nGuild Error: ${res.guild?.error || "N/A"}`,
                     );
                 }
-                // TODO Better wording?
-                //  - You are now supporting this server?
-                //  - You have now selected this server to share your sub benefits with
                 return super.success(interaction, language.get("COMMAND_PATREON_SERVER_SET"));
             }
             case "unset_server": {
@@ -147,7 +144,6 @@ export default class Patreon extends Command {
                         }\nGuild Error: ${clearRes.guild.error || "N/A"}`,
                     );
                 }
-                // TODO Better wording?
                 return super.success(interaction, language.get("COMMAND_PATREON_SERVER_REMOVED"));
             }
             default: {
