@@ -747,13 +747,16 @@ class SWAPI {
             throw new Error("You need to have a list of abilities here");
         }
         const skillArr = Array.isArray(skillArray) ? skillArray : [skillArray];
+        // Guard against a falsy lang (default params only cover `undefined`, not `null`),
+        // matching the rest of the lang-aware methods (gear/units/unitNames/getCharacter).
+        const thisLang = lang?.toLowerCase() || "eng_us";
 
         // All the skills should be loaded, so just get em from the cache
         if (opts.min) {
             return (await cache.get(
                 env.MONGODB_SWAPI_DB,
                 "abilities",
-                { skillId: { $in: skillArr }, language: lang.toLowerCase() },
+                { skillId: { $in: skillArr }, language: thisLang },
                 { nameKey: 1, _id: 0 },
             )) as { nameKey: string }[];
         }
@@ -762,7 +765,7 @@ class SWAPI {
             "abilities",
             {
                 skillId: { $in: skillArr },
-                language: lang.toLowerCase() as never,
+                language: thisLang as never,
             },
             {
                 _id: 0,
