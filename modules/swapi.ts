@@ -57,6 +57,10 @@ const flatStats = [
 
 const MAX_CONCURRENT = 20;
 
+// Ceiling for a single getPlayerUpdates worker. Chunk processing is CPU-bound and finishes in
+// seconds; this only exists to kill a stalled worker before it pins its heap for the process lifetime.
+const WORKER_TIMEOUT_MS = 60_000;
+
 class SWAPI {
     private specialAbilityList: SWAPIUnitAbility[] | null = null;
     private reloadIntervalId: NodeJS.Timeout | null = null;
@@ -219,27 +223,45 @@ class SWAPI {
             allyCode: { $in: acArr },
         });
         const processMemberChunk = async (updatedBare: SWAPIPlayer[], chunkIx: number) => {
-            const chunkRes: SWAPIWorkerOutput = await new Promise((resolve, reject) => {
-                let settled = false;
-                const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.ts`, {
-                    workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
-                });
-                worker.on("message", (result) => {
-                    settled = true;
-                    resolve(result);
-                });
-                worker.on("error", (err) => {
-                    settled = true;
-                    reject(err);
-                });
-                worker.on("exit", (code) => {
-                    if (code !== 0 && !settled) {
-                        logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
-                        reject(new Error(`Worker stopped with exit code ${code}`));
-                    }
-                });
+            const worker = new Worker(`${import.meta.dirname}/workers/getPlayerUpdates.ts`, {
+                workerData: { oldMembers, updatedBare, specialAbilities, chunkIx },
             });
-            return chunkRes;
+            try {
+                const chunkRes: SWAPIWorkerOutput = await new Promise((resolve, reject) => {
+                    let settled = false;
+                    // Guard against a stalled worker pinning its heap for the life of the shard: if it
+                    // never posts a result we reject (and terminate in finally) instead of waiting forever.
+                    const timer = setTimeout(() => {
+                        if (settled) return;
+                        settled = true;
+                        logger.error(`[SWAPI getPlayerUpdates] Worker timed out after ${WORKER_TIMEOUT_MS}ms`);
+                        reject(new Error(`Worker timed out after ${WORKER_TIMEOUT_MS}ms`));
+                    }, WORKER_TIMEOUT_MS);
+                    worker.on("message", (result) => {
+                        settled = true;
+                        clearTimeout(timer);
+                        resolve(result);
+                    });
+                    worker.on("error", (err) => {
+                        settled = true;
+                        clearTimeout(timer);
+                        reject(err);
+                    });
+                    worker.on("exit", (code) => {
+                        clearTimeout(timer);
+                        if (code !== 0 && !settled) {
+                            settled = true;
+                            logger.error(`[SWAPI getPlayerUpdates] Worker stopped with exit code ${code}`);
+                            reject(new Error(`Worker stopped with exit code ${code}`));
+                        }
+                    });
+                });
+                return chunkRes;
+            } finally {
+                // Always release the thread/isolate -- on success the worker may otherwise linger until
+                // its own event loop drains, and on timeout it would never exit on its own.
+                await worker.terminate();
+            }
         };
 
         const memberChunks = [];

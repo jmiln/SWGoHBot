@@ -30,11 +30,17 @@ const client = new Client({
         ReactionManager: 0,
         GuildInviteManager: 0,
         GuildScheduledEventManager: 0,
+        // The user cache otherwise grows toward every distinct member of every guild and is never
+        // read for anything that REST can't supply (userCount sums guild.memberCount instead).
+        // Keep the bot's own user, which it relies on internally.
+        UserManager: {
+            maxSize: 0,
+            keepOverLimit: (user) => user.id === user.client.user.id,
+        },
     }),
     // Default sweepers only handle threads. The member cache is otherwise unbounded and never read
     // directly (events supply the member, interactions supply interaction.member), so sweep it hourly.
-    // The bot's own member is preserved by the filter. UserManager is left intact so the user-count
-    // stat (modules/functions.ts) stays accurate.
+    // The bot's own member is preserved by the filter.
     sweepers: {
         ...Options.DefaultSweeperSettings,
         guildMembers: {

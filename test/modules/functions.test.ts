@@ -29,7 +29,9 @@ import {
     summarizeCharLevels,
     toProperCase,
     trimFloat,
+    userCount,
 } from "../../modules/functions.ts";
+import type { Client } from "discord.js";
 import type { SWAPIPlayer } from "../../types/swapi_types.ts";
 import type { ArenaPlayer, BotUnit } from "../../types/types.ts";
 import { createMockLanguage } from "../mocks/index.ts";
@@ -691,5 +693,30 @@ describe("summarizeCharLevels", () => {
         const [levels] = summarizeCharLevels([player, p2], "gear");
         assert.strictEqual(levels[13], 2, "Expected 2 characters at G13 across both players");
         assert.strictEqual(levels[12], 1, "Expected 1 character at G12");
+    });
+});
+
+describe("userCount", () => {
+    it("sums memberCount across guilds when not sharded", async () => {
+        const client = {
+            shard: null,
+            guilds: { cache: [{ memberCount: 3 }, { memberCount: 5 }] },
+        } as unknown as Client;
+        assert.strictEqual(await userCount(client), 8);
+    });
+
+    it("treats a missing memberCount as zero", async () => {
+        const client = {
+            shard: null,
+            guilds: { cache: [{ memberCount: 3 }, {}] },
+        } as unknown as Client;
+        assert.strictEqual(await userCount(client), 3);
+    });
+
+    it("sums per-shard totals when sharded", async () => {
+        const client = {
+            shard: { count: 2, broadcastEval: async () => [10, 20] },
+        } as unknown as Client;
+        assert.strictEqual(await userCount(client), 30);
     });
 });

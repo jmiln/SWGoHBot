@@ -413,17 +413,18 @@ export function updatedFooterStr(updated: number, languageOrContext: Language | 
     return lang.get("BASE_SWGOH_LAST_UPDATED", time(Math.floor(updated / 1000)));
 }
 
-// Get the current user count
+// Get the current user count (total memberships summed across guilds). Uses guild.memberCount
+// rather than the user cache so the UserManager cache can stay bounded -- see swgohBot.ts.
 export async function userCount(client: Client): Promise<number> {
     if (client.shard?.count) {
         return (
             (await client.shard
-                .fetchClientValues("users.cache.size")
+                .broadcastEval((c) => c.guilds.cache.reduce((sum, g) => sum + (g.memberCount ?? 0), 0))
                 .then((results: number[]) => results.reduce((prev, val) => prev + val, 0))
                 .catch(logger.error)) || 0
         );
     }
-    return client.users.cache.size || 0;
+    return client.guilds.cache.reduce((sum, g) => sum + (g.memberCount ?? 0), 0);
 }
 
 // Get the current guild count

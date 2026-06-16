@@ -1,7 +1,18 @@
-import type { ChatInputCommandInteraction, Client, Guild, GuildMember, InteractionReplyOptions, User } from "discord.js";
+import { Collection, type ChatInputCommandInteraction, type Client, type Guild, type GuildMember, type InteractionReplyOptions, type User } from "discord.js";
 import Language from "../../base/Language.ts";
 import type { SWAPILang } from "../../types/swapi_types.ts";
 import type { CommandContext } from "../../types/types.ts";
+
+// Shared default guild cache for the mock client: ~1500 guilds totalling ~50000
+// members, matching the realistic defaults the bot reports via /info stats.
+// Mirrors discord.js's guilds.cache (a Collection), so it exposes both `.size`
+// (used by guildCount) and `.reduce` (used by userCount over guild.memberCount).
+const DEFAULT_GUILD_COUNT = 1500;
+const DEFAULT_MEMBERS_PER_GUILD = 33;
+const defaultGuildCache = new Collection<string, { memberCount: number }>();
+for (let i = 0; i < DEFAULT_GUILD_COUNT; i++) {
+    defaultGuildCache.set(String(i), { memberCount: DEFAULT_MEMBERS_PER_GUILD });
+}
 
 interface MockInteractionOptions {
     optionsData?: Record<string, any>;
@@ -56,10 +67,10 @@ export function createMockInteraction(
             user: { id: "bot123", username: "BotUser" },
             shard: null,
             guilds: {
-                cache: { size: 1500 }
+                cache: defaultGuildCache,
             },
             users: {
-                cache: { size: 50000 }
+                cache: { size: 50000 },
             },
         } as unknown as Client<true>,
         channelId: overrides.channelId || "123",
