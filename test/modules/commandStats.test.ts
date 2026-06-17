@@ -11,12 +11,18 @@ describe("commandStats module", () => {
     const db = () => mongoClient.db(env.MONGODB_SWGOHBOT_DB);
     const col = () => db().collection("commandStats");
 
+    // Command names are unique to this file: test files run in parallel against the
+    // shared commandStats collection (info.test.ts also writes it), so names must not
+    // overlap and cleanup must be scoped to these rather than dropping the collection.
+    const CS_CMD_NAMES = ["mods", "mymods", "mycharacter", "notimed"];
+
     before(async () => {
         mongoClient = await getMongoClient();
         database.init(mongoClient);
 
         // Seed test data
         const now = Date.now();
+        await col().deleteMany({ commandName: { $in: CS_CMD_NAMES } });
         await col().insertMany([
             { commandName: "mods", subcommand: null, count: 10, success: true,  executionTime: 200, timestamp: now },
             { commandName: "mods", subcommand: null, count: 5,  success: false, executionTime: 400, timestamp: now },
@@ -67,7 +73,7 @@ describe("commandStats module", () => {
     });
 
     after(async () => {
-        await col().drop().catch(() => {});
+        await col().deleteMany({ commandName: { $in: CS_CMD_NAMES } });
         await closeMongoClient();
     });
 

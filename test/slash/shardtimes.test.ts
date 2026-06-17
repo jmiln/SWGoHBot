@@ -7,8 +7,11 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
-// Guild/channel IDs used across tests
-const GUILD_ID = "987654321";
+// Guild/channel IDs used across tests.
+// NOTE: This must be unique to this file. Test files run in parallel against a shared
+// MongoDB, and other files (e.g. showconf.test.ts) delete the entire guildConfigs doc
+// for their guild ID. Sharing an ID caused intermittent REM_MISSING failures here.
+const GUILD_ID = "shardtimes-test-guild";
 const CHANNEL_ID = "test-channel-shard";
 
 /** Creates a mock interaction with guild, channel, and client.emojis set up for shardtimes. */

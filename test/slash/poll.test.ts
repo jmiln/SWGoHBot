@@ -7,7 +7,10 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
-const GUILD_ID = "987654321";
+// Unique to this file: test files run in parallel against the shared test DB, so the
+// guild ID must not collide with other suites (the mock default "987654321" is shared,
+// and showconf/aliases delete the whole guildConfigs doc for their guild).
+const GUILD_ID = "poll-test-guild";
 const CHANNEL_ID = "poll-channel-1";
 
 /** Creates a mock interaction with guild and channel set for poll tests. */

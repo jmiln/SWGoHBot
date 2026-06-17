@@ -31,7 +31,7 @@ describe("Register", () => {
 
     // Scope cleanup to this file's ids/codes — concurrent test files share these collections
     const REG_TEST_USER_FILTER = { id: { $in: ["register-test-user", "other-user-id-999"] } };
-    const REG_TEST_PLAYER_FILTER = { allyCode: { $in: [123456789, 987654321] } };
+    const REG_TEST_PLAYER_FILTER = { allyCode: { $in: [733111222, 733222333] } };
 
     after(async () => {
         try {
@@ -93,7 +93,7 @@ describe("Register", () => {
         const interaction = createMockInteraction({
             user: REG_USER,
             optionsData: {
-                allycode: "123456789",
+                allycode: "733111222",
                 user: otherUser,
             },
         });
@@ -105,7 +105,7 @@ describe("Register", () => {
 
     it("should register successfully when the API returns valid player data", async () => {
         const player = createMockPlayer({
-            allyCode: 123456789,
+            allyCode: 733111222,
             name: "GoodPlayer",
             stats: [
                 { nameKey: "STAT_GALACTIC_POWER_ACQUIRED_NAME", value: 5000000 },
@@ -122,7 +122,7 @@ describe("Register", () => {
                 name: "Test Guild",
                 members: { cache: { has: () => true } },
             } as any,
-            optionsData: { allycode: "123456789" },
+            optionsData: { allycode: "733111222" },
         });
         const ctx = createCommandContext({ interaction });
         const command = new Register();
@@ -147,7 +147,7 @@ describe("Register", () => {
 
     it("should store ally code as a number, not a string", async () => {
         const player = createMockPlayer({
-            allyCode: 123456789,
+            allyCode: 733111222,
             name: "NumberPlayer",
             stats: [
                 { nameKey: "STAT_GALACTIC_POWER_ACQUIRED_NAME", value: 5000000 },
@@ -164,7 +164,7 @@ describe("Register", () => {
                 name: "Test Guild",
                 members: { cache: { has: () => true } },
             } as any,
-            optionsData: { allycode: "123456789" },
+            optionsData: { allycode: "733111222" },
         });
         const ctx = createCommandContext({ interaction });
         const command = new Register();
@@ -173,7 +173,7 @@ describe("Register", () => {
         const user = await userReg.getUser(interaction.user.id);
         assert.ok(user, "Expected user to be registered");
         assert.strictEqual(typeof user.accounts[0], "number", "allyCode must be stored as a number");
-        assert.strictEqual(user.accounts[0], 123456789);
+        assert.strictEqual(user.accounts[0], 733111222);
     });
 
     it("should promote an already-linked code to primary even when no arenaPlayers doc exists", async () => {
@@ -181,8 +181,8 @@ describe("Register", () => {
         // is in user.accounts but the arenaPlayers collection has no doc for it.
         await userReg.updateUser(REG_USER.id, {
             id: REG_USER.id,
-            accounts: [123456789, 987654321],
-            primaryAllyCode: 987654321,
+            accounts: [733111222, 733222333],
+            primaryAllyCode: 733222333,
         } as any);
 
         const interaction = createMockInteraction({
@@ -192,7 +192,7 @@ describe("Register", () => {
                 name: "Test Guild",
                 members: { cache: { has: () => true } },
             } as any,
-            optionsData: { allycode: "123456789" },
+            optionsData: { allycode: "733111222" },
         });
         // The real language dereferences the player object in COMMAND_REGISTER_SUCCESS_DESC,
         // which is exactly what a null arenaPlayers doc breaks — the mock language hides that
@@ -201,12 +201,12 @@ describe("Register", () => {
         await command.run(ctx);
 
         const user = await userReg.getUser(REG_USER.id);
-        assert.strictEqual(user?.primaryAllyCode, 123456789, "code should have been promoted to primary");
+        assert.strictEqual(user?.primaryAllyCode, 733111222, "code should have been promoted to primary");
 
         const replies = (interaction as any)._getReplies();
         const lastReply = replies[replies.length - 1];
         const embedData = lastReply?.embeds?.[0]?.data ?? lastReply?.embeds?.[0];
-        assert.ok((embedData?.description ?? "").includes("123-456-789"), `expected success embed, got: ${JSON.stringify(replies)}`);
+        assert.ok((embedData?.description ?? "").includes("733-111-222"), `expected success embed, got: ${JSON.stringify(replies)}`);
     });
 
     it("should return error when API returns empty result for a valid ally code", async () => {
@@ -219,7 +219,7 @@ describe("Register", () => {
                 name: "Test Guild",
                 members: { cache: { has: () => true } },
             } as any,
-            optionsData: { allycode: "123456789" },
+            optionsData: { allycode: "733111222" },
         });
         const ctx = createCommandContext({ interaction });
         const command = new Register();

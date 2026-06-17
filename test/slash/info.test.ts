@@ -84,14 +84,22 @@ describe("Info", () => {
     describe("/info cmdstats", () => {
         const col = () => mongoClient.db(env.MONGODB_SWGOHBOT_DB).collection("commandStats");
 
+        // Command names are unique to this file: test files run in parallel against the
+        // shared commandStats collection (commandStats.test.ts also writes it), so names
+        // must not overlap or the aggregations pollute each other's percentages.
+        const INFO_CMD_NAMES = ["info_mychar", "info_noargs", "info_manyargs"];
+
         before(async () => {
             const now = Date.now();
+            // Scope cleanup to this file's command names rather than dropping the whole
+            // collection, which would race with other suites writing commandStats.
+            await col().deleteMany({ commandName: { $in: INFO_CMD_NAMES } });
             await col().insertMany([
-                { commandName: "mycharacter", subcommand: "character", count: 1, success: true, timestamp: now, options: [{ name: "allycode", type: 3, value: "123" }] },
-                { commandName: "mycharacter", subcommand: "ship", count: 1, success: true, timestamp: now },
-                { commandName: "noargs", subcommand: "list", count: 1, success: true, timestamp: now },
+                { commandName: "info_mychar", subcommand: "character", count: 1, success: true, timestamp: now, options: [{ name: "allycode", type: 3, value: "123" }] },
+                { commandName: "info_mychar", subcommand: "ship", count: 1, success: true, timestamp: now },
+                { commandName: "info_noargs", subcommand: "list", count: 1, success: true, timestamp: now },
                 ...Array.from({ length: 11 }, (_, i) => ({
-                    commandName: "manyargs",
+                    commandName: "info_manyargs",
                     subcommand: null,
                     count: 1,
                     success: true,
@@ -102,7 +110,7 @@ describe("Info", () => {
         });
 
         after(async () => {
-            await col().drop().catch(() => {});
+            await col().deleteMany({ commandName: { $in: INFO_CMD_NAMES } });
         });
 
         it("should display top commands list when no command arg is given", async () => {
@@ -123,7 +131,7 @@ describe("Info", () => {
 
         it("should display detail view when command arg is given", async () => {
             const interaction = createMockInteraction({
-                optionsData: { _subcommand: "cmdstats", command: "mods" },
+                optionsData: { _subcommand: "cmdstats", command: "info_mychar" },
             });
 
             const command = new Info();
@@ -149,7 +157,7 @@ describe("Info", () => {
 
         it("should show percentages in subcommand breakdown", async () => {
             const interaction = createMockInteraction({
-                optionsData: { _subcommand: "cmdstats", command: "mycharacter" },
+                optionsData: { _subcommand: "cmdstats", command: "info_mychar" },
             });
             const command = new Info();
             const ctx = createCommandContext({ interaction });
@@ -164,7 +172,7 @@ describe("Info", () => {
 
         it("should include Arguments field when options data exists", async () => {
             const interaction = createMockInteraction({
-                optionsData: { _subcommand: "cmdstats", command: "mycharacter" },
+                optionsData: { _subcommand: "cmdstats", command: "info_mychar" },
             });
             const command = new Info();
             const ctx = createCommandContext({ interaction });
@@ -180,7 +188,7 @@ describe("Info", () => {
 
         it("should omit Arguments field when no options data exists", async () => {
             const interaction = createMockInteraction({
-                optionsData: { _subcommand: "cmdstats", command: "noargs" },
+                optionsData: { _subcommand: "cmdstats", command: "info_noargs" },
             });
             const command = new Info();
             const ctx = createCommandContext({ interaction });
@@ -194,7 +202,7 @@ describe("Info", () => {
 
         it("should show overflow marker when more than 10 argument types exist", async () => {
             const interaction = createMockInteraction({
-                optionsData: { _subcommand: "cmdstats", command: "manyargs" },
+                optionsData: { _subcommand: "cmdstats", command: "info_manyargs" },
             });
             const command = new Info();
             const ctx = createCommandContext({ interaction });

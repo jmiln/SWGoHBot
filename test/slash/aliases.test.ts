@@ -18,6 +18,9 @@ function getReplyDescription(reply: any): string | undefined {
 describe("Aliases Command Functionality", () => {
     let mongoClient: MongoClient;
     const testDbName = env.MONGODB_SWGOHBOT_DB;
+    // Unique to this file. Test files run in parallel against the shared test DB, so the
+    // guild ID must not collide with other suites (the mock default "987654321" is shared).
+    const ALIASES_GUILD_ID = "aliases-test-guild";
 
     before(async () => {
         // Get MongoDB client from testcontainer and initialize the cache module
@@ -30,7 +33,7 @@ describe("Aliases Command Functionality", () => {
         try {
             // Scope to this file's mock guild — test files run in parallel against the
             // shared test DB, so a collection-wide wipe races with other suites' docs
-            await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({ guildId: "987654321" });
+            await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({ guildId: ALIASES_GUILD_ID });
         } catch (e) {
             // Ignore cleanup errors
         }
@@ -41,6 +44,7 @@ describe("Aliases Command Functionality", () => {
         it("should successfully add an alias for a valid character", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "add",
                     unit: "TRIPLEZERO",  // Using actual character from data file
@@ -79,6 +83,7 @@ describe("Aliases Command Functionality", () => {
         it("should successfully add an alias for a valid ship", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "add",
                     unit: "HOUNDSTOOTH",
@@ -107,6 +112,7 @@ describe("Aliases Command Functionality", () => {
         it("should return an error when unit does not exist", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "add",
                     unit: "NONEXISTENTUNIT",
@@ -131,6 +137,7 @@ describe("Aliases Command Functionality", () => {
         it("should return an error when alias is already in use", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "add",
                     unit: "COMMANDERLUKESKYWALKER",
@@ -170,6 +177,7 @@ describe("Aliases Command Functionality", () => {
         it("should successfully remove an existing alias", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "remove",
                     alias: "DV",
@@ -219,6 +227,7 @@ describe("Aliases Command Functionality", () => {
         it("should return an error when trying to remove non-existent alias", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "remove",
                     alias: "NONEXISTENT",
@@ -255,6 +264,7 @@ describe("Aliases Command Functionality", () => {
         it("should remove alias and sort remaining aliases alphabetically", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "remove",
                     alias: "MMM",
@@ -298,6 +308,7 @@ describe("Aliases Command Functionality", () => {
         it("should display all aliases when they exist", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "view",
                 },
@@ -338,6 +349,7 @@ describe("Aliases Command Functionality", () => {
         it("should handle viewing when no aliases exist", async () => {            const command = new Aliases();
 
             const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "view",
                 },

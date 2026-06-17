@@ -8,7 +8,10 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { getLastReply } from "./helpers.ts";
 
-const TEST_GUILD_ID = "987654321";
+// Unique to this file: test files run in parallel against the shared test DB, and this
+// suite deletes the whole guildConfigs doc for its guild. Sharing the mock default
+// "987654321" raced with poll/aliases and caused intermittent failures.
+const TEST_GUILD_ID = "showconf-test-guild";
 const ROLE_ID = "123456789012345678";
 const CHANNEL_ID = "111222333444555666";
 const SUPPORTER_ID = "222333444555666777";
