@@ -1,4 +1,5 @@
 import { readdir, unlink, writeFile } from "node:fs/promises";
+import { availableParallelism } from "node:os";
 import path from "node:path";
 import { inspect } from "node:util";
 import { eachLimit } from "async";
@@ -14,12 +15,32 @@ import logger from "../modules/Logger.ts";
 const FORCE_UPDATE = process.argv.includes("--force") || false;
 const DEBUG_LOGS = process.argv.includes("--debug") || false;
 
+// Parse a numeric `--flag value` CLI override, falling back to a default when absent or unparseable.
+function numericArg(flag: string, fallback: number): number {
+    const ix = process.argv.indexOf(flag);
+    if (ix === -1) return fallback;
+    const parsed = Number.parseInt(process.argv[ix + 1], 10);
+    return Number.isNaN(parsed) ? fallback : parsed;
+}
+
 // Maximum concurrent API requests to prevent rate limiting and excessive memory usage.
 // Up to 120 seems to work ok, and cuts off 6 or so seconds of processing time, but it's just
 // not worth the risk of rate limits.
-const MAX_CONCURRENT = process.argv.includes("--max-concurrent")
-    ? Number.parseInt(process.argv[process.argv.indexOf("--max-concurrent") + 1], 10)
-    : 80;
+const MAX_CONCURRENT = numericArg("--max-concurrent", 80);
+
+// Player-fetch worker pool (see aggregatePlayerMods). One isolate per concurrent request gives the
+// parse parallelism the workload needs (parsing each full-player payload is real CPU, not just
+// I/O), so the thread count tracks the host's available cores -- but it is capped, because the
+// fetch is API rate-limit bound and must NOT scale up on bigger hardware. The cap is the validated
+// safe concurrency; do not raise it. Each worker's V8 old space is also capped so transient
+// payloads get collected instead of ballooning rss: the live set per worker is single-digit MB,
+// but with no memory pressure V8 grew the (default CPU-count) isolates freely until they hit ~5GB.
+// All three knobs are overridable per run (--mod-threads / --mod-tasks / --worker-heap) for tuning;
+// the defaults are the verified config (12 threads, 1 task each, 256MB cap -> ~1.4GB peak).
+const MOD_FETCH_CONCURRENCY_CAP = 12;
+const MOD_WORKER_THREADS = numericArg("--mod-threads", Math.max(1, Math.min(availableParallelism(), MOD_FETCH_CONCURRENCY_CAP)));
+const MOD_TASKS_PER_WORKER = numericArg("--mod-tasks", 1);
+const MOD_WORKER_HEAP_MB = numericArg("--worker-heap", 256);
 
 import ComlinkStub from "@swgoh-utils/comlink";
 import type { components, operations } from "../types/comlinkGamedata.js";
@@ -99,6 +120,12 @@ const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationB
 // Track resources for cleanup
 let mongoClient: MongoClient | null = null;
 
+// Print usage and exit before any startup work when --help/-h is passed.
+if (!process.env.TESTING_ENV && (process.argv.includes("--help") || process.argv.includes("-h"))) {
+    printHelp();
+    process.exit(0);
+}
+
 logger.log("Starting data updater");
 
 // Centralized cleanup function
@@ -176,6 +203,7 @@ async function init() {
                 let exitCode = 0;
                 try {
                     debugTime("Total update cycle");
+                    logMem("cycle start");
 
                     debugTime("Checking metadata");
                     const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
@@ -204,11 +232,15 @@ async function init() {
                         await runGameDataUpdaters(newMetadata, comlinkStub);
                         debugTimeEnd("Running game data updaters");
                         debugLog("Finished running game data updater for new metadata");
+                        logMem("after game data updaters");
+                    } else {
+                        logMem("metadata unchanged, skipping game data updaters");
                     }
 
                     debugTime("Running mod updaters");
                     await runModUpdaters(comlinkStub);
                     debugTimeEnd("Running mod updaters");
+                    logMem("after mod updaters");
 
                     debugTime("Exporting command docs");
                     await exportCommandDocs();
@@ -331,6 +363,7 @@ async function runGameDataUpdaters(metadata: Metadata, comlinkStub: ComlinkStub)
     const log = [];
 
     const locales = await getLocalizationData(comlinkStub, metadata.latestLocalizationBundleVersion);
+    logMem("after getLocalizationData (locales held)");
 
     // TODO Change updateGameData to return a log array so it can all be logged nicely with the locations?
     await updateGameData(locales, metadata, comlinkStub); // Run the stuff to grab all new game data, and update listings in the db
@@ -502,12 +535,22 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
     const unitsOut: UnitModAccumulator = {};
 
     let failedCount = 0;
+    let processedCount = 0;
 
-    // Create pool locally for this operation
+    // Create pool locally for this operation. Thread count follows the host cores up to the
+    // rate-limit cap (MOD_WORKER_THREADS), instead of Piscina's raw CPU-count default, and each
+    // worker's heap is capped so transient payloads are collected instead of accumulating.
     const piscina = new Piscina({
         filename: path.resolve(import.meta.dirname, "../modules/workers/getStrippedModsWorker.ts"),
         taskQueue: new FixedQueue(),
+        minThreads: MOD_WORKER_THREADS,
+        maxThreads: MOD_WORKER_THREADS,
+        concurrentTasksPerWorker: MOD_TASKS_PER_WORKER,
+        resourceLimits: { maxOldGenerationSizeMb: MOD_WORKER_HEAP_MB },
     });
+    logMem(
+        `aggregatePlayerMods start (piscina threads=${piscina.threads.length}, tasksPerWorker=${MOD_TASKS_PER_WORKER}, heapCap=${MOD_WORKER_HEAP_MB}MB)`,
+    );
 
     try {
         await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
@@ -521,6 +564,8 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
                 failedCount++;
                 logger.error(`[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}:`, err);
             }
+            // Sample memory periodically to catch any transient peak from in-flight worker payloads
+            if (++processedCount % 1000 === 0) logMem(`aggregatePlayerMods after ${processedCount} players`);
         });
 
         if (failedCount > 0) {
@@ -1084,6 +1129,7 @@ async function updateGameData(locales: Locales, metadata: Metadata, comlinkStub:
 async function processGameData(gameData: GameData, locales: Locales) {
     try {
         debugTime("Finished processing all GameData");
+        logMem("processGameData start (gameData + locales held)");
         // Validate gameData structure before processing
         validateGameData(gameData);
 
@@ -1092,6 +1138,7 @@ async function processGameData(gameData: GameData, locales: Locales) {
         await saveFile(path.join(DATA_DIR_PATH, "skillMap.json"), skillMap, false);
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales);
         debugTimeEnd("Finished processing Abilities");
+        logMem("after abilities localization");
 
         debugTime("Finished processing Omicrons");
         const omicrons = sortOmicrons(abilitiesOut, locales);
@@ -1108,6 +1155,7 @@ async function processGameData(gameData: GameData, locales: Locales) {
         const mappedEquipmentList = processEquipment(gameData.equipment);
         await processLocalization(mappedEquipmentList, "gear", ["nameKey"], "id", locales);
         debugTimeEnd("Finished processing Equipment");
+        logMem("after gear localization");
 
         debugTime("Finished processing Materials");
         const { unitShardList, bulkMatArr } = processMaterials(gameData.material);
@@ -1152,6 +1200,7 @@ async function processGameData(gameData: GameData, locales: Locales) {
         await saveFile(CHAR_FILE_PATH, sortByName(charactersOut));
         await saveFile(SHIP_FILE_PATH, sortByName(shipsOut));
         debugTimeEnd("Finished processing Units");
+        logMem("after units processing");
 
         debugTime("Finished processing Journey Reqs");
         await processJourneyReqs(gameData);
@@ -2028,6 +2077,39 @@ function debugTimeEnd(name: string) {
     if (!FORCE_UPDATE && !DEBUG_LOGS) return;
     if (!name?.length) return;
     console.timeEnd(name);
+}
+
+// Diagnostic: log a memory snapshot at a phase boundary. rss is process-wide (includes worker
+// threads); heapUsed is the main isolate's JS objects; external/arrayBuffers covers Buffers and
+// off-heap data. rss >> heapUsed points at worker payloads or buffers; high heapUsed points at
+// main-thread JS (e.g. gameData/localization). Gated behind --debug like the other debug helpers.
+function logMem(label: string) {
+    if (!FORCE_UPDATE && !DEBUG_LOGS) return;
+    const m = process.memoryUsage();
+    const mb = (n: number) => Math.round(n / 1024 / 1024);
+    logger.log(
+        `[mem] ${label}: rss=${mb(m.rss)}MB heapUsed=${mb(m.heapUsed)}MB heapTotal=${mb(m.heapTotal)}MB external=${mb(m.external)}MB arrayBuffers=${mb(m.arrayBuffers)}MB`,
+    );
+}
+
+// Print CLI usage. Defaults shown here must track the numericArg() fallbacks above.
+function printHelp() {
+    const defaultThreads = Math.max(1, Math.min(availableParallelism(), MOD_FETCH_CONCURRENCY_CAP));
+    console.log(`SWGoHBot data updater
+
+Usage: node --env-file=.env services/dataUpdater.ts [options]
+
+Runs a single update cycle then exits: checks game metadata, refreshes game data when the
+version changed, recalculates mod stats from the top guilds, and exports command docs.
+
+Options:
+  -h, --help            Show this help and exit.
+  --force               Skip the normal cycle and run only the forced bits (currently exportCommandDocs).
+  --debug               Verbose timing, debug logging, and per-phase memory ([mem]) snapshots.
+  --max-concurrent N    Max in-flight player fetches queued to the worker pool (default 80).
+  --mod-threads N       Player-fetch worker threads (default min(cpuCount, ${MOD_FETCH_CONCURRENCY_CAP}); here ${defaultThreads}).
+  --mod-tasks N         Concurrent tasks per worker thread (default 1).
+  --worker-heap N       Per-worker V8 old-space cap in MB; bounds peak rss (default 256).`);
 }
 
 function debugLog(str: string | string[]) {
