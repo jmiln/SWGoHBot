@@ -18,6 +18,7 @@ import type {
     SWAPIGuild,
     SWAPIGuildAlteredMemberContribution,
     SWAPILang,
+    SWAPIMod,
     SWAPIPlayer,
     SWAPIPlayerArenaProfile,
     SWAPIPlayerArenaProfilePVP,
@@ -56,6 +57,26 @@ const flatStats = [
 ];
 
 const MAX_CONCURRENT = 20;
+
+/**
+ * Reduce a mod to only the fields the bot stores and consumes (see SWAPIMod).
+ * The statcalc service returns mods carrying raw game-economy fields
+ * (sellValue, removeCost, levelCost, xp, locked, bonusQuantity, convertedItem,
+ * rerolledCount) that nothing reads; persisting them verbatim accounted for
+ * ~31% of every playerStats document. Picking the whitelisted keys drops them.
+ */
+export function pruneModFields(mod: SWAPIMod): SWAPIMod {
+    return {
+        id: mod.id,
+        level: mod.level,
+        tier: mod.tier,
+        slot: mod.slot,
+        set: mod.set,
+        pips: mod.pips,
+        primaryStat: mod.primaryStat,
+        secondaryStat: mod.secondaryStat,
+    };
+}
 
 // Ceiling for a single getPlayerUpdates worker. Chunk processing is CPU-bound and finishes in
 // seconds; this only exists to kill a stalled worker before it pins its heap for the process lifetime.
@@ -449,6 +470,9 @@ class SWAPI {
                         }
 
                         for (const char of bareP.roster) {
+                            if (char.mods?.length) {
+                                char.mods = char.mods.map(pruneModFields);
+                            }
                             for (const ability of char.skills) {
                                 const thisAbility = specialAbilities.find((abi) => abi.skillId === ability.id);
                                 if (thisAbility) {
