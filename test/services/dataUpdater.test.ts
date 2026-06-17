@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import dataUpdater from "../../services/dataUpdater.ts";
 
 const {
+    foldUnitMods,
     processAbilities,
     processCategories,
     processEquipment,
@@ -341,6 +342,62 @@ describe("processModResults", () => {
         const result = processModResults(input);
         assert.ok(result["VADER"]);
         assert.ok(result["LUKE"]);
+    });
+});
+
+// ---------------------------------------------------------------------------
+// foldUnitMods
+// ---------------------------------------------------------------------------
+
+describe("foldUnitMods", () => {
+    it("folds a single unit's mods into primary and set strings", () => {
+        const acc = {};
+        foldUnitMods(acc, [
+            {
+                defId: "VADER",
+                mods: [
+                    { slot: 0, set: 1, primaryStat: 5 },
+                    { slot: 1, set: 1, primaryStat: 17 },
+                ],
+            },
+        ] as any);
+        // Primary string uses 1-based mod index, not slot: "1-5_2-17"
+        assert.deepStrictEqual(acc, {
+            VADER: {
+                primaries: { "1-5_2-17": 1 },
+                sets: { "2x1": 1 }, // two mods of set 1
+            },
+        });
+    });
+
+    it("accumulates counts across separate calls (streaming equivalence)", () => {
+        const acc = {};
+        const player = [
+            {
+                defId: "VADER",
+                mods: [
+                    { slot: 0, set: 1, primaryStat: 5 },
+                    { slot: 1, set: 1, primaryStat: 17 },
+                ],
+            },
+        ];
+        // Folding two players one at a time must equal folding both together
+        foldUnitMods(acc, player as any);
+        foldUnitMods(acc, player as any);
+        assert.strictEqual((acc as any).VADER.primaries["1-5_2-17"], 2);
+        assert.strictEqual((acc as any).VADER.sets["2x1"], 2);
+    });
+
+    it("skips units with no mods", () => {
+        const acc = {};
+        foldUnitMods(acc, [{ defId: "EMPTY", mods: [] }] as any);
+        assert.deepStrictEqual(acc, {});
+    });
+
+    it("returns the same accumulator it was given", () => {
+        const acc = {};
+        const result = foldUnitMods(acc, [] as any);
+        assert.strictEqual(result, acc);
     });
 });
 

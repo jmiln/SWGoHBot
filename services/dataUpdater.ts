@@ -68,6 +68,10 @@ interface ProcessedUnit {
 }
 type Locales = Record<SWAPILang, Record<string, string>>;
 
+// Per-defId tally of how often each primary-stat layout and mod-set combination appears
+// across all scanned rosters. Built incrementally by foldUnitMods, consumed by processModResults.
+type UnitModAccumulator = Record<string, { primaries: Record<string, number>; sets: Record<string, number> }>;
+
 // Simplified call for auto-generated types from comlink openapi.yaml
 type GameData = operations["getGameData"]["responses"]["2XX"]["content"]["application/json"];
 type getGuildLeaderboardResponse = operations["getGuildLeaderboard"]["responses"]["2XX"]["content"]["application/json"];
@@ -294,17 +298,13 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
     const playerIds = await getGuildPlayerIds(comlinkStub, guildIds);
     debugTimeEnd("Getting guildPlayerIds");
 
-    // Grab the defId and needed mod info for each of those players' units
-    debugTime("Getting playerRosters");
+    // Grab the defId and needed mod info for each of those players' units, folding each
+    // player's mods into the per-defId aggregation as they stream in (see aggregatePlayerMods).
+    // Records which sets of mods each character has and the primary stats per slot.
+    debugTime("Aggregating player mods");
     const modMap = await readJSON<ModMap>(path.join(DATA_DIR_PATH, "modMap.json"));
-    const playerUnits = await getPlayerRosters(playerIds, modMap);
-    debugTimeEnd("Getting playerRosters");
-
-    // Get list which sets of mods each character has and record the
-    // primary stats each of them has per slot
-    debugTime("Processing unitMods");
-    const unitsOut = await processUnitMods(playerUnits);
-    debugTimeEnd("Processing unitMods");
+    const unitsOut = await aggregatePlayerMods(playerIds, modMap);
+    debugTimeEnd("Aggregating player mods");
 
     // Go through each character and find the most common versions of
     // set and primaries, and convert them to be readable
@@ -494,10 +494,12 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
     return playerIdArr;
 }
 
-// Stick all of the characters from each player's rosters into an array ot be processed later
-async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
-    debugLog(`Getting rosters for ${playerIds.length} players (${MAX_CONCURRENT} at a time)`);
-    const rosterArr = [];
+// Fetch each player's stripped roster and fold its mods straight into the per-defId
+// aggregation as it arrives, so we never hold every player's units in memory at once.
+// Peak memory is bounded by the MAX_CONCURRENT in-flight rosters plus the small accumulator.
+async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise<UnitModAccumulator> {
+    debugLog(`Aggregating mods for ${playerIds.length} players (${MAX_CONCURRENT} at a time)`);
+    const unitsOut: UnitModAccumulator = {};
 
     let failedCount = 0;
 
@@ -510,16 +512,19 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
     try {
         await eachLimit(playerIds, MAX_CONCURRENT, async (playerId) => {
             try {
-                const strippedUnits = await piscina.run({ playerId, modMap });
-                rosterArr.push(...(strippedUnits || []));
+                const strippedUnits = (await piscina.run({ playerId, modMap })) as SWAPIUnit[] | undefined;
+                // Fold synchronously here: eachLimit callbacks only interleave at the await
+                // above, so mutating the shared accumulator is safe and the player's units
+                // become eligible for GC as soon as this returns.
+                if (strippedUnits?.length) foldUnitMods(unitsOut, strippedUnits);
             } catch (err) {
                 failedCount++;
-                logger.error(`[dataUpdater/getPlayerRosters] Failed to process player ${playerId}:`, err);
+                logger.error(`[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}:`, err);
             }
         });
 
         if (failedCount > 0) {
-            logger.error(`[dataUpdater/getPlayerRosters] Failed to process ${failedCount}/${playerIds.length} players`);
+            logger.error(`[dataUpdater/aggregatePlayerMods] Failed to process ${failedCount}/${playerIds.length} players`);
         }
     } finally {
         // Always close, even if errors occurred
@@ -527,12 +532,13 @@ async function getPlayerRosters(playerIds: string[], modMap: ModMap) {
         debugLog("Closed worker pool");
     }
 
-    return rosterArr;
+    return unitsOut;
 }
 
-async function processUnitMods(unitsIn: SWAPIUnit[]) {
-    const unitsOut = {};
-
+// Fold one batch of stripped units (typically a single player's roster) into the running
+// accumulator, mutating it in place. Records, per defId, how often each primary-stat layout
+// and each mod-set combination appears so processModResults can pick the most common later.
+function foldUnitMods(unitsOut: UnitModAccumulator, unitsIn: SWAPIUnit[]): UnitModAccumulator {
     for (const unit of unitsIn) {
         const { mods, defId } = unit;
         if (!mods?.length) continue;
@@ -2212,6 +2218,7 @@ async function exportCommandDocs() {
 }
 
 export default {
+    foldUnitMods,
     processAbilities,
     processCategories,
     processEquipment,
