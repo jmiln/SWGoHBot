@@ -68,6 +68,10 @@ export default class Randomchar extends Command {
         const allyCode = await getAllyCode(interaction, ac, false);
 
         if (allyCode) {
+            // Acknowledge before fetching the roster (game API), which can exceed Discord's
+            // 3s reply window and otherwise leave the reply failing with "Unknown interaction".
+            await interaction.deferReply();
+
             // If there is a valid ally code provided, grab the user's roster
             const player = await fetchPlayerWithCooldown(interaction, allyCode);
             if (!player) {
@@ -124,6 +128,8 @@ export default class Randomchar extends Command {
             }
         }
         const charString = charOut.join("\n");
-        return interaction.reply({ content: codeBlock(charString) });
+        const payload = { content: codeBlock(charString) };
+        // Only the allycode branch defers; the in-memory path replies directly.
+        return interaction.deferred ? interaction.editReply(payload) : interaction.reply(payload);
     }
 }

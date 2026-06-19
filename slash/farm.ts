@@ -45,6 +45,10 @@ export default class Farm extends Command {
         // There was only one result, so lets use it
         const character = chars[0];
 
+        // Acknowledge before the game-API lookup (units) below, which can exceed Discord's
+        // 3s reply window and otherwise leave every later reply failing with "Unknown interaction".
+        await interaction.deferReply();
+
         const unit = await swgohAPI.units(character.uniqueName, swgohLanguage);
         if (!unit) {
             return super.error(interaction, language.get("COMMAND_FARM_UNIT_ERROR"));
@@ -140,7 +144,7 @@ export default class Farm extends Command {
         if (!outList.length) {
             return super.error(interaction, language.get("COMMAND_FARM_CHAR_UNAVAILABLE"));
         }
-        return interaction.reply({
+        return interaction.editReply({
             embeds: [
                 {
                     author: {

@@ -98,6 +98,10 @@ export default class GuildUpdate extends Command {
                 const allyCode = await getAllyCode(interaction, acInput);
                 if (!allyCode) return super.error(interaction, language.get("BASE_INVALID_AC_SHORT"));
 
+                // Acknowledge before the game-API lookup below, which can exceed Discord's 3s
+                // reply window and otherwise leave every later reply failing with "Unknown interaction".
+                await interaction.deferReply();
+
                 // Grab the info for the ally code from the api, to make sure the code is actually valid
                 const player = await swgohAPI.unitStats(allyCode);
                 if (!player?.length) {
@@ -119,7 +123,8 @@ export default class GuildUpdate extends Command {
             if (updatedArr.length) {
                 user.guildUpdate = gu;
                 await userReg.updateUser(userID, user);
-                return interaction.reply({
+                // The allycode branch may have deferred; route accordingly.
+                const settingsPayload = {
                     content: null,
                     embeds: [
                         {
@@ -127,7 +132,8 @@ export default class GuildUpdate extends Command {
                             description: updatedArr.join("\n"),
                         },
                     ],
-                });
+                };
+                return interaction.deferred ? interaction.editReply(settingsPayload) : interaction.reply(settingsPayload);
             }
             return super.error(interaction, language.get("COMMAND_GUILDUPDATE_NO_OPTIONS"));
         }

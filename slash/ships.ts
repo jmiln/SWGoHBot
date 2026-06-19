@@ -64,6 +64,12 @@ export default class Ships extends Command {
         }
 
         const ship = foundShips[0];
+
+        // Acknowledge before the game-API lookup (getCharacter) below, which can exceed
+        // Discord's 3s reply window and otherwise leave every later reply failing with
+        // "Unknown interaction".
+        await interaction.deferReply();
+
         const unit = await swgohAPI.getCharacter(ship.uniqueName, swgohLanguage);
 
         const shipAbilities = unit.skillReferenceList;
@@ -107,7 +113,7 @@ export default class Ships extends Command {
             });
         }
         const charImg = await getBlankUnitImage(ship.uniqueName);
-        return interaction.reply({
+        return interaction.editReply({
             embeds: [
                 {
                     color: getSideColor(ship.side),

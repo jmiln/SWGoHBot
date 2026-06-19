@@ -56,6 +56,12 @@ export default class Charactergear extends Command {
         const searchChar = interaction.options.getString("character");
 
         const ac = interaction.options.getString("allycode");
+
+        // Acknowledge the interaction up front: the gear lookups below hit the game API
+        // (getCharacter / fetchPlayerWithCooldown) and can exceed Discord's 3s reply window,
+        // which would otherwise leave every later reply failing with "Unknown interaction".
+        await interaction.deferReply();
+
         const allyCode = ac ? await getAllyCode(interaction, ac, true) : null;
 
         // The current max possible gear level
@@ -128,7 +134,7 @@ export default class Charactergear extends Command {
                 const msgArr = msgArray(language.get("COMMAND_CHARACTERGEAR_GEAR_ALL", character.name, gearString), "\n", 1900);
                 for (const [ix, msg] of msgArr.entries()) {
                     if (ix === 0) {
-                        await interaction.reply({ content: codeBlock("md", msg) });
+                        await interaction.editReply({ content: codeBlock("md", msg) });
                     } else if (ix > 0) {
                         await interaction.followUp({ content: codeBlock("md", msg) });
                     }
@@ -169,13 +175,13 @@ export default class Charactergear extends Command {
                 };
                 const totalLen = fields.reduce((acc, cur) => acc + cur.name.length + cur.value.length, 0);
                 if (totalLen < 5500) {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: null,
                         embeds: [{ ...embedBase, fields }],
                     });
                 }
                 const half = Math.floor(fields.length / 2);
-                await interaction.reply({
+                await interaction.editReply({
                     embeds: [{ ...embedBase, fields: fields.slice(0, half) }],
                 });
                 return await interaction.followUp({
@@ -263,7 +269,7 @@ export default class Charactergear extends Command {
             }, 0);
             const footerStr = updatedFooterStr(player.updated, language);
             if (totalLen < 5500) {
-                return interaction.reply({
+                return interaction.editReply({
                     embeds: [
                         {
                             author: {
@@ -278,7 +284,7 @@ export default class Charactergear extends Command {
                 });
             }
             const half = Math.floor(fields.length / 2);
-            await interaction.reply({
+            await interaction.editReply({
                 embeds: [
                     {
                         author: {

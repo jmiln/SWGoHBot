@@ -61,6 +61,11 @@ export default class Character extends Command {
             return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(chars)));
         }
 
+        // Acknowledge before the game-API lookup (getCharacter) below, which can exceed
+        // Discord's 3s reply window and otherwise leave every later reply failing with
+        // "Unknown interaction".
+        await interaction.deferReply();
+
         const character = chars[0];
         let char: RawCharacter;
         try {
@@ -156,7 +161,7 @@ export default class Character extends Command {
             }
         }
 
-        await interaction.reply({
+        await interaction.editReply({
             content: null,
             embeds: [embeds[0]],
             files: charImage

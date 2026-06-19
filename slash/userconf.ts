@@ -153,6 +153,9 @@ export default class UserConf extends Command {
                         return super.error(interaction, language.get("COMMAND_USERCONF_ALLYCODE_TOO_MANY"));
                     }
                     try {
+                        // Acknowledge before the game-API lookup below, which can exceed Discord's 3s
+                        // reply window and otherwise leave every later reply failing with "Unknown interaction".
+                        await interaction.deferReply();
                         const playerRes = await swgohAPI.unitStats(Number(allyCode), cooldown);
                         const player = playerRes?.[0] || null;
                         if (!player) {
