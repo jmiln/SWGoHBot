@@ -110,7 +110,7 @@ export default abstract class slashCommand {
                 await interaction
                     .reply({
                         content: "An error occurred while processing your command. Please try again later.",
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     })
                     .catch((replyErr: unknown) => {
                         const replyErrMsg = replyErr instanceof Error ? replyErr.message : String(replyErr);
