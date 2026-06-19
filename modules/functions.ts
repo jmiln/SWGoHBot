@@ -33,7 +33,7 @@ export async function readJSON<T = unknown>(filePath: string): Promise<T> {
 }
 
 export function isMain(client: Client): boolean {
-    return client.user.id === "315739499932024834";
+    return client.user?.id === "315739499932024834";
 }
 
 /**
@@ -166,7 +166,7 @@ export async function permLevel(interaction: ChatInputCommandInteraction, guildS
     // The rest of the perms rely on roles. If those roles are not found
     // in the settings, or the user does not have it, their level will be 0
     const hasAdminRole = guildSettings?.adminRole?.some((roleId) => {
-        const adminRole = interaction.guild.roles.cache.find((r) => r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase());
+        const adminRole = interaction.guild?.roles.cache.find((r) => r.id === roleId || r.name.toLowerCase() === roleId.toLowerCase());
         return adminRole && hasRole(interaction, adminRole.id);
     });
     return hasAdminRole ? permMap.GUILD_ADMIN : permMap.BASE_USER;
@@ -325,7 +325,7 @@ export function formatCurrentTime(zone?: string): string {
 }
 
 // Check against the list of timezones to make sure the given one is valid
-export function isValidZone(zone: string): boolean {
+export function isValidZone(zone?: string): zone is string {
     // Check if the entered string is a valid timezone (According to Wikipedia's list), so go ahead and process
     if (!zone) return false;
     try {
@@ -509,7 +509,7 @@ export function makeTable(
     }
 
     let header = "";
-    const out = [];
+    const out: string[] = [];
 
     if (options.useHeader) {
         for (const h in headers) {
@@ -615,7 +615,7 @@ export function getDivider(count: number, divChar = "="): string {
 
 export function chunkArray<T>(inArray: Array<T>, chunkSize: number): Array<Array<T>> {
     if (!Array.isArray(inArray)) throw new Error("[chunkArray] inArray must be an array!");
-    const res = [];
+    const res: T[][] = [];
     for (let ix = 0, len = inArray.length; ix < len; ix += chunkSize) {
         res.push(inArray.slice(ix, ix + chunkSize));
     }
@@ -630,7 +630,7 @@ export function getGearStr(charIn: SWAPIUnit, preStr = ""): string {
     let charGearOut = preStr + charIn.gear.toString();
     if (charIn.equipped?.length) {
         charGearOut += `+${charIn.equipped.length}`;
-    } else if (charIn?.relic?.currentTier > 2) {
+    } else if (charIn?.relic?.currentTier && charIn.relic.currentTier > 2) {
         charGearOut += `r${charIn.relic.currentTier - 2}`;
     }
     return charGearOut;
@@ -647,7 +647,7 @@ export function summarizeCharLevels(guildMembers: SWAPIPlayer[], type: string): 
         let lvlCount = 0;
         for (const member of guildMembers) {
             if (type === "relic") {
-                lvlCount += member.roster.filter((c) => c?.combatType === 1 && c.relic?.currentTier - 2 === ix).length;
+                lvlCount += member.roster.filter((c) => c?.combatType === 1 && (c.relic?.currentTier ?? 0) - 2 === ix).length;
             } else {
                 lvlCount += member.roster.filter((c) => c?.combatType === 1 && c[type] === ix).length;
             }
@@ -709,7 +709,7 @@ export async function getBlankUnitImage(defId: string): Promise<Buffer | null> {
         gear: -1,
         level: -1,
         rarity: -1,
-        skills: null,
+        skills: undefined,
         relic: null,
     });
 }
@@ -736,9 +736,9 @@ export async function getUnitImage(defId: string, { rarity, level, gear, skills,
         rarity,
         level,
         gear,
-        zetas: skills?.filter((s) => s.isZeta && s.tier >= s?.zetaTier).length || 0,
+        zetas: skills?.filter((s) => s.isZeta && s.zetaTier != null && s.tier >= s.zetaTier).length || 0,
         relic: relic?.currentTier || 0,
-        omicron: skills?.filter((s) => s.isOmicron && s.tier >= s.omicronTier).length || 0,
+        omicron: skills?.filter((s) => s.isOmicron && s.omicronTier != null && s.tier >= s.omicronTier).length || 0,
         side: thisChar.side,
     };
 

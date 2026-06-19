@@ -1,5 +1,5 @@
 import { readJSON } from "../../modules/functions.ts";
-import type { BotUnit, JourneyName, OmicronCategories, UnitLocation } from "../../types/types.ts";
+import type { BotUnit, JourneyName, JourneyReqs, OmicronCategories, UnitLocation } from "../../types/types.ts";
 
 const __dirname = new URL(".", import.meta.url).pathname;
 const dataDir = __dirname + "/../../data";
@@ -9,7 +9,7 @@ export const acronyms: Record<string, string> = await readJSON(`${dataDir}/acron
 export const arenaJumps = await readJSON(`${dataDir}/arenaJumps.json`);
 export const charLocs: UnitLocation[] = await readJSON(`${dataDir}/charLocations.json`);
 export const characters: BotUnit[] = await readJSON(`${dataDir}/characters.json`);
-export const journeyReqs = await readJSON(`${dataDir}/journeyReqs.json`);
+export const journeyReqs: JourneyReqs = await readJSON(`${dataDir}/journeyReqs.json`);
 export const missions = await readJSON(`${dataDir}/missions.json`);
 export const omicrons: OmicronCategories = await readJSON(`${dataDir}/omicrons.json`);
 export const raidNames = await readJSON(`${dataDir}/raidNames.json`);
@@ -18,7 +18,7 @@ export const shipLocs: UnitLocation[] = await readJSON(`${dataDir}/shipLocations
 export const ships: BotUnit[] = await readJSON(`${dataDir}/ships.json`);
 export const timezones = await readJSON(`${dataDir}/timezones.json`);
 
-export const factions: string[] = [...new Set(characters.reduce((a, b) => a.concat(b.factions), []))];
+export const factions: string[] = [...new Set(characters.reduce<string[]>((a, b) => a.concat(b.factions), []))];
 
 // Cache the units list to avoid recreating it on every call
 export const allUnitsList: BotUnit[] = [...characters, ...ships];

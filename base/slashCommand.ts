@@ -5,6 +5,8 @@ import {
     codeBlock,
     EmbedBuilder,
     type InteractionContextType,
+    type InteractionEditReplyOptions,
+    type InteractionReplyOptions,
     MessageFlags,
 } from "discord.js";
 import constants from "../data/constants/constants.ts";
@@ -81,24 +83,26 @@ export default abstract class slashCommand {
         const embed = new EmbedBuilder().setDescription(description).setColor(color);
 
         if (title || iconURL) {
-            embed.setAuthor({ name: title, iconURL: iconURL || null });
+            embed.setAuthor({ name: title, iconURL: iconURL || undefined });
         }
         if (footer?.length) {
             embed.setFooter({ text: footer });
         }
 
-        const embedObj = {
+        const embedObj: InteractionReplyOptions = {
             embeds: [embed],
-            flags: [],
         };
         if (ephemeral) {
-            embedObj.flags = [MessageFlags.Ephemeral];
+            embedObj.flags = MessageFlags.Ephemeral;
         }
 
         // If the interaction has been replied to or deferred, edit the reply
         try {
             if (interaction.replied || interaction.deferred) {
-                return await interaction.editReply(embedObj);
+                // editReply's option type omits the Ephemeral flag (ephemeral is fixed at
+                // defer/initial-reply time and ignored here), but the same payload is shared with
+                // the reply path; cast through to keep existing behavior.
+                return await interaction.editReply(embedObj as InteractionEditReplyOptions);
             }
             return await interaction.reply(embedObj);
         } catch (e) {

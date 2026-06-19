@@ -3,20 +3,30 @@ import type { AnyBulkWriteOperation, BulkWriteResult, DeleteResult, Document, Fi
 export interface BotCache {
     checkIndexes: (database: string, collection: string) => Promise<Document[]>;
     exists: (database: string, collection: string, matchCondition: Filter<Document>) => Promise<boolean>;
-    get: <T>(
+    get: <T extends Document>(
         database: string,
         collection: string,
         matchCondition: Filter<T>,
         projection?: Partial<Record<keyof T, 0 | 1>>,
         limit?: number,
     ) => Promise<T[]>;
-    getOne: <T>(
+    getOne: <T extends Document>(
         database: string,
         collection: string,
         matchCondition: Filter<T>,
         projection?: Partial<Record<keyof T, 0 | 1>>,
     ) => Promise<T>;
-    put: <T>(database: string, collection: string, matchCondition: Filter<T>, saveObject: T, autoUpdate?: boolean) => Promise<T>;
-    putMany: <T>(database: string, collection: string, saveObjectArray: readonly AnyBulkWriteOperation<T>[]) => Promise<BulkWriteResult>;
+    put: <T extends Document>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        saveObject: T,
+        autoUpdate?: boolean,
+    ) => Promise<T>;
+    putMany: <T extends Document>(
+        database: string,
+        collection: string,
+        saveObjectArray: readonly AnyBulkWriteOperation<T>[],
+    ) => Promise<BulkWriteResult>;
     remove: <T>(database: string, collection: string, matchCondition: Filter<T>) => Promise<DeleteResult>;
 }

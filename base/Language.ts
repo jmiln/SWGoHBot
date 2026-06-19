@@ -40,10 +40,10 @@ export default class Language {
         Language._languages = {};
     }
 
-    get(str: string, ...args: null | (string | number | boolean | object)[]): string {
+    get(str: string, ...args: (string | number | boolean | object)[]): string {
         if (!this.language[str]) {
             const defLang = Language._languages[defaultSettings.language];
-            let res = null;
+            let res = "";
             try {
                 if (!args.length) {
                     res = defLang.get(str);

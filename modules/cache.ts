@@ -37,7 +37,7 @@ class Cache implements BotCache {
         return this.mongo.db(dbName).collection<T>(collection);
     }
 
-    async put<T extends Cacheable>(
+    async put<T extends Document>(
         database: string,
         collection: string,
         matchCondition: Filter<T>,
@@ -47,8 +47,9 @@ class Cache implements BotCache {
         const col = this.getCol<T>(database, collection);
 
         if (autoUpdate) {
-            saveObject.updated = Date.now();
-            saveObject.updatedAt = new Date();
+            // Metadata fields written via the Document index signature
+            (saveObject as Cacheable).updated = Date.now();
+            (saveObject as Cacheable).updatedAt = new Date();
         }
 
         // Destructure to ensure _id isn't sent in the $set payload
@@ -91,12 +92,7 @@ class Cache implements BotCache {
         return (await col.aggregate(aggregate).toArray()) as unknown as T[];
     }
 
-    async getOne<T extends Document>(
-        database: string,
-        collection: string,
-        matchCondition: Filter<T>,
-        projection?: Document,
-    ): Promise<T | null> {
+    async getOne<T extends Document>(database: string, collection: string, matchCondition: Filter<T>, projection?: Document): Promise<T> {
         return (await this.getCol<T>(database, collection).findOne(matchCondition, { projection })) as unknown as T;
     }
 
