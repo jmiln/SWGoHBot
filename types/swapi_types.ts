@@ -37,11 +37,11 @@ export interface SWAPIPlayer {
     guildBannerColor: string;
     guildBannerLogo: string;
     level: number;
-    poUTCOffsetMinutes: number;
+    poUTCOffsetMinutes?: number; // Live game data can omit this; consumers guard for it (see BUG_REFERENCE)
     roster: SWAPIUnit[];
     stats: { nameKey: string; value: number }[];
     arena?: SWAPIPlayerArena;
-    lastActivity: number;
+    lastActivity?: number;
 
     // Extra that's added occasionally before sending out
     warnings?: string[];
@@ -534,6 +534,9 @@ export interface SWAPIWorkerPlayerLog {
     starred: string[];
     unlocked: string[];
     ultimate: string[];
+    // All change categories are string[]; the index signature lets the log be iterated/indexed
+    // generically (and keeps it assignable to PlayerUpdates).
+    [changeType: string]: string[];
 }
 
 export interface SWAPIWorkerOutput {
@@ -582,7 +585,7 @@ export interface SWAPIIngredient {
 
 export interface SWAPIGuild {
     id: string;
-    _id: string; // Mongo ID from when we take it from the db
+    _id?: string; // Mongo ID from when we take it from the db (only present when read from cache)
     autoLaunchConfig?: SWAPIGuildRaidLaunchConfig;
     bannerColor: string;
     bannerLogo: string;

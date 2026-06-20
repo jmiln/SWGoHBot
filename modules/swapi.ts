@@ -17,6 +17,7 @@ import type {
     SWAPIGear,
     SWAPIGuild,
     SWAPIGuildAlteredMemberContribution,
+    SWAPIGuildMember,
     SWAPILang,
     SWAPIMod,
     SWAPIPlayer,
@@ -25,13 +26,14 @@ import type {
     SWAPIRecipe,
     SWAPIUnit,
     SWAPIUnitAbility,
+    SWAPIWorkerGuildLog,
     SWAPIWorkerOutput,
 } from "../types/swapi_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
 
 const THREAD_COUNT = os.cpus().length;
-const abilityCosts = await readJSON(`${import.meta.dirname}/../data/abilityCosts.json`);
+const abilityCosts = await readJSON<Record<string, Record<string, number>>>(`${import.meta.dirname}/../data/abilityCosts.json`);
 
 // if (!config.backingServices.swapiClient || !config.credentials.swapi) {
 //     throw new Error("Missing SWAPI client config or credentials!");
@@ -42,9 +44,28 @@ const comlinkStub = new ComlinkStub({
     secretKey: env.SWAPI_SECRET_KEY,
 });
 
-let modMap = await readJSON(`${import.meta.dirname}/../data/modMap.json`);
-let unitMap = await readJSON(`${import.meta.dirname}/../data/unitMap.json`);
-let skillMap = await readJSON(`${import.meta.dirname}/../data/skillMap.json`);
+// Minimal shapes for the JSON lookup maps -- only the fields the bot reads are typed; the index
+// signature keeps the rest of each entry's data accessible without enumerating it.
+interface UnitMapEntry {
+    nameKey: string;
+    crew: SWAPIUnit["crew"];
+    combatType: SWAPIUnit["combatType"];
+    [key: string]: unknown;
+}
+interface SkillMapEntry {
+    tiers: number;
+    [key: string]: unknown;
+}
+interface ModMapEntry {
+    slot: number;
+    set: string | number;
+    pips: number;
+    [key: string]: unknown;
+}
+
+let modMap = await readJSON<Record<string, ModMapEntry>>(`${import.meta.dirname}/../data/modMap.json`);
+let unitMap = await readJSON<Record<string, UnitMapEntry>>(`${import.meta.dirname}/../data/unitMap.json`);
+let skillMap = await readJSON<Record<string, SkillMapEntry>>(`${import.meta.dirname}/../data/skillMap.json`);
 
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
@@ -100,9 +121,9 @@ class SWAPI {
         this.reloadIntervalId = setInterval(async () => {
             try {
                 const [modMapData, unitMapData, skillMapData] = await Promise.all([
-                    readJSON(`${import.meta.dirname}/../data/modMap.json`),
-                    readJSON(`${import.meta.dirname}/../data/unitMap.json`),
-                    readJSON(`${import.meta.dirname}/../data/skillMap.json`),
+                    readJSON<Record<string, ModMapEntry>>(`${import.meta.dirname}/../data/modMap.json`),
+                    readJSON<Record<string, UnitMapEntry>>(`${import.meta.dirname}/../data/unitMap.json`),
+                    readJSON<Record<string, SkillMapEntry>>(`${import.meta.dirname}/../data/skillMap.json`),
                 ]);
 
                 modMap = modMapData;
@@ -184,7 +205,7 @@ class SWAPI {
         acArr = acArr.filter((ac) => !!ac && ac.toString().length === 9);
         if (!acArr.length) throw new Error("No valid ally code(s) entered");
 
-        const playersOut = [];
+        const playersOut: SWAPIPlayerArenaProfile[] = [];
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
             const p: SWAPIPlayerArenaProfile | null = await (
                 comlinkStub.getPlayerArenaProfile(ac.toString()) as Promise<SWAPIPlayerArenaProfile>
@@ -285,13 +306,13 @@ class SWAPI {
             }
         };
 
-        const memberChunks = [];
+        const memberChunks: SWAPIPlayer[][] = [];
         const chunkSize = Math.ceil(updatedBare.length / THREAD_COUNT);
         for (let ix = 0, len = updatedBare.length; ix < len; ix += chunkSize) {
             const chunk = updatedBare.slice(ix, ix + chunkSize);
             memberChunks.push(chunk);
         }
-        const guildLog = {};
+        const guildLog: SWAPIWorkerGuildLog = {};
         // Using Promise.all here is acceptable because workers offload CPU-intensive stat
         // calculations to separate threads, preventing main thread blocking. The coordination
         // itself is lightweight and allows parallel worker execution.
@@ -302,8 +323,8 @@ class SWAPI {
             }),
         )
             .then(async (res) => {
-                const skillsArr = [];
-                const defIdArr = [];
+                const skillsArr: string[] = [];
+                const defIdArr: string[] = [];
                 for (const { guildLogOut, cacheUpdatesOut, skills, defIds } of res) {
                     for (const [key, value] of Object.entries(guildLogOut)) {
                         guildLog[key] = value;
@@ -354,15 +375,15 @@ class SWAPI {
             player: this.playerMaxCooldown,
             guild: this.guildMaxCooldown,
         },
-        options: { force?: boolean; defId?: string } = { force: false, defId: null },
+        options: { force?: boolean; defId?: string } = { force: false },
     ): Promise<SWAPIPlayer[]> {
         // Make sure the allyCode(s) are in an array
-        if (!allyCodes) return null;
+        if (!allyCodes) return [];
         const acArr: number[] = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
         const specialAbilities: SWAPIUnitAbility[] = await this.getSpecialAbilities();
 
-        let playerStats = [];
+        let playerStats: SWAPIPlayer[] = [];
         try {
             if (!acArr?.length) {
                 throw new Error("No valid ally code(s) entered");
@@ -447,7 +468,7 @@ class SWAPI {
                     return players;
                 }
 
-                const bulkWrites = [];
+                const bulkWrites: SWAPIWorkerOutput["cacheUpdatesOut"] = [];
                 for (const bareP of updatedBare) {
                     if (bareP?.roster?.length) {
                         try {
@@ -541,7 +562,7 @@ class SWAPI {
         const comlinkPlayerArena = {};
         const emptyArena = { rank: null, squad: null };
 
-        for (const { tab, rank, squad } of comlinkPlayer.pvpProfile) {
+        for (const { tab, rank, squad } of comlinkPlayer.pvpProfile ?? []) {
             comlinkPlayerArena[tab] = {
                 rank: rank,
                 squad:
@@ -583,7 +604,7 @@ class SWAPI {
                                 return {
                                     id: sk.id,
                                     tier: sk.tier + 2,
-                                    tiers: thisSkill?.tiers ? thisSkill.tiers + 1 : null,
+                                    tiers: thisSkill?.tiers ? thisSkill.tiers + 1 : 0,
                                 };
                             })
                             .filter((sk) => !!sk),
@@ -638,7 +659,7 @@ class SWAPI {
     }
 
     private formatMod({ definitionId, primaryStat, id, level, tier, secondaryStat, ...rest }: ComlinkMod) {
-        const modSchema = modMap[definitionId] || {};
+        const modSchema = modMap[definitionId] ?? ({} as ModMapEntry);
         const primaryStatId = primaryStat.stat.unitStatId;
         const primaryStatScaler = flatStats.includes(primaryStatId) ? 1e8 : 1e6;
         return {
@@ -673,7 +694,7 @@ class SWAPI {
 
         if (char.defId) {
             const unit = await this.units(char.defId);
-            char.nameKey = unit ? unit.nameKey : null;
+            char.nameKey = unit?.nameKey;
         }
 
         if (char.mods) {
@@ -681,12 +702,12 @@ class SWAPI {
                 // If they've got the numbers instead of enums, enum em
                 // if (mod.primaryStat.unitStatId) mod.primaryStat.unitStat = mod.primaryStat.unitStatId;
                 const primaryUnitStatId = mod.primaryStat.unitStatId || mod.primaryStat.unitStat;
-                if (!Number.isNaN(primaryUnitStatId)) {
+                if (primaryUnitStatId != null && !Number.isNaN(primaryUnitStatId)) {
                     mod.primaryStat.unitStat = statEnums.enums[primaryUnitStatId];
                 }
                 for (const stat of mod.secondaryStat) {
                     const unitStatId = stat.unitStatId || stat.unitStat;
-                    if (!Number.isNaN(unitStatId)) {
+                    if (unitStatId != null && !Number.isNaN(unitStatId)) {
                         stat.unitStat = statEnums.enums[unitStatId];
                     }
                 }
@@ -752,7 +773,7 @@ class SWAPI {
         if (cooldown.guild < this.guildMinCooldown) cooldown.guild = this.guildMinCooldown;
         if (!defId) throw new Error("[swapi guildUnitStats] You need to specify a defId");
 
-        const outStats = [];
+        const outStats: SWAPIUnit[] = [];
         const blankUnit = {
             defId: defId,
             gear: 0,
@@ -770,16 +791,16 @@ class SWAPI {
         if (!players.length) throw new Error("Couldn't get your stats");
 
         for (const player of players) {
-            let unit: SWAPIUnit = null;
+            let unit: SWAPIUnit | null = null;
 
             if (player?.roster?.length) {
-                unit = player.roster.find((c) => c.defId === defId);
+                unit = player.roster.find((c) => c.defId === defId) ?? null;
             }
             if (!unit) {
-                unit = JSON.parse(JSON.stringify(blankUnit));
+                unit = JSON.parse(JSON.stringify(blankUnit)) as SWAPIUnit;
             }
-            unit.zetas = unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier);
-            unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier);
+            unit.zetas = unit.skills.filter((s) => s.isZeta && s.zetaTier != null && s.tier >= s.zetaTier);
+            unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.omicronTier != null && s.tier >= s.omicronTier);
             unit.player = player.name;
             unit.allyCode = player.allyCode;
             unit.updated = player.updated;
@@ -1169,7 +1190,7 @@ class SWAPI {
             }
         }
 
-        const members = [];
+        const members: SWAPIGuildMember[] = [];
         await eachLimit(
             member,
             MAX_CONCURRENT,
@@ -1187,10 +1208,10 @@ class SWAPI {
                 try {
                     const { name, level, allyCode, profileStat } = (await comlinkStub.getPlayer(null, playerId)) as ComlinkPlayer;
 
-                    let gp: number;
-                    let gpChar: number;
-                    let gpShip: number;
-                    for (const stat of profileStat) {
+                    let gp = 0;
+                    let gpChar = 0;
+                    let gpShip = 0;
+                    for (const stat of profileStat ?? []) {
                         if (stat.nameKey === "STAT_SHIP_GALACTIC_POWER_ACQUIRED_NAME") {
                             gpShip = Number(stat.value);
                         } else if (stat.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME") {
@@ -1202,6 +1223,8 @@ class SWAPI {
                     }
 
                     members.push({
+                        // The eachLimit callback param under-declares the raw API member shape, so
+                        // `...rest` carries the remaining SWAPIGuildMember fields the type can't see here.
                         ...rest,
                         id: playerId,
                         guildMemberLevel: memberLevel,
@@ -1213,7 +1236,7 @@ class SWAPI {
                         gpChar,
                         gpShip,
                         updated: Date.now(),
-                    });
+                    } as unknown as SWAPIGuildMember);
                 } catch (err) {
                     logger.error(`[formatGuild] Failed to fetch player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
                 }
@@ -1249,7 +1272,7 @@ class SWAPI {
         return zetas?.zetas;
     }
 
-    private isExpired(lastUpdated: number, cooldown: PlayerCooldown, guild = false): boolean {
+    private isExpired(lastUpdated: number | undefined, cooldown: PlayerCooldown | undefined, guild = false): boolean {
         if (!lastUpdated) return true;
         let thisCooldown = this.guildMaxCooldown;
 
