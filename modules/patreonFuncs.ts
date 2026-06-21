@@ -1,4 +1,4 @@
-import type { ChatInputCommandInteraction, Client, Embed, Message } from "discord.js";
+import type { APIEmbed, ChatInputCommandInteraction, Client, Message } from "discord.js";
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
@@ -126,6 +126,9 @@ type ArenaRankTracking = Pick<ArenaPlayer, "lastCharRank" | "lastCharClimb" | "l
 // to update a doc suppresses the same rank change for everyone after it.
 export type RankSnapshot = Map<number, ArenaRankTracking>;
 
+// A single arena rank change, collected per account and fed to checkRanks for log formatting
+type ArenaRankChange = { allyCode: number; name: string; oldRank: number; newRank: number; mark?: string };
+
 export function buildRankSnapshot(arenaPlayerMap: Map<number, ArenaPlayer>): RankSnapshot {
     const snapshot: RankSnapshot = new Map();
     for (const [allyCode, doc] of arenaPlayerMap) {
@@ -150,6 +153,7 @@ export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map
             // mention/poOffset can be absent on migrated entries — normalize them here so the
             // hydrated account always satisfies ArenaWatchAcct
             mention: entry.mention ?? null,
+            mark: entry.mark ?? undefined,
             poOffset: entry.poOffset ?? 0,
             name: doc?.name || String(entry.allyCode),
             lastChar: doc?.lastCharRank ?? null,
@@ -515,12 +519,16 @@ class PatreonFuncs {
 
         // Fill in missing arena sub-configs with disabled defaults so the rest of the function
         // can safely access their properties without crashing on old/partial DB records.
-        aw.arena ??= { char: { channel: null, enabled: false }, fleet: { channel: null, enabled: false } };
-        aw.arena.char ??= { channel: null, enabled: false };
-        aw.arena.fleet ??= { channel: null, enabled: false };
+        aw.arena ??= { char: { channel: "", enabled: false }, fleet: { channel: "", enabled: false } };
+        aw.arena.char ??= { channel: "", enabled: false };
+        aw.arena.fleet ??= { channel: "", enabled: false };
+        // After the normalization above both sub-configs exist; capture them in consts so the
+        // definite type survives into the broadcastEval closures (which otherwise re-widen to optional).
+        const arenaChar = aw.arena.char;
+        const arenaFleet = aw.arena.fleet;
 
         // Check if they have either alerts or payouts enabled
-        const hasAlerts = (aw.arena.fleet.channel || aw.arena.char.channel) && (aw.arena.fleet.enabled || aw.arena.char.enabled);
+        const hasAlerts = (arenaFleet.channel || arenaChar.channel) && (arenaFleet.enabled || arenaChar.enabled);
         const hasPayouts =
             aw?.payout &&
             ((aw.payout?.char?.enabled && aw.payout?.char?.channel) || (aw.payout?.fleet?.enabled && aw.payout?.fleet?.channel));
@@ -535,10 +543,10 @@ class PatreonFuncs {
         if (!accountsToCheck.length) return;
 
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
-        const compChar = [];
-        const compShip = [];
-        let charOut = [];
-        let shipOut = [];
+        const compChar: ArenaRankChange[] = [];
+        const compShip: ArenaRankChange[] = [];
+        let charOut: string[] = [];
+        let shipOut: string[] = [];
         for (const [ix, player] of accountsToCheck.entries()) {
             const newPlayer = playerMap.get(player.allyCode) ?? null;
             if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
@@ -622,32 +630,32 @@ class PatreonFuncs {
 
             arenaPlayerMap.set(player.allyCode, playerDoc);
 
-            if (player.result || (player.warn && player.warn.min > 0 && player.warn.arena)) {
+            if (player.result || (player.warn && (player.warn.min ?? 0) > 0 && player.warn.arena)) {
                 let pName = player.mention ? `<@${player.mention}>` : player.name;
                 if (aw.useMarksInLog && player.mark) {
                     pName = `${player.mark} ${pName}`;
                 }
-                if (player.lastChar != null && charMinLeft === 0 && ["char", "both"].includes(player.result)) {
+                if (player.lastChar != null && charMinLeft === 0 && ["char", "both"].includes(player.result ?? "")) {
                     // If they have char payouts turned on, do that here
                     charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
                 }
                 if (
                     player.lastChar != null &&
                     player.warn?.min &&
-                    ["char", "both"].includes(player.warn.arena) &&
+                    ["char", "both"].includes(player.warn.arena ?? "") &&
                     charMinLeft === player.warn.min
                 ) {
                     // Warn them of their upcoming payout if this is enabled
                     charOut.push(`${pName}'s **character** arena payout is in ${`${player.warn.min} minutes`}`);
                 }
-                if (player.lastShip != null && fleetMinLeft === 0 && ["fleet", "both"].includes(player.result)) {
+                if (player.lastShip != null && fleetMinLeft === 0 && ["fleet", "both"].includes(player.result ?? "")) {
                     // If they have fleet payouts turned on, do that here
                     shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
                 }
                 if (
                     player.lastShip != null &&
                     player.warn?.min &&
-                    ["fleet", "both"].includes(player.warn.arena) &&
+                    ["fleet", "both"].includes(player.warn.arena ?? "") &&
                     fleetMinLeft === player.warn.min
                 ) {
                     // Warn them of their upcoming payout if this is enabled
@@ -657,15 +665,15 @@ class PatreonFuncs {
             accountsToCheck[ix] = player;
         }
 
-        if (compChar.length && aw.arena.char.enabled) {
+        if (compChar.length && arenaChar.enabled) {
             charOut = charOut.concat(this.checkRanks(compChar, aw));
         }
-        if (compShip.length && aw.arena.fleet.enabled) {
+        if (compShip.length && arenaFleet.enabled) {
             shipOut = shipOut.concat(this.checkRanks(compShip, aw));
         }
 
-        const charFields = [];
-        const shipFields = [];
+        const charFields: string[] = [];
+        const shipFields: string[] = [];
         if (charOut.length) {
             charFields.push("**Character Arena:**");
             charFields.push(charOut.map((c) => `- ${c}`).join("\n"));
@@ -677,53 +685,53 @@ class PatreonFuncs {
 
         // Only send the alerts if there have been rank changes, and the user has alerts enabled
         if ((charFields.length || shipFields.length) && hasAlerts) {
-            if (aw.arena.char.channel && aw.arena.char.channel === aw.arena.fleet.channel) {
+            if (arenaChar.channel && arenaChar.channel === arenaFleet.channel) {
                 // If they're both set to the same channel, send it all
                 const fields = charFields.concat(shipFields);
-                await this.client.shard.broadcastEval(
-                    async (client, { aw, fields }) => {
-                        const chan = client.channels.cache.get(aw.arena.char.channel);
+                await this.client.shard?.broadcastEval(
+                    async (client, { channel, fields }) => {
+                        const chan = client.channels.cache.get(channel);
                         if (
                             chan?.type === 0 && // 0 = GUILD_TEXT
                             // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                            chan?.permissionsFor(client.user).has(3072n)
+                            chan?.permissionsFor(client.user)?.has(3072n)
                         ) {
                             await chan.send(`>>> ${fields.join("\n")}`);
                         }
                     },
-                    { context: { aw: aw, fields: fields } },
+                    { context: { channel: arenaChar.channel, fields: fields } },
                 );
             } else {
                 // Else they each have their own channels, so send em there
                 await Promise.allSettled([
-                    aw.arena.char.channel && aw.arena.char.enabled && charFields.length
-                        ? this.client.shard.broadcastEval(
-                              async (client, { aw, charFields }) => {
-                                  const chan = client.channels.cache.get(aw.arena.char.channel);
+                    arenaChar.channel && arenaChar.enabled && charFields.length
+                        ? this.client.shard?.broadcastEval(
+                              async (client, { channel, charFields }) => {
+                                  const chan = client.channels.cache.get(channel);
                                   if (
                                       chan?.type === 0 && // 0 = GUILD_TEXT
                                       // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                      chan?.permissionsFor(client.user).has(3072n)
+                                      chan?.permissionsFor(client.user)?.has(3072n)
                                   ) {
                                       await chan.send(`>>> ${charFields.join("\n")}`);
                                   }
                               },
-                              { context: { aw: aw, charFields: charFields } },
+                              { context: { channel: arenaChar.channel, charFields: charFields } },
                           )
                         : Promise.resolve(),
-                    aw.arena.fleet.channel && aw.arena.fleet.enabled && shipFields.length
-                        ? this.client.shard.broadcastEval(
-                              async (client, { aw, shipFields }) => {
-                                  const chan = client.channels.cache.get(aw.arena.fleet.channel);
+                    arenaFleet.channel && arenaFleet.enabled && shipFields.length
+                        ? this.client.shard?.broadcastEval(
+                              async (client, { channel, shipFields }) => {
+                                  const chan = client.channels.cache.get(channel);
                                   if (
                                       chan?.type === 0 && // 0 = GUILD_TEXT
                                       // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                      chan?.permissionsFor(client.user).has(3072n)
+                                      chan?.permissionsFor(client.user)?.has(3072n)
                                   ) {
                                       await chan.send(`>>> ${shipFields.join("\n")}`);
                                   }
                               },
-                              { context: { aw: aw, shipFields: shipFields } },
+                              { context: { channel: arenaFleet.channel, shipFields: shipFields } },
                           )
                         : Promise.resolve(),
                 ]);
@@ -778,7 +786,7 @@ class PatreonFuncs {
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            let guild: SWAPIGuild = null;
+            let guild: SWAPIGuild | null = null;
             try {
                 guild = await swgohAPI.guild(gu.allyCode);
             } catch (err) {
@@ -800,7 +808,7 @@ class PatreonFuncs {
                     logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allyCode}`);
                     continue;
                 }
-                guildLog = await swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode));
+                guildLog = await swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode).filter((a): a is number => a != null));
             } catch (err) {
                 logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
                 continue;
@@ -810,10 +818,10 @@ class PatreonFuncs {
             if (!Object.keys(guildLog).length) continue;
 
             // Processs the guild changes
-            const fields = [];
+            const fields: { name: string; value: string }[] = [];
             for (const memberName of Object.keys(guildLog).sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1))) {
                 const member = guildLog[memberName];
-                const fieldVal = [];
+                const fieldVal: string[] = [];
                 for (const cat of Object.keys(member)) {
                     if (!member[cat].length) continue;
                     fieldVal.push(...member[cat]);
@@ -836,14 +844,14 @@ class PatreonFuncs {
             const fieldsOut = chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
-                await this.client.shard.broadcastEval(
+                await this.client.shard?.broadcastEval(
                     async (client, { guChan, fieldChunk }) => {
                         const channel = client.channels.cache.get(guChan);
                         if (
                             channel?.type === 0 && // 0 = GUILD_TEXT
                             channel?.guild &&
                             // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                            channel.permissionsFor(client.user).has(3072n)
+                            channel.permissionsFor(client.user)?.has(3072n)
                         ) {
                             return channel.send({
                                 embeds: [
@@ -893,9 +901,10 @@ class PatreonFuncs {
 
             // Get the user's saved data
             const user = userMap.get(patron.discordID);
+            if (!user) continue;
 
             // If the guild update isn't enabled, or is missing some needed info, move along
-            const gt = user?.guildTickets;
+            const gt = user.guildTickets;
             if (!gt?.enabled) continue;
             if (!gt?.allyCode) continue;
             if (!gt?.channel) continue;
@@ -904,7 +913,7 @@ class PatreonFuncs {
             const isMsgType = gt?.updateType === "msg";
 
             // If it's a user that only wants the message right before reset, don't bother getting all the info together at other times.
-            const refresh = Number.parseInt(gt.nextChallengesRefresh, 10);
+            const refresh = Number.parseInt(gt.nextChallengesRefresh ?? "", 10);
             if (isMsgType && refresh && !this.isWithinTime(refresh, nowTime, 1, 5) && refresh > nowTime) {
                 continue;
             }
@@ -916,9 +925,9 @@ class PatreonFuncs {
             if (!chanAvail) continue;
 
             // Get any updates for the guild
-            let rawGuild: RawGuild = null;
+            let rawGuild: RawGuild | null = null;
             try {
-                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, null, { forceUpdate: true });
+                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, undefined, { forceUpdate: true });
             } catch (err) {
                 const errStr = err instanceof Error ? err.message : String(err);
                 if (errStr.includes("not in a guild")) continue;
@@ -938,7 +947,7 @@ class PatreonFuncs {
                 continue;
             }
 
-            let roster = null;
+            let roster: RawGuild["roster"] = [];
             if (gt.sortBy === "tickets") {
                 roster = rawGuild.roster.sort((a, b) =>
                     Number.parseInt(a.memberContribution[2]?.currentValue, 10) > Number.parseInt(b.memberContribution[2]?.currentValue, 10)
@@ -949,7 +958,7 @@ class PatreonFuncs {
                 roster = rawGuild.roster.sort((a, b) => (a.playerName.toLowerCase() > b.playerName.toLowerCase() ? 1 : -1));
             }
 
-            let timeUntilReset = null;
+            let timeUntilReset = "";
             const refreshTime = Number.parseInt(rawGuild.nextChallengesRefresh, 10) * 1000;
 
             if (refreshTime > nowTime) {
@@ -970,9 +979,9 @@ class PatreonFuncs {
             }
 
             let maxed = 0;
-            const outArr = [];
+            const outArr: string[] = [];
             for (const member of roster) {
-                const tickets = member.memberContribution["2"].currentValue;
+                const tickets = Number.parseInt(member.memberContribution["2"]?.currentValue, 10) || 0;
                 if (tickets < MAX_TICKETS) {
                     outArr.push(expandSpaces(`\`${tickets.toString().padStart(3)}\` - ${`**${member.playerName}**`}`));
                 } else if (isMsgType || gt?.showMax) {
@@ -995,7 +1004,7 @@ class PatreonFuncs {
             // If the user wants the messages just before each reset, send a new message instead of updating an old one
             //  - Just don't send the msg ID
             const sentMsg: Message = (await this.sendBroadcastMsg(
-                gt?.updateType === "msg" ? null : gt.msgId,
+                gt?.updateType === "msg" ? null : (gt.msgId ?? null),
                 gt.channel,
                 outEmbed,
             )) as Message;
@@ -1058,14 +1067,14 @@ class PatreonFuncs {
 
     // Helper function to check if a channel is available and has proper permissions
     private async isChannelAvailable(channelId: string): Promise<boolean> {
-        const channels = await this.client.shard.broadcastEval(
+        const channels = await this.client.shard?.broadcastEval(
             async (client, { chanId }) => {
                 const channel = client.channels.cache.get(chanId);
                 if (
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                    channel.permissionsFor(client.user).has(3072n)
+                    channel.permissionsFor(client.user)?.has(3072n)
                 ) {
                     return true;
                 }
@@ -1073,7 +1082,7 @@ class PatreonFuncs {
             },
             { context: { chanId: channelId } },
         );
-        return channels.some((ch) => !!ch);
+        return channels?.some((ch) => !!ch) ?? false;
     }
 
     // Format the output for the payouts embed
@@ -1087,16 +1096,17 @@ class PatreonFuncs {
             player.outString = expandSpaces(
                 `**\`${constants.zws} ${rankString} ${constants.zws}\`** - ${player.mark ? `${player.mark} ` : ""}${player.name}`,
             );
-            const existingTime = times.get(player.timeTil);
+            const timeKey = player.timeTil ?? "";
+            const existingTime = times.get(timeKey);
             if (existingTime) {
                 existingTime.players.push(player);
             } else {
-                times.set(player.timeTil, {
+                times.set(timeKey, {
                     players: [player],
                 });
             }
         }
-        const fieldOut = [];
+        const fieldOut: { name: string; value: string }[] = [];
         for (const [key, time] of times.entries()) {
             fieldOut.push({
                 name: `PO in ${key}`,
@@ -1123,12 +1133,18 @@ class PatreonFuncs {
             player.duration = Math.floor(timeLeft / constants.minMS);
             player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
         }
-        return players.sort((a, b) => (a.duration > b.duration ? 1 : -1));
+        return players.sort((a, b) => ((a.duration ?? 0) > (b.duration ?? 0) ? 1 : -1));
     }
 
     // Go through a given list and get the payout times for both arenas
     private getAllPayoutTimes(player: ArenaWatchAcct) {
-        const payout = {
+        const payout: {
+            poOffset: number;
+            charDuration: number | null;
+            charTimeTil: string | null;
+            fleetDuration: number | null;
+            fleetTimeTil: string | null;
+        } = {
             poOffset: player.poOffset,
             charDuration: null,
             charTimeTil: null,
@@ -1145,12 +1161,9 @@ class PatreonFuncs {
     }
 
     // Compare ranks to see if we have both sides of the fight or not
-    private checkRanks(
-        inArr: { allyCode: string; name: string; oldRank: number; newRank: number; mark: string }[],
-        aw: UserConfig["arenaWatch"],
-    ) {
-        const checked = [];
-        const outArr = [];
+    private checkRanks(inArr: ArenaRankChange[], aw: UserConfig["arenaWatch"]) {
+        const checked: number[] = [];
+        const outArr: string[] = [];
         if (aw.showvs) {
             // If the setting is on, show when the ranks match up
             for (let ix = 0; ix < inArr.length; ix++) {
@@ -1188,21 +1201,21 @@ class PatreonFuncs {
     }
 
     // Send updated messages to the given channel, and edit an old message if able & one is supplied
-    private async sendBroadcastMsg(msgId: string, channelId: string, outEmbed: Partial<Embed>) {
+    private async sendBroadcastMsg(msgId: string | null, channelId: string, outEmbed: APIEmbed) {
         // Use broadcastEval to check all shards for the channel, and if there's a valid message
         // there, edit it. If not, send a fresh copy of it.
         if (!channelId) return;
-        const messages = await this.client.shard.broadcastEval(
+        const messages = await this.client.shard?.broadcastEval(
             async (client, { msgIdIn, chanIn, outEmbed }) => {
                 const channel = client.channels.cache.find((chan) => chan.id === chanIn || ("name" in chan && chan.name === chanIn));
 
-                let msg: Message;
-                let targetMsg: Message;
+                let msg: Message | null;
+                let targetMsg: Message | null = null;
                 if (
                     channel?.type === 0 && // 0 = GUILD_TEXT
                     channel?.guild &&
                     // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                    channel.permissionsFor(client.user).has(3072n)
+                    channel.permissionsFor(client.user)?.has(3072n)
                 ) {
                     if (!msgIdIn) {
                         targetMsg = await channel.send({ embeds: [outEmbed] });
@@ -1239,7 +1252,7 @@ class PatreonFuncs {
                 },
             },
         );
-        const msg = messages.filter((a) => !!a);
+        const msg = (messages ?? []).filter((a) => !!a);
         return msg.length ? msg[0] : null;
     }
 

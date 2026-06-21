@@ -275,7 +275,7 @@ export async function ensureBonusServerSet({ userId, amount_cents }: { userId: s
 //  - Sum the tiers of all of a server's supporters, then snap the total down to the
 //    nearest defined tier bracket (pledges stack: two $5 supporters = the $10 tier)
 const tierNums = Object.keys(patreonTiers.tiers);
-export async function getGuildSupporterTier({ guildId }: { guildId: string }) {
+export async function getGuildSupporterTier({ guildId }: { guildId?: string }) {
     // If no guildId supplied, return the lowest tier available (0)
     if (!guildId) return 0;
 
