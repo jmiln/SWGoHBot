@@ -1,6 +1,6 @@
 import type { ApplicationCommandOptionType } from "discord.js";
 import type { SWAPILang } from "./swapi_types.ts";
-import type { BotLanguage, GuildAlias } from "./types.ts";
+import type { BotLanguage, GuildAlias, OperationResult } from "./types.ts";
 
 export interface Strike {
     id: string;
@@ -94,6 +94,16 @@ export interface GuildConfigEvent {
 
     // Used if the event is set with cooldowns
     isCD?: boolean;
+}
+
+// An event that has been loaded through one of the getter functions that stamp the
+// owning guildId onto it (getAllEvents/getTriggeredEvents/getCountdownEvents). Use this
+// where the guildId is guaranteed to be present rather than the optional base type.
+export type GuildConfigEventWithGuild = GuildConfigEvent & { guildId: string };
+
+// Result of an add/update operation on a single event (eventServe addEvents / eventSocket).
+export interface EventOperationResult extends OperationResult {
+    event: GuildConfigEvent;
 }
 export interface GuildConfigPoll {
     question: string;

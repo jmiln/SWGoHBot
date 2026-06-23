@@ -34,6 +34,18 @@ export default class Language {
     }
 
     /**
+     * Get a language instance by code, falling back to the default language.
+     * Throws if neither the requested code nor the default language is registered.
+     */
+    static getLanguageOrDefault(code: string): Language {
+        const lang = Language._languages[code] || Language._languages[defaultSettings.language];
+        if (!lang) {
+            throw new Error(`No language registered for "${code}" or default "${defaultSettings.language}"`);
+        }
+        return lang;
+    }
+
+    /**
      * Clear all registered languages (used during reload)
      */
     static clearLanguages(): void {

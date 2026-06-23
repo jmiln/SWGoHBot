@@ -244,7 +244,7 @@ async function handleChatInputCommand(interaction: ChatInputCommandInteraction, 
     const selectedLanguage = user?.lang?.language || defaultSettings.language;
     const swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
 
-    const language = Language.getLanguage(selectedLanguage) || Language.getLanguage(defaultSettings.language);
+    const language = Language.getLanguageOrDefault(selectedLanguage);
 
     // Merge swgohLanguage into guildSettings
     const mergedGuildSettings = { ...guildSettings, swgohLanguage };

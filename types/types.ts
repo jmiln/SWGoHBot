@@ -8,6 +8,13 @@ export interface PlayerCooldown {
     guild: number;
 }
 
+// Generic result of an operation that can succeed or fail. error is null on success
+// and an actionable message on failure.
+export interface OperationResult {
+    success: boolean;
+    error: string | null;
+}
+
 export type BotLanguage = "en_US" | "de_DE" | "es_SP" | "ko_KR" | "pt_BR";
 export type UnitSide = "light" | "dark" | "neutral";
 

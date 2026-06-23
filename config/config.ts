@@ -10,7 +10,9 @@ process.loadEnvFile?.();
 //   urlString({ default: "http://..." })           - URL with default value
 //   urlString({ required: "Error message" })       - Required URL, no default
 //   urlString({ optional: true })                  - Optional URL
-const urlString = (opts: { default?: string; required?: string; optional?: boolean } = {}) => {
+function urlString(opts: { optional: true; default?: undefined; required?: undefined }): z.ZodType<string | undefined>;
+function urlString(opts?: { default?: string; required?: string; optional?: false }): z.ZodType<string>;
+function urlString(opts: { default?: string; required?: string; optional?: boolean } = {}): z.ZodType<string | undefined> {
     const urlValidator = (val: string) => {
         try {
             new URL(val);
@@ -40,7 +42,7 @@ const urlString = (opts: { default?: string; required?: string; optional?: boole
 
     // Fallback: required URL with generic message
     return z.string().min(1).refine(urlValidator, { message: "Invalid URL format" });
-};
+}
 
 // Zod schema for environment variables with validation and defaults
 const envSchema = z.object({

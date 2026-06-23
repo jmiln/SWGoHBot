@@ -13,7 +13,8 @@ import {
 } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
-import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
+import type { EventOperationResult, GuildConfigEvent } from "../types/guildConfig_types.ts";
+import type { OperationResult } from "../types/types.ts";
 
 let mongo: MongoClient | null = null;
 let isShuttingDown = false;
@@ -194,10 +195,10 @@ async function processEvents() {
 
 async function addEvents(guildId: string, events: GuildConfigEvent | GuildConfigEvent[]) {
     const eventArr = Array.isArray(events) ? events : [events];
-    const results = [];
+    const results: EventOperationResult[] = [];
 
     for (const event of eventArr) {
-        const evRes = { event, success: true, error: null };
+        const evRes: EventOperationResult = { event, success: true, error: null };
         const exists = await guildEventExists({ guildId, evName: event.name });
         if (exists) {
             evRes.success = false;
@@ -219,7 +220,7 @@ async function addEvents(guildId: string, events: GuildConfigEvent | GuildConfig
 }
 
 async function removeEvent(guildId: string, eventName: string) {
-    const res = { eventName, success: true, error: null };
+    const res: OperationResult & { eventName: string } = { eventName, success: true, error: null };
     const exists = await guildEventExists({ guildId, evName: eventName });
 
     if (!exists) {

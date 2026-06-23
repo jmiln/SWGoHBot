@@ -1,4 +1,4 @@
-import type { GuildConfig, GuildConfigEvent } from "../../types/guildConfig_types.ts";
+import type { GuildConfig, GuildConfigEvent, GuildConfigEventWithGuild } from "../../types/guildConfig_types.ts";
 import logger from "../Logger.ts";
 import { guildConfigDB } from "./db.ts";
 
@@ -48,7 +48,7 @@ export async function deleteGuildEvent({ guildId, evName }: { guildId: string; e
     const evArrOut = res.filter((ev) => ev.name !== evName);
     return await guildConfigDB.put({ guildId: guildId }, { events: evArrOut }, false);
 }
-export async function getAllEvents(): Promise<GuildConfigEvent[]> {
+export async function getAllEvents(): Promise<GuildConfigEventWithGuild[]> {
     const resArr = (await guildConfigDB.get({}, { guildId: 1, events: 1, _id: 0 })) as {
         guildId: string;
         events: GuildConfigEvent[];
@@ -58,17 +58,18 @@ export async function getAllEvents(): Promise<GuildConfigEvent[]> {
         return acc.concat(
             curr.events.map((ev) => {
                 ev.guildId = curr.guildId;
-                return ev;
+                // guildId was just stamped above, so this is now a guaranteed-guild event
+                return ev as GuildConfigEventWithGuild;
             }),
         );
-    }, [] as GuildConfigEvent[]);
+    }, [] as GuildConfigEventWithGuild[]);
 }
 
 /**
  * Get events that should be triggered (eventDT <= current time)
  * Uses database-level filtering for better performance
  */
-export async function getTriggeredEvents({ nowTime }: { nowTime: number }): Promise<GuildConfigEvent[]> {
+export async function getTriggeredEvents({ nowTime }: { nowTime: number }): Promise<GuildConfigEventWithGuild[]> {
     const resArr = (await guildConfigDB.get(
         {
             "events.eventDT": { $lte: nowTime },
@@ -82,17 +83,18 @@ export async function getTriggeredEvents({ nowTime }: { nowTime: number }): Prom
             .filter((ev) => ev.eventDT <= nowTime)
             .map((ev) => {
                 ev.guildId = curr.guildId;
-                return ev;
+                // guildId was just stamped above, so this is now a guaranteed-guild event
+                return ev as GuildConfigEventWithGuild;
             });
         return acc.concat(triggeredEvents);
-    }, [] as GuildConfigEvent[]);
+    }, [] as GuildConfigEventWithGuild[]);
 }
 
 /**
  * Get events that have countdown enabled and are in the future
  * Uses database-level filtering for better performance
  */
-export async function getCountdownEvents({ nowTime }: { nowTime: number }): Promise<GuildConfigEvent[]> {
+export async function getCountdownEvents({ nowTime }: { nowTime: number }): Promise<GuildConfigEventWithGuild[]> {
     const resArr = (await guildConfigDB.get(
         {
             "events.countdown": true,
@@ -107,8 +109,9 @@ export async function getCountdownEvents({ nowTime }: { nowTime: number }): Prom
             .filter((ev) => ev.countdown && ev.eventDT > nowTime)
             .map((ev) => {
                 ev.guildId = curr.guildId;
-                return ev;
+                // guildId was just stamped above, so this is now a guaranteed-guild event
+                return ev as GuildConfigEventWithGuild;
             });
         return acc.concat(countdownEvents);
-    }, [] as GuildConfigEvent[]);
+    }, [] as GuildConfigEventWithGuild[]);
 }

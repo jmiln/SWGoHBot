@@ -1,8 +1,7 @@
 import type { Client } from "discord.js";
 import Language from "../base/Language.ts";
-import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
-import type { GuildConfigEvent, GuildConfigSettings } from "../types/guildConfig_types.ts";
+import type { GuildConfigEvent, GuildConfigEventWithGuild, GuildConfigSettings } from "../types/guildConfig_types.ts";
 import { formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";
@@ -24,7 +23,7 @@ class EventFuncs {
     }
 
     // Handle any events that have been found via the checker
-    async manageEvents(eventList: GuildConfigEvent[]): Promise<void> {
+    async manageEvents(eventList: GuildConfigEventWithGuild[]): Promise<void> {
         for (const event of eventList) {
             if (event.isCD) {
                 // It's a countdown alert, so do that
@@ -51,6 +50,7 @@ class EventFuncs {
             } else {
                 chan = guildConf.announceChan;
             }
+            if (!this.client.shard) return;
             try {
                 await this.client.shard.broadcastEval(
                     async (client, { guildId, announceMessage, chan, guildConf }) => {
@@ -117,10 +117,10 @@ class EventFuncs {
     }
 
     // Send out an alert based on the guild's countdown settings
-    async countdownAnnounce(event: GuildConfigEvent): Promise<void> {
+    async countdownAnnounce(event: GuildConfigEventWithGuild): Promise<void> {
         const guildConf = await getGuildSettings({ guildId: event.guildId });
         const diffNum = Math.abs(Date.now() - event.eventDT);
-        const language = Language.getLanguage(guildConf.language) || Language.getLanguage(defaultSettings.language);
+        const language = Language.getLanguageOrDefault(guildConf.language);
         const timeToGo = formatDuration(diffNum, language);
 
         const announceMessage = language.get("BASE_EVENT_STARTING_IN_MSG", event.name, timeToGo);
@@ -128,10 +128,10 @@ class EventFuncs {
         await this.sendMsg(event, guildConf, event.guildId, announceMessage);
     }
 
-    async eventAnnounce(event: GuildConfigEvent): Promise<void> {
+    async eventAnnounce(event: GuildConfigEventWithGuild): Promise<void> {
         // Parse out the eventName and guildName from the ID
         const guildConf = await getGuildSettings({ guildId: event.guildId });
-        const language = Language.getLanguage(guildConf.language) || Language.getLanguage(defaultSettings.language);
+        const language = Language.getLanguageOrDefault(guildConf.language);
 
         let outMsg = event?.message || "";
 

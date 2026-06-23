@@ -1,5 +1,6 @@
 import { env } from "../config/config.ts";
-import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
+import type { EventOperationResult, GuildConfigEvent, GuildConfigEventWithGuild } from "../types/guildConfig_types.ts";
+import type { OperationResult } from "../types/types.ts";
 import logger from "./Logger.ts";
 
 const ERROR_THROTTLE_MS = 60000;
@@ -87,9 +88,9 @@ class EventSocket {
     /**
      * Check for events that need to be triggered
      */
-    async checkEvents(): Promise<GuildConfigEvent[]> {
+    async checkEvents(): Promise<GuildConfigEventWithGuild[]> {
         try {
-            const events = await this.post<GuildConfigEvent[]>("/checkEvents");
+            const events = await this.post<GuildConfigEventWithGuild[]>("/checkEvents");
             return Array.isArray(events) ? events : [];
         } catch (error) {
             this.logThrottledError("checkEvents failed", error instanceof Error ? error : undefined);
@@ -100,10 +101,7 @@ class EventSocket {
     /**
      * Add one or more events to a guild
      */
-    async addEvents(
-        guildId: string,
-        events: GuildConfigEvent | GuildConfigEvent[],
-    ): Promise<{ success: boolean; error: string; event: GuildConfigEvent }[]> {
+    async addEvents(guildId: string, events: GuildConfigEvent | GuildConfigEvent[]): Promise<EventOperationResult[]> {
         try {
             return await this.post("/addEvents", {
                 guildId,
@@ -122,7 +120,7 @@ class EventSocket {
     /**
      * Delete an event from a guild
      */
-    async deleteEvent(guildId: string, eventName: string): Promise<{ success: boolean; error?: string; eventName: string }> {
+    async deleteEvent(guildId: string, eventName: string): Promise<OperationResult & { eventName: string }> {
         try {
             return await this.post("/delEvent", {
                 guildId,

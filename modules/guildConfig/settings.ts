@@ -2,7 +2,7 @@ import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
 import { guildConfigDB } from "./db.ts";
 
 // Get the guildsettings from the mongo db
-export async function getGuildSettings({ guildId }: { guildId: string }) {
+export async function getGuildSettings({ guildId }: { guildId?: string }) {
     if (!guildId) return defaultSettings;
 
     const guildSettings = await guildConfigDB.getOne({ guildId: guildId }, { settings: 1 });
