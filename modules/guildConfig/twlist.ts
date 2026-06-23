@@ -56,11 +56,11 @@ export async function getFullTWList({ guildId }: { guildId: string }) {
     for (const unitType of Object.keys(unitChecklist)) {
         if (!twListOut[unitType]) twListOut[unitType] = {};
         for (const defId of twList[unitType]) {
-            if (twList.Blacklist.includes(defId)) continue;
+            if (twList.Blacklist?.includes(defId)) continue;
             if (!twListOut[unitType][defId]) twListOut[unitType][defId] = "";
         }
         for (const [defId, shortName] of unitChecklist[unitType]) {
-            if (twList.Blacklist.includes(defId)) continue;
+            if (twList.Blacklist?.includes(defId)) continue;
             if (!twListOut[unitType][defId]) twListOut[unitType][defId] = shortName;
         }
     }

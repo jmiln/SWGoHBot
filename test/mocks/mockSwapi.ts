@@ -213,10 +213,10 @@ export class MockSWAPI {
             player: 180,
             guild: 360,
         },
-        options: { force?: boolean; defId?: string } = { force: false, defId: null },
+        options: { force?: boolean; defId?: string } = { force: false, defId: undefined },
     ): Promise<SWAPIPlayer[]> {
         this.checkError("unitStats");
-        if (!allycodes) return null;
+        if (!allycodes) return [];
 
         const acArr: number[] = Array.isArray(allycodes) ? allycodes : [allycodes];
         const players = acArr
@@ -260,10 +260,10 @@ export class MockSWAPI {
 
         const outStats: SWAPIUnit[] = [];
         for (const player of players) {
-            let unit: SWAPIUnit = null;
+            let unit: SWAPIUnit | null = null;
 
             if (player?.roster?.length) {
-                unit = player.roster.find((c) => c.defId === defId);
+                unit = player.roster.find((c) => c.defId === defId) ?? null;
             }
 
             if (!unit) {
@@ -277,11 +277,11 @@ export class MockSWAPI {
                     relic: { currentTier: 0 },
                     equipped: [],
                     stats: null,
-                } as SWAPIUnit;
+                } as unknown as SWAPIUnit;
             }
 
-            unit.zetas = unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier);
-            unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier);
+            unit.zetas = unit.skills.filter((s) => s.isZeta && s.tier >= (s.zetaTier ?? Number.POSITIVE_INFINITY));
+            unit.omicrons = unit.skills.filter((s) => s.isOmicron && s.tier >= (s.omicronTier ?? Number.POSITIVE_INFINITY));
             unit.player = player.name;
             unit.allyCode = player.allyCode;
             unit.updated = player.updated;
@@ -320,7 +320,8 @@ export class MockSWAPI {
 
     async character(defId: string): Promise<RawCharacter> {
         this.checkError("character");
-        return this.config.characters.get(defId);
+        // Mirrors the real swapi.character, which casts the cache result without a presence check
+        return this.config.characters.get(defId) as RawCharacter;
     }
 
     async gear(gearArray: string | string[], _lang: SWAPILang): Promise<SWAPIGear[]> {
@@ -337,7 +338,8 @@ export class MockSWAPI {
         this.checkError("units");
         if (!defId) throw new Error("You need to specify a defId");
 
-        return this.config.units.get(defId);
+        // Mirrors the real swapi.units, which casts the cache result without a presence check
+        return this.config.units.get(defId) as SWAPIUnit;
     }
 
     async recipes(recArray: number | number[], _lang: SWAPILang): Promise<SWAPIRecipe[]> {
@@ -393,7 +395,7 @@ export class MockSWAPI {
         };
     }
 
-    async guildByName(gName: string): Promise<SWAPIGuild> {
+    async guildByName(gName: string): Promise<SWAPIGuild | null> {
         this.checkError("guildByName");
         const guild = Array.from(this.config.guilds.values()).find((g) => g.name === gName);
         return guild || null;

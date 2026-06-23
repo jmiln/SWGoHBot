@@ -32,7 +32,7 @@ async function init(workerData: {
         }
         if (JSON.stringify(oldPlayer.roster) === JSON.stringify(newPlayer.roster)) continue;
 
-        const playerLog = {
+        const playerLog: SWAPIWorkerPlayerLog = {
             abilities: [],
             geared: [],
             leveled: [],
@@ -71,7 +71,7 @@ async function init(workerData: {
                 const oldSkill = oldUnit.skills.find((s) => s.id === skillId);
                 const newSkill = newUnit.skills.find((s) => s.id === skillId);
 
-                if (newSkill?.tier && ((!oldSkill && newSkill?.tier) || oldSkill?.tier < newSkill?.tier)) {
+                if (newSkill?.tier && (!oldSkill || oldSkill.tier < newSkill.tier)) {
                     // Grab zeta/ omicron data for the ability if available
                     const thisAbility = workerData.specialAbilities.find((abi) => abi.skillId === newSkill.id);
                     if (thisAbility?.omicronTier) {
@@ -88,17 +88,20 @@ async function init(workerData: {
                     //     playerLog.abilities.push(`Unlocked ${newUnit.defId}'s **${locSkill.nameKey}**`);
                     // }
 
-                    if (
-                        (newSkill.isOmicron || newSkill.isZeta) &&
-                        (newSkill.tier >= newSkill.zetaTier || newSkill.tier >= newSkill.omicronTier)
-                    ) {
+                    // zeta/omicron tiers only exist on processed skills; default missing tiers so the
+                    // threshold comparisons evaluate false (matching the prior undefined-comparison behaviour)
+                    const oldTier = oldSkill?.tier ?? Number.POSITIVE_INFINITY;
+                    const zetaTier = newSkill.zetaTier ?? Number.POSITIVE_INFINITY;
+                    const omicronTier = newSkill.omicronTier ?? Number.POSITIVE_INFINITY;
+
+                    if ((newSkill.isOmicron || newSkill.isZeta) && (newSkill.tier >= zetaTier || newSkill.tier >= omicronTier)) {
                         // If the skill has zeta/ omicron tiers, and is high enough level
-                        if (oldSkill?.tier < newSkill.zetaTier && newSkill.tier >= newSkill.zetaTier) {
+                        if (oldTier < zetaTier && newSkill.tier >= zetaTier) {
                             // If it was below the Zeta tier before, and at or above it now
                             playerLog.abilities.push(`Zeta'd {${newUnit.defId}}'s **{${skillId}}**`);
                         }
 
-                        if (oldSkill?.tier < newSkill.omicronTier && newSkill.tier >= newSkill.omicronTier) {
+                        if (oldTier < omicronTier && newSkill.tier >= omicronTier) {
                             // If it was below the Omicron tier before, and at or above it now
                             playerLog.abilities.push(`Omicron'd {${newUnit.defId}}'s **{${skillId}}**`);
                         }
@@ -111,7 +114,11 @@ async function init(workerData: {
             if (oldUnit.gear < newUnit.gear) {
                 playerLog.geared.push(`Geared up {${newUnit.defId}} to G${newUnit.gear}!`);
             }
-            if (oldUnit?.relic?.currentTier < newUnit?.relic?.currentTier && newUnit.relic.currentTier - 2 > 0) {
+            if (
+                newUnit.relic &&
+                (oldUnit.relic?.currentTier ?? Number.POSITIVE_INFINITY) < newUnit.relic.currentTier &&
+                newUnit.relic.currentTier - 2 > 0
+            ) {
                 playerLog.reliced.push(`Upgraded {${newUnit.defId}} to relic ${newUnit.relic.currentTier - 2}!`);
             }
             if (oldUnit?.purchasedAbilityId?.length < newUnit?.purchasedAbilityId?.length) {

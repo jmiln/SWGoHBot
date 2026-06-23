@@ -3,10 +3,13 @@ import { env } from "../../config/config.ts";
 // Grab the tiers data file for use later
 import patreonTiers from "../../data/patreon.ts";
 import type { GuildConfigPatreonSettings } from "../../types/guildConfig_types.ts";
-import type { UserConfig } from "../../types/types.ts";
+import type { OperationResult, UserConfig } from "../../types/types.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
 import { guildConfigDB } from "./db.ts";
+
+// Combined success/error result for operations that touch both the user and the guild record.
+type SupporterUpdateResult = { user: OperationResult; guild: OperationResult };
 
 // MongoDB document types for cache queries
 interface PatreonSettingsProjection {
@@ -48,8 +51,8 @@ export async function addServerSupporter({
 }: {
     guildId: string;
     userInfo: { userId: string; tier: number };
-}): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string } }> {
-    const resOut = { user: { success: false, error: null }, guild: { success: false, error: null } };
+}): Promise<SupporterUpdateResult> {
+    const resOut: SupporterUpdateResult = { user: { success: false, error: null }, guild: { success: false, error: null } };
     if (!guildId) resOut.guild = { success: false, error: "Missing guild ID." };
     if (!userInfo?.userId || !userInfo?.tier) resOut.user = { success: false, error: "Missing userId or tier." };
 
@@ -94,7 +97,7 @@ export async function addServerSupporter({
         })
         .catch((error: Error) => {
             logger.error(`[guildConfig/patreonSettings/addServerSupporter] Error updating guild: ${error.message}`);
-            return { success: false, error: error };
+            return { success: false, error: error.message };
         });
 
     // ################
@@ -126,13 +129,7 @@ export async function getServerSupporters({ guildId }: { guildId: string }): Pro
 }
 
 // Remove a user from the given guilds' supporters
-export async function removeServerSupporter({
-    guildId,
-    userId,
-}: {
-    guildId: string;
-    userId: string;
-}): Promise<{ success: boolean; error: string }> {
+export async function removeServerSupporter({ guildId, userId }: { guildId: string; userId: string }): Promise<OperationResult> {
     if (!guildId) return { success: false, error: "Missing guild ID." };
     if (!userId) return { success: false, error: "Missing userId." };
 
@@ -140,17 +137,18 @@ export async function removeServerSupporter({
         patreonSettings: 1,
         _id: 0,
     } as Document);
-    const hasUser = guildPatSettings?.patreonSettings?.supporters.find((sup) => sup.userId === userId);
+    const patreonSettings = guildPatSettings?.patreonSettings;
+    const hasUser = patreonSettings?.supporters.find((sup) => sup.userId === userId);
 
     // If the user isn't in the supporters arr, say so
-    if (!hasUser) return { success: false, error: "User not in supporters array" };
+    if (!hasUser || !patreonSettings) return { success: false, error: "User not in supporters array" };
 
     // Get the list of supporters without the user, then save it as such
     // (guildPatSettings is the projected doc, so save its inner patreonSettings — saving the
     // wrapper itself would double-nest the key and wipe the real supporters array)
-    guildPatSettings.patreonSettings.supporters = guildPatSettings.patreonSettings.supporters.filter((sup) => sup.userId !== userId);
+    patreonSettings.supporters = patreonSettings.supporters.filter((sup) => sup.userId !== userId);
     return await guildConfigDB
-        .put({ guildId }, { patreonSettings: guildPatSettings.patreonSettings }, false)
+        .put({ guildId }, { patreonSettings }, false)
         .then(() => {
             return { success: true, error: null };
         })
@@ -162,13 +160,9 @@ export async function removeServerSupporter({
 
 // Remove all the server & user settings for a given user
 // Returns success/ error for both the user setting & the guild one
-export async function clearSupporterInfo({
-    userId,
-}: {
-    userId: string;
-}): Promise<{ user: { success: boolean; error: string }; guild: { success: boolean; error: string } }> {
+export async function clearSupporterInfo({ userId }: { userId: string }): Promise<SupporterUpdateResult> {
     const userConf = await cache.getOne<UserConfig>(env.MONGODB_SWGOHBOT_DB, "users", { id: userId });
-    const resOut = {
+    const resOut: SupporterUpdateResult = {
         user: { success: true, error: null },
         guild: { success: true, error: null },
     };
@@ -260,14 +254,13 @@ export async function ensureBonusServerSet({ userId, amount_cents }: { userId: s
     }
 
     // If the guild doesn't have anyone in their supporters array or this user isn't in there, create it/ add them
-    const addServerRes: { user: { success: boolean; error: string }; guild: { success: boolean; error: string } } =
-        await addServerSupporter({
-            guildId: userConf.bonusServer,
-            userInfo: {
-                userId: userId,
-                tier: Math.floor(amount_cents / 100),
-            },
-        });
+    const addServerRes: SupporterUpdateResult = await addServerSupporter({
+        guildId: userConf.bonusServer,
+        userInfo: {
+            userId: userId,
+            tier: Math.floor(amount_cents / 100),
+        },
+    });
 
     return addServerRes;
 }
@@ -291,7 +284,7 @@ export async function getGuildSupporterTier({ guildId }: { guildId?: string }) {
     }, 0);
     for (const tier of [...tierNums].reverse()) {
         const tierNum = Number.parseInt(tier, 10);
-        if (totalRes >= tierNum) return tierNum;
+        if ((totalRes ?? 0) >= tierNum) return tierNum;
     }
 
     // If it gets to here (It shouldn't), return 0

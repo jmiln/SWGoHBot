@@ -256,7 +256,8 @@ export interface UserConfig {
         nextChallengesRefresh?: string;
         showMax?: boolean;
     };
-    bonusServer?: string;
+    // null is written to explicitly clear the linked server (forces a MongoDB $set overwrite)
+    bonusServer?: string | null;
     patreonAmountCents?: number;
 }
 export interface ArenaHistEntry {

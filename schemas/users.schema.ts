@@ -89,6 +89,6 @@ export const UserConfigSchema = z.object({
         })
         .partial()
         .optional(),
-    bonusServer: z.string().optional(),
+    bonusServer: z.string().nullable().optional(),
     patreonAmountCents: z.number().optional(),
 });
