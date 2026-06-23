@@ -86,7 +86,8 @@ export interface UnitLocation {
 }
 export interface Location {
     type: string;
-    locId: string;
+    // null/absent for shop locations (cost-based) and hard-mode default nodes; consumers guard on it
+    locId?: string | null;
     name?: string;
     level?: string;
     cost?: string;
@@ -109,8 +110,8 @@ export interface BotUnit {
     factions: string[];
     avatarName: string;
 
-    // For Characters only
-    mods?: BotUnitMods;
+    // For Characters only; null for ships (no mods)
+    mods?: BotUnitMods | null;
 
     // For Ships only
     crew?: string[];

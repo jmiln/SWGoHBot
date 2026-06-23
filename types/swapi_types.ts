@@ -358,9 +358,9 @@ export interface ComlinkAbility {
     tierList: string[];
     type: string;
     isZeta: boolean;
-    zetaTier: number;
+    zetaTier: number | null;
     isOmicron: boolean;
-    omicronTier: number;
+    omicronTier: number | null;
 }
 
 export interface ComlinkMod {
