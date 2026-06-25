@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType, MessageFlags } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType, MessageFlags } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import patreonInfo from "../data/patreon.ts";
 import { addServerSupporter, clearSupporterInfo } from "../modules/guildConfig/patreonSettings.ts";
@@ -52,7 +52,7 @@ export default class Patreon extends Command {
 
     async run({ interaction, language }: CommandContext) {
         const subCom = interaction.options.getSubcommand() || "none";
-        const fields = [];
+        const fields: APIEmbedField[] = [];
         let description = null;
         let ephemeral = false;
 
@@ -239,7 +239,7 @@ function getTier(amount_cents: number) {
 }
 
 function patCmdinfo() {
-    const patreonValue = [];
+    const patreonValue: string[] = [];
     for (const cmd of Object.keys(patreonInfo.commands)) {
         patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd]]);
     }

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
@@ -142,7 +142,7 @@ export default class Charactergear extends Command {
             } else {
                 // Format and send the requested data back
                 const gearList = char.unitTierList.filter((t) => t.tier >= gearLvl);
-                const fields = [];
+                const fields: APIEmbedField[] = [];
                 for (const g of gearList) {
                     let f: { name: string; value: string };
                     if (doExpand) {
@@ -215,7 +215,7 @@ export default class Charactergear extends Command {
 
             const gearList = char.unitTierList.filter((t) => t.tier >= playerChar.gear);
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             for (const [ix, g] of gearList.entries()) {
                 // Take out any that are already equipped
                 if (gearLvl > 0 && g.tier > gearLvl) continue;
@@ -310,7 +310,7 @@ export default class Charactergear extends Command {
 }
 
 async function expandPieces(list: string[]) {
-    let end = [];
+    let end: { name: string; count: number; mark: string }[] = [];
     for (const piece of list) {
         const gr = await cache.get(
             env.MONGODB_SWAPI_DB,

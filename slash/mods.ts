@@ -57,7 +57,7 @@ export default class Mods extends Command {
             };
 
             const keyArray = key.split("/ ");
-            const valueArray = [];
+            const valueArray: string[] = [];
 
             for (const index in keyArray) {
                 const key = keyArray[index].trim();
@@ -74,7 +74,7 @@ export default class Mods extends Command {
         };
 
         const getLocalizedModAdvice = (modAdvice: BotUnitMods) => {
-            const sets = [];
+            const sets: string[] = [];
 
             for (const i in modAdvice.sets) {
                 const thisSet = modAdvice.sets[i];

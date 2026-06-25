@@ -1,4 +1,5 @@
 import {
+    type APIEmbedField,
     ApplicationCommandOptionType,
     type AutocompleteFocusedOption,
     type AutocompleteInteraction,
@@ -238,7 +239,7 @@ export default class UserConf extends Command {
                     // Make sure it exists before trying to set stuff to it
                     if (!user.lang) user.lang = {};
 
-                    const updateLog = [];
+                    const updateLog: string[] = [];
                     if (botLanguage) {
                         user.lang.language = botLanguage;
                         updateLog.push(`Updated the bot's language to ${botLanguage}`);
@@ -261,7 +262,7 @@ export default class UserConf extends Command {
                     const pat = await patreonFuncs.getPatronUser(interaction.user.id);
                     const isPatron = pat && pat.amount_cents >= 100;
 
-                    const fields = [];
+                    const fields: APIEmbedField[] = [];
 
                     // Ally codes — fetch names for both accounts and arenaWatch entries in one call
                     const awCodes = user.arenaWatch?.allyCodes?.map((ac) => ac.allyCode) ?? [];

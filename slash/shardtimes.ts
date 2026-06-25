@@ -1,7 +1,9 @@
 import {
+    type APIEmbedField,
     ApplicationCommandOptionType,
     type AutocompleteFocusedOption,
     type AutocompleteInteraction,
+    type GuildEmoji,
     InteractionContextType,
     type TextChannel,
 } from "discord.js";
@@ -380,7 +382,7 @@ export default class Shardtimes extends Command {
 
             // View the shard table
             const timeToAdd = isShip ? 19 : 18;
-            const shardOut = {};
+            const shardOut: Record<string, string[]> = {};
 
             if (!shardTimes?.times || !Object.keys(shardTimes.times)?.length) {
                 return super.error(interaction, language.get("COMMAND_SHARDTIMES_NO_WATCHERS"));
@@ -401,10 +403,10 @@ export default class Shardtimes extends Command {
 
             const sortedShardTimes = Object.keys(shardOut).sort((a, b) => (a > b ? 1 : -1));
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             const maxLen = 20;
             for (const time of sortedShardTimes) {
-                const times = [];
+                const times: { flag: GuildEmoji | string | undefined; name: string }[] = [];
                 for (const user of shardOut[time]) {
                     let userFlag = interaction.client.emojis.cache.get(shardTimes.times[user].flag);
                     if (!userFlag) userFlag = shardTimes.times[user]?.flag;

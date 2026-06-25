@@ -73,7 +73,7 @@ export default class GuildUpdate extends Command {
         const subCommand = interaction.options.getSubcommand();
 
         if (subCommand === "set") {
-            const updatedArr = [];
+            const updatedArr: string[] = [];
             const isEnabled = interaction.options.getBoolean("enabled");
             const channel = interaction.options.getChannel("channel");
             const acInput = interaction.options.getString("allycode");

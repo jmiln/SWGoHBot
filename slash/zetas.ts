@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
@@ -140,9 +140,9 @@ export default class Zetas extends Command {
                 }
             };
 
-            const desc = [];
+            const desc: string[] = [];
             const author = { name: "" };
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             if (character) {
                 // Grab just the one character from the roster
                 const char = player.roster.find((c) => c.defId === character.uniqueName);
@@ -310,8 +310,8 @@ export default class Zetas extends Command {
                 }
             }
 
-            const zOut = [];
-            const fields = [];
+            const zOut: { name: string; abilities: string }[] = [];
+            const fields: APIEmbedField[] = [];
             if (!character) {
                 // They want to see all zetas for the guild
                 for (const char of Object.keys(zetas)) {

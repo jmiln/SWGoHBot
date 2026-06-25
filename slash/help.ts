@@ -1,5 +1,5 @@
 import path from "node:path";
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { msgArray, readJSON, toProperCase } from "../modules/functions.ts";
@@ -54,7 +54,7 @@ export default class Help extends Command {
         const helpKeys = Object.keys(help).filter((key) => key !== "metadata");
 
         if (!search) {
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             const div = "`======================================`";
             for (const [ix, cat] of helpKeys.entries()) {
                 if (category && category !== cat) continue;

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { omicrons } from "../data/constants/units.ts";
@@ -39,7 +39,7 @@ export default class TerritoryWar extends Command {
     }
 
     async run({ interaction, language }: CommandContext) {
-        const problemArr = [];
+        const problemArr: string[] = [];
 
         await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
@@ -164,10 +164,10 @@ export default class TerritoryWar extends Command {
         };
 
         // An array to stick all the fields in as we go.
-        const fields = [];
+        const fields: APIEmbedField[] = [];
 
         // The GP stats
-        const gpStats = [];
+        const gpStats: Record<string, string | number>[] = [];
         const guild1GP = { char: 0, ship: 0, total: guild1.gp };
         const guild2GP = { char: 0, ship: 0, total: guild2.gp };
 
@@ -219,7 +219,7 @@ export default class TerritoryWar extends Command {
         });
 
         // Overall counts for zetas/ omicrons
-        const abilityStats = [];
+        const abilityStats: Record<string, string | number>[] = [];
         abilityStats.push({
             check: labels.zetas,
             user1: guild1AbilityStats.zetas,
@@ -251,7 +251,7 @@ export default class TerritoryWar extends Command {
         });
 
         // Get the overall gear levels for each user
-        const gearOverview = [];
+        const gearOverview: Record<string, string | number>[] = [];
         const [g1GearLvls, g1AvgGear] = summarizeCharLevels(guild1Stats, "gear");
         const [g2GearLvls, g2AvgGear] = summarizeCharLevels(guild2Stats, "gear");
         const maxGear = Math.max(
@@ -288,7 +288,7 @@ export default class TerritoryWar extends Command {
         });
 
         // Get the overall relic levels for each user
-        const relicOverview = [];
+        const relicOverview: Record<string, string | number>[] = [];
         const [g1RelicLvls, g1AvgRelic] = summarizeCharLevels(guild1Stats, "relic");
         const [g2RelicLvls, g2AvgRelic] = summarizeCharLevels(guild2Stats, "relic");
         const maxRelic = Math.max(
@@ -325,7 +325,7 @@ export default class TerritoryWar extends Command {
         });
 
         // Get the overall rarity levels for each user
-        const rarityOverview = [];
+        const rarityOverview: Record<string, string | number>[] = [];
         const [g1RarityLvls, g1AvgRarity] = summarizeCharLevels(guild1Stats, "rarity");
         const [g2RarityLvls, g2AvgRarity] = summarizeCharLevels(guild2Stats, "rarity");
         const maxRarity = Math.max(
@@ -394,10 +394,10 @@ export default class TerritoryWar extends Command {
             }
         }
 
-        const glOverview = [];
+        const glOverview: Record<string, string | number>[] = [];
         for (const [glDefId, glName] of Object.entries(legendMap)) {
             glOverview.push({
-                check: glName,
+                check: String(glName),
                 user1: `${guild1GLCount[glDefId]}+${guild1GLUltCount[glDefId]}`,
                 user2: `${guild2GLCount[glDefId]}+${guild2GLUltCount[glDefId]}`,
             });
@@ -440,10 +440,10 @@ export default class TerritoryWar extends Command {
             }
         }
 
-        const capitalOverview = [];
+        const capitalOverview: Record<string, string | number>[] = [];
         for (const [capitalDefId, capitalName] of Object.entries(capitalMap)) {
             capitalOverview.push({
-                check: capitalName,
+                check: String(capitalName),
                 user1: guild1CapitalCount[capitalDefId],
                 user2: guild2CapitalCount[capitalDefId],
             });

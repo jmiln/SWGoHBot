@@ -15,24 +15,30 @@ import { getGuildTWList, setGuildTWList } from "../modules/guildConfig/twlist.ts
 import type { CommandContext } from "../types/types.ts";
 
 // Set the base subargs up
+type OptOut = {
+    name: string;
+    type: ApplicationCommandOptionType;
+    description: string;
+    choices: { name: string; value: string }[] | null;
+};
 const options = {
     add: {
         name: "add",
         description: "Add a value to one of the array settings",
         type: ApplicationCommandOptionType.Subcommand,
-        options: [],
+        options: [] as OptOut[],
     },
     remove: {
         name: "remove",
         description: "Remove a value from one of the array settings",
         type: ApplicationCommandOptionType.Subcommand,
-        options: [],
+        options: [] as OptOut[],
     },
     set: {
         name: "set",
         type: ApplicationCommandOptionType.Subcommand,
         description: "Set the value of one of the options",
-        options: [],
+        options: [] as OptOut[],
     },
     twlist: {
         name: "twlist",
@@ -89,7 +95,7 @@ const options = {
 // Check out each option in the config file, and set it up in each subarg as needed
 for (const [key, value] of Object.entries(typedDefaultSettings)) {
     // Fill out the options based on the default settings in the config file
-    const optOut = {
+    const optOut: OptOut = {
         name: key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
         type: value.type,
         description: value.description,
@@ -153,7 +159,7 @@ export default class SetConf extends Command {
 
             // View the available list
             if (subCommand === "view") {
-                const outArr = [];
+                const outArr: string[] = [];
                 for (const key of Object.keys(guildTWList)) {
                     if (!guildTWList[key].length) continue;
                     outArr.push(`* **${key}**: \n${guildTWList[key].map((defId: string) => `  - ${getCharName(defId)}`).join("\n")}`);
@@ -261,8 +267,8 @@ export default class SetConf extends Command {
         }
 
         const settingsIn = {};
-        const errors = [];
-        const changeLog = [];
+        const errors: string[] = [];
+        const changeLog: string[] = [];
         for (const [key, defConf] of Object.entries(typedDefaultSettings)) {
             const optionKey = key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
             const keyType = defConf?.type;

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, getPayoutTimeLeft, makeTable, updatedFooterStr } from "../modules/functions.ts";
@@ -55,7 +55,7 @@ export default class MyArena extends Command {
             return super.error(interaction, language.get("BASE_SOMETHING_BROKE"));
         }
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
         const positions = ["L|", "2|", "3|", "4|", "5|"];
         const sPositions = ["L|", "2|", "3|", "4|", "B|", "B|", "B|", "B|"];
 
@@ -75,7 +75,7 @@ export default class MyArena extends Command {
 
             const playerStats = player;
 
-            const chars = [];
+            const chars: { pos: string; speed: string | number; health: string | number; prot: string | number; name: string }[] = [];
             for (let ix = 0; ix < player.arena.char.squad.length; ix++) {
                 const charId = player.arena.char.squad[ix].defId;
                 const unitName = await getUnitName(player, charId);
@@ -129,7 +129,7 @@ export default class MyArena extends Command {
 
         async function getArenaStrings(player: SWAPIPlayer, type = "char") {
             if (!player.arena?.[type]?.squad?.length) return null;
-            const arenaArr = [];
+            const arenaArr: string[] = [];
             for (let ix = 0; ix < player.arena[type].squad.length; ix++) {
                 const unitId = player.arena[type].squad[ix].defId;
                 const unitName = await getUnitName(player, unitId);

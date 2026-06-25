@@ -5,7 +5,7 @@ import { characters, journeyReqs, ships } from "../data/constants/units.ts";
 import { getAllyCode } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { CommandContext, UnitSide } from "../types/types.ts";
 
 export default class Panic extends Command {
     static readonly metadata = {
@@ -56,7 +56,24 @@ export default class Panic extends Command {
         const player = await fetchPlayerWithCooldown(interaction, allyCode);
         if (!player?.roster) return super.error(interaction, language.get("COMMAND_PANIC_ROSTER_ERROR"));
 
-        const reqsOut = [];
+        const reqsOut: {
+            defId: string;
+            name: string | undefined;
+            charUrl: string | undefined;
+            rarity: number;
+            gear: number;
+            level: number;
+            relic: number;
+            side: UnitSide;
+            gp: number;
+            gpReq: number;
+            gearReq: number;
+            relicReq: number;
+            rarityReq: number;
+            isShip: boolean;
+            isRequired: boolean;
+            isValid: boolean;
+        }[] = [];
         for (const unitReq of thisReq.reqs) {
             const baseChar = characters.find((u) => u.uniqueName === unitReq.defId) || ships.find((u) => u.uniqueName === unitReq.defId);
             const playerUnit = player.roster.find((u) => u.defId === unitReq.defId);

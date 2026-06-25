@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
@@ -78,7 +78,7 @@ export default class Character extends Command {
                 "Sorry, I couldn't fetch character data right now. Please try again later or contact support if this continues.",
             );
         }
-        const fields = [];
+        const fields: APIEmbedField[] = [];
 
         if (char.factions.length) {
             fields.push({
@@ -90,7 +90,7 @@ export default class Character extends Command {
         for (const ability of char.skillReferenceList) {
             const type = getAbilityType(ability.skillId);
 
-            const costs = [];
+            const costs: string[] = [];
             if (ability.cost) {
                 if (ability.cost.AbilityMatOmicron > 0) {
                     costs.push(`${ability.cost.AbilityMatOmicron} ${omicron}`);
@@ -137,7 +137,7 @@ export default class Character extends Command {
                     url: character?.url || null,
                 },
                 thumbnail: charImage ? { url: "attachment://image.png" } : null,
-                fields: [],
+                fields: [] as APIEmbedField[],
             },
         ];
 
@@ -153,7 +153,7 @@ export default class Character extends Command {
                             name: `${character.name} continued...`,
                             url: null,
                         },
-                        fields: [],
+                        fields: [] as APIEmbedField[],
                         thumbnail: null,
                     });
                 }

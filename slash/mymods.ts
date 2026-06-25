@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType, PermissionsBitField } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType, PermissionsBitField } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
@@ -210,7 +210,7 @@ export default class MyMods extends Command {
                 }
             }
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             for (const mod of Object.keys(slots)) {
                 // Set some default strings in case we don't have perms to use external emotes
                 let typeIcon = slots[mod].type;
@@ -320,7 +320,7 @@ export default class MyMods extends Command {
                 }**\n`;
             }
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
 
             return interaction.editReply({
                 content: null,
@@ -341,7 +341,7 @@ export default class MyMods extends Command {
             const statIndex = statEnums.stats.indexOf(statToCheck);
 
             // Go through the player's roster and get a list of each stat per mod
-            const statMap = [];
+            const statMap: { slot: number; value: number; defId: string; name?: string }[] = [];
             for (const character of player.roster) {
                 // For each character
                 if (!character.mods?.length) continue;
@@ -402,7 +402,7 @@ export default class MyMods extends Command {
             const charDefIds = g10PlusChars.map((c) => c.defId);
             const charNames = await swgohAPI.unitNames(charDefIds, swgohLanguage);
 
-            const outArr = [];
+            const outArr: string[] = [];
             for (const character of g10PlusChars) {
                 const missingMods = 6 - (character.mods?.length || 0);
                 const lowerLvl = 6 - (character.mods?.filter((m) => !m || m.level >= 15).length || 0) - missingMods;

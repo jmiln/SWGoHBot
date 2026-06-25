@@ -1,4 +1,5 @@
 import {
+    type APIEmbedField,
     ApplicationCommandOptionType,
     ChannelType,
     type ChatInputCommandInteraction,
@@ -533,7 +534,7 @@ export async function processAWChanges({
                     cmdOut =
                         "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from";
                 }
-                const resArr = [];
+                const resArr: string[] = [];
                 aw.allyCodes = aw.allyCodes.map((p) => {
                     if (p.allyCode.toString() === ac.toString()) {
                         p.mark = remove_mark ? null : mark;
@@ -647,7 +648,7 @@ export async function processAWChanges({
         case "allycode": {
             // Add/ remove
             const action = interactionOptions.subCommand;
-            const outLog = [];
+            const outLog: string[] = [];
 
             // Logic for add/ remove
             if (action === "add") {
@@ -671,7 +672,7 @@ export async function processAWChanges({
                     );
                 }
 
-                const codes = [];
+                const codes: { code: number; mention: string }[] = [];
                 for (const code of codesIn) {
                     let ac: number;
                     let mention: string;
@@ -983,7 +984,7 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, 
                 return `\`${a.allyCode}\` ${tags} ${a.mark ? `${a.mark} ` : ""}**${a.mention ? `<@${a.mention}>` : pName}**`;
             });
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
         // Chunk the codes down so they'll fit within the 1024 character limit of a field value
         const acChunks = msgArray(acOut, "\n", 1000);
         for (const [ix, chunk] of acChunks.entries()) {

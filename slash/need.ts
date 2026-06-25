@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
@@ -8,7 +8,7 @@ import { getAllyCode, msgArray, toProperCase } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIUnit } from "../types/swapi_types.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { CommandContext, UnitLocation } from "../types/types.ts";
 
 const shopMap = [
     { name: "Arena Shop", value: "Arena Shipments" },
@@ -115,8 +115,8 @@ export default class Need extends Command {
             return super.error(interaction, language.get("COMMAND_NEED_ROSTER_NOT_FOUND"));
         }
 
-        let units = [];
-        let namesToSearch = [];
+        let units: { baseId?: string; nameKey?: string; name?: string }[] = [];
+        let namesToSearch: string[] = [];
         if (battle) {
             namesToSearch.push(battle);
         }
@@ -158,8 +158,8 @@ export default class Need extends Command {
 
         const totalShards = units.length * shardsLeftAtStar[0];
         let shardsLeft = 0;
-        let outChars = [];
-        let outShips = [];
+        let outChars: { rarity: number; name: string }[] = [];
+        let outShips: { rarity: number; name: string }[] = [];
         for (const unit of units) {
             // Go through the found characters and check them against the player's roster
             let playerUnit = player.roster.find((c) => c.defId === unit.baseId);
@@ -189,12 +189,12 @@ export default class Need extends Command {
             }
         }
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
         if (outChars.length) {
             outChars = outChars.filter((c) => c.name);
             outChars = outChars.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
-            outChars = outChars.map((c) => `\`${c.rarity}*\` ${c.rarity ? c.name : `~~${c.name}~~`}`);
-            const msgArr = msgArray(outChars, "\n", 1000);
+            const outCharLines = outChars.map((c) => `\`${c.rarity}*\` ${c.rarity ? c.name : `~~${c.name}~~`}`);
+            const msgArr = msgArray(outCharLines, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix + 1})`;
@@ -206,8 +206,8 @@ export default class Need extends Command {
         }
         if (outShips.length) {
             outShips = outShips.filter((a) => !!a.name).sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
-            outShips = outShips.map((s) => `\`${s.rarity}*\` ${s.rarity ? s.name : `~~${s.name}~~`}`);
-            const msgArr = msgArray(outShips, "\n", 1000);
+            const outShipLines = outShips.map((s) => `\`${s.rarity}*\` ${s.rarity ? s.name : `~~${s.name}~~`}`);
+            const msgArr = msgArray(outShipLines, "\n", 1000);
             msgArr.forEach((m, ix) => {
                 let end = "";
                 if (msgArr.length > 1) end = `(${ix + 1})`;
@@ -264,7 +264,7 @@ export default class Need extends Command {
         });
 
         function getHeaderNames(namesIn: string[]) {
-            const namesOut = [];
+            const namesOut: string[] = [];
             for (const name of namesIn) {
                 let n = kwMap.find((k) => k.value === name)?.name;
                 if (!n) {
@@ -286,7 +286,7 @@ export default class Need extends Command {
         async function getUnitsExact(searchArr: string | string[]) {
             // Get unit matches based on the exact name of their locations
             const searchNames = Array.isArray(searchArr) ? searchArr : [searchArr];
-            let unitsOut = [];
+            let unitsOut: (UnitLocation & { baseId?: string })[] = [];
             if (searchNames.includes("*")) {
                 unitsOut.push(...charLocs);
                 unitsOut.push(...shipLocs);

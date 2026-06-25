@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { getAllyCode, updatedFooterStr } from "../modules/functions.ts";
@@ -84,7 +84,7 @@ export default class GuildQuality extends Command {
                 }),
         ];
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
 
         const {
             modQuality: totalMod,

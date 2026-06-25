@@ -54,7 +54,7 @@ export default class Farm extends Command {
             return super.error(interaction, language.get("COMMAND_FARM_UNIT_ERROR"));
         }
 
-        const outList = [];
+        const outList: string[] = [];
         let unitLocs = null;
         if (isShip) {
             unitLocs = shipLocs.find((s) => s.defId === character.uniqueName);

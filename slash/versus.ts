@@ -107,7 +107,7 @@ export default class Versus extends Command {
         if (!user1) return super.error(interaction, language.get("COMMAND_VERSUS_USER1_ERROR"));
         const user2 = await fetchPlayerWithCooldown(interaction, user2AC);
         if (!user2) return super.error(interaction, language.get("COMMAND_VERSUS_USER2_ERROR"));
-        const errArr = [];
+        const errArr: string[] = [];
         if (!user1?.roster?.length) {
             errArr.push("User 1 is missing pieces, please try again later.");
         }
@@ -128,7 +128,7 @@ export default class Versus extends Command {
 
         const isShip = (char1 ? char1.combatType : char2.combatType) !== 1;
 
-        const genOut = [];
+        const genOut: Record<string, string | number>[] = [];
 
         // Stick the level in
         genOut.push({
@@ -195,7 +195,7 @@ export default class Versus extends Command {
         );
 
         // For each stat in a list, add onto the statOut array
-        const statOut = [];
+        const statOut: Record<string, string | number>[] = [];
         for (const stat of statList) {
             const s1 = char1?.stats?.final[stat.stat];
             const s2 = char2?.stats?.final[stat.stat];

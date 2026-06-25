@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { expandSpaces, getAllyCode, updatedFooterStr } from "../modules/functions.ts";
@@ -54,7 +54,7 @@ export default class MyProfile extends Command {
         const gpChar = gpCharStat?.value ?? "N/A";
         const gpShip = gpShipStat?.value ?? "N/A";
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
 
         // Get the mod stats
         const mods = {

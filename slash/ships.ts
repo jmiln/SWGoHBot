@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters, ships } from "../data/constants/units.ts";
 import {
@@ -74,10 +74,10 @@ export default class Ships extends Command {
 
         const shipAbilities = unit.skillReferenceList;
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
 
         if (unit.crew.length) {
-            const crew = [];
+            const crew: string[] = [];
             for (const crewMember of unit.crew) {
                 const crewName = characters.find((c) => c.uniqueName === crewMember);
                 if (crewName) crew.push(crewName.name);

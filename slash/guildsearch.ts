@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -263,7 +263,7 @@ export default class GuildSearch extends Command {
 
         if (stat) {
             // Looking for a stat
-            const outArr = [];
+            const outArr: Record<string, string | number>[] = [];
 
             let sortedMembers = guildChar
                 .filter((gChar) => gChar?.gp)
@@ -322,7 +322,7 @@ export default class GuildSearch extends Command {
                 Resistance: { short: "Res" },
             };
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             if (!outArr.length) {
                 fields.push({
                     name: foundUnit.name,
@@ -417,8 +417,8 @@ export default class GuildSearch extends Command {
         // Can get the order from abilities table => skillReferenceList
         let maxZ = 0;
         let maxO = 0;
-        const zetas = [];
-        const omicrons = [];
+        const zetas: string[] = [];
+        const omicrons: string[] = [];
         let apiChar: RawCharacter;
         try {
             apiChar = await swgohAPI.getCharacter(foundUnit.uniqueName);
@@ -466,7 +466,7 @@ export default class GuildSearch extends Command {
             sortedGuild = sortedGuild.reverse();
         }
 
-        const charOut = {};
+        const charOut: Record<string, string[]> = {};
         const hasRelic = sortedGuild.filter((mem) => mem?.relic?.currentTier > 2).length;
         const maxGP = Math.max(...sortedGuild.map((ch) => ch.gp?.toLocaleString().length || 0));
         for (const member of sortedGuild) {
@@ -523,7 +523,7 @@ export default class GuildSearch extends Command {
             }
         }
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
         let outArr = [];
 
         if (doReverse) {

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -73,7 +73,7 @@ export default class GrandArena extends Command {
     }
 
     async run({ interaction, language }: CommandContext) {
-        const problemArr = [];
+        const problemArr: string[] = [];
 
         await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
 
@@ -104,7 +104,7 @@ export default class GrandArena extends Command {
 
         // If they're looking for specific characters, do what we can to get matches for them
         const characterStr = interaction.options.getString("characters");
-        let charOut = [];
+        let charOut: string[] = [];
         if (characterStr?.length) {
             const parsedCharacters = characterStr.split(",").map((c) => c.trim());
             for (const char of parsedCharacters) {
@@ -152,13 +152,13 @@ export default class GrandArena extends Command {
         }
 
         // If there are no problems, continue
-        const checkArr = {};
+        const checkArr: Record<string, Record<string, string | number>[]> = {};
 
         // Localized labels for each row
         const labels = language.get("BASE_GA_COMP_NAMES") as unknown as { [key: string]: string };
 
         // An array to stick all the fields in as we go.
-        const fields = [];
+        const fields: APIEmbedField[] = [];
 
         // In case the user wants to look for charcters from a specific faction
         const faction = interaction.options.getString("faction");
@@ -180,7 +180,7 @@ export default class GrandArena extends Command {
         }
 
         // Get rid of any duplicates in case
-        let charArr = [];
+        let charArr: string[] = [];
         if (charOut.length) {
             charArr = [...new Set(charOut)];
         }
@@ -200,7 +200,7 @@ export default class GrandArena extends Command {
         });
 
         // The GP stats
-        const gpStats = [];
+        const gpStats: Record<string, string | number>[] = [];
 
         // Overall basic gp stats
         gpStats.push({
@@ -259,7 +259,7 @@ export default class GrandArena extends Command {
         });
 
         // Get the overall gear levels for each user
-        const gearOverview = [];
+        const gearOverview: Record<string, string | number>[] = [];
         const [u1GearLvls, u1AvgGear] = summarizeCharLevels([user1], "gear");
         const [u2GearLvls, u2AvgGear] = summarizeCharLevels([user2], "gear");
         const maxGear = Math.max(
@@ -296,7 +296,7 @@ export default class GrandArena extends Command {
         });
 
         // Get the overall rarity levels for each user
-        const rarityOverview = [];
+        const rarityOverview: Record<string, string | number>[] = [];
         const [u1RarityLvls, u1AvgRarity] = summarizeCharLevels([user1], "rarity");
         const [u2RarityLvls, u2AvgRarity] = summarizeCharLevels([user2], "rarity");
         const maxRarity = Math.max(
@@ -335,7 +335,7 @@ export default class GrandArena extends Command {
 
         // Get some general stats for any available galactic legends
         const legendMap = unitChecklist["Galactic Legends"];
-        const glOverview = [];
+        const glOverview: Record<string, string | number>[] = [];
         for (const gl of legendMap) {
             const u1Char = user1.roster.find((c) => c.defId === gl[0]);
             const u2Char = user2.roster.find((c) => c.defId === gl[0]);
@@ -363,7 +363,7 @@ export default class GrandArena extends Command {
         });
 
         // Get the overall relic levels for each user
-        const relicOverview = [];
+        const relicOverview: Record<string, string | number>[] = [];
         const [u1RelicLvls, u1AvgRelic] = summarizeCharLevels([user1], "relic");
         const [u2RelicLvls, u2AvgRelic] = summarizeCharLevels([user2], "relic");
         const maxRelic = Math.max(
@@ -403,7 +403,7 @@ export default class GrandArena extends Command {
         const u1Mods = getModStats(user1);
         const u2Mods = getModStats(user2);
 
-        const modOverview = [];
+        const modOverview: Record<string, string | number>[] = [];
         modOverview.push({
             check: labels.mods6,
             user1: user1.roster.reduce((a, b) => a + (b.mods ? b.mods.filter((m) => m.pips === 6).length : 0), 0),
@@ -572,7 +572,7 @@ function getModStats(user: SWAPIPlayer) {
 }
 
 function getOverview(user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: string]: string }) {
-    const overview = [];
+    const overview: Record<string, string | number>[] = [];
 
     // Arena stats
     if (user1.arena && user2.arena) {

@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, raidNames, ships } from "../data/constants/units.ts";
@@ -20,7 +20,7 @@ import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
-import type { CommandContext, TWList } from "../types/types.ts";
+import type { BotUnit, CommandContext, TWList } from "../types/types.ts";
 
 export default class Guilds extends Command {
     static readonly metadata = {
@@ -455,7 +455,7 @@ export default class Guilds extends Command {
                 });
             }
             guildGG = guildGG.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
-            let output = [];
+            let output: { sixPip: number; spd15: number; spd20: number; off100: number; name: string }[] = [];
             for (const player of guildGG) {
                 const mods = {
                     sixPip: 0,
@@ -544,7 +544,25 @@ export default class Guilds extends Command {
         }
 
         async function guildRelics() {
-            const members = [];
+            const members: {
+                name: string;
+                g1: number;
+                g2: number;
+                g3: number;
+                g4: number;
+                g5: number;
+                g6: number;
+                g7: number;
+                g8: number;
+                g9: number;
+                g10: number;
+                g11: number;
+                g12: number;
+                "r0-4": number;
+                "r5-8": number;
+                r9: number;
+                "r10+": number;
+            }[] = [];
 
             // Make sure the guild roster exists, and grab all the ally codes
             if (!guild?.roster?.length) {
@@ -682,7 +700,7 @@ export default class Guilds extends Command {
             const totalOut = makeTable(totalsFormat, [tierTotals]);
 
             // Chunk the info into sections so it'll fit in the embed fields
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             const fieldVals = msgArray(memOut, "\n", 1000);
 
             // Stick the formatted bits into the fields
@@ -724,8 +742,8 @@ export default class Guilds extends Command {
             if (!rawGuild.profile)
                 return interaction.editReply({ content: "Sorry, could not retrieve guild profile data. Please try again." });
 
-            const out = [];
-            const fullOut = [];
+            const out: string[] = [];
+            const fullOut: string[] = [];
             let roster = null;
             if (sortBy === "tickets") {
                 roster = rawGuild.roster.sort((a, b) =>
@@ -784,12 +802,12 @@ export default class Guilds extends Command {
         }
 
         async function baseGuild() {
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             let desc = guild.desc ? `**${language.get("COMMAND_GUILDS_DESC")}:**\n\`${guild.desc}\`\n` : "";
             desc += guild.message?.length ? `**${language.get("COMMAND_GUILDS_MSG")}:**\n\`${guild.message}\`` : "";
 
             const raidHeaderStr = language.get("COMMAND_GUILDS_RAID_HEADER");
-            const raidArr = [];
+            const raidArr: string[] = [];
             let raids = "";
 
             if (guild.raid && Object.keys(guild.raid).length) {
@@ -920,9 +938,9 @@ export default class Guilds extends Command {
                 });
             }
 
-            let charList = [];
-            let shipList = [];
-            const users = [];
+            let charList: BotUnit[] = [];
+            let shipList: BotUnit[] = [];
+            const users: string[] = [];
             if (showSide) {
                 charList = characters.filter((ch) => ch.side === showSide);
                 shipList = ships.filter((ch) => ch.side === showSide);
@@ -961,7 +979,7 @@ export default class Guilds extends Command {
                 }
             }
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             const header = "**`[ Char  | Ship  | Total ]`**";
             const msgArr = msgArray([header, ...users], "\n", 1000);
             msgArr.forEach((m, ix) => {
@@ -1068,7 +1086,7 @@ export default class Guilds extends Command {
                 }
             }
 
-            const users = [];
+            const users: string[] = [];
             // Format the strings for each member
             const maxLen = sortedGuild.length > 0 ? Math.max(...sortedGuild.map((mem) => mem.gp.toLocaleString().length)) : 0;
             for (const p of sortedGuild) {
@@ -1085,7 +1103,7 @@ export default class Guilds extends Command {
                 users.push(`\`[${numStr}]\` - \`[${p.memberLvl ?? "?"}]\` ${nameStr} ${regStr}`);
             }
 
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             fields.push({
                 name: language.get("COMMAND_GUILDS_GUILD_GP_HEADER"),
                 value: codeBlock(
@@ -1126,7 +1144,7 @@ export default class Guilds extends Command {
         }
 
         async function twSummary() {
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             const doExpand = interaction.options.getBoolean("expand");
             const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id });
             if (!guild?.roster?.length) {
@@ -1374,13 +1392,13 @@ export default class Guilds extends Command {
             isShips = false,
         ) {
             const catToFormat = isShips ? ["Ships", "Capital Ships"] : ["Galactic Legends", "Light Side", "Dark Side"];
-            const fieldsOut = [];
+            const fieldsOut: APIEmbedField[] = [];
             const [gear1, gear2] = Object.keys(gearLvls)
                 .map((num) => Number.parseInt(num, 10))
                 .sort((a, b) => b - a);
 
             for (const category of catToFormat) {
-                const unitOut = [];
+                const unitOut: string[] = [];
                 const unitListMap = unitObj?.[category];
                 if (!unitListMap || !Object.keys(unitListMap)?.length) continue;
                 for (const [defId, name] of Object.entries(unitListMap)) {

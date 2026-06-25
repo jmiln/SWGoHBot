@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
@@ -69,7 +69,7 @@ export default class Faction extends Command {
             extra = " with zeta abilities";
         }
 
-        const factionChars = [];
+        const factionChars: string[] = [];
         let chars: RawCharacter[] = await cache.get(
             env.MONGODB_SWAPI_DB,
             "units",
@@ -163,7 +163,7 @@ export default class Faction extends Command {
                 factionChars.push(`**\`[ ${ch.rarity} |  ${lvlStr}  | ${gpStr} | ${gearStr} ]\` ${zetas}${ch.nameKey}**`);
             }
             const msgArr = msgArray(factionChars, "\n", 1000);
-            const fields = [];
+            const fields: APIEmbedField[] = [];
             let desc: string;
             if (msgArr.length > 1) {
                 msgArr.forEach((m, ix) => {

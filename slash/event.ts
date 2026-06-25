@@ -379,8 +379,8 @@ export default class Event extends Command {
                     result.map((e) => e.event),
                 );
 
-                const evAddLog = [];
-                const evFailLog = [];
+                const evAddLog: string[] = [];
+                const evFailLog: string[] = [];
 
                 for (const ev of res) {
                     const thisEvent = ev.event;
@@ -586,7 +586,7 @@ export default class Event extends Command {
                     });
                     if (res.success) {
                         // Find all the fields that were updated
-                        const outLog = [];
+                        const outLog: string[] = [];
                         for (const field of Object.keys(validEvent.event)) {
                             if (["updated", "updatedAt", "createdAt"].includes(field)) continue;
                             if (validEvent.event[field].toString() !== event[field]?.toString()) {
@@ -670,12 +670,12 @@ export default class Event extends Command {
             const now = Date.now();
             const MAX_MSG_SIZE = 1000;
             const outEvents = [];
-            const nameArr = [];
+            const nameArr: string[] = [];
             const guildEvNames = new Set(guildEvArray?.map((ev) => ev.name) ?? []);
             const eventArray = Array.isArray(eventArr) ? eventArr : [eventArr];
 
             for (const [ix, thisEvent] of eventArray.entries()) {
-                const err = [];
+                const err: string[] = [];
                 const newEvent = {
                     name: "",
                     eventDT: 0,
@@ -840,7 +840,7 @@ export default class Event extends Command {
         async function sendPaged({ eventList, minimal, page }: { eventList: GuildConfigEvent[]; minimal: boolean; page: number }) {
             if (Array.isArray(eventList) && eventList.length === 0)
                 return interaction.reply({ content: "I could not find any events for this server" });
-            const evOutArr = [];
+            const evOutArr: string[] = [];
 
             // Otherwise, process the events for viewing, and display em
 

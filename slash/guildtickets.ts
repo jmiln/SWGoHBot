@@ -125,7 +125,7 @@ export default class GuildTickets extends Command {
 
         // Whether it's setting values or view
         if (subCommand === "set") {
-            const updatedArr = [];
+            const updatedArr: string[] = [];
             const channel = interaction.options.getChannel("channel");
             const isEnabled = interaction.options.getBoolean("enabled");
             const showMax = interaction.options.getBoolean("show_max");

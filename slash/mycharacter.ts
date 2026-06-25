@@ -1,5 +1,5 @@
 import { inspect } from "node:util";
-import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -245,7 +245,7 @@ export default class MyCharacter extends Command {
         if (stats.final["Physical Critical Rating"]) stats.final["Physical Critical Chance"] = stats.final["Physical Critical Rating"];
         if (stats.final["Special Critical Rating"]) stats.final["Special Critical Chance"] = stats.final["Special Critical Rating"];
 
-        const statArr = [];
+        const statArr: string[] = [];
         for (const sn of Object.keys(statNames)) {
             let statStr = `== ${sn} ==\n`;
             for (let s of statNames[sn]) {
@@ -280,7 +280,7 @@ export default class MyCharacter extends Command {
             statArr.push(expandSpaces(statStr));
         }
 
-        const fields = [];
+        const fields: APIEmbedField[] = [];
         msgArray(statArr, "\n", 1000).forEach((m: string, ix: number) => {
             fields.push({
                 name: ix === 0 ? "Stats" : "-",
