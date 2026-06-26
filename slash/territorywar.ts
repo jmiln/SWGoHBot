@@ -480,7 +480,9 @@ export default class TerritoryWar extends Command {
             return interaction.editReply({ content: null, embeds: [embed] });
         } catch (err) {
             logger.error(`[slash/territorywar] Couldn't edit the reply to send final results. Sending message instead. ${String(err)}`);
-            return interaction.channel.send({ content: null, embeds: [embed] });
+            if (interaction.channel) {
+                return interaction.channel.send({ content: null, embeds: [embed] });
+            }
         }
     }
 }

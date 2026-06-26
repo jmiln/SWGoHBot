@@ -12,6 +12,7 @@ import constants from "../data/constants/constants.ts";
 import { convertMS, getStartOfDay, getUTCFromOffset, hasViewAndSend, isUserID, isValidZone } from "../modules/functions.ts";
 import { getGuildShardTimes, setGuildShardTimes } from "../modules/guildConfig/shardTimes.ts";
 import logger from "../modules/Logger.ts";
+import type { GuildConfigShardTimes } from "../types/guildConfig_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Shardtimes extends Command {
@@ -112,12 +113,13 @@ export default class Shardtimes extends Command {
             if (!interaction?.guild || !interaction?.channel) {
                 return await interaction.respond([]);
             }
+            const channelId = interaction.channel.id;
 
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 
             // Get shard times for this channel
             const shardArr = await getGuildShardTimes({ guildId: interaction.guild.id });
-            const shardTimes = shardArr.find((sh) => sh.channelId === interaction.channel.id);
+            const shardTimes = shardArr.find((sh) => sh.channelId === channelId);
 
             if (!shardTimes?.times) {
                 return await interaction.respond([]);
@@ -153,13 +155,14 @@ export default class Shardtimes extends Command {
 
     async run({ interaction, language, guildSettings, permLevel }: CommandContext) {
         // Shard ID will be guild.id-channel.id
-        if (!interaction?.guild || !interaction?.channel) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
+        if (!interaction.inCachedGuild() || !interaction.channel) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
+        // Captured after the guard so the narrowed (non-null) channel id carries into the closures below
+        const channelId = interaction.channel.id;
 
         const shardArr = await getGuildShardTimes({ guildId: interaction.guild.id });
-        const targetIndex = shardArr.findIndex((sh) => sh.channelId === interaction.channel.id);
-        const shardTimes =
-            targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : { channelId: interaction.channel.id, times: {} };
+        const targetIndex = shardArr.findIndex((sh) => sh.channelId === channelId);
+        const shardTimes = targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : { channelId: channelId, times: {} };
 
         const action = interaction.options.getSubcommand();
 
@@ -245,13 +248,19 @@ export default class Shardtimes extends Command {
             } else {
                 flag = "";
             }
-            let tempUser = null;
-            if (shardTimes.times[`${userID}`]) {
-                tempUser = shardTimes.times[`${userID}`];
+            // The stored entry, augmented at runtime with a transient `tempZone` display value
+            // (used only for the "user moved" message; it is never written back to the DB)
+            // The previously-stored entry (if any), augmented at runtime with a transient `tempZone`
+            // display value used only for the "user moved" message; it is never written back to the DB.
+            const tempUser: (GuildConfigShardTimes["times"][string] & { tempZone?: string | number }) | undefined =
+                shardTimes.times[`${userID}`];
+            if (tempUser) {
                 if (tempUser.zoneType) {
                     if (tempUser.zoneType === "utc") {
-                        const sign = tempUser.timezone >= 0 ? "+" : "-";
-                        const num = Math.abs(tempUser.timezone);
+                        // utc zoneType stores the timezone as a numeric offset in minutes
+                        const offsetMinutes = Number(tempUser.timezone);
+                        const sign = offsetMinutes >= 0 ? "+" : "-";
+                        const num = Math.abs(offsetMinutes);
                         const hour = Math.floor(num / 60);
                         let min = (num % 60).toString();
                         if (min.length === 1) min = `0${min}`;

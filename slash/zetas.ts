@@ -15,7 +15,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class Zetas extends Command {
     static readonly metadata = {
@@ -82,7 +82,7 @@ export default class Zetas extends Command {
 
         const subCommand = interaction.options.getSubcommand(true);
 
-        let character = null;
+        let character: BotUnit | null = null;
         const searchChar = interaction.options.getString("character");
         // If a character was entered, see if it can find a match to display later
         if (searchChar) {

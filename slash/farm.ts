@@ -6,7 +6,7 @@ import cache from "../modules/cache.ts";
 import { charListFromSearch, expandSpaces, findCharOrShip, getSideColor, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { CommandContext, UnitLocation } from "../types/types.ts";
 
 export default class Farm extends Command {
     static readonly metadata = {
@@ -55,11 +55,11 @@ export default class Farm extends Command {
         }
 
         const outList: string[] = [];
-        let unitLocs = null;
+        let unitLocs: UnitLocation | null = null;
         if (isShip) {
-            unitLocs = shipLocs.find((s) => s.defId === character.uniqueName);
+            unitLocs = shipLocs.find((s) => s.defId === character.uniqueName) ?? null;
         } else {
-            unitLocs = charLocs.find((c) => c.defId === character.uniqueName);
+            unitLocs = charLocs.find((c) => c.defId === character.uniqueName) ?? null;
         }
 
         if (!unitLocs) {

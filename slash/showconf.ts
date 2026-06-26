@@ -24,6 +24,9 @@ export default class Showconf extends Command {
     }
 
     async run({ interaction, language }: CommandContext) {
+        if (!interaction.guild) {
+            return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
+        }
         const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
         const notAvailable = language.get("BASE_NA");
@@ -66,8 +69,9 @@ export default class Showconf extends Command {
         const totalSuppTier = await getGuildSupporterTier({ guildId: interaction.guild.id });
         const guildSupporters = await getServerSupporters({ guildId: interaction.guild.id });
         // Members missing from the cache still get listed, as a mention the client can resolve
+        const guild = interaction.guild;
         const supporterList = guildSupporters.map((supp) => {
-            const user = interaction.guild.members.cache.get(supp.userId);
+            const user = guild.members.cache.get(supp.userId);
             return user?.displayName ? user.displayName : `<@${supp.userId}>`;
         });
 

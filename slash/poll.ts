@@ -84,6 +84,8 @@ export default class Poll extends Command {
         if (!interaction.guild || !interaction.channel) {
             return super.error(interaction, language.get("COMMAND_POLL_NO_DM"));
         }
+        // Captured after the guard so the narrowed (non-null) value carries into the closures below
+        const channelId = interaction.channel.id;
 
         const poll = {
             question: "",
@@ -92,11 +94,11 @@ export default class Poll extends Command {
                 // userID: vote#
             },
             anon: false,
-            channelId: interaction.channel.id,
+            channelId: channelId,
         };
 
         const pollsArr = await getGuildPolls({ guildId: interaction.guild.id });
-        const oldPoll = pollsArr.find((p) => p.channelId === interaction.channel.id);
+        const oldPoll = pollsArr.find((p) => p.channelId === channelId);
 
         if (oldPoll && action === "create") {
             // If they're trying to create a new poll when one exists, tell em
@@ -152,7 +154,7 @@ export default class Poll extends Command {
             case "cancel": {
                 // Cancel the current poll in a channel, should ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
-                const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
+                const targetIndex = pollsArr.findIndex((p) => p.channelId === channelId);
                 try {
                     pollsArr.splice(targetIndex, 1);
                     await setGuildPolls({ guildId: interaction.guild.id, pollsOut: pollsArr });
@@ -164,7 +166,7 @@ export default class Poll extends Command {
             case "end": {
                 // End the current poll in a channel, should probably ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
-                const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
+                const targetIndex = pollsArr.findIndex((p) => p.channelId === channelId);
                 try {
                     pollsArr.splice(targetIndex, 1);
                     await setGuildPolls({ guildId: interaction.guild.id, pollsOut: pollsArr });
@@ -203,7 +205,7 @@ export default class Poll extends Command {
                 if (oldPoll.options.length <= opt || opt < 0) {
                     return super.error(interaction, language.get("COMMAND_POLL_INVALID_OPTION"), { ephemeral: true });
                 }
-                const targetIndex = pollsArr.findIndex((p) => p.channelId === interaction.channel.id);
+                const targetIndex = pollsArr.findIndex((p) => p.channelId === channelId);
                 let voted = null;
                 if (oldPoll.votes[interaction.user.id] === opt) {
                     // Warn em that they're voting for the same thing they already voted for, so it won't be registered

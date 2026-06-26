@@ -76,6 +76,14 @@ export function createMockInteraction(
         channelId: overrides.channelId || "123",
         commandName: overrides.commandName || "test",
         createdTimestamp: overrides.createdTimestamp || Date.now(),
+        // discord.js interaction guards used by guild-only commands; mirror real behaviour
+        // by reporting a cached guild whenever one is present on the mock.
+        inGuild() {
+            return this.guild != null;
+        },
+        inCachedGuild() {
+            return this.guild != null;
+        },
         get deferred() {
             return _deferred;
         },

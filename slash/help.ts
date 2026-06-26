@@ -3,7 +3,7 @@ import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextTyp
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { msgArray, readJSON, toProperCase } from "../modules/functions.ts";
-import type { HelpJSON } from "../types/help_types.ts";
+import type { HelpCommand, HelpJSON } from "../types/help_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Help extends Command {
@@ -107,11 +107,11 @@ export default class Help extends Command {
             }
         } else {
             // Searching for info on a certain command
-            let foundCommand = null;
+            let foundCommand: HelpCommand | null = null;
             for (const cat of helpKeys) {
                 const thisCat = help[cat];
                 if (typeof thisCat === "object" && "commands" in thisCat) {
-                    foundCommand = thisCat.commands.find((cmd) => cmd.name.toLowerCase() === search.toLowerCase());
+                    foundCommand = thisCat.commands.find((cmd) => cmd.name.toLowerCase() === search.toLowerCase()) ?? null;
                     if (foundCommand) break;
                 }
             }

@@ -297,7 +297,7 @@ export default class MyMods extends Command {
 
             const out = sortedCharList.map((c) => {
                 let finalStat = "0";
-                let modStat = null;
+                let modStat: string | null = null;
                 if (c.stats?.final?.[statToCheck] % 1 === 0) {
                     // If it's a full number, give that
                     finalStat = (c.stats?.final?.[statToCheck] || 0).toLocaleString();

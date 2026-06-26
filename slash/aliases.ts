@@ -96,7 +96,7 @@ export default class Aliases extends Command {
 
     async run({ interaction, language }: CommandContext) {
         // Make sure this is running in a server, since it doesn't do any good in DMs
-        if (!interaction?.guild?.id) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
+        if (!interaction.inCachedGuild()) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
 
         const action = interaction.options.getSubcommand();
         const searchUnit = interaction.options.getString("unit");
@@ -122,7 +122,7 @@ export default class Aliases extends Command {
     }
 
     private async handleAddAlias(
-        interaction: ChatInputCommandInteraction,
+        interaction: ChatInputCommandInteraction<"cached">,
         language: Language,
         alias: string,
         unitKey: string,
@@ -156,7 +156,7 @@ export default class Aliases extends Command {
     }
 
     private async handleRemoveAlias(
-        interaction: ChatInputCommandInteraction,
+        interaction: ChatInputCommandInteraction<"cached">,
         language: Language,
         alias: string,
         guildAliases: GuildAlias[],
