@@ -87,7 +87,7 @@ export default class Poll extends Command {
         // Captured after the guard so the narrowed (non-null) value carries into the closures below
         const channelId = interaction.channel.id;
 
-        const poll = {
+        const poll: GuildConfigPoll = {
             question: "",
             options: [],
             votes: {
@@ -119,7 +119,10 @@ export default class Poll extends Command {
             // Create a poll (lvl 3+)
             case "create": {
                 const optionsString = interaction.options.getString("options");
-                poll.question = interaction.options.getString("question");
+                if (!optionsString) {
+                    return super.error(interaction, language.get("COMMAND_POLL_TOO_FEW_OPT"));
+                }
+                poll.question = interaction.options.getString("question") ?? "";
                 poll.anon = interaction.options.getBoolean("anonymous") || false;
                 poll.options = optionsString.split("|").map((opt) => opt.trim());
 
@@ -166,6 +169,7 @@ export default class Poll extends Command {
             case "end": {
                 // End the current poll in a channel, should probably ask for confirmation, maybe try and use a button here at some point?
                 // Delete the current poll
+                if (!oldPoll) return super.error(interaction, language.get("COMMAND_POLL_NO_ACTIVE"));
                 const targetIndex = pollsArr.findIndex((p) => p.channelId === channelId);
                 try {
                     pollsArr.splice(targetIndex, 1);
@@ -186,6 +190,7 @@ export default class Poll extends Command {
             }
             case "view": {
                 // View the current poll in a channel
+                if (!oldPoll) return super.error(interaction, language.get("COMMAND_POLL_NO_ACTIVE"));
                 return interaction.reply({
                     embeds: [
                         {
@@ -201,12 +206,13 @@ export default class Poll extends Command {
             case "vote": {
                 // Vote on the current poll in a channel, and don't show any output for this
                 // Doesn't need to be usable in DMs anymore because of the ephemeral reqponses now
-                const opt = interaction.options.getInteger("option") - 1;
+                if (!oldPoll) return super.error(interaction, language.get("COMMAND_POLL_NO_ACTIVE"));
+                const opt = (interaction.options.getInteger("option") ?? 0) - 1;
                 if (oldPoll.options.length <= opt || opt < 0) {
                     return super.error(interaction, language.get("COMMAND_POLL_INVALID_OPTION"), { ephemeral: true });
                 }
                 const targetIndex = pollsArr.findIndex((p) => p.channelId === channelId);
-                let voted = null;
+                let voted: number | null = null;
                 if (oldPoll.votes[interaction.user.id] === opt) {
                     // Warn em that they're voting for the same thing they already voted for, so it won't be registered
                     return super.error(interaction, language.get("COMMAND_POLL_SAME_OPT", oldPoll.options[opt]), {

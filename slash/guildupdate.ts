@@ -54,10 +54,10 @@ export default class GuildUpdate extends Command {
             return super.error(interaction, language.get("BASE_DATA_NOT_FOUND"));
         }
         let gu = user.guildUpdate;
-        const defGU = {
+        const defGU: { enabled: boolean; channel?: string; allyCode?: number } = {
             enabled: false,
-            channel: null,
-            allyCode: null,
+            channel: undefined,
+            allyCode: undefined,
         };
         if (!gu) {
             gu = defGU;
@@ -125,7 +125,6 @@ export default class GuildUpdate extends Command {
                 await userReg.updateUser(userID, user);
                 // The allycode branch may have deferred; route accordingly.
                 const settingsPayload = {
-                    content: null,
                     embeds: [
                         {
                             title: "Settings updated",

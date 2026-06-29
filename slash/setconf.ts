@@ -19,7 +19,7 @@ type OptOut = {
     name: string;
     type: ApplicationCommandOptionType;
     description: string;
-    choices: { name: string; value: string }[] | null;
+    choices?: { name: string; value: string }[];
 };
 const options = {
     add: {
@@ -99,7 +99,6 @@ for (const [key, value] of Object.entries(typedDefaultSettings)) {
         name: key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
         type: value.type,
         description: value.description,
-        choices: null,
     };
     if (value?.choices) {
         optOut.choices = value.choices.map((choice: string) => {
@@ -187,18 +186,23 @@ export default class SetConf extends Command {
                     const thisChar = characters.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
                     if (thisChar) {
                         if (thisChar.factions.includes("Galactic Legend")) {
+                            guildTWList["Galactic Legends"] ??= [];
                             guildTWList["Galactic Legends"].push(thisChar.uniqueName);
                         } else if (thisChar.side === "dark") {
+                            guildTWList["Dark Side"] ??= [];
                             guildTWList["Dark Side"].push(thisChar.uniqueName);
                         } else {
+                            guildTWList["Light Side"] ??= [];
                             guildTWList["Light Side"].push(thisChar.uniqueName);
                         }
                     } else {
                         const thisShip = ships.find((u) => u.uniqueName === addUnitDefId || u.name === addUnitDefId);
                         if (thisShip) {
                             if (thisShip.factions.includes("Capital Ship")) {
+                                guildTWList["Capital Ships"] ??= [];
                                 guildTWList["Capital Ships"].push(thisShip.uniqueName);
                             } else {
+                                guildTWList.Ships ??= [];
                                 guildTWList.Ships.push(thisShip.uniqueName);
                             }
                         }
@@ -249,10 +253,11 @@ export default class SetConf extends Command {
                         );
                     }
                 } else if (subCommand === "blacklist") {
-                    if (!guildTWList.Blacklist.includes(removeUnitDefId)) {
+                    const blacklist = guildTWList.Blacklist ?? [];
+                    if (!blacklist.includes(removeUnitDefId)) {
                         return super.error(interaction, language.get("COMMAND_SETCONF_NOT_IN_BLACKLIST", removeUnitDefId));
                     }
-                    guildTWList.Blacklist = guildTWList.Blacklist.filter((u) => u !== removeUnitDefId);
+                    guildTWList.Blacklist = blacklist.filter((u) => u !== removeUnitDefId);
                     try {
                         await setGuildTWList({ guildId: interaction.guild.id, twListOut: guildTWList });
                         return super.success(interaction, language.get("COMMAND_SETCONF_UNIT_REMOVED_BLACKLIST", removeUnitDefId));
@@ -272,8 +277,8 @@ export default class SetConf extends Command {
         for (const [key, defConf] of Object.entries(typedDefaultSettings)) {
             const optionKey = key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
             const keyType = defConf?.type;
-            let settingStr = null;
-            let nameStr = null;
+            let settingStr: string | number | boolean | null = null;
+            let nameStr: string | null = null;
             if (keyType === ApplicationCommandOptionType.String) {
                 settingStr = interaction.options.getString(optionKey);
                 if (!settingStr) continue;
@@ -294,7 +299,7 @@ export default class SetConf extends Command {
                 settingStr = interaction.options.getBoolean(optionKey);
                 if (["enable_part", "enable_welcome"].includes(key) && settingStr === true) {
                     // If they're trying to enable the welcome or part message, make sure there's an announcement channel set up
-                    if (!guildConf.announceChan?.length && interaction.channel) {
+                    if (!guildConf.announceChan?.length && interaction.channel?.isSendable()) {
                         await interaction.channel.send(
                             "The welcome and parting messages will not work without an announcement channel set.",
                         );
@@ -324,7 +329,7 @@ export default class SetConf extends Command {
             }
         }
 
-        function changeSetting(action: string, key: string, setting: string, name: string) {
+        function changeSetting(action: string, key: string, setting: string | number | boolean | null, name: string | null) {
             if (setting === null) return null;
             if (action === "set") {
                 // Just send back the setting
@@ -374,7 +379,7 @@ export default class SetConf extends Command {
         if (subCommandGroup === "twlist") {
             const searchKey = focusedOption.value?.trim().toLowerCase();
             if (focusedOption.name === "add_unit") {
-                const aliases = await getGuildAliases({ guildId: interaction?.guild?.id });
+                const aliases = await getGuildAliases({ guildId: interaction?.guild?.id ?? "" });
                 const unitList = [
                     ...aliases.map((alias) => ({ name: `${alias.name} (${alias.alias})`, defId: alias.defId })),
                     ...characterNameList,
@@ -387,15 +392,17 @@ export default class SetConf extends Command {
                         .slice(0, 24) || [];
                 await interaction.respond(outArr);
             } else if (focusedOption.name === "remove_unit") {
-                const guildTWList = await getGuildTWList({ guildId: interaction?.guild?.id });
+                const guildTWList = await getGuildTWList({ guildId: interaction?.guild?.id ?? "" });
                 if (subCommand === "blacklist") {
                     const outArr =
-                        guildTWList.Blacklist.filter((defId) => {
-                            if (!searchKey?.length) return true;
-                            const thisUnit =
-                                characterNameList.find((char) => char.defId === defId) || shipNameList.find((ship) => ship.defId === defId);
-                            return thisUnit?.name.toLowerCase().includes(searchKey) ?? false;
-                        })
+                        (guildTWList.Blacklist ?? [])
+                            .filter((defId) => {
+                                if (!searchKey?.length) return true;
+                                const thisUnit =
+                                    characterNameList.find((char) => char.defId === defId) ||
+                                    shipNameList.find((ship) => ship.defId === defId);
+                                return thisUnit?.name.toLowerCase().includes(searchKey) ?? false;
+                            })
                             .map((defId) => {
                                 const thisUnit =
                                     characterNameList.find((char) => char.defId === defId) ||

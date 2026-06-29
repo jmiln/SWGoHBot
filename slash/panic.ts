@@ -43,6 +43,9 @@ export default class Panic extends Command {
             return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE"));
         }
 
+        if (!searchUnit) {
+            return super.error(interaction, language.get("COMMAND_PANIC_UNIT_NOT_FOUND", ""));
+        }
         const thisReq = journeyReqs?.[searchUnit] || null;
         if (!thisReq) {
             return super.error(interaction, language.get("COMMAND_PANIC_UNIT_NOT_FOUND", searchUnit));
@@ -83,22 +86,22 @@ export default class Panic extends Command {
             let isValid = false;
             switch (unitReq.type) {
                 case "GP": {
-                    isValid = playerUnit?.gp >= unitReq.tier;
+                    isValid = (playerUnit?.gp ?? 0) >= unitReq.tier;
                     break;
                 }
                 case "STAR": {
-                    isValid = playerUnit?.rarity >= unitReq.tier;
+                    isValid = (playerUnit?.rarity ?? 0) >= unitReq.tier;
                     break;
                 }
                 case "GEAR": {
-                    isValid = playerUnit?.gear >= unitReq.tier;
+                    isValid = (playerUnit?.gear ?? 0) >= unitReq.tier;
                     if (unitReq.tier > 11) {
                         reqs.rarity = 7;
                     }
                     break;
                 }
                 case "RELIC": {
-                    isValid = playerUnit?.relic?.currentTier - 2 >= unitReq.tier;
+                    isValid = (playerUnit?.relic?.currentTier ?? 0) - 2 >= unitReq.tier;
                     if (unitReq.tier > 0) {
                         reqs.rarity = 7;
                         reqs.gear = 13;
@@ -119,7 +122,7 @@ export default class Panic extends Command {
                 gear: playerUnit?.gear || 0,
                 level: playerUnit?.level || 0,
                 relic: playerUnit?.relic?.currentTier || 0,
-                side: baseChar.side,
+                side: baseChar?.side ?? "neutral",
                 gp: playerUnit?.gp || 0,
 
                 // The target bits from the journeyReqs
@@ -136,12 +139,12 @@ export default class Panic extends Command {
         }
 
         // Now that we have the units all formatted to send over to the image generator, go ahead and send it
-        let imageOut = null;
+        let imageOut: Buffer | null = null;
         try {
             imageOut = await fetch(`${env.IMAGE_SERVER_URL}/panic/`, {
                 method: "post",
                 body: JSON.stringify({
-                    header: `${player.name}'s ${targetUnit.name} requirements`,
+                    header: `${player.name}'s ${targetUnit?.name} requirements`,
                     units: reqsOut,
                 }),
                 headers: { "Content-Type": "application/json" },

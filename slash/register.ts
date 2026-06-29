@@ -42,7 +42,7 @@ export default class Register extends Command {
         let allyCode = interaction.options.getString("allycode");
         let user = interaction.options.getUser("user");
 
-        if (!isAllyCode(allyCode)) {
+        if (!allyCode || !isAllyCode(allyCode)) {
             return super.error(
                 interaction,
                 `**${allyCode}** is __NOT__ a valid ally code, please try again. Ally codes must have 9 numbers.`,
@@ -69,7 +69,7 @@ export default class Register extends Command {
 
         // Then, if not, move along
         // See if they have an entry in the DB already
-        let userConfig: UserConfig = await userReg.getUser(user.id);
+        let userConfig: UserConfig | null = await userReg.getUser(user.id);
         if (!userConfig) {
             // If they don't exist in the DB yet, stick em with a default config
             userConfig = JSON.parse(JSON.stringify(constants.defaultUserConf)) as Partial<UserConfig> as UserConfig;
@@ -92,7 +92,7 @@ export default class Register extends Command {
                 interaction,
                 codeBlock(
                     "asciiDoc",
-                    language.get("COMMAND_REGISTER_SUCCESS_DESC", playerDoc, parsedCode.toString().match(/\d{3}/g)?.join("-")),
+                    language.get("COMMAND_REGISTER_SUCCESS_DESC", playerDoc, parsedCode.toString().match(/\d{3}/g)?.join("-") ?? ""),
                 ),
                 {
                     title: language.get("BASE_REGISTRATION_SUCCESS", playerDoc.name),
@@ -121,7 +121,7 @@ export default class Register extends Command {
                     language.get(
                         "COMMAND_REGISTER_SUCCESS_DESC",
                         player,
-                        player.allyCode?.toString().match(/\d{3}/g)?.join("-"),
+                        player.allyCode?.toString().match(/\d{3}/g)?.join("-") ?? "",
                         player.stats.find((s) => s.nameKey === "STAT_GALACTIC_POWER_ACQUIRED_NAME")?.value?.toLocaleString() ?? "0",
                     ),
                 ),

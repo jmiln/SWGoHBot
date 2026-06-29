@@ -192,7 +192,7 @@ export interface RawCharacter {
         tier: number;
         equipmentSetList: string[];
     }[];
-    categoryIdList: null;
+    categoryIdList: string[];
     creationRecipeReference: string | null;
     crewList: null;
     nameKey: string | null;

@@ -36,11 +36,16 @@ export default class BotShards extends Command {
     }
 
     async run({ interaction }: CommandContext) {
-        const shardCount = interaction.client.shard.count;
+        const { shard } = interaction.client;
+        if (!shard) {
+            await interaction.reply({ content: "Error fetching shard information." });
+            return;
+        }
+        const shardCount = shard.count;
 
         try {
-            const results = await interaction.client.shard.broadcastEval((client) => [
-                client.shard.ids,
+            const results = await shard.broadcastEval((client) => [
+                client.shard?.ids,
                 client.ws.status,
                 client.ws.ping,
                 client.guilds.cache.size,

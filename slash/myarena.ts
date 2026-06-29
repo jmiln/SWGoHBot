@@ -157,7 +157,9 @@ export default class MyArena extends Command {
                 return `Missing ID for ${defId}`;
             }
             const thisLangChar = await swgohAPI.langChar(thisChar, swgohLanguage);
-            const thisZ = thisLangChar.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1));
+            const thisZ = (thisLangChar.skills ?? []).filter(
+                (s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1),
+            );
             if (thisLangChar.name && !thisLangChar.nameKey) thisLangChar.nameKey = thisLangChar.name;
             return `${"z".repeat(thisZ.length)}${thisLangChar.nameKey}`;
         }

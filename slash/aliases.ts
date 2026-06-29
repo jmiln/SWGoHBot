@@ -114,6 +114,7 @@ export default class Aliases extends Command {
             return this.handleAddAlias(interaction, language, alias, searchUnit, guildAliases);
         }
         if (action === "remove") {
+            if (!alias) return super.error(interaction, language.get("COMMAND_ALIASES_FIELDS_REQUIRED"));
             return this.handleRemoveAlias(interaction, language, alias, guildAliases);
         }
         return interaction.reply({

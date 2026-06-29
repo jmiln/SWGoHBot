@@ -241,7 +241,6 @@ export default class Need extends Command {
                 ],
             });
             return interaction.followUp({
-                content: null,
                 embeds: [
                     {
                         fields: fields.slice(Math.floor(fields.length / 2), 500),

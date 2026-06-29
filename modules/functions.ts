@@ -388,7 +388,7 @@ export function getStartOfDay(zone: string): Date {
  * Simple one to make the "Last updated ____ " footer strings and display them with Discord's timestamp format
  * Accepts Language or CommandContext
  */
-export function updatedFooterStr(updated: number, languageOrContext: Language | CommandContext | null = null): string {
+export function updatedFooterStr(updated: number | undefined, languageOrContext: Language | CommandContext | null = null): string {
     if (!updated) {
         logger.error("[functions/updatedFooterStr] Missing updated timestamp");
         return "";
@@ -852,9 +852,9 @@ export function buildAllyCodeChoices(
 }
 
 // Get the ally code of someone that's registered
-export async function getAllyCode(interaction: ChatInputCommandInteraction, user: string | string[], useInteractionId = true) {
+export async function getAllyCode(interaction: ChatInputCommandInteraction, user: string | string[] | null, useInteractionId = true) {
     const otherCodeRegex = /^-\d{1,2}$/;
-    const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : user;
+    const userStr: string = Array.isArray(user) ? user?.join(" ")?.toString().trim() || "" : (user ?? "");
 
     let userAcct: UserConfig | null = null;
     if (userStr === "me" || userStr?.match(otherCodeRegex) || (!userStr && useInteractionId)) {

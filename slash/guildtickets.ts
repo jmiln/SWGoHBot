@@ -101,9 +101,19 @@ export default class GuildTickets extends Command {
             return super.error(interaction, language.get("BASE_DATA_NOT_FOUND"));
         }
         let gt = user.guildTickets;
-        const defGT = {
-            allyCode: null,
-            channel: null,
+        const defGT: {
+            enabled: boolean;
+            channel?: string;
+            allyCode?: number;
+            sortBy: string;
+            msgId: string;
+            tickets: number;
+            updateType: string;
+            nextChallengesRefresh: string;
+            showMax: boolean;
+        } = {
+            allyCode: undefined,
+            channel: undefined,
             enabled: false,
             showMax: false,
             sortBy: "name",
@@ -190,7 +200,6 @@ export default class GuildTickets extends Command {
                 await userReg.updateUser(userID, user);
                 // The allycode branch may have deferred; route accordingly.
                 const settingsPayload = {
-                    content: null,
                     embeds: [
                         {
                             title: "Settings updated",
@@ -213,7 +222,7 @@ export default class GuildTickets extends Command {
                             `Channel:  **${gt.channel ? `<#${gt.channel}>` : "N/A"}**`,
                             `Allycode: **${gt.allyCode ? gt.allyCode : "N/A"}**`,
                             `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
-                            `SortBy:   **${toProperCase(gt.sortBy)}**`,
+                            `SortBy:   **${toProperCase(gt.sortBy ?? "")}**`,
                             `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
                             `Tickets:  **${gt.tickets || 600}**`,
                         ].join("\n"),

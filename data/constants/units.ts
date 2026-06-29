@@ -6,7 +6,7 @@ const dataDir = __dirname + "/../../data";
 
 export const abilityCosts = await readJSON(`${dataDir}/abilityCosts.json`);
 export const acronyms: Record<string, string> = await readJSON(`${dataDir}/acronyms.json`);
-export const arenaJumps = await readJSON(`${dataDir}/arenaJumps.json`);
+export const arenaJumps: Record<string, number> = await readJSON(`${dataDir}/arenaJumps.json`);
 export const charLocs: UnitLocation[] = await readJSON(`${dataDir}/charLocations.json`);
 export const characters: BotUnit[] = await readJSON(`${dataDir}/characters.json`);
 export const journeyReqs: JourneyReqs = await readJSON(`${dataDir}/journeyReqs.json`);

@@ -35,7 +35,7 @@ export default class Activites extends Command {
         let day = interaction.options.getString("day");
 
         if (!day) {
-            const weekday = getCurrentWeekday(guildSettings?.timezone || null);
+            const weekday = getCurrentWeekday(guildSettings?.timezone || undefined);
             day = `day_${weekday}`;
         }
 

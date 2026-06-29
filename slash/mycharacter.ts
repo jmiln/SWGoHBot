@@ -84,11 +84,11 @@ export default class MyCharacter extends Command {
         }
 
         // Get any matching units
-        const units = findChar(searchUnit, searchType === "ship" ? ships : characters, true);
+        const units = searchUnit ? findChar(searchUnit, searchType === "ship" ? ships : characters, true) : [];
 
         // If there are no results or too many results, let the user know
         if (units.length === 0) {
-            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchUnit));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchUnit ?? ""));
         }
         if (units.length > 1) {
             return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(units)));
@@ -139,7 +139,7 @@ export default class MyCharacter extends Command {
             hardware: [],
         };
 
-        let gearStr: string;
+        let gearStr = "";
         if (searchType === "character") {
             gearStr = ["   [0]  [3]", "[1]       [4]", "   [2]  [5]"].join("\n");
             for (const e of thisUnit.equipped) {
@@ -171,8 +171,8 @@ export default class MyCharacter extends Command {
                     a.tierStr = `Lvl ${a.tier}`;
                 }
                 try {
-                    abilities[`${a.type ? a.type.toLowerCase() : a.defId.toLowerCase()}`].push(
-                        `\`${a.tierStr} [${a.type ? a.type.charAt(0) : a.defId.charAt(0)}]\` ${a.nameKey}`,
+                    abilities[`${a.type ? a.type.toLowerCase() : (a.defId?.toLowerCase() ?? "")}`].push(
+                        `\`${a.tierStr} [${a.type ? a.type.charAt(0) : (a.defId?.charAt(0) ?? "")}]\` ${a.nameKey}`,
                     );
                 } catch (err) {
                     logger.error(`ERROR[MC]: bad ability type: ${inspect(a)} - Error: ${err instanceof Error ? err.message : String(err)}`);
@@ -315,8 +315,8 @@ export default class MyCharacter extends Command {
                     {
                         author: {
                             name: `${thisUnit.player ? thisUnit.player : player.name}'s ${unit.name}`,
-                            url: unit.url || null,
-                            icon_url: unit.avatarURL || null,
+                            url: unit.url || undefined,
+                            icon_url: unit.avatarURL || undefined,
                         },
                         description: `\`${language.get("BASE_LEVEL_SHORT")} ${thisUnit.level} | ${
                             thisUnit.rarity

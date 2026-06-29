@@ -44,7 +44,7 @@ export default class Help extends Command {
     async run({ interaction, language }: CommandContext) {
         const search = interaction.options.getString("command");
         const category = interaction.options.getString("category");
-        const isDetailed = interaction.options.getBoolean("details");
+        const isDetailed = interaction.options.getBoolean("details") ?? false;
 
         const color = Math.floor(Math.random() * 16777215);
 

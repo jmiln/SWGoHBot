@@ -27,13 +27,13 @@ export default class WhoIs extends Command {
     async run({ interaction, language }: CommandContext) {
         const PLAYER_LIMIT = 25;
         const name = interaction.options.getString("name");
-        if (name.length > 50) return super.error(interaction, language.get("COMMAND_WHOIS_NAME_TOO_LONG"));
+        if (!name || name.length > 50) return super.error(interaction, language.get("COMMAND_WHOIS_NAME_TOO_LONG"));
 
         await interaction.deferReply();
 
         const players = await swgohAPI.playerByName(name);
 
-        if (!players.length) {
+        if (!players?.length) {
             return interaction.editReply({
                 content: "No results found for that name.\nProbably a wrong name or the player is not registered with the bot.",
             });

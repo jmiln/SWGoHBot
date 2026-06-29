@@ -123,11 +123,11 @@ export default class UserConf extends Command {
 
         const userID = interaction.user.id;
 
-        let user: UserConfig = await userReg.getUser(userID);
+        let user: UserConfig | null = await userReg.getUser(userID);
         if (!user) {
             // If the user doesn't have a config available, set the default one for embeds
             // This has id, accounts, arenaAlert, and lang
-            user = structuredClone(constants.defaultUserConf) as Partial<UserConfig> as UserConfig;
+            user = structuredClone(constants.defaultUserConf) as unknown as UserConfig;
             user.id = userID;
         }
 
@@ -135,8 +135,8 @@ export default class UserConf extends Command {
             // This means the user is working with the allycode, so go from there
 
             let allyCode = interaction.options.getString("allycode");
-            if (!isAllyCode(allyCode)) {
-                return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE_AC", allyCode));
+            if (!allyCode || !isAllyCode(allyCode)) {
+                return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE_AC", allyCode ?? ""));
             }
             allyCode = allyCode.replace(/[^\d]*/g, "");
 
@@ -224,7 +224,13 @@ export default class UserConf extends Command {
                     ]);
                     return super.success(
                         interaction,
-                        language.get("COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY", prevDoc?.name, prevPrimary, newDoc?.name, parsedCode),
+                        language.get(
+                            "COMMAND_USERCONF_ALLYCODE_NEW_PRIMARY",
+                            prevDoc?.name ?? "",
+                            prevPrimary ?? "",
+                            newDoc?.name ?? "",
+                            parsedCode,
+                        ),
                     );
                 }
             }
@@ -322,11 +328,11 @@ export default class UserConf extends Command {
                                     `Report: **${uAW.report ? "ON" : "OFF"}**`,
                                     `ShowVS: **${uAW.showvs ? "ON" : "OFF"}**`,
                                     "",
-                                    `Fleet Enabled: **${uAW.arena.fleet.enabled ? "ON" : "OFF"}**`,
-                                    `Fleet Channel: **${uAW.arena.fleet.channel ? `<#${uAW.arena.fleet.channel}>` : "N/A"}**`,
+                                    `Fleet Enabled: **${uAW.arena.fleet?.enabled ? "ON" : "OFF"}**`,
+                                    `Fleet Channel: **${uAW.arena.fleet?.channel ? `<#${uAW.arena.fleet.channel}>` : "N/A"}**`,
                                     "",
-                                    `Char Enabled: **${uAW.arena.char.enabled ? "ON" : "OFF"}**`,
-                                    `Char Channel: **${uAW.arena.char.channel ? `<#${uAW.arena.char.channel}>` : "N/A"}**`,
+                                    `Char Enabled: **${uAW.arena.char?.enabled ? "ON" : "OFF"}**`,
+                                    `Char Channel: **${uAW.arena.char?.channel ? `<#${uAW.arena.char.channel}>` : "N/A"}**`,
                                 ].join("\n"),
                             });
 

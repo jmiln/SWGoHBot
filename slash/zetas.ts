@@ -99,7 +99,7 @@ export default class Zetas extends Command {
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const player: SWAPIPlayer = await swgohAPI.player(allyCode, cooldown).catch((e: Error) => {
+        const player: SWAPIPlayer | null = await swgohAPI.player(allyCode, cooldown).catch((e: Error) => {
             logger.error(`[slash/zetas] Error fetching player ${allyCode}: ${e.message}`);
             return null;
         });
@@ -124,17 +124,19 @@ export default class Zetas extends Command {
                         langedChar.nameKey = tmp[0].name;
                     }
                 }
-                for (const skill of langedChar.skills) {
+                const charName = langedChar.nameKey;
+                if (!charName) return;
+                for (const skill of langedChar.skills ?? []) {
                     if (
                         (skill.isOmicron && skill.isZeta && skill.tier >= skill.tiers - 1) ||
                         (!skill.isOmicron && skill.isZeta && skill.tier === skill.tiers)
                     ) {
                         count++;
                         // If the character is not already listed, add it
-                        if (!zetas[langedChar.nameKey]) {
-                            zetas[langedChar.nameKey] = [`\`[${skill.id.charAt(0).toUpperCase()}]\` ${skill.nameKey}`];
+                        if (!zetas[charName]) {
+                            zetas[charName] = [`\`[${skill.id.charAt(0).toUpperCase()}]\` ${skill.nameKey}`];
                         } else {
-                            zetas[langedChar.nameKey].push(`\`[${skill.id.charAt(0).toUpperCase()}]\` ${skill.nameKey}`);
+                            zetas[charName].push(`\`[${skill.id.charAt(0).toUpperCase()}]\` ${skill.nameKey}`);
                         }
                     }
                 }
@@ -146,7 +148,7 @@ export default class Zetas extends Command {
             if (character) {
                 // Grab just the one character from the roster
                 const char = player.roster.find((c) => c.defId === character.uniqueName);
-                await getCharInfo(char);
+                if (char) await getCharInfo(char);
                 const sorted = Object.keys(zetas).sort((p, c) => (p > c ? 1 : -1));
 
                 author.name = `${player.name}'s ${character.name} (${count})`;
@@ -165,7 +167,7 @@ export default class Zetas extends Command {
                 // Get all the zetas for each character
                 for (const char of player.roster) {
                     if (!char?.skills?.length) continue;
-                    const zList = char.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier);
+                    const zList = char.skills.filter((s) => s.isZeta && s.tier >= (s.zetaTier ?? Number.POSITIVE_INFINITY));
                     if (!zList.length) continue;
                     const charName = langCharNames[char.defId];
                     zetas[charName] = zList;
@@ -211,15 +213,10 @@ export default class Zetas extends Command {
                             author: author,
                             description: desc.join("\n"),
                             fields: fields,
-                            thumbnail: { url: "attachment://image.png" },
+                            ...(charImg && { thumbnail: { url: "attachment://image.png" } }),
                         },
                     ],
-                    files: [
-                        {
-                            attachment: charImg,
-                            name: "image.png",
-                        },
-                    ],
+                    ...(charImg && { files: [{ attachment: charImg, name: "image.png" }] }),
                 });
             }
             if (fields.length > 5) {
@@ -235,7 +232,6 @@ export default class Zetas extends Command {
                     ],
                 });
                 await interaction.followUp({
-                    content: null,
                     embeds: [
                         {
                             color: constants.colors.black,
@@ -264,8 +260,8 @@ export default class Zetas extends Command {
             // Display the zetas for the whole guild (Takes a while)
             await interaction.editReply({ content: language.get("COMMAND_ZETA_WAIT_GUILD") });
 
-            let guild: SWAPIGuild = null;
-            let guildGG: SWAPIPlayer[] = null;
+            let guild: SWAPIGuild | null = null;
+            let guildGG: SWAPIPlayer[] | null = null;
 
             try {
                 guild = await swgohAPI.guild(player.allyCode, cooldown);
@@ -278,7 +274,7 @@ export default class Zetas extends Command {
             }
             try {
                 guildGG = await swgohAPI.unitStats(
-                    guild.roster.map((p) => p.allyCode),
+                    guild.roster.map((p) => p.allyCode).filter((c): c is number => c != null),
                     cooldown,
                 );
             } catch (e) {
@@ -316,7 +312,7 @@ export default class Zetas extends Command {
                 // They want to see all zetas for the guild
                 for (const char of Object.keys(zetas)) {
                     const outObj = { name: "", abilities: "" };
-                    outObj.name = `**${characters.find((c) => c.uniqueName === char).name}**`;
+                    outObj.name = `**${characters.find((c) => c.uniqueName === char)?.name ?? ""}**`;
                     outObj.abilities = "";
                     for (const skill of Object.keys(zetas[char])) {
                         const s = await swgohAPI.abilities(skill, swgohLanguage, { min: true });

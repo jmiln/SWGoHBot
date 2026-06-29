@@ -48,7 +48,7 @@ export default class Character extends Command {
         const omicron = emoteStrings.omicronMat;
 
         // Find any characters that match what they're looking for
-        const chars = findChar(searchName, characters);
+        const chars = searchName ? findChar(searchName, characters) : [];
         if (!chars?.length) {
             const err = language.get("COMMAND_CHARACTER_INVALID_CHARACTER");
             if (err.indexOf("\n") > -1) {
@@ -80,7 +80,7 @@ export default class Character extends Command {
         }
         const fields: APIEmbedField[] = [];
 
-        if (char.factions.length) {
+        if (char.factions?.length) {
             fields.push({
                 name: "Factions",
                 value: char.factions.map((f) => toProperCase(f)).join(", "),
@@ -110,7 +110,7 @@ export default class Character extends Command {
             const costStr = costs.length > 0 ? costs.join(" | ") : "";
 
             let cooldownString = "";
-            if (ability.cooldown > 0) {
+            if (ability.cooldown && ability.cooldown > 0) {
                 cooldownString = language.get("COMMAND_CHARACTER_COOLDOWN", ability.cooldown);
             }
 
@@ -119,24 +119,24 @@ export default class Character extends Command {
             }
 
             const msgArr = msgArray(
-                expandSpaces(language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc)).split(" "),
+                expandSpaces(language.get("COMMAND_CHARACTER_ABILITY", type, costStr, cooldownString, ability.desc ?? "")).split(" "),
                 " ",
                 1000,
             );
 
-            fields.push(...msgArrayToFields(msgArr, ability.name));
+            fields.push(...msgArrayToFields(msgArr, ability.name ?? ""));
         }
 
         let embeds1Len = 0;
         const charImage = await getBlankUnitImage(character.uniqueName);
         const embeds = [
             {
-                color: getSideColor(character.side),
+                color: getSideColor(character.side) ?? undefined,
                 author: {
                     name: character.name,
-                    url: character?.url || null,
+                    url: character?.url || undefined,
                 },
-                thumbnail: charImage ? { url: "attachment://image.png" } : null,
+                thumbnail: charImage ? { url: "attachment://image.png" } : undefined,
                 fields: [] as APIEmbedField[],
             },
         ];
@@ -148,13 +148,13 @@ export default class Character extends Command {
             } else {
                 if (!embeds[1]) {
                     embeds.push({
-                        color: getSideColor(character.side),
+                        color: getSideColor(character.side) ?? undefined,
                         author: {
                             name: `${character.name} continued...`,
-                            url: null,
+                            url: undefined,
                         },
                         fields: [] as APIEmbedField[],
-                        thumbnail: null,
+                        thumbnail: undefined,
                     });
                 }
                 embeds[1].fields.push(thisField);
@@ -171,10 +171,10 @@ export default class Character extends Command {
                           name: "image.png",
                       },
                   ]
-                : null,
+                : undefined,
         });
         if (embeds.length > 1) {
-            await interaction.followUp({ content: null, embeds: [embeds[1]] });
+            await interaction.followUp({ embeds: [embeds[1]] });
         }
         return;
     }

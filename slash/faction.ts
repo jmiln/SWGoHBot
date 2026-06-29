@@ -90,7 +90,7 @@ export default class Faction extends Command {
         if (chars.length > 40) {
             return super.error(interaction, language.get("COMMAND_FACTION_TOO_MANY_RESULTS"));
         }
-        chars = chars.sort((a, b) => (a.nameKey.toLowerCase() > b.nameKey.toLowerCase() ? 1 : -1));
+        chars = chars.sort((a, b) => ((a.nameKey ?? "").toLowerCase() > (b.nameKey ?? "").toLowerCase() ? 1 : -1));
 
         // If they want just characters with leader abilities or zetas, filter em out
         if (wantsLeader || wantsZeta) {
@@ -98,7 +98,7 @@ export default class Faction extends Command {
                 chars.map(async (c) => {
                     const char: RawCharacter = await swgohAPI.getCharacter(c.baseId, swgohLanguage);
                     const isLeader = char.skillReferenceList.some((s) => s.skillId.startsWith("leader"));
-                    const hasZeta = char.skillReferenceList.some((s) => s.cost?.AbilityMatZeta > 0);
+                    const hasZeta = char.skillReferenceList.some((s) => (s.cost?.AbilityMatZeta ?? 0) > 0);
                     return { char, isLeader, hasZeta };
                 }),
             );
@@ -106,13 +106,13 @@ export default class Faction extends Command {
             if (wantsLeader) {
                 chars = chars.filter((c) => {
                     const char = units.find((u) => u.char.baseId === c.baseId);
-                    return char.isLeader;
+                    return char?.isLeader;
                 });
             }
             if (wantsZeta) {
                 chars = chars.filter((c) => {
                     const char = units.find((u) => u.char.baseId === c.baseId);
-                    return char.hasZeta;
+                    return char?.hasZeta;
                 });
             }
         }
@@ -144,7 +144,7 @@ export default class Faction extends Command {
                 }
             }
 
-            const gpMax = Math.max(...playerChars.map((c) => c.gp.toLocaleString().length));
+            const gpMax = Math.max(...playerChars.map((c) => (c.gp ?? 0).toLocaleString().length));
             const gearMax = Math.max(...playerChars.map((c) => c.gear.toString().length));
             const lvlMax = Math.max(...playerChars.map((c) => c.level.toString().length));
 
@@ -155,7 +155,7 @@ export default class Faction extends Command {
 
             for (const ch of playerChars) {
                 const lvlStr = ch.level.toString().padStart(lvlMax);
-                const gpStr = ch.gp.toLocaleString().padStart(gpMax);
+                const gpStr = (ch.gp ?? 0).toLocaleString().padStart(gpMax);
                 const gearStr = ch.gear.toString().padStart(gearMax);
                 const zetas = "z".repeat(
                     ch.skills.filter((s) => (s.isZeta && s.tier === s.tiers) || (s.isOmicron && s.tier >= s.tiers - 1)).length,
@@ -164,7 +164,7 @@ export default class Faction extends Command {
             }
             const msgArr = msgArray(factionChars, "\n", 1000);
             const fields: APIEmbedField[] = [];
-            let desc: string;
+            let desc: string | undefined;
             if (msgArr.length > 1) {
                 msgArr.forEach((m, ix) => {
                     fields.push({

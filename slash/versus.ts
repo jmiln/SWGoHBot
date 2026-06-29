@@ -91,10 +91,10 @@ export default class Versus extends Command {
         }
 
         // If it got this far, it has 2 users and a character that needs checking.
-        const { units: charRes } = findCharOrShip(character, characters, ships);
+        const { units: charRes } = character ? findCharOrShip(character, characters, ships) : { units: [] };
         if (!charRes.length) {
             // Didn't find any matches
-            return super.error(interaction, language.get("BASE_CHAR_NO_MATCH", character));
+            return super.error(interaction, language.get("BASE_CHAR_NO_MATCH", character ?? ""));
         }
         if (charRes.length > 1) {
             // If found more than 1 match
@@ -125,23 +125,28 @@ export default class Versus extends Command {
         if (!char1 && !char2) {
             return super.error(interaction, language.get("COMMAND_VERSUS_NOT_UNLOCKED"));
         }
+        // At least one of char1/char2 exists (guarded above); use whichever is present.
+        const activeChar = char1 ?? char2;
+        if (!activeChar) {
+            return super.error(interaction, language.get("COMMAND_VERSUS_NOT_UNLOCKED"));
+        }
 
-        const isShip = (char1 ? char1.combatType : char2.combatType) !== 1;
+        const isShip = activeChar.combatType !== 1;
 
         const genOut: Record<string, string | number>[] = [];
 
         // Stick the level in
         genOut.push({
             stat: "Lvl",
-            user1: char1?.level,
-            user2: char2?.level,
+            user1: char1?.level ?? "N/A",
+            user2: char2?.level ?? "N/A",
         });
 
         // Add in the Star level / rarity
         genOut.push({
             stat: "Rarity",
-            user1: char1?.rarity,
-            user2: char2?.rarity,
+            user1: char1?.rarity ?? "N/A",
+            user2: char2?.rarity ?? "N/A",
         });
 
         if (!isShip) {
@@ -151,20 +156,20 @@ export default class Versus extends Command {
             if (user1Zetas || user2Zetas) {
                 genOut.push({
                     stat: "Zetas",
-                    user1: user1Zetas,
-                    user2: user2Zetas,
+                    user1: user1Zetas ?? "N/A",
+                    user2: user2Zetas ?? "N/A",
                 });
             }
 
             // Add in the gear level
             genOut.push({
                 stat: "Gear",
-                user1: char1?.gear,
-                user2: char2?.gear,
+                user1: char1?.gear ?? "N/A",
+                user2: char2?.gear ?? "N/A",
             });
 
-            const user1Relic = char1?.relic?.currentTier - 2;
-            const user2Relic = char2?.relic?.currentTier - 2;
+            const user1Relic = (char1?.relic?.currentTier ?? Number.NaN) - 2;
+            const user2Relic = (char2?.relic?.currentTier ?? Number.NaN) - 2;
             if (user1Relic || user2Relic) {
                 genOut.push({
                     stat: "Relic",
@@ -178,8 +183,8 @@ export default class Versus extends Command {
             if (user1Ult || user2Ult) {
                 genOut.push({
                     stat: "Ultimate",
-                    user1: user1Ult > 0 ? "✓" : "N/A",
-                    user2: user2Ult > 0 ? "✓" : "N/A",
+                    user1: (user1Ult ?? 0) > 0 ? "✓" : "N/A",
+                    user2: (user2Ult ?? 0) > 0 ? "✓" : "N/A",
                 });
             }
         }
@@ -206,7 +211,7 @@ export default class Versus extends Command {
             });
         }
 
-        const defId = char1 ? char1.defId : char2.defId;
+        const defId = activeChar.defId;
         const nameMap = await swgohAPI.unitNames(defId, swgohLanguage);
         const charName = nameMap[defId];
         const statTable = makeTable(
@@ -219,7 +224,10 @@ export default class Versus extends Command {
             { boldHeader: false, useHeader: false },
         );
 
-        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), language);
+        const footerStr = updatedFooterStr(
+            Math.min(user1.updated ?? Number.POSITIVE_INFINITY, user2.updated ?? Number.POSITIVE_INFINITY),
+            language,
+        );
         return interaction.editReply({
             content: null,
             embeds: [

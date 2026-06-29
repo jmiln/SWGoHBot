@@ -144,9 +144,9 @@ export default class ArenaAlert extends Command {
     private computeArenaAlertChanges(
         user: UserConfig,
         input: {
-            enabledms?: string;
-            arena?: string;
-            payoutResult?: string;
+            enabledms?: string | null;
+            arena?: string | null;
+            payoutResult?: string | null;
             payoutWarning?: number | null;
         },
     ): { changelog: string[]; updatedUser: UserConfig } {

@@ -69,10 +69,14 @@ export default class TerritoryWar extends Command {
         if (problemArr.length) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
+        // Both ally codes are valid here (problemArr guard above returns otherwise); narrow for the API calls.
+        if (user1 == null || user2 == null) {
+            return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
+        }
         await interaction.editReply({ content: "> Found matching ally codes for both users, getting guilds..." });
 
         // Get the name & ally code for each player in each of the guilds
-        let guild1: SWAPIGuild = null;
+        let guild1: SWAPIGuild | null = null;
         try {
             guild1 = await swgohAPI.guild(user1, cooldown);
             if (!guild1?.roster?.length) {
@@ -83,7 +87,7 @@ export default class TerritoryWar extends Command {
             problemArr.push(`I could not find a guild for "${user1}"`);
         }
 
-        let guild2: SWAPIGuild = null;
+        let guild2: SWAPIGuild | null = null;
         try {
             guild2 = await swgohAPI.guild(user2, cooldown);
             if (!guild2?.roster?.length) {
@@ -97,28 +101,36 @@ export default class TerritoryWar extends Command {
         if (problemArr.length) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
+        // Both guilds came back with rosters (problemArr guard above returns otherwise); narrow for the loops below.
+        if (!guild1?.roster?.length || !guild2?.roster?.length) {
+            return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
+        }
         await interaction.editReply({ content: "> Found guilds for both ally codes, getting stats..." });
 
-        const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id });
+        const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id ?? "" });
 
         // Extract TW omicron skill IDs for filtering
         const twOmicronIds = omicrons.tw.map((o) => o.skillId);
 
         // Run each of the players through to get the stats of each players' roster
-        let guild1Stats: SWAPIPlayer[] = null;
+        let guild1Stats: SWAPIPlayer[] | null = null;
         const guild1AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
         try {
             guild1Stats = await swgohAPI.unitStats(
-                guild1.roster.map((p) => p.allyCode),
+                guild1.roster.map((p) => p.allyCode).filter((c): c is number => c != null),
                 cooldown,
             );
             for (const player of guild1Stats) {
                 if (!player?.roster) continue;
                 for (const unit of player.roster) {
-                    guild1AbilityStats.zetas += unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier).length;
-                    guild1AbilityStats.omicrons += unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier).length;
+                    guild1AbilityStats.zetas += unit.skills.filter(
+                        (s) => s.isZeta && s.tier >= (s.zetaTier ?? Number.POSITIVE_INFINITY),
+                    ).length;
+                    guild1AbilityStats.omicrons += unit.skills.filter(
+                        (s) => s.isOmicron && s.tier >= (s.omicronTier ?? Number.POSITIVE_INFINITY),
+                    ).length;
                     guild1AbilityStats.twOmicrons += unit.skills.filter(
-                        (s) => s.isOmicron && s.tier >= s.omicronTier && twOmicronIds.includes(s.id),
+                        (s) => s.isOmicron && s.tier >= (s.omicronTier ?? Number.POSITIVE_INFINITY) && twOmicronIds.includes(s.id),
                     ).length;
                 }
             }
@@ -127,20 +139,24 @@ export default class TerritoryWar extends Command {
             problemArr.push(`I could not get stats for ${user1str}'s guild`);
         }
 
-        let guild2Stats: SWAPIPlayer[] = null;
+        let guild2Stats: SWAPIPlayer[] | null = null;
         const guild2AbilityStats = { zetas: 0, omicrons: 0, twOmicrons: 0 };
         try {
             guild2Stats = await swgohAPI.unitStats(
-                guild2.roster.map((p) => p.allyCode),
+                guild2.roster.map((p) => p.allyCode).filter((c): c is number => c != null),
                 cooldown,
             );
             for (const player of guild2Stats) {
                 if (!player?.roster) continue;
                 for (const unit of player.roster) {
-                    guild2AbilityStats.zetas += unit.skills.filter((s) => s.isZeta && s.tier >= s.zetaTier).length;
-                    guild2AbilityStats.omicrons += unit.skills.filter((s) => s.isOmicron && s.tier >= s.omicronTier).length;
+                    guild2AbilityStats.zetas += unit.skills.filter(
+                        (s) => s.isZeta && s.tier >= (s.zetaTier ?? Number.POSITIVE_INFINITY),
+                    ).length;
+                    guild2AbilityStats.omicrons += unit.skills.filter(
+                        (s) => s.isOmicron && s.tier >= (s.omicronTier ?? Number.POSITIVE_INFINITY),
+                    ).length;
                     guild2AbilityStats.twOmicrons += unit.skills.filter(
-                        (s) => s.isOmicron && s.tier >= s.omicronTier && twOmicronIds.includes(s.id),
+                        (s) => s.isOmicron && s.tier >= (s.omicronTier ?? Number.POSITIVE_INFINITY) && twOmicronIds.includes(s.id),
                     ).length;
                 }
             }
@@ -150,6 +166,10 @@ export default class TerritoryWar extends Command {
         }
 
         if (problemArr.length) {
+            return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
+        }
+        // Both stat pulls succeeded (problemArr guard above returns otherwise); narrow for the processing below.
+        if (!guild1Stats || !guild2Stats) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
         await interaction.editReply({ content: "> Got stats for both guilds, processing now..." });
@@ -172,12 +192,12 @@ export default class TerritoryWar extends Command {
         const guild2GP = { char: 0, ship: 0, total: guild2.gp };
 
         for (const member of guild1.roster) {
-            guild1GP.char += member.gpChar;
-            guild1GP.ship += member.gpShip;
+            guild1GP.char += member.gpChar ?? 0;
+            guild1GP.ship += member.gpShip ?? 0;
         }
         for (const member of guild2.roster) {
-            guild2GP.char += member.gpChar;
-            guild2GP.ship += member.gpShip;
+            guild2GP.char += member.gpChar ?? 0;
+            guild2GP.ship += member.gpShip ?? 0;
         }
 
         // Overall basic gp stats
@@ -480,8 +500,8 @@ export default class TerritoryWar extends Command {
             return interaction.editReply({ content: null, embeds: [embed] });
         } catch (err) {
             logger.error(`[slash/territorywar] Couldn't edit the reply to send final results. Sending message instead. ${String(err)}`);
-            if (interaction.channel) {
-                return interaction.channel.send({ content: null, embeds: [embed] });
+            if (interaction.channel?.isSendable()) {
+                return interaction.channel.send({ embeds: [embed] });
             }
         }
     }

@@ -182,7 +182,7 @@ export default class MyMods extends Command {
             const sets = language.get("BASE_MODSETS_FROM_GAME");
             const stats = language.get("BASE_MODS_FROM_GAME");
 
-            for (const mod of charMods) {
+            for (const mod of charMods ?? []) {
                 slots[mod.slot] = {
                     stats: [],
                     type: sets[mod.set],
@@ -192,12 +192,12 @@ export default class MyMods extends Command {
 
                 // Add the primary in
                 slots[mod.slot].stats.push(
-                    `${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat].replace(/\+/g, "").replace(/%/g, "")}`,
+                    `${mod.primaryStat.value} ${stats[mod.primaryStat.unitStat ?? ""].replace(/\+/g, "").replace(/%/g, "")}`,
                 );
 
                 // Then all the secondaries
                 for (const s of mod.secondaryStat) {
-                    let t = stats[s.unitStat];
+                    let t = stats[s.unitStat ?? ""];
                     let statStr = `${s.value}`;
                     if (t.indexOf("%") > -1) {
                         t = t.replace(/%/g, "").trim();
@@ -220,7 +220,9 @@ export default class MyMods extends Command {
                 // If the bot has the right perms to use external emotes, go ahead and set it to use them
                 if (
                     !interaction.guild ||
-                    interaction.channel?.permissionsFor(interaction.client.user).has([PermissionsBitField.Flags.UseExternalEmojis])
+                    (interaction.channel &&
+                        "permissionsFor" in interaction.channel &&
+                        interaction.channel.permissionsFor(interaction.client.user)?.has([PermissionsBitField.Flags.UseExternalEmojis]))
                 ) {
                     const shapeIconString = `${modSlots[Number.parseInt(mod, 10) - 1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
                     shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
@@ -244,7 +246,7 @@ export default class MyMods extends Command {
                             name: `${player.name}'s ${character.name}`,
                             icon_url: character.avatarURL,
                         },
-                        color: getSideColor(character.side),
+                        color: getSideColor(character.side) ?? undefined,
                         fields: [...fields, { name: constants.zws, value: footerStr }],
                     },
                 ],
@@ -252,6 +254,7 @@ export default class MyMods extends Command {
         }
         if (subCommand === "best") {
             const statToCheck = interaction.options.getString("stat");
+            if (!statToCheck) return super.error(interaction, language.get("COMMAND_MYMODS_BAD_STAT", ""));
             const showTotal = interaction.options.getBoolean("total");
 
             // Filter the player's roster so it's just characters
@@ -338,6 +341,7 @@ export default class MyMods extends Command {
         if (subCommand === "bestmods") {
             // Check for best individual mods of a stat
             const statToCheck = interaction.options.getString("stat");
+            if (!statToCheck) return super.error(interaction, language.get("COMMAND_MYMODS_BAD_STAT", ""));
             const statIndex = statEnums.stats.indexOf(statToCheck);
 
             // Go through the player's roster and get a list of each stat per mod

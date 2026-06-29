@@ -71,11 +71,11 @@ export default class Charactergear extends Command {
             return super.error(interaction, language.get("COMMAND_CHARACTERGEAR_INVALID_LEVEL", gearLvl, MAX_GEAR));
         }
 
-        const chars = findChar(searchChar, characters);
+        const chars = searchChar ? findChar(searchChar, characters) : [];
 
         let character: BotUnit;
         if (!chars.length) {
-            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchChar ?? ""));
         }
         if (chars.length > 1) {
             return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST", charListFromSearch(chars)));
@@ -92,7 +92,7 @@ export default class Charactergear extends Command {
         if (!allyCode) {
             if (!gearLvl) {
                 const allGear = {};
-                let allGearList = [];
+                let allGearList: string[] = [];
                 for (const gTier of char.unitTierList) {
                     if (doExpand) {
                         allGearList = allGearList.concat(gTier.equipmentSetList);
@@ -166,7 +166,7 @@ export default class Charactergear extends Command {
                     }
                 }
                 const embedBase = {
-                    color: getSideColor(character.side),
+                    color: getSideColor(character.side) ?? undefined,
                     author: {
                         name: character.name,
                         url: character.url,
@@ -185,7 +185,7 @@ export default class Charactergear extends Command {
                     embeds: [{ ...embedBase, fields: fields.slice(0, half) }],
                 });
                 return await interaction.followUp({
-                    embeds: [{ color: getSideColor(character.side), fields: fields.slice(half) }],
+                    embeds: [{ color: getSideColor(character.side) ?? undefined, fields: fields.slice(half) }],
                 });
             }
         } else {

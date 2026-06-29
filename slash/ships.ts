@@ -39,7 +39,7 @@ export default class Ships extends Command {
         const searchName = interaction.options.getString("ship");
 
         // Find any characters that match that
-        const foundShips = findChar(searchName, ships, true);
+        const foundShips = searchName ? findChar(searchName, ships, true) : [];
         if (foundShips.length <= 0) {
             return super.error(
                 interaction,
@@ -76,7 +76,7 @@ export default class Ships extends Command {
 
         const fields: APIEmbedField[] = [];
 
-        if (unit.crew.length) {
+        if (unit.crew?.length) {
             const crew: string[] = [];
             for (const crewMember of unit.crew) {
                 const crewName = characters.find((c) => c.uniqueName === crewMember);
@@ -87,7 +87,7 @@ export default class Ships extends Command {
                 value: toProperCase(crew.join(", ")),
             });
         }
-        if (unit.factions.length) {
+        if (unit.factions?.length) {
             fields.push({
                 name: language.get("COMMAND_SHIPS_FACTIONS"),
                 value: toProperCase(unit.factions.join(", ")),
@@ -103,7 +103,7 @@ export default class Ships extends Command {
 
                 const msgArr = msgArray(expandSpaces(language.get("COMMAND_SHIPS_ABILITIES", a)).split(" "), " ", 1000);
 
-                fields.push(...msgArrayToFields(msgArr, ability.name));
+                fields.push(...msgArrayToFields(msgArr, ability.name ?? ""));
             }
         }
         if (!fields.length) {
@@ -116,7 +116,7 @@ export default class Ships extends Command {
         return interaction.editReply({
             embeds: [
                 {
-                    color: getSideColor(ship.side),
+                    color: getSideColor(ship.side) ?? undefined,
                     author: {
                         name: toProperCase(ship.name),
                         url: ship.url,

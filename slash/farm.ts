@@ -31,6 +31,9 @@ export default class Farm extends Command {
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         // Grab the character they're looking for
         const searchChar = interaction.options.getString("character");
+        if (!searchChar) {
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", ""));
+        }
 
         const { units: chars, isShip } = findCharOrShip(searchChar, characters, ships);
         if (!chars?.length) {
@@ -150,7 +153,7 @@ export default class Farm extends Command {
                     author: {
                         name: character.name + language.get("COMMAND_FARM_LOCATIONS"),
                     },
-                    color: getSideColor(character.side),
+                    color: getSideColor(character.side) ?? undefined,
                     description: `**${outList.map((f) => `* ${f}`).join("\n")}**`,
                 },
             ],

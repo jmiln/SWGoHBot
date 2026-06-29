@@ -171,13 +171,13 @@ export default class Shardtimes extends Command {
             // To add someone ;shardinfo <me|@mention|discordID> <timezone> [flag/emoji]
             let userID = interaction.options.getString("user");
             let flag = interaction.options.getString("flag");
-            let timezone: string | number = interaction.options.getString("timezone");
+            let timezone: string | number | null = interaction.options.getString("timezone");
             const timeTil = interaction.options.getString("time_until");
 
             let type = "id";
             if (userID === "me") {
                 userID = interaction.user.id;
-            } else if (isUserID(userID)) {
+            } else if (userID && isUserID(userID)) {
                 // If it's an ID, use it as such
                 userID = userID.replace(/[^\d]*/g, "");
             } else {
@@ -189,7 +189,10 @@ export default class Shardtimes extends Command {
             let tempZone = timezone ? timezone : null;
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if (![interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
+            if (
+                ![interaction.user.id, interaction.user.username, "me"].includes(userID ?? "") &&
+                permLevel < constants.permMap.GUILD_ADMIN
+            ) {
                 return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
@@ -206,8 +209,9 @@ export default class Shardtimes extends Command {
             }
 
             if (timezone) {
-                const match = timezone.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
-                if (isValidZone(timezone)) {
+                const tzStr = typeof timezone === "string" ? timezone : String(timezone);
+                const match = tzStr.match(/([+-])(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
+                if (isValidZone(tzStr)) {
                     // Timezone is fine & already set, continue on
                 } else if (match) {
                     // It's a UTC +/- zone  (+8:00 / -4:15)
@@ -218,6 +222,9 @@ export default class Shardtimes extends Command {
                     return super.error(interaction, language.get("BASE_INVALID_TIMEZONE"));
                 }
             } else {
+                if (!timeTil) {
+                    return super.error(interaction, language.get("COMMAND_SHARDTIMES_INVALID_TIME_TIL"));
+                }
                 zoneType = "hhmm";
                 const match = timeTil.match(/(2[0-3]|[01]{0,1}[0-9]):([0-5][0-9])/);
                 if (!match) {
@@ -289,7 +296,7 @@ export default class Shardtimes extends Command {
                 .then(() => {
                     if (tempUser) {
                         return interaction.reply({
-                            content: language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone, tempZone),
+                            content: language.get("COMMAND_SHARDTIMES_USER_MOVED", tempUser.tempZone ?? "", tempZone ?? ""),
                         });
                     }
                     return interaction.reply({ content: language.get("COMMAND_SHARDTIMES_USER_ADDED") });
@@ -305,18 +312,19 @@ export default class Shardtimes extends Command {
             let userID = interaction.options.getString("user");
             if (userID === "me") {
                 userID = interaction.user.id;
-            } else if (isUserID(userID)) {
+            } else if (userID && isUserID(userID)) {
                 // If it's an ID, use it as such
                 userID = userID.replace(/[^\d]*/g, "");
             }
+            const uid = userID ?? "";
 
             // If they're trying to add someone other than themselves, make sure they have perms for it (AdminRole/ server manager)
-            if (![interaction.user.id, interaction.user.username, "me"].includes(userID) && permLevel < constants.permMap.GUILD_ADMIN) {
+            if (![interaction.user.id, interaction.user.username, "me"].includes(uid) && permLevel < constants.permMap.GUILD_ADMIN) {
                 return super.error(interaction, language.get("COMMAND_SHARDTIMES_REM_MISSING_PERMS"));
             }
 
-            if (shardTimes.times[userID]) {
-                delete shardTimes.times[userID];
+            if (shardTimes.times[uid]) {
+                delete shardTimes.times[uid];
                 shardArr[targetIndex] = shardTimes;
                 await setGuildShardTimes({ guildId: interaction.guild.id, stOut: shardArr })
                     .then(() => {
@@ -332,7 +340,10 @@ export default class Shardtimes extends Command {
             }
         } else if (action === "copy") {
             // ;shardtimes copy destChannel
-            const destChannel: TextChannel = interaction.options.getChannel("dest_channel");
+            const destChannel = interaction.options.getChannel("dest_channel") as TextChannel | null;
+            if (!destChannel) {
+                return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_NO_DEST", ""));
+            }
 
             // Make sure the person has the correct perms to copy it (admin/ mod)
             if (permLevel < constants.permMap.GUILD_ADMIN) {
@@ -346,7 +357,8 @@ export default class Shardtimes extends Command {
             }
 
             // Check and make sure the bot has permissions to see/ send in the specified channel
-            if (!hasViewAndSend(destChannel, interaction.guild.members.me)) {
+            const botMember = interaction.guild.members.me;
+            if (!botMember || !hasViewAndSend(destChannel, botMember)) {
                 return super.error(interaction, language.get("COMMAND_SHARDTIMES_COPY_NO_PERMS", destChannel.id));
             }
 

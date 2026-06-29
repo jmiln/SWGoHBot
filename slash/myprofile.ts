@@ -29,7 +29,7 @@ export default class MyProfile extends Command {
         const ac = interaction.options.getString("allycode");
         const allyCode = await getAllyCode(interaction, ac, true);
         if (!allyCode) {
-            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE_AC", ac));
+            return super.error(interaction, language.get("BASE_INVALID_ALLY_CODE_AC", ac ?? ""));
         }
         await interaction.reply({ content: `> Please wait while I look up the profile for ${allyCode}` });
 

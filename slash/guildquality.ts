@@ -129,7 +129,7 @@ export default class GuildQuality extends Command {
         }
 
         // Grab the most recently updated player's timestamp
-        const maxUpdated = Math.max(...guild.roster.map((pl) => pl.updated));
+        const maxUpdated = Math.max(...guild.roster.map((pl) => pl.updated ?? 0));
         const footerStr = updatedFooterStr(maxUpdated, language);
         fields.push({
             name: constants.zws,
@@ -149,10 +149,10 @@ export default class GuildQuality extends Command {
             ],
         });
 
-        async function getGuildRosterQualities(guild: SWAPIGuild): Promise<PlayerQuality[]> {
+        async function getGuildRosterQualities(guild: SWAPIGuild): Promise<PlayerQuality[] | null> {
             try {
                 const guildGG = await swgohAPI.unitStats(
-                    guild.roster.map((m) => m.allyCode),
+                    guild.roster.map((m) => m.allyCode).filter((c): c is number => c != null),
                     cooldown,
                 );
                 return guildGG.map(processPlayerQuality);

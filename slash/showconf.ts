@@ -30,7 +30,7 @@ export default class Showconf extends Command {
         const guildConf = await getGuildSettings({ guildId: interaction.guild.id });
 
         const notAvailable = language.get("BASE_NA");
-        const onOff = (val: boolean) => `**${language.get(val ? "BASE_ON" : "BASE_OFF")}**`;
+        const onOff = (val?: boolean) => `**${language.get(val ? "BASE_ON" : "BASE_OFF")}**`;
         const truncate = (msg: string) => (msg.length > MESSAGE_PREVIEW_LENGTH ? `${msg.slice(0, MESSAGE_PREVIEW_LENGTH)}…` : msg);
 
         // General — roles render as mentions when stored as IDs, names stay as-is

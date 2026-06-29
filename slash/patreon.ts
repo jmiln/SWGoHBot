@@ -53,7 +53,7 @@ export default class Patreon extends Command {
     async run({ interaction, language }: CommandContext) {
         const subCom = interaction.options.getSubcommand() || "none";
         const fields: APIEmbedField[] = [];
-        let description = null;
+        let description: string | undefined;
         let ephemeral = false;
 
         switch (subCom) {
@@ -81,9 +81,8 @@ export default class Patreon extends Command {
                 break;
             }
             case "cooldowns": {
-                const currentCooldowns = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id || null);
+                const currentCooldowns = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id || undefined);
                 return interaction.reply({
-                    content: null,
                     embeds: [
                         {
                             title: `${interaction.user.displayName}'s Current Cooldowns`,
@@ -215,7 +214,7 @@ export default class Patreon extends Command {
                     fields: fields,
                 },
             ],
-            flags: ephemeral ? MessageFlags.Ephemeral : null,
+            flags: ephemeral ? MessageFlags.Ephemeral : undefined,
         });
     }
 }

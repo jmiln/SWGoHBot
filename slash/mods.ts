@@ -98,7 +98,7 @@ export default class Mods extends Command {
         const searchName = interaction.options.getString("character");
 
         // Find any characters that match that
-        const chars = findChar(searchName, Mods.characters);
+        const chars = searchName ? findChar(searchName, Mods.characters) : [];
         if (!chars?.length) {
             return super.error(interaction, language.get("COMMAND_MODS_USAGE") || "Usage is `/mods character: <characterName>`", {
                 title: language.get("COMMAND_MODS_INVALID_CHARACTER_HEADER") || "Invalid Character",
@@ -123,7 +123,7 @@ export default class Mods extends Command {
         return interaction.editReply({
             embeds: [
                 {
-                    color: getSideColor(character.side),
+                    color: getSideColor(character.side) ?? undefined,
                     author: {
                         name: character.name,
                         icon_url: character.avatarURL,
