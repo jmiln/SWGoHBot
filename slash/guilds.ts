@@ -252,7 +252,7 @@ export default class Guilds extends Command {
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        const guildConf = await getGuildSettings({ guildId: interaction.guild?.id || null });
+        const guildConf = await getGuildSettings({ guildId: interaction.guild?.id || undefined });
 
         // Take care of the tickets now if needed, since it doesn't need bits ahead
         if (subCommand === "tickets") {
@@ -351,7 +351,10 @@ export default class Guilds extends Command {
                     content: language.get("COMMAND_GUILDSEARCH_INVALID_SORT", gears.join(",")) as string,
                 });
             }
-            const gRoster = guild.roster.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1)).map((m) => m.allyCode);
+            const gRoster = guild.roster
+                .sort((a, b) => ((a.name ?? "").toLowerCase() > (b.name ?? "").toLowerCase() ? 1 : -1))
+                .map((m) => m.allyCode)
+                .filter((c): c is number => c != null);
 
             if (!gRoster.length) {
                 return interaction.editReply({ content: "I can't find any players in the requested guild." });
@@ -439,7 +442,7 @@ export default class Guilds extends Command {
             let guildGG: SWAPIPlayer[];
             try {
                 guildGG = await swgohAPI.unitStats(
-                    guild.roster.map((m) => m.allyCode),
+                    guild.roster.map((m) => m.allyCode).filter((c): c is number => c != null),
                     cooldown,
                 );
             } catch (err) {
@@ -516,10 +519,7 @@ export default class Guilds extends Command {
             );
             const header = [expandSpaces("`     ┏╸ Spd ┓  Off ┓`")];
 
-            const fields = msgArray(header.concat(table), "\n", 700).map((m) => {
-                if (!m?.length) return null;
-                return { name: "-", value: m };
-            });
+            const fields = msgArray(header.concat(table), "\n", 700).flatMap((m) => (m?.length ? [{ name: "-", value: m }] : []));
 
             const embed = {
                 author: {
@@ -532,9 +532,9 @@ export default class Guilds extends Command {
             } catch (err) {
                 const errorMessage = err instanceof Error ? err.message : String(err);
                 logger.error(`ERROR(Guilds/guildMods) sending embed: ${errorMessage}`);
-                if (interaction.channel) {
+                if (interaction.channel?.isSendable()) {
                     try {
-                        return interaction.channel.send({ content: null, embeds: [embed] });
+                        return interaction.channel.send({ embeds: [embed] });
                     } catch (channelErr) {
                         const channelError = channelErr instanceof Error ? channelErr.message : String(channelErr);
                         logger.error(`ERROR(Guilds/guildMods) Failed to send to channel: ${channelError}`);
@@ -571,7 +571,7 @@ export default class Guilds extends Command {
                 );
             }
             await interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
-            const gRosterCodes = guild.roster.map((m) => m.allyCode);
+            const gRosterCodes = guild.roster.map((m) => m.allyCode).filter((c): c is number => c != null);
 
             // Use the ally codes to get all the other info for the guild
             let guildMembers: SWAPIPlayer[];
@@ -618,9 +618,9 @@ export default class Guilds extends Command {
                     "r10+": 0,
                 };
                 for (const char of member.roster) {
-                    if (char.gear === 13 && char?.relic?.currentTier - 2 >= 0) {
+                    if (char.gear === 13 && (char?.relic?.currentTier ?? Number.NaN) - 2 >= 0) {
                         // If it's a g13 with a relic, check for the relic
-                        const rel = char.relic.currentTier - 2;
+                        const rel = (char.relic?.currentTier ?? 0) - 2;
                         if (rel <= 4) {
                             memberRoster["r0-4"] += 1;
                         } else if (rel <= 8) {
@@ -639,7 +639,7 @@ export default class Guilds extends Command {
             }
 
             // See what the top 4 tiers of gear/ relic are available for these members
-            let firstViableTier = null;
+            let firstViableTier: string | null = null;
             if (members.length === 0) {
                 return interaction.editReply({
                     content: null,
@@ -744,7 +744,7 @@ export default class Guilds extends Command {
 
             const out: string[] = [];
             const fullOut: string[] = [];
-            let roster = null;
+            let roster: typeof rawGuild.roster | null = null;
             if (sortBy === "tickets") {
                 roster = rawGuild.roster.sort((a, b) =>
                     Number.parseInt(a.memberContribution[2]?.currentValue, 10) > Number.parseInt(b.memberContribution[2]?.currentValue, 10)
@@ -756,7 +756,7 @@ export default class Guilds extends Command {
             }
 
             const dayMS = 86400000;
-            let timeUntilReset = null;
+            let timeUntilReset: string | null = null;
             const chaTime = Number.parseInt(rawGuild.nextChallengesRefresh, 10) * 1000;
             const nowTime = Date.now();
             if (chaTime > nowTime) {
@@ -854,8 +854,8 @@ export default class Guilds extends Command {
             let guildCharGP = 0;
             let guildShipGP = 0;
             for (const mem of guild.roster) {
-                guildCharGP += mem.gpChar;
-                guildShipGP += mem.gpShip;
+                guildCharGP += mem.gpChar ?? 0;
+                guildShipGP += mem.gpShip ?? 0;
             }
             const stats = language.get(
                 "COMMAND_GUILDS_STAT_STRINGS",
@@ -898,7 +898,7 @@ export default class Guilds extends Command {
                             name: guild.name,
                         },
                         description: desc.length ? desc : "",
-                        fields: fields.length ? fields : null,
+                        fields: fields.length ? fields : undefined,
                     },
                 ],
             });
@@ -917,7 +917,7 @@ export default class Guilds extends Command {
                 );
             }
             await interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
-            const gRosterACs = guild.roster.map((m) => m.allyCode);
+            const gRosterACs = guild.roster.map((m) => m.allyCode).filter((c): c is number => c != null);
 
             // Use the ally codes to get all the other info for the guild
             let guildMembers: SWAPIPlayer[];
@@ -957,12 +957,12 @@ export default class Guilds extends Command {
                 for (const unit of charList) {
                     const thisChar = member.roster.find((ch) => ch.defId === unit.uniqueName);
                     if (!thisChar) continue;
-                    charTotal += thisChar.gp;
+                    charTotal += thisChar.gp ?? 0;
                 }
                 for (const unit of shipList) {
                     const thisShip = member.roster.find((ch) => ch.defId === unit.uniqueName);
                     if (!thisShip) continue;
-                    shipTotal += thisShip.gp;
+                    shipTotal += thisShip.gp ?? 0;
                 }
                 if (member.inGuild) {
                     users.push(
@@ -1024,14 +1024,14 @@ export default class Guilds extends Command {
             let sortedGuild: SWAPIGuildMember[];
             if (showAC || (sortBy && ["name", "rank"].includes(sortBy))) {
                 // Sort em by name
-                sortedGuild = guild.roster.sort((p, c) => (p.name.toLowerCase() > c.name.toLowerCase() ? 1 : -1));
+                sortedGuild = guild.roster.sort((p, c) => ((p.name ?? "").toLowerCase() > (c.name ?? "").toLowerCase() ? 1 : -1));
                 if (sortBy === "rank") {
                     // Sort em by rank
                     sortedGuild = sortedGuild.sort((p, c) => (p.guildMemberLevel > c.guildMemberLevel ? -1 : 1));
                 }
             } else {
                 // Sort em by GP
-                sortedGuild = guild.roster.sort((p, c) => c.gp - p.gp);
+                sortedGuild = guild.roster.sort((p, c) => (c.gp ?? 0) - (p.gp ?? 0));
             }
 
             let badCount = 0;
@@ -1050,7 +1050,7 @@ export default class Guilds extends Command {
             }
 
             // Bulk-fetch all registered users for every ally code in one query
-            const validAllyCodes = sortedGuild.filter((p) => p.allyCode).map((p) => p.allyCode);
+            const validAllyCodes = sortedGuild.map((p) => p.allyCode).filter((c): c is number => c != null);
             const allyCodeUserMap = await userReg.getUsersByAllyCodes(validAllyCodes);
 
             // Collect all Discord IDs that appear in the results
@@ -1088,7 +1088,7 @@ export default class Guilds extends Command {
 
             const users: string[] = [];
             // Format the strings for each member
-            const maxLen = sortedGuild.length > 0 ? Math.max(...sortedGuild.map((mem) => mem.gp.toLocaleString().length)) : 0;
+            const maxLen = sortedGuild.length > 0 ? Math.max(...sortedGuild.map((mem) => (mem.gp ?? 0).toLocaleString().length)) : 0;
             for (const p of sortedGuild) {
                 // The name, bold if they're in the server with the bot
                 const nameStr = p.inGuild ? `**${p.name}**` : p.name;
@@ -1097,7 +1097,9 @@ export default class Guilds extends Command {
                 const regStr = showReg && p.dID ? `(<@!${p.dID}>)` : "";
 
                 // The ally code or the GP string
-                const numStr = showAC ? p.allyCode : `${" ".repeat(maxLen - p.gp.toLocaleString().length) + p.gp.toLocaleString()} GP`;
+                const numStr = showAC
+                    ? p.allyCode
+                    : `${" ".repeat(maxLen - (p.gp ?? 0).toLocaleString().length) + (p.gp ?? 0).toLocaleString()} GP`;
 
                 // Finally, the output string with everything together
                 users.push(`\`[${numStr}]\` - \`[${p.memberLvl ?? "?"}]\` ${nameStr} ${regStr}`);
@@ -1146,7 +1148,7 @@ export default class Guilds extends Command {
         async function twSummary() {
             const fields: APIEmbedField[] = [];
             const doExpand = interaction.options.getBoolean("expand");
-            const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id });
+            const unitChecklist = await getFullTWList({ guildId: interaction.guild?.id ?? "" });
             if (!guild?.roster?.length) {
                 return interaction.editReply({
                     content: null,
@@ -1160,7 +1162,7 @@ export default class Guilds extends Command {
                 });
             }
             await interaction.editReply({ content: `Found guild \`${guild.name}\`!` });
-            const gRosterACs = guild.roster.map((m) => m.allyCode);
+            const gRosterACs = guild.roster.map((m) => m.allyCode).filter((c): c is number => c != null);
 
             let guildMembers: SWAPIPlayer[];
             try {
@@ -1188,7 +1190,7 @@ export default class Guilds extends Command {
             // const shipArenaAVG = (shipArenaMembers.reduce((acc, curr) => acc + curr.arena.ship.rank, 0) / shipArenaMembers.length);
 
             const membersGP = guild.roster.filter((m) => m?.gp);
-            const avgMemberGP = membersGP.reduce((acc, curr) => acc + curr.gp, 0) / membersGP.length;
+            const avgMemberGP = membersGP.reduce((acc, curr) => acc + (curr.gp ?? 0), 0) / membersGP.length;
 
             let zetaCount = 0;
             for (const member of guildMembers) {
@@ -1317,7 +1319,9 @@ export default class Guilds extends Command {
             for (let ix = MAX_RELIC; ix >= 1; ix--) {
                 let relicCount = 0;
                 for (const member of guildMembers) {
-                    relicCount += member.roster.filter((c) => c && c.combatType === 1 && c.relic?.currentTier - 2 === ix).length;
+                    relicCount += member.roster.filter(
+                        (c) => c && c.combatType === 1 && (c.relic?.currentTier ?? Number.NaN) - 2 === ix,
+                    ).length;
                 }
                 if (relicCount > 0) {
                     relicLvls[ix] = relicCount;
@@ -1357,7 +1361,7 @@ export default class Guilds extends Command {
                 }),
             );
 
-            const footerStr = updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated)), language);
+            const footerStr = updatedFooterStr(Math.min(...guildMembers.map((m) => m.updated ?? Number.POSITIVE_INFINITY)), language);
             fields.push({
                 name: constants.zws,
                 value: footerStr,
@@ -1373,9 +1377,9 @@ export default class Guilds extends Command {
             } catch (err) {
                 const errorMessage = err instanceof Error ? err.message : String(err);
                 logger.error(`ERROR(Guilds/twSummary) sending embed: ${errorMessage}`);
-                if (interaction.channel) {
+                if (interaction.channel?.isSendable()) {
                     try {
-                        return interaction.channel.send({ content: null, embeds: [embed] });
+                        return interaction.channel.send({ embeds: [embed] });
                     } catch (channelErr) {
                         const channelError = channelErr instanceof Error ? channelErr.message : String(channelErr);
                         logger.error(`ERROR(Guilds/twSummary) Failed to send to channel: ${channelError}`);

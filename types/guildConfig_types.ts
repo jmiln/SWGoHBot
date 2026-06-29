@@ -75,7 +75,7 @@ export interface GuildConfigEvent {
     name: string;
     eventDT: number;
     message: string;
-    channel: string;
+    channel?: string | null;
     countdown: boolean;
     repeat?: {
         repeatDay: number;
@@ -88,7 +88,7 @@ export interface GuildConfigEvent {
     day?: string;
     time?: string;
     repeatStr?: string; // The string that gets parsed into repeat{day/hr/min}
-    repeatDay: string; // The comma separated list of days that gets parsed into repeatDays
+    repeatDay?: string; // The comma separated list of days that gets parsed into repeatDays
     channelID?: string; // Deprecated field
     guildId?: string; // Used in the getAllEvents function to specify which is from where
 

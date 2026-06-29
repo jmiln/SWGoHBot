@@ -5,7 +5,7 @@ import {
     type Client,
     type Embed,
     type Guild,
-    type GuildChannel,
+    type GuildBasedChannel,
     GuildMember,
     GuildMemberRoleManager,
     PermissionsBitField,
@@ -623,7 +623,7 @@ export function chunkArray<T>(inArray: Array<T>, chunkSize: number): Array<Array
 }
 
 // Returns a gear string (9+4 or 13r5), etc
-export function getGearStr(charIn: SWAPIUnit, preStr = ""): string {
+export function getGearStr(charIn: SWAPIUnit | undefined, preStr = ""): string {
     // If the character is not unlocked
     if (!charIn?.gear) return "N/A";
 
@@ -696,7 +696,7 @@ export function trimFloat(num: number, trimTo = 1): string {
 }
 
 // Function to see if we have permission to see/ send messages in a given channel
-export async function hasViewAndSend(channel: GuildChannel, user: User | GuildMember): Promise<boolean> {
+export async function hasViewAndSend(channel: GuildBasedChannel, user: User | GuildMember): Promise<boolean> {
     return (
         (channel?.guild &&
             channel.permissionsFor(user)?.has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages])) ||

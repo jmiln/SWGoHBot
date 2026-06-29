@@ -206,33 +206,32 @@ export default class GuildSearch extends Command {
         await interaction.reply({ content: language.get("COMMAND_GUILDSEARCH_PLEASE_WAIT") });
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
 
-        let unitList: BotUnit[] = null;
-        let foundUnit = null;
+        let unitList: BotUnit[] | null = null;
         let isShip = false;
-        let searchStr = null;
+        let searchStr: string | null = null;
         if (searchType === "character") {
             // Get any matches for the character
             searchStr = interaction.options.getString("character");
-            unitList = findChar(searchStr, characters);
+            unitList = findChar(searchStr ?? "", characters);
         } else {
             // Get any matches for the ship
             searchStr = interaction.options.getString("ship");
-            unitList = findChar(searchStr, ships, true);
+            unitList = findChar(searchStr ?? "", ships, true);
             isShip = true;
         }
 
         if (!unitList?.length) {
             // No character found, so error
-            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchStr));
+            return super.error(interaction, language.get("BASE_SWGOH_NO_CHAR_FOUND", searchStr ?? ""));
         }
         if (unitList.length > 1) {
             return super.error(interaction, language.get("BASE_SWGOH_CHAR_LIST_ASCIIDOC", charListFromSearch(unitList)));
         }
 
         // If there's just one match, use it
-        foundUnit = unitList[0];
+        const foundUnit = unitList[0];
 
-        let guild: SWAPIGuild = null;
+        let guild: SWAPIGuild | null = null;
         try {
             guild = await swgohAPI.guild(allyCode, cooldown);
         } catch (e) {
@@ -249,7 +248,7 @@ export default class GuildSearch extends Command {
         }
         await interaction.editReply({ content: `Found guild \`${guild.name}\`!\n*Processing...*` });
 
-        const guildAllycodes = guild.roster.map((p) => p.allyCode);
+        const guildAllycodes = guild.roster.map((p) => p.allyCode).filter((c): c is number => c != null);
 
         let guildChar: SWAPIUnit[];
         try {
@@ -285,8 +284,8 @@ export default class GuildSearch extends Command {
             }
 
             for (const member of sortedMembers) {
-                const stats = {
-                    Protection: null,
+                const stats: Record<string, string | number> = {
+                    Protection: "N/A",
                 };
                 if (!member.stats?.final) {
                     continue;
@@ -300,7 +299,7 @@ export default class GuildSearch extends Command {
                 }
                 outArr.push({
                     ...stats,
-                    player: member.player,
+                    player: member.player ?? "",
                     gp: member.gp ? member.gp.toLocaleString() : 0,
                     gear: member.gear,
                 });
@@ -343,7 +342,7 @@ export default class GuildSearch extends Command {
                     outMsgArr.forEach((m, ix) => {
                         const name =
                             ix === 0
-                                ? language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse)
+                                ? language.get("COMMAND_GUILDSEARCH_SORTED_BY", foundUnit.name, stat, doReverse ?? false)
                                 : language.get("BASE_CONT_STRING");
                         fields.push({
                             name: name,
@@ -369,9 +368,9 @@ export default class GuildSearch extends Command {
                 await interaction.editReply({ content: null, embeds: [embed] });
             } catch (err) {
                 logger.error(`ERROR(GuildSearch) ${err}`);
-                if (interaction.channel) {
+                if (interaction.channel?.isSendable()) {
                     try {
-                        await interaction.channel.send({ content: null, embeds: [embed] });
+                        await interaction.channel.send({ embeds: [embed] });
                     } catch (channelErr) {
                         logger.error(`ERROR(GuildSearch) Failed to send to channel: ${channelErr}`);
                     }
@@ -390,11 +389,11 @@ export default class GuildSearch extends Command {
         if (
             !guildChar?.length ||
             (starLvl > 0 && !guildChar.filter((c) => c.rarity >= starLvl).length) ||
-            (doZeta && !guildChar.filter((c) => c.zetas.length > 0).length)
+            (doZeta && !guildChar.filter((c) => (c.zetas?.length ?? 0) > 0).length)
         ) {
             let desc = "";
             // Go through, and if there's an error, spit it out
-            if (doZeta && !guildChar.filter((c) => c.zetas.length > 0).length) {
+            if (doZeta && !guildChar.filter((c) => (c.zetas?.length ?? 0) > 0).length) {
                 desc = language.get("COMMAND_GUILDSEARCH_NO_ZETAS");
             } else if (isShip && starLvl > 0) {
                 desc = language.get("COMMAND_GUILDSEARCH_NO_SHIP_STAR", starLvl);
@@ -441,10 +440,10 @@ export default class GuildSearch extends Command {
         let sortedGuild: SWAPIUnit[] = [];
         if (sortType === "name") {
             // Sort by name
-            sortedGuild = guildChar.sort((p, c) => (p.player.toLowerCase() > c.player.toLowerCase() ? 1 : -1));
+            sortedGuild = guildChar.sort((p, c) => ((p.player ?? "").toLowerCase() > (c.player ?? "").toLowerCase() ? 1 : -1));
         } else if (sortType === "gp") {
             // Sort by the GP
-            sortedGuild = guildChar.sort((p, c) => (p.gp > c.gp ? 1 : -1));
+            sortedGuild = guildChar.sort((p, c) => ((p.gp ?? 0) > (c.gp ?? 0) ? 1 : -1));
         } else if (sortType === "gear") {
             // Sort by the gear
             sortedGuild = guildChar.sort((p, c) => {
@@ -467,7 +466,7 @@ export default class GuildSearch extends Command {
         }
 
         const charOut: Record<string, string[]> = {};
-        const hasRelic = sortedGuild.filter((mem) => mem?.relic?.currentTier > 2).length;
+        const hasRelic = sortedGuild.filter((mem) => (mem?.relic?.currentTier ?? 0) > 2).length;
         const maxGP = Math.max(...sortedGuild.map((ch) => ch.gp?.toLocaleString().length || 0));
         for (const member of sortedGuild) {
             // If we want just zeta, just omicron, or both, and the player doesn't have a viable character, move along
@@ -484,7 +483,7 @@ export default class GuildSearch extends Command {
                 unitStr += member.purchasedAbilityId?.length ? "u" : " ";
             }
             zetas.forEach((zeta, ix) => {
-                const pZeta = member.zetas.find((pz) => pz.id === zeta);
+                const pZeta = member.zetas?.find((pz) => pz.id === zeta);
                 if (!pZeta) {
                     unitStr += " ";
                 } else {
@@ -492,7 +491,7 @@ export default class GuildSearch extends Command {
                 }
             });
             omicrons.forEach((omicron, ix) => {
-                const pOmicron = member.omicrons.find((po) => po.id === omicron);
+                const pOmicron = member.omicrons?.find((po) => po.id === omicron);
                 if (!pOmicron) {
                     unitStr += " ";
                 } else {
@@ -511,7 +510,7 @@ export default class GuildSearch extends Command {
                     uStr = `**\`[${gearStr} | ${gpStr.padStart(maxGP)}${unitStr.length > unitStrLen ? unitStr : ""}]\`** ${member.player}`;
                 }
             } else {
-                uStr = member.player;
+                uStr = member.player ?? "";
             }
 
             uStr = expandSpaces(uStr);
@@ -524,7 +523,7 @@ export default class GuildSearch extends Command {
         }
 
         const fields: APIEmbedField[] = [];
-        let outArr = [];
+        let outArr: string[] = [];
 
         if (doReverse) {
             outArr = Object.keys(charOut).reverse();
@@ -533,7 +532,7 @@ export default class GuildSearch extends Command {
         }
 
         for (const star of outArr) {
-            if (star >= starLvl) {
+            if (Number.parseInt(star, 10) >= starLvl) {
                 const msgArr = msgArray(charOut[star], "\n", 700);
                 for (const [ix, msg] of msgArr.entries()) {
                     const name =
@@ -564,9 +563,9 @@ export default class GuildSearch extends Command {
             }
         }
 
-        const maxUpdated = Math.max(...guildChar.map((ch) => ch.updated));
+        const maxUpdated = Math.max(...guildChar.map((ch) => ch.updated ?? 0));
         const footerStr = updatedFooterStr(maxUpdated, language);
-        let description = null;
+        let description: string | undefined;
         if (doZeta || doOmicron) {
             if (doZeta && doOmicron) {
                 description = "Showing characters with both Zeta(s) & Omicron(s)";

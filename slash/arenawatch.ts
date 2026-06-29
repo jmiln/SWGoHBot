@@ -3,7 +3,6 @@ import {
     ApplicationCommandOptionType,
     ChannelType,
     type ChatInputCommandInteraction,
-    type Embed,
     type GuildChannel,
     InteractionContextType,
 } from "discord.js";
@@ -20,30 +19,40 @@ import type { CommandContext, UserConfig } from "../types/types.ts";
 
 interface InteractionOptions {
     subCommand: string;
-    subCommandGroup: string;
+    subCommandGroup: string | null;
 
-    allyCode: string;
-    allyCodes: string;
-    arena: string;
-    arenaType: string;
+    allyCode: string | null;
+    allyCodes: string | null;
+    arena: string | null;
+    arenaType: string | null;
     channel: GuildChannel;
     enabled: boolean | null;
-    mark: string;
-    mins: number;
-    new_allyCode: string;
-    old_allyCode: string;
+    mark: string | null;
+    mins: number | null;
+    new_allyCode: string | null;
+    old_allyCode: string | null;
     remove_mark: boolean | null;
-    view_by: string;
+    view_by: string | null;
 
-    channelId: string;
+    channelId: string | null;
     codeCap: number;
 }
 interface AwChangeRes {
     outLog: string;
-    error: string;
-    errorKey: string[];
-    embed: Embed[];
+    error: string | null;
+    errorKey: string[] | null;
+    embed: { title: string; description: string; fields?: APIEmbedField[] } | null;
 }
+
+// fillAWSkeleton guarantees both arenas and useMarksInLog exist, so callers can use them
+// without optional checks (the stored type leaves them optional).
+type FilledAW = Omit<UserConfig["arenaWatch"], "arena" | "useMarksInLog"> & {
+    arena: {
+        fleet: { channel: string | null; enabled: boolean };
+        char: { channel: string | null; enabled: boolean };
+    };
+    useMarksInLog: boolean;
+};
 
 export default class ArenaWatch extends Command {
     static readonly metadata = {
@@ -388,7 +397,7 @@ export default class ArenaWatch extends Command {
             return super.error(interaction, language.get("BASE_MISSING_LOG_CHANNEL_PERM"));
         }
 
-        const user: UserConfig = await userReg.getUser(interaction.user.id);
+        const user: UserConfig | null = await userReg.getUser(interaction.user.id);
         if (!user) return super.error(interaction, language.get("BASE_DATA_NOT_FOUND"));
 
         const pat = await patreonFuncs.getPatronUser(interaction.user.id);
@@ -463,9 +472,9 @@ export async function processAWChanges({
 }: {
     target: string;
     interactionOptions: InteractionOptions;
-    aw: UserConfig["arenaWatch"];
-}): Promise<{ result: AwChangeRes; aw: UserConfig["arenaWatch"] }> {
-    const result = {
+    aw: FilledAW;
+}): Promise<{ result: AwChangeRes; aw: FilledAW }> {
+    const result: AwChangeRes = {
         outLog: "", // Normal progress, just results of changing values
         embed: null, // Premade embed for the view
         error: null, // Send back an error (to be lang'd eventually)
@@ -477,12 +486,12 @@ export async function processAWChanges({
             // ;aw payout enable char | fleet | both    (Toggles per arena)
             // ;aw payout channel #channelName char     (Sets it to a channel)
             // ;aw payout mark <allyCode>   (Sets it to mark a player with an emote)
-            const targetArena = interactionOptions.arena;
+            const targetArena = interactionOptions.arena ?? "";
 
             // Get the which part of the payout we're working with
             const setting = interactionOptions.subCommand;
             if (setting === "arena") {
-                const arenaType = interactionOptions.arenaType;
+                const arenaType = interactionOptions.arenaType ?? "";
                 aw.payout.char.enabled = ["char", "both"].includes(arenaType);
                 aw.payout.fleet.enabled = ["fleet", "both"].includes(arenaType);
                 result.outLog =
@@ -517,7 +526,7 @@ export async function processAWChanges({
                     break;
                 }
 
-                const player = aw.allyCodes.find((p) => p.allyCode.toString() === ac.toString());
+                const player = aw.allyCodes.find((p) => p.allyCode.toString() === ac?.toString());
                 if (!player) {
                     result.error = "Sorry, but you can only apply a mark to an already present player/ ally code";
                     break;
@@ -529,14 +538,14 @@ export async function processAWChanges({
 
                 // If they're trying to use a custom emote, make sure it's available for the bot to use
                 const emojiRegex = /(:[^:\s]+:|<:[^:\s]+:[0-9]+>|<a:[^:\s]+:[0-9]+>)/;
-                let cmdOut = null;
-                if (emojiRegex.test(mark)) {
+                let cmdOut: string | null = null;
+                if (mark && emojiRegex.test(mark)) {
                     cmdOut =
                         "If you are using an external emote from outside this server, it will not work if this bot does not also have access to the server that it's from";
                 }
                 const resArr: string[] = [];
                 aw.allyCodes = aw.allyCodes.map((p) => {
-                    if (p.allyCode.toString() === ac.toString()) {
+                    if (p.allyCode.toString() === ac?.toString()) {
                         p.mark = remove_mark ? null : mark;
                     }
                     resArr.push(`${p.allyCode}: '${p.mark ?? ""}'`);
@@ -549,7 +558,7 @@ export async function processAWChanges({
         case "arena_log": {
             const setting = interactionOptions.subCommand;
             if (setting === "arena") {
-                const arenaType = interactionOptions.arenaType;
+                const arenaType = interactionOptions.arenaType ?? "";
                 aw.arena.char.enabled = ["char", "both"].includes(arenaType);
                 aw.arena.fleet.enabled = ["fleet", "both"].includes(arenaType);
                 result.outLog =
@@ -557,7 +566,7 @@ export async function processAWChanges({
                         ? "ArenaWatch arena log has been disabled."
                         : `ArenaWatch arena log for ${arenaType === "both" ? "both arenas" : arenaType} has been enabled.`;
             } else if (setting === "channel") {
-                const targetArena = interactionOptions.arena;
+                const targetArena = interactionOptions.arena ?? "";
                 if (!interactionOptions.channelId) {
                     result.error = "Invalid channel, please make sure you're choosing a text channel in this server.";
                     break;
@@ -569,9 +578,9 @@ export async function processAWChanges({
                 // ;aw warn 123123123 <# of min> <none|both|char|fleet>
                 const code = interactionOptions.allyCode;
                 const mins = interactionOptions.mins;
-                const arena = interactionOptions.arena;
+                const arena = interactionOptions.arena ?? "";
 
-                if (!isAllyCode(code)) {
+                if (!code || !isAllyCode(code)) {
                     result.error = `Invalid ally code (${code})`;
                     break;
                 }
@@ -586,14 +595,14 @@ export async function processAWChanges({
 
                 if (typeof exists.allyCode === "string") exists.allyCode = Number.parseInt(exists.allyCode, 10);
                 exists.warn = {
-                    min: mins && mins > 0 ? mins : null,
-                    arena: arena === "none" ? null : arena,
+                    min: mins && mins > 0 ? mins : undefined,
+                    arena: arena === "none" ? undefined : arena,
                 };
                 aw.allyCodes.push(exists);
 
                 result.outLog = `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`;
             } else if (setting === "report") {
-                const arena = interactionOptions.arena;
+                const arena = interactionOptions.arena ?? "";
                 if (aw.report === arena.toLowerCase()) {
                     result.outLog = `Your report setting was already set to ${arena}`;
                     break;
@@ -602,7 +611,7 @@ export async function processAWChanges({
                 result.outLog = `Your report setting has been set to ${arena}`;
             } else if (setting === "showvs") {
                 // Enable or disable showing when one person hits another
-                const isEnabled = interactionOptions.enabled;
+                const isEnabled = interactionOptions.enabled ?? false;
                 if (isEnabled === aw.showvs) {
                     result.outLog = `Your showvs setting was already set to ${isEnabled.toString()}`;
                     break;
@@ -612,9 +621,9 @@ export async function processAWChanges({
             } else if (setting === "result") {
                 // ;aw result 123123123 <none|char|fleet|both>
                 const code = interactionOptions.allyCode;
-                const arena = interactionOptions.arena;
+                const arena = interactionOptions.arena ?? "";
 
-                if (!isAllyCode(code)) {
+                if (!code || !isAllyCode(code)) {
                     result.error = `Invalid ally code (${code})`;
                     break;
                 }
@@ -629,13 +638,13 @@ export async function processAWChanges({
                 aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(code, 10));
 
                 // Update the user
-                exists.result = arena === "none" ? null : arena;
+                exists.result = arena === "none" ? undefined : arena;
 
                 // Put the user back in
                 aw.allyCodes.push(exists);
                 result.outLog = `Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`;
             } else if (setting === "use_marks_in_log") {
-                const useMarksInLog = interactionOptions.enabled;
+                const useMarksInLog = interactionOptions.enabled ?? false;
                 if (aw.useMarksInLog === useMarksInLog) {
                     result.outLog = `UseMarksInLog is already set to ${aw.useMarksInLog.toString()}`;
                     break;
@@ -653,7 +662,7 @@ export async function processAWChanges({
             // Logic for add/ remove
             if (action === "add") {
                 // List of ally codes to add or remove
-                const codesIn = interactionOptions.allyCodes
+                const codesIn = (interactionOptions.allyCodes ?? "")
                     .split(",") // Split em at the commas if there are more than one
                     .map((a) => a?.trim()) // Trim off any spaces in case
                     .filter(Boolean);
@@ -672,10 +681,10 @@ export async function processAWChanges({
                     );
                 }
 
-                const codes: { code: number; mention: string }[] = [];
+                const codes: { code: number; mention: string | null }[] = [];
                 for (const code of codesIn) {
                     let ac: number;
-                    let mention: string;
+                    let mention: string | null;
                     try {
                         [ac, mention] = getAcMention(code);
                         if (!isAllyCode(ac)) {
@@ -728,8 +737,8 @@ export async function processAWChanges({
                     await arenaPlayerRegistry.upsertPlayer({
                         allyCode: c.code,
                         name: player.name,
-                        lastCharRank: player.arena.char?.rank ?? undefined,
-                        lastShipRank: player.arena.ship?.rank ?? undefined,
+                        lastCharRank: player.arena?.char?.rank ?? undefined,
+                        lastShipRank: player.arena?.ship?.rank ?? undefined,
                     });
                     outLog.push(`${c.code} added!`);
                 }
@@ -739,14 +748,14 @@ export async function processAWChanges({
                 const oldCode = interactionOptions.old_allyCode;
                 const newCode = interactionOptions.new_allyCode;
 
-                if (!isAllyCode(oldCode)) {
+                if (!oldCode || !isAllyCode(oldCode)) {
                     result.error = `${oldCode} is not a valid ally code.`;
                     break;
                 }
                 let ac: number;
-                let mention: string;
+                let mention: string | null;
                 try {
-                    [ac, mention] = getAcMention(newCode);
+                    [ac, mention] = getAcMention(newCode ?? "");
                 } catch (e) {
                     result.error = e instanceof Error ? e.message : String(e);
                     break;
@@ -762,7 +771,7 @@ export async function processAWChanges({
                 }
                 aw.allyCodes = aw.allyCodes.filter((p) => p.allyCode !== Number.parseInt(oldCode, 10));
 
-                let player = null;
+                let player: SWAPIPlayer | null = null;
                 try {
                     const players = await swgohAPI.unitStats(ac);
                     if (!players?.length) logger.error(`[AW Edit] Missing players ${ac}`);
@@ -780,14 +789,14 @@ export async function processAWChanges({
                 await arenaPlayerRegistry.upsertPlayer({
                     allyCode: ac,
                     name: player.name,
-                    lastCharRank: player.arena.char?.rank ?? undefined,
-                    lastShipRank: player.arena.ship?.rank ?? undefined,
+                    lastCharRank: player.arena?.char?.rank ?? undefined,
+                    lastShipRank: player.arena?.ship?.rank ?? undefined,
                 });
                 outLog.push(`${ac} ${exists ? "updated" : "added"}!`);
                 result.outLog = outLog.join("\n");
             } else if (["remove", "delete"].includes(action)) {
                 // List of ally codes to add or remove
-                const codesIn = interactionOptions.allyCodes
+                const codesIn = (interactionOptions.allyCodes ?? "")
                     .split(",") // Split em at the commas if there are more than one
                     .map((a) => a?.trim()) // Trim off any spaces in case
                     .filter((a) => isAllyCode(a));
@@ -871,7 +880,7 @@ const defAW = {
     showvs: true, // Show both sides of a battle between monitored players
 };
 
-export function fillAWSkeleton(awIn: UserConfig["arenaWatch"] | null): UserConfig["arenaWatch"] {
+export function fillAWSkeleton(awIn: UserConfig["arenaWatch"] | null): FilledAW {
     const aw = awIn || defAW;
     const thisChan = aw.channel || null;
 
@@ -879,14 +888,13 @@ export function fillAWSkeleton(awIn: UserConfig["arenaWatch"] | null): UserConfi
     aw.useMarksInLog ??= false;
     aw.report ??= "both";
     if (aw.showvs !== true && aw.showvs !== false) aw.showvs = true;
-    if (thisChan && (!aw.arena.fleet || !aw.arena.char)) {
-        // Migrating from old single-channel format: user had it active, so enable both arenas.
-        aw.arena = {
-            fleet: aw.arena.fleet ?? { channel: thisChan, enabled: true },
-            char: aw.arena.char ?? { channel: thisChan, enabled: true },
-        };
-    }
-    return aw;
+    // Ensure both arenas exist. Migrating from old single-channel format: if the user had a
+    // channel set, enable both arenas with it; otherwise they default to disabled.
+    aw.arena ??= {};
+    aw.arena.fleet ??= { channel: thisChan, enabled: !!thisChan };
+    aw.arena.char ??= { channel: thisChan, enabled: !!thisChan };
+    // Both arenas and useMarksInLog are now populated, so the value satisfies FilledAW.
+    return aw as FilledAW;
 }
 
 function getChannelStr(aw: UserConfig["arenaWatch"], alertType: string, arenaType: string) {
@@ -902,19 +910,19 @@ function getChannelStr(aw: UserConfig["arenaWatch"], alertType: string, arenaTyp
     return thisAW.channel ? `<#${thisAW.channel}>` : "N/A";
 }
 
-function getAcMention(code: string): [number, string] {
-    let [ac, mention] = code.split(":");
-    if (!isAllyCode(ac)) throw new Error(`Invalid code (${ac})!`);
-    ac = ac.replace(/[^\d]/g, "");
+function getAcMention(code: string): [number, string | null] {
+    const [acRaw, mentionRaw] = code.split(":");
+    if (!isAllyCode(acRaw)) throw new Error(`Invalid code (${acRaw})!`);
+    const ac = acRaw.replace(/[^\d]/g, "");
 
-    mention = isUserMention(mention?.trim() || "") ? mention.replace(/[^\d]/g, "") : null;
+    const mention = isUserMention(mentionRaw?.trim() || "") ? mentionRaw.replace(/[^\d]/g, "") : null;
     return [Number.parseInt(ac, 10), mention];
 }
 
 function checkPlayer(
     aw: UserConfig["arenaWatch"],
     players: SWAPIPlayer[],
-    code: { code: number; mention?: string },
+    code: { code: number; mention?: string | null },
     codeCap = 1,
     isEdit = false,
 ) {
@@ -943,8 +951,8 @@ function getChannelIdIfValid(interaction: ChatInputCommandInteraction, channel: 
     return channel.id;
 }
 
-async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, view_by: string | null, codeCap: number) {
-    const result = {
+async function formatForViewing(aw: FilledAW, allyCode: string | null, view_by: string | null, codeCap: number) {
+    const result: { error: string | null; embedOut: { title: string; description: string; fields?: APIEmbedField[] } | null } = {
         error: null,
         embedOut: null,
     };
@@ -1027,6 +1035,10 @@ async function formatForViewing(aw: UserConfig["arenaWatch"], allyCode: string, 
     }
 
     const player = aw.allyCodes.find((p) => p.allyCode === parsedCode);
+    if (!player) {
+        result.error = `${allyCode} is not listed in your registered ally codes.`;
+        return result;
+    }
     const playerDoc = await arenaPlayerRegistry.getPlayer(parsedCode);
     result.embedOut = {
         title: `Arena Watch Settings (${allyCode})`,

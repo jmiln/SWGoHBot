@@ -227,8 +227,8 @@ export interface UserConfig {
         allyCodes: ArenaWatchConfig[];
         channel?: string | null;
         arena: {
-            fleet?: { channel: string; enabled: boolean };
-            char?: { channel: string; enabled: boolean };
+            fleet?: { channel: string | null; enabled: boolean };
+            char?: { channel: string | null; enabled: boolean };
         };
         payout: {
             char: { enabled: boolean; channel: string | null; msgID: string | null };

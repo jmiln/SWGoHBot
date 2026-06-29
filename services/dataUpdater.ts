@@ -1526,7 +1526,7 @@ function processMaterials(materialIn: components["schemas"]["CraftingMaterialDef
     const bulkMatArr: AnyBulkWriteOperation[] = [];
 
     for (const mat of materialIn) {
-        if (!mat.id || !mat.id.startsWith("unitshard")) continue;
+        if (!mat.id?.startsWith("unitshard")) continue;
         unitShardList.push({
             id: mat.id,
             iconKey: (mat.iconKey ?? "").replace(/^tex\./, ""),

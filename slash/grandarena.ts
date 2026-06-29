@@ -126,12 +126,15 @@ export default class GrandArena extends Command {
         }
 
         const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
-        let user1: SWAPIPlayer;
-        let user2: SWAPIPlayer;
+        let user1: SWAPIPlayer | null = null;
+        let user2: SWAPIPlayer | null = null;
         if (!problemArr.length) {
             // If there are no problems, go ahead and pull the users
             try {
-                const users = await swgohAPI.unitStats([user1AC, user2AC], cooldown);
+                const users = await swgohAPI.unitStats(
+                    [user1AC, user2AC].filter((c): c is number => c != null),
+                    cooldown,
+                );
                 if (Array.isArray(users)) {
                     user1 = users[0];
                     user2 = users[1];
@@ -148,6 +151,10 @@ export default class GrandArena extends Command {
         }
         if (problemArr.length) {
             // Otherwise, spit out the list of issues
+            return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
+        }
+        // Both users loaded with rosters (problemArr guard above returns otherwise); narrow for the rest.
+        if (!user1 || !user2) {
             return super.error(interaction, codeBlock(problemArr.map((p) => `* ${p}`).join("\n")));
         }
 
@@ -341,8 +348,8 @@ export default class GrandArena extends Command {
             const u2Char = user2.roster.find((c) => c.defId === gl[0]);
             glOverview.push({
                 check: gl[1],
-                user1: `${getGearStr(u1Char)}${u1Char?.purchasedAbilityId?.length > 0 ? "U" : ""}`,
-                user2: `${getGearStr(u2Char)}${u2Char?.purchasedAbilityId?.length > 0 ? "U" : ""}`,
+                user1: `${getGearStr(u1Char)}${(u1Char?.purchasedAbilityId?.length ?? 0) > 0 ? "U" : ""}`,
+                user2: `${getGearStr(u2Char)}${(u2Char?.purchasedAbilityId?.length ?? 0) > 0 ? "U" : ""}`,
             });
         }
         const glOverviewOut = codeBlock(
@@ -488,8 +495,8 @@ export default class GrandArena extends Command {
                 });
                 checkArr[thisCharName].push({
                     check: labels.speed,
-                    user1: user1Char?.stats.final.Speed ? user1Char.stats.final.Speed : "N/A",
-                    user2: user2Char?.stats.final.Speed ? user2Char.stats.final.Speed : "N/A",
+                    user1: user1Char?.stats?.final.Speed ? user1Char.stats.final.Speed : "N/A",
+                    user2: user2Char?.stats?.final.Speed ? user2Char.stats.final.Speed : "N/A",
                 });
             }
         }
@@ -528,7 +535,10 @@ export default class GrandArena extends Command {
             });
         }
 
-        const footerStr = updatedFooterStr(Math.min(user1.updated, user2.updated), language);
+        const footerStr = updatedFooterStr(
+            Math.min(user1.updated ?? Number.POSITIVE_INFINITY, user2.updated ?? Number.POSITIVE_INFINITY),
+            language,
+        );
         return interaction.editReply({
             content: null,
             embeds: [
@@ -617,13 +627,13 @@ function getOverview(user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: str
 
 // Quick little function to add up all the gp frm a given chunk of roster
 const sumGP = (rosterIn: SWAPIUnit[]) => {
-    return rosterIn.reduce((a, b) => a + b.gp, 0);
+    return rosterIn.reduce((a, b) => a + (b.gp ?? 0), 0);
 };
 
 // Get the top X characters from the roster (Sort then slice)
 const getTopX = (rosterIn: SWAPIUnit[], x: number) => {
     // Sort it so the ones with a higher gp are first
-    const sortedIn = [...rosterIn].sort((a, b) => (a.gp < b.gp ? 1 : -1));
+    const sortedIn = [...rosterIn].sort((a, b) => ((a.gp ?? 0) < (b.gp ?? 0) ? 1 : -1));
     return sortedIn.slice(0, x);
 };
 
