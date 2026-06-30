@@ -21,6 +21,7 @@ import type {
     SWAPILang,
     SWAPIMod,
     SWAPIPlayer,
+    SWAPIPlayerArena,
     SWAPIPlayerArenaProfile,
     SWAPIPlayerArenaProfilePVP,
     SWAPIRecipe,
@@ -343,7 +344,7 @@ class SWAPI {
                     ),
                     cache.get(env.MONGODB_SWAPI_DB, "units", { baseId: { $in: defIdArr }, language: "eng_us" }, { baseId: 1, nameKey: 1 }),
                 ]);
-                const langKeys = {};
+                const langKeys: Record<string, string> = {};
                 for (const nameId of [...skillNames, ...unitNames]) {
                     langKeys[nameId?.skillId || nameId?.baseId] = nameId.nameKey;
                 }
@@ -559,7 +560,7 @@ class SWAPI {
     }
 
     private async formatComlinkPlayer(comlinkPlayer: ComlinkPlayer): Promise<SWAPIPlayer> {
-        const comlinkPlayerArena = {};
+        const comlinkPlayerArena: Record<number, SWAPIPlayerArena["char"]> = {};
         const emptyArena = { rank: null, squad: null };
 
         for (const { tab, rank, squad } of comlinkPlayer.pvpProfile ?? []) {
@@ -703,12 +704,12 @@ class SWAPI {
                 // if (mod.primaryStat.unitStatId) mod.primaryStat.unitStat = mod.primaryStat.unitStatId;
                 const primaryUnitStatId = mod.primaryStat.unitStatId || mod.primaryStat.unitStat;
                 if (primaryUnitStatId != null && !Number.isNaN(primaryUnitStatId)) {
-                    mod.primaryStat.unitStat = statEnums.enums[primaryUnitStatId];
+                    mod.primaryStat.unitStat = statEnums.enums[primaryUnitStatId as number];
                 }
                 for (const stat of mod.secondaryStat) {
                     const unitStatId = stat.unitStatId || stat.unitStat;
                     if (unitStatId != null && !Number.isNaN(unitStatId)) {
-                        stat.unitStat = statEnums.enums[unitStatId];
+                        stat.unitStat = statEnums.enums[unitStatId as number];
                     }
                 }
             }
@@ -1055,7 +1056,7 @@ class SWAPI {
                         const tempMember: RawGuildMember = {} as RawGuildMember;
                         const contribution = {} as SWAPIGuildAlteredMemberContribution;
                         for (const contType of member.memberContribution) {
-                            contribution[contType.type] = {
+                            contribution[String(contType.type) as keyof SWAPIGuildAlteredMemberContribution] = {
                                 currentValue: contType.currentValue,
                                 lifetimeValue: contType.lifetimeValue,
                             };
@@ -1067,7 +1068,7 @@ class SWAPI {
                         tempGuild.roster.push(tempMember);
                     }
                 } else if (!ignoreArr.includes(key)) {
-                    tempGuild[key] = rawGuild[key];
+                    (tempGuild as unknown as Record<string, unknown>)[key] = rawGuild[key as keyof RawGuild];
                 }
             }
             if (!tempGuild.roster) tempGuild.roster = [];
@@ -1175,7 +1176,7 @@ class SWAPI {
             ...profileRest
         } = profile;
 
-        const raids = {};
+        const raids: Record<string, unknown> = {};
         // if (raidLaunchConfig) {
         //     for (const { campaignMissionIdentifier, raidId } of raidLaunchConfig) {
         //         raids[raidId] = campaignMissionIdentifier.campaignMissionId;

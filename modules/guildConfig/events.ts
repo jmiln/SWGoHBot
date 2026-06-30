@@ -6,7 +6,7 @@ export async function setEvents({ guildId, evArrOut }: { guildId: string; evArrO
     if (!Array.isArray(evArrOut)) throw new Error("[/eventFuncs setEvents] Somehow have a non-array stOut");
     return await guildConfigDB.put({ guildId: guildId }, { events: evArrOut }, false);
 }
-export async function updateGuildEvent({ guildId, evName, event }) {
+export async function updateGuildEvent({ guildId, evName, event }: { guildId: string; evName: string; event: GuildConfigEvent }) {
     const evList: GuildConfig = await guildConfigDB.getOne({ guildId }, { events: 1, _id: 0 });
     const evIx = evList.events.findIndex((ev) => ev.name === evName);
 

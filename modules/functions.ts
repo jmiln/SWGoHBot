@@ -492,7 +492,7 @@ export function makeTable(
     },
 ) {
     if (!headers || !rows?.length) throw new Error("Need both headers and rows");
-    const max = {};
+    const max: Record<string, number> = {};
     for (const h in headers) {
         // Get the max length needed, then add a bit for padding
         if (options.useHeader) {
@@ -639,17 +639,17 @@ export function getGearStr(charIn: SWAPIUnit | undefined, preStr = ""): string {
 // Get the overall levels for a guild as a whole (Gear, rarity, relic, etc)
 export function summarizeCharLevels(guildMembers: SWAPIPlayer[], type: string): [{ [key: number]: number }, string] {
     const max = { gear: 13, relic: 9, rarity: 7 };
-    if (!max?.[type]) throw new Error(`[summarizeLevels] Invalid type (${type})`);
+    if (!max?.[type as keyof typeof max]) throw new Error(`[summarizeLevels] Invalid type (${type})`);
     if (!Array.isArray(guildMembers)) throw new Error("[summarizeCharLevels] guildMembers must be an array!");
 
-    const levels = {};
-    for (let ix = max[type]; ix >= 1; ix--) {
+    const levels: Record<string, number> = {};
+    for (let ix = max[type as keyof typeof max]; ix >= 1; ix--) {
         let lvlCount = 0;
         for (const member of guildMembers) {
             if (type === "relic") {
                 lvlCount += member.roster.filter((c) => c?.combatType === 1 && (c.relic?.currentTier ?? 0) - 2 === ix).length;
             } else {
-                lvlCount += member.roster.filter((c) => c?.combatType === 1 && c[type] === ix).length;
+                lvlCount += member.roster.filter((c) => c?.combatType === 1 && c[type as keyof typeof c] === ix).length;
             }
         }
         if (lvlCount > 0) {

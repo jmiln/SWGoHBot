@@ -162,7 +162,18 @@ export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map
     });
 }
 
-const tiers = patreonModule.tiers;
+const tiers: Record<
+    number,
+    {
+        name: string;
+        benefits: Record<string, string> | null;
+        playerTime: number;
+        guildTime: number;
+        sharePlayer?: number;
+        shareGuild?: number;
+        awAccounts?: number;
+    }
+> = patreonModule.tiers;
 
 // Patron tier thresholds (in cents)
 const TIER_1_CENTS = 100; // $1
@@ -250,7 +261,7 @@ class PatreonFuncs {
                 userId: userId,
                 playerTime: currentTier.playerTime,
                 guildTime: currentTier.guildTime,
-                awAccounts: currentTier.awAccounts,
+                awAccounts: currentTier.awAccounts ?? 0,
                 discordID: userId,
                 amount_cents: currentAmountCents,
             };
@@ -267,7 +278,7 @@ class PatreonFuncs {
             ...patron,
             playerTime: currentTier.playerTime,
             guildTime: currentTier.guildTime,
-            awAccounts: currentTier.awAccounts,
+            awAccounts: currentTier.awAccounts ?? 0,
         };
     }
 
@@ -286,8 +297,8 @@ class PatreonFuncs {
         const supporterTimes: { playerTime: number; guildTime: number } = !tiers?.[supporterTier]?.sharePlayer
             ? tiers[0]
             : {
-                  playerTime: tiers[supporterTier].sharePlayer,
-                  guildTime: tiers[supporterTier].shareGuild,
+                  playerTime: tiers[supporterTier].sharePlayer ?? 0,
+                  guildTime: tiers[supporterTier].shareGuild ?? 0,
               };
 
         // Grab the best times for the user themselves, patreon sub or not
@@ -1088,7 +1099,7 @@ class PatreonFuncs {
     // Format the output for the payouts embed
     private formatPayouts(players: ArenaWatchAcct[], arena: "char" | "fleet") {
         const times = new Map<string, { players: ArenaWatchAcct[] }>();
-        const arenaString = `last${toProperCase(arena === "fleet" ? "ship" : arena)}`;
+        const arenaString = `last${toProperCase(arena === "fleet" ? "ship" : arena)}` as "lastChar" | "lastShip";
 
         for (const player of players) {
             // A watched account may have no stored rank yet (fresh add, arena type not played)

@@ -38,24 +38,33 @@ export async function getUnitChecklist(): Promise<Record<string, [string, string
 export async function getGuildTWList({ guildId }: { guildId: string }): Promise<GuildConfigTWList> {
     if (!guildId) return defaultTWList;
     const res = await guildConfigDB.getOne({ guildId: guildId }, { twList: 1 });
-    const outObj = {};
+    const outObj: Record<string, string[]> = {};
     for (const key of Object.keys(defaultTWList)) {
         outObj[key] = res?.twList?.[key] || [];
     }
-    return outObj || defaultTWList;
+    return (outObj as GuildConfigTWList) || defaultTWList;
 }
 
 export async function getFullTWList({ guildId }: { guildId: string }) {
     const unitChecklist = await getUnitChecklist();
 
-    if (!guildId) return unitChecklist;
+    if (!guildId) {
+        // No guild to filter against, so return the full checklist converted to the same
+        // {category: {defId: shortName}} shape the guild path produces (no blacklist to apply)
+        const fullList: Record<string, Record<string, string>> = {};
+        for (const [unitType, units] of Object.entries(unitChecklist)) {
+            fullList[unitType] = {};
+            for (const [defId, shortName] of units) fullList[unitType][defId] = shortName;
+        }
+        return fullList;
+    }
     const res = await guildConfigDB.getOne({ guildId: guildId }, { twList: 1 });
     const twList: GuildConfigTWList = res?.twList || defaultTWList;
 
-    const twListOut = {};
+    const twListOut: Record<string, Record<string, string>> = {};
     for (const unitType of Object.keys(unitChecklist)) {
         if (!twListOut[unitType]) twListOut[unitType] = {};
-        for (const defId of twList[unitType]) {
+        for (const defId of twList[unitType as keyof GuildConfigTWList] || []) {
             if (twList.Blacklist?.includes(defId)) continue;
             if (!twListOut[unitType][defId]) twListOut[unitType][defId] = "";
         }

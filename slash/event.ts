@@ -602,7 +602,7 @@ export default class Event extends Command {
                 try {
                     const res = await updateGuildEvent({
                         guildId: interaction.guild.id,
-                        evName: eventName,
+                        evName: event.name,
                         event: validEvent.event,
                     });
                     if (res?.success) {

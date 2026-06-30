@@ -9,6 +9,7 @@
         "noEmit": true,
         "rewriteRelativeImportExtensions": true,
         "skipLibCheck": true,
+        "strictNullChecks": true,
         "strict": false,
         "target": "ESNext",
         "verbatimModuleSyntax": true

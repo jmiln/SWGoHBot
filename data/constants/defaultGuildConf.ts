@@ -92,9 +92,9 @@ export const defaultSettings = getDefaultGuildSettings();
 
 function getDefaultGuildSettings() {
     const defSettings: TypedDefaultSettings = typedDefaultSettings;
-    const settingsOut: Partial<GuildConfigSettings> = {};
+    const settingsOut: Record<string, unknown> = {};
     for (const [key, conf] of Object.entries(defSettings)) {
         settingsOut[key] = conf.value;
     }
-    return settingsOut as GuildConfigSettings;
+    return settingsOut as unknown as GuildConfigSettings;
 };
