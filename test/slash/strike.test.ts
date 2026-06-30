@@ -296,6 +296,50 @@ describe("Strike command", () => {
         });
     });
 
+    describe("defers reply before slow work (interaction timeout guard)", () => {
+        // Discord invalidates the interaction token after 3s if it isn't acknowledged. Every
+        // subcommand that does DB/API I/O before replying must defer first, or it throws
+        // DiscordAPIError[10062] "Unknown interaction" on slow lookups. See docs/BUG_REFERENCE.md.
+        it("defers on add (slowest path: uncached swapi player lookup)", async () => {
+            await seedPlayer(PLAYER_AC, "TestPlayer");
+            const { interaction, ctx } = makeCtx("add", { allycode: PLAYER_AC, reason: "test" });
+            await new Strike().run(ctx);
+            assert.strictEqual(interaction.deferred, true, "add must defer before the swapi/cache lookup");
+        });
+
+        it("defers on view", async () => {
+            await seedPlayer(PLAYER_AC, "TestPlayer");
+            await new Strike().run(makeCtx("add", { allycode: PLAYER_AC, reason: "test" }).ctx);
+            const { interaction, ctx } = makeCtx("view", { allycode: PLAYER_AC });
+            await new Strike().run(ctx);
+            assert.strictEqual(interaction.deferred, true, "view must defer before the strikes lookup");
+        });
+
+        it("defers on revoke", async () => {
+            await seedPlayer(PLAYER_AC, "TestPlayer");
+            await new Strike().run(makeCtx("add", { allycode: PLAYER_AC, reason: "test" }).ctx);
+            const all = await getAllStrikes({ guildId: GUILD_ID });
+            const strikeId = all[0].strikes[0].id;
+            const { interaction, ctx } = makeCtx("revoke", { allycode: PLAYER_AC, strike_id: strikeId });
+            await new Strike().run(ctx);
+            assert.strictEqual(interaction.deferred, true, "revoke must defer before the strikes lookup");
+        });
+
+        it("defers on clear", async () => {
+            await seedPlayer(PLAYER_AC, "TestPlayer");
+            await new Strike().run(makeCtx("add", { allycode: PLAYER_AC, reason: "test" }).ctx);
+            const { interaction, ctx } = makeCtx("clear", { allycode: PLAYER_AC });
+            await new Strike().run(ctx);
+            assert.strictEqual(interaction.deferred, true, "clear must defer before the strikes lookup");
+        });
+
+        it("defers on list (no-filter path)", async () => {
+            const { interaction, ctx } = makeCtx("list", {});
+            await new Strike().run(ctx);
+            assert.strictEqual(interaction.deferred, true, "list must defer before the strikes lookup");
+        });
+    });
+
     describe("autocomplete: strike_id", () => {
         function makeAutocompleteInteraction(subcommand: string, options: Record<string, string | number> = {}) {
             let _responded: any[] | null = null;

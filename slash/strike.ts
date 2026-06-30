@@ -165,6 +165,9 @@ export default class StrikeCommand extends Command {
     }
 
     private async handleAdd(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
+        // Acknowledge first: the cache miss path below hits swgohAPI.player(), which can exceed
+        // Discord's 3s interaction window and otherwise throws 10062 "Unknown interaction".
+        await interaction.deferReply();
         const allyCode = interaction.options.getInteger("allycode", true);
         const reason = interaction.options.getString("reason", true);
         const expiresDays = interaction.options.getInteger("expires");
@@ -215,6 +218,8 @@ export default class StrikeCommand extends Command {
     }
 
     private async handleRevoke(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
+        // Acknowledge before the DB read+write so a slow lookup can't expire the interaction token.
+        await interaction.deferReply();
         const allyCode = interaction.options.getInteger("allycode", true);
         const strikeId = interaction.options.getString("strike_id", true);
         const revokedBy = interaction.user.id;
@@ -235,6 +240,8 @@ export default class StrikeCommand extends Command {
     }
 
     private async handleClear(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
+        // Acknowledge before the DB lookups so a slow query can't expire the interaction token.
+        await interaction.deferReply();
         const allyCode = interaction.options.getInteger("allycode", true);
 
         const record = await getPlayerStrikes({ guildId, allyCode });
@@ -250,6 +257,8 @@ export default class StrikeCommand extends Command {
     }
 
     private async handleView(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
+        // Acknowledge before the DB lookup so a slow query can't expire the interaction token.
+        await interaction.deferReply();
         const allyCode = interaction.options.getInteger("allycode", true);
         const record = await getPlayerStrikes({ guildId, allyCode });
 
@@ -286,16 +295,16 @@ export default class StrikeCommand extends Command {
             );
         }
 
-        return interaction.reply({ embeds: [embed] });
+        return interaction.editReply({ embeds: [embed] });
     }
 
     private async handleList(interaction: ChatInputCommandInteraction, guildId: string, language: Language) {
+        // Acknowledge before any DB/cache lookups so a slow query can't expire the interaction token.
+        await interaction.deferReply();
         const guildFilter = interaction.options.getString("guild");
         const sortBy = interaction.options.getString("sort") ?? "name";
 
         if (guildFilter) {
-            await interaction.deferReply();
-
             // Direct cache lookup by guildId (same pattern used internally by swapi.guild()).
             // Do NOT call swgohAPI.guild() -- that method requires an ally code and does a player lookup first.
             type GuildMember = { allyCode: number; name: string };
@@ -349,7 +358,7 @@ export default class StrikeCommand extends Command {
                 .setTitle("Strike List")
                 .setDescription("No members with active strikes.")
                 .setColor(constants.colors.green);
-            return interaction.reply({ embeds: [embed] });
+            return interaction.editReply({ embeds: [embed] });
         }
 
         const maxCount = Math.max(...withActive.map((p) => activeCounts.get(p.allyCode) ?? 0));
@@ -370,7 +379,7 @@ export default class StrikeCommand extends Command {
 
         const chunks = msgArray(lines, "\n", 4000);
         const embed = new EmbedBuilder().setTitle("Strike List").setDescription(chunks[0]).setColor(constants.colors.red);
-        await interaction.reply({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
         for (const chunk of chunks.slice(1)) {
             await interaction.followUp({ embeds: [new EmbedBuilder().setDescription(chunk).setColor(constants.colors.red)] });
         }
