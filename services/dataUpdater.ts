@@ -134,7 +134,7 @@ const UNIT_CHECKLIST_FILE_PATH = path.join(DATA_DIR_PATH, "unitChecklist.json");
 const HELP_JSON_PATH = path.join(DATA_DIR_PATH, "help.json");
 
 // The metadata keys we actually care about
-const META_KEYS = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
+const META_KEYS: (keyof Metadata)[] = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
 
 // Track resources for cleanup
 let mongoClient: MongoClient | null = null;
@@ -225,14 +225,7 @@ async function init() {
                     logMem("cycle start");
 
                     debugTime("Checking metadata");
-                    const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(
-                        DATA_DIR_PATH,
-                        comlinkStub,
-                    )) as unknown as {
-                        isMetadataUpdated: boolean;
-                        newMetadata: Metadata;
-                        oldMetadata: Metadata;
-                    };
+                    const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
                     debugTimeEnd("Checking metadata");
 
                     if (isMetadataUpdated) {
@@ -317,14 +310,14 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
         throw new Error(`[updateMetadata] Missing required metadata keys: ${missingKeys.join(", ")}`);
     }
 
-    const metadataOut: Record<string, unknown> = {};
-    let oldMetadata: Record<string, unknown> = {};
+    const metadataOut: Partial<Metadata> = {};
+    let oldMetadata: Partial<Metadata> = {};
     try {
-        oldMetadata = await readJSON<Record<string, unknown>>(META_FILE);
+        oldMetadata = await readJSON<Partial<Metadata>>(META_FILE);
     } catch (error) {
         debugLog(`No existing metadata (${error.code || error.message}). Creating new metadata.`);
     }
-    const meta = newMetaData as Record<string, unknown>;
+    const meta = newMetaData as Record<string, string>;
     let isMetadataUpdated = false;
     for (const key of META_KEYS) {
         if (meta[key] !== oldMetadata[key]) {
@@ -340,7 +333,8 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
         await saveFile(META_FILE, metadataOut);
     }
 
-    return { isMetadataUpdated, newMetadata: metadataOut, oldMetadata };
+    // metadataOut is built by copying every META_KEYS entry, so it satisfies Metadata by construction.
+    return { isMetadataUpdated, newMetadata: metadataOut as Metadata, oldMetadata: oldMetadata as Metadata };
 }
 
 async function runModUpdaters(comlinkStub: ComlinkStub) {
