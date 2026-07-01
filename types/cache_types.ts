@@ -28,5 +28,5 @@ export interface BotCache {
         collection: string,
         saveObjectArray: readonly AnyBulkWriteOperation<T>[],
     ) => Promise<BulkWriteResult>;
-    remove: <T>(database: string, collection: string, matchCondition: Filter<T>) => Promise<DeleteResult>;
+    remove: (database: string, collection: string, matchCondition: Filter<Document>) => Promise<DeleteResult>;
 }

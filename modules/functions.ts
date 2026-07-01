@@ -432,8 +432,9 @@ export async function guildCount(client: Client): Promise<number> {
     if (client.shard?.count) {
         return (
             (await client.shard
+                // fetchClientValues is typed Promise<unknown[]>, but "guilds.cache.size" always yields numbers
                 .fetchClientValues("guilds.cache.size")
-                .then((results: number[]) => results.reduce((prev, val) => prev + val, 0))
+                .then((results) => (results as number[]).reduce((prev, val) => prev + val, 0))
                 .catch(logger.error)) || 0
         );
     }
