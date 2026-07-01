@@ -5,6 +5,7 @@ import { characters, ships } from "../data/constants/units.ts";
 import { charListFromSearch, findCharOrShip, getAllyCode, makeTable, updatedFooterStr } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import type { SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Versus extends Command {
@@ -202,8 +203,8 @@ export default class Versus extends Command {
         // For each stat in a list, add onto the statOut array
         const statOut: Record<string, string | number>[] = [];
         for (const stat of statList) {
-            const s1 = char1?.stats?.final[stat.stat];
-            const s2 = char2?.stats?.final[stat.stat];
+            const s1 = char1?.stats?.final[stat.stat as keyof SWAPIUnitStatTypes];
+            const s2 = char2?.stats?.final[stat.stat as keyof SWAPIUnitStatTypes];
             statOut.push({
                 stat: stat.short,
                 user1: s1 ? (s1 % 1 === 0 ? s1.toLocaleString() : `${(s1 * 100).toFixed(2)}%`) : "N/A",

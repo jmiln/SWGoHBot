@@ -189,7 +189,7 @@ export class MockSWAPI {
         this.checkError("getPlayerUpdates");
         const acArr = Array.isArray(allycodes) ? allycodes : [allycodes];
 
-        const guildLog = {};
+        const guildLog: Record<string, Record<string, string[]>> = {};
         for (const ac of acArr) {
             const player = this.config.players.get(ac);
             if (player) {

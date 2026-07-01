@@ -393,7 +393,7 @@ export default class UserConf extends Command {
                             .map(Number)
                             .filter((t) => t > 0);
                         const tierNum = tierThresholds.filter((t) => pat.amount_cents / 100 >= t).reduce((a, b) => Math.max(a, b), 0);
-                        const tier = patreonInfo.tiers[tierNum];
+                        const tier = patreonInfo.tiers[tierNum as keyof typeof patreonInfo.tiers];
                         const bonusGuildName = user.bonusServer
                             ? (interaction.client.guilds.cache.get(user.bonusServer)?.name ?? user.bonusServer)
                             : language.get("COMMAND_USERCONF_VIEW_PATREON_NONE_SET");
@@ -414,7 +414,7 @@ export default class UserConf extends Command {
                             ">>> If you subscribe on [Patreon](https://patreon.com/swgohbot), this will show settings for those parts of the bot as well. https://patreon.com/swgohbot",
                         ];
                         for (const cmd of Object.keys(patreonInfo.commands)) {
-                            patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd]]);
+                            patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd as keyof typeof patreonInfo.commands]]);
                         }
                         fields.push({ name: language.get("COMMAND_USERCONF_VIEW_PATREON_HEADER"), value: patreonValue.join("\n") });
                     }

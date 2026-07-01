@@ -378,7 +378,7 @@ export default class Guilds extends Command {
                 });
             }
 
-            const gearOut = {};
+            const gearOut: Record<string, Record<string, number>> = {};
 
             for (const player of guildGG) {
                 if (!player.roster) continue;
@@ -404,7 +404,9 @@ export default class Guilds extends Command {
             });
 
             if (sortBy) {
-                tableIn = tableIn.sort((a, b) => (a[sortBy] < b[sortBy] ? 1 : -1));
+                tableIn = tableIn.sort((a, b) =>
+                    (a[sortBy as keyof typeof a] as number) < (b[sortBy as keyof typeof b] as number) ? 1 : -1,
+                );
             } else {
                 tableIn = tableIn.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
             }
@@ -632,7 +634,7 @@ export default class Guilds extends Command {
                         }
                     } else {
                         // If it's not already there, then stick it in
-                        memberRoster[`g${char.gear}`] += 1;
+                        (memberRoster as unknown as Record<string, number>)[`g${char.gear}`] += 1;
                     }
                 }
                 members.push(memberRoster);
@@ -654,7 +656,7 @@ export default class Guilds extends Command {
             }
             const tierKeys = Object.keys(members[0]).reverse();
             for (const [index, tier] of tierKeys.entries()) {
-                if (members.filter((mem) => mem[tier] > 0).length) {
+                if (members.filter((mem) => (mem as unknown as Record<string, number>)[tier] > 0).length) {
                     firstViableTier = String(index);
                     break;
                 }
@@ -694,7 +696,7 @@ export default class Guilds extends Command {
             };
             for (const member of members) {
                 for (const key of Object.keys(tierTotals)) {
-                    tierTotals[key] += member[key];
+                    tierTotals[key] += (member as unknown as Record<string, number>)[key];
                 }
             }
             const totalOut = makeTable(totalsFormat, [tierTotals]);
@@ -1045,7 +1047,7 @@ export default class Guilds extends Command {
                 if (!p.allyCode) {
                     badCount += 1;
                 } else {
-                    p.memberLvl = p.guildMemberLevel ? gRanks[p.guildMemberLevel] : null;
+                    p.memberLvl = p.guildMemberLevel ? gRanks[p.guildMemberLevel as keyof typeof gRanks] : undefined;
                 }
             }
 
@@ -1314,7 +1316,7 @@ export default class Guilds extends Command {
             });
 
             // Get the overall relic levels for the guild as a whole
-            const relicLvls = {};
+            const relicLvls: Record<string, number> = {};
             const MAX_RELIC = 8;
             for (let ix = MAX_RELIC; ix >= 1; ix--) {
                 let relicCount = 0;

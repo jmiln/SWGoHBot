@@ -13,7 +13,7 @@ export function formatShardInfo(results: ShardData[], shardCount: number): strin
         shardInfoArr.push(
             [
                 `${(Number.parseInt(id[0].toString(), 10) + 1).toString().padStart(2)}/${shardCount}`,
-                Status[status.toString()].padStart(6),
+                Status[status].padStart(6),
                 `${size.toString().padStart(5)} `,
                 `${ping} ms`,
             ].join(" | "),

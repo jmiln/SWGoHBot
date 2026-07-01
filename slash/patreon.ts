@@ -60,7 +60,7 @@ export default class Patreon extends Command {
             case "benefits": {
                 // Spit out the benefits data
                 for (const tier of Object.keys(patreonInfo.tiers)) {
-                    const thisTier = patreonInfo.tiers[tier];
+                    const thisTier = patreonInfo.tiers[Number(tier) as keyof typeof patreonInfo.tiers];
                     if (!thisTier?.benefits) continue;
 
                     fields.push({
@@ -72,7 +72,7 @@ export default class Patreon extends Command {
                             `**__BENEFITS__:**${Number.parseInt(tier, 10) > 1 ? "\nEverything above +\n" : ""}`,
                             Object.keys(thisTier.benefits)
                                 .map((ben) => {
-                                    return `**${ben}**:\n${thisTier.benefits[ben]}`;
+                                    return `**${ben}**:\n${thisTier.benefits[ben as keyof typeof thisTier.benefits]}`;
                                 })
                                 .join("\n\n"),
                         ].join("\n"),
@@ -185,13 +185,13 @@ export default class Patreon extends Command {
                         .filter((t) => t < tierNum) // Grab just the ones under the current tier
                         .sort()
                         .reverse(); // Sort it backwards so it's highest first
-                    const outObj = { ...thisTier.benefits };
+                    const outObj: Record<string, string> = { ...thisTier.benefits };
                     for (const t of tiers) {
-                        const thisT = patreonInfo.tiers[t];
+                        const thisT = patreonInfo.tiers[t as keyof typeof patreonInfo.tiers];
                         if (!thisT?.benefits) continue;
                         for (const benefit of Object.keys(thisT.benefits)) {
                             if (!outObj[benefit]) {
-                                outObj[benefit] = thisT.benefits[benefit];
+                                outObj[benefit] = thisT.benefits[benefit as keyof typeof thisT.benefits];
                             }
                         }
                     }
@@ -240,7 +240,7 @@ function getTier(amount_cents: number) {
 function patCmdinfo() {
     const patreonValue: string[] = [];
     for (const cmd of Object.keys(patreonInfo.commands)) {
-        patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd]]);
+        patreonValue.push(...["", `**__${cmd}__**`, patreonInfo.commands[cmd as keyof typeof patreonInfo.commands]]);
     }
     return {
         name: "Patreon Commands",

@@ -246,7 +246,7 @@ export default class Poll extends Command {
         }
 
         function pollCheck(poll: GuildConfigPoll, showRes = false) {
-            const voteCount = {};
+            const voteCount: Record<string, number> = {};
             const totalVotes = Object.keys(poll.votes).length || 1;
             poll.options.forEach((_, ix) => {
                 voteCount[ix] = 0;
@@ -257,7 +257,7 @@ export default class Poll extends Command {
             let outString = "";
             for (const opt of Object.keys(voteCount)) {
                 const percent = Math.floor((voteCount[opt] / totalVotes) * 30);
-                outString += `\`[${Number.parseInt(opt, 10) + 1}]\` **${poll.options[opt]}**\n`;
+                outString += `\`[${Number.parseInt(opt, 10) + 1}]\` **${poll.options[Number(opt)]}**\n`;
                 if (!poll.anon || showRes) {
                     // If the poll is not set to anonymous, or it's told to show the results (for closing the poll)
                     outString += `**\`[${"#".repeat(percent)}${"-".repeat(30 - percent)}]\`**(${voteCount[opt]})\n`;

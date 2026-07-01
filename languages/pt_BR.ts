@@ -1,4 +1,5 @@
 import Language from "../base/Language.ts";
+import type { SWAPIUnit } from "../types/swapi_types.ts";
 
 const DAYSOFWEEK = {
     SUNDAY: {
@@ -569,10 +570,10 @@ export default class extends Language {
                 header: `Characters (${charList.length})`,
                 stats: [
                     `GP dos personagens  :: ${gpChar}`,
-                    `Quantidade de personagens com 7 Estrelas   :: ${charList.filter(c => c.rarity === 7).length}`,
-                    `Quantidade de personagens com nível 85   :: ${charList.filter(c => c.level === 85).length}`,
-                    `Quantidade de personagens com equipamento nível 12  :: ${charList.filter(c => c.gear === 12).length}`,
-                    `Quantidade de personagens com equipamento nível 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `Quantidade de personagens com 7 Estrelas   :: ${charList.filter((c: SWAPIUnit) =>c.rarity === 7).length}`,
+                    `Quantidade de personagens com nível 85   :: ${charList.filter((c: SWAPIUnit) =>c.level === 85).length}`,
+                    `Quantidade de personagens com equipamento nível 12  :: ${charList.filter((c: SWAPIUnit) =>c.gear === 12).length}`,
+                    `Quantidade de personagens com equipamento nível 11  :: ${charList.filter((c: SWAPIUnit) =>c.gear === 11).length}`,
                     `Número de Zetas    :: ${zetaCount}`
                 ].join("\n")
             }),
@@ -580,8 +581,8 @@ export default class extends Language {
                 header: `Ships (${shipList.length})`,
                 stats: [
                     `GP das NaVES :: ${gpShip}`,
-                    `Quantidade de naves com 7 Estrelas  :: ${shipList.filter(s => s.rarity === 7).length}`,
-                    `Quantidade de naves com nível 85  :: ${shipList.filter(s => s.level === 85).length}`
+                    `Quantidade de naves com 7 Estrelas  :: ${shipList.filter((s: SWAPIUnit) =>s.rarity === 7).length}`,
+                    `Quantidade de naves com nível 85  :: ${shipList.filter((s: SWAPIUnit) =>s.level === 85).length}`
                 ].join("\n")
             }),
             COMMAND_MYPROFILE_HELP: {

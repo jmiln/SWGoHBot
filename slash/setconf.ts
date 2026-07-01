@@ -160,8 +160,9 @@ export default class SetConf extends Command {
             if (subCommand === "view") {
                 const outArr: string[] = [];
                 for (const key of Object.keys(guildTWList)) {
-                    if (!guildTWList[key].length) continue;
-                    outArr.push(`* **${key}**: \n${guildTWList[key].map((defId: string) => `  - ${getCharName(defId)}`).join("\n")}`);
+                    const list = guildTWList[key as keyof typeof guildTWList];
+                    if (!list?.length) continue;
+                    outArr.push(`* **${key}**: \n${list.map((defId: string) => `  - ${getCharName(defId)}`).join("\n")}`);
                 }
                 if (!outArr.length) return super.error(interaction, language.get("COMMAND_SETCONF_TW_NO_UNITS"));
                 return super.success(interaction, outArr.join("\n"), { title: "Your current list:" });
@@ -179,7 +180,7 @@ export default class SetConf extends Command {
                 if (subCommand === "manage_list") {
                     for (const key of Object.keys(guildTWList)) {
                         if (key === "Blacklist") continue;
-                        if (guildTWList[key].includes(addUnitDefId)) {
+                        if (guildTWList[key as keyof typeof guildTWList]?.includes(addUnitDefId)) {
                             return super.error(interaction, language.get("COMMAND_SETCONF_UNIT_IN_LIST", addUnitDefId));
                         }
                     }
@@ -239,8 +240,9 @@ export default class SetConf extends Command {
                 if (subCommand === "manage_list") {
                     for (const key of Object.keys(guildTWList)) {
                         if (key === "Blacklist") continue;
-                        if (guildTWList[key].includes(removeUnitDefId)) {
-                            guildTWList[key] = guildTWList[key].filter((u: string) => u !== removeUnitDefId);
+                        const k = key as keyof typeof guildTWList;
+                        if (guildTWList[k]?.includes(removeUnitDefId)) {
+                            guildTWList[k] = guildTWList[k]?.filter((u: string) => u !== removeUnitDefId);
                         }
                     }
                     try {
@@ -271,7 +273,7 @@ export default class SetConf extends Command {
             }
         }
 
-        const settingsIn = {};
+        const settingsIn: Record<string, unknown> = {};
         const errors: string[] = [];
         const changeLog: string[] = [];
         for (const [key, defConf] of Object.entries(typedDefaultSettings)) {
@@ -324,7 +326,7 @@ export default class SetConf extends Command {
             const newSetting = changeSetting(subCommand, key, settingStr, nameStr);
 
             // If it got here, then the setting should be valid and changed
-            if (newSetting !== null && newSetting !== guildConf[key]) {
+            if (newSetting !== null && newSetting !== guildConf[key as keyof typeof guildConf]) {
                 settingsIn[key] = newSetting;
             }
         }
@@ -338,7 +340,7 @@ export default class SetConf extends Command {
             }
             if (action === "add") {
                 // Stick it into the old one
-                const newArr = [...guildConf[key]];
+                const newArr = [...(guildConf[key as keyof typeof guildConf] as unknown[])];
                 newArr.push(setting);
                 changeLog.push(`Added ${setting} to ${key}`);
 
@@ -346,7 +348,7 @@ export default class SetConf extends Command {
             }
             if (action === "remove") {
                 // Take out a setting from an array
-                let newArr = [...guildConf[key]];
+                let newArr = [...(guildConf[key as keyof typeof guildConf] as unknown[])];
                 newArr = newArr.filter((s) => s !== setting && s !== name);
                 changeLog.push(`Removed ${setting} from ${key}`);
 
@@ -362,7 +364,7 @@ export default class SetConf extends Command {
         if (Object.keys(settingsIn)?.length) {
             // Go through and make all the changes to the guildConf
             for (const key of Object.keys(settingsIn)) {
-                guildConf[key] = settingsIn[key];
+                (guildConf as unknown as Record<string, unknown>)[key] = settingsIn[key];
             }
 
             // Actually change stuff in the db
@@ -413,9 +415,9 @@ export default class SetConf extends Command {
                             .slice(0, 24) || [];
                     await interaction.respond(outArr);
                 } else if (subCommand === "manage_list") {
-                    const defIdList = Object.keys(guildTWList).reduce((acc, key) => {
-                        if (key === "Blacklist" || !guildTWList[key]?.length) return acc;
-                        return acc.concat(guildTWList[key]);
+                    const defIdList = Object.keys(guildTWList).reduce<string[]>((acc, key) => {
+                        if (key === "Blacklist" || !guildTWList[key as keyof typeof guildTWList]?.length) return acc;
+                        return acc.concat(guildTWList[key as keyof typeof guildTWList] ?? []);
                     }, []);
                     // [...guildTWList.GLs, ...guildTWList.characters, ...guildTWList.ships, ...guildTWList.capitalShips];
                     const outArr =

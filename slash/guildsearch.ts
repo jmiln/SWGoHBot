@@ -15,7 +15,7 @@ import {
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
-import type { RawCharacter, SWAPIGuild, SWAPIUnit } from "../types/swapi_types.ts";
+import type { RawCharacter, SWAPIGuild, SWAPIUnit, SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
 export default class GuildSearch extends Command {
@@ -264,14 +264,15 @@ export default class GuildSearch extends Command {
             // Looking for a stat
             const outArr: Record<string, string | number>[] = [];
 
+            const statKey = stat as keyof SWAPIUnitStatTypes;
             let sortedMembers = guildChar
                 .filter((gChar) => gChar?.gp)
                 .sort((a, b) => {
                     if (!a.stats?.final) return -1;
                     if (!b.stats?.final) return 1;
-                    if (!a.stats.final[stat]) a.stats.final[stat] = 0;
-                    if (!b.stats.final[stat]) b.stats.final[stat] = 0;
-                    return a.stats.final[stat] < b.stats.final[stat] ? 1 : -1;
+                    if (!a.stats.final[statKey]) a.stats.final[statKey] = 0;
+                    if (!b.stats.final[statKey]) b.stats.final[statKey] = 0;
+                    return a.stats.final[statKey] < b.stats.final[statKey] ? 1 : -1;
                 });
 
             if (top) {
@@ -291,10 +292,12 @@ export default class GuildSearch extends Command {
                     continue;
                 }
                 for (const s of Object.keys(member.stats.final)) {
-                    if (member.stats.final[s] % 1 !== 0) {
-                        stats[s] = `${(member.stats.final[s] * 100).toFixed(2)}%`;
+                    const sKey = s as keyof SWAPIUnitStatTypes;
+                    const val = member.stats.final[sKey] ?? 0;
+                    if (val % 1 !== 0) {
+                        stats[s] = `${(val * 100).toFixed(2)}%`;
                     } else {
-                        stats[s] = member.stats.final[s] ? member.stats.final[s].toLocaleString() : "N/A";
+                        stats[s] = val ? val.toLocaleString() : "N/A";
                     }
                 }
                 outArr.push({
@@ -332,7 +335,11 @@ export default class GuildSearch extends Command {
                     gear: { value: "⚙", startWith: "`[", endWith: "|", align: "right" },
                     gp: { value: "GP", endWith: "|", align: "right" },
                 };
-                header[stat] = { value: checkableStats[stat].short, endWith: "]`", align: "right" };
+                (header as Record<string, { value: string; startWith?: string; endWith: string; align: string }>)[stat as string] = {
+                    value: checkableStats[stat as keyof typeof checkableStats].short,
+                    endWith: "]`",
+                    align: "right",
+                };
                 const outHeader = { ...header, player: { value: "", align: "left" } };
 
                 const outTable = makeTable(outHeader, outArr);
@@ -474,7 +481,7 @@ export default class GuildSearch extends Command {
             if (doZeta && !doOmicron && !member.zetas?.length) continue;
             if (doOmicron && !doZeta && !member.omicrons?.length) continue;
 
-            if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity];
+            if (Number.isNaN(member.rarity)) member.rarity = rarityMap[member.rarity as unknown as keyof typeof rarityMap];
 
             const gearStr = getGearStr(member, "⚙").padEnd(hasRelic ? 5 : 3);
             let unitStr = " | ";

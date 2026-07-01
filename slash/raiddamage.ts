@@ -83,7 +83,8 @@ export default class RaidDamage extends Command {
 
         if (!phase || !amount) return super.error(interaction, language.get("COMMAND_RAIDDAMAGE_NOT_FOUND"));
 
-        const thisPhase = thisRaid.phases[phase];
+        const thisPhase = thisRaid.phases[Number(phase) as keyof typeof thisRaid.phases];
+        if (!thisPhase) return super.error(interaction, language.get("COMMAND_RAIDDAMAGE_NOT_FOUND"));
 
         if (Number.isNaN(Number.parseInt(amount, 10))) {
             return super.error(interaction, language.get("COMMAND_RAIDDAMAGE_AMOUNT_STR"), {

@@ -465,6 +465,9 @@ export interface SWAPIUnitStatTypes {
     "Deflection Chance": number;
     "Physical Critical Chance": number;
     "Special Critical Chance": number;
+    // Internal game-file stat names; normalized into the "... Chance" keys above
+    "Physical Critical Rating"?: number;
+    "Special Critical Rating"?: number;
     "Critical Damage": number;
     Potency: number;
     Tenacity: number;

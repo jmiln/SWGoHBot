@@ -637,7 +637,7 @@ export function getGearStr(charIn: SWAPIUnit | undefined, preStr = ""): string {
 }
 
 // Get the overall levels for a guild as a whole (Gear, rarity, relic, etc)
-export function summarizeCharLevels(guildMembers: SWAPIPlayer[], type: string): [{ [key: number]: number }, string] {
+export function summarizeCharLevels(guildMembers: SWAPIPlayer[], type: string): [Record<string, number>, string] {
     const max = { gear: 13, relic: 9, rarity: 7 };
     if (!max?.[type as keyof typeof max]) throw new Error(`[summarizeLevels] Invalid type (${type})`);
     if (!Array.isArray(guildMembers)) throw new Error("[summarizeCharLevels] guildMembers must be an array!");

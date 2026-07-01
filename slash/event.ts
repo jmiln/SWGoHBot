@@ -610,7 +610,8 @@ export default class Event extends Command {
                         const outLog: string[] = [];
                         for (const field of Object.keys(validEvent.event)) {
                             if (["updated", "updatedAt", "createdAt"].includes(field)) continue;
-                            if (validEvent.event[field].toString() !== event[field]?.toString()) {
+                            const fKey = field as keyof GuildConfigEvent;
+                            if (validEvent.event[fKey]?.toString() !== event[fKey]?.toString()) {
                                 let from = "N/A"; // Default if there's nothing to show
                                 let to = "N/A";
                                 let code = true; // Show in inline code blocks
@@ -627,8 +628,8 @@ export default class Event extends Command {
                                     }
                                     code = false;
                                 } else {
-                                    from = event[field]?.toString().length ? event[field].toString() : "N/A";
-                                    to = validEvent.event[field]?.toString().length ? validEvent.event[field].toString() : "N/A";
+                                    from = event[fKey]?.toString().length ? event[fKey].toString() : "N/A";
+                                    to = validEvent.event[fKey]?.toString().length ? validEvent.event[fKey].toString() : "N/A";
                                 }
                                 if (code) {
                                     outLog.push(`Updated **${toProperCase(field)}** from \`${from}\` to \`${to}\``);

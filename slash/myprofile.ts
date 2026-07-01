@@ -88,8 +88,9 @@ export default class MyProfile extends Command {
                 }
             }
         }
+        const modsRec = mods as Record<string, number | string>;
         for (const k of Object.keys(mods)) {
-            if (mods[k] === 0) mods[k] = "0";
+            if (modsRec[k] === 0) modsRec[k] = "0";
         }
 
         const modOut = language.get("COMMAND_MYPROFILE_MODS", mods) as unknown as { header: string; modStrs: string[] };
@@ -98,7 +99,7 @@ export default class MyProfile extends Command {
             value: ["```asciidoc", modOut.modStrs, "```"].join("\n"),
         });
 
-        const rarityCount = {
+        const rarityCount: Record<string, { c: number; s: number }> = {
             1: { c: 0, s: 0 },
             2: { c: 0, s: 0 },
             3: { c: 0, s: 0 },
@@ -108,7 +109,7 @@ export default class MyProfile extends Command {
             7: { c: 0, s: 0 },
         };
         const relicTiers = ["baseZero", "LOCKED", "UNLOCKED", 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        const relicCount = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
+        const relicCount: Record<string, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
 
         // Get the Character stats
         let zetaCount = 0;

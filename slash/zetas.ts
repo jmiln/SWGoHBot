@@ -112,7 +112,7 @@ export default class Zetas extends Command {
 
         if (subCommand === "player") {
             // Display zetas for a single player
-            const zetas = {};
+            const zetas: Record<string, unknown[]> = {};
             let count = 0;
 
             // This will grab the character info for any entered character
@@ -283,7 +283,7 @@ export default class Zetas extends Command {
                 return super.error(interaction, errorMessage);
             }
 
-            const zetas = {};
+            const zetas: Record<string, Record<string, string[]>> = {};
 
             for (const player of guildGG) {
                 for (const char of player.roster) {
@@ -365,7 +365,7 @@ export default class Zetas extends Command {
                 return;
             }
             const footerStr = updatedFooterStr(guild.updated, language);
-            if (!zetas[character.uniqueName]?.length) {
+            if (!Object.keys(zetas[character.uniqueName] ?? {}).length) {
                 return interaction.editReply({
                     embeds: [
                         {

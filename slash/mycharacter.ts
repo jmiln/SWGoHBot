@@ -16,6 +16,7 @@ import {
 import logger from "../modules/Logger.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import type { SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class MyCharacter extends Command {
@@ -129,7 +130,7 @@ export default class MyCharacter extends Command {
         const stats = thisUnit.stats;
         const isShip = thisUnit.combatType === 2;
 
-        const abilities = {
+        const abilities: Record<string, string[]> = {
             basic: [],
             special: [],
             leader: [],
@@ -188,7 +189,7 @@ export default class MyCharacter extends Command {
             .concat(abilities.contract)
             .concat(abilities.hardware);
 
-        const statNames = {
+        const statNames: Record<string, string[]> = {
             "Primary Attributes": ["Strength", "Agility", "Intelligence"],
             General: ["Health", "Protection", "Speed", "Critical Damage", "Potency", "Tenacity", "Health Steal"],
             "Physical Offense": ["Physical Damage", "Physical Critical Chance", "Armor Penetration", "Accuracy"],
@@ -197,8 +198,8 @@ export default class MyCharacter extends Command {
             "Special Survivability": ["Resistance", "Deflection Chance", "Critical Avoidance"],
         };
 
-        const langStr = language.get("BASE_STAT_NAMES");
-        const langMap = {
+        const langStr = language.get("BASE_STAT_NAMES") as unknown as Record<string, string>;
+        const langMap: Record<string, string> = {
             "Primary Attributes": "PRIMARY",
             Strength: "STRENGTH",
             Agility: "AGILITY",
@@ -250,7 +251,8 @@ export default class MyCharacter extends Command {
             let statStr = `== ${sn} ==\n`;
             for (let s of statNames[sn]) {
                 if (s.indexOf("Rating") >= 0) s = s.replace("Rating", "Chance");
-                if (!stats.final[s]) stats.final[s] = 0;
+                const sKey = s as keyof SWAPIUnitStatTypes;
+                if (!stats.final[sKey]) stats.final[sKey] = 0;
                 const thisLangStr = langStr[langMap[s]];
                 if (!thisLangStr?.length) {
                     logger.log(
@@ -265,13 +267,14 @@ export default class MyCharacter extends Command {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: 2.00%\n`;
                     } else {
                         statStr += `${langStr[langMap[s]]}${" ".repeat(rep > 0 ? rep : 0)} :: `;
-                        const str = stats.final[s] % 1 === 0 ? stats.final[s].toLocaleString() : `${(stats.final[s] * 100).toFixed(2)}%`;
+                        const str =
+                            stats.final[sKey] % 1 === 0 ? stats.final[sKey].toLocaleString() : `${(stats.final[sKey] * 100).toFixed(2)}%`;
                         const modStr = isShip
                             ? ""
-                            : stats.mods[s]
-                              ? stats.mods[s] % 1 === 0
-                                  ? `(${stats.mods[s].toLocaleString()})`
-                                  : `(${(stats.mods[s] * 100).toFixed(2)}%)`
+                            : stats.mods[sKey]
+                              ? stats.mods[sKey] % 1 === 0
+                                  ? `(${stats.mods[sKey].toLocaleString()})`
+                                  : `(${(stats.mods[sKey] * 100).toFixed(2)}%)`
                               : "";
                         statStr += `${str.toString().padEnd(8 - str.length) + modStr}\n`;
                     }

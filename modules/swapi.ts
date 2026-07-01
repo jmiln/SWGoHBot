@@ -33,6 +33,31 @@ import type {
 import type { PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
 
+// Shape of the raw comlink getGuild response as consumed by formatGuild.
+// The API returns far more; only the fields actually read are typed, the rest ride the index signatures.
+interface ComlinkGuildResponse {
+    guild: {
+        profile: {
+            id: string;
+            name: string;
+            externalMessageKey: string;
+            memberCount: number;
+            enrollmentStatus: number;
+            levelRequirement: number;
+            bannerColorId: string;
+            bannerLogoId: string;
+            internalMessage: string;
+            guildGalacticPower: string | number;
+            [key: string]: unknown;
+        };
+        recentRaidResult?: { identifier: { campaignMissionId: string }; guildRewardScore: number; raidId: string }[];
+        member: { playerId: string; memberLevel: number; memberContribution: number; [key: string]: unknown }[];
+        [key: string]: unknown;
+    };
+    raidLaunchConfig: unknown;
+    [key: string]: unknown;
+}
+
 const THREAD_COUNT = os.cpus().length;
 const abilityCosts = await readJSON<Record<string, Record<string, number>>>(`${import.meta.dirname}/../data/abilityCosts.json`);
 
@@ -1149,17 +1174,13 @@ class SWAPI {
     }
 
     private async fetchGuild(guildId: string) {
-        const comlinkGuild = (await comlinkStub.getGuild(guildId, true)) as {
-            guild: unknown;
-            raidLaunchConfig: unknown;
-            [key: string]: unknown;
-        };
+        const comlinkGuild = (await comlinkStub.getGuild(guildId, true)) as unknown as ComlinkGuildResponse;
 
         const formattedGuild = await this.formatGuild(comlinkGuild);
         return formattedGuild;
     }
 
-    private async formatGuild({ guild, raidLaunchConfig, ...topRest }) {
+    private async formatGuild({ guild, raidLaunchConfig, ...topRest }: ComlinkGuildResponse) {
         const { profile, guildEventTracker, nextChallengesRefresh, recentTerritoryWarResult, recentRaidResult, member, ...guildRest } =
             guild;
         const {
@@ -1265,7 +1286,7 @@ class SWAPI {
             nextChallengesRefresh,
             guildEventTracker,
             raidLaunchConfig,
-        };
+        } as unknown as SWAPIGuild;
     }
 
     async zetaRec(lang = "ENG_US") {

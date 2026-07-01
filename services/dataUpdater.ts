@@ -225,7 +225,10 @@ async function init() {
                     logMem("cycle start");
 
                     debugTime("Checking metadata");
-                    const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
+                    const { isMetadataUpdated, newMetadata, oldMetadata } = (await updateMetadata(
+                        DATA_DIR_PATH,
+                        comlinkStub,
+                    )) as unknown as {
                         isMetadataUpdated: boolean;
                         newMetadata: Metadata;
                         oldMetadata: Metadata;
@@ -314,19 +317,20 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
         throw new Error(`[updateMetadata] Missing required metadata keys: ${missingKeys.join(", ")}`);
     }
 
-    const metadataOut = {};
-    let oldMetadata = {};
+    const metadataOut: Record<string, unknown> = {};
+    let oldMetadata: Record<string, unknown> = {};
     try {
-        oldMetadata = await readJSON(META_FILE);
+        oldMetadata = await readJSON<Record<string, unknown>>(META_FILE);
     } catch (error) {
         debugLog(`No existing metadata (${error.code || error.message}). Creating new metadata.`);
     }
+    const meta = newMetaData as Record<string, unknown>;
     let isMetadataUpdated = false;
     for (const key of META_KEYS) {
-        if (newMetaData[key] !== oldMetadata[key]) {
+        if (meta[key] !== oldMetadata[key]) {
             isMetadataUpdated = true;
-            debugLog(`Updating metadata ${key} from ${oldMetadata[key]} to ${newMetaData[key]}`);
-            metadataOut[key] = newMetaData[key];
+            debugLog(`Updating metadata ${key} from ${oldMetadata[key]} to ${meta[key]}`);
+            metadataOut[key] = meta[key];
         } else {
             metadataOut[key] = oldMetadata[key];
         }
@@ -423,8 +427,17 @@ async function saveFile(filePath: string, jsonData: [] | object, doPretty = true
     }
 }
 
-const setLang = { 1: "Health", 2: "Offense", 3: "Defense", 4: "Speed", 5: "Crit. Chance", 6: "Crit. Damage", 7: "Potency", 8: "Tenacity" };
-const statLang = {
+const setLang: Record<string, string> = {
+    1: "Health",
+    2: "Offense",
+    3: "Defense",
+    4: "Speed",
+    5: "Crit. Chance",
+    6: "Crit. Damage",
+    7: "Potency",
+    8: "Tenacity",
+};
+const statLang: Record<string, string> = {
     0: "None",
     1: "Health",
     2: "Strength",
@@ -636,12 +649,12 @@ function foldUnitMods(unitsOut: UnitModAccumulator, unitsIn: SWAPIUnit[]): UnitM
     return unitsOut;
 }
 
-function incrementInObj(obj: object, key: string | number) {
+function incrementInObj(obj: Record<string, number>, key: string | number) {
     obj[key] = obj[key] ? obj[key] + 1 : 1;
     return obj;
 }
 
-const multiSets = {
+const multiSets: Record<string, string[]> = {
     "Crit. Chance x4": ["Crit. Chance x2", "Crit. Chance x2"],
     "Crit. Chance x6": ["Crit. Chance x2", "Crit. Chance x2", "Crit. Chance x2"],
     "Defense x4": ["Defense x2", "Defense x2"],
@@ -763,7 +776,9 @@ async function updateLocs(
     const bulkLocPut: AnyBulkWriteOperation[] = [];
     for (const lang of langList) {
         for (const target of Object.keys(targets)) {
-            const langKey = targets[target].map((t: string) => locales[lang][t] || `ERROR: ${t}`).join(" ");
+            const langKey = targets[target as keyof typeof targets]
+                .map((t: string) => locales[lang as keyof Locales][t] || `ERROR: ${t}`)
+                .join(" ");
             bulkLocPut.push({
                 updateOne: {
                     filter: { id: target, language: lang },
@@ -889,7 +904,7 @@ async function updateLocs(
                 // Go through and save all the locale strings into the db
                 let isAvailable = true;
                 for (const lang of langList) {
-                    const langKey = locales[lang][locId];
+                    const langKey = locales[lang as keyof Locales][locId];
                     if (!langKey) {
                         isAvailable = false;
                         continue;
@@ -932,7 +947,7 @@ async function updateLocs(
                     "Fleet Battles": { suffix: " (Fleet)", locId: "HARD_FLEET" },
                     default: { suffix: "N/A", locId: null },
                 };
-                const { suffix, locId } = modeMap[outMode] || modeMap.default;
+                const { suffix, locId } = modeMap[outMode as keyof typeof modeMap] || modeMap.default;
 
                 let type = outMode === "Cantina Battles" ? "Cantina" : "Hard Modes";
                 if (suffix.length) type += suffix;
@@ -1148,7 +1163,7 @@ function validateGameData(gameData: GameData): asserts gameData is ValidatedGame
         "challenge",
     ];
 
-    const missingKeys = requiredKeys.filter((key) => !gameData[key] || !Array.isArray(gameData[key]));
+    const missingKeys = requiredKeys.filter((key) => !gameData[key as keyof GameData] || !Array.isArray(gameData[key as keyof GameData]));
     if (missingKeys.length > 0) {
         throw new Error(`[validateGameData] Missing or invalid gameData keys: ${missingKeys.join(", ")}`);
     }
@@ -1283,7 +1298,7 @@ async function processLocalization(
     langList: SWAPILang[] | null = null,
 ) {
     const idKey = dbIdKey || "id";
-    const thisLangList = langList || Object.keys(locales);
+    const thisLangList: SWAPILang[] = langList || (Object.keys(locales) as SWAPILang[]);
     const bulkWriteArr: AnyBulkWriteOperation[] = [];
 
     for (const lang of thisLangList) {
@@ -1291,13 +1306,15 @@ async function processLocalization(
         for (const data of rawDataIn) {
             // For each chunk of the dataIn (ability, gear, recipes, unit, etc)
             // Create new object instead of mutating - eliminates need for structuredClone
-            const localizedData = { ...data, language: lang };
+            const localizedData: Record<string, unknown> = { ...data, language: lang };
+            const dataRec = data as Record<string, unknown>;
 
             for (const target of targetKeys) {
                 // For each of the specified keys of each chunk
-                localizedData[target] = Array.isArray(data[target])
-                    ? data[target].map((entry) => locales[lang][entry] || entry)
-                    : locales[lang][data[target]] || data[target];
+                const rawVal = dataRec[target];
+                localizedData[target] = Array.isArray(rawVal)
+                    ? rawVal.map((entry) => locales[lang][entry] || entry)
+                    : locales[lang][rawVal as string] || rawVal;
             }
             bulkWriteArr.push({
                 updateOne: {
@@ -1384,11 +1401,11 @@ async function saveRaidNames(locales: Locales) {
     logger.log(`[saveRaidNames] Found ${discoveredRaids.length} total raids: ${discoveredRaids.sort().join(", ")}`);
 
     // Build the output structure with all languages
-    const raidNamesOut = {};
+    const raidNamesOut: Record<string, Record<string, string>> = {};
     for (const lang of langList) {
         raidNamesOut[lang] = {};
         for (const [key, value] of Object.entries(raidKeys)) {
-            raidNamesOut[lang][value] = locales[lang][key];
+            raidNamesOut[lang][value] = locales[lang as keyof Locales][key];
         }
     }
     return raidNamesOut;
@@ -1782,7 +1799,7 @@ function unitsToCharacterDB(unitsIn: CharacterDBUnit[]) {
         for (const category of unit.categoryIdList) {
             const [prefix, faction] = category.split("_");
             if (catList.has(prefix) && !ignoreSet.has(faction)) {
-                factions.add(toProperCase(factionMap[faction] || faction));
+                factions.add(toProperCase(factionMap[faction as keyof typeof factionMap] || faction));
             }
         }
 
@@ -1815,7 +1832,7 @@ function unitsToCharacterDB(unitsIn: CharacterDBUnit[]) {
 
 function unitsForUnitMapFile(unitsIn: ProcessedUnit[]) {
     // gameData.units -> This is used to grab nameKey (Yes, we actually need it), crew data & combatType
-    const unitsOut = unitsIn.reduce((acc, unit) => {
+    const unitsOut = unitsIn.reduce<Record<string, unknown>>((acc, unit) => {
         acc[unit.baseId] = {
             nameKey: unit.nameKey,
             combatType: unit.combatType,
@@ -1857,7 +1874,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
 
         const localeOut = {} as Locales;
         for (const [lang, content] of Object.entries(localeData)) {
-            const out = {};
+            const out: Record<string, string> = {};
             if (lang === "Loc_Key_Mapping.txt") continue;
             const langKey = lang.replace(/^Loc_|\.txt$/gi, "").toLowerCase();
             if (!content) {
@@ -1873,7 +1890,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
                     if (key && val) out[key] = val;
                 }
             }
-            localeOut[langKey] = out;
+            localeOut[langKey as keyof Locales] = out;
         }
         // This is going to be a new version, so we can just delete the old files
         const allDataFiles = await readdir(GAMEDATA_DIR_PATH);

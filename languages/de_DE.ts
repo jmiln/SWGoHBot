@@ -1,4 +1,5 @@
 import Language from "../base/Language.ts";
+import type { SWAPIUnit } from "../types/swapi_types.ts";
 
 const langList = ["ENG_US", "GER_DE", "SPA_XM", "FRE_FR", "RUS_RU", "POR_BR", "KOR_KR", "ITA_IT", "TUR_TR", "CHS_CN", "CHT_CN", "IND_ID", "JPN_JP", "THA_TH"];
 const swgohLangList = ["de_DE", "en_US", "es_SP", "ko_KR", "pt_BR"];
@@ -961,10 +962,10 @@ export default class extends Language {
                 header: `Charaktere (${charList.length})`,
                 stats: [
                     `Char GM  :: ${gpChar}`,
-                    `7 Sterne   :: ${charList.filter(c => c.rarity === 7).length}`,
-                    `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
-                    `Ausruestungsstufe 12  :: ${charList.filter(c => c.gear === 12).length}`,
-                    `Ausruestungsstufe 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `7 Sterne   :: ${charList.filter((c: SWAPIUnit) =>c.rarity === 7).length}`,
+                    `lvl 85   :: ${charList.filter((c: SWAPIUnit) =>c.level === 85).length}`,
+                    `Ausruestungsstufe 12  :: ${charList.filter((c: SWAPIUnit) =>c.gear === 12).length}`,
+                    `Ausruestungsstufe 11  :: ${charList.filter((c: SWAPIUnit) =>c.gear === 11).length}`,
                     `Zetas    :: ${zetaCount}`
                 ].join("\n")
             }),
@@ -972,8 +973,8 @@ export default class extends Language {
                 header: `Flotten (${shipList.length})`,
                 stats: [
                     `Flotten GM :: ${gpShip}`,
-                    `7 Sterne  :: ${shipList.filter(s => s.rarity === 7).length}`,
-                    `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                    `7 Sterne  :: ${shipList.filter((s: SWAPIUnit) =>s.rarity === 7).length}`,
+                    `lvl 85  :: ${shipList.filter((s: SWAPIUnit) =>s.level === 85).length}`
                 ].join("\n")
             }),
             COMMAND_MYPROFILE_HELP: {

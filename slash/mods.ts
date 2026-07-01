@@ -63,8 +63,8 @@ export default class Mods extends Command {
                 const key = keyArray[index].trim();
                 let localizationKey = "COMMAND_MODS_UNKNOWN";
 
-                if (localizationKeyMap[key]) {
-                    localizationKey = localizationKeyMap[key];
+                if (localizationKeyMap[key as keyof typeof localizationKeyMap]) {
+                    localizationKey = localizationKeyMap[key as keyof typeof localizationKeyMap];
                 }
 
                 valueArray.push(language.get(localizationKey));

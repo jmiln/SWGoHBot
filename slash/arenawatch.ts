@@ -906,8 +906,8 @@ function getChannelStr(aw: UserConfig["arenaWatch"], alertType: string, arenaTyp
         logger.error("Invalid arenaType");
         return null;
     }
-    const thisAW = aw?.[alertType]?.[arenaType];
-    return thisAW.channel ? `<#${thisAW.channel}>` : "N/A";
+    const thisAW = (aw as unknown as Record<string, Record<string, { channel?: string }>>)?.[alertType]?.[arenaType];
+    return thisAW?.channel ? `<#${thisAW.channel}>` : "N/A";
 }
 
 function getAcMention(code: string): [number, string | null] {

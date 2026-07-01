@@ -7,6 +7,7 @@ import statEnums from "../data/statEnum.ts";
 import { charListFromSearch, findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import type { SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
 const modSlots = ["square", "arrow", "diamond", "triangle", "circle", "cross"];
@@ -177,10 +178,10 @@ export default class MyMods extends Command {
             }
 
             const charMods = langChar.mods;
-            const slots = {};
+            const slots: Record<string, { stats: string[]; type: string; lvl: number; pip: number }> = {};
 
-            const sets = language.get("BASE_MODSETS_FROM_GAME");
-            const stats = language.get("BASE_MODS_FROM_GAME");
+            const sets = language.get("BASE_MODSETS_FROM_GAME") as unknown as Record<string, string>;
+            const stats = language.get("BASE_MODS_FROM_GAME") as unknown as Record<string, string>;
 
             for (const mod of charMods ?? []) {
                 slots[mod.slot] = {
@@ -225,10 +226,10 @@ export default class MyMods extends Command {
                         interaction.channel.permissionsFor(interaction.client.user)?.has([PermissionsBitField.Flags.UseExternalEmojis]))
                 ) {
                     const shapeIconString = `${modSlots[Number.parseInt(mod, 10) - 1]}Mod${slots[mod].pip === 6 ? "Gold" : ""}`;
-                    shapeIcon = emoteStrings[shapeIconString] || shapeIcon;
+                    shapeIcon = emoteStrings[shapeIconString as keyof typeof emoteStrings] || shapeIcon;
 
                     const typeIconString = `modset${slots[mod].type.replace(/\s*/g, "")}`;
-                    typeIcon = emoteStrings[typeIconString] || typeIcon;
+                    typeIcon = emoteStrings[typeIconString as keyof typeof emoteStrings] || typeIcon;
                 }
 
                 fields.push({
@@ -253,8 +254,9 @@ export default class MyMods extends Command {
             });
         }
         if (subCommand === "best") {
-            const statToCheck = interaction.options.getString("stat");
-            if (!statToCheck) return super.error(interaction, language.get("COMMAND_MYMODS_BAD_STAT", ""));
+            const statToCheckRaw = interaction.options.getString("stat");
+            if (!statToCheckRaw) return super.error(interaction, language.get("COMMAND_MYMODS_BAD_STAT", ""));
+            const statToCheck = statToCheckRaw as keyof SWAPIUnitStatTypes;
             const showTotal = interaction.options.getBoolean("total");
 
             // Filter the player's roster so it's just characters
@@ -301,7 +303,7 @@ export default class MyMods extends Command {
             const out = sortedCharList.map((c) => {
                 let finalStat = "0";
                 let modStat: string | null = null;
-                if (c.stats?.final?.[statToCheck] % 1 === 0) {
+                if ((c.stats?.final?.[statToCheck] ?? 0) % 1 === 0) {
                     // If it's a full number, give that
                     finalStat = (c.stats?.final?.[statToCheck] || 0).toLocaleString();
                     modStat = (c.stats?.mods?.[statToCheck] || 0).toLocaleString();
@@ -382,7 +384,7 @@ export default class MyMods extends Command {
             for (const mod of namedSorted) {
                 const shapeIconString = `${modSlots[mod.slot - 1]}Mod`;
                 const value = mod.value % 1 === 0 ? mod.value : `${mod.value.toFixed(2)}%`;
-                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${emoteStrings[shapeIconString]} | ${mod.name}\n`;
+                outStr += `**\`${value.toLocaleString().padEnd(maxLen)}\`** ${emoteStrings[shapeIconString as keyof typeof emoteStrings]} | ${mod.name}\n`;
             }
 
             // Send it on back to the user

@@ -421,8 +421,8 @@ export default class GrandArena extends Command {
             // spd15, 20, 25, and off100
             modOverview.push({
                 check: labels[key],
-                user1: u1Mods?.[key],
-                user2: u2Mods?.[key],
+                user1: u1Mods?.[key as keyof typeof u1Mods],
+                user2: u2Mods?.[key as keyof typeof u2Mods],
             });
         }
 
@@ -642,7 +642,7 @@ const getDiv = (gpIn: number) => {
     const divKeys = Object.keys(gpMap);
     for (const key of [...divKeys].reverse()) {
         if (gpIn < Number.parseInt(key, 10)) continue;
-        return gpMap[key];
+        return gpMap[Number(key) as keyof typeof gpMap];
     }
-    return gpMap[divKeys[0]];
+    return gpMap[Number(divKeys[0]) as keyof typeof gpMap];
 };

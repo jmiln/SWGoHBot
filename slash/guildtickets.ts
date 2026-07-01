@@ -159,7 +159,7 @@ export default class GuildTickets extends Command {
             }
             if (updateType) {
                 gt.updateType = updateType;
-                updatedArr.push(`Update: **${updateTypeStrings[updateType]}**`);
+                updatedArr.push(`Update: **${updateTypeStrings[updateType as keyof typeof updateTypeStrings]}**`);
             }
             if (acInput) {
                 // Make sure it's a correctly formatted code, or at least just 9 numbers
@@ -223,7 +223,7 @@ export default class GuildTickets extends Command {
                             `Allycode: **${gt.allyCode ? gt.allyCode : "N/A"}**`,
                             `Show Max: **${gt?.showMax ? "ON" : "OFF"}**`,
                             `SortBy:   **${toProperCase(gt.sortBy ?? "")}**`,
-                            `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType] : updateTypeStrings.update}**`,
+                            `Updates:  **${gt?.updateType ? updateTypeStrings[gt.updateType as keyof typeof updateTypeStrings] : updateTypeStrings.update}**`,
                             `Tickets:  **${gt.tickets || 600}**`,
                         ].join("\n"),
                     },

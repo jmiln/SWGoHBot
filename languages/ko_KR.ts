@@ -1,4 +1,5 @@
 import Language from "../base/Language.ts";
+import type { SWAPIUnit } from "../types/swapi_types.ts";
 
 const DAYSOFWEEK = {
     SUNDAY: {
@@ -553,10 +554,10 @@ export default class extends Language {
                 header: `Characters (${charList.length})`,
                 stats: [
                     `Char GP  :: ${gpChar}`,
-                    `7 Star   :: ${charList.filter(c => c.rarity === 7).length}`,
-                    `lvl 85   :: ${charList.filter(c => c.level === 85).length}`,
-                    `Gear 12  :: ${charList.filter(c => c.gear === 12).length}`,
-                    `Gear 11  :: ${charList.filter(c => c.gear === 11).length}`,
+                    `7 Star   :: ${charList.filter((c: SWAPIUnit) =>c.rarity === 7).length}`,
+                    `lvl 85   :: ${charList.filter((c: SWAPIUnit) =>c.level === 85).length}`,
+                    `Gear 12  :: ${charList.filter((c: SWAPIUnit) =>c.gear === 12).length}`,
+                    `Gear 11  :: ${charList.filter((c: SWAPIUnit) =>c.gear === 11).length}`,
                     `Zetas    :: ${zetaCount}`
                 ].join("\n")
             }),
@@ -564,8 +565,8 @@ export default class extends Language {
                 header: `Ships (${shipList.length})`,
                 stats: [
                     `Ship GP :: ${gpShip}`,
-                    `7 Star  :: ${shipList.filter(s => s.rarity === 7).length}`,
-                    `lvl 85  :: ${shipList.filter(s => s.level === 85).length}`
+                    `7 Star  :: ${shipList.filter((s: SWAPIUnit) =>s.rarity === 7).length}`,
+                    `lvl 85  :: ${shipList.filter((s: SWAPIUnit) =>s.level === 85).length}`
                 ].join("\n")
             }),
             COMMAND_MYPROFILE_HELP: {

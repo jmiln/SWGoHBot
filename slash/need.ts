@@ -172,7 +172,7 @@ export default class Need extends Command {
                 } as SWAPIUnit;
             }
             if (playerUnit.rarity === 7) continue;
-            shardsLeft += shardsLeftAtStar[playerUnit.rarity];
+            shardsLeft += shardsLeftAtStar[playerUnit.rarity as keyof typeof shardsLeftAtStar];
             playerUnit = (await swgohAPI.langChar(playerUnit, swgohLanguage)) as SWAPIUnit;
             if (characters.find((c) => c.uniqueName === unit.baseId)) {
                 // It's a character

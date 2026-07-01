@@ -385,10 +385,10 @@ export default class TerritoryWar extends Command {
         // Get some general stats for any available galactic legends
         const legendMap = unitChecklist["Galactic Legends"];
 
-        const guild1GLCount = {};
-        const guild1GLUltCount = {};
-        const guild2GLCount = {};
-        const guild2GLUltCount = {};
+        const guild1GLCount: Record<string, number> = {};
+        const guild1GLUltCount: Record<string, number> = {};
+        const guild2GLCount: Record<string, number> = {};
+        const guild2GLUltCount: Record<string, number> = {};
         for (const glDefId of Object.keys(legendMap)) {
             guild1GLCount[glDefId] = 0;
             guild1GLUltCount[glDefId] = 0;
@@ -441,8 +441,8 @@ export default class TerritoryWar extends Command {
 
         // Get the overall counts for capital ships
         const capitalMap = unitChecklist["Capital Ships"];
-        const guild1CapitalCount = {};
-        const guild2CapitalCount = {};
+        const guild1CapitalCount: Record<string, number> = {};
+        const guild2CapitalCount: Record<string, number> = {};
         for (const capitalDefId of Object.keys(capitalMap)) {
             guild1CapitalCount[capitalDefId] = 0;
             guild2CapitalCount[capitalDefId] = 0;

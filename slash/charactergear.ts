@@ -91,7 +91,7 @@ export default class Charactergear extends Command {
 
         if (!allyCode) {
             if (!gearLvl) {
-                const allGear = {};
+                const allGear: Record<string, number> = {};
                 let allGearList: string[] = [];
                 for (const gTier of char.unitTierList) {
                     if (doExpand) {
@@ -330,7 +330,7 @@ async function expandPieces(list: string[]) {
         end = end.concat(pieces);
     }
 
-    const out = {};
+    const out: Record<string, { count: number; mark: string }> = {};
     for (const g of end) {
         if (out[g.name]) {
             out[g.name].count += g.count;

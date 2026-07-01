@@ -127,16 +127,17 @@ export default class MyArena extends Command {
             ],
         });
 
-        async function getArenaStrings(player: SWAPIPlayer, type = "char") {
-            if (!player.arena?.[type]?.squad?.length) return null;
+        async function getArenaStrings(player: SWAPIPlayer, type: "char" | "ship" = "char") {
+            const arena = player.arena?.[type];
+            if (!arena?.squad?.length) return null;
             const arenaArr: string[] = [];
-            for (let ix = 0; ix < player.arena[type].squad.length; ix++) {
-                const unitId = player.arena[type].squad[ix].defId;
+            for (let ix = 0; ix < arena.squad.length; ix++) {
+                const unitId = arena.squad[ix].defId;
                 const unitName = await getUnitName(player, unitId);
                 arenaArr.push(`\`${type === "char" ? positions[ix] : sPositions[ix]}\` ${unitName}`);
             }
             return {
-                name: language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA" : "FLEET"}`, player.arena[type].rank),
+                name: language.get(`COMMAND_MYARENA_${type === "char" ? "ARENA" : "FLEET"}`, arena.rank),
                 value: `${getPayoutLine(player, type === "char" ? "char" : "fleet")}${arenaArr.join("\n")}\n\`------------------------------\``,
                 inline: true,
             };
