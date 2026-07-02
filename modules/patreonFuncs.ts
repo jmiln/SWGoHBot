@@ -1237,19 +1237,14 @@ class PatreonFuncs {
                             msg = null;
                         }
                         if (msg) {
-                            // @ts-expect-error  (Won't shut up about partial messages or void, etc)
-                            targetMsg = await msg
-                                .edit({ embeds: [outEmbed] })
-                                .catch((err: unknown) =>
-                                    logger.error(`[PF sendBroadcastMsg edit] ${err instanceof Error ? err.message : String(err)}`),
-                                );
+                            // NOTE: this runs inside broadcastEval (each shard's own context), so the
+                            // module-level `logger` is not in scope here — referencing it throws
+                            // "ReferenceError: logger is not defined". Swallow to null so a failed
+                            // edit doesn't reject the whole broadcast; null is treated as "no message".
+                            targetMsg = await msg.edit({ embeds: [outEmbed] }).catch(() => null);
                         } else {
-                            // @ts-expect-error  (Won't shut up about partial messages or void, etc)
-                            targetMsg = await channel
-                                .send({ embeds: [outEmbed] })
-                                .catch((err: unknown) =>
-                                    logger.error(`[PF sendBroadcastMsg send] ${err instanceof Error ? err.message : String(err)}`),
-                                );
+                            // See note above: no `logger` inside broadcastEval; swallow to null.
+                            targetMsg = await channel.send({ embeds: [outEmbed] }).catch(() => null);
                         }
                     }
                 }
