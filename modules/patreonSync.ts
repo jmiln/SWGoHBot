@@ -115,7 +115,9 @@ async function updatePatrons() {
         try {
             jsonData = await response.json();
         } catch (parseError) {
-            logger.error("[patreonSync/updatePatrons] Failed to parse Patreon response as JSON:", parseError);
+            logger.error(
+                `[patreonSync/updatePatrons] Failed to parse Patreon response as JSON: ${parseError instanceof Error ? parseError.message : String(parseError)}`,
+            );
             return;
         }
 

@@ -131,7 +131,10 @@ export default class Register extends Command {
             );
         } catch (e) {
             logger.error(`[REGISTER] Incorrect Ally Code: ${e}`);
-            return super.error(interaction, `Something broke. Make sure you've got the correct ally code${codeBlock(e.message)}`);
+            return super.error(
+                interaction,
+                `Something broke. Make sure you've got the correct ally code${codeBlock(e instanceof Error ? e.message : String(e))}`,
+            );
         }
     }
 }

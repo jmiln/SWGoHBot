@@ -737,7 +737,7 @@ export default class Guilds extends Command {
             try {
                 rawGuild = await swgohAPI.getRawGuild(userAC);
             } catch (err) {
-                return interaction.editReply({ content: err.toString() });
+                return interaction.editReply({ content: String(err) });
             }
 
             if (!rawGuild) return interaction.editReply({ content: `Sorry, but I could not find a guild to match with ${userAC}` });

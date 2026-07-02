@@ -176,8 +176,8 @@ export async function clearSupporterInfo({ userId }: { userId: string }): Promis
     try {
         await cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, userConf);
     } catch (err) {
-        logger.error(`[guildConfig/patreonSettings/clearSupporterInfo] Error updating user: ${err.toString()}`);
-        resOut.user = { success: false, error: err.toString() };
+        logger.error(`[guildConfig/patreonSettings/clearSupporterInfo] Error updating user: ${String(err)}`);
+        resOut.user = { success: false, error: String(err) };
     }
 
     // Then remove the user info from the previously bonusServer guild

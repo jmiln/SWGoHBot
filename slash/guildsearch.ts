@@ -235,10 +235,10 @@ export default class GuildSearch extends Command {
         try {
             guild = await swgohAPI.guild(allyCode, cooldown);
         } catch (e) {
-            if (e.toString().indexOf("player is not in a guild") > -1) {
+            if (String(e).indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NOT_IN_GUILD"));
             }
-            return super.error(interaction, `${codeBlock(e)}Please try again in a bit.`, {
+            return super.error(interaction, `${codeBlock(String(e))}Please try again in a bit.`, {
                 title: "Something Broke while getting your guild's roster",
             });
         }
@@ -254,7 +254,7 @@ export default class GuildSearch extends Command {
         try {
             guildChar = await swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
-            return super.error(interaction, codeBlock(e), {
+            return super.error(interaction, codeBlock(String(e)), {
                 title: "Something Broke while getting your guild's characters",
                 footer: "Please try again in a bit",
             });

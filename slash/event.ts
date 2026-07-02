@@ -367,7 +367,7 @@ export default class Event extends Command {
                         jsonWhole = [parsedJSON];
                     }
                 } catch (e) {
-                    return super.error(interaction, `**ERROR Parsing the json**${codeBlock(e.message)}`);
+                    return super.error(interaction, `**ERROR Parsing the json**${codeBlock(e instanceof Error ? e.message : String(e))}`);
                 }
 
                 // ```json
@@ -647,7 +647,7 @@ export default class Event extends Command {
                     }
                     return super.error(interaction, `${language.get("COMMAND_EVENT_EDIT_BROKE")}\n${res?.error}`);
                 } catch (e) {
-                    return super.error(interaction, e.message);
+                    return super.error(interaction, e instanceof Error ? e.message : String(e));
                 }
             }
         }

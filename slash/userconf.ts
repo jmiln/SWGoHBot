@@ -187,7 +187,7 @@ export default class UserConf extends Command {
                         logger.error(`ERROR[UC AC ADD]: Incorrect Ally Code(${allyCode}): ${e}`);
                         return super.error(
                             interaction,
-                            `Something broke. Please make sure you've got the correct ally code${codeBlock(e.message)}`,
+                            `Something broke. Please make sure you've got the correct ally code${codeBlock(e instanceof Error ? e.message : String(e))}`,
                         );
                     }
                 }

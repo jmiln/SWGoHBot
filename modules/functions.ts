@@ -828,7 +828,7 @@ export async function reloadLanguages(): Promise<Error | null> {
             Language.registerLanguage(langName, langInstance);
         }
     } catch (err) {
-        return err;
+        return err instanceof Error ? err : new Error(String(err));
     }
     return null;
 }

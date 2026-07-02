@@ -140,7 +140,7 @@ export default class GrandArena extends Command {
                     user2 = users[1];
                 }
             } catch (e) {
-                problemArr.push(e.message);
+                problemArr.push(e instanceof Error ? e.message : String(e));
             }
             if (!user1?.roster?.length) {
                 problemArr.push("Could not get user 1");

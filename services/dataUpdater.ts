@@ -265,7 +265,9 @@ async function init() {
 
                     debugTimeEnd("Total update cycle");
                 } catch (error) {
-                    logger.error("[dataUpdater] Update cycle failed:", error);
+                    logger.error(
+                        `[dataUpdater] Update cycle failed: ${error instanceof Error ? error.stack || error.message : String(error)}`,
+                    );
                     exitCode = 1;
                 } finally {
                     await cleanup();
@@ -315,7 +317,7 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
     try {
         oldMetadata = await readJSON<Partial<Metadata>>(META_FILE);
     } catch (error) {
-        debugLog(`No existing metadata (${error.code || error.message}). Creating new metadata.`);
+        debugLog(`No existing metadata (${fsErrInfo(error)}). Creating new metadata.`);
     }
     const meta = newMetaData as Record<string, string>;
     let isMetadataUpdated = false;
@@ -517,7 +519,9 @@ async function getGuildIds(comlinkStub: ComlinkStub) {
 
         return guildLeaderboardRes.leaderboard[0].guild.map((guild) => guild.id).filter((id): id is string => id !== undefined);
     } catch (error) {
-        logger.error("[dataUpdater/getGuildIds] Failed to fetch guild leaderboard:", error);
+        logger.error(
+            `[dataUpdater/getGuildIds] Failed to fetch guild leaderboard: ${error instanceof Error ? error.stack || error.message : String(error)}`,
+        );
         throw error; // Re-throw to let caller handle
     }
 }
@@ -541,7 +545,9 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
             const playerIds = guild.member.map((player) => player.playerId).filter((id): id is string => id !== undefined);
             playerIdArr.push(...playerIds);
         } catch (error) {
-            logger.error(`[dataUpdater/getGuildPlayerIds] Failed to fetch guild ${guildId}:`, error);
+            logger.error(
+                `[dataUpdater/getGuildPlayerIds] Failed to fetch guild ${guildId}: ${error instanceof Error ? error.message : String(error)}`,
+            );
             failedGuilds++;
         }
     });
@@ -588,7 +594,9 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
                 if (strippedUnits?.length) foldUnitMods(unitsOut, strippedUnits);
             } catch (err) {
                 failedCount++;
-                logger.error(`[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}:`, err);
+                logger.error(
+                    `[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`,
+                );
             }
             // Sample memory periodically to catch any transient peak from in-flight worker payloads
             if (++processedCount % 1000 === 0) logMem(`aggregatePlayerMods after ${processedCount} players`);
@@ -1093,7 +1101,7 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string):
         return cachedData;
     } catch (error) {
         // File doesn't exist or can't be read, fetch new data
-        debugLog(`No cached gameData for ${version} (${error.code || error.message}), fetching new copy`);
+        debugLog(`No cached gameData for ${version} (${fsErrInfo(error)}), fetching new copy`);
     }
 
     // If we don't have the most recent version locally, grab a new copy of the gameData from CG
@@ -1108,7 +1116,7 @@ async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string):
                 await unlink(path.join(GAMEDATA_DIR_PATH, f));
             } catch (error) {
                 // Ignore ENOENT (file already deleted), log other errors
-                if (error.code !== "ENOENT") {
+                if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
                     logger.warn(`[getMostRecentGameData] Failed to delete old file ${f}: ${error}`);
                 }
             }
@@ -1855,7 +1863,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
         return localeData;
     } catch (error) {
         // File doesn't exist or can't be read, fetch new data
-        debugLog(`No cached localeData for ${bundleVersion} (${error.code || error.message}), fetching new copy`);
+        debugLog(`No cached localeData for ${bundleVersion} (${fsErrInfo(error)}), fetching new copy`);
     }
 
     try {
@@ -1895,7 +1903,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
                     await unlink(path.join(GAMEDATA_DIR_PATH, f));
                 } catch (error) {
                     // Ignore ENOENT (file already deleted), log other errors
-                    if (error.code !== "ENOENT") {
+                    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
                         logger.warn(`[getLocalizationData] Failed to delete old file ${f}: ${error}`);
                     }
                 }
@@ -1934,7 +1942,7 @@ async function processJourneyReqs(gameData: ValidatedGameData) {
         oldReqs = await readJSON<JourneyReqs>(JOURNEY_FILE_PATH);
     } catch (error) {
         // File doesn't exist yet, will be created
-        debugLog(`No existing journey requirements file (${error.code || error.message}), creating new one`);
+        debugLog(`No existing journey requirements file (${fsErrInfo(error)}), creating new one`);
     }
 
     // Build lookup maps for O(1) access
@@ -2070,7 +2078,7 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
         try {
             checklist = await readJSON<Record<string, [string, string][]>>(UNIT_CHECKLIST_FILE_PATH);
         } catch (error) {
-            logger.warn(`[updateUnitChecklist] Could not read checklist (${error.code || error.message}), creating new one`);
+            logger.warn(`[updateUnitChecklist] Could not read checklist (${fsErrInfo(error)}), creating new one`);
             checklist = {
                 "Galactic Legends": [],
                 "Light Side": [],
@@ -2192,6 +2200,12 @@ function debugLog(str: string | string[]) {
 
 function logError(context: string, message: string, error?: unknown) {
     logger.error(`[${context}] ${message}${error ? `: ${error}` : ""}`);
+}
+
+// fs/errno errors carry a `.code` (e.g. ENOENT) that's more useful than the message for logging.
+function fsErrInfo(error: unknown): string {
+    if (error instanceof Error) return (error as NodeJS.ErrnoException).code || error.message;
+    return String(error);
 }
 
 function getCategoryDescription(category: string): string {

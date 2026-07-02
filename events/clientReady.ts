@@ -107,7 +107,7 @@ function setupDataUpdateTasks(shardId: number): void {
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[${shardId}] Error in arenaTick: ${message}`);
-                logger.error(err.stack);
+                logger.error(err instanceof Error ? err.stack : String(err));
             } finally {
                 arenaTickRunning = false;
             }
@@ -142,7 +142,7 @@ function setupDataUpdateTasks(shardId: number): void {
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err);
                 logger.error(`[${shardId}] Error in data update tasks: ${message}`);
-                logger.error(err.stack);
+                logger.error(err instanceof Error ? err.stack : String(err));
             } finally {
                 isRunning = false;
             }

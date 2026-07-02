@@ -17,7 +17,7 @@ export async function getMongoClient(): Promise<MongoClient> {
         } catch (error) {
             throw new Error(
                 `Failed to connect to MongoDB at ${url}. Ensure testcontainer is running.\n` +
-                `Original error: ${error.message}`
+                `Original error: ${error instanceof Error ? error.message : String(error)}`
             );
         }
     }
