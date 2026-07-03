@@ -7,7 +7,8 @@ export async function setEvents({ guildId, evArrOut }: { guildId: string; evArrO
     return await guildConfigDB.put({ guildId: guildId }, { events: evArrOut }, false);
 }
 export async function updateGuildEvent({ guildId, evName, event }: { guildId: string; evName: string; event: GuildConfigEvent }) {
-    const evList: GuildConfig = await guildConfigDB.getOne({ guildId }, { events: 1, _id: 0 });
+    const evList: GuildConfig | null = await guildConfigDB.getOne({ guildId }, { events: 1, _id: 0 });
+    if (!evList) return null; // No config doc for this guild, so there is no event to update
     const evIx = evList.events.findIndex((ev) => ev.name === evName);
 
     if (evIx < 0) return null; // Just to be doubly sure that it exists

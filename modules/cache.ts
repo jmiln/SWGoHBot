@@ -92,8 +92,14 @@ class Cache implements BotCache {
         return (await col.aggregate(aggregate).toArray()) as unknown as T[];
     }
 
-    async getOne<T extends Document>(database: string, collection: string, matchCondition: Filter<T>, projection?: Document): Promise<T> {
-        return (await this.getCol<T>(database, collection).findOne(matchCondition, { projection })) as unknown as T;
+    async getOne<T extends Document>(
+        database: string,
+        collection: string,
+        matchCondition: Filter<T>,
+        projection?: Document,
+    ): Promise<T | null> {
+        // findOne resolves to null when nothing matches; surface that honestly so callers must guard.
+        return (await this.getCol<T>(database, collection).findOne(matchCondition, { projection })) as T | null;
     }
 
     async remove(database: string, collection: string, matchCondition: Filter<Document>): Promise<DeleteResult> {

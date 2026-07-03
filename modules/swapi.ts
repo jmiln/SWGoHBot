@@ -1042,7 +1042,7 @@ class SWAPI {
 
         if (!player.guildId) throw new Error("This player is not in a guild");
 
-        let rawGuild: RawGuild = await cache.getOne(env.MONGODB_SWAPI_DB, "rawGuilds", { id: player.guildId });
+        let rawGuild: RawGuild | null = await cache.getOne(env.MONGODB_SWAPI_DB, "rawGuilds", { id: player.guildId });
         if (
             forceUpdate ||
             !rawGuild ||
@@ -1129,7 +1129,7 @@ class SWAPI {
         }
         if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
 
-        const guild: SWAPIGuild = await cache.getOne(env.MONGODB_SWAPI_DB, "guilds", { id: player.guildId });
+        const guild: SWAPIGuild | null = await cache.getOne(env.MONGODB_SWAPI_DB, "guilds", { id: player.guildId });
 
         /** Check if existance and expiration */
         if (!guild || this.isExpired(guild.updated, cooldown, true)) {

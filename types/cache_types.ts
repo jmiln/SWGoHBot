@@ -15,7 +15,7 @@ export interface BotCache {
         collection: string,
         matchCondition: Filter<T>,
         projection?: Partial<Record<keyof T, 0 | 1>>,
-    ) => Promise<T>;
+    ) => Promise<T | null>;
     put: <T extends Document>(
         database: string,
         collection: string,
