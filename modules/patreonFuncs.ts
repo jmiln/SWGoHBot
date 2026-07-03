@@ -951,7 +951,7 @@ class PatreonFuncs {
                 gt.nextChallengesRefresh = rawGuild.nextChallengesRefresh;
             }
 
-            if (!rawGuild?.roster?.length) {
+            if (!rawGuild?.roster?.length || !rawGuild?.profile) {
                 logger.error(
                     `[patreonFuncs/guildsTickets] Could not get the guild/ roster for ${gt.allyCode}, guild output: ${JSON.stringify(rawGuild)}`,
                 );

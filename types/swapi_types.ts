@@ -264,8 +264,8 @@ export interface RawGuild {
     };
     progress: null;
     roster: RawGuildMember[];
-    member: RawComlinkGuildMember[]; // Hoisted from guild.member during processing
-    guild?: { member: RawComlinkGuildMember[] }; // Raw API response wraps members here
+    member: RawComlinkGuildMember[]; // From the unwrapped guild response; turned into roster during processing
+    guild?: { member: RawComlinkGuildMember[]; profile: RawGuild["profile"] }; // Raw API response wraps the payload here
     updated: number;
     updatedAt: Date;
 }

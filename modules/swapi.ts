@@ -1053,10 +1053,9 @@ class SWAPI {
         ) {
             rawGuild = (await comlinkStub.getGuild(player.guildId, true)) as RawGuild;
 
-            // The comlink API wraps member data under a 'guild' key; hoist it so the loop below finds it
-            if (rawGuild.guild?.member?.length) {
-                rawGuild.member = rawGuild.guild.member;
-            }
+            // The comlink API wraps the whole payload under a 'guild' key; unwrap it
+            // so the loop below iterates the real guild fields (profile, member, ...)
+            rawGuild = (rawGuild.guild ?? rawGuild) as RawGuild;
             const ignoreArr = [
                 "inviteStatus",
                 "raidStatus",
@@ -1070,7 +1069,6 @@ class SWAPI {
                 "stat",
                 "recentRaidResult",
                 "recentTerritoryWarResult",
-                "guild", // member data hoisted above; don't store the raw wrapper
             ];
 
             // Only keep the useful parts of this mess
