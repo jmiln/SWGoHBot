@@ -27,7 +27,6 @@ export { defaultSettings as defaultGuildSettings } from "../data/constants/defau
 export * from "./arenaPlayers.schema.ts";
 export * from "./commandStats.schema.ts";
 export * from "./guildConfigs.schema.ts";
-export * from "./guilds.schema.ts";
 export * from "./patrons.schema.ts";
 export * from "./players.schema.ts";
 export * from "./users.schema.ts";

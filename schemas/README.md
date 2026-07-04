@@ -8,8 +8,11 @@ This directory contains Zod schemas for validating MongoDB documents. These sche
 - **`guildConfigs.schema.ts`** - Guild configuration documents (`guildConfigs` collection)
 - **`patrons.schema.ts`** - Patreon user documents (`patrons` collection)
 - **`players.schema.ts`** - Player data documents (`rawPlayers`, `playerStats` collections)
-- **`guilds.schema.ts`** - Guild data documents (`rawGuilds`, `guilds` collections)
 - **`index.ts`** - Main export file with helper functions
+
+> The `rawGuilds` / `guilds` collections have no Zod schema. Their shapes are the `RawGuild` and
+> `SWAPIGuild` interfaces in `types/swapi_types.ts` and are not validated on write (the comlink API
+> owns the shape). See `docs/SCHEMAS.md`.
 
 ## Usage
 
