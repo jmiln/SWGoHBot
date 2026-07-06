@@ -2,106 +2,74 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import Challenges from "../../slash/challenges.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
-import { assertReplyCount } from "./helpers.ts";
+import { assertErrorReply, assertReplyCount, getLastReply } from "./helpers.ts";
+
+// challenges maps each weekday to the set of challenges available that day. MockLanguage echoes
+// the lang keys, so the challenge names in the output are the COMMAND_CHALLENGES_* keys. These
+// tests assert the exact per-day challenge set (the real logic), plus header/formatting and the
+// unknown-day error branch. Expected sets verified against the challenges map in slash/challenges.ts.
+const MONDAY = [
+    "COMMAND_CHALLENGES_TRAINING",
+    "COMMAND_CHALLENGES_STRENGTH",
+    "COMMAND_CHALLENGES_SHIP_ENHANCEMENT",
+    "COMMAND_CHALLENGES_SHIP_BUILDING",
+    "COMMAND_CHALLENGES_SHIP_ABILITY",
+];
+const SUNDAY = [
+    "COMMAND_CHALLENGES_TRAINING",
+    "COMMAND_CHALLENGES_ABILITY",
+    "COMMAND_CHALLENGES_BOUNTY",
+    "COMMAND_CHALLENGES_AGILITY",
+    "COMMAND_CHALLENGES_STRENGTH",
+    "COMMAND_CHALLENGES_TACTICS",
+    "COMMAND_CHALLENGES_SHIP_ABILITY",
+];
+
+async function runForDay(day: string) {
+    const interaction = createMockInteraction({ optionsData: { day: `day_${day}` } });
+    const command = new Challenges();
+    await command.run(createCommandContext({ interaction }));
+    return interaction;
+}
+
+/** Pull the "* <challenge>" lines out of the asciiDoc code block. */
+function challengeLines(interaction: unknown): string[] {
+    const content = getLastReply(interaction as never).content as string;
+    return content
+        .split("\n")
+        .filter((l) => l.startsWith("* "))
+        .map((l) => l.slice(2).trim());
+}
 
 describe("Challenges", () => {
-    it("should display challenges for current day when no day specified", async () => {        const interaction = createMockInteraction();
-
-        const command = new Challenges();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
-
-        const reply = replies[0];
-        assert.ok(reply.content, "Expected content in reply");
-
-        // Should contain challenge information
-        assert.ok(
-            reply.content.includes("Challenges for") || reply.content.includes("COMMAND_CHALLENGES_"),
-            "Expected challenges information in response"
-        );
+    it("lists exactly the challenges available on Monday", async () => {
+        const interaction = await runForDay("Monday");
+        assert.deepStrictEqual(new Set(challengeLines(interaction)), new Set(MONDAY));
     });
 
-    it("should display challenges for specified day", async () => {        const interaction = createMockInteraction({
-            optionsData: { day: "day_Monday" }
-        });
-
-        const command = new Challenges();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
-
-        const reply = replies[0];
-        assert.ok(reply.content, "Expected content in reply");
-        assert.ok(
-            reply.content.includes("Monday") || reply.content.includes("MONDAY"),
-            "Expected Monday challenges"
-        );
+    it("lists exactly the challenges available on Sunday", async () => {
+        const interaction = await runForDay("Sunday");
+        assert.deepStrictEqual(new Set(challengeLines(interaction)), new Set(SUNDAY));
     });
 
-    it("should display challenges for different days", async () => {
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-        for (const day of days) {
-            const interaction = createMockInteraction({
-                optionsData: { day: `day_${day}` }
-            });
-
-            const command = new Challenges();
-            const ctx = createCommandContext({ interaction });
-            await command.run(ctx);
-
-            const replies = (interaction as any)._getReplies();
-            const reply = replies[0];
-
-            assert.ok(reply.content, `Expected content for ${day}`);
-            // Each day should have some challenges listed
-            assert.ok(
-                reply.content.includes(day.toUpperCase()) || reply.content.includes(day),
-                `Expected ${day} in response`
-            );
-        }
+    it("includes a header naming the requested day", async () => {
+        const interaction = await runForDay("Wednesday");
+        const reply = getLastReply(interaction);
+        assert.ok(reply.content.includes("Challenges for Wednesday"), "Expected the day header");
     });
 
-    it("should include challenge types in response", async () => {        const interaction = createMockInteraction({
-            optionsData: { day: "day_Sunday" }
-        });
-
-        const command = new Challenges();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        const reply = replies[0];
-
-        // Sunday should have multiple challenges
-        // The response should contain COMMAND_CHALLENGES_ language keys (in mock)
-        assert.ok(reply.content.length > 20, "Expected substantial content with challenge list");
-    });
-
-    it("should send exactly one reply", async () => {        const interaction = createMockInteraction();
-
-        const command = new Challenges();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
+    it("wraps the output in an asciiDoc code block and replies once", async () => {
+        const interaction = await runForDay("Friday");
+        const reply = getLastReply(interaction);
+        assert.ok(reply.content.startsWith("```asciiDoc\n"), "Expected an asciiDoc code block fence");
+        assert.ok(reply.content.trimEnd().endsWith("```"), "Expected the code block to be closed");
         assertReplyCount(interaction, 1);
     });
 
-    it("should format response as code block", async () => {        const interaction = createMockInteraction();
-
+    it("errors on an unrecognized day", async () => {
+        const interaction = createMockInteraction({ optionsData: { day: "day_Notaday" } });
         const command = new Challenges();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
-
-        const replies = (interaction as any)._getReplies();
-        const reply = replies[0];
-
-        assert.ok(reply.content, "Expected content");
-        // Code blocks are formatted (though we can't easily verify the exact format)
+        await command.run(createCommandContext({ interaction }));
+        assertErrorReply(interaction, "COMMAND_CHALLENGES_UNKNOWN_DAY");
     });
 });

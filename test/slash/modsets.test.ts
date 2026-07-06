@@ -2,36 +2,28 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import Modsets from "../../slash/modsets.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
-import { assertReplyCount } from "./helpers.ts";
+import { assertReplyCount, getLastReply } from "./helpers.ts";
 
+// modsets is a static command: it replies with COMMAND_MODSETS_OUTPUT wrapped in an
+// `md` code block. There is no branching logic, so the tests assert the formatting
+// contract (code block + correct string key) and that it replies exactly once.
 describe("Modsets", () => {
-    it("should display mod set information", async () => {        const interaction = createMockInteraction();
-
+    it("wraps the mod-sets output in an `md` code block", async () => {
+        const interaction = createMockInteraction();
         const command = new Modsets();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
+        await command.run(createCommandContext({ interaction }));
 
-        const replies = (interaction as any)._getReplies();
-        assert.ok(replies.length > 0, "Expected at least one reply");
-
-        const reply = replies[0];
-        assert.ok(reply.content, "Expected content in reply");
-
-        // The modsets command uses language.get("COMMAND_MODSETS_OUTPUT")
-        // which returns the key itself in mock
-        assert.ok(
-            reply.content.includes("COMMAND_MODSETS_OUTPUT"),
-            "Expected mod sets output in reply"
-        );
+        const reply = getLastReply(interaction);
+        assert.ok(reply.content.startsWith("```md\n"), "Expected an md code block fence");
+        assert.ok(reply.content.trimEnd().endsWith("```"), "Expected the code block to be closed");
+        assert.ok(reply.content.includes("COMMAND_MODSETS_OUTPUT"), "Expected the mod-sets output string");
     });
 
-    it("should send exactly one reply", async () => {        const interaction = createMockInteraction();
-
+    it("sends exactly one reply", async () => {
+        const interaction = createMockInteraction();
         const command = new Modsets();
-        const ctx = createCommandContext({ interaction });
-        await command.run(ctx);
+        await command.run(createCommandContext({ interaction }));
 
         assertReplyCount(interaction, 1);
     });
-
 });
