@@ -1,5 +1,6 @@
 import { Collection, type ChatInputCommandInteraction, type Client, type Guild, type GuildMember, type InteractionReplyOptions, type User } from "discord.js";
 import Language from "../../base/Language.ts";
+import EnUS from "../../languages/en_US.ts";
 import type { SWAPILang } from "../../types/swapi_types.ts";
 import type { CommandContext } from "../../types/types.ts";
 
@@ -297,6 +298,21 @@ class MockLanguage extends Language {
 
 export function createMockLanguage(): Language {
     return new MockLanguage();
+}
+
+/**
+ * Real en_US Language instance for testing.
+ *
+ * Unlike createMockLanguage() (which echoes raw keys and drops args), this returns the actual
+ * en_US strings with real interpolation. Use it in a test when you need to assert real rendered
+ * output (computed values, formatted numbers, interpolated names) rather than which lang key was
+ * selected. Opt in per test: pass it as `language` to createCommandContext.
+ *
+ * Note: with this language, replies contain real strings, so assertions must match real substrings
+ * (not "COMMAND_*" key names). Keep using createMockLanguage() for branch/key-selection assertions.
+ */
+export function createRealLanguage(): Language {
+    return new EnUS();
 }
 
 /**

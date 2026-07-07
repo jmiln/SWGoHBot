@@ -29,11 +29,6 @@ describe("Versus", () => {
         swgohAPI.unitNames = originalUnitNames;
     });
 
-    it("should initialize with correct name", () => {
-        const command = new Versus();
-        assert.strictEqual(command.commandData.name, "versus");
-    });
-
     it("should return error when both ally codes are invalid", async () => {
         // getAllyCode uses useInteractionId=false so null inputs return null without hitting MongoDB
         const interaction = createMockInteraction({ optionsData: {} });
@@ -114,5 +109,20 @@ describe("Versus", () => {
         const embedData = embed.data || embed;
         assert.ok(embedData.title?.includes("Player One"), "Expected player 1 name in title");
         assert.ok(embedData.title?.includes("Player Two"), "Expected player 2 name in title");
+        assert.ok(embedData.title?.includes("Darth Vader"), "Expected the character name in title");
+
+        const fieldValue = (name: string): string =>
+            embedData.fields?.find((f: { name: string; value: string }) => f.name === name)?.value ?? "";
+
+        // General Info table: both players share level 85, rarity 7, gear 13, relic 7 (currentTier 9 - 2).
+        const general = fieldValue("General Info");
+        assert.ok(general.includes("85"), "Expected level 85 in the general table");
+        assert.ok(general.includes("13"), "Expected gear 13 in the general table");
+
+        // Stats table: the real comparison — Speed 180 (user1) vs 200 (user2), Health formatted with a locale comma.
+        const stats = fieldValue("Stats");
+        assert.ok(stats.includes("180"), "Expected user1 Speed 180 in the stats table");
+        assert.ok(stats.includes("200"), "Expected user2 Speed 200 in the stats table");
+        assert.ok(stats.includes("40,000"), "Expected user1 Health formatted as 40,000");
     });
 });

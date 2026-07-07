@@ -29,11 +29,6 @@ describe("Need", () => {
         swgohAPI.langChar = originalLangChar;
     });
 
-    it("should initialize with correct name", () => {
-        const command = new Need();
-        assert.strictEqual(command.commandData.name, "need");
-    });
-
     it("should return error when no filter is specified", async () => {
         // Literal allycode bypasses MongoDB, no filter options → error before interaction.reply()
         const interaction = createMockInteraction({ optionsData: { allycode: "123456789" } });
@@ -51,7 +46,9 @@ describe("Need", () => {
         assertErrorReply(interaction, "BASE_INVALID_ALLY_CODE");
     });
 
-    it("should display a need list for a battle filter", async () => {
+    it("should display a partial-progress need list for a battle filter", async () => {
+        // Player owns only Vader (6*); every other Cantina unit is un-owned (defaults to rarity 0),
+        // so this is deterministically a PARTIAL result with strikethrough lines for the 0* units.
         swgohAPI.player = async () =>
             createMockPlayer({
                 allyCode: 123456789,
@@ -71,5 +68,15 @@ describe("Need", () => {
         const reply = getLastReply(interaction);
         assert.ok(reply.embeds?.length > 0, "Expected embed in reply");
         assert.ok(!reply.flags?.length, "Expected non-ephemeral reply");
+
+        const embed = reply.embeds[0];
+        // Not everyone is 7*, so the description is the partial-progress branch (not COMMAND_NEED_COMPLETE).
+        assert.strictEqual(embed.description, "COMMAND_NEED_PARTIAL");
+
+        // The character section exists and formats un-owned units as struck-through 0* lines.
+        const charField = embed.fields?.find((f: { name: string }) => f.name.includes("COMMAND_NEED_CHAR_HEADER"));
+        assert.ok(charField, "Expected a character field");
+        assert.ok(charField.value.includes("`0*`"), "Expected 0* lines for un-owned units");
+        assert.ok(charField.value.includes("~~"), "Expected un-owned units to be struck through");
     });
 });

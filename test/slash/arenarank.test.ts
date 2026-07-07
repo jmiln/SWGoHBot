@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import { arenaJumps } from "../../data/constants/units.ts";
 import Arenarank from "../../slash/arenarank.ts";
-import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction, createRealLanguage } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount, getLastReply } from "./helpers.ts";
 
 // A rank well above the arenaJumps table (max key 59), so findNextRank uses the
@@ -106,6 +106,20 @@ describe("Arenarank", () => {
             // (not error / best-rank); the numeric progression is covered by the unit tests above.
             assert.ok(reply.content.includes("COMMAND_ARENARANK_RANKLIST"), "Expected the rank-list branch");
             assertReplyCount(interaction, 1);
+        });
+
+        it("renders the real computed progression end-to-end (real language)", async () => {
+            const interaction = createMockInteraction({ optionsData: { rank: ESTIMATED_RANK } });
+            const command = new Arenarank();
+            // Real en_US language (not the key-echoing mock) so we can assert the actual rendered
+            // progression rank 100 → 85 → 72 → 61 → 51 → 43 reaches the user, not just the branch.
+            await command.run(createCommandContext({ interaction, language: createRealLanguage() }));
+
+            const reply = getLastReply(interaction);
+            assert.ok(
+                reply.content.includes("100 → 85 → 72 → 61 → 51 → 43"),
+                `Expected the real rank progression in the reply, got: ${reply.content}`,
+            );
         });
     });
 });

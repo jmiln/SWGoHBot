@@ -5,7 +5,7 @@ import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import MyProfile from "../../slash/myprofile.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
-import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit, createRealLanguage } from "../mocks/index.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
 describe("MyProfile", () => {
@@ -24,11 +24,6 @@ describe("MyProfile", () => {
 
     beforeEach(() => {
         swgohAPI.player = originalPlayer;
-    });
-
-    it("should initialize with correct name", () => {
-        const command = new MyProfile();
-        assert.strictEqual(command.commandData.name, "myprofile");
     });
 
     it("should return error when no allyCode is registered and none provided", async () => {
@@ -73,7 +68,9 @@ describe("MyProfile", () => {
         swgohAPI.player = async () => mockPlayer;
 
         const interaction = createMockInteraction({ optionsData: { allycode: "123456789" } });
-        const ctx = createCommandContext({ interaction });
+        // Real language so the COMMAND_MYPROFILE_CHARS/SHIPS/MODS stat objects actually render
+        // their computed values. With the key-echoing mock these fields come back undefined.
+        const ctx = createCommandContext({ interaction, language: createRealLanguage() });
         const command = new MyProfile();
         await command.run(ctx);
 
@@ -81,10 +78,29 @@ describe("MyProfile", () => {
         assert.ok(reply.embeds?.length > 0, "Expected embed in reply");
         assert.ok(!reply.flags?.length, "Expected non-ephemeral reply");
 
-        const embed = reply.embeds[0];
-        const embedData = embed.data || embed;
+        const embedData = reply.embeds[0].data || reply.embeds[0];
         assert.ok(embedData.author?.name, "Expected author in embed");
-        assert.ok(embedData.fields?.length > 0, "Expected fields in embed");
+
+        const field = (match: string) =>
+            embedData.fields?.find((f: { name: string }) => f.name.includes(match)) as { name: string; value: string } | undefined;
+
+        // Characters field: 1 char (Vader, 7*), char GP 3,000,000 (from STAT_CHARACTER_GALACTIC_POWER).
+        const chars = field("Characters (1)");
+        assert.ok(chars, "Expected a Characters field rendered by the real lang function");
+        assert.match(chars.value, /Char GP\s*::\s*3,000,000/, "Expected rendered char GP");
+        assert.match(chars.value, /7 Star\s*::\s*1/, "Expected one 7* character");
+        assert.match(chars.value, /Zetas\s*::\s*0/, "Expected zero zetas");
+
+        // Ships field: 1 ship (Chimaera, 7*), ship GP 2,000,000.
+        const ships = field("Ships (1)");
+        assert.ok(ships, "Expected a Ships field");
+        assert.match(ships.value, /Ship GP\s*::\s*2,000,000/, "Expected rendered ship GP");
+        assert.match(ships.value, /7 Star\s*::\s*1/, "Expected one 7* ship");
+
+        // Mods field: no mods on the roster, so all counts render as 0.
+        const modsField = field("Mod Overview");
+        assert.ok(modsField, "Expected a Mod Overview field");
+        assert.match(modsField.value, /6\* Mods\s*::\s*0/, "Expected rendered mod counts");
     });
 
     it("should return error when player has no stats", async () => {
