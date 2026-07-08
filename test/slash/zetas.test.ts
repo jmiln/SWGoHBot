@@ -5,7 +5,7 @@ import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import Zetas from "../../slash/zetas.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
-import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit, createRealLanguage } from "../mocks/index.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
 describe("Zetas", () => {
@@ -30,11 +30,6 @@ describe("Zetas", () => {
         swgohAPI.player = originalPlayer;
         swgohAPI.unitNames = originalUnitNames;
         swgohAPI.langChar = originalLangChar;
-    });
-
-    it("should initialize with correct name", () => {
-        const command = new Zetas();
-        assert.strictEqual(command.commandData.name, "zetas");
     });
 
     it("should have player and guild subcommands", () => {
@@ -107,12 +102,26 @@ describe("Zetas", () => {
         const interaction = createMockInteraction({
             optionsData: { _subcommand: "player", allycode: "123456789" },
         });
-        const ctx = createCommandContext({ interaction });
+        // Real language so COMMAND_ZETA_ZETAS_HEADER renders "<player>'s Zetas (<count>)" with the
+        // real interpolated name/count instead of the raw key.
+        const ctx = createCommandContext({ interaction, language: createRealLanguage() });
         const command = new Zetas();
         await command.run(ctx);
 
         const reply = getLastReply(interaction);
         assert.ok(reply.embeds?.length > 0, "Expected embed in reply");
         assert.ok(!reply.flags?.length, "Expected non-ephemeral reply");
+
+        const embedData = reply.embeds[0].data || reply.embeds[0];
+
+        // The one qualifying zeta gives a count of 1, rendered into the author header.
+        assert.strictEqual(embedData.author?.name, "TestPlayer's Zetas (1)", "Expected the rendered zeta header with count");
+
+        // The character list field shows "`(1)` Darth Vader" for the single zeta'd unit.
+        const listField = embedData.fields?.find((f: { value: string }) => f.value.includes("Darth Vader")) as
+            | { value: string }
+            | undefined;
+        assert.ok(listField, "Expected a field listing the zeta'd character");
+        assert.ok(listField.value.includes("`(1)` Darth Vader"), "Expected the character with its zeta count");
     });
 });

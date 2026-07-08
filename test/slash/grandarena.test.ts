@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, it } from "node:test";
 import swgohAPI from "../../modules/swapi.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
 import GrandArena from "../../slash/grandarena.ts";
-import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
+import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit, createRealLanguage } from "../mocks/index.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
 const originalUnitStats = swgohAPI.unitStats;
@@ -78,7 +78,7 @@ describe("GrandArena Functionality", () => {
         assert.ok(fieldNames.includes("Mod Stats Overview"), "Expected Mod Stats Overview field");
     });
 
-    it("should set the embed author using the output header language key", async () => {
+    it("should render the vs header with both player names", async () => {
         const player1 = createMockPlayer({ name: "AlphaPlayer", allyCode: 123456789, roster: [makeDarthVader()] });
         const player2 = createMockPlayer({ name: "BetaPlayer", allyCode: 987654321, roster: [makeDarthVader()] });
 
@@ -88,14 +88,18 @@ describe("GrandArena Functionality", () => {
             optionsData: { allycode_1: "123456789", allycode_2: "987654321" },
         } as any);
 
-        await new GrandArena().run(createCommandContext({ interaction }));
+        // Real language so BASE_GA_VS_HEADER interpolates the two player names instead of echoing the key.
+        await new GrandArena().run(createCommandContext({ interaction, language: createRealLanguage() }));
 
         const lastReply = getLastReply(interaction);
         const embed = lastReply.embeds?.[0];
         const embedData = embed?.data || embed;
 
-        // The test language mock returns the language key itself; verify the correct key is used
-        assert.ok(embedData?.author?.name?.includes("BASE_GA_VS_HEADER"), "Expected embed author to use grandarena output header language key");
+        assert.strictEqual(
+            embedData?.author?.name,
+            "Grand Arena AlphaPlayer vs BetaPlayer",
+            "Expected the rendered vs header naming both players",
+        );
 
         // Verify the General Overview field contains GP values derived from the mock roster
         const overviewField = embedData?.fields?.find((f: any) => f.name === "General Overview");

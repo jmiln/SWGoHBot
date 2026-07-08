@@ -32,11 +32,6 @@ describe("TerritoryWar", () => {
         swgohAPI.unitStats = originalUnitStats;
     });
 
-    it("should initialize with correct name", () => {
-        const command = new TerritoryWar();
-        assert.strictEqual(command.commandData.name, "territorywar");
-    });
-
     it("should have allycode_1 and allycode_2 options", () => {
         const command = new TerritoryWar();
         const optionNames = command.commandData.options.map((o: any) => o.name);
@@ -61,8 +56,8 @@ describe("TerritoryWar", () => {
         const player1 = createMockPlayer({ allyCode: 111111111, name: "Player One", guildId: "guild-a", roster: [unit] });
         const player2 = createMockPlayer({ allyCode: 222222222, name: "Player Two", guildId: "guild-b", roster: [unit] });
 
-        const guild1 = createMockGuild({ id: "guild-a", name: "Guild Alpha", gp: 200000000, members: 50, roster: [member1] });
-        const guild2 = createMockGuild({ id: "guild-b", name: "Guild Beta", gp: 180000000, members: 48, roster: [member2] });
+        const guild1 = createMockGuild({ id: "guild-a", name: "Guild Alpha", gp: 200_000_000, members: 50, roster: [member1] });
+        const guild2 = createMockGuild({ id: "guild-b", name: "Guild Beta", gp: 180_000_000, members: 48, roster: [member2] });
 
         swgohAPI.player = async (allycode) => {
             if (String(allycode) === "111111111") return player1;
@@ -92,9 +87,25 @@ describe("TerritoryWar", () => {
 
         const embed = reply.embeds[0];
         const embedData = embed.data || embed;
-        assert.ok(
-            JSON.stringify(embedData).includes("Guild Alpha") || JSON.stringify(embedData).includes("Guild Beta"),
-            "Expected guild name in embed",
+
+        // Author header is built directly (not lang-driven): both guild names + roster sizes.
+        assert.strictEqual(
+            embedData.author?.name,
+            "Territory War, Guild Alpha (1) vs Guild Beta (1)",
+            "Expected the header naming both guilds and their roster counts",
         );
+
+        const fieldNames = embedData.fields?.map((f: { name: string }) => f.name) ?? [];
+        for (const section of ["GP Stats Overview", "Character Gear Counts", "Character Relic Counts", "Character Rarity Counts"]) {
+            assert.ok(fieldNames.includes(section), `Expected the "${section}" field`);
+        }
+
+        // GP Stats Overview renders the guild totals via shortenNum: 200M (guild1) vs 180M (guild2).
+        const gpField = embedData.fields?.find((f: { name: string; value: string }) => f.name === "GP Stats Overview") as
+            | { value: string }
+            | undefined;
+        assert.ok(gpField, "Expected the GP Stats Overview field");
+        assert.ok(gpField.value.includes("200M"), "Expected guild1 total GP rendered as 200M");
+        assert.ok(gpField.value.includes("180M"), "Expected guild2 total GP rendered as 180M");
     });
 });
