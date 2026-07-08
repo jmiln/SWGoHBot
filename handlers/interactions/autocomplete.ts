@@ -9,9 +9,19 @@ import { getCommandNames } from "../slashHandler.ts";
 import { logErr } from "./errors.ts";
 
 // Constants
-const AUTOCOMPLETE_IGNORED_ERRORS = ["unknown interaction", "bad gateway", "service unavailable", "connect timeout", "unknown message"];
+// "already been acknowledged" (DiscordAPIError 40060) mirrors the guard in chatInput.ts:
+// a shard replay / duplicate gateway delivery means the first handler already responded,
+// so the second respond is expected noise rather than a real failure.
+const AUTOCOMPLETE_IGNORED_ERRORS = [
+    "unknown interaction",
+    "already been acknowledged",
+    "bad gateway",
+    "service unavailable",
+    "connect timeout",
+    "unknown message",
+];
 
-const AUTOCOMPLETE_SILENT_ERRORS = ["unknown interaction", "service unavailable"];
+const AUTOCOMPLETE_SILENT_ERRORS = ["unknown interaction", "already been acknowledged", "service unavailable"];
 
 const MAX_AUTOCOMPLETE_RESULTS = 24;
 
