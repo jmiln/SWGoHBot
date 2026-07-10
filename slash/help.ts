@@ -108,11 +108,15 @@ export default class Help extends Command {
         } else {
             // Searching for info on a certain command
             let foundCommand: HelpCommand | null = null;
+            let foundCategory: string | null = null;
             for (const cat of helpKeys) {
                 const thisCat = help[cat];
                 if (typeof thisCat === "object" && "commands" in thisCat) {
                     foundCommand = thisCat.commands.find((cmd) => cmd.name.toLowerCase() === search.toLowerCase()) ?? null;
-                    if (foundCommand) break;
+                    if (foundCommand) {
+                        foundCategory = cat;
+                        break;
+                    }
                 }
             }
 
@@ -120,11 +124,14 @@ export default class Help extends Command {
 
             const cmdArr = formatCmdHelp(foundCommand.usage, foundCommand.name, foundCommand.description);
 
+            // Flag supporter-only commands so the detail view matches the category listing
+            const supporterNote = foundCategory === "Patreon" ? "**Patreon supporter-only command**\n\n" : "";
+
             await interaction.reply({
                 embeds: [
                     {
                         title: `Command description for ${toProperCase(search)}`,
-                        description: ` - Options are either \`<required>\` or \`[optional]\`\n\n${cmdArr.join("\n")}`,
+                        description: ` - Options are either \`<required>\` or \`[optional]\`\n\n${supporterNote}${cmdArr.join("\n")}`,
                         color: color,
                     },
                 ],
