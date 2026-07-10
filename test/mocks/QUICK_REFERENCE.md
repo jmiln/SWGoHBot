@@ -72,6 +72,12 @@ const msg = interaction.language.get(
 
 // Day formatting
 interaction.language.getDay("monday", "long");  // "Monday"
+
+// Default mock ECHOES the key and drops args (good for asserting which branch/key was used).
+// Opt into the real en_US language when you need to assert real rendered output:
+import { createRealLanguage } from "../mocks/index.ts";
+const ctx = createCommandContext({ interaction, language: createRealLanguage() });
+// reply now contains real English -> assert real substrings, not "COMMAND_*" keys.
 ```
 
 ### Discord Properties

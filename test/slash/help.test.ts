@@ -78,6 +78,30 @@ describe("Help", () => {
         assert.ok(embed.description?.includes("/info"), "Expected command in description");
     });
 
+    it("should flag a Patreon command as supporter-only in its detail view", async () => {
+        const interaction = createMockInteraction({ optionsData: { command: "arenahist" } });
+
+        await new Help().run(createCommandContext({ interaction }));
+
+        const embed = (interaction as any)._getReplies()[0].embeds[0];
+        assert.ok(
+            embed.description?.toLowerCase().includes("supporter-only"),
+            "Expected the Patreon supporter-only note in the arenahist detail view",
+        );
+    });
+
+    it("should not flag a non-Patreon command as supporter-only", async () => {
+        const interaction = createMockInteraction({ optionsData: { command: "info" } });
+
+        await new Help().run(createCommandContext({ interaction }));
+
+        const embed = (interaction as any)._getReplies()[0].embeds[0];
+        assert.ok(
+            !embed.description?.toLowerCase().includes("supporter-only"),
+            "Did not expect a supporter-only note for a non-Patreon command",
+        );
+    });
+
     it("should return error for invalid command", async () => {
         const interaction = createMockInteraction({ optionsData: { command: "nonexistentcommand" } });
 

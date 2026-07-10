@@ -1085,6 +1085,7 @@ export default class extends Language {
             COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
             COMMAND_MYARENA_PAYOUT: "Payout",
+            COMMAND_MYARENA_HISTORY_NOTE: "Track your arena rank history over time with `/arenahist` — available to Patreon supporters for their tracked accounts.",
             COMMAND_MYARENA_HELP: {
                 description: "Show user's current arena ranks and their squads.",
                 actions: [

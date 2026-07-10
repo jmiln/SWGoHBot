@@ -176,6 +176,32 @@ const day1 = interaction.language.getDay("monday", "long");  // "Monday"
 const day2 = interaction.language.getDay("mon", "short");    // "MON"
 ```
 
+#### Key-echoing mock vs. `createRealLanguage()`
+
+The default language on `createMockInteraction()` / `createCommandContext()` is a **key-echoing mock**:
+for an unknown key it returns the raw key string and **drops any interpolation args** (it only fills
+`{{0}}`/`{{name}}`-style placeholders, which the real keys don't contain). That is ideal for asserting
+*which branch* a command took (`assertErrorReply(interaction, "COMMAND_X_KEY")`), but it means computed
+values, joined lists, and formatted numbers never reach the reply — and any message built by passing
+sub-strings as args (e.g. an error list) collapses to just its wrapper key.
+
+When you need to assert the **real rendered output**, opt into the real `en_US` language per test:
+
+```typescript
+import { createRealLanguage } from "../mocks/index.ts";
+
+const ctx = createCommandContext({ interaction, language: createRealLanguage() });
+await command.run(ctx);
+
+// Replies now contain real English, so assert real substrings — NOT "COMMAND_*" key names.
+const reply = getLastReply(interaction);
+assert.ok(reply.content.includes("100 → 85 → 72 → 61 → 51 → 43")); // arenarank progression
+```
+
+Rule of thumb: use the default mock for branch/key-selection assertions; reach for
+`createRealLanguage()` only when the value you care about is produced by the language layer
+(interpolated names/counts, formatted numbers, joined lists). Keep both in the same file as needed.
+
 ### Discord Properties
 
 Realistic Discord objects included:
@@ -599,7 +625,13 @@ it("handles API errors gracefully", async () => {
 
 4. **Options data**: Keys prefixed with `_` are special (e.g., `_subcommand`, `_subcommandGroup`).
 
-5. **Language auto-creation**: You don't need to pass `language` to `createCommandContext()` - it's automatically created from the interaction.
+5. **Language auto-creation**: You don't need to pass `language` to `createCommandContext()` - it's automatically created from the interaction (the key-echoing mock). Pass `language: createRealLanguage()` when you need real rendered strings (see [Language System](#language-system)).
+
+6. **Per-file process isolation**: `node --test` runs each test file in its own process, so
+   reassigning a module singleton (e.g. `patreonFuncs.getPatronUser`, `swgohAPI.player`,
+   `userReg.getUser`) is isolated to that file - two files can mock the same function without racing.
+   Still restore the original in `afterEach`/`after`. (Shared MongoDB is the one exception; scope
+   writes with file-unique keys.)
 
 ---
 
@@ -630,6 +662,6 @@ See these files for complete working examples:
 
 ---
 
-**Last Updated**: February 2026
-**Mock Coverage**: Full CommandContext + SWAPI support
+**Last Updated**: July 2026
+**Mock Coverage**: Full CommandContext + SWAPI support (+ `createRealLanguage()` for real-string assertions)
 **Test Compatibility**: Node.js native test runner with TypeScript
