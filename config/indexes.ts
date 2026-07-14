@@ -258,6 +258,16 @@ export const indexConfig: DatabaseIndexes = {
                 },
             },
         ],
+
+        // GAC battle counter data — derived win rates per leader
+        counterData: [
+            {
+                key: { mode: 1, battleType: 1, leader: 1, instanceId: 1 },
+                options: {
+                    name: "idx_counterdata_lookup",
+                },
+            },
+        ],
     },
 };
 
