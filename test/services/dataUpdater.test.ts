@@ -15,6 +15,7 @@ const {
     unitsToCharacterDB,
     unitsForUnitMapFile,
     unitsToUnitFiles,
+    resolveLocKey,
 } = dataUpdater;
 
 // ---------------------------------------------------------------------------
@@ -507,6 +508,51 @@ describe("unitsForUnitMapFile", () => {
 });
 
 // ---------------------------------------------------------------------------
+// resolveLocKey
+// ---------------------------------------------------------------------------
+
+describe("resolveLocKey", () => {
+    const BASE = "EVENT_ASSAULT_EMPIRE_NAME";
+
+    it("returns the bare key when that is all that exists", () => {
+        assert.strictEqual(resolveLocKey(BASE, { [BASE]: "Empire Assault" }), BASE);
+    });
+
+    it("prefers a versioned key over the bare one", () => {
+        const locale = { [BASE]: "old", [`${BASE}_V2`]: "new" };
+        assert.strictEqual(resolveLocKey(BASE, locale), `${BASE}_V2`);
+    });
+
+    it("picks the highest version when several exist", () => {
+        const locale = { [BASE]: "v1", [`${BASE}_V2`]: "v2", [`${BASE}_V3`]: "v3" };
+        assert.strictEqual(resolveLocKey(BASE, locale), `${BASE}_V3`);
+    });
+
+    it("handles the separator-less V form CG also uses", () => {
+        // real example: EVENT_ASSAULT_EWOK_NAMEV2
+        const locale = { [`${BASE}V2`]: "new" };
+        assert.strictEqual(resolveLocKey(BASE, locale), `${BASE}V2`);
+    });
+
+    it("still handles the legacy _2 form check1or2 used to resolve", () => {
+        const locale = { [`${BASE}_2`]: "second" };
+        assert.strictEqual(resolveLocKey(BASE, locale), `${BASE}_2`);
+    });
+
+    it("returns null when nothing resolves", () => {
+        assert.strictEqual(resolveLocKey(BASE, { SOMETHING_ELSE: "x" }), null);
+    });
+
+    it("does not match a longer unrelated key that merely starts with the base", () => {
+        assert.strictEqual(resolveLocKey(BASE, { [`${BASE}_DESC`]: "a description" }), null);
+    });
+
+    it("tolerates a missing locale", () => {
+        assert.strictEqual(resolveLocKey(BASE, undefined as any), null);
+    });
+});
+
+// ---------------------------------------------------------------------------
 // unitsToUnitFiles
 // ---------------------------------------------------------------------------
 
@@ -649,6 +695,27 @@ describe("unitsToUnitFiles", () => {
         assert.deepStrictEqual(shipsOut[0].crew, ["General Grievous"]);
         assert.strictEqual(shipsOut[0].avatarName, "charui_malevolence");
         assert.strictEqual(shipsOut[0].mods, null);
+    });
+
+    it("omits crew for characters, which never have any", () => {
+        const { charactersOut } = build([vader], [], []);
+        assert.ok(!("crew" in charactersOut[0]), `characters should carry no crew field, got ${JSON.stringify(charactersOut[0].crew)}`);
+    });
+
+    it("drops a legacy crew field an earlier run wrote onto a character", () => {
+        const oldChar = {
+            name: "Darth Vader",
+            uniqueName: "VADER",
+            aliases: ["Darth Vader"],
+            avatarName: "charui_vader",
+            avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_vader.png",
+            side: "dark",
+            factions: ["Sith"],
+            mods: {},
+            crew: [],
+        };
+        const { charactersOut } = build([vader], [oldChar as any], []);
+        assert.ok(!("crew" in charactersOut[0]), "a stored character crew field should not survive");
     });
 
     it("splits units into characters and ships by combatType", () => {

@@ -832,72 +832,73 @@ async function updateLocs(
             if (node.campaignId === "EVENTS") {
                 if (node.campaignMapId === "MARQUEE") {
                     // Run through stuff for Marquee events
-                    locId = `EVENT_MARQUEE_${node.campaignNodeId.split("_")[0]}_NAME`;
+                    locId = resolveLocKey(`EVENT_MARQUEE_${node.campaignNodeId.split("_")[0]}_NAME`, locales.eng_us);
                     charObj = { type: "Marquee", locId };
                 } else if (node.campaignMapId === "PROGRESSION") {
                     // Process the two progression events (GMY / EP)
-                    locId = `PROGRESSIONEVENT_${node.campaignNodeId}_NAME`;
+                    locId = resolveLocKey(`PROGRESSIONEVENT_${node.campaignNodeId}_NAME`, locales.eng_us);
                     charObj = { type: "Legendary Event", locId };
                 } else if (node.campaignMapId === "JOURNEY") {
                     const journeyKeys = ["JOURNEY_JEDIKNIGHTLUKE", "JOURNEY_DARTHREVAN"];
                     if (journeyKeys.some((key) => campaignNodeId.includes(key))) {
-                        locId = `EVENT_JOURNEY_${mat.defId}_NAME`;
+                        locId = resolveLocKey(`EVENT_JOURNEY_${mat.defId}_NAME`, locales.eng_us);
                     } else if (node.campaignNodeId === "HEROJOURNEY_SCAVENGERREY") {
-                        locId = "EVENT_HERO_SCAVENGERREY_NAME";
+                        locId = resolveLocKey("EVENT_HERO_SCAVENGERREY_NAME", locales.eng_us);
                     } else {
-                        locId = check1or2(`${mat.defId}_GUIDE_DETAILS_TITLE`, locales.eng_us);
+                        // CG has dropped some units' guide title outright (JEDIKNIGHTCAL), so fall
+                        // back to the journey event's own name rather than losing the location.
+                        locId =
+                            resolveLocKey(`${mat.defId}_GUIDE_DETAILS_TITLE`, locales.eng_us) ??
+                            resolveLocKey(`EVENT_JOURNEY_${mat.defId}_NAME`, locales.eng_us);
                     }
                     charObj = { type: "Hero's Journey", locId };
                 } else if (node.campaignMapId === "LEGENDARY") {
                     if (["THE_FORCE_UNLEASHED", "DARK_TIMES"].includes(node.campaignNodeId)) {
-                        locId = `${mat.defId}_JOURNEY_GUIDE_EVENT_TITLE_V2`;
+                        locId = resolveLocKey(`${mat.defId}_JOURNEY_GUIDE_EVENT_TITLE`, locales.eng_us);
                     } else {
-                        locId = check1or2(`${mat.defId}_GUIDE_DETAILS_TITLE`, locales.eng_us);
+                        locId = resolveLocKey(`${mat.defId}_GUIDE_DETAILS_TITLE`, locales.eng_us);
                     }
                     charObj = { type: "Legendary Event", locId };
                 } else if (node.campaignMapId === "EPIC") {
                     if (node.campaignNodeId === "CLASH_ON_KAMINO") {
-                        locId = `EPIC_CONFRONTATION_${node.campaignNodeId}_NAME`;
+                        locId = resolveLocKey(`EPIC_CONFRONTATION_${node.campaignNodeId}_NAME`, locales.eng_us);
                     } else {
-                        locId = `MYTHICEVENT_${node.campaignNodeId}_V2`;
+                        locId = resolveLocKey(`MYTHICEVENT_${node.campaignNodeId}`, locales.eng_us);
                     }
                     charObj = { type: "Epic Confrontation", locId };
                 } else if (node.campaignMapId === "HEROIC") {
-                    locId = `EVENT_${node.campaignNodeId.replace("NODE_EVENT_", "")}_NAME`;
+                    locId = resolveLocKey(`EVENT_${node.campaignNodeId.replace("NODE_EVENT_", "")}_NAME`, locales.eng_us);
                     charObj = { type: "Heroic Event", locId };
                 } else if (node.campaignMapId === "FLEETMASTERY") {
-                    locId = `EVENT_FLEET_MASTERY_${mat.defId}_NAME`;
+                    locId = resolveLocKey(`EVENT_FLEET_MASTERY_${mat.defId}_NAME`, locales.eng_us);
                     charObj = { type: "Fleet Event", locId };
                 } else if (node.campaignMapId === "SCHEDULED") {
                     if (node.campaignNodeId === "CONQUEST_UNIT_TRIALS") {
                         // Process the Proving Grounds events
                         // - Really just localize "Proving Grounds" since the rest is just the unit's name
-                        locId = "EVENT_CONQUEST_UNIT_TRIALS_NAME";
+                        locId = resolveLocKey("EVENT_CONQUEST_UNIT_TRIALS_NAME", locales.eng_us);
                         charObj = { type: "Proving Grounds", locId };
                     } else if (node.campaignNodeId.includes("GHOSTS_OF_DATHOMIR")) {
-                        locId = "EVENT_HOLIDAY_GHOSTS_OF_DATHOMIR_NAME";
+                        locId = resolveLocKey("EVENT_HOLIDAY_GHOSTS_OF_DATHOMIR_NAME", locales.eng_us);
                         charObj = { type: "Special Event", locId };
                     } else if (node.campaignNodeId.startsWith("NODE_EVENT_ASSAULT")) {
-                        locId = `EVENT_ASSAULT_${node.campaignNodeId.split("_").pop()}_NAME`;
+                        locId = resolveLocKey(`EVENT_ASSAULT_${node.campaignNodeId.split("_").pop()}_NAME`, locales.eng_us);
                         charObj = { type: "Assault Battle Event", locId };
                     } else if (node.campaignNodeId.includes("GALACTIC_BOUNTY")) {
-                        locId = "EVENT_GALACTIC_BOUNTY_01_NAME";
+                        locId = resolveLocKey("EVENT_GALACTIC_BOUNTY_01_NAME", locales.eng_us);
                         charObj = { type: "Galactic Bounty Event", locId };
                     }
                 } else if (node.campaignMapId === "GALACTIC") {
                     // Process galactic legends events
                     //  - Still not sure how to manage LORDVADER in place of VADER
                     const commonStr = node.campaignNodeId.replace("CAMPAIGN_", ""); // Replace junk
-                    const possibleKeys = [
-                        `NODE_CAMPAIGN_${commonStr}_NAME`,
-                        `${commonStr}_NAME`,
-                        `EVENT_${mat.defId}_GALACTICLEGEND_NAME_V2`,
-                        `EVENT_${mat.defId}_GALACTICLEGEND_NAME`,
-                    ];
+                    // Each base is version-resolved, so these are only the genuinely different shapes.
+                    const possibleKeys = [`NODE_CAMPAIGN_${commonStr}_NAME`, `${commonStr}_NAME`, `EVENT_${mat.defId}_GALACTICLEGEND_NAME`];
 
                     for (const possible of possibleKeys) {
-                        if (locales.eng_us[possible]) {
-                            locId = possible;
+                        const resolved = resolveLocKey(possible, locales.eng_us);
+                        if (resolved) {
+                            locId = resolved;
                             break;
                         }
                     }
@@ -1088,14 +1089,24 @@ function removeDuplicates(locations: Location[]) {
     });
 }
 
-function check1or2(strIn: string, locale: Record<string, string>) {
-    if (locale?.[strIn]) {
-        return strIn;
+// CG versions localization keys inconsistently and without warning: the same event name has
+// shipped as `KEY`, `KEY_2`, `KEY_V2`, `KEY_V3` and even `KEYV2` (no separator). Hardcoding
+// whichever suffix was current when a branch was written means a rename silently drops the
+// location (see BUG_REFERENCE.md), so resolve the base key against the versions that actually
+// exist and take the newest. Only the V forms are treated as versions -- a trailing `_<n>` is
+// usually an ordinary index (`_01`, `_95`), so only the legacy `_2` that check1or2 used is kept.
+// Versions observed in the wild top out at V7; the cap just bounds the probe.
+const MAX_LOC_KEY_VERSION = 9;
+
+function resolveLocKey(baseKey: string, locale: Record<string, string>): string | null {
+    if (!locale) return null;
+    for (let version = MAX_LOC_KEY_VERSION; version >= 2; version--) {
+        for (const key of [`${baseKey}_V${version}`, `${baseKey}V${version}`]) {
+            if (locale[key]) return key;
+        }
     }
-    if (locale?.[`${strIn}_2`]) {
-        return `${strIn}_2`;
-    }
-    return null;
+    if (locale[`${baseKey}_2`]) return `${baseKey}_2`;
+    return locale[baseKey] ? baseKey : null;
 }
 
 async function getMostRecentGameData(comlinkStub: ComlinkStub, version: string): Promise<GameData> {
@@ -1682,11 +1693,16 @@ function unitsToUnitFiles(
         // have to be resolved here.
         const localizedFactions = factions.map((faction) => engStringMap?.[faction] || faction);
 
+        // crew is ship-only, so it's dropped here rather than carried over: earlier runs wrote an
+        // empty one onto every character, where it means nothing.
+        const isShip = unit.combatType === SHIP_COMBAT_TYPE;
+        const { crew: _oldCrew, ...oldUnitFields } = oldUnit ?? {};
+
         // Everything assigned here is derived from game data, so it is recomputed every run --
         // fields that are curated (aliases) or filled in by other passes (mods, abilities, url)
         // are carried over from the existing entry instead.
         const unitObj: BotUnit = {
-            ...oldUnit,
+            ...oldUnitFields,
             name,
             uniqueName: unit.baseId,
             aliases: oldUnit?.aliases?.length ? oldUnit.aliases : [name],
@@ -1695,7 +1711,7 @@ function unitsToUnitFiles(
             side,
             factions: localizedFactions.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
             mods: unit.combatType === CHAR_COMBAT_TYPE ? (oldUnit?.mods ?? ({} as BotUnitMods)) : null,
-            crew: (unit.combatType === SHIP_COMBAT_TYPE && unit.crewList?.map((cr) => unitDefIdMap[cr.unitId ?? ""])) || [],
+            ...(isShip ? { crew: unit.crewList?.map((cr) => unitDefIdMap[cr.unitId ?? ""]) ?? [] } : {}),
         };
 
         if (unit.combatType === CHAR_COMBAT_TYPE) {
@@ -2416,6 +2432,7 @@ export default {
     unitsToCharacterDB,
     unitsForUnitMapFile,
     unitsToUnitFiles,
+    resolveLocKey,
 
     processModResults,
 
