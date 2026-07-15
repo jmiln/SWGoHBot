@@ -423,6 +423,7 @@ export default class extends Language {
             COMMAND_COUNTER_HEADER_VARIANT: (mode, kind, sampleN, comp) => `${mode} · ${kind} · ${sampleN} seen · vs ${comp}`,
             COMMAND_COUNTER_HEADER_CLOSEST: (mode, kind, sampleN, comp) => `${mode} · ${kind} · ${sampleN} seen · closest comp: ${comp}`,
             COMMAND_COUNTER_OVERALL_NOTE: (leader) => `No data for that exact comp — showing all ${leader} defenses.`,
+            COMMAND_COUNTER_ROW_STATS: (winPct, n) => `**${winPct}% win** · ${n} battles`,
             COMMAND_COUNTER_TOP_NOTE: "Showing top 10.",
             COMMAND_COUNTER_FOOTER: (season, instanceId) => `Season ${season} · event ${instanceId} · refreshes each GAC event · Source: gahistory.c3po.wtf`,
 

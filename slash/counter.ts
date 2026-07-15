@@ -15,10 +15,6 @@ import logger from "../modules/Logger.ts";
 import type { CounterDoc } from "../schemas/counters.schema.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
-const MODE_CHOICES = [
-    { name: "5v5", value: "5v5" },
-    { name: "3v3", value: "3v3" },
-];
 const BATTLETYPE_CHOICES = [
     { name: "Characters", value: "char" },
     { name: "Fleet", value: "fleet" },
@@ -29,6 +25,33 @@ const memberOption = (n: number) => ({
     type: ApplicationCommandOptionType.String,
     description: `Defense team member ${n} to narrow the comp (optional)`,
     autocomplete: true,
+});
+
+// Mode is always required, so it reads better as a subcommand (`/counter 5v5 ...`) than an option.
+// Both subcommands take an identical option set.
+const modeSubcommand = (mode: "5v5" | "3v3") => ({
+    name: mode,
+    type: ApplicationCommandOptionType.Subcommand,
+    description: `Find ${mode} counters for a defensive leader or fleet capital`,
+    options: [
+        {
+            name: "leader",
+            type: ApplicationCommandOptionType.String,
+            description: "Leader (character) or capital ship to counter",
+            required: true,
+            autocomplete: true,
+        },
+        memberOption(2),
+        memberOption(3),
+        memberOption(4),
+        memberOption(5),
+        {
+            name: "battletype",
+            type: ApplicationCommandOptionType.String,
+            description: "Force character or fleet lookup (defaults to character)",
+            choices: BATTLETYPE_CHOICES,
+        },
+    ],
 });
 
 /** baseId -> display name; falls back to the raw baseId when the unit is unknown. */
@@ -107,15 +130,19 @@ export function buildCounterEmbed(
         header = language.get("COMMAND_COUNTER_HEADER_CLOSEST", mode, battleType, view.bucket.sampleN, compNames);
     else header = language.get("COMMAND_COUNTER_HEADER_OVERALL", mode, battleType, view.bucket.sampleN);
 
-    const lines = view.rows.map((r) => {
-        const team = [`${nameOf(r.atkLeader)} (L)`, ...r.others.map(nameOf)].join(", ");
-        return `${team} — **${r.winPct}%**  n=${r.n}`;
-    });
-    if (view.totalCounters > view.rows.length) lines.push(`_${language.get("COMMAND_COUNTER_TOP_NOTE")}_`);
+    // One field per counter: the attack leader is the (bold) field name, its team and stats sit below it.
+    const fields = view.rows.map((r) => ({
+        name: nameOf(r.atkLeader),
+        value: `${r.others.length ? `${r.others.map(nameOf).join(", ")}\n` : ""}${language.get("COMMAND_COUNTER_ROW_STATS", r.winPct, r.n)}`,
+    }));
+    if (view.totalCounters > view.rows.length) {
+        fields.push({ name: "​", value: `_${language.get("COMMAND_COUNTER_TOP_NOTE")}_` });
+    }
 
     return {
         title: `vs ${leaderName}`,
-        description: `${header}\n\n${lines.join("\n")}`,
+        description: header,
+        fields,
         footer: { text: language.get("COMMAND_COUNTER_FOOTER", view.doc.season, view.doc.instanceId) },
     };
 }
@@ -127,26 +154,7 @@ export default class Counter extends Command {
         category: "Gamedata",
         permLevel: 0,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
-        options: [
-            { name: "mode", type: ApplicationCommandOptionType.String, description: "GAC mode", required: true, choices: MODE_CHOICES },
-            {
-                name: "leader",
-                type: ApplicationCommandOptionType.String,
-                description: "Leader (character) or capital ship to counter",
-                required: true,
-                autocomplete: true,
-            },
-            memberOption(2),
-            memberOption(3),
-            memberOption(4),
-            memberOption(5),
-            {
-                name: "battletype",
-                type: ApplicationCommandOptionType.String,
-                description: "Force character or fleet lookup (defaults to character)",
-                choices: BATTLETYPE_CHOICES,
-            },
-        ],
+        options: [modeSubcommand("5v5"), modeSubcommand("3v3")],
     };
 
     constructor() {
@@ -156,7 +164,7 @@ export default class Counter extends Command {
     async run({ interaction, language }: CommandContext) {
         await interaction.deferReply();
 
-        const mode = interaction.options.getString("mode", true) as "5v5" | "3v3";
+        const mode = interaction.options.getSubcommand() as "5v5" | "3v3";
         const leaderArg = interaction.options.getString("leader", true);
         const battletypeArg = interaction.options.getString("battletype");
 
@@ -211,7 +219,8 @@ export default class Counter extends Command {
 
     async autocomplete(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption) {
         const query = focusedOption.value?.toString() ?? "";
-        const mode = interaction.options.getString("mode") as "5v5" | "3v3" | null;
+        // getSubcommand(false) so a malformed/incomplete interaction returns no suggestions rather than throwing.
+        const mode = interaction.options.getSubcommand(false) as "5v5" | "3v3" | null;
         if (!mode) return interaction.respond([]);
 
         const battletypeArg = interaction.options.getString("battletype");
