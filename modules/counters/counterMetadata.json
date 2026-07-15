@@ -1,0 +1,18 @@
+{
+    "5v5": {
+        "lastInstanceId": "O1782853200000",
+        "season": 80,
+        "status": "ok",
+        "ingestedAt": "2026-07-15T09:27:22.415Z",
+        "leaderDocs": 156,
+        "players": 134282
+    },
+    "3v3": {
+        "lastInstanceId": "O1780434000000",
+        "season": 79,
+        "status": "ok",
+        "ingestedAt": "2026-07-15T10:03:23.455Z",
+        "leaderDocs": 185,
+        "players": 172428
+    }
+}
