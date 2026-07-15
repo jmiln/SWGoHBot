@@ -415,6 +415,17 @@ export default class extends Language {
             COMMAND_ARENAHIST_NOT_REGISTERED: "I couldn't find your data. Please register with `/register` first.",
             COMMAND_ARENAHIST_IMAGE_ERROR:    "Failed to generate the history chart. Please try again shortly.",
 
+            // Counter Command
+            COMMAND_COUNTER_NO_UNIT: (name) => `Couldn't find a unit named \`${name}\`.`,
+            COMMAND_COUNTER_NO_DATA: (leader, mode) => `No counter data for **${leader}** in ${mode} yet. Data refreshes each GAC event.`,
+            COMMAND_COUNTER_UNRESOLVED_MEMBERS: (names) => `Ignoring members I couldn't identify: ${names}.`,
+            COMMAND_COUNTER_HEADER_OVERALL: (mode, kind, sampleN) => `${mode} · ${kind} · ${sampleN} seen · any defense`,
+            COMMAND_COUNTER_HEADER_VARIANT: (mode, kind, sampleN, comp) => `${mode} · ${kind} · ${sampleN} seen · vs ${comp}`,
+            COMMAND_COUNTER_HEADER_CLOSEST: (mode, kind, sampleN, comp) => `${mode} · ${kind} · ${sampleN} seen · closest comp: ${comp}`,
+            COMMAND_COUNTER_OVERALL_NOTE: (leader) => `No data for that exact comp — showing all ${leader} defenses.`,
+            COMMAND_COUNTER_TOP_NOTE: "Showing top 10.",
+            COMMAND_COUNTER_FOOTER: (season, instanceId) => `Season ${season} · event ${instanceId} · refreshes each GAC event · Source: gahistory.c3po.wtf`,
+
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Training Droids",
             COMMAND_CHALLENGES_ABILITY : "Ability Mats",
