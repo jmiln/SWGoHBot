@@ -1251,14 +1251,17 @@ async function processGameData(gameData: GameData, locales: Locales) {
         const unitsOut = unitsForUnitMapFile(processedUnitList);
         await saveFile(path.join(DATA_DIR_PATH, "unitMap.json"), unitsOut, false);
 
-        // Update & save the character/ship.json files (Not being tested, because it mashes so many bits together to make it work)
-        const { charactersOut, shipsOut } = await unitsToUnitFiles(
+        // Update & save the character/ship.json files
+        const [oldCharFile, oldShipFile] = await Promise.all([readJSON<BotUnit[]>(CHAR_FILE_PATH), readJSON<BotUnit[]>(SHIP_FILE_PATH)]);
+        const { charactersOut, shipsOut } = unitsToUnitFiles(
             processedUnitList,
             locales,
             catMapOut,
             unitDefIdMap,
             unitRecipeList,
             unitShardList,
+            oldCharFile,
+            oldShipFile,
         );
         await saveFile(CHAR_FILE_PATH, sortByName(charactersOut));
         await saveFile(SHIP_FILE_PATH, sortByName(shipsOut));
@@ -1638,15 +1641,16 @@ function processUnits(unitsIn: comlinkComponents["UnitDef"][]): ProcessedUnit[] 
         });
 }
 
-async function unitsToUnitFiles(
+function unitsToUnitFiles(
     filteredList: ProcessedUnit[],
     locales: Locales,
     catMap: { id: string; descKey: string }[],
     unitDefIdMap: Record<string, string>,
     unitRecipeList: { id: string; unitShard: string }[],
     unitShardList: { id: string; iconKey: string }[],
+    oldCharFile: BotUnit[],
+    oldShipFile: BotUnit[],
 ) {
-    const [oldCharFile, oldShipFile] = await Promise.all([readJSON<BotUnit[]>(CHAR_FILE_PATH), readJSON<BotUnit[]>(SHIP_FILE_PATH)]);
     const engStringMap = locales.eng_us;
 
     // Build lookup maps for O(1) access
@@ -1662,26 +1666,29 @@ async function unitsToUnitFiles(
         const charUIName = getCharUIName(unit.creationRecipeReference, recipeMap, shardMap) ?? "";
         const name = engStringMap?.[unit.nameKey] || unit.nameKey;
 
-        let unitObj: BotUnit;
-        if (oldUnit) {
-            unitObj = oldUnit;
-            unitObj.avatarName = charUIName;
-            unitObj.avatarURL = `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`;
-        } else {
-            const unitFactionsObj = catMap.filter((cat) => unit.categoryIdList.includes(cat.id));
-            const { factions, side } = getSide(unitFactionsObj);
-            unitObj = {
-                name,
-                uniqueName: unit.baseId,
-                aliases: [name],
-                avatarName: charUIName,
-                avatarURL: `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`,
-                side,
-                factions: factions.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
-                mods: unit.combatType === CHAR_COMBAT_TYPE ? ({} as BotUnitMods) : null,
-                crew: (unit.combatType === SHIP_COMBAT_TYPE && unit.crewList?.map((cr) => unitDefIdMap[cr.unitId ?? ""])) || [],
-            };
-        }
+        const unitFactionsObj = catMap.filter((cat) => unit.categoryIdList.includes(cat.id));
+        const { factions, side } = getSide(unitFactionsObj);
+
+        // catMap holds raw descKeys; processLocalization only ever writes localized copies to the
+        // db, so the display names these files (and the `factions` constant built from them) need
+        // have to be resolved here.
+        const localizedFactions = factions.map((faction) => engStringMap?.[faction] || faction);
+
+        // Everything assigned here is derived from game data, so it is recomputed every run --
+        // fields that are curated (aliases) or filled in by other passes (mods, abilities, url)
+        // are carried over from the existing entry instead.
+        const unitObj: BotUnit = {
+            ...oldUnit,
+            name,
+            uniqueName: unit.baseId,
+            aliases: oldUnit?.aliases?.length ? oldUnit.aliases : [name],
+            avatarName: charUIName,
+            avatarURL: `https://game-assets.swgoh.gg/textures/tex.${charUIName}.png`,
+            side,
+            factions: localizedFactions.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
+            mods: unit.combatType === CHAR_COMBAT_TYPE ? (oldUnit?.mods ?? ({} as BotUnitMods)) : null,
+            crew: (unit.combatType === SHIP_COMBAT_TYPE && unit.crewList?.map((cr) => unitDefIdMap[cr.unitId ?? ""])) || [],
+        };
 
         if (unit.combatType === CHAR_COMBAT_TYPE) {
             charactersOut.push(unitObj);

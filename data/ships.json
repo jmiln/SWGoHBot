@@ -679,16 +679,16 @@
         "avatarName": "charui_gauntlet"
     },
     {
-        "name": "Geonosian Soldier's Starfighter",
+        "name": "Sun Fac's Geonosian Starfighter",
         "uniqueName": "GEONOSIANSTARFIGHTER1",
         "aliases": [
-            "Geonosian Soldier",
-            "GenSol",
+            "Sun Fac",
             "Geonosian Starfighter",
-            "Geonosian Soldiers Starfighter"
+            "Geonosian",
+            "Sun Fac's Genosian Starfighter"
         ],
         "crew": [
-            "Geonosian Soldier"
+            "Sun Fac"
         ],
         "url": "http://swgoh.gg/ships/sun-facs-geonosian-starfighter/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosis_fighter_sunfac.png",
@@ -1788,16 +1788,16 @@
         "avatarName": "charui_slave1"
     },
     {
-        "name": "Sun Fac's Geonosian Starfighter",
+        "name": "Geonosian Soldier's Starfighter",
         "uniqueName": "GEONOSIANSTARFIGHTER2",
         "aliases": [
-            "Sun Fac",
+            "Geonosian Soldier",
+            "GenSol",
             "Geonosian Starfighter",
-            "Geonosian",
-            "Sun Fac's Genosian Starfighter"
+            "Geonosian Soldiers Starfighter"
         ],
         "crew": [
-            "Sun Fac"
+            "Geonosian Soldier"
         ],
         "url": "http://swgoh.gg/ships/geonosian-soldiers-starfighter/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_geonosis_fighter_soldier.png",

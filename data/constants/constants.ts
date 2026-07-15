@@ -30,6 +30,7 @@ export default {
         blue:      255,
         lightblue: 22015,
         green:     65280,
+        grey:      9807270,
         red:       16711680,
         brightred: 14685204,
         white:     16777215,

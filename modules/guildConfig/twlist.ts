@@ -7,6 +7,7 @@ import { guildConfigDB } from "./db.ts";
 const defaultTWList = {
     "Light Side": [],
     "Dark Side": [],
+    Neutral: [],
     "Galactic Legends": [],
     Ships: [],
     "Capital Ships": [],

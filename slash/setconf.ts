@@ -192,6 +192,9 @@ export default class SetConf extends Command {
                         } else if (thisChar.side === "dark") {
                             guildTWList["Dark Side"] ??= [];
                             guildTWList["Dark Side"].push(thisChar.uniqueName);
+                        } else if (thisChar.side === "neutral") {
+                            guildTWList.Neutral ??= [];
+                            guildTWList.Neutral.push(thisChar.uniqueName);
                         } else {
                             guildTWList["Light Side"] ??= [];
                             guildTWList["Light Side"].push(thisChar.uniqueName);

@@ -14,6 +14,7 @@ const {
     processUnits,
     unitsToCharacterDB,
     unitsForUnitMapFile,
+    unitsToUnitFiles,
 } = dataUpdater;
 
 // ---------------------------------------------------------------------------
@@ -502,5 +503,163 @@ describe("unitsForUnitMapFile", () => {
         const units = [{ baseId: "VADER", nameKey: "UNIT_VADER", combatType: 1, crewList: [] }];
         const result = unitsForUnitMapFile(units as any);
         assert.deepStrictEqual(result["VADER"].crew, []);
+    });
+});
+
+// ---------------------------------------------------------------------------
+// unitsToUnitFiles
+// ---------------------------------------------------------------------------
+
+describe("unitsToUnitFiles", () => {
+    const locales = {
+        eng_us: {
+            UNIT_MALEVOLENCE: "Malevolence",
+            UNIT_VADER: "Darth Vader",
+            DARK_SIDE: "Dark Side",
+            SEPARATIST: "Separatist",
+            SITH: "Sith",
+        },
+    } as any;
+    const catMap = [
+        { id: "alignment_dark", descKey: "DARK_SIDE" },
+        { id: "affiliation_separatist", descKey: "SEPARATIST" },
+        { id: "affiliation_sith", descKey: "SITH" },
+    ];
+    const unitDefIdMap = { GRIEVOUS: "General Grievous" };
+    const unitRecipeList = [{ id: "recipe_malevolence", unitShard: "unitshard_malevolence" }];
+    const unitShardList = [{ id: "unitshard_malevolence", iconKey: "charui_malevolence" }];
+
+    const malevolence = {
+        baseId: "CAPITALMALEVOLENCE",
+        nameKey: "UNIT_MALEVOLENCE",
+        skillReferenceList: [],
+        categoryIdList: ["alignment_dark", "affiliation_separatist"],
+        combatType: 2,
+        unitTierList: [],
+        crewList: [{ unitId: "GRIEVOUS", skillReference: [], slot: 1 }],
+        creationRecipeReference: "recipe_malevolence",
+        legend: false,
+    };
+    const vader = {
+        baseId: "VADER",
+        nameKey: "UNIT_VADER",
+        skillReferenceList: [],
+        categoryIdList: ["alignment_dark", "affiliation_sith"],
+        combatType: 1,
+        unitTierList: [],
+        crewList: [],
+        creationRecipeReference: "recipe_vader",
+        legend: false,
+    };
+
+    const build = (units: any[], oldCharFile: any[] = [], oldShipFile: any[] = []) =>
+        unitsToUnitFiles(units as any, locales, catMap as any, unitDefIdMap, unitRecipeList, unitShardList, oldCharFile, oldShipFile);
+
+    it("recomputes crew for an existing ship whose stored crew is empty", () => {
+        const oldShip = {
+            name: "Malevolence",
+            uniqueName: "CAPITALMALEVOLENCE",
+            aliases: ["Malevolence"],
+            avatarName: "charui_malevolence",
+            avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_malevolence.png",
+            side: "dark",
+            factions: ["Separatist"],
+            crew: [],
+        };
+        const { shipsOut } = build([malevolence], [], [oldShip]);
+        assert.deepStrictEqual(shipsOut[0].crew, ["General Grievous"]);
+    });
+
+    it("recomputes stale crew names for an existing ship", () => {
+        const oldShip = {
+            name: "Malevolence",
+            uniqueName: "CAPITALMALEVOLENCE",
+            aliases: ["Malevolence"],
+            avatarName: "charui_malevolence",
+            avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_malevolence.png",
+            side: "dark",
+            factions: ["Separatist"],
+            crew: ["Grievous"],
+        };
+        const { shipsOut } = build([malevolence], [], [oldShip]);
+        assert.deepStrictEqual(shipsOut[0].crew, ["General Grievous"]);
+    });
+
+    it("recomputes name, side and factions for an existing unit when game data changes", () => {
+        const oldChar = {
+            name: "Vader",
+            uniqueName: "VADER",
+            aliases: ["Vader", "dv"],
+            avatarName: "charui_vader",
+            avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_vader.png",
+            side: "light",
+            factions: ["Rebel"],
+            mods: {},
+        };
+        const { charactersOut } = build([vader], [oldChar], []);
+        assert.strictEqual(charactersOut[0].name, "Darth Vader");
+        assert.strictEqual(charactersOut[0].side, "dark");
+        assert.deepStrictEqual(charactersOut[0].factions, ["Sith"]);
+    });
+
+    it("preserves curated and non-derived fields on existing units", () => {
+        const abilities = { basicskill_MALEVOLENCE: { type: "basic", abilityCooldown: "0", abilityDesc: "desc" } };
+        const oldShip = {
+            name: "Malevolence",
+            uniqueName: "CAPITALMALEVOLENCE",
+            aliases: ["Malevolence", "mal"],
+            url: "http://swgoh.gg/ships/malevolence/",
+            avatarName: "charui_malevolence",
+            avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_malevolence.png",
+            side: "dark",
+            factions: ["Separatist"],
+            crew: [],
+            abilities,
+            shardLocations: ["Fleet Store"],
+        };
+        const { shipsOut } = build([malevolence], [], [oldShip as any]);
+        assert.deepStrictEqual(shipsOut[0].aliases, ["Malevolence", "mal"], "curated aliases must survive");
+        assert.strictEqual(shipsOut[0].url, "http://swgoh.gg/ships/malevolence/");
+        assert.deepStrictEqual(shipsOut[0].abilities, abilities);
+        assert.deepStrictEqual((shipsOut[0] as any).shardLocations, ["Fleet Store"]);
+    });
+
+    it("preserves mods on existing characters so a gamedata run does not wipe them", () => {
+        const mods = { square: "Offense", arrow: "Speed", sets: ["Speed x4"] };
+        const oldChar = {
+            name: "Darth Vader",
+            uniqueName: "VADER",
+            aliases: ["Darth Vader"],
+            avatarName: "charui_vader",
+            avatarURL: "https://game-assets.swgoh.gg/textures/tex.charui_vader.png",
+            side: "dark",
+            factions: ["Sith"],
+            mods,
+        };
+        const { charactersOut } = build([vader], [oldChar as any], []);
+        assert.deepStrictEqual(charactersOut[0].mods, mods);
+    });
+
+    it("builds new units with derived fields and seeds aliases from the name", () => {
+        const { shipsOut } = build([malevolence], [], []);
+        assert.strictEqual(shipsOut[0].name, "Malevolence");
+        assert.deepStrictEqual(shipsOut[0].aliases, ["Malevolence"]);
+        assert.strictEqual(shipsOut[0].side, "dark");
+        assert.deepStrictEqual(shipsOut[0].factions, ["Separatist"]);
+        assert.deepStrictEqual(shipsOut[0].crew, ["General Grievous"]);
+        assert.strictEqual(shipsOut[0].avatarName, "charui_malevolence");
+        assert.strictEqual(shipsOut[0].mods, null);
+    });
+
+    it("splits units into characters and ships by combatType", () => {
+        const { charactersOut, shipsOut } = build([malevolence, vader], [], []);
+        assert.deepStrictEqual(
+            charactersOut.map((u) => u.uniqueName),
+            ["VADER"],
+        );
+        assert.deepStrictEqual(
+            shipsOut.map((u) => u.uniqueName),
+            ["CAPITALMALEVOLENCE"],
+        );
     });
 });

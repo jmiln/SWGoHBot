@@ -118,6 +118,7 @@ export interface GuildConfigPoll {
 export interface GuildConfigTWList {
     "Light Side"?: string[];
     "Dark Side"?: string[];
+    Neutral?: string[];
     "Galactic Legends"?: string[];
     Ships?: string[];
     "Capital Ships"?: string[];

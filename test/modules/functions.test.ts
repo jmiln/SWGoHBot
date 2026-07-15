@@ -14,6 +14,7 @@ import {
     getDivider,
     getGearStr,
     getSetTimeForTimezone,
+    getSideColor,
     getStartOfDay,
     getTimezoneOffset,
     getUserID,
@@ -31,6 +32,7 @@ import {
     trimFloat,
     userCount,
 } from "../../modules/functions.ts";
+import constants from "../../data/constants/constants.ts";
 import type { Client } from "discord.js";
 import type { SWAPIPlayer } from "../../types/swapi_types.ts";
 import type { ArenaPlayer, BotUnit } from "../../types/types.ts";
@@ -718,5 +720,32 @@ describe("userCount", () => {
             shard: { count: 2, broadcastEval: async () => [10, 20] },
         } as unknown as Client;
         assert.strictEqual(await userCount(client), 30);
+    });
+});
+
+describe("getSideColor", () => {
+    it("returns the light side colour", () => {
+        assert.strictEqual(getSideColor("light"), constants.colors.lightblue);
+    });
+
+    it("returns the dark side colour", () => {
+        assert.strictEqual(getSideColor("dark"), constants.colors.brightred);
+    });
+
+    it("returns the neutral colour for unaligned units", () => {
+        assert.strictEqual(getSideColor("neutral"), constants.colors.grey);
+    });
+
+    it("is case insensitive", () => {
+        assert.strictEqual(getSideColor("Neutral"), constants.colors.grey);
+        assert.strictEqual(getSideColor("DARK"), constants.colors.brightred);
+    });
+
+    it("returns null for a missing side", () => {
+        assert.strictEqual(getSideColor(""), null);
+    });
+
+    it("returns null for an unknown side", () => {
+        assert.strictEqual(getSideColor("chaotic"), null);
     });
 });

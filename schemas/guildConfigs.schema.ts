@@ -98,6 +98,7 @@ export const GuildConfigPollSchema = z.object({
 export const GuildConfigTWListSchema = z.object({
     "Light Side": z.array(z.string()).optional(),
     "Dark Side": z.array(z.string()).optional(),
+    Neutral: z.array(z.string()).optional(),
     "Galactic Legends": z.array(z.string()).optional(),
     Ships: z.array(z.string()).optional(),
     "Capital Ships": z.array(z.string()).optional(),

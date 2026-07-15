@@ -120,11 +120,17 @@ export function getSideColor(side: string): number | null {
         logger.error("[functions/getSideColor] No side provided");
         return null;
     }
-    if (!["light", "dark"].includes(side.toLowerCase())) {
+    const sideColors: Record<string, number> = {
+        light: constants.colors.lightblue,
+        dark: constants.colors.brightred,
+        neutral: constants.colors.grey,
+    };
+    const sideColor = sideColors[side.toLowerCase()];
+    if (sideColor === undefined) {
         logger.error(`[functions/getSideColor] Invalid side: ${side}`);
         return null;
     }
-    return side === "light" ? constants.colors.lightblue : constants.colors.brightred;
+    return sideColor;
 }
 
 /*  PERMISSION LEVEL FUNCTION
