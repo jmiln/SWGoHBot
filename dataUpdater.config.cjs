@@ -7,6 +7,9 @@ module.exports = {
             node_args: ["--env-file=.env"],
             interpreter: "node",
             script: "./services/dataUpdater.ts",
+            // --cleanup is opt-in so a manual run never fires the destructive db cleanup; this is
+            // the scheduled run, so it's the one that should.
+            args: ["--cleanup"],
             // Runs a single update cycle then exits, so the OS reclaims the cycle's memory.
             // autorestart:false keeps PM2 from looping it on that clean exit. Launched on a
             // schedule by the system crontab (`pm2 start dataUpdater.config.cjs`), kept out of

@@ -12,8 +12,20 @@ import databaseCleanup from "../modules/databaseCleanup.ts";
 import { readJSON, toProperCase } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 
-const FORCE_UPDATE = process.argv.includes("--force") || false;
 const DEBUG_LOGS = process.argv.includes("--debug") || false;
+
+// Run the game data updaters even when the metadata is unchanged. Without this the whole gamedata
+// path (including the character/ship file rebuild) is skipped on an unchanged version, so there's
+// no way to re-derive those files on demand.
+const FORCE_GAMEDATA = process.argv.includes("--force-gamedata") || false;
+
+// Skip the mod updaters, which fetch every player in the top 100 guilds and dominate the cycle's
+// runtime. Everything else in the cycle is independent of them.
+const SKIP_MODS = process.argv.includes("--skip-mods") || false;
+
+// databaseCleanup deletes old player stats/guilds/rosters, so it's opt-in rather than opt-out: a
+// manual run must never quietly destroy data. The scheduled run passes this (dataUpdater.config.cjs).
+const RUN_CLEANUP = process.argv.includes("--cleanup") || false;
 
 // Parse a numeric `--flag value` CLI override, falling back to a default when absent or unparseable.
 function numericArg(flag: string, fallback: number): number {
@@ -151,7 +163,8 @@ logger.log("Starting data updater");
 async function cleanup() {
     logger.log("Cleaning up resources...");
 
-    databaseCleanup.stop();
+    // Awaited so an in-flight cleanup finishes its deletes before the db connection closes below.
+    await databaseCleanup.stop();
 
     // Close MongoDB connection
     if (mongoClient) {
@@ -208,86 +221,81 @@ async function init() {
 
         mongoClient = await MongoClient.connect(env.MONGODB_URL);
         cache.init(mongoClient);
-        databaseCleanup.start(24);
+        if (RUN_CLEANUP) {
+            databaseCleanup.start(24);
+        } else {
+            logger.log("Skipping database cleanup (pass --cleanup to run it)");
+        }
         const comlinkStub = new ComlinkStub({
             url: env.SWAPI_CLIENT_URL,
             accessKey: env.SWAPI_ACCESS_KEY,
             secretKey: env.SWAPI_SECRET_KEY,
         });
 
-        if (!FORCE_UPDATE) {
-            // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
-            // allocated. PM2 relaunches this daily via cron_restart (see ecosystem.config.cjs).
-            await (async function runUpdaters() {
-                let exitCode = 0;
-                try {
-                    debugTime("Total update cycle");
-                    logMem("cycle start");
+        // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
+        // allocated. PM2 relaunches this daily via cron_restart (see ecosystem.config.cjs).
+        await (async function runUpdaters() {
+            let exitCode = 0;
+            try {
+                debugTime("Total update cycle");
+                logMem("cycle start");
 
-                    debugTime("Checking metadata");
-                    const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
-                    debugTimeEnd("Checking metadata");
+                debugTime("Checking metadata");
+                const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
+                debugTimeEnd("Checking metadata");
 
-                    if (isMetadataUpdated) {
-                        const log: string[] = [];
-                        if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
-                            log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
-                        }
-                        if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
-                            log.push(
-                                ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
-                            );
-                        }
-                        if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
-                            log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
-                        }
-                        if (log.length) logger.log(["Found new metadata, running updaters", ...log].join("\n"));
-
-                        debugTime("Running game data updaters");
-                        await runGameDataUpdaters(newMetadata, comlinkStub);
-                        debugTimeEnd("Running game data updaters");
-                        debugLog("Finished running game data updater for new metadata");
-                        logMem("after game data updaters");
+                if (isMetadataUpdated || FORCE_GAMEDATA) {
+                    const log: string[] = [];
+                    if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
+                        log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
+                    }
+                    if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
+                        log.push(
+                            ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
+                        );
+                    }
+                    if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
+                        log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
+                    }
+                    if (log.length) {
+                        logger.log(["Found new metadata, running updaters", ...log].join("\n"));
                     } else {
-                        logMem("metadata unchanged, skipping game data updaters");
+                        logger.log("Metadata unchanged, but --force-gamedata was passed; running game data updaters anyway");
                     }
 
+                    debugTime("Running game data updaters");
+                    await runGameDataUpdaters(newMetadata, comlinkStub);
+                    debugTimeEnd("Running game data updaters");
+                    debugLog("Finished running game data updater for new metadata");
+                    logMem("after game data updaters");
+                } else {
+                    logMem("metadata unchanged, skipping game data updaters");
+                }
+
+                if (SKIP_MODS) {
+                    logger.log("Skipping mod updaters (--skip-mods)");
+                } else {
                     debugTime("Running mod updaters");
                     await runModUpdaters(comlinkStub);
                     debugTimeEnd("Running mod updaters");
                     logMem("after mod updaters");
-
-                    debugTime("Exporting command docs");
-                    await exportCommandDocs();
-                    debugTimeEnd("Exporting command docs");
-
-                    debugLog("Finished running all updaters");
-
-                    debugTimeEnd("Total update cycle");
-                } catch (error) {
-                    logger.error(
-                        `[dataUpdater] Update cycle failed: ${error instanceof Error ? error.stack || error.message : String(error)}`,
-                    );
-                    exitCode = 1;
-                } finally {
-                    await cleanup();
-                    process.exit(exitCode);
                 }
-            })();
-        } else {
-            // TODO: Add a way to choose what's updated from the cmdline without having to manually change which bit we want updated
-            // If we're forcing an update, just run the bits we want then exit
-            logger.log("Forcing update, running updaters");
-            // const { newMetadata } = (await updateMetadata(DATA_DIR_PATH, comlinkStub)) as {
-            //     isMetadataUpdated: boolean;
-            //     newMetadata: Metadata;
-            //     oldMetadata: Metadata;
-            // };
-            // await runGameDataUpdaters(newMetadata, comlinkStub);
-            await exportCommandDocs();
-            await cleanup();
-            process.exit(0);
-        }
+
+                debugTime("Exporting command docs");
+                await exportCommandDocs();
+                debugTimeEnd("Exporting command docs");
+
+                debugLog("Finished running all updaters");
+
+                debugTimeEnd("Total update cycle");
+            } catch (error) {
+                logger.error(`[dataUpdater] Update cycle failed: ${error instanceof Error ? error.stack || error.message : String(error)}`);
+                exitCode = 1;
+            } finally {
+                await cleanup();
+                process.exit(exitCode);
+            }
+        })();
     } catch (error) {
         logError("dataUpdater/init", "Failed to start the data updater:", error);
         await cleanup();
@@ -2153,12 +2161,12 @@ async function updateUnitChecklist(characters: BotUnit[], ships: BotUnit[]) {
 }
 
 function debugTime(name: string) {
-    if (!FORCE_UPDATE && !DEBUG_LOGS) return;
+    if (!DEBUG_LOGS) return;
     if (!name?.length) return;
     console.time(name);
 }
 function debugTimeEnd(name: string) {
-    if (!FORCE_UPDATE && !DEBUG_LOGS) return;
+    if (!DEBUG_LOGS) return;
     if (!name?.length) return;
     console.timeEnd(name);
 }
@@ -2168,7 +2176,7 @@ function debugTimeEnd(name: string) {
 // off-heap data. rss >> heapUsed points at worker payloads or buffers; high heapUsed points at
 // main-thread JS (e.g. gameData/localization). Gated behind --debug like the other debug helpers.
 function logMem(label: string) {
-    if (!FORCE_UPDATE && !DEBUG_LOGS) return;
+    if (!DEBUG_LOGS) return;
     const m = process.memoryUsage();
     const mb = (n: number) => Math.round(n / 1024 / 1024);
     logger.log(
@@ -2188,8 +2196,15 @@ version changed, recalculates mod stats from the top guilds, and exports command
 
 Options:
   -h, --help            Show this help and exit.
-  --force               Skip the normal cycle and run only the forced bits (currently exportCommandDocs).
   --debug               Verbose timing, debug logging, and per-phase memory ([mem]) snapshots.
+  --force-gamedata      Run the game data updaters even if the metadata is unchanged. Needed to
+                        re-derive data/characters.json and data/ships.json on demand, since that
+                        path is normally skipped when the version has not moved.
+  --skip-mods           Skip the mod updaters. They fetch every player in the top 100 guilds and
+                        dominate the cycle's runtime; nothing else depends on them.
+  --cleanup             Run the database cleanup (deletes old player stats, guilds and empty
+                        rosters). Off by default so a manual run never destroys data; the
+                        scheduled run passes it via dataUpdater.config.cjs.
   --max-concurrent N    Max in-flight player fetches queued to the worker pool (default 80).
   --mod-threads N       Player-fetch worker threads (default min(cpuCount, ${MOD_FETCH_CONCURRENCY_CAP}); here ${defaultThreads}).
   --mod-tasks N         Concurrent tasks per worker thread (default 1).
@@ -2197,7 +2212,7 @@ Options:
 }
 
 function debugLog(str: string | string[]) {
-    if (!FORCE_UPDATE && !DEBUG_LOGS) return;
+    if (!DEBUG_LOGS) return;
     if (typeof str === "string" && str.length) {
         logger.log(str);
     } else {

@@ -177,11 +177,24 @@ describe("DatabaseCleanup Module", () => {
             // Start the scheduler (this triggers immediate cleanup)
             databaseCleanup.start(24);
 
-            // Wait a bit for the immediate cleanup to complete
-            await new Promise((resolve) => setTimeout(resolve, 500));
-
             // Stop should not throw
-            databaseCleanup.stop();
+            await databaseCleanup.stop();
+        });
+
+        it("stop() waits for the in-flight initial cleanup instead of abandoning it", async () => {
+            // start() kicks off an immediate cleanup without awaiting it. Callers (dataUpdater's
+            // cleanup()) close the db and process.exit() straight after stop(), so stop() must not
+            // resolve while deletes are still in flight or they get truncated mid-run.
+            databaseCleanup.start(24);
+            assert.equal(databaseCleanup.isCleanupRunning, true, "start() should kick off an immediate cleanup");
+
+            await databaseCleanup.stop();
+            assert.equal(databaseCleanup.isCleanupRunning, false, "stop() should not resolve while a cleanup is still running");
+        });
+
+        it("stop() is safe when the scheduler was never started", async () => {
+            await databaseCleanup.stop();
+            assert.equal(databaseCleanup.isCleanupRunning, false);
         });
     });
 });

@@ -11,6 +11,15 @@ class DatabaseCleanup {
     private cleanupInterval: NodeJS.Timeout | null = null;
     private isRunning = false;
 
+    // The cleanup currently in flight, so stop() can wait it out rather than leaving callers to
+    // close the db / exit underneath it.
+    private currentRun: Promise<void> | null = null;
+
+    /** Whether a cleanup is currently in flight. */
+    get isCleanupRunning(): boolean {
+        return this.isRunning;
+    }
+
     /**
      * Start automated cleanup on a schedule
      * @param intervalHours - Hours between cleanup runs (default: 24)
@@ -24,14 +33,14 @@ class DatabaseCleanup {
         const intervalMs = intervalHours * 60 * 60 * 1000;
 
         // Run immediately on startup
-        this.runCleanup().catch((err) => {
+        this.currentRun = this.runCleanup().catch((err) => {
             const errorMsg = err instanceof Error ? err.message : String(err);
             logger.error(`Initial database cleanup failed: ${errorMsg}`);
         });
 
         // Then schedule regular cleanups
         this.cleanupInterval = setInterval(() => {
-            this.runCleanup().catch((err) => {
+            this.currentRun = this.runCleanup().catch((err) => {
                 const errorMsg = err instanceof Error ? err.message : String(err);
                 logger.error(`Scheduled database cleanup failed: ${errorMsg}`);
             });
@@ -43,12 +52,16 @@ class DatabaseCleanup {
     /**
      * Stop the automated cleanup schedule
      */
-    stop(): void {
+    async stop(): Promise<void> {
         if (this.cleanupInterval) {
             clearInterval(this.cleanupInterval);
             this.cleanupInterval = null;
             logger.log("Database cleanup schedule stopped");
         }
+
+        // Let an in-flight cleanup finish its deletes before the caller closes the db and exits.
+        await this.currentRun;
+        this.currentRun = null;
     }
 
     /**
