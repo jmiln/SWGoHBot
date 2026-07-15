@@ -359,7 +359,10 @@
         "aliases": [
             "Ebon Hawk"
         ],
-        "crew": [],
+        "crew": [
+            "Carth Onasi",
+            "T3-M4"
+        ],
         "url": "http://swgoh.gg/ships/ebon-hawk/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ebonhawk.png",
         "side": "light",
@@ -453,7 +456,9 @@
         "aliases": [
             "Executor"
         ],
-        "crew": [],
+        "crew": [
+            "Admiral Piett"
+        ],
         "url": "http://swgoh.gg/ships/executor/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_executor.png",
         "side": "dark",
@@ -518,7 +523,9 @@
         "aliases": [
             "Finalizer"
         ],
-        "crew": [],
+        "crew": [
+            "General Hux"
+        ],
         "url": "http://swgoh.gg/ships/finalizer/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_finalizer.png",
         "side": "dark",
@@ -613,7 +620,9 @@
         "aliases": [
             "Fury-class Interceptor"
         ],
-        "crew": [],
+        "crew": [
+            "Darth Malgus"
+        ],
         "url": "http://swgoh.gg/ships/fury-class-interceptor/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_furyclassinterceptor.png",
         "side": "dark",
@@ -1134,7 +1143,9 @@
         "aliases": [
             "Malevolence"
         ],
-        "crew": [],
+        "crew": [
+            "General Grievous"
+        ],
         "url": "http://swgoh.gg/ships/malevolence/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_malevolence.png",
         "side": "dark",
@@ -1172,7 +1183,9 @@
         "aliases": [
             "Mark VI Interceptor"
         ],
-        "crew": [],
+        "crew": [
+            "Sith Empire Trooper"
+        ],
         "url": "http://swgoh.gg/ships/mark-vi-interceptor/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sithsupremacyclass.png",
         "side": "dark",
@@ -1190,7 +1203,10 @@
         "aliases": [
             "MG-100 StarFortress SF-17"
         ],
-        "crew": [],
+        "crew": [
+            "Rose Tico",
+            "Resistance Trooper"
+        ],
         "url": "http://swgoh.gg/ships/mg-100-starfortress-sf-17/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mg100.png",
         "side": "light",
@@ -1207,7 +1223,9 @@
         "aliases": [
             "Negotiator"
         ],
-        "crew": [],
+        "crew": [
+            "General Kenobi"
+        ],
         "url": "http://swgoh.gg/ships/negotiator/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_negotiator.png",
         "side": "light",
@@ -1225,7 +1243,9 @@
         "aliases": [
             "Outrider"
         ],
-        "crew": [],
+        "crew": [
+            "Dash Rendar"
+        ],
         "url": "http://swgoh.gg/ships/outrider/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_outrider.png",
         "side": "light",
@@ -1376,7 +1396,9 @@
         "aliases": [
             "Profundity"
         ],
-        "crew": [],
+        "crew": [
+            "Admiral Raddus"
+        ],
         "url": "http://swgoh.gg/ships/profundity/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_profundity.png",
         "side": "light",
@@ -1431,7 +1453,9 @@
         "aliases": [
             "Raven's Claw"
         ],
-        "crew": [],
+        "crew": [
+            "Kyle Katarn"
+        ],
         "url": "http://swgoh.gg/ships/ravens-claw/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ravensclaw.png",
         "side": "light",
@@ -1449,7 +1473,9 @@
         "aliases": [
             "Razor Crest"
         ],
-        "crew": [],
+        "crew": [
+            "The Mandalorian (Beskar Armor)"
+        ],
         "url": "http://swgoh.gg/ships/razor-crest/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_razorcrest.png",
         "side": "light",
@@ -1678,7 +1704,10 @@
         "aliases": [
             "Scythe"
         ],
-        "crew": [],
+        "crew": [
+            "Grand Inquisitor",
+            "Fifth Brother"
+        ],
         "url": "http://swgoh.gg/ships/scythe/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_scythe.png",
         "side": "dark",
@@ -1842,7 +1871,9 @@
         "aliases": [
             "TIE Dagger"
         ],
-        "crew": [],
+        "crew": [
+            "Sith Trooper"
+        ],
         "url": "http://swgoh.gg/ships/tie-dagger/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tiedagger.png",
         "side": "dark",
@@ -1860,7 +1891,9 @@
         "aliases": [
             "TIE Defender"
         ],
-        "crew": [],
+        "crew": [
+            "Iden Versio"
+        ],
         "url": "http://swgoh.gg/ships/tie-defender/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tiedefender.png",
         "side": "dark",
@@ -1877,7 +1910,9 @@
         "aliases": [
             "TIE Echelon"
         ],
-        "crew": [],
+        "crew": [
+            "First Order Officer"
+        ],
         "url": "http://swgoh.gg/ships/tie-echelon/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_firstordertieechelon.png",
         "side": "dark",
@@ -1976,7 +2011,9 @@
         "aliases": [
             "TIE/IN Interceptor Prototype"
         ],
-        "crew": [],
+        "crew": [
+            "Second Sister"
+        ],
         "url": "http://swgoh.gg/ships/tiein-interceptor-prototype/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_tie_interceptor_prototype.png",
         "side": "dark",
