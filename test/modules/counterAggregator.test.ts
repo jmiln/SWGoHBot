@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { CounterCursorSchema, CounterDocSchema } from "../../schemas/counters.schema.ts";
+import { CounterDocSchema, CounterMetadataSchema } from "../../schemas/counters.schema.ts";
 import { baseId, squadInfo, teamIds, teamKey } from "../../modules/counters/counterAggregator.ts";
 
 describe("counters schema", () => {
@@ -22,9 +22,16 @@ describe("counters schema", () => {
         assert.strictEqual(CounterDocSchema.safeParse(bad).success, false);
     });
 
-    it("accepts a valid cursor doc", () => {
-        const cur = { _id: "meta:5v5", lastInstanceId: "O123", season: 80, status: "ok" };
-        assert.strictEqual(CounterCursorSchema.safeParse(cur).success, true);
+    it("accepts a valid metadata entry", () => {
+        const meta = {
+            lastInstanceId: "O123",
+            season: 80,
+            status: "ok",
+            ingestedAt: "2026-07-15T00:00:00.000Z",
+            leaderDocs: 77,
+            players: 134282,
+        };
+        assert.strictEqual(CounterMetadataSchema.safeParse(meta).success, true);
     });
 });
 

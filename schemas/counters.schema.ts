@@ -29,14 +29,22 @@ export const CounterDocSchema = z.object({
     variants: z.array(CounterVariantSchema),
 });
 
-export const CounterCursorSchema = z.object({
-    _id: z.string(),
+export const CounterMetadataSchema = z.object({
     lastInstanceId: z.string(),
     season: z.number(),
     status: z.string(),
+    ingestedAt: z.string(),
+    leaderDocs: z.number(),
+    players: z.number(),
+});
+
+export const CounterMetadataFileSchema = z.object({
+    "5v5": CounterMetadataSchema.optional(),
+    "3v3": CounterMetadataSchema.optional(),
 });
 
 export type CounterEntry = z.infer<typeof CounterEntrySchema>;
 export type CounterVariant = z.infer<typeof CounterVariantSchema>;
 export type CounterDoc = z.infer<typeof CounterDocSchema>;
-export type CounterCursor = z.infer<typeof CounterCursorSchema>;
+export type CounterMetadata = z.infer<typeof CounterMetadataSchema>;
+export type CounterMetadataFile = z.infer<typeof CounterMetadataFileSchema>;

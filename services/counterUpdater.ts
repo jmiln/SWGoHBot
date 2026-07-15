@@ -9,9 +9,10 @@ import {
     DEFAULT_BUILD_OPTIONS,
     foldPlayer,
 } from "../modules/counters/counterAggregator.ts";
+import { readMetadata, writeMetadata } from "../modules/counters/counterMetadata.ts";
 import { createGahistoryClient, type GahistoryClient, type InfoDoc, type Mode } from "../modules/counters/gahistoryClient.ts";
 import logger from "../modules/Logger.ts";
-import type { CounterCursor } from "../schemas/counters.schema.ts";
+import type { CounterMetadata } from "../schemas/counters.schema.ts";
 
 const COLLECTION = "counterData";
 const MODES: Mode[] = ["5v5", "3v3"];
@@ -23,8 +24,8 @@ function numericArg(flag: string, fallback: number): number {
     return Number.isNaN(parsed) ? fallback : parsed;
 }
 
-export function shouldIngest(info: InfoDoc, cursor: CounterCursor | null): boolean {
-    return !cursor || cursor.lastInstanceId !== info.instanceId;
+export function shouldIngest(info: InfoDoc, meta: CounterMetadata | null): boolean {
+    return !meta || meta.lastInstanceId !== info.instanceId;
 }
 
 export interface RunDeps {
@@ -34,6 +35,8 @@ export interface RunDeps {
     options: BuildOptions;
     /** When true, emit per-batch fetch-progress heartbeats (off by default; too noisy otherwise). */
     debug?: boolean;
+    /** Overrides the committed metadata file. Tests MUST set this so they never write the real one. */
+    metaFile?: string;
 }
 export interface RunResult {
     mode: Mode;
@@ -42,11 +45,11 @@ export interface RunResult {
 }
 
 export async function runMode(mode: Mode, deps: RunDeps): Promise<RunResult> {
-    const { client, db, concurrency, options, debug } = deps;
+    const { client, db, concurrency, options, debug, metaFile } = deps;
     logger.log(`[counterUpdater] ${mode}: checking for a new event...`);
     const info = await client.getInfo(mode);
-    const cursor = (await cache.getOne(db, COLLECTION, { _id: `meta:${mode}` })) as CounterCursor | null;
-    if (!shouldIngest(info, cursor)) {
+    const meta = await readMetadata(mode, metaFile);
+    if (!shouldIngest(info, meta)) {
         logger.log(`[counterUpdater] ${mode}: already at ${info.instanceId}, nothing to do`);
         return { mode, ingested: false, docCount: 0 };
     }
@@ -78,9 +81,9 @@ export async function runMode(mode: Mode, deps: RunDeps): Promise<RunResult> {
     if (!playerIds.length || !docs.length) {
         // The upstream may publish info.json before the player data is fully posted. If we got no
         // players or no qualifying docs, treat the event as not-yet-ready: leave the existing docs
-        // and cursor untouched so the next tick retries, rather than pruning good data for weeks.
+        // and metadata untouched so the next tick retries, rather than pruning good data for weeks.
         logger.warn(
-            `[counterUpdater] ${mode}: no data yet (players=${playerIds.length}, docs=${docs.length}); leaving cursor + existing docs intact`,
+            `[counterUpdater] ${mode}: no data yet (players=${playerIds.length}, docs=${docs.length}); leaving metadata + existing docs intact`,
         );
         return { mode, ingested: false, docCount: 0 };
     }
@@ -96,14 +99,20 @@ export async function runMode(mode: Mode, deps: RunDeps): Promise<RunResult> {
             },
         })),
     );
-    // Prune counter docs from older events for this mode (never the meta cursor docs).
+    // Prune counter docs from older events for this mode.
     await cache.delete(db, COLLECTION, { mode, leader: { $exists: true }, instanceId: { $ne: info.instanceId } });
-    // Advance the cursor LAST so a mid-run crash simply re-runs next tick.
-    await cache.put(
-        db,
-        COLLECTION,
-        { _id: `meta:${mode}` },
-        { _id: `meta:${mode}`, lastInstanceId: info.instanceId, season: info.season, status: "ok" },
+    // Update the metadata LAST so a mid-run crash simply re-runs next tick.
+    await writeMetadata(
+        mode,
+        {
+            lastInstanceId: info.instanceId,
+            season: info.season,
+            status: "ok",
+            ingestedAt: new Date().toISOString(),
+            leaderDocs: docs.length,
+            players: total,
+        },
+        metaFile,
     );
 
     return { mode, ingested: true, docCount: docs.length };
