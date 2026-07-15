@@ -13,17 +13,21 @@ export function inferBattleType(leaderBaseId: string, shipBaseIds: Set<string>):
     return shipBaseIds.has(leaderBaseId) ? "fleet" : "char";
 }
 
-/** Top `limit` counters as display rows. Defensive re-sort (data is already best-first). */
+/**
+ * Top `limit` counters as display rows, in stored order.
+ *
+ * Deliberately does NOT re-sort: the aggregator ranks these by a confidence-adjusted win rate
+ * (Wilson lower bound), which needs the whole tally to compute. Re-sorting here on raw win% —
+ * as this once did — silently overrode that and promoted small-sample flukes back to the top.
+ * The producer owns the ranking; this just renders it.
+ */
 export function displayRows(bucket: { counters: CounterEntry[] }, limit = 10): DisplayRow[] {
-    return [...bucket.counters]
-        .sort((a, b) => b.wins / b.total - a.wins / a.total || b.total - a.total)
-        .slice(0, limit)
-        .map((c) => ({
-            atkLeader: c.atkLeader,
-            others: c.attack.filter((id) => id !== c.atkLeader),
-            winPct: Math.round((c.wins / c.total) * 100),
-            n: c.total,
-        }));
+    return bucket.counters.slice(0, limit).map((c) => ({
+        atkLeader: c.atkLeader,
+        others: c.attack.filter((id) => id !== c.atkLeader),
+        winPct: Math.round((c.wins / c.total) * 100),
+        n: c.total,
+    }));
 }
 
 export type BucketKind = "overall" | "variant" | "closest";

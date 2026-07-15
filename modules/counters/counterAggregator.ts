@@ -142,13 +142,33 @@ export const DEFAULT_BUILD_OPTIONS: BuildOptions = { minBattles: 5, countersPerB
 
 import type { CounterDoc, CounterEntry } from "../../schemas/counters.schema.ts";
 
-const winRate = (t: CounterTally): number => (t.total ? t.wins / t.total : 0);
+/** z for a 95% confidence interval; the only knob on how harshly small samples are discounted. */
+const WILSON_Z = 1.96;
 
-/** Filter by minBattles, sort by win% then sample size, cap, and strip to the stored shape. */
+/**
+ * Lower bound of the Wilson score interval for a win rate — "how good is this team, pessimistically?"
+ *
+ * Ranking on raw win% is the wrong question: it cannot tell a 5-battle 100% fluke from a genuinely
+ * dominant team, so tiny perfect records crowd out the teams people actually field. The Wilson lower
+ * bound answers "given this sample, what win rate can we actually be confident in?", which grows with
+ * evidence: 5/5 -> ~0.57, 209/209 -> ~0.98, 2400/3000 -> ~0.79. Draws live in `total` but not `wins`,
+ * so they correctly drag a team's score down.
+ */
+export function wilsonLowerBound(wins: number, total: number): number {
+    if (!total) return 0;
+    const p = wins / total;
+    const z2 = WILSON_Z * WILSON_Z;
+    const denominator = 1 + z2 / total;
+    const centre = p + z2 / (2 * total);
+    const margin = WILSON_Z * Math.sqrt((p * (1 - p) + z2 / (4 * total)) / total);
+    return Math.max(0, (centre - margin) / denominator);
+}
+
+/** Filter by minBattles, rank by confidence-adjusted win rate, cap, and strip to the stored shape. */
 function rankCounters(byAttack: Map<string, CounterTally>, opts: BuildOptions): CounterEntry[] {
     return [...byAttack.values()]
         .filter((t) => t.total >= opts.minBattles)
-        .sort((a, b) => winRate(b) - winRate(a) || b.total - a.total)
+        .sort((a, b) => wilsonLowerBound(b.wins, b.total) - wilsonLowerBound(a.wins, a.total) || b.total - a.total)
         .slice(0, opts.countersPerBucket)
         .map((t) => ({ attack: t.attack, atkLeader: t.atkLeader, wins: t.wins, total: t.total, draws: t.draws }));
 }

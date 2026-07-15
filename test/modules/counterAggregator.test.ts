@@ -109,7 +109,36 @@ describe("foldPlayer", () => {
     });
 });
 
-import { buildCounterDocs, DEFAULT_BUILD_OPTIONS } from "../../modules/counters/counterAggregator.ts";
+import { buildCounterDocs, DEFAULT_BUILD_OPTIONS, wilsonLowerBound } from "../../modules/counters/counterAggregator.ts";
+
+describe("wilsonLowerBound", () => {
+    it("discounts a tiny perfect record far below a huge strong one", () => {
+        assert.ok(wilsonLowerBound(5, 5) < wilsonLowerBound(2400, 3000), "5/5 must score below 2400/3000");
+    });
+
+    it("rewards sample size at equal win rate", () => {
+        assert.ok(wilsonLowerBound(209, 209) > wilsonLowerBound(11, 11));
+        assert.ok(wilsonLowerBound(800, 1000) > wilsonLowerBound(8, 10));
+    });
+
+    it("never exceeds the observed rate, and stays within [0,1]", () => {
+        for (const [w, n] of [
+            [5, 5],
+            [11, 11],
+            [800, 1000],
+            [1, 5],
+            [0, 7],
+        ]) {
+            const lb = wilsonLowerBound(w, n);
+            assert.ok(lb >= 0 && lb <= 1, `${w}/${n} -> ${lb} out of range`);
+            assert.ok(lb <= w / n + 1e-9, `${w}/${n} lower bound ${lb} exceeded observed rate`);
+        }
+    });
+
+    it("returns 0 for a zero-battle tally rather than dividing by zero", () => {
+        assert.strictEqual(wilsonLowerBound(0, 0), 0);
+    });
+});
 
 function accWith(nWins: number, nLoss: number): Accumulator {
     const acc: Accumulator = new Map();
@@ -134,6 +163,43 @@ describe("buildCounterDocs", () => {
     it("drops counter rows below minBattles", () => {
         const docs = buildCounterDocs(accWith(3, 0), meta, { ...DEFAULT_BUILD_OPTIONS, minBattles: 5 });
         assert.strictEqual(docs.length, 0);
+    });
+
+    // A tiny perfect record is luck, not a counter. Ranking on raw win% let a 5/5 outrank a
+    // thousands-of-battles staple, so every stored slot filled with flukes and the real meta
+    // teams were discarded at ingestion. Rank on the Wilson lower bound instead.
+    it("ranks a high-volume strong team above a tiny perfect record", () => {
+        const acc: Accumulator = new Map();
+        const duel = (atk: string, outcome: number) => ({
+            defenderUnit: [{ definitionId: "GRIEVOUS:X", squadUnitType: 2 }],
+            attackerUnit: [{ definitionId: `${atk}:X`, squadUnitType: 2 }],
+            battleOutcome: outcome,
+        });
+        // META: 2400/3000 = 80% over a huge sample. FLUKE: 5/5 = 100% over nothing.
+        for (let i = 0; i < 2400; i++) foldDuel(acc, duel("META", 1));
+        for (let i = 0; i < 600; i++) foldDuel(acc, duel("META", 2));
+        for (let i = 0; i < 5; i++) foldDuel(acc, duel("FLUKE", 1));
+
+        const docs = buildCounterDocs(acc, meta, { ...DEFAULT_BUILD_OPTIONS, minBattles: 5 });
+        const order = docs[0].overall.counters.map((c) => c.atkLeader);
+        assert.deepStrictEqual(order, ["META", "FLUKE"], "the 3000-battle 80% team must outrank the 5/5");
+    });
+
+    it("still ranks a big perfect record above a small one", () => {
+        const acc: Accumulator = new Map();
+        const duel = (atk: string) => ({
+            defenderUnit: [{ definitionId: "GRIEVOUS:X", squadUnitType: 2 }],
+            attackerUnit: [{ definitionId: `${atk}:X`, squadUnitType: 2 }],
+            battleOutcome: 1,
+        });
+        for (let i = 0; i < 209; i++) foldDuel(acc, duel("BIG"));
+        for (let i = 0; i < 11; i++) foldDuel(acc, duel("SMALL"));
+
+        const docs = buildCounterDocs(acc, meta, { ...DEFAULT_BUILD_OPTIONS, minBattles: 5 });
+        assert.deepStrictEqual(
+            docs[0].overall.counters.map((c) => c.atkLeader),
+            ["BIG", "SMALL"],
+        );
     });
 
     it("caps counters per bucket", () => {

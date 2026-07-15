@@ -20,10 +20,32 @@ describe("gahistoryClient", () => {
         assert.deepStrictEqual(await client.getInfo("5v5"), { instanceId: "O1", season: 80, eventInstanceId: "E:O1" });
     });
 
-    it("getPlayerIds returns the KYBER list", async () => {
-        const { impl } = fakeFetch([{ status: 200, body: { KYBER: ["a", "b"], AURODIUM: ["c"] } }]);
+    it("getPlayerIds gathers every ingested league, not just KYBER", async () => {
+        const { impl } = fakeFetch([
+            { status: 200, body: { KYBER: ["a", "b"], AURODIUM: ["c"], CHROMIUM: ["d"], BRONZIUM: ["e"], CARBONITE: ["z"] } },
+        ]);
         const client = createGahistoryClient({ fetchImpl: impl, maxPer10s: 100000 });
-        assert.deepStrictEqual(await client.getPlayerIds("3v3"), ["a", "b"]);
+        assert.deepStrictEqual(await client.getPlayerIds("3v3"), ["a", "b", "c", "d", "e"]);
+    });
+
+    it("getPlayerIds skips CARBONITE (AFK-heavy, so its teams pollute win rates)", async () => {
+        const { impl } = fakeFetch([{ status: 200, body: { KYBER: ["a"], CARBONITE: ["afk1", "afk2"] } }]);
+        const client = createGahistoryClient({ fetchImpl: impl, maxPer10s: 100000 });
+        const ids = await client.getPlayerIds("5v5");
+        assert.deepStrictEqual(ids, ["a"]);
+        assert.ok(!ids.includes("afk1"));
+    });
+
+    it("getPlayerIds tolerates a missing league and de-duplicates ids", async () => {
+        const { impl } = fakeFetch([{ status: 200, body: { KYBER: ["a", "dup"], BRONZIUM: ["dup", "b"] } }]);
+        const client = createGahistoryClient({ fetchImpl: impl, maxPer10s: 100000 });
+        assert.deepStrictEqual(await client.getPlayerIds("5v5"), ["a", "dup", "b"]);
+    });
+
+    it("getPlayerIds returns an empty list when the payload has no leagues", async () => {
+        const { impl } = fakeFetch([{ status: 200, body: {} }]);
+        const client = createGahistoryClient({ fetchImpl: impl, maxPer10s: 100000 });
+        assert.deepStrictEqual(await client.getPlayerIds("5v5"), []);
     });
 
     it("getPlayer retries on 5xx then succeeds", async () => {

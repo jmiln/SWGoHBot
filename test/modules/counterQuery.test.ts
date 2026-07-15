@@ -15,15 +15,16 @@ describe("inferBattleType", () => {
 });
 
 describe("displayRows", () => {
+    // Stored best-first by the aggregator's confidence-adjusted ranking.
     const bucket = {
         counters: [
-            { attack: ["WAMPA", "JOLEE"], atkLeader: "WAMPA", wins: 5, total: 10, draws: 0 }, // 50%
             { attack: ["GAS", "ARC", "FIVES"], atkLeader: "GAS", wins: 9, total: 10, draws: 1 }, // 90%
             { attack: ["REY"], atkLeader: "REY", wins: 8, total: 10, draws: 0 }, // 80%
+            { attack: ["WAMPA", "JOLEE"], atkLeader: "WAMPA", wins: 5, total: 10, draws: 0 }, // 50%
         ],
     };
 
-    it("sorts best win% first, marks leader out of others, rounds win%, uses total as n", () => {
+    it("splits the leader out of the team, rounds win%, and uses total as n", () => {
         const rows = displayRows(bucket);
         assert.deepStrictEqual(
             rows.map((r) => [r.atkLeader, r.winPct, r.n]),
@@ -34,6 +35,22 @@ describe("displayRows", () => {
             ],
         );
         assert.deepStrictEqual(rows[0].others, ["ARC", "FIVES"]);
+    });
+
+    // Regression: re-sorting on raw win% here would override the aggregator's Wilson ranking and
+    // promote small-sample flukes back to the top. Stored order is authoritative.
+    it("preserves stored order instead of re-ranking on raw win%", () => {
+        const ranked = {
+            counters: [
+                { attack: ["META"], atkLeader: "META", wins: 2400, total: 3000, draws: 0 }, // 80%, huge sample
+                { attack: ["FLUKE"], atkLeader: "FLUKE", wins: 5, total: 5, draws: 0 }, // 100%, no sample
+            ],
+        };
+        assert.deepStrictEqual(
+            displayRows(ranked).map((r) => r.atkLeader),
+            ["META", "FLUKE"],
+            "must not float the 5/5 above the 3000-battle team",
+        );
     });
 
     it("caps at the limit", () => {

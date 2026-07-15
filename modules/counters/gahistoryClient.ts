@@ -2,6 +2,19 @@ import type { RawPlayerDoc } from "./counterAggregator.ts";
 
 const GAHISTORY_BASE = "https://gahistory.c3po.wtf";
 
+/**
+ * Leagues we fold into the counter stats, best-first.
+ *
+ * KYBER alone is only ~4.8% of the ~189k tracked players, which spreads each defense across too few
+ * battles: teams end up seen 11-200 times, so coin-flip 100% win rates survive and crowd out the
+ * teams people actually field. Widening to AURODIUM/CHROMIUM/BRONZIUM gives ~134k players (~15x),
+ * enough for win rates to regress toward the truth.
+ *
+ * CARBONITE is deliberately excluded: it is the largest bucket (~54k) and the parking spot for AFK
+ * players, whose unattended defenses would inflate every attacker's win rate.
+ */
+export const INGEST_LEAGUES = ["KYBER", "AURODIUM", "CHROMIUM", "BRONZIUM"] as const;
+
 export type Mode = "5v5" | "3v3";
 export interface InfoDoc {
     instanceId: string;
@@ -79,8 +92,14 @@ export function createGahistoryClient(opts: { fetchImpl?: FetchImpl; maxPer10s?:
         },
         async getPlayerIds(mode) {
             const { data } = await getJson(`/${mode}/players.json`);
-            const d = (data ?? {}) as Record<string, string[]>;
-            return d.KYBER ?? [];
+            const d = (data ?? {}) as Record<string, string[] | undefined>;
+            // De-duplicated across leagues: a player should only ever appear in one, but a repeat
+            // would otherwise double-count every one of their battles.
+            const ids = new Set<string>();
+            for (const league of INGEST_LEAGUES) {
+                for (const id of d[league] ?? []) ids.add(id);
+            }
+            return [...ids];
         },
         async getPlayer(mode, playerId) {
             const { status, data } = await getJson(`/${mode}/${playerId}.json`);
