@@ -135,30 +135,6 @@
     },
     {
         "name": "Ahsoka Tano",
-        "defId": "AHSOKATANO",
-        "locations": [
-            {
-                "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_JEDI_NAME",
-                "name": "Places Of Power Assault Battles"
-            },
-            {
-                "type": "Cantina Store",
-                "cost": "400 Cantina Tokens/10"
-            },
-            {
-                "type": "Fleet Arena Store",
-                "cost": "400 Fleet Arena Tokens/10"
-            },
-            {
-                "type": "Hard Modes (L)",
-                "level": "1-B",
-                "locId": "HARD_LIGHT"
-            }
-        ]
-    },
-    {
-        "name": "Ahsoka Tano",
         "defId": "GLAHSOKATANO",
         "locations": []
     },
@@ -182,8 +158,32 @@
             },
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
+            }
+        ]
+    },
+    {
+        "name": "Ahsoka Tano (Snips)",
+        "defId": "AHSOKATANO",
+        "locations": [
+            {
+                "type": "Assault Battle Event",
+                "locId": "EVENT_ASSAULT_JEDI_NAME",
+                "name": "Places Of Power Assault Battles"
+            },
+            {
+                "type": "Cantina Store",
+                "cost": "400 Cantina Tokens/10"
+            },
+            {
+                "type": "Fleet Arena Store",
+                "cost": "400 Fleet Arena Tokens/10"
+            },
+            {
+                "type": "Hard Modes (L)",
+                "level": "1-B",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -193,8 +193,8 @@
         "locations": [
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Hard Modes (D)",
@@ -880,8 +880,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EWOK_NAME",
-                "name": "Assault Battles: Forest Moon"
+                "locId": "EVENT_ASSAULT_EWOK_NAMEV2",
+                "name": "Forest Moon Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -1313,8 +1313,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Fleet Arena Store",
@@ -1369,8 +1369,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -1399,6 +1399,10 @@
         "name": "Dedra Meero",
         "defId": "DEDRAMEERO",
         "locations": [
+            {
+                "type": "Hard Modes (D)",
+                "locId": "HARD_DARK"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_DEDRAMEERO_NAME",
@@ -1443,8 +1447,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Guild Events Store",
@@ -1541,8 +1545,8 @@
         "locations": [
             {
                 "type": "Legendary Event",
-                "locId": "PROGRESSIONEVENT_EMPERORS_END_NAME",
-                "name": "Emperor's Demise"
+                "locId": "PROGRESSIONEVENT_EMPERORS_END_NAME_V2",
+                "name": "Emperor's Demise Legendary Event"
             }
         ]
     },
@@ -1552,8 +1556,8 @@
         "locations": [
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Hard Modes (Fleet)",
@@ -1568,8 +1572,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EWOK_NAME",
-                "name": "Assault Battles: Forest Moon"
+                "locId": "EVENT_ASSAULT_EWOK_NAMEV2",
+                "name": "Forest Moon Assault Battles"
             },
             {
                 "type": "Guild Activity Store",
@@ -1593,8 +1597,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EWOK_NAME",
-                "name": "Assault Battles: Forest Moon"
+                "locId": "EVENT_ASSAULT_EWOK_NAMEV2",
+                "name": "Forest Moon Assault Battles"
             },
             {
                 "type": "Hard Modes (L)",
@@ -1763,8 +1767,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -1891,8 +1895,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Guild Events Store",
@@ -1979,8 +1983,8 @@
         "locations": [
             {
                 "type": "Legendary Event",
-                "locId": "PROGRESSIONEVENT_GRANDMASTERS_TRAINING_NAME",
-                "name": "Grand Master's Training"
+                "locId": "PROGRESSIONEVENT_GRANDMASTERS_TRAINING_NAME_V2",
+                "name": "Grand Master's Training Legendary Event"
             }
         ]
     },
@@ -1990,8 +1994,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Fleet Arena Store",
@@ -2052,7 +2056,13 @@
     {
         "name": "Grogu & Anzellans",
         "defId": "GOPHERANTS",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_GOPHER_NAME",
+                "name": "Small But Mighty Special Marquee Event"
+            }
+        ]
     },
     {
         "name": "Gungan Boomadier",
@@ -2092,8 +2102,8 @@
         "locations": [
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Guild Activity Store",
@@ -2387,8 +2397,8 @@
         "locations": [
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Guild Activity Store",
@@ -2410,8 +2420,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Guild Events Store",
@@ -2534,7 +2544,7 @@
         "locations": [
             {
                 "type": "Hero's Journey",
-                "locId": "JEDIKNIGHTCAL_GUIDE_DETAILS_TITLE",
+                "locId": "EVENT_JOURNEY_JEDIKNIGHTCAL_NAME",
                 "name": "Jedi Knight Cal Kestis"
             }
         ]
@@ -2872,6 +2882,11 @@
         ]
     },
     {
+        "name": "Leia (Jedi Training)",
+        "defId": "LEIAJEDITRAINING",
+        "locations": []
+    },
+    {
         "name": "Leia Organa",
         "defId": "GLLEIA",
         "locations": [
@@ -2904,8 +2919,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EWOK_NAME",
-                "name": "Assault Battles: Forest Moon"
+                "locId": "EVENT_ASSAULT_EWOK_NAMEV2",
+                "name": "Forest Moon Assault Battles"
             },
             {
                 "type": "Guild Activity Store",
@@ -2924,8 +2939,8 @@
         "locations": [
             {
                 "type": "Galactic Ascension",
-                "locId": "EVENT_LORDVADER_GALACTICLEGEND_NAME_V2",
-                "name": "Lord Vader Hero's Fall"
+                "locId": "EVENT_LORDVADER_GALACTICLEGEND_NAME_V3",
+                "name": "Hero's Fall Galactic Ascension"
             }
         ]
     },
@@ -3014,8 +3029,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Galactic War Store",
@@ -3031,6 +3046,10 @@
         "name": "Major Partagaz",
         "defId": "MAJORPARTAGAZ",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_MAJORPARTAGAZ_NAME",
@@ -3109,7 +3128,13 @@
     {
         "name": "Maz Kanata",
         "defId": "MAZKANATA",
-        "locations": []
+        "locations": [
+            {
+                "type": "Proving Grounds",
+                "locId": "EVENT_CONQUEST_UNIT_TRIALS_NAME",
+                "name": "Proving Grounds Conquest Trials"
+            }
+        ]
     },
     {
         "name": "Merrin",
@@ -3427,13 +3452,13 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EWOK_NAME",
-                "name": "Assault Battles: Forest Moon"
+                "locId": "EVENT_ASSAULT_EWOK_NAMEV2",
+                "name": "Forest Moon Assault Battles"
             },
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Guild Activity Store",
@@ -3578,8 +3603,8 @@
             },
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             }
         ]
     },
@@ -3680,8 +3705,8 @@
             },
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Guild Activity Store",
@@ -3833,8 +3858,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Guild Events Store",
@@ -4024,8 +4049,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Hard Modes (L)",
@@ -4141,8 +4166,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Guild Activity Store",
@@ -4198,8 +4223,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Cantina Store",
@@ -4356,8 +4381,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EWOK_NAME",
-                "name": "Assault Battles: Forest Moon"
+                "locId": "EVENT_ASSAULT_EWOK_NAMEV2",
+                "name": "Forest Moon Assault Battles"
             },
             {
                 "type": "Galactic War Store",
@@ -4461,8 +4486,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -4631,8 +4656,8 @@
         "locations": [
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Hard Modes (D)",
@@ -4651,8 +4676,8 @@
             },
             {
                 "type": "Galactic Bounty Event",
-                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME",
-                "name": "Galactic Bounties Special Event"
+                "locId": "EVENT_GALACTIC_BOUNTY_01_NAME_V2",
+                "name": "Galactic Bounties I Special Event"
             },
             {
                 "type": "Guild Activity Store",

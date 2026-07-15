@@ -1,7 +1,7 @@
 {
     "metadata": {
-        "generatedAt": "2026-06-14T16:30:10.855Z",
-        "totalCommands": 46,
+        "generatedAt": "2026-07-15T23:18:21.598Z",
+        "totalCommands": 47,
         "categories": 4
     },
     "General": {
@@ -1008,14 +1008,12 @@
                             {
                                 "name": "admin_role",
                                 "type": 8,
-                                "description": "A list of the roles that are allowed to mess with settings/ events.",
-                                "choices": null
+                                "description": "A list of the roles that are allowed to mess with settings/ events."
                             },
                             {
                                 "name": "event_countdown",
                                 "type": 4,
-                                "description": "Set how long before events it should warn you.",
-                                "choices": null
+                                "description": "Set how long before events it should warn you."
                             }
                         ]
                     },
@@ -1027,14 +1025,12 @@
                             {
                                 "name": "admin_role",
                                 "type": 8,
-                                "description": "A list of the roles that are allowed to mess with settings/ events.",
-                                "choices": null
+                                "description": "A list of the roles that are allowed to mess with settings/ events."
                             },
                             {
                                 "name": "event_countdown",
                                 "type": 4,
-                                "description": "Set how long before events it should warn you.",
-                                "choices": null
+                                "description": "Set how long before events it should warn you."
                             }
                         ]
                     },
@@ -1046,44 +1042,37 @@
                             {
                                 "name": "enable_welcome",
                                 "type": 5,
-                                "description": "Toggle the welcome message",
-                                "choices": null
+                                "description": "Toggle the welcome message"
                             },
                             {
                                 "name": "welcome_message",
                                 "type": 3,
-                                "description": "Set the welcome message text",
-                                "choices": null
+                                "description": "Set the welcome message text"
                             },
                             {
                                 "name": "enable_part",
                                 "type": 5,
-                                "description": "Toggle the parting/ leaving message",
-                                "choices": null
+                                "description": "Toggle the parting/ leaving message"
                             },
                             {
                                 "name": "part_message",
                                 "type": 3,
-                                "description": "Set the part message text",
-                                "choices": null
+                                "description": "Set the part message text"
                             },
                             {
                                 "name": "timezone",
                                 "type": 3,
-                                "description": "Set the timezone to be referenced for events and such in the guild",
-                                "choices": null
+                                "description": "Set the timezone to be referenced for events and such in the guild"
                             },
                             {
                                 "name": "announce_chan",
                                 "type": 7,
-                                "description": "Set the default channel for events to announce to",
-                                "choices": null
+                                "description": "Set the default channel for events to announce to"
                             },
                             {
                                 "name": "use_event_pages",
                                 "type": 5,
-                                "description": "Set it to show your events list in pages",
-                                "choices": null
+                                "description": "Set it to show your events list in pages"
                             },
                             {
                                 "name": "language",
@@ -1178,8 +1167,7 @@
                             {
                                 "name": "shardtime_vertical",
                                 "type": 5,
-                                "description": "Display the shardtimes info vertically",
-                                "choices": null
+                                "description": "Display the shardtimes info vertically"
                             }
                         ]
                     },
@@ -2127,6 +2115,129 @@
                         "description": "The gear level you want to see the requirements for",
                         "minValue": 1,
                         "maxValue": 13
+                    }
+                ],
+                "permLevel": 0,
+                "devServerOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
+                "name": "counter",
+                "description": "Find general PvP counters for a character-squad leader or fleet capital",
+                "usage": [
+                    "**/counter** 5v5 <leader> [member2] [member3] [member4] [member5] [battletype]",
+                    "**/counter** 3v3 <leader> [member2] [member3] [member4] [member5] [battletype]"
+                ],
+                "options": [
+                    {
+                        "name": "5v5",
+                        "type": 1,
+                        "description": "Find 5v5 counters for a defensive leader or fleet capital",
+                        "options": [
+                            {
+                                "name": "leader",
+                                "type": 3,
+                                "description": "Leader (character) or capital ship to counter",
+                                "required": true,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member2",
+                                "type": 3,
+                                "description": "Defense team member 2 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member3",
+                                "type": 3,
+                                "description": "Defense team member 3 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member4",
+                                "type": 3,
+                                "description": "Defense team member 4 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member5",
+                                "type": 3,
+                                "description": "Defense team member 5 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "battletype",
+                                "type": 3,
+                                "description": "Force character or fleet lookup (defaults to character)",
+                                "choices": [
+                                    {
+                                        "name": "Characters",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "Fleet",
+                                        "value": "fleet"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "3v3",
+                        "type": 1,
+                        "description": "Find 3v3 counters for a defensive leader or fleet capital",
+                        "options": [
+                            {
+                                "name": "leader",
+                                "type": 3,
+                                "description": "Leader (character) or capital ship to counter",
+                                "required": true,
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member2",
+                                "type": 3,
+                                "description": "Defense team member 2 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member3",
+                                "type": 3,
+                                "description": "Defense team member 3 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member4",
+                                "type": 3,
+                                "description": "Defense team member 4 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "member5",
+                                "type": 3,
+                                "description": "Defense team member 5 to narrow the comp (optional)",
+                                "autocomplete": true
+                            },
+                            {
+                                "name": "battletype",
+                                "type": 3,
+                                "description": "Force character or fleet lookup (defaults to character)",
+                                "choices": [
+                                    {
+                                        "name": "Characters",
+                                        "value": "char"
+                                    },
+                                    {
+                                        "name": "Fleet",
+                                        "value": "fleet"
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ],
                 "permLevel": 0,

@@ -45,7 +45,7 @@
         ]
     },
     {
-        "name": "Biggs Darklighter's X-Wing",
+        "name": "Biggs Darklighter's X-wing",
         "defId": "XWINGRED3",
         "locations": [
             {
@@ -64,7 +64,7 @@
         ]
     },
     {
-        "name": "Bistan's U-Wing",
+        "name": "Bistan's U-wing",
         "defId": "UWINGSCARIF",
         "locations": [
             {
@@ -104,7 +104,7 @@
         ]
     },
     {
-        "name": "Cassian's U-Wing",
+        "name": "Cassian's U-wing",
         "defId": "UWINGROGUEONE",
         "locations": [
             {
@@ -215,7 +215,7 @@
         "locations": []
     },
     {
-        "name": "First Order SF Tie Fighter",
+        "name": "First Order SF TIE Fighter",
         "defId": "TIEFIGHTERFOSF",
         "locations": [
             {
@@ -225,7 +225,7 @@
         ]
     },
     {
-        "name": "First Order Tie Fighter",
+        "name": "First Order TIE Fighter",
         "defId": "TIEFIGHTERFIRSTORDER",
         "locations": [
             {
@@ -264,8 +264,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Fleet Arena Store",
@@ -284,7 +284,7 @@
     },
     {
         "name": "Geonosian Soldier's Starfighter",
-        "defId": "GEONOSIANSTARFIGHTER1",
+        "defId": "GEONOSIANSTARFIGHTER2",
         "locations": [
             {
                 "type": "Assault Battle Event",
@@ -304,9 +304,9 @@
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Hard Modes (Fleet)",
-                "level": "2-A",
-                "locId": "HARD_FLEET"
+                "type": "Hard Modes (L)",
+                "level": "9-D",
+                "locId": "HARD_LIGHT"
             }
         ]
     },
@@ -423,8 +423,8 @@
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Cantina",
@@ -839,7 +839,7 @@
         ]
     },
     {
-        "name": "Slave-I",
+        "name": "Slave I",
         "defId": "SLAVE1",
         "locations": [
             {
@@ -855,7 +855,7 @@
     },
     {
         "name": "Sun Fac's Geonosian Starfighter",
-        "defId": "GEONOSIANSTARFIGHTER2",
+        "defId": "GEONOSIANSTARFIGHTER1",
         "locations": [
             {
                 "type": "Assault Battle Event",
@@ -875,20 +875,20 @@
                 "cost": "400 Mk I Guild Event Tokens/4"
             },
             {
-                "type": "Hard Modes (L)",
-                "level": "9-D",
-                "locId": "HARD_LIGHT"
+                "type": "Hard Modes (Fleet)",
+                "level": "2-A",
+                "locId": "HARD_FLEET"
             }
         ]
     },
     {
-        "name": "Tie Advanced x1",
+        "name": "TIE Advanced x1",
         "defId": "TIEADVANCED",
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Assault Battle Event",
@@ -940,13 +940,13 @@
         ]
     },
     {
-        "name": "Tie Reaper",
+        "name": "TIE Reaper",
         "defId": "TIEREAPER",
         "locations": [
             {
                 "type": "Assault Battle Event",
-                "locId": "EVENT_ASSAULT_EMPIRE_NAME",
-                "name": "Empire Assault"
+                "locId": "EVENT_ASSAULT_EMPIRE_NAME_V3",
+                "name": "Military Might Assault Battles"
             },
             {
                 "type": "Hard Modes (L)",
@@ -956,7 +956,7 @@
         ]
     },
     {
-        "name": "Tie Silencer",
+        "name": "TIE Silencer",
         "defId": "TIESILENCER",
         "locations": [
             {
@@ -1022,7 +1022,7 @@
         ]
     },
     {
-        "name": "Wedge Antilles's X-Wing",
+        "name": "Wedge Antilles's X-wing",
         "defId": "XWINGRED2",
         "locations": [
             {

@@ -37,11 +37,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_4lom.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_BOUNTYHUNTER_DESC_V2",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_SPECIESDROID_DESC"
+            "Bounty Hunter",
+            "Droid",
+            "Leader",
+            "Scoundrel",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -54,8 +54,7 @@
                 "Speed x4",
                 "Tenacity x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "50R-T",
@@ -98,7 +97,9 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -186,6 +187,7 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_admiralraddus.png",
         "side": "light",
         "factions": [
+            "Fleet Commander",
             "Leader",
             "Rebel",
             "Rogue One",
@@ -235,6 +237,69 @@
     },
     {
         "name": "Ahsoka Tano",
+        "uniqueName": "GLAHSOKATANO",
+        "aliases": [
+            "Ahsoka Tano (GL)",
+            "Ahsoka Tano Gray",
+            "Galactic Legend Ahsoka Tano"
+        ],
+        "avatarName": "charui_ahsokatanogray",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokatanogray.png",
+        "side": "light",
+        "factions": [
+            "Galactic Legend",
+            "Leader",
+            "Spectre",
+            "Tank",
+            "Unaligned Force User"
+        ],
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Defense x2",
+                "Speed x4"
+            ]
+        }
+    },
+    {
+        "name": "Ahsoka Tano (Fulcrum)",
+        "uniqueName": "FULCRUMAHSOKA",
+        "aliases": [
+            "Ahsoka Tano (Fulcrum)",
+            "Ahsoka Tano Fulcrum",
+            "ATF",
+            "FAT"
+        ],
+        "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokaadult.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Rebel",
+            "Spectre",
+            "Unaligned Force User"
+        ],
+        "mods": {
+            "square": "Offense",
+            "arrow": "Offense",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Offense x4"
+            ]
+        },
+        "avatarName": "charui_ahsokaadult"
+    },
+    {
+        "name": "Ahsoka Tano (Snips)",
         "uniqueName": "AHSOKATANO",
         "aliases": [
             "Ahsoka Tano",
@@ -264,69 +329,6 @@
             ]
         },
         "avatarName": "charui_ahsoka"
-    },
-    {
-        "name": "Ahsoka Tano",
-        "uniqueName": "GLAHSOKATANO",
-        "aliases": [
-            "Ahsoka Tano (GL)",
-            "Ahsoka Tano Gray",
-            "Galactic Legend Ahsoka Tano"
-        ],
-        "avatarName": "charui_ahsokatanogray",
-        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokatanogray.png",
-        "side": "light",
-        "factions": [
-            "Galactic Legend",
-            "Leader",
-            "Tank",
-            "Spectre",
-            "Unaligned Force User"
-        ],
-        "mods": {
-            "square": "Offense",
-            "arrow": "Speed",
-            "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Health",
-            "sets": [
-                "Defense x2",
-                "Speed x4"
-            ]
-        },
-        "crew": []
-    },
-    {
-        "name": "Ahsoka Tano (Fulcrum)",
-        "uniqueName": "FULCRUMAHSOKA",
-        "aliases": [
-            "Ahsoka Tano (Fulcrum)",
-            "Ahsoka Tano Fulcrum",
-            "ATF",
-            "FAT"
-        ],
-        "url": "http://swgoh.gg/characters/ahsoka-tano-fulcrum/",
-        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ahsokaadult.png",
-        "side": "light",
-        "factions": [
-            "Attacker",
-            "Rebel",
-            "Unaligned Force User"
-        ],
-        "mods": {
-            "square": "Offense",
-            "arrow": "Offense",
-            "diamond": "Defense",
-            "triangle": "Crit. Damage",
-            "circle": "Health",
-            "cross": "Offense",
-            "sets": [
-                "Health x2",
-                "Offense x4"
-            ]
-        },
-        "avatarName": "charui_ahsokaadult"
     },
     {
         "name": "Amilyn Holdo",
@@ -429,11 +431,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_asajjdarkdisciple.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_BOUNTYHUNTER_DESC_V2",
-            "CATEGORY_NIGHTSISTERS_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Attacker",
+            "Bounty Hunter",
+            "Leader",
+            "Nightsister",
+            "Unaligned Force User"
         ],
         "mods": {
             "square": "Offense",
@@ -446,8 +448,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Aurra Sing",
@@ -462,6 +463,7 @@
             "Attacker",
             "Bounty Hunter",
             "Leader",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -551,7 +553,9 @@
             "Galactic Republic",
             "Healer",
             "Jedi",
-            "Leader"
+            "Jedi Vanguard",
+            "Leader",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -640,8 +644,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_batcher.png",
         "side": "light",
         "factions": [
+            "Attacker",
             "Bad Batch",
-            "Attacker"
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -654,8 +659,7 @@
                 "Speed x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Baylan Skoll",
@@ -667,8 +671,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_baylanskoll.png",
         "side": "dark",
         "factions": [
-            "Mercenary",
             "Leader",
+            "Mercenary",
             "Tank",
             "Unaligned Force User"
         ],
@@ -683,8 +687,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Baze Malbus",
@@ -900,6 +903,7 @@
         "factions": [
             "Attacker",
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
             "Scoundrel"
         ],
@@ -930,6 +934,7 @@
             "Attacker",
             "Bounty Hunter",
             "Leader",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -1072,10 +1077,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_brutus.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_SCOUNDREL_DESC"
+            "Attacker",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel"
         ],
         "mods": {
             "square": "Offense",
@@ -1088,8 +1093,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "BT-1",
@@ -1134,6 +1138,7 @@
         "factions": [
             "Droid",
             "Galactic Republic",
+            "New Republic",
             "Rebel",
             "Resistance",
             "Support"
@@ -1163,7 +1168,9 @@
         "side": "dark",
         "factions": [
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
+            "Mercenary",
             "Scoundrel",
             "Support"
         ],
@@ -1221,6 +1228,7 @@
         "factions": [
             "Attacker",
             "Mandalorian",
+            "Mercenary",
             "Old Republic",
             "Scoundrel"
         ],
@@ -1248,14 +1256,13 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_carsonteva.png",
         "side": "light",
         "factions": [
-            "CATEGORY_CONSTABLE_DESC",
-            "CATEGORY_NEWREPUBLIC_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC"
+            "Attacker",
+            "Constable",
+            "Leader",
+            "New Republic",
+            "Rebel"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Captain Drogan",
@@ -1268,6 +1275,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "New Republic",
             "Rebel",
             "Rebel Fighter"
         ],
@@ -1309,8 +1317,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Captain Han Solo",
@@ -1352,11 +1359,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ithano.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_SCOUNDREL_DESC"
+            "Attacker",
+            "Leader",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel"
         ],
         "mods": {
             "square": "Offense",
@@ -1369,8 +1376,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Captain Phasma",
@@ -1412,8 +1418,8 @@
         "factions": [
             "Clone Trooper",
             "Phoenix",
+            "Rebel",
             "Rebel Fighter",
-            "Rebels",
             "Support"
         ],
         "mods": {
@@ -1439,12 +1445,12 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_captainsilvo.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Leader",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel",
+            "Support",
+            "Unaligned Force User"
         ],
         "mods": {
             "square": "Offense",
@@ -1457,8 +1463,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Captain Tarpals",
@@ -1496,6 +1501,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_caradune.png",
         "side": "light",
         "factions": [
+            "Constable",
+            "Mercenary",
+            "New Republic",
             "Rebel",
             "Rebel Fighter",
             "Scoundrel",
@@ -1583,10 +1591,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cassianundercover.png",
         "side": "light",
         "factions": [
-            "CATEGORY_REBELFIGHTER_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Leader",
+            "Rebel",
+            "Rebel Fighter",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -1599,8 +1607,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "CC-1119 \"Appo\"",
@@ -1612,9 +1619,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_appo.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_CLONETROOPER_DESC",
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Attacker",
+            "Clone Trooper",
+            "Empire",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -1627,8 +1635,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "CC-2224 \"Cody\"",
@@ -1703,7 +1710,8 @@
             "Attacker",
             "Rebel",
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -1819,8 +1827,10 @@
         "side": "light",
         "factions": [
             "Droid",
+            "New Republic",
             "Phoenix",
             "Rebel",
+            "Spectre",
             "Support"
         ],
         "mods": {
@@ -1847,9 +1857,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cinta.png",
         "side": "light",
         "factions": [
-            "CATEGORY_REBELFIGHTER_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Attacker",
+            "Rebel",
+            "Rebel Fighter"
         ],
         "mods": {
             "square": "Offense",
@@ -1862,8 +1872,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Clone Sergeant - Phase I",
@@ -1910,7 +1919,8 @@
             "Galactic Republic",
             "Leader",
             "Scoundrel",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -1937,12 +1947,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_cobbvanth.png",
         "side": "light",
         "factions": [
-            "CATEGORY_CONSTABLE_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC"
+            "Attacker",
+            "Constable",
+            "Leader"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Colonel Starck",
@@ -1984,11 +1993,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_colonelward.png",
         "side": "light",
         "factions": [
-            "CATEGORY_NEWREPUBLIC_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "New Republic",
+            "Support"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Commander Ahsoka Tano",
@@ -2062,6 +2070,7 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_coruscantpolice.png",
         "side": "light",
         "factions": [
+            "Constable",
             "Galactic Republic",
             "Support"
         ],
@@ -2119,8 +2128,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_crosshair_scarred.png",
         "side": "light",
         "factions": [
-            "CATEGORY_BADBATCH_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Attacker",
+            "Bad Batch",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -2133,8 +2143,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "CT-21-0408 \"Echo\"",
@@ -2242,9 +2251,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_operative.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_CLONETROOPER_DESC",
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Clone Trooper",
+            "Empire",
+            "Order 66 Raid",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -2257,8 +2267,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Dark Trooper",
@@ -2475,6 +2484,7 @@
         "side": "dark",
         "factions": [
             "Attacker",
+            "Fleet Commander",
             "Leader",
             "Sith",
             "Sith Empire"
@@ -2650,9 +2660,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vaderduelsend.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_SITH_DESC"
+            "Attacker",
+            "Empire",
+            "Sith"
         ],
         "mods": {
             "square": "Offense",
@@ -2665,8 +2675,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Dash Rendar",
@@ -2679,6 +2688,7 @@
         "side": "light",
         "factions": [
             "Leader",
+            "Mercenary",
             "Scoundrel",
             "Smuggler",
             "Support"
@@ -2767,9 +2777,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_deathtrooperperidea.png",
         "side": "dark",
         "factions": [
+            "Attacker",
             "Imperial Remnant",
-            "Nightsister",
-            "Attacker"
+            "Nightsister"
         ],
         "mods": {
             "square": "Offense",
@@ -2782,8 +2792,7 @@
                 "Crit. Chance x2",
                 "Crit. Damage x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Dedra Meero",
@@ -2795,9 +2804,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_dedrameero.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_IMPERIALSECURITYBUREAU",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Empire",
+            "ISB",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -2810,8 +2819,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Dengar",
@@ -2826,6 +2834,7 @@
             "Attacker",
             "Bounty Hunter",
             "Leader",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -2852,10 +2861,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_depabillaba.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_JEDIVANGUARD_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Attacker",
+            "Galactic Republic",
+            "Jedi",
+            "Jedi Vanguard",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -2868,8 +2878,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Director Krennic",
@@ -2884,6 +2893,7 @@
         "side": "dark",
         "factions": [
             "Empire",
+            "ISB",
             "Leader",
             "Support"
         ],
@@ -2911,9 +2921,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_disguisedclonetrooper.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_CLONETROOPER_DESC",
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Clone Trooper",
+            "Empire",
+            "Order 66 Raid",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -2926,8 +2937,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Doctor Aphra",
@@ -2940,6 +2950,7 @@
         "side": "dark",
         "factions": [
             "Leader",
+            "Mercenary",
             "Scoundrel",
             "Support"
         ],
@@ -3029,7 +3040,9 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -3090,7 +3103,9 @@
         "factions": [
             "Attacker",
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -3150,6 +3165,8 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Order 66 Raid",
+            "Pirate",
             "Scoundrel",
             "Smuggler"
         ],
@@ -3262,8 +3279,8 @@
         "side": "light",
         "factions": [
             "Jedi",
-            "Support",
-            "Spectre"
+            "Spectre",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -3276,8 +3293,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Fennec Shand",
@@ -3293,6 +3309,7 @@
             "Attacker",
             "Bounty Hunter",
             "Leader",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -3523,6 +3540,7 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gamorreanguard.png",
         "side": "dark",
         "factions": [
+            "Hutt Cartel",
             "Scoundrel",
             "Tank"
         ],
@@ -3735,8 +3753,9 @@
         "side": "light",
         "factions": [
             "Leader",
-            "Support",
-            "Spectre"
+            "New Republic",
+            "Spectre",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -3749,8 +3768,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "General Veers",
@@ -3972,6 +3990,7 @@
             "Empire",
             "Fleet Commander",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -3998,8 +4017,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_greatmothers.png",
         "side": "dark",
         "factions": [
-            "Nightsister",
             "Leader",
+            "Nightsister",
             "Support"
         ],
         "mods": {
@@ -4013,8 +4032,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Greedo",
@@ -4028,6 +4046,7 @@
         "factions": [
             "Attacker",
             "Bounty Hunter",
+            "Hutt Cartel",
             "Leader",
             "Scoundrel"
         ],
@@ -4080,17 +4099,16 @@
         "aliases": [
             "Grogu & Anzellans"
         ],
-        "avatarName": "charui_gopherants",
-        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_gopherants.png",
+        "avatarName": "charui_groguanz",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_groguanz.png",
         "side": "light",
         "factions": [
-            "CATEGORY_MANDALORIAN_DESC",
-            "CATEGORY_NEWREPUBLIC_DESC",
-            "CATEGORY_ROLEHEALER_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Healer",
+            "Mandalorian",
+            "New Republic",
+            "Unaligned Force User"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Gungan Boomadier",
@@ -4143,8 +4161,7 @@
                 "Health x2",
                 "Health x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Han Solo",
@@ -4157,6 +4174,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Mercenary",
             "Rebel",
             "Scoundrel",
             "Smuggler"
@@ -4273,8 +4291,11 @@
         ],
         "url": "http://swgoh.gg/characters/hondo-ohnaka/",
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hondoohnaka.png",
-        "side": "dark",
+        "side": "neutral",
         "factions": [
+            "Mercenary",
+            "Order 66 Raid",
+            "Pirate",
             "Scoundrel",
             "Smuggler",
             "Support"
@@ -4394,9 +4415,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_hunters3.png",
         "side": "light",
         "factions": [
-            "CATEGORY_BADBATCH_DESC",
-            "CATEGORY_MERCENARY_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Bad Batch",
+            "Mercenary",
+            "Order 66 Raid",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -4409,8 +4431,7 @@
                 "Speed x4",
                 "Potency x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Huyang",
@@ -4437,8 +4458,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Iden Versio",
@@ -4626,11 +4646,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_ig-90.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_BOUNTYHUNTER_DESC_V2",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_SPECIESDROID_DESC"
+            "Bounty Hunter",
+            "Droid",
+            "Leader",
+            "Scoundrel",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -4643,8 +4663,7 @@
                 "Speed x4",
                 "Tenacity x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Ima-Gun Di",
@@ -4660,7 +4679,9 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -4692,6 +4713,7 @@
         "factions": [
             "Droid",
             "Empire",
+            "ISB",
             "Support"
         ],
         "mods": {
@@ -4747,11 +4769,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_inquisitorbarriss.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_INQUISITORIUS_DESC",
-            "CATEGORY_ROLEHEALER_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Empire",
+            "Healer",
+            "Inquisitorius",
+            "Leader",
+            "Unaligned Force User"
         ],
         "mods": {
             "square": "Offense",
@@ -4764,8 +4786,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Jabba the Hutt",
@@ -4813,6 +4834,7 @@
             "Bounty Hunter",
             "Leader",
             "Mandalorian",
+            "Mercenary",
             "Scoundrel",
             "Separatist"
         ],
@@ -4854,8 +4876,7 @@
                 "Speed x4",
                 "Potency x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Jawa",
@@ -4952,7 +4973,9 @@
         "factions": [
             "Galactic Republic",
             "Healer",
-            "Jedi"
+            "Jedi",
+            "Jedi Vanguard",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -5013,7 +5036,8 @@
         "factions": [
             "Attacker",
             "Jedi",
-            "Leader"
+            "Leader",
+            "Mercenary"
         ],
         "mods": {
             "square": "Offense",
@@ -5041,6 +5065,8 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
+            "Order 66 Raid",
             "Tank"
         ],
         "mods": {
@@ -5191,11 +5217,12 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jedimastermacewindu.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_JEDIVANGUARD_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC"
+            "Attacker",
+            "Galactic Republic",
+            "Jedi",
+            "Jedi Vanguard",
+            "Leader",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -5208,8 +5235,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Jocasta Nu",
@@ -5221,10 +5247,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jocastanu_blaster.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_JEDIVANGUARD_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Attacker",
+            "Galactic Republic",
+            "Jedi",
+            "Jedi Vanguard",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -5237,8 +5264,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Jolee Bindo",
@@ -5406,7 +5432,9 @@
             "Attacker",
             "Galactic Republic",
             "Jedi",
-            "Leader"
+            "Jedi Vanguard",
+            "Leader",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -5465,7 +5493,9 @@
             "Attacker",
             "Galactic Republic",
             "Jedi",
-            "Leader"
+            "Jedi Vanguard",
+            "Leader",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -5491,11 +5521,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kix.png",
         "side": "light",
         "factions": [
-            "CATEGORY_CLONETROOPER_DESC",
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLEHEALER_DESC",
-            "CATEGORY_SCOUNDREL_DESC"
+            "Clone Trooper",
+            "Healer",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel"
         ],
         "mods": {
             "square": "Offense",
@@ -5508,8 +5538,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Kleya Marki",
@@ -5521,9 +5550,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kleya.png",
         "side": "light",
         "factions": [
-            "CATEGORY_REBELFIGHTER_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLEATTACKER_DESC"
+            "Attacker",
+            "Rebel",
+            "Rebel Fighter"
         ],
         "mods": {
             "square": "Offense",
@@ -5536,8 +5565,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Krrsantan",
@@ -5552,8 +5580,10 @@
             "Bounty Hunter",
             "Hutt Cartel",
             "Leader",
+            "Mercenary",
             "Scoundrel",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -5607,10 +5637,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_kxsecuritydroid.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_IMPERIALSECURITYBUREAU",
-            "CATEGORY_ROLETANK_DESC",
-            "CATEGORY_SPECIESDROID_DESC"
+            "Droid",
+            "Empire",
+            "ISB",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -5624,8 +5654,7 @@
                 "Health x2",
                 "Tenacity x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Kyle Katarn",
@@ -5639,6 +5668,8 @@
         "factions": [
             "Attacker",
             "Jedi",
+            "Mercenary",
+            "New Republic",
             "Rebel",
             "Rebel Fighter"
         ],
@@ -5730,6 +5761,7 @@
         "side": "light",
         "factions": [
             "Droid",
+            "Mercenary",
             "Scoundrel",
             "Smuggler",
             "Tank"
@@ -5780,6 +5812,21 @@
         "avatarName": "charui_landobespin"
     },
     {
+        "name": "Leia (Jedi Training)",
+        "uniqueName": "LEIAJEDITRAINING",
+        "aliases": [
+            "Leia (Jedi Training)"
+        ],
+        "avatarName": "charui_leiajeditraining",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_leiajeditraining.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Jedi"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Leia Organa",
         "uniqueName": "GLLEIA",
         "aliases": [
@@ -5817,6 +5864,7 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_lobot.png",
         "side": "light",
         "factions": [
+            "Constable",
             "Leader",
             "Rebel",
             "Support"
@@ -5937,7 +5985,9 @@
             "Galactic Republic",
             "Healer",
             "Jedi",
-            "Leader"
+            "Jedi Vanguard",
+            "Leader",
+            "Order 66 Raid"
         ],
         "mods": {
             "square": "Offense",
@@ -5964,8 +6014,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_luthenrael.png",
         "side": "light",
         "factions": [
+            "Rebel",
             "Rebel Fighter",
-            "Rebels",
             "Support"
         ],
         "mods": {
@@ -5979,8 +6029,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Mace Windu",
@@ -6051,10 +6100,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_majorpartagaz.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_IMPERIALSECURITYBUREAU",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Empire",
+            "ISB",
+            "Leader",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -6067,8 +6116,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
@@ -6124,8 +6172,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Master Qui-Gon",
@@ -6152,8 +6199,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Maul",
@@ -6194,8 +6240,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_maulhatefueled.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Attacker",
+            "Unaligned Force User"
         ],
         "mods": {
             "square": "Offense",
@@ -6209,8 +6255,7 @@
                 "Health x2",
                 "Health x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Maz Kanata",
@@ -6222,13 +6267,13 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_mazkanata.png",
         "side": "light",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_SMUGGLER_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Leader",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel",
+            "Smuggler",
+            "Support",
+            "Unaligned Force User"
         ],
         "mods": {
             "square": "Offense",
@@ -6241,8 +6286,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Merrin",
@@ -6283,6 +6327,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Mercenary",
             "Old Republic",
             "Scoundrel"
         ],
@@ -6369,6 +6414,7 @@
         "side": "light",
         "factions": [
             "Leader",
+            "New Republic",
             "Rebel",
             "Support"
         ],
@@ -6411,8 +6457,7 @@
                 "Health x2",
                 "Defense x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Mother Talzin",
@@ -6453,9 +6498,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_nighttrooper_a.png",
         "side": "dark",
         "factions": [
+            "Attacker",
             "Imperial Remnant",
-            "Nightsister",
-            "Attacker"
+            "Nightsister"
         ],
         "mods": {
             "square": "Offense",
@@ -6468,8 +6513,7 @@
                 "Offense x4",
                 "Potency x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Nightsister Acolyte",
@@ -6739,6 +6783,7 @@
         "factions": [
             "Bad Batch",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -6752,8 +6797,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Padawan Obi-Wan",
@@ -6765,9 +6809,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padawanobiwan.png",
         "side": "light",
         "factions": [
+            "Attacker",
             "Galactic Republic",
-            "Jedi",
-            "Attacker"
+            "Jedi"
         ],
         "mods": {
             "square": "Offense",
@@ -6780,8 +6824,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Padawan Sabine Wren",
@@ -6793,8 +6836,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_padawansabine.png",
         "side": "light",
         "factions": [
-            "Mandalorian",
             "Attacker",
+            "Mandalorian",
             "Spectre",
             "Unaligned Force User"
         ],
@@ -6809,8 +6852,7 @@
                 "Offense x4",
                 "Crit. Chance x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Padmé Amidala",
@@ -6936,13 +6978,13 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_glhondo.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_GALACTIC_LEGEND_DESC",
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_SMUGGLER_DESC"
+            "Galactic Legend",
+            "Leader",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel",
+            "Smuggler",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -6955,8 +6997,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Plo Koon",
@@ -6970,7 +7011,9 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
             "Leader",
+            "Order 66 Raid",
             "Tank"
         ],
         "mods": {
@@ -7112,6 +7155,7 @@
         "side": "light",
         "factions": [
             "Leader",
+            "Mercenary",
             "Scoundrel",
             "Smuggler",
             "Support"
@@ -7171,7 +7215,9 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -7198,10 +7244,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_quiggold.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLETANK_DESC",
-            "CATEGORY_SCOUNDREL_DESC"
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -7215,8 +7261,7 @@
                 "Health x2",
                 "Defense x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "R2-D2",
@@ -7260,14 +7305,13 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_r5d4.png",
         "side": "light",
         "factions": [
-            "CATEGORY_NEWREPUBLIC_DESC",
-            "CATEGORY_REBELFIGHTER_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_SPECIESDROID_DESC"
+            "Droid",
+            "New Republic",
+            "Rebel",
+            "Rebel Fighter",
+            "Support"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Range Trooper",
@@ -7307,9 +7351,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_scorch.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_CLONETROOPER_DESC",
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Clone Trooper",
+            "Empire",
+            "Order 66 Raid",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -7323,8 +7368,7 @@
                 "Health x2",
                 "Defense x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Rebel Officer Leia Organa",
@@ -7505,8 +7549,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darkrey.png",
         "side": "dark",
         "factions": [
-            "First Order",
             "Attacker",
+            "First Order",
             "Sith"
         ],
         "mods": {
@@ -7520,8 +7564,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Rey (Jedi Training)",
@@ -7623,12 +7666,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rotta.png",
         "side": "light",
         "factions": [
-            "CATEGORY_HUTTCARTEL_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC"
+            "Attacker",
+            "Hutt Cartel",
+            "Leader"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Royal Guard",
@@ -7699,6 +7741,9 @@
         "factions": [
             "Attacker",
             "Leader",
+            "Mercenary",
+            "Order 66 Raid",
+            "Pirate",
             "Scoundrel",
             "Smuggler"
         ],
@@ -7726,10 +7771,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sateleshan.png",
         "side": "light",
         "factions": [
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_OLDREPUBLIC_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Jedi",
+            "Leader",
+            "Old Republic",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -7742,8 +7787,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Savage Opress",
@@ -7936,7 +7980,9 @@
         "factions": [
             "Galactic Republic",
             "Jedi",
+            "Jedi Vanguard",
             "Leader",
+            "Order 66 Raid",
             "Support"
         ],
         "mods": {
@@ -7963,8 +8009,8 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_shinhati.png",
         "side": "dark",
         "factions": [
-            "Mercenary",
             "Attacker",
+            "Mercenary",
             "Unaligned Force User"
         ],
         "mods": {
@@ -7978,8 +8024,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Shoretrooper",
@@ -8198,10 +8243,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_sm33.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_SPECIESDROID_DESC"
+            "Attacker",
+            "Droid",
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel"
         ],
         "mods": {
             "square": "Offense",
@@ -8214,8 +8260,7 @@
                 "Health x2",
                 "Offense x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Snowtrooper",
@@ -8229,6 +8274,7 @@
         "factions": [
             "Attacker",
             "Empire",
+            "Imperial Remnant",
             "Imperial Trooper"
         ],
         "mods": {
@@ -8255,14 +8301,13 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_remnantsnowcommander.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_EMPIRE_DESC",
-            "CATEGORY_IMPERIALREMNANT_DESC",
-            "CATEGORY_IMPERIALTROOPER_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Empire",
+            "Imperial Remnant",
+            "Imperial Trooper",
+            "Leader",
+            "Tank"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "STAP",
@@ -8389,9 +8434,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_stormtrooperluke.png",
         "side": "light",
         "factions": [
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Leader",
+            "Rebel",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -8404,8 +8449,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Sun Fac",
@@ -8649,10 +8693,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vanguardtempleguard.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_JEDIVANGUARD_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Galactic Republic",
+            "Jedi",
+            "Jedi Vanguard",
+            "Order 66 Raid",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -8666,8 +8711,7 @@
                 "Health x2",
                 "Health x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "The Armorer",
@@ -8742,6 +8786,7 @@
             "Attacker",
             "Leader",
             "Mandalorian",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -8768,9 +8813,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_stranger.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_ROLEATTACKER_DESC",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_SITH_DESC"
+            "Attacker",
+            "Leader",
+            "Sith"
         ],
         "mods": {
             "square": "Offense",
@@ -8783,8 +8828,7 @@
                 "Health x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Third Sister",
@@ -8831,7 +8875,8 @@
         "factions": [
             "Attacker",
             "Droid",
-            "Rebel"
+            "Rebel",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -8859,7 +8904,8 @@
         "side": "dark",
         "factions": [
             "Attacker",
-            "Empire"
+            "Empire",
+            "Imperial Remnant"
         ],
         "mods": {
             "square": "Offense",
@@ -9052,9 +9098,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_chewbacca_vandor.png",
         "side": "light",
         "factions": [
+            "Mercenary",
             "Scoundrel",
             "Smuggler",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -9081,10 +9129,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vane.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_PIRATE_DESC",
-            "CATEGORY_RAID_ORDER66_DESC",
-            "CATEGORY_ROLETANK_DESC",
-            "CATEGORY_SCOUNDREL_DESC"
+            "Order 66 Raid",
+            "Pirate",
+            "Scoundrel",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -9098,8 +9146,7 @@
                 "Health x2",
                 "Health x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Vel Sartha",
@@ -9111,9 +9158,9 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_vel.png",
         "side": "light",
         "factions": [
-            "CATEGORY_REBELFIGHTER_DESC",
-            "CATEGORY_REBELS_DESC",
-            "CATEGORY_ROLESUPPORT_DESC"
+            "Rebel",
+            "Rebel Fighter",
+            "Support"
         ],
         "mods": {
             "square": "Offense",
@@ -9127,8 +9174,7 @@
                 "Health x2",
                 "Defense x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Veteran Smuggler Chewbacca",
@@ -9143,7 +9189,8 @@
             "Attacker",
             "Resistance",
             "Scoundrel",
-            "Smuggler"
+            "Smuggler",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -9172,6 +9219,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Mercenary",
             "Resistance",
             "Scoundrel",
             "Smuggler"
@@ -9368,9 +9416,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_wreckers3.png",
         "side": "light",
         "factions": [
-            "CATEGORY_BADBATCH_DESC",
-            "CATEGORY_MERCENARY_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "Bad Batch",
+            "Mercenary",
+            "Order 66 Raid",
+            "Tank"
         ],
         "mods": {
             "square": "Offense",
@@ -9384,8 +9433,7 @@
                 "Health x2",
                 "Tenacity x2"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Yoda & Chewie",
@@ -9397,10 +9445,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_yodachewbacca.png",
         "side": "light",
         "factions": [
-            "CATEGORY_GALACTICREPUBLIC_DESC",
-            "CATEGORY_JEDI_DESC",
-            "CATEGORY_ROLESUPPORT_DESC",
-            "CATEGORY_WOOKIEE_DESC"
+            "Galactic Republic",
+            "Jedi",
+            "Support",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -9413,8 +9461,7 @@
                 "Defense x2",
                 "Speed x4"
             ]
-        },
-        "crew": []
+        }
     },
     {
         "name": "Young Han Solo",
@@ -9428,6 +9475,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Mercenary",
             "Scoundrel",
             "Smuggler"
         ],
@@ -9456,6 +9504,7 @@
         "side": "light",
         "factions": [
             "Attacker",
+            "Mercenary",
             "Scoundrel",
             "Smuggler"
         ],
@@ -9483,9 +9532,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zaalbar.png",
         "side": "light",
         "factions": [
+            "Mercenary",
             "Old Republic",
             "Scoundrel",
-            "Tank"
+            "Tank",
+            "Wookiee"
         ],
         "mods": {
             "square": "Offense",
@@ -9515,6 +9566,7 @@
             "Attacker",
             "Bounty Hunter",
             "Leader",
+            "Mercenary",
             "Scoundrel"
         ],
         "mods": {
@@ -9541,11 +9593,10 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_rangerzeb.png",
         "side": "light",
         "factions": [
-            "CATEGORY_NEWREPUBLIC_DESC",
-            "CATEGORY_ROLETANK_DESC"
+            "New Republic",
+            "Tank"
         ],
-        "mods": {},
-        "crew": []
+        "mods": {}
     },
     {
         "name": "Zorii Bliss",
@@ -9586,11 +9637,11 @@
         "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_zuckuss.png",
         "side": "dark",
         "factions": [
-            "CATEGORY_BOUNTYHUNTER_DESC_V2",
-            "CATEGORY_ROLELEADER_DESC",
-            "CATEGORY_ROLETANK_DESC",
-            "CATEGORY_SCOUNDREL_DESC",
-            "CATEGORY_UNALIGNEDFORCEUSER_DESC"
+            "Bounty Hunter",
+            "Leader",
+            "Scoundrel",
+            "Tank",
+            "Unaligned Force User"
         ],
         "mods": {
             "square": "Offense",
@@ -9603,7 +9654,6 @@
                 "Speed x4",
                 "Tenacity x2"
             ]
-        },
-        "crew": []
+        }
     }
 ]

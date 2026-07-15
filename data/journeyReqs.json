@@ -58,6 +58,16 @@
         },
         "reqs": [
             {
+                "defId": "4LOM",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "ASAJJDARKDISCIPLE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "AURRA_SING",
                 "type": "STAR",
                 "tier": 7
@@ -118,6 +128,11 @@
                 "tier": 7
             },
             {
+                "defId": "IG90",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "JABBATHEHUTT",
                 "type": "STAR",
                 "tier": 7
@@ -139,6 +154,11 @@
             },
             {
                 "defId": "ZAMWESELL",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "ZUCKUSS",
                 "type": "STAR",
                 "tier": 7
             }
@@ -263,6 +283,11 @@
                 "tier": 7
             },
             {
+                "defId": "CARSONTEVA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "CAPTAINDROGAN",
                 "type": "STAR",
                 "tier": 7
@@ -273,12 +298,22 @@
                 "tier": 7
             },
             {
+                "defId": "CAPTAINREX",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "CARADUNE",
                 "type": "STAR",
                 "tier": 7
             },
             {
                 "defId": "CASSIANANDOR",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CASSIANUNDERCOVER",
                 "type": "STAR",
                 "tier": 7
             },
@@ -294,6 +329,11 @@
             },
             {
                 "defId": "CHOPPERS3",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "CINTA",
                 "type": "STAR",
                 "tier": 7
             },
@@ -348,6 +388,11 @@
                 "tier": 7
             },
             {
+                "defId": "KLEYA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "KYLEKATARN",
                 "type": "STAR",
                 "tier": 7
@@ -369,6 +414,11 @@
             },
             {
                 "defId": "LUKESKYWALKER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "LUTHENRAEL",
                 "type": "STAR",
                 "tier": 7
             },
@@ -398,6 +448,11 @@
                 "tier": 7
             },
             {
+                "defId": "R5D4",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "HOTHLEIA",
                 "type": "STAR",
                 "tier": 7
@@ -423,7 +478,17 @@
                 "tier": 7
             },
             {
+                "defId": "STORMTROOPERLUKE",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "C3POCHEWBACCA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "VEL",
                 "type": "STAR",
                 "tier": 7
             },
@@ -508,6 +573,11 @@
                 "tier": 7
             },
             {
+                "defId": "DEPABILLABA",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "EETHKOTH",
                 "type": "STAR",
                 "tier": 7
@@ -588,6 +658,16 @@
                 "tier": 7
             },
             {
+                "defId": "JEDIMASTERMACEWINDU",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "JOCASTANU",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "JOLEEBINDO",
                 "type": "STAR",
                 "tier": 7
@@ -619,6 +699,11 @@
             },
             {
                 "defId": "KYLEKATARN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "LEIAJEDITRAINING",
                 "type": "STAR",
                 "tier": 7
             },
@@ -658,7 +743,22 @@
                 "tier": 7
             },
             {
+                "defId": "SATELESHAN",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "SHAAKTI",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "VANGUARDTEMPLEGUARD",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "YODACHEWBACCA",
                 "type": "STAR",
                 "tier": 7
             }
@@ -773,7 +873,17 @@
                 "tier": 7
             },
             {
+                "defId": "APPO",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "COLONELSTARCK",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "OPERATIVE",
                 "type": "STAR",
                 "tier": 7
             },
@@ -793,12 +903,27 @@
                 "tier": 7
             },
             {
+                "defId": "VADERDUELSEND",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "DEATHTROOPER",
                 "type": "STAR",
                 "tier": 7
             },
             {
+                "defId": "DEDRAMEERO",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "DIRECTORKRENNIC",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "DISGUISEDCLONETROOPER",
                 "type": "STAR",
                 "tier": 7
             },
@@ -858,12 +983,27 @@
                 "tier": 7
             },
             {
+                "defId": "INQUISITORBARRISS",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "KXSECURITYDROID",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "LORDVADER",
                 "type": "STAR",
                 "tier": 7
             },
             {
                 "defId": "MAGMATROOPER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "MAJORPARTAGAZ",
                 "type": "STAR",
                 "tier": 7
             },
@@ -884,6 +1024,11 @@
             },
             {
                 "defId": "RANGETROOPER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "SCORCH",
                 "type": "STAR",
                 "tier": 7
             },
@@ -914,6 +1059,11 @@
             },
             {
                 "defId": "SNOWTROOPER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "REMNANTSNOWCOMMANDER",
                 "type": "STAR",
                 "tier": 7
             },
@@ -1283,7 +1433,19 @@
                 "ship": true
             },
             {
+                "defId": "BWINGREBEL",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
                 "defId": "YWINGREBEL",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "ROGUEONESHIP",
                 "type": "STAR",
                 "tier": 7,
                 "ship": true
@@ -1389,6 +1551,12 @@
             },
             {
                 "defId": "IG2000",
+                "type": "STAR",
+                "tier": 7,
+                "ship": true
+            },
+            {
+                "defId": "PUNISHINGONE",
                 "type": "STAR",
                 "tier": 7,
                 "ship": true
@@ -1856,6 +2024,11 @@
                 "tier": 5
             },
             {
+                "defId": "CARSONTEVA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "CAPTAINDROGAN",
                 "type": "STAR",
                 "tier": 5
@@ -1866,12 +2039,22 @@
                 "tier": 5
             },
             {
+                "defId": "CAPTAINREX",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "CARADUNE",
                 "type": "STAR",
                 "tier": 5
             },
             {
                 "defId": "CASSIANANDOR",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CASSIANUNDERCOVER",
                 "type": "STAR",
                 "tier": 5
             },
@@ -1887,6 +2070,11 @@
             },
             {
                 "defId": "CHOPPERS3",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "CINTA",
                 "type": "STAR",
                 "tier": 5
             },
@@ -1936,6 +2124,11 @@
                 "tier": 5
             },
             {
+                "defId": "KLEYA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "KYLEKATARN",
                 "type": "STAR",
                 "tier": 5
@@ -1957,6 +2150,11 @@
             },
             {
                 "defId": "LUKESKYWALKER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "LUTHENRAEL",
                 "type": "STAR",
                 "tier": 5
             },
@@ -1986,6 +2184,11 @@
                 "tier": 5
             },
             {
+                "defId": "R5D4",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "SABINEWRENS3",
                 "type": "STAR",
                 "tier": 5
@@ -2006,7 +2209,17 @@
                 "tier": 5
             },
             {
+                "defId": "STORMTROOPERLUKE",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "C3POCHEWBACCA",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "VEL",
                 "type": "STAR",
                 "tier": 5
             },
@@ -2093,6 +2306,11 @@
                 "tier": 5
             },
             {
+                "defId": "REMNANTSNOWCOMMANDER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "STORMTROOPER",
                 "type": "STAR",
                 "tier": 5
@@ -2130,6 +2348,11 @@
                 "tier": 22000
             },
             {
+                "defId": "APPO",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
                 "defId": "CC2224",
                 "type": "GP",
                 "tier": 22000
@@ -2155,6 +2378,16 @@
                 "tier": 22000
             },
             {
+                "defId": "OPERATIVE",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "DISGUISEDCLONETROOPER",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
                 "defId": "BADBATCHECHO",
                 "type": "GP",
                 "tier": 22000
@@ -2165,7 +2398,17 @@
                 "tier": 22000
             },
             {
+                "defId": "KIX",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
                 "defId": "BADBATCHOMEGA",
+                "type": "GP",
+                "tier": 22000
+            },
+            {
+                "defId": "SCORCH",
                 "type": "GP",
                 "tier": 22000
             },
@@ -2206,6 +2449,11 @@
             },
             {
                 "defId": "FIFTHBROTHER",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "INQUISITORBARRISS",
                 "type": "RELIC",
                 "tier": 7
             },
@@ -3599,6 +3847,42 @@
                 "defId": "GRANDADMIRALTHRAWN",
                 "type": "RELIC",
                 "tier": 7
+            }
+        ]
+    },
+    "CASSIANUNDERCOVER": {
+        "guideId": "THE_PRICE_OF_HOPE_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "CINTA",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "DEDRAMEERO",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "KLEYA",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "MAJORPARTAGAZ",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "VEL",
+                "type": "RELIC",
+                "tier": 6
+            },
+            {
+                "defId": "KXSECURITYDROID",
+                "type": "RELIC",
+                "tier": 6
             }
         ]
     },
