@@ -67,6 +67,31 @@ node scripts/verifyIndexes.ts              # Create missing
 ✓ baseId  (unique)  - Character definition lookup
 ```
 
+### swapidb.abilities
+```
+✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
+```
+
+### swapidb.categories
+```
+✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
+```
+
+### swapidb.gear
+```
+✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
+```
+
+### swapidb.recipes
+```
+✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
+```
+
+### swapidb.units
+```
+✓ baseId + language (unique)  - processLocalization upsert filter (avoids COLLSCAN)
+```
+
 ### swapidb.zetaRec
 ```
 ✓ lang  - Language-based recommendations

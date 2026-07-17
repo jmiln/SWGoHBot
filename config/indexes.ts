@@ -249,6 +249,60 @@ export const indexConfig: DatabaseIndexes = {
             },
         ],
 
+        // Localized game data written by dataUpdater's processLocalization().
+        // Each upsert filters by { <idKey>, language }; without these compound
+        // indexes every upsert is a full collection scan, making the bulkWrite
+        // O(N^2) (e.g. ~3.5min for ~27k abilities docs).
+        abilities: [
+            {
+                key: { id: 1, language: 1 },
+                options: {
+                    name: "idx_abilities_id_language",
+                    unique: true,
+                },
+            },
+        ],
+
+        categories: [
+            {
+                key: { id: 1, language: 1 },
+                options: {
+                    name: "idx_categories_id_language",
+                    unique: true,
+                },
+            },
+        ],
+
+        gear: [
+            {
+                key: { id: 1, language: 1 },
+                options: {
+                    name: "idx_gear_id_language",
+                    unique: true,
+                },
+            },
+        ],
+
+        recipes: [
+            {
+                key: { id: 1, language: 1 },
+                options: {
+                    name: "idx_recipes_id_language",
+                    unique: true,
+                },
+            },
+        ],
+
+        units: [
+            {
+                key: { baseId: 1, language: 1 },
+                options: {
+                    name: "idx_units_baseid_language",
+                    unique: true,
+                },
+            },
+        ],
+
         // Zeta recommendations
         zetaRec: [
             {
