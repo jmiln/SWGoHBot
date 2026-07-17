@@ -1,4 +1,5 @@
 import { readJSON } from "../../modules/functions.ts";
+import type { SWAPILang } from "../../types/swapi_types.ts";
 import type { BotUnit, JourneyName, JourneyReqs, OmicronCategories, UnitLocation } from "../../types/types.ts";
 
 const __dirname = new URL(".", import.meta.url).pathname;
@@ -17,6 +18,27 @@ export const resources = await readJSON(`${dataDir}/resources.json`);
 export const shipLocs: UnitLocation[] = await readJSON(`${dataDir}/shipLocations.json`);
 export const ships: BotUnit[] = await readJSON(`${dataDir}/ships.json`);
 export const timezones = await readJSON(`${dataDir}/timezones.json`);
+
+// New build artifact from dataUpdater; may be absent before the first run, so default to an
+// empty map rather than crashing boot. resolveUnitName falls back to the defId in that case.
+export const unitNames: Record<string, Record<string, string>> = await readJSON<Record<string, Record<string, string>>>(
+    `${dataDir}/unitNames.json`,
+).catch((): Record<string, Record<string, string>> => ({}));
+
+/**
+ * Resolve a defId to a localized display name from a given map.
+ * Fallback chain: requested lang -> eng_us -> the raw defId, so it never returns undefined.
+ */
+export function resolveUnitName(map: Record<string, Record<string, string>>, defId: string, lang: SWAPILang = "eng_us"): string {
+    const byLang = map[defId];
+    if (!byLang) return defId;
+    return byLang[lang.toLowerCase()] ?? byLang.eng_us ?? defId;
+}
+
+/** defId -> localized display name using the boot-loaded unitNames map. */
+export function unitNameOf(defId: string, lang: SWAPILang = "eng_us"): string {
+    return resolveUnitName(unitNames, defId, lang);
+}
 
 export const factions: string[] = [...new Set(characters.reduce<string[]>((a, b) => a.concat(b.factions), []))];
 

@@ -1284,6 +1284,9 @@ async function processGameData(gameData: GameData, locales: Locales) {
         );
         await saveFile(CHAR_FILE_PATH, sortByName(charactersOut));
         await saveFile(SHIP_FILE_PATH, sortByName(shipsOut));
+
+        const unitNamesOut = buildUnitNamesMap(processedUnitList, locales);
+        await saveFile(path.join(DATA_DIR_PATH, "unitNames.json"), unitNamesOut);
         debugTimeEnd("Finished processing Units");
         logMem("after units processing");
 
@@ -1658,6 +1661,28 @@ function processUnits(unitsIn: comlinkComponents["UnitDef"][]): ProcessedUnit[] 
                 legend: unit?.legend ?? false, // True if GL?
             };
         });
+}
+
+/**
+ * Build the defId -> { lang: localized name } map written to data/unitNames.json.
+ * Locales that lack a name for a given unit are omitted; the boot-time accessor
+ * (unitNameOf) falls back at read time, so gaps never need an empty placeholder.
+ */
+function buildUnitNamesMap(
+    units: { baseId: string; nameKey: string }[],
+    locales: Record<string, Record<string, string>>,
+): Record<string, Record<string, string>> {
+    const out: Record<string, Record<string, string>> = {};
+    const langs = Object.keys(locales);
+    for (const unit of units) {
+        const byLang: Record<string, string> = {};
+        for (const lang of langs) {
+            const name = locales[lang]?.[unit.nameKey];
+            if (name) byLang[lang] = name;
+        }
+        out[unit.baseId] = byLang;
+    }
+    return out;
 }
 
 function unitsToUnitFiles(
@@ -2433,6 +2458,7 @@ export default {
     unitsForUnitMapFile,
     unitsToUnitFiles,
     resolveLocKey,
+    buildUnitNamesMap,
 
     processModResults,
 

@@ -16,6 +16,7 @@ const {
     unitsForUnitMapFile,
     unitsToUnitFiles,
     resolveLocKey,
+    buildUnitNamesMap,
 } = dataUpdater;
 
 // ---------------------------------------------------------------------------
@@ -728,5 +729,30 @@ describe("unitsToUnitFiles", () => {
             shipsOut.map((u) => u.uniqueName),
             ["CAPITALMALEVOLENCE"],
         );
+    });
+});
+
+// ---------------------------------------------------------------------------
+// buildUnitNamesMap
+// ---------------------------------------------------------------------------
+
+describe("buildUnitNamesMap", () => {
+    const locales = {
+        eng_us: { NAME_LUKE: "Luke Skywalker", NAME_HAN: "Han Solo" },
+        ger_de: { NAME_LUKE: "Luke Skywalker" }, // Han deliberately missing in de
+    };
+    const units = [
+        { baseId: "LUKE", nameKey: "NAME_LUKE" },
+        { baseId: "HAN", nameKey: "NAME_HAN" },
+    ];
+
+    it("maps each defId to its localized names across locales", () => {
+        const map = buildUnitNamesMap(units, locales);
+        assert.deepStrictEqual(map.LUKE, { eng_us: "Luke Skywalker", ger_de: "Luke Skywalker" });
+    });
+
+    it("omits locales that lack a name for the unit", () => {
+        const map = buildUnitNamesMap(units, locales);
+        assert.deepStrictEqual(map.HAN, { eng_us: "Han Solo" });
     });
 });
