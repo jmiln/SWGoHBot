@@ -3,7 +3,14 @@
  *
  * This file defines all indexes that should exist on MongoDB collections.
  * Run verifyIndexes.ts to check and create missing indexes.
+ *
+ * Database keys are resolved from env (config.ts), not hardcoded, so the verifier
+ * targets the same databases the app actually reads/writes (e.g. MONGODB_SWAPI_DB
+ * defaults to "swapi", not "swapidb"). Hardcoding them silently created indexes on
+ * an unused database while the real collections went unindexed.
  */
+
+import { env } from "./config.ts";
 
 export interface IndexDefinition {
     key: Record<string, 1 | -1>;
@@ -28,8 +35,8 @@ export interface DatabaseIndexes {
  * Complete index configuration for all databases
  */
 export const indexConfig: DatabaseIndexes = {
-    // swgohbot database - Bot-specific data
-    swgohbot: {
+    // Bot-specific data (MONGODB_SWGOHBOT_DB, default "swgohbot")
+    [env.MONGODB_SWGOHBOT_DB]: {
         // User configurations and ally code mappings
         users: [
             {
@@ -155,8 +162,8 @@ export const indexConfig: DatabaseIndexes = {
         ],
     },
 
-    // swapidb database - Game data from SWAPI
-    swapidb: {
+    // Game data from SWAPI (MONGODB_SWAPI_DB, default "swapi")
+    [env.MONGODB_SWAPI_DB]: {
         // Raw player data from API
         rawPlayers: [
             {
