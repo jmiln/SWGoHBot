@@ -9,9 +9,13 @@ This directory contains the MongoDB index configuration for SWGoHBot and the ver
 
 ## Index Configuration
 
-The `indexes.ts` file defines all indexes that should exist on MongoDB collections across two databases:
+The `indexes.ts` file defines all indexes that should exist on MongoDB collections across two databases.
+Database keys are resolved from env (`config.ts`) — `MONGODB_SWGOHBOT_DB` (default `swgohbot`) and
+`MONGODB_SWAPI_DB` (default `swapi`) — not hardcoded, so the verifier targets the same databases the app
+reads/writes. (Hardcoding `swapidb` previously created every game-data index on an unused phantom DB
+while the real `swapi` collections went unindexed; see `docs/BUG_REFERENCE.md`.)
 
-### swgohbot Database (Bot Configuration)
+### swgohbot Database (Bot Configuration, `MONGODB_SWGOHBOT_DB`)
 
 #### users Collection
 - **id** (unique) - Discord user ID, primary lookup
@@ -27,7 +31,7 @@ The `indexes.ts` file defines all indexes that should exist on MongoDB collectio
 #### patrons Collection
 - **discordID** (unique) - Discord ID for patron lookups
 
-### swapidb Database (Game Data)
+### swapi Database (Game Data, `MONGODB_SWAPI_DB`)
 
 #### rawPlayers Collection
 - **allyCode** (unique) - Player ally code, primary lookup
@@ -49,6 +53,15 @@ The `indexes.ts` file defines all indexes that should exist on MongoDB collectio
 
 #### characters Collection
 - **baseId** (unique) - Character definition ID
+
+#### Localized game-data collections (written by dataUpdater's `processLocalization`)
+Each is upserted per `{ <idKey>, language }`; the compound index avoids a full collection scan on
+every upsert (abilities alone is ~27k docs across 14 languages).
+- **abilities** - **id + language** (unique)
+- **categories** - **id + language** (unique)
+- **gear** - **id + language** (unique)
+- **recipes** - **id + language** (unique)
+- **units** - **baseId + language** (unique)
 
 #### zetaRec Collection
 - **lang** - Language-based zeta recommendations

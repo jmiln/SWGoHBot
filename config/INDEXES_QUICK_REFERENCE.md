@@ -36,63 +36,63 @@ node scripts/verifyIndexes.ts              # Create missing
 ✓ discordID  (unique)  - Patron user lookup
 ```
 
-### swapidb.rawPlayers
+### swapi.rawPlayers
 ```
 ✓ allyCode  (unique)  - Primary player lookup
 ✓ updated             - Cache freshness
 ✓ guildId   (sparse)  - Guild member queries
 ```
 
-### swapidb.playerStats
+### swapi.playerStats
 ```
 ✓ allyCode  (unique)  - Primary player lookup
 ✓ updated             - Cache freshness
 ```
 
-### swapidb.rawGuilds
+### swapi.rawGuilds
 ```
 ✓ id       (unique)  - Primary guild lookup
 ✓ updated            - Cache freshness
 ```
 
-### swapidb.guilds
+### swapi.guilds
 ```
 ✓ id       (unique)  - Primary guild lookup
 ✓ name               - Guild name search
 ✓ updated            - Cache freshness
 ```
 
-### swapidb.characters
+### swapi.characters
 ```
 ✓ baseId  (unique)  - Character definition lookup
 ```
 
-### swapidb.abilities
+### swapi.abilities
 ```
 ✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
 ```
 
-### swapidb.categories
+### swapi.categories
 ```
 ✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
 ```
 
-### swapidb.gear
+### swapi.gear
 ```
 ✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
 ```
 
-### swapidb.recipes
+### swapi.recipes
 ```
 ✓ id + language     (unique)  - processLocalization upsert filter (avoids COLLSCAN)
 ```
 
-### swapidb.units
+### swapi.units
 ```
 ✓ baseId + language (unique)  - processLocalization upsert filter (avoids COLLSCAN)
 ```
 
-### swapidb.zetaRec
+### swapi.zetaRec
 ```
 ✓ lang  - Language-based recommendations
 ```
