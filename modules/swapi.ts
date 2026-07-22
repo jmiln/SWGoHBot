@@ -7,6 +7,7 @@ import constants from "../data/constants/constants.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
 import { convertMS, readJSON } from "../modules/functions.ts";
+import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type {
     ComlinkAbility,
     ComlinkDatacron,
@@ -31,7 +32,6 @@ import type {
     SWAPIWorkerGuildLog,
     SWAPIWorkerOutput,
 } from "../types/swapi_types.ts";
-import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
 
