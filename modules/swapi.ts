@@ -9,6 +9,7 @@ import cache from "../modules/cache.ts";
 import { convertMS, readJSON } from "../modules/functions.ts";
 import type {
     ComlinkAbility,
+    ComlinkDatacron,
     ComlinkMod,
     ComlinkPlayer,
     RawCharacter,
@@ -30,6 +31,7 @@ import type {
     SWAPIWorkerGuildLog,
     SWAPIWorkerOutput,
 } from "../types/swapi_types.ts";
+import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
 
@@ -95,7 +97,9 @@ let skillMap = await readJSON<Record<string, SkillMapEntry>>(`${import.meta.dirn
 
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
-const flatStats = [
+// Exported for reuse by modules/datacrons.ts, which de-scales datacron affix values with the same
+// rule (flat stats scaled by 1e8, everything else 1e6).
+export const flatStats = [
     1, // health
     5, // speed
     28, // prot
@@ -104,6 +108,38 @@ const flatStats = [
 ];
 
 const MAX_CONCURRENT = 20;
+
+/**
+ * Maps comlink's datacron payload onto our player shape.
+ *
+ * Normalizes two quirks of the raw payload: statValue arrives as a STRING of scaled integers,
+ * and stat-only affixes send targetRule/abilityId as "" rather than omitting them. Reroll fields
+ * are retained deliberately -- the follow-on analysis work (Spec B) needs them.
+ */
+export function mapPlayerDatacrons(datacrons: ComlinkDatacron[] | undefined): PlayerDatacron[] {
+    if (!datacrons?.length) return [];
+    return datacrons.map((datacron) => ({
+        id: datacron.id ?? "",
+        setId: datacron.setId ?? 0,
+        templateId: datacron.templateId ?? "",
+        tag: datacron.tag ?? [],
+        locked: datacron.locked ?? false,
+        focused: datacron.focused ?? false,
+        rerollIndex: datacron.rerollIndex,
+        rerollCount: datacron.rerollCount,
+        affix: (datacron.affix ?? []).map((a) => ({
+            // The game sends "" for stat-only affixes; normalize to undefined so callers
+            // only need a single absent-check.
+            targetRule: a.targetRule || undefined,
+            abilityId: a.abilityId || undefined,
+            statType: a.statType,
+            // statValue arrives as a STRING of scaled integers (e.g. "26807422").
+            statValue: a.statValue == null ? undefined : Number(a.statValue),
+            requiredUnitTier: a.requiredUnitTier,
+            requiredRelicTier: a.requiredRelicTier,
+        })),
+    }));
+}
 
 /**
  * Reduce a mod to only the fields the bot stores and consumes (see SWAPIMod).
@@ -661,9 +697,9 @@ class SWAPI {
             guildBannerLogo: comlinkPlayer.guildBannerLogo,
             poUTCOffsetMinutes: comlinkPlayer.localTimeZoneOffsetMinutes,
             lastActivity: comlinkPlayer.lastActivityTime,
+            datacron: mapPlayerDatacrons(comlinkPlayer.datacron),
 
             // // TODO I don't do anything with these, but I probably should at some point
-            // datacron: ???
             // grandArena: comlinkPlayer.seasonStatus,
             // playerRating: comlinkPlayer.playerRating,
             // lifetimeSeasonScore: comlinkPlayer.lifetimeSeasonScore,
@@ -955,6 +991,19 @@ class SWAPI {
                 updated: 0,
             },
         );
+    }
+
+    /**
+     * Localized datacron text (set names + ability name/desc), keyed by localization key.
+     * The structure lives in data/datacrons.json; this supplies the per-language text to render it.
+     */
+    async datacronText(lang: SWAPILang = "eng_us"): Promise<Map<string, string>> {
+        const thisLang = lang?.toLowerCase() || "eng_us";
+        const rows = (await cache.get(env.MONGODB_SWAPI_DB, "datacrons", { language: thisLang as never }, { key: 1, text: 1, _id: 0 })) as {
+            key: string;
+            text: string;
+        }[];
+        return new Map(rows.map((r) => [r.key, r.text]));
     }
 
     // Used by farm, randomchar, and reloaddata

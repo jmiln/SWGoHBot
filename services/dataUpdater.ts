@@ -56,6 +56,7 @@ const MOD_WORKER_HEAP_MB = numericArg("--worker-heap", 256);
 
 import ComlinkStub from "@swgoh-utils/comlink";
 import type { components, operations } from "../types/comlinkGamedata.js";
+import type { DatacronFile } from "../types/datacron_types.ts";
 import type { HelpJSON } from "../types/help_types.ts";
 import type { ComlinkAbility, FeatureStore, SWAPILang, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotUnit, BotUnitMods, JourneyReqs, Location, OmicronCategories, UnitLocation, UnitSide } from "../types/types.ts";
@@ -141,6 +142,7 @@ const CHAR_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "charLocations.json");
 const JOURNEY_FILE_PATH = path.join(DATA_DIR_PATH, "journeyReqs.json");
 const RAID_NAMES_FILE_PATH = path.join(DATA_DIR_PATH, "raidNames.json");
 const SHIP_FILE_PATH = path.join(DATA_DIR_PATH, "ships.json");
+const DATACRON_FILE_PATH = path.join(DATA_DIR_PATH, "datacrons.json");
 const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
 const UNIT_CHECKLIST_FILE_PATH = path.join(DATA_DIR_PATH, "unitChecklist.json");
 const HELP_JSON_PATH = path.join(DATA_DIR_PATH, "help.json");
@@ -1191,6 +1193,83 @@ function validateGameData(gameData: GameData): asserts gameData is ValidatedGame
     logger.log("[validateGameData] Validated gameData");
 }
 
+/**
+ * Derives the datacron STRUCTURE file from the gameData blob (no API call -- the blob is cached).
+ * Localized text is handled separately (buildDatacronLocRows -> processLocalization -> Mongo).
+ *
+ * Affix pools live on the TEMPLATE's tiers (the SET's tiers only carry the un-upgradeable base and
+ * a scopeIdentifier that cannot express the ROLE mechanic, so it is not used). Each affix's label
+ * comes at render time from its abilityId -> gameData.ability nameKey/descKey (authoritative and
+ * localized), so no scope is stored on the tier. datacronHelpEntry is excluded (in-client help).
+ */
+export function processDatacrons(gameData: GameData): DatacronFile {
+    const affixSets = new Map((gameData.datacronAffixTemplateSet ?? []).map((s) => [s.id ?? "", s.affix ?? []]));
+
+    const templatesBySet = new Map<number, NonNullable<GameData["datacronTemplate"]>[number]>();
+    for (const tpl of gameData.datacronTemplate ?? []) {
+        if (tpl.setId != null && !templatesBySet.has(tpl.setId)) templatesBySet.set(tpl.setId, tpl);
+    }
+
+    const abilities: DatacronFile["abilities"] = {};
+    for (const ability of gameData.ability ?? []) {
+        if (ability.id?.startsWith("datacron_") && ability.nameKey && ability.descKey) {
+            abilities[ability.id] = { nameKey: ability.nameKey, descKey: ability.descKey };
+        }
+    }
+
+    const sets = (gameData.datacronSet ?? []).map((set) => {
+        const tpl = set.id != null ? templatesBySet.get(set.id) : undefined;
+
+        const tiers = (tpl?.tier ?? []).map((tier) => {
+            const affixPool = (tier.affixTemplateSetId ?? []).flatMap((setId) =>
+                (affixSets.get(setId) ?? []).map((a) => ({
+                    targetRule: a.targetRule || undefined,
+                    abilityId: a.abilityId || undefined,
+                    statType: typeof a.statType === "number" ? a.statType : undefined,
+                    statValueMin: a.statValueMin == null ? undefined : Number(a.statValueMin),
+                    statValueMax: a.statValueMax == null ? undefined : Number(a.statValueMax),
+                    minTier: a.minTier,
+                    maxTier: a.maxTier,
+                })),
+            );
+            return {
+                tier: tier.id ?? 0,
+                requiredUnitTier: typeof tier.requiredUnitTier === "number" ? tier.requiredUnitTier : undefined,
+                requiredRelicTier: typeof tier.requiredRelicTier === "number" ? tier.requiredRelicTier : undefined,
+                affixPool,
+            };
+        });
+
+        return {
+            setId: set.id ?? 0,
+            nameKey: set.displayName ?? "",
+            // int64 arrives as a string, like statValue; store a number (0 -> undefined = no expiry).
+            expirationTimeMs: set.expirationTimeMs ? Number(set.expirationTimeMs) : undefined,
+            allowReroll: tpl?.allowReroll ?? false,
+            tiers,
+        };
+    });
+
+    return { sets, abilities };
+}
+
+/**
+ * Collects the distinct localization keys the datacron commands render (set names + ability
+ * name/desc keys) into rows shaped for processLocalization: each row's `text` field holds the loc
+ * key, which processLocalization resolves to per-language text and stores in the `datacrons` collection.
+ */
+export function buildDatacronLocRows(file: DatacronFile): { key: string; text: string }[] {
+    const keys = new Set<string>();
+    for (const set of file.sets) {
+        if (set.nameKey) keys.add(set.nameKey);
+    }
+    for (const ref of Object.values(file.abilities)) {
+        if (ref.nameKey) keys.add(ref.nameKey);
+        if (ref.descKey) keys.add(ref.descKey);
+    }
+    return [...keys].map((key) => ({ key, text: key }));
+}
+
 async function updateGameData(locales: Locales, metadata: Metadata, comlinkStub: ComlinkStub) {
     try {
         if (!metadata.latestGamedataVersion) {
@@ -1232,6 +1311,14 @@ async function processGameData(gameData: GameData, locales: Locales) {
         // await saveFile(dataDir + "catMap.json", catMapOut, false);
         await processLocalization(catMapOut, "categories", ["descKey"], "id", locales);
         debugTimeEnd("Finished processing Categories");
+
+        debugTime("Finished processing Datacrons");
+        // Hybrid storage: structure -> data/datacrons.json (held in memory like characters.json);
+        // localized text -> Mongo `datacrons` collection, resolved per language via processLocalization.
+        const datacronsOut = processDatacrons(gameData);
+        await saveFile(DATACRON_FILE_PATH, datacronsOut, false);
+        await processLocalization(buildDatacronLocRows(datacronsOut), "datacrons", ["text"], "key", locales);
+        debugTimeEnd("Finished processing Datacrons");
 
         debugTime("Finished processing Equipment");
         const mappedEquipmentList = processEquipment(gameData.equipment);
@@ -1907,8 +1994,32 @@ function unitsForUnitMapFile(unitsIn: ProcessedUnit[]) {
     return unitsOut;
 }
 
+// Key prefixes dropped wholesale -- these never contain anything the bot renders.
+const IGNORE_KEY_PREFIXES = ["KEY_MAPPING", "ANNIVERSARY", "PROMO", "SUBSCRIPTION"];
+
+// The gameData blob references 503 distinct DATACRON_* keys. These five prefixes cover what
+// /datacron and /mydatacrons display; MATERIAL (reroll currency), HELP (in-client tutorial copy)
+// and CURRENCY are never shown. Keeping the allowlist is about not storing copy we never render,
+// not about memory -- it only drops ~68 of the 503 keys.
+const DATACRON_KEEP_PREFIXES = ["DATACRON_SET_", "DATACRON_CHARACTER_", "DATACRON_FACTION_", "DATACRON_ALIGNMENT_", "DATACRON_ROLE_"];
+
+/**
+ * Decides whether a localization row survives into the stored bundle.
+ *
+ * Matches on the KEY only. The previous implementation substring-matched the whole row, so a
+ * legitimate row could be dropped because an ignored word appeared in its translated *value*.
+ */
+export function shouldKeepLocalizationRow(row: string): boolean {
+    if (!row || row.startsWith("#")) return false;
+    const key = row.split("|")[0]?.trim().toUpperCase();
+    if (!key) return false;
+    if (key.startsWith("DATACRON")) {
+        return DATACRON_KEEP_PREFIXES.some((prefix) => key.startsWith(prefix));
+    }
+    return !IGNORE_KEY_PREFIXES.some((prefix) => key.startsWith(prefix));
+}
+
 async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: string): Promise<Locales> {
-    const IGNORE_KEYS = ["key_mapping", "datacron", "anniversary", "promo", "subscription"];
     const dataFile = `localizationBundle_${bundleVersion}.json`;
     const filePath = path.join(GAMEDATA_DIR_PATH, dataFile);
 
@@ -1941,7 +2052,7 @@ async function getLocalizationData(comlinkStub: ComlinkStub, bundleVersion: stri
             }
 
             for (const row of content.split("\n")) {
-                if (IGNORE_KEYS.some((ign) => row.toLowerCase().includes(ign))) continue;
+                if (!shouldKeepLocalizationRow(row)) continue;
                 const res = processLocalizationLine(row);
                 if (res) {
                     const [key, val] = res;
@@ -2467,5 +2578,8 @@ export default {
 
     saveFile,
     processLocalization,
+    shouldKeepLocalizationRow,
+    processDatacrons,
+    buildDatacronLocRows,
     exportCommandDocs,
 };

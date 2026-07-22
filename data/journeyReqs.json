@@ -473,6 +473,11 @@
                 "tier": 7
             },
             {
+                "defId": "LUKESTARKILLER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
                 "defId": "STORMTROOPERHAN",
                 "type": "STAR",
                 "tier": 7
@@ -714,6 +719,11 @@
             },
             {
                 "defId": "MACEWINDU",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "MARAJADESKYWALKER",
                 "type": "STAR",
                 "tier": 7
             },
@@ -1069,6 +1079,11 @@
             },
             {
                 "defId": "STORMTROOPER",
+                "type": "STAR",
+                "tier": 7
+            },
+            {
+                "defId": "STORMTROOPERCONCEPT",
                 "type": "STAR",
                 "tier": 7
             },
@@ -2204,6 +2219,11 @@
                 "tier": 5
             },
             {
+                "defId": "LUKESTARKILLER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
                 "defId": "STORMTROOPERHAN",
                 "type": "STAR",
                 "tier": 5
@@ -2312,6 +2332,11 @@
             },
             {
                 "defId": "STORMTROOPER",
+                "type": "STAR",
+                "tier": 5
+            },
+            {
+                "defId": "STORMTROOPERCONCEPT",
                 "type": "STAR",
                 "tier": 5
             }
@@ -2722,6 +2747,32 @@
                 "type": "STAR",
                 "tier": 7,
                 "ship": true
+            }
+        ]
+    },
+    "TBA": {
+        "guideId": "GLMANDOGROGU_JOURNEY_GUIDE_REQUIREMENT",
+        "type": "AUTO",
+        "reqs": [
+            {
+                "defId": "THEMANDALORIAN",
+                "type": "RELIC",
+                "tier": 10
+            },
+            {
+                "defId": "R5D4",
+                "type": "RELIC",
+                "tier": 9
+            },
+            {
+                "defId": "GREEFKARGA",
+                "type": "RELIC",
+                "tier": 7
+            },
+            {
+                "defId": "ROTTATHEHUTT",
+                "type": "RELIC",
+                "tier": 6
             }
         ]
     },

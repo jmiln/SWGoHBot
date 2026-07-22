@@ -1,8 +1,8 @@
 {
     "metadata": {
-        "generatedAt": "2026-07-18T00:52:45.119Z",
-        "totalCommands": 47,
-        "categories": 4
+        "generatedAt": "2026-07-22T22:21:48.338Z",
+        "totalCommands": 49,
+        "categories": 5
     },
     "General": {
         "description": "General commands",
@@ -2249,6 +2249,33 @@
                 "enabled": true
             },
             {
+                "name": "datacron",
+                "description": "Look up a datacron set: what it boosts, when it expires, and what each tier can roll",
+                "usage": [
+                    "**/datacron** [set] [tier]"
+                ],
+                "options": [
+                    {
+                        "name": "set",
+                        "type": 4,
+                        "description": "Which set (defaults to the current one; autocompletes by name)",
+                        "autocomplete": true
+                    },
+                    {
+                        "name": "tier",
+                        "type": 4,
+                        "description": "Show everything one tier can roll, with full ability text"
+                    }
+                ],
+                "permLevel": 0,
+                "devServerOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            },
+            {
                 "name": "grandarena",
                 "description": "Compare two players' rosters for Grand Arena",
                 "usage": [
@@ -3633,6 +3660,33 @@
                                 "description": "Just show the zeta'd abilities for a specific character"
                             }
                         ]
+                    }
+                ],
+                "permLevel": 0,
+                "devServerOnly": false,
+                "contexts": [
+                    0,
+                    1
+                ],
+                "enabled": true
+            }
+        ]
+    },
+    "SWGoH": {
+        "description": "Miscellaneous commands",
+        "commands": [
+            {
+                "name": "mydatacrons",
+                "description": "Show all the datacrons on your account, or any ally code's",
+                "usage": [
+                    "**/mydatacrons** [allycode]"
+                ],
+                "options": [
+                    {
+                        "name": "allycode",
+                        "type": 3,
+                        "description": "The ally code whose datacrons you want to see",
+                        "autocomplete": true
                     }
                 ],
                 "permLevel": 0,

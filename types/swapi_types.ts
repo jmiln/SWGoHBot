@@ -1,3 +1,5 @@
+import type { PlayerDatacron } from "./datacron_types.ts";
+
 export type SWAPILang =
     | "eng_us"
     | "ENG_US"
@@ -43,6 +45,12 @@ export interface SWAPIPlayer {
     arena?: SWAPIPlayerArena;
     lastActivity?: number;
 
+    /**
+     * Player-owned datacrons. Present only on players fetched after the datacron pipeline landed;
+     * absent means "roster predates datacron support / needs refresh", NOT "owns none".
+     */
+    datacron?: PlayerDatacron[];
+
     // Extra that's added occasionally before sending out
     warnings?: string[];
 
@@ -71,8 +79,10 @@ export interface ComlinkPlayer {
     profileStat?: { nameKey: string; value: number }[];
     rosterUnit: ComlinkUnit[];
 
+    // Datacrons the player owns. Comlink DOES send these; the bot just did not map them until 2026-07.
+    datacron?: ComlinkDatacron[];
+
     // Generally unused for me
-    datacron: null;
     grandArena: null;
     playerRating: null;
     lifetimeSeasonScore: null;
@@ -85,6 +95,30 @@ export interface ComlinkPlayer {
         unlocked: null;
     };
     guildTypeId: null;
+}
+
+/** Raw datacron shape as it arrives in the comlink /player payload. */
+export interface ComlinkDatacron {
+    id?: string;
+    setId?: number;
+    templateId?: string;
+    tag?: string[];
+    locked?: boolean;
+    focused?: boolean;
+    rerollIndex?: number;
+    rerollCount?: number;
+    affix?: {
+        /** "" for stat-only affixes, not undefined. */
+        targetRule?: string;
+        abilityId?: string;
+        statType?: number;
+        /** A STRING of scaled integers, e.g. "26807422". */
+        statValue?: string;
+        requiredUnitTier?: number;
+        requiredRelicTier?: number;
+        tag?: string[];
+        scopeIcon?: string;
+    }[];
 }
 
 export interface ComlinkPvpProfile {

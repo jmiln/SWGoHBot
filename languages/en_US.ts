@@ -427,6 +427,32 @@ export default class extends Language {
             COMMAND_COUNTER_TOP_NOTE: "Showing top 10.",
             COMMAND_COUNTER_FOOTER: (season, instanceId) => `Season ${season} · event ${instanceId} · refreshes each GAC event · Source: gahistory.c3po.wtf`,
 
+            // Datacron Command
+            COMMAND_DATACRON_SET_NOT_FOUND: (available) => `I don't have a datacron set with that ID. Available sets: ${available}`,
+            COMMAND_DATACRON_TIER_NOT_FOUND: (set, tier) => `Set ${set} doesn't have a tier ${tier}.`,
+            COMMAND_DATACRON_TITLE: (set, name) => (name ? `Datacron Set ${set}: ${name}` : `Datacron Set ${set}`),
+            COMMAND_DATACRON_EXPIRES: "Expires",
+            COMMAND_DATACRON_EXPIRED: "Expired",
+            COMMAND_DATACRON_REROLLABLE: "Rerollable",
+            COMMAND_DATACRON_YES: "Yes",
+            COMMAND_DATACRON_NO: "No",
+            COMMAND_DATACRON_TIER_LABEL: (tier) => `Tier ${tier}`,
+            COMMAND_DATACRON_REQUIRES_RELIC: (relic) => `Requires Relic ${relic}+`,
+            COMMAND_DATACRON_POOL_HEADER: "This tier can roll:",
+            COMMAND_DATACRON_OVERVIEW_HINT: "Use `tier:` to see the full ability text a tier can roll.",
+            COMMAND_DATACRON_STAT_TIER: (count) => `Stat boosts (${count} options)`,
+
+            // MyDatacrons Command
+            COMMAND_MYDATACRONS_NONE: (name) => `${name} doesn't have any datacrons.`,
+            COMMAND_MYDATACRONS_NEEDS_REFRESH: (name) =>
+                `I don't have datacron data for ${name} yet - their roster predates datacron support. It'll fill in on their next refresh.`,
+            COMMAND_MYDATACRONS_NONE_IN_SET: (name, set) => `${name} doesn't have any datacrons in set ${set}.`,
+            COMMAND_MYDATACRONS_HEADER: (name) => `${name}'s Datacrons`,
+            COMMAND_MYDATACRONS_INDEX_HINT: "Use `set:` to see the full details for one set.",
+            COMMAND_MYDATACRONS_ENTRY: (set, affixes) => `**Set ${set}** - ${affixes} affixes`,
+            COMMAND_MYDATACRONS_FOCUSED: "focused",
+            COMMAND_MYDATACRONS_LOCKED: "locked",
+
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Training Droids",
             COMMAND_CHALLENGES_ABILITY : "Ability Mats",

@@ -1,3 +1,5 @@
+import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
+import type { SWAPILang } from "../types/swapi_types.ts";
 import type { ArenaPlayer, GuildAlias } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
 import { buildAllyCodeChoices } from "./functions.ts";
@@ -12,14 +14,14 @@ import userReg from "./users.ts";
  * first keystroke fetches the full candidate set; subsequent keystrokes filter it in
  * memory until the TTL lapses.
  *
- * The TTL only needs to outlast a single typing session — each new command pulls fresh
+ * The TTL only needs to outlast a single typing session - each new command pulls fresh
  * data, so changes (register, userconf add/remove, alias edits) show up on the next
  * command without any explicit invalidation.
  */
 
 export const AUTOCOMPLETE_CACHE_TTL_MS = 15_000;
 
-// Lazy sweep threshold — when an insert pushes the cache past this size, expired
+// Lazy sweep threshold - when an insert pushes the cache past this size, expired
 // entries are purged so an idle bot doesn't accumulate stale entries indefinitely
 const SWEEP_SIZE = 500;
 
@@ -36,7 +38,7 @@ function sweepExpired(now: number): void {
     }
 }
 
-// Generic TTL-cached fetch — returns the cached value when fresh, otherwise runs the
+// Generic TTL-cached fetch - returns the cached value when fresh, otherwise runs the
 // fetcher and caches its result
 async function getCached<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
     const now = Date.now();
@@ -71,6 +73,21 @@ export async function getCachedAllyCodeChoices(userId: string, searchKey: string
 export async function getCachedGuildAliases(guildId: string | undefined): Promise<GuildAlias[]> {
     if (!guildId) return [];
     return getCached(`aliases:${guildId}`, () => getGuildAliases({ guildId }));
+}
+
+/**
+ * Return the user's configured SWGoH game-data language for autocomplete, served from the
+ * per-user cache when fresh.
+ *
+ * Resolved exactly as `handlers/interactions/chatInput.ts` does for command runs, so an
+ * autocomplete and the command body agree. Deliberately NOT Discord's `interaction.locale`:
+ * that is the user's client language, and would silently override the language they chose.
+ */
+export async function getCachedSwgohLanguage(userId: string): Promise<SWAPILang> {
+    return getCached(`swgohlang:${userId}`, async () => {
+        const user = await userReg.getUser(userId);
+        return (user?.lang?.swgohLanguage || defaultSettings.swgohLanguage) as SWAPILang;
+    });
 }
 
 /**

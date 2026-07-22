@@ -1190,6 +1190,11 @@
         ]
     },
     {
+        "name": "Darth Jar Jar",
+        "defId": "DARTHJARJAR",
+        "locations": []
+    },
+    {
         "name": "Darth Malak",
         "defId": "DARTHMALAK",
         "locations": [
@@ -2508,6 +2513,11 @@
         ]
     },
     {
+        "name": "Jaxxon",
+        "defId": "JAXXON",
+        "locations": []
+    },
+    {
         "name": "Jedi Consular",
         "defId": "JEDIKNIGHTCONSULAR",
         "locations": [
@@ -2797,6 +2807,11 @@
         "defId": "KXSECURITYDROID",
         "locations": [
             {
+                "type": "Cantina",
+                "level": "8-F",
+                "locId": "CANTINA"
+            },
+            {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_KXSECURITYDROID_NAME",
                 "name": "Still Resisting? Special Marquee Event"
@@ -3054,6 +3069,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_MAJORPARTAGAZ_NAME",
                 "name": "The Doctrine Of Precision Special Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Mara Jade Skywalker",
+        "defId": "MARAJADESKYWALKER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_MARAJADESKYWALKER_NAME",
+                "name": "The Last Command Special Marquee Event"
             }
         ]
     },
@@ -4218,6 +4244,17 @@
         ]
     },
     {
+        "name": "Starkiller (Luke Concept)",
+        "defId": "LUKESTARKILLER",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_LUKESTARKILLER_NAME",
+                "name": "Ancient Reckoning Special Marquee Event"
+            }
+        ]
+    },
+    {
         "name": "Stormtrooper",
         "defId": "STORMTROOPER",
         "locations": [
@@ -4233,6 +4270,17 @@
             {
                 "type": "Guild Events Store",
                 "cost": "400 Mk I Guild Event Tokens/10"
+            }
+        ]
+    },
+    {
+        "name": "Stormtrooper (Concept)",
+        "defId": "STORMTROOPERCONCEPT",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_STORMTROOPERCONCEPT_NAME",
+                "name": "Blade And Bastion Special Marquee Event"
             }
         ]
     },
@@ -4451,6 +4499,17 @@
                 "type": "Hero's Journey",
                 "locId": "THEMANDALORIANBESKARARMOR_GUIDE_DETAILS_TITLE",
                 "name": "The Mandalorian (Beskar Armor)"
+            }
+        ]
+    },
+    {
+        "name": "The Ronin",
+        "defId": "THERONIN",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_THERONIN_NAME",
+                "name": "The Wanderer's Blade Special Marquee Event"
             }
         ]
     },
@@ -4759,6 +4818,17 @@
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_WRECKERS3_NAME",
                 "name": "The Cavalry Has Arrived Iv Special Marquee Event"
+            }
+        ]
+    },
+    {
+        "name": "Yoda (Dark Side Vision)",
+        "defId": "YODADSV",
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_YODADSV_NAME",
+                "name": "A Dark Reflection Special Marquee Event"
             }
         ]
     },

@@ -84,7 +84,7 @@ const SWAPIPlayerCrewSchema = z.object({
 });
 
 /**
- * Zod schema for SWAPIUnit — matches the SWAPIUnit interface in types/swapi_types.ts.
+ * Zod schema for SWAPIUnit - matches the SWAPIUnit interface in types/swapi_types.ts.
  * Includes optional fields that are added during processing (stats, mods, zetas, omicrons, etc.).
  */
 export const SWAPIUnitSchema = z.object({
@@ -111,6 +111,27 @@ export const SWAPIUnitSchema = z.object({
     allyCode: z.number().optional(),
     updated: z.number().optional(),
     unitTierList: z.array(z.object({ tier: z.number(), equipmentSetList: z.array(z.string()) })).optional(),
+});
+
+const DatacronAffixSchema = z.object({
+    targetRule: z.string().optional(),
+    abilityId: z.string().optional(),
+    statType: z.number().optional(),
+    statValue: z.number().optional(),
+    requiredUnitTier: z.number().optional(),
+    requiredRelicTier: z.number().optional(),
+});
+
+const PlayerDatacronSchema = z.object({
+    id: z.string(),
+    setId: z.number(),
+    templateId: z.string(),
+    tag: z.array(z.string()),
+    locked: z.boolean(),
+    focused: z.boolean(),
+    affix: z.array(DatacronAffixSchema),
+    rerollIndex: z.number().optional(),
+    rerollCount: z.number().optional(),
 });
 
 /**
@@ -142,6 +163,8 @@ export const RawPlayerSchema = z.object({
         })
         .optional(),
     stats: z.array(z.object({ nameKey: z.string(), value: z.number() })).optional(),
+    // Optional: documents cached before the datacron pipeline landed have no datacron key.
+    datacron: z.array(PlayerDatacronSchema).optional(),
     grandArena: z.null().optional(),
     warnings: z.array(z.string()).optional(),
 });

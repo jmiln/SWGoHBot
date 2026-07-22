@@ -2356,6 +2356,23 @@
         }
     },
     {
+        "name": "Darth Jar Jar",
+        "uniqueName": "DARTHJARJAR",
+        "aliases": [
+            "Darth Jar Jar"
+        ],
+        "avatarName": "charui_darthjarjar",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_darthjarjar.png",
+        "side": "dark",
+        "factions": [
+            "Gungan",
+            "Leader",
+            "Sith",
+            "Support"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Darth Malak",
         "uniqueName": "DARTHMALAK",
         "aliases": [
@@ -4962,6 +4979,23 @@
         "avatarName": "charui_jawa_scavenger"
     },
     {
+        "name": "Jaxxon",
+        "uniqueName": "JAXXON",
+        "aliases": [
+            "Jaxxon"
+        ],
+        "avatarName": "charui_jaxxon",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_jaxxon.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Mercenary",
+            "Scoundrel",
+            "Smuggler"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Jedi Consular",
         "uniqueName": "JEDIKNIGHTCONSULAR",
         "aliases": [
@@ -6117,6 +6151,22 @@
                 "Speed x4"
             ]
         }
+    },
+    {
+        "name": "Mara Jade Skywalker",
+        "uniqueName": "MARAJADESKYWALKER",
+        "aliases": [
+            "Mara Jade Skywalker"
+        ],
+        "avatarName": "charui_marajadeskywalker",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_marajadeskywalker.png",
+        "side": "light",
+        "factions": [
+            "Attacker",
+            "Jedi",
+            "New Republic"
+        ],
+        "mods": {}
     },
     {
         "name": "Mara Jade, The Emperor's Hand",
@@ -8364,6 +8414,22 @@
         "avatarName": "charui_starkiller"
     },
     {
+        "name": "Starkiller (Luke Concept)",
+        "uniqueName": "LUKESTARKILLER",
+        "aliases": [
+            "Starkiller (Luke Concept)"
+        ],
+        "avatarName": "charui_lukestarkiller",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_lukestarkiller.png",
+        "side": "light",
+        "factions": [
+            "Rebel",
+            "Support",
+            "Unaligned Force User"
+        ],
+        "mods": {}
+    },
+    {
         "name": "Stormtrooper",
         "uniqueName": "STORMTROOPER",
         "aliases": [
@@ -8392,6 +8458,22 @@
             ]
         },
         "avatarName": "charui_trooperstorm"
+    },
+    {
+        "name": "Stormtrooper (Concept)",
+        "uniqueName": "STORMTROOPERCONCEPT",
+        "aliases": [
+            "Stormtrooper (Concept)"
+        ],
+        "avatarName": "charui_stormtrooperconcept",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_stormtrooperconcept.png",
+        "side": "dark",
+        "factions": [
+            "Empire",
+            "Imperial Trooper",
+            "Tank"
+        ],
+        "mods": {}
     },
     {
         "name": "Stormtrooper Han",
@@ -8802,6 +8884,21 @@
             ]
         },
         "avatarName": "charui_mandobeskar"
+    },
+    {
+        "name": "The Ronin",
+        "uniqueName": "THERONIN",
+        "aliases": [
+            "The Ronin"
+        ],
+        "avatarName": "charui_theronin",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_theronin.png",
+        "side": "dark",
+        "factions": [
+            "Attacker",
+            "Sith"
+        ],
+        "mods": {}
     },
     {
         "name": "The Stranger",
@@ -9434,6 +9531,21 @@
                 "Tenacity x2"
             ]
         }
+    },
+    {
+        "name": "Yoda (Dark Side Vision)",
+        "uniqueName": "YODADSV",
+        "aliases": [
+            "Yoda (Dark Side Vision)"
+        ],
+        "avatarName": "charui_yodadsv",
+        "avatarURL": "https://game-assets.swgoh.gg/textures/tex.charui_yodadsv.png",
+        "side": "dark",
+        "factions": [
+            "Healer",
+            "Sith"
+        ],
+        "mods": {}
     },
     {
         "name": "Yoda & Chewie",

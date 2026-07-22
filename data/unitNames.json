@@ -1903,6 +1903,22 @@
         "tha_th": "ชอร์ทรูปเปอร์",
         "tur_tr": "Kıyı Askeri"
     },
+    "DARTHJARJAR": {
+        "chs_cn": "达斯·加·加",
+        "cht_cn": "達斯恰恰",
+        "eng_us": "Darth Jar Jar",
+        "fre_fr": "Dark Jar Jar",
+        "ger_de": "Darth Jar Jar",
+        "ind_id": "Darth Jar Jar",
+        "ita_it": "Darth Jar Jar",
+        "jpn_jp": "ダース・ジャー・ジャー",
+        "kor_kr": "다스 자자",
+        "por_br": "Darth Jar Jar",
+        "rus_ru": "Дарт Джа-Джа",
+        "spa_xm": "Darth Jar Jar",
+        "tha_th": "ดาร์ธจาจา",
+        "tur_tr": "Darth Jar Jar"
+    },
     "CAPITALJEDICRUISER": {
         "chs_cn": "耐力号",
         "cht_cn": "堅忍號",
@@ -2527,6 +2543,22 @@
         "tha_th": "คีร่า",
         "tur_tr": "Qi'ra"
     },
+    "MARAJADESKYWALKER": {
+        "chs_cn": "玛拉·杰德·天行者",
+        "cht_cn": "瑪拉·杰德天行者",
+        "eng_us": "Mara Jade Skywalker",
+        "fre_fr": "Mara Jade Skywalker",
+        "ger_de": "Mara Jade Skywalker",
+        "ind_id": "Mara Jade Skywalker",
+        "ita_it": "Mara Jade Skywalker",
+        "jpn_jp": "マラ・ジェイド・スカイウォーカー",
+        "kor_kr": "마라 제이드 스카이워커",
+        "por_br": "Mara Jade Skywalker",
+        "rus_ru": "Мара Джейд Скайуокер",
+        "spa_xm": "Mara Jade Skywalker",
+        "tha_th": "มาร่า เจด สกายวอล์คเกอร์",
+        "tur_tr": "Mara Jade Skywalker"
+    },
     "MORGANELSBETH": {
         "chs_cn": "摩根·埃尔斯贝斯",
         "cht_cn": "摩根·艾爾斯貝特",
@@ -2686,6 +2718,22 @@
         "spa_xm": "Obi-Wan Kenobi (Viejo Ben)",
         "tha_th": "โอบีวาน เคโนบี (เบนตอนแก่)",
         "tur_tr": "Obi-Wan Kenobi (Yaşlı Ben)"
+    },
+    "THERONIN": {
+        "chs_cn": "浪人",
+        "cht_cn": "浪人",
+        "eng_us": "The Ronin",
+        "fre_fr": "Le Ronin",
+        "ger_de": "Ronin",
+        "ind_id": "Sang Ronin",
+        "ita_it": "Il Ronin",
+        "jpn_jp": "ローニン",
+        "kor_kr": "로닌",
+        "por_br": "O Ronin",
+        "rus_ru": "Ронин",
+        "spa_xm": "Ronin",
+        "tha_th": "เดอะโรนิน",
+        "tur_tr": "The Ronin"
     },
     "HERASYNDULLAS3": {
         "chs_cn": "希娜·仙杜拉",
@@ -2954,7 +3002,7 @@
         "jpn_jp": "レイ(ダークサイド・ヴィジョン)",
         "kor_kr": "레이(다크 사이드 비전)",
         "por_br": "Rey (Visão do Lado Sombrio)",
-        "rus_ru": "Рей (Видение Темной стороны)",
+        "rus_ru": "Рей (видение Темной стороны)",
         "spa_xm": "Rey (Visión del Lado Oscuro)",
         "tha_th": "เรย์ (นิมิตด้านมืด)",
         "tur_tr": "Rey (Karanlık Taraf Canlandırması)"
@@ -2990,6 +3038,22 @@
         "spa_xm": "Mace Windu",
         "tha_th": "เมซ วินดู",
         "tur_tr": "Mace Windu"
+    },
+    "JAXXON": {
+        "chs_cn": "贾克森",
+        "cht_cn": "賈克森",
+        "eng_us": "Jaxxon",
+        "fre_fr": "Jaxxon",
+        "ger_de": "Jaxxon",
+        "ind_id": "Jaxxon",
+        "ita_it": "Jaxxon",
+        "jpn_jp": "ジャクソン",
+        "kor_kr": "잭슨",
+        "por_br": "Jaxxon",
+        "rus_ru": "Джекссон",
+        "spa_xm": "Jaxxon",
+        "tha_th": "แจ็กซ์ซัน",
+        "tur_tr": "Jaxxon"
     },
     "SITHASSASSIN": {
         "chs_cn": "西斯刺客",
@@ -3142,7 +3206,7 @@
         "fre_fr": "Grogu et les Anzellans",
         "ger_de": "Grogu & Anzellianer",
         "ind_id": "Grogu & Anzellans",
-        "ita_it": "Grogu & Anzellans",
+        "ita_it": "Grogu e gli anzellani",
         "jpn_jp": "グローグー＆アンゼラ人",
         "kor_kr": "그로구&안젤란",
         "por_br": "Grogu e Anzellanos",
@@ -3473,7 +3537,7 @@
     },
     "DARTHSIDIOUS": {
         "chs_cn": "达斯·西迪厄斯",
-        "cht_cn": "達斯西帝",
+        "cht_cn": "達斯·西帝",
         "eng_us": "Darth Sidious",
         "fre_fr": "Dark Sidious",
         "ger_de": "Darth Sidious",
@@ -4367,6 +4431,22 @@
         "tha_th": "Ebon Hawk",
         "tur_tr": "Ebon Hawk"
     },
+    "YODADSV": {
+        "chs_cn": "尤达（黑暗面幻象）",
+        "cht_cn": "尤達（黑暗面幻象）",
+        "eng_us": "Yoda (Dark Side Vision)",
+        "fre_fr": "Yoda (vision du Côté Obscur)",
+        "ger_de": "Yoda (Vision der Dunklen Seite)",
+        "ind_id": "Yoda (Visi Sisi Gelap)",
+        "ita_it": "Yoda (Visione del Lato Oscuro)",
+        "jpn_jp": "ヨーダ(ダークサイド・ヴィジョン)",
+        "kor_kr": "요다(다크 사이드 비전)",
+        "por_br": "Yoda (Visão do Lado Sombrio)",
+        "rus_ru": "Йода (видение Темной стороны)",
+        "spa_xm": "Yoda (Visión del Lado Oscuro)",
+        "tha_th": "โยดา (นิมิตด้านมืด)",
+        "tur_tr": "Yoda (Karanlık Taraf Canlandırması)"
+    },
     "NIGHTSISTERZOMBIE": {
         "chs_cn": "暗夜姐妹僵尸",
         "cht_cn": "暗夜姊妹殭屍",
@@ -4792,7 +4872,7 @@
         "ind_id": "Rey (Pemulung)",
         "ita_it": "Rey (mercante di rottami)",
         "jpn_jp": "レイ(スカベンジャー)",
-        "kor_kr": "레이 (폐품업자)",
+        "kor_kr": "레이(폐품업자)",
         "por_br": "Rey (Catadora)",
         "rus_ru": "Рей (Мусорщица)",
         "spa_xm": "Rey (chatarrera)",
@@ -5679,6 +5759,22 @@
         "tha_th": "เพชฌฆาตฝ่ายปฐมภาคี",
         "tur_tr": "İlk Düzen İnfazcı"
     },
+    "STORMTROOPERCONCEPT": {
+        "chs_cn": "风暴兵（概念）",
+        "cht_cn": "風暴兵（概念）",
+        "eng_us": "Stormtrooper (Concept)",
+        "fre_fr": "Stormtrooper (Concept)",
+        "ger_de": "Sturmtruppler (Konzept)",
+        "ind_id": "Stormtrooper (Konsep)",
+        "ita_it": "Assaltatore (Concept)",
+        "jpn_jp": "ストームトルーパー(コンセプト)",
+        "kor_kr": "스톰트루퍼(콘셉트)",
+        "por_br": "Stormtrooper (Conceito)",
+        "rus_ru": "Штурмовик (прототип)",
+        "spa_xm": "Soldado de asalto (prototipo)",
+        "tha_th": "สตอร์มทรูปเปอร์ (แนวคิด)",
+        "tur_tr": "Fırtına Askeri (Konsept)"
+    },
     "THEMANDALORIAN": {
         "chs_cn": "曼达洛人",
         "cht_cn": "曼達洛人",
@@ -5774,6 +5870,22 @@
         "spa_xm": "Oficial rebelde Leia Organa",
         "tha_th": "เจ้าหน้าที่ฝ่ายกบฏ เลอา ออร์กาน่า",
         "tur_tr": "Asi Subayı Leia Organa"
+    },
+    "LUKESTARKILLER": {
+        "chs_cn": "弑星者（卢克概念）",
+        "cht_cn": "弒星者（路克概念）",
+        "eng_us": "Starkiller (Luke Concept)",
+        "fre_fr": "Starkiller (Concept de Luke)",
+        "ger_de": "Starkiller (Luke Konzept)",
+        "ind_id": "Starkiller (Konsep Luke)",
+        "ita_it": "Starkiller (Concept Luke)",
+        "jpn_jp": "スターキラー(ルーク・コンセプト)",
+        "kor_kr": "스타킬러(루크 콘셉트)",
+        "por_br": "Starkiller (Conceito do Luke)",
+        "rus_ru": "Старкиллер (прототип Люка)",
+        "spa_xm": "Starkiller (Luke prototipo)",
+        "tha_th": "สตาร์คิลเลอร์ (แนวคิดลุค)",
+        "tur_tr": "Yıldız Katili (Luke Konsept)"
     },
     "JANGOFETT": {
         "chs_cn": "詹戈·费特",
