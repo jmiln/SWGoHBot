@@ -386,7 +386,7 @@ describe("PatreonFuncs Module", () => {
             const patron: ActivePatron = { discordID: "hist_test_user", amount_cents: 100 };
             await cache.put(testDbName, "patrons", { discordID: "hist_test_user" }, patron);
 
-            // User has accounts but NO arenaAlert — history/rank tracking should still run
+            // User has accounts but NO arenaAlert - history/rank tracking should still run
             const user = {
                 id: "hist_test_user",
                 accounts: [888777666],
@@ -719,7 +719,7 @@ describe("PatreonFuncs Module", () => {
                 }],
             ]);
 
-            // The user doc was intentionally never inserted — an unconditional updateUser would upsert it
+            // The user doc was intentionally never inserted - an unconditional updateUser would upsert it
             await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
 
             const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
@@ -857,7 +857,7 @@ describe("PatreonFuncs Module", () => {
         it("still detects a watch rank change after processArenaAlerts already updated the shared doc", async () => {
             const patron: ActivePatron = { discordID: "ordering_test_user", amount_cents: 500 };
 
-            // The same account is both registered (accounts) and watched (arenaWatch) —
+            // The same account is both registered (accounts) and watched (arenaWatch) -
             // payout-only watch config keeps broadcastEval send paths out of the picture
             const user = {
                 id: "ordering_test_user",
@@ -885,7 +885,7 @@ describe("PatreonFuncs Module", () => {
                 }],
             ]);
 
-            // Stored rank 5, current rank 10 — both consumers must see this change
+            // Stored rank 5, current rank 10 - both consumers must see this change
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
                 [888777666, { allyCode: 888777666, name: "OrderingTest", lastCharRank: 5, lastCharClimb: 5 }],
             ]);
@@ -904,7 +904,7 @@ describe("PatreonFuncs Module", () => {
 
     describe("recordHistoryAtPayout()", () => {
         it("does not write an entry when the rank is nullish at payout", () => {
-            // A watched ship-only (or char-only) account has no rank for the other arena —
+            // A watched ship-only (or char-only) account has no rank for the other arena -
             // an entry of { rank: null } must never land in the history
             const fromUndefined = (patreonFuncs as any).recordHistoryAtPayout(undefined, undefined, 0);
             assert.strictEqual(fromUndefined, undefined, "no entry should be created for an undefined rank");
@@ -1034,7 +1034,7 @@ describe("PatreonFuncs Module", () => {
                 },
             } as unknown as UserConfig;
 
-            // No arenaPlayers doc and an empty API name — worst case for name resolution
+            // No arenaPlayers doc and an empty API name - worst case for name resolution
             const playerMap = new Map<number, PlayerArenaRes>([
                 [LOG_ALLY_CODE, {
                     name: "",

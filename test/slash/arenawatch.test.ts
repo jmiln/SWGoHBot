@@ -43,7 +43,7 @@ describe("ArenaWatch", () => {
         };
     }
 
-    // Scope cleanup to this file's ally codes — concurrent test files share the collection
+    // Scope cleanup to this file's ally codes - concurrent test files share the collection
     const AW_TEST_PLAYER_FILTER = { allyCode: { $in: [123456789, 987654321, 999888777, 555555555, 611111111, 622222222] } };
 
     before(async () => {
@@ -475,7 +475,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should error when API returns no players for the ally code", async () => {
-            // No player data set — unitStats returns empty array
+            // No player data set - unitStats returns empty array
             const aw = createBaseAW();
             const { result } = await processAWChanges({
                 target: "allycode",
@@ -543,7 +543,7 @@ describe("ArenaWatch", () => {
         });
 
         it("should add multiple comma-separated ally codes", async () => {
-            // 611/622 prefixes — 111111111/222222222 are reserved by arenaPlayerRegistry.test.ts,
+            // 611/622 prefixes - 111111111/222222222 are reserved by arenaPlayerRegistry.test.ts,
             // which runs concurrently against the same arenaPlayers collection
             const player1 = createMockPlayer({ allyCode: 611111111, name: "Player1" });
             const player2 = createMockPlayer({ allyCode: 622222222, name: "Player2" });

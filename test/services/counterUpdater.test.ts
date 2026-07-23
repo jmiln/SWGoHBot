@@ -16,7 +16,7 @@ const { shouldIngest, runMode } = counterUpdater;
 const TEST_DB = "counterUpdater_test_db";
 const INSTANCE = "TEST_CU_O1";
 const LEADER = "TESTLEADER_CU";
-// Must never be the real modules/counters/counterMetadata.json — that file is committed.
+// Must never be the real modules/counters/counterMetadata.json - that file is committed.
 const META_FILE = path.join(mkdtempSync(path.join(tmpdir(), "counterUpdater-")), "counterMetadata.json");
 
 const duel = (outcome: number) => ({

@@ -68,7 +68,7 @@ describe("Shardtimes", () => {
     });
 
     it("should return error when no channel is present (DM context)", async () => {
-        // Default mock has no channel — !interaction.channel fires immediately, no MongoDB needed
+        // Default mock has no channel - !interaction.channel fires immediately, no MongoDB needed
         const interaction = createMockInteraction({ optionsData: { _subcommand: "view" } });
         const ctx = createCommandContext({ interaction });
         const command = new Shardtimes();

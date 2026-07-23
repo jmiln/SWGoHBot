@@ -22,7 +22,7 @@ function makeMockGuild() {
     });
 }
 
-/** A mock guildUnitStats result — one player who has Darth Vader */
+/** A mock guildUnitStats result - one player who has Darth Vader */
 function makeMockGuildChar(overrides: Record<string, any> = {}) {
     return [
         {
@@ -312,9 +312,9 @@ describe("GuildSearch Command Functionality", () => {
 
             const replies = (interaction as any)._getReplies();
             const lastReply = replies[replies.length - 1];
-            assert.ok(lastReply.embeds?.length > 0, "Expected embed — partial 'vader' should resolve to Darth Vader");
+            assert.ok(lastReply.embeds?.length > 0, "Expected embed - partial 'vader' should resolve to Darth Vader");
             const embedData = lastReply.embeds[0].data || lastReply.embeds[0];
-            assert.ok(!lastReply.flags, "Expected non-error response — partial match should succeed");
+            assert.ok(!lastReply.flags, "Expected non-error response - partial match should succeed");
             assert.ok(embedData.fields?.some((f: any) => f.value?.includes("GuildMember1")), "Expected guild member in partial match result");
         });
 
@@ -326,8 +326,8 @@ describe("GuildSearch Command Functionality", () => {
 
             const replies = (interaction as any)._getReplies();
             const lastReply = replies[replies.length - 1];
-            assert.ok(lastReply.embeds?.length > 0, "Expected embed — uppercase search should resolve");
-            assert.ok(!lastReply.flags, "Expected non-error response — case-insensitive match should succeed");
+            assert.ok(lastReply.embeds?.length > 0, "Expected embed - uppercase search should resolve");
+            assert.ok(!lastReply.flags, "Expected non-error response - case-insensitive match should succeed");
         });
     });
 

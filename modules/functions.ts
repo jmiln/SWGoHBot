@@ -379,7 +379,7 @@ const ARENA_OFFSETS = {
 // the same base timestamp
 export function getPayoutTimeLeft(poUTCOffsetMinutes: number, arenaType: "char" | "fleet", now: number = Date.now()): number {
     const then = getUTCFromOffset(poUTCOffsetMinutes) + ARENA_OFFSETS[arenaType] * constants.hrMS;
-    // Normalize into [0, dayMS) — a single `+= dayMS` isn't enough when the raw
+    // Normalize into [0, dayMS) - a single `+= dayMS` isn't enough when the raw
     // target lands more than a day away (e.g. large positive offsets push char's
     // 18h mark past tomorrow's UTC midnight, showing 26h+ until payout)
     return (((then - now) % constants.dayMS) + constants.dayMS) % constants.dayMS;
@@ -840,7 +840,7 @@ export async function reloadLanguages(): Promise<Error | null> {
 }
 
 // Build autocomplete choices for a user's registered ally codes, matching the search key
-// against both the stored player name and the code itself. Pure — callers fetch the
+// against both the stored player name and the code itself. Pure - callers fetch the
 // playerMap (arenaPlayerRegistry.batchGet) themselves.
 export function buildAllyCodeChoices(
     allyCodes: number[],

@@ -33,7 +33,7 @@ export default class Showconf extends Command {
         const onOff = (val?: boolean) => `**${language.get(val ? "BASE_ON" : "BASE_OFF")}**`;
         const truncate = (msg: string) => (msg.length > MESSAGE_PREVIEW_LENGTH ? `${msg.slice(0, MESSAGE_PREVIEW_LENGTH)}…` : msg);
 
-        // General — roles render as mentions when stored as IDs, names stay as-is
+        // General - roles render as mentions when stored as IDs, names stay as-is
         const roleArr = (guildConf.adminRole ?? []).map((role: string) => (isUserID(role) ? `<@&${role}>` : role)).sort();
         const generalValue = [
             `${language.get("COMMAND_SHOWCONF_LABEL_ADMIN_ROLES")}: ${roleArr.length ? roleArr.join(", ") : notAvailable}`,
@@ -43,13 +43,13 @@ export default class Showconf extends Command {
             )}: ${guildConf.swgohLanguage}`,
         ].join("\n");
 
-        // Welcome / Part — toggle state with the message quoted underneath
+        // Welcome / Part - toggle state with the message quoted underneath
         const welcomeLines = [`${language.get("COMMAND_SHOWCONF_LABEL_WELCOME")}: ${onOff(guildConf.enableWelcome)}`];
         if (guildConf.welcomeMessage?.length) welcomeLines.push(`> ${truncate(guildConf.welcomeMessage)}`);
         welcomeLines.push(`${language.get("COMMAND_SHOWCONF_LABEL_PART")}: ${onOff(guildConf.enablePart)}`);
         if (guildConf.partMessage?.length) welcomeLines.push(`> ${truncate(guildConf.partMessage)}`);
 
-        // Events — channel renders as a mention when stored as an ID
+        // Events - channel renders as a mention when stored as an ID
         const announceChan = guildConf.announceChan?.length
             ? isUserID(guildConf.announceChan)
                 ? `<#${guildConf.announceChan}>`

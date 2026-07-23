@@ -270,7 +270,7 @@ export default class UserConf extends Command {
 
                     const fields: APIEmbedField[] = [];
 
-                    // Ally codes — fetch names for both accounts and arenaWatch entries in one call
+                    // Ally codes - fetch names for both accounts and arenaWatch entries in one call
                     const awCodes = user.arenaWatch?.allyCodes?.map((ac) => ac.allyCode) ?? [];
                     const playerMap = await arenaPlayerRegistry.batchGet([...new Set([...user.accounts, ...awCodes])]);
                     const MAX_ALLYCODES = 20;
@@ -303,7 +303,7 @@ export default class UserConf extends Command {
                     });
 
                     if (isPatron) {
-                        // Arena Alert — read-only display; configure via /arenaalert
+                        // Arena Alert - read-only display; configure via /arenaalert
                         fields.push({
                             name: language.get("BASE_ARENA_VIEW_HEADER"),
                             value: [

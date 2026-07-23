@@ -17,8 +17,8 @@ export function inferBattleType(leaderBaseId: string, shipBaseIds: Set<string>):
  * Top `limit` counters as display rows, in stored order.
  *
  * Deliberately does NOT re-sort: the aggregator ranks these by a confidence-adjusted win rate
- * (Wilson lower bound), which needs the whole tally to compute. Re-sorting here on raw win% —
- * as this once did — silently overrode that and promoted small-sample flukes back to the top.
+ * (Wilson lower bound), which needs the whole tally to compute. Re-sorting here on raw win% -
+ * as this once did - silently overrode that and promoted small-sample flukes back to the top.
  * The producer owns the ranking; this just renders it.
  */
 export function displayRows(bucket: { counters: CounterEntry[] }, limit = 10): DisplayRow[] {

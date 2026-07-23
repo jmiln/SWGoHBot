@@ -166,7 +166,7 @@ describe("Poll", () => {
             const interaction1 = makePollInteraction({ _subcommand: "vote", option: 1 });
             await new Poll().run(createCommandContext({ interaction: interaction1 }));
 
-            // Need to persist the vote — reload the poll from DB and vote again
+            // Need to persist the vote - reload the poll from DB and vote again
             // Re-use the same user ID from the mock (default: "123456789")
             // to simulate voting for the same option again
             const interaction2 = makePollInteraction({ _subcommand: "vote", option: 1 });

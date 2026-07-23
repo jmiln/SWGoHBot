@@ -24,7 +24,7 @@ describe("UserReg Module", () => {
         userReg.init(cache);
     });
 
-    // All ids in this file use the "user-" prefix — scope cleanup to it so concurrent
+    // All ids in this file use the "user-" prefix - scope cleanup to it so concurrent
     // test files' documents are never wiped mid-run
     const USERS_TEST_FILTER = { id: { $regex: "^user-" } };
 

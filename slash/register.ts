@@ -81,11 +81,11 @@ export default class Register extends Command {
             // This ally code is already registered & primary
             return super.error(interaction, language.get("COMMAND_REGISTER_ALREADY_REGISTERED"));
         } else if (userConfig.accounts.includes(Number.parseInt(allyCode, 10))) {
-            // This ally code is already registered but not primary — just promote it to primary
+            // This ally code is already registered but not primary - just promote it to primary
             const parsedCode = Number.parseInt(allyCode, 10);
             userConfig.primaryAllyCode = parsedCode;
             await userReg.updateUser(user.id, userConfig);
-            // The arenaPlayers doc can be missing (account linked pre-migration, failed upsert) —
+            // The arenaPlayers doc can be missing (account linked pre-migration, failed upsert) -
             // the lang string dereferences the player object, so always hand it one
             const playerDoc = (await arenaPlayerRegistry.getPlayer(parsedCode)) ?? { allyCode: parsedCode, name: allyCode };
             return super.success(

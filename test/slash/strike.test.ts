@@ -153,7 +153,7 @@ describe("Strike command", () => {
             assertErrorReply(interaction, "COMMAND_STRIKE_ALREADY_REVOKED");
         });
 
-        it("revokes an expired strike — strike remains in record with removedAt set", async () => {
+        it("revokes an expired strike - strike remains in record with removedAt set", async () => {
             await guildConfigDB.put(
                 { guildId: GUILD_ID },
                 {
@@ -172,7 +172,7 @@ describe("Strike command", () => {
             assert.ok(after[0].strikes[0].removedAt, "removedAt should be set");
         });
 
-        it("revokes an active strike — strike remains in history, not counted as active", async () => {
+        it("revokes an active strike - strike remains in history, not counted as active", async () => {
             await seedPlayer(PLAYER_AC, "TestPlayer");
             await new Strike().run(makeCtx("add", { allycode: PLAYER_AC, reason: "test" }).ctx);
 

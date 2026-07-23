@@ -110,7 +110,7 @@ export function buildArenaHistChart(
     return {
         labels,
         datasets,
-        title: `Arena Rank — Last ${windowDays} Days — ${label}`,
+        title: `Arena Rank - Last ${windowDays} Days - ${label}`,
         width: 800,
         height: 400,
         pointLabels: true,
@@ -122,7 +122,7 @@ type ArenaRankTracking = Pick<ArenaPlayer, "lastCharRank" | "lastCharClimb" | "l
 
 // Ranks as they stood at the start of an arenaTick. Multiple patrons can track the same
 // ally code (and one patron can both register and watch it), so change detection must
-// compare against this snapshot rather than the live docs — otherwise the first consumer
+// compare against this snapshot rather than the live docs - otherwise the first consumer
 // to update a doc suppresses the same rank change for everyone after it.
 export type RankSnapshot = Map<number, ArenaRankTracking>;
 
@@ -150,7 +150,7 @@ export function hydrateWatchAccounts(entries: ArenaWatchConfig[], playerMap: Map
         const doc = playerMap.get(entry.allyCode);
         return {
             ...structuredClone(entry),
-            // mention/poOffset can be absent on migrated entries — normalize them here so the
+            // mention/poOffset can be absent on migrated entries - normalize them here so the
             // hydrated account always satisfies ArenaWatchAcct
             mention: entry.mention ?? null,
             mark: entry.mark ?? undefined,
@@ -335,7 +335,7 @@ class PatreonFuncs {
 
             const playerDoc = arenaPlayerMap.get(allyCode) ?? { allyCode, name: "" };
 
-            // In-memory defaults only — not marked changed; they persist alongside the next real change
+            // In-memory defaults only - not marked changed; they persist alongside the next real change
             playerDoc.lastCharRank ??= 0;
             playerDoc.lastCharClimb ??= 0;
             playerDoc.lastShipRank ??= 0;
@@ -366,9 +366,9 @@ class PatreonFuncs {
             }
 
             // Record payout history (runs for all patrons regardless of arenaAlert config) and
-            // run DM alerts in a single pass per arena type — both need timeLeft/minTil, and
+            // run DM alerts in a single pass per arena type - both need timeLeft/minTil, and
             // getPayoutTimeLeft() involves a Temporal lookup, so compute it once and share it.
-            // Live data can omit the payout offset — without it the payout math would go NaN,
+            // Live data can omit the payout offset - without it the payout math would go NaN,
             // so payout history/alerts are skipped (null) while rank tracking still runs
             if (typeof player.poUTCOffsetMinutes !== "number") {
                 logger.log(`[processArenaAlerts] Missing poUTCOffsetMinutes for ${allyCode}; skipping payout history & payout alerts`);
@@ -394,7 +394,7 @@ class PatreonFuncs {
                 const prevRank = playerDoc[rankKey];
                 const prevClimb = playerDoc[climbKey];
 
-                // DM alerts compare against the tick-start snapshot, not the live doc — another
+                // DM alerts compare against the tick-start snapshot, not the live doc - another
                 // patron tracking the same account may have already updated the doc this tick
                 const snap = rankSnapshot.get(allyCode);
                 await this.handleArenaAlerts(arenaType, player, playerDoc, user, patron, timeLeft, minTil, {
@@ -409,7 +409,7 @@ class PatreonFuncs {
 
             arenaPlayerMap.set(allyCode, playerDoc);
         }
-        // No longer writes user doc — arenaTick flushes arenaPlayerMap after all patrons
+        // No longer writes user doc - arenaTick flushes arenaPlayerMap after all patrons
     }
 
     // Single per-minute arena cycle: batch-fetch all ally codes, then run alerts and shard processing
@@ -443,7 +443,7 @@ class PatreonFuncs {
             });
         }
 
-        // Only write docs that actually changed this tick — the map holds every loaded doc
+        // Only write docs that actually changed this tick - the map holds every loaded doc
         if (changedCodes.size) {
             const changedDocs = [...changedCodes]
                 .map((code) => arenaPlayerMap.get(code))
@@ -586,7 +586,7 @@ class PatreonFuncs {
                 changedCodes.add(player.allyCode);
             }
 
-            // Compare against the tick-start snapshot, not the live doc — processArenaAlerts
+            // Compare against the tick-start snapshot, not the live doc - processArenaAlerts
             // (or another patron watching the same account) may have already updated the doc
             const snap = rankSnapshot.get(player.allyCode);
             const prevLastChar = snap?.lastCharRank ?? 0;
@@ -749,7 +749,7 @@ class PatreonFuncs {
             }
         }
 
-        // Update poOffset in user.arenaWatch.allyCodes after processing — rank/history now live
+        // Update poOffset in user.arenaWatch.allyCodes after processing - rank/history now live
         // in the arenaPlayers collection, so poOffset is the only user-doc field this loop can
         // touch. Only write the doc back when one actually changed.
         const storedByCode = new Map(user.arenaWatch.allyCodes.map((a) => [a.allyCode, a]));
@@ -1034,7 +1034,7 @@ class PatreonFuncs {
         rank: number | null | undefined,
         minLeft: number | null,
     ): ArenaHistEntry[] | undefined {
-        // No rank means the account hasn't played this arena type — never write a null entry
+        // No rank means the account hasn't played this arena type - never write a null entry
         if (minLeft !== 0 || rank == null) return hist;
         return shouldWriteHistory(hist) ? updateArenaHistory(hist, rank) : hist;
     }
@@ -1238,7 +1238,7 @@ class PatreonFuncs {
                         }
                         if (msg) {
                             // NOTE: this runs inside broadcastEval (each shard's own context), so the
-                            // module-level `logger` is not in scope here — referencing it throws
+                            // module-level `logger` is not in scope here - referencing it throws
                             // "ReferenceError: logger is not defined". Swallow to null so a failed
                             // edit doesn't reject the whole broadcast; null is treated as "no message".
                             targetMsg = await msg.edit({ embeds: [outEmbed] }).catch(() => null);
@@ -1281,10 +1281,10 @@ class PatreonFuncs {
         acc: ArenaRankTracking,
         user: UserConfig,
         patron: { discordID: string },
-        // null when the player data is missing poUTCOffsetMinutes — payout-based alerts are skipped
+        // null when the player data is missing poUTCOffsetMinutes - payout-based alerts are skipped
         timeLeft: number | null,
         minTil: number | null,
-        // Rank/climb as they stood at the start of the tick — see RankSnapshot
+        // Rank/climb as they stood at the start of the tick - see RankSnapshot
         prev: { rank: number; climb: number },
     ) {
         const arenaConfig = {
@@ -1390,7 +1390,7 @@ const patreonFuncs = new PatreonFuncs();
 
 /**
  * Fetches a player's data from the SWGOH API with patreon-aware cooldown.
- * Returns null on any error — the caller is responsible for the error reply.
+ * Returns null on any error - the caller is responsible for the error reply.
  *
  * Usage:
  *   const player = await fetchPlayerWithCooldown(interaction, allyCode);

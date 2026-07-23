@@ -408,9 +408,9 @@ export default class extends Language {
             },
 
             // Arena History Command
-            COMMAND_ARENAHIST_PATREON_TITLE: "Arena History — Patreon Feature",
+            COMMAND_ARENAHIST_PATREON_TITLE: "Arena History - Patreon Feature",
             COMMAND_ARENAHIST_PATREON_DESC:  "Arena history graphs plot your char and fleet arena rank over the last 7, 30, or 90 days. Available to Patreon supporters.",
-            COMMAND_ARENAHIST_NO_DATA:        "No arena history recorded yet — history is collected at your daily payout.",
+            COMMAND_ARENAHIST_NO_DATA:        "No arena history recorded yet - history is collected at your daily payout.",
             COMMAND_ARENAHIST_NO_ACCOUNT:     "That ally code isn't registered to your account.",
             COMMAND_ARENAHIST_NOT_REGISTERED: "I couldn't find your data. Please register with `/register` first.",
             COMMAND_ARENAHIST_IMAGE_ERROR:    "Failed to generate the history chart. Please try again shortly.",
@@ -422,7 +422,7 @@ export default class extends Language {
             COMMAND_COUNTER_HEADER_OVERALL: (mode, kind, sampleN) => `${mode} · ${kind} · ${sampleN} seen · any defense`,
             COMMAND_COUNTER_HEADER_VARIANT: (mode, kind, sampleN, comp) => `${mode} · ${kind} · ${sampleN} seen · vs ${comp}`,
             COMMAND_COUNTER_HEADER_CLOSEST: (mode, kind, sampleN, comp) => `${mode} · ${kind} · ${sampleN} seen · closest comp: ${comp}`,
-            COMMAND_COUNTER_OVERALL_NOTE: (leader) => `No data for that exact comp — showing all ${leader} defenses.`,
+            COMMAND_COUNTER_OVERALL_NOTE: (leader) => `No data for that exact comp - showing all ${leader} defenses.`,
             COMMAND_COUNTER_ROW_STATS: (winPct, n) => `**${winPct}% win** · ${n} battles`,
             COMMAND_COUNTER_TOP_NOTE: "Showing top 10.",
             COMMAND_COUNTER_FOOTER: (season, instanceId) => `Season ${season} · event ${instanceId} · refreshes each GAC event · Source: gahistory.c3po.wtf`,
@@ -1133,7 +1133,7 @@ export default class extends Language {
             COMMAND_MYARENA_FLEET: (rank) => `Ship Arena (Rank: ${rank})`,
             COMMAND_MYARENA_EMBED_HEADER: (playerName) => `${playerName}'s Arena`,
             COMMAND_MYARENA_PAYOUT: "Payout",
-            COMMAND_MYARENA_HISTORY_NOTE: "Track your arena rank history over time with `/arenahist` — available to Patreon supporters for their tracked accounts.",
+            COMMAND_MYARENA_HISTORY_NOTE: "Track your arena rank history over time with `/arenahist` - available to Patreon supporters for their tracked accounts.",
             COMMAND_MYARENA_HELP: {
                 description: "Show user's current arena ranks and their squads.",
                 actions: [

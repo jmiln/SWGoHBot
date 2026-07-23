@@ -2,7 +2,7 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import { UserConfigSchema } from "../../schemas/users.schema.ts";
 
-// Minimal valid UserConfig fixture — only fields required by the schema
+// Minimal valid UserConfig fixture - only fields required by the schema
 const BASE_USER = {
     id: "12345",
     accounts: [],

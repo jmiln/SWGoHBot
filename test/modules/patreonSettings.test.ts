@@ -15,7 +15,7 @@ describe("guildConfig/patreonSettings", () => {
     let client: MongoClient;
     const testDbName = env.MONGODB_SWGOHBOT_DB;
 
-    // Distinctive IDs scoped to this suite — the shared test DB runs suites in parallel
+    // Distinctive IDs scoped to this suite - the shared test DB runs suites in parallel
     const GUILD_ONE = "880000000000000001";
     const GUILD_TWO = "880000000000000002";
     const USER_ONE = "881000000000000001";

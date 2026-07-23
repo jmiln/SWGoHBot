@@ -243,7 +243,7 @@ describe("Farm", () => {
         assert.ok(description.includes("1-B"), "Expected level");
     });
 
-    // Batch DB query test — verifies both locId locations resolve correctly
+    // Batch DB query test - verifies both locId locations resolve correctly
     it("should display all locations when a character has multiple locId lookups", async () => {
         const description = descriptionOf(await runFarm("FARMTEST_HARDNODES"));
         assert.ok(description.includes("Dark Side Hard"), "Expected the dark side location resolved from DB");

@@ -54,7 +54,7 @@ describe("Showconf", () => {
 
     after(async () => {
         try {
-            // Scope to this file's mock guild — test files run in parallel against the
+            // Scope to this file's mock guild - test files run in parallel against the
             // shared test DB, so a collection-wide wipe races with other suites' docs
             await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({ guildId: TEST_GUILD_ID });
         } catch (_e) {
@@ -82,7 +82,7 @@ describe("Showconf", () => {
         assert.strictEqual(embedData.title, "COMMAND_SHOWCONF_TITLE");
 
         const general = getField(embedData, "COMMAND_SHOWCONF_HEADER_GENERAL");
-        // Default adminRole is the plain name "Administrator" — no mention formatting
+        // Default adminRole is the plain name "Administrator" - no mention formatting
         assert.ok(general.value.includes("COMMAND_SHOWCONF_LABEL_ADMIN_ROLES"), "Expected admin roles label");
         assert.ok(general.value.includes("Administrator"), "Expected default admin role name");
         assert.ok(general.value.includes("America/Los_Angeles"), "Expected default timezone");

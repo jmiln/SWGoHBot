@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 /**
- * Lean watch-config entry — player data lives in arenaPlayers collection
+ * Lean watch-config entry - player data lives in arenaPlayers collection
  */
 export const ArenaWatchConfigSchema = z.object({
     allyCode: z.number(),

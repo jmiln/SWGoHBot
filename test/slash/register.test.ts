@@ -25,11 +25,11 @@ describe("Register", () => {
         arenaPlayerRegistry.init(cache);
     });
 
-    // Unique interaction user for this file — the shared mock default ("987654321") is
+    // Unique interaction user for this file - the shared mock default ("987654321") is
     // read by other test files that expect it to stay unregistered
     const REG_USER = { id: "register-test-user", username: "RegTester" } as any;
 
-    // Scope cleanup to this file's ids/codes — concurrent test files share these collections
+    // Scope cleanup to this file's ids/codes - concurrent test files share these collections
     const REG_TEST_USER_FILTER = { id: { $in: ["register-test-user", "other-user-id-999"] } };
     const REG_TEST_PLAYER_FILTER = { allyCode: { $in: [733111222, 733222333] } };
 
@@ -195,7 +195,7 @@ describe("Register", () => {
             optionsData: { allycode: "733111222" },
         });
         // The real language dereferences the player object in COMMAND_REGISTER_SUCCESS_DESC,
-        // which is exactly what a null arenaPlayers doc breaks — the mock language hides that
+        // which is exactly what a null arenaPlayers doc breaks - the mock language hides that
         const ctx = createCommandContext({ interaction, language: new EnUS() });
         const command = new Register();
         await command.run(ctx);
@@ -210,7 +210,7 @@ describe("Register", () => {
     });
 
     it("should return error when API returns empty result for a valid ally code", async () => {
-        // Do not set any player data — unitStats will return an empty array
+        // Do not set any player data - unitStats will return an empty array
 
         const interaction = createMockInteraction({
             user: REG_USER,

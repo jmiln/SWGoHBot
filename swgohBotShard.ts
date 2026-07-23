@@ -41,7 +41,7 @@ async function formatSpawnError(err: unknown): Promise<string> {
         const retryAfter = err.headers.get("retry-after");
         const scope = err.headers.get("x-ratelimit-scope");
         let detail = `HTTP ${err.status} ${err.statusText}`;
-        if (retryAfter) detail += ` — retry after ${retryAfter}s`;
+        if (retryAfter) detail += ` - retry after ${retryAfter}s`;
         if (scope) detail += ` (scope: ${scope})`;
         return detail;
     }

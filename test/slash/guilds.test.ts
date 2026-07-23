@@ -504,7 +504,7 @@ describe("Guilds Command Functionality", () => {
 
         it("should show positive time until reset when nextChallengesRefresh is multiple days stale", async () => {
             const command = new Guilds();
-            // 3 days ago in seconds — the pre-fix code (chaTime + dayMS - nowTime) would give a large negative number
+            // 3 days ago in seconds - the pre-fix code (chaTime + dayMS - nowTime) would give a large negative number
             const staleTimeSecs = Math.floor((Date.now() - 3 * DAY_MS) / 1000);
             swgohAPI.getRawGuild = async () => makeRawGuild(staleTimeSecs);
 

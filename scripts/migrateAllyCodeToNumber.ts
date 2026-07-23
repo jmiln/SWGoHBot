@@ -40,7 +40,7 @@ async function migrate() {
             }
         }
 
-        logger.info(`Migration complete — found: ${found}, converted: ${converted}, failed: ${failed}`);
+        logger.info(`Migration complete - found: ${found}, converted: ${converted}, failed: ${failed}`);
     } finally {
         await client.close();
     }

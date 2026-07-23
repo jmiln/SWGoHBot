@@ -80,7 +80,7 @@ export async function addServerSupporter({
     // guild doesn't keep their benefits until the next reconciliation sweep
     if (userConf?.bonusServer?.length && userConf.bonusServer !== guildId) {
         const remRes = await removeServerSupporter({ guildId: userConf.bonusServer, userId: userInfo.userId });
-        // "User not in supporters array" just means there's nothing to clean up — anything else is a real failure
+        // "User not in supporters array" just means there's nothing to clean up - anything else is a real failure
         if (!remRes.success && remRes.error !== "User not in supporters array") {
             resOut.guild = { success: false, error: `Could not unlink previous server: ${remRes.error}` };
             return resOut;
@@ -144,7 +144,7 @@ export async function removeServerSupporter({ guildId, userId }: { guildId: stri
     if (!hasUser || !patreonSettings) return { success: false, error: "User not in supporters array" };
 
     // Get the list of supporters without the user, then save it as such
-    // (guildPatSettings is the projected doc, so save its inner patreonSettings — saving the
+    // (guildPatSettings is the projected doc, so save its inner patreonSettings - saving the
     // wrapper itself would double-nest the key and wipe the real supporters array)
     patreonSettings.supporters = patreonSettings.supporters.filter((sup) => sup.userId !== userId);
     return await guildConfigDB

@@ -104,7 +104,7 @@ export async function runMigration(client: MongoClient): Promise<{ found: number
                 }
 
                 // Rebuild allyCodes entry without player-data fields. Only carry over keys
-                // that are actually present — an absent poOffset must not be written as null.
+                // that are actually present - an absent poOffset must not be written as null.
                 // Store allyCode as a number so it matches the arenaPlayers doc keyed above.
                 const cleanEntry: Record<string, unknown> = { allyCode: allyCode ?? entry.allyCode };
                 if (entry.poOffset != null) cleanEntry.poOffset = entry.poOffset;
@@ -143,7 +143,7 @@ export async function runMigration(client: MongoClient): Promise<{ found: number
         }
     }
 
-    logger.info(`Migration complete — found: ${found}, converted: ${converted}, failed: ${failed}`);
+    logger.info(`Migration complete - found: ${found}, converted: ${converted}, failed: ${failed}`);
     return { found, converted, failed };
 }
 
@@ -152,7 +152,7 @@ async function main() {
     await client.connect();
     try {
         const { failed } = await runMigration(client);
-        // Surface partial failures to the operator — a clean exit must mean every doc migrated
+        // Surface partial failures to the operator - a clean exit must mean every doc migrated
         if (failed > 0) process.exitCode = 1;
     } finally {
         await client.close();

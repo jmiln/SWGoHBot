@@ -170,9 +170,9 @@ pm2 start ecosystem.config.cjs
 ```
 
 This starts:
-- `swhohBotShard` — the Discord bot (shard manager)
-- `dataUpdater` — game data refresh and player update service
-- `eventServe` — HTTP server for cross-shard guild event management
+- `swhohBotShard` - the Discord bot (shard manager)
+- `dataUpdater` - game data refresh and player update service
+- `eventServe` - HTTP server for cross-shard guild event management
 
 
 # Contributing to the website (swgohbot.com)

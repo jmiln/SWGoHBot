@@ -57,7 +57,7 @@ describe("buildCounterEmbed", () => {
         assert.ok(embed.title.includes("Boss Nass"));
 
         const row = embed.fields[0];
-        // Leader is the field name (Discord renders field names bold) — not crammed into the team line.
+        // Leader is the field name (Discord renders field names bold) - not crammed into the team line.
         assert.strictEqual(row.name, "General Skywalker");
         // Team on its own line, stats on the line after it.
         assert.strictEqual(row.value, "ARC Trooper, Fives\n**90% win** · 30 battles");

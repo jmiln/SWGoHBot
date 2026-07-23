@@ -198,7 +198,7 @@ export default class Info extends Command {
         return interaction.reply({
             embeds: [
                 {
-                    title: `/${commandName} — last 90 days`,
+                    title: `/${commandName} - last 90 days`,
                     description: detail.totalCount === 0 ? "No usage data found for this command." : codeBlock("asciidoc", summaryTable),
                     fields,
                     color: Math.floor(Math.random() * MAX_COLOR_VALUE),

@@ -183,7 +183,7 @@ async function updatePatrons() {
                 if (discordID) {
                     logger.log(`[patreonSync/updatePatrons] New Patreon supporter ${memberName} (${discordID})`);
                 } else {
-                    logger.log(`[patreonSync/updatePatrons] New Patreon supporter ${memberName} — no Discord account linked`);
+                    logger.log(`[patreonSync/updatePatrons] New Patreon supporter ${memberName} - no Discord account linked`);
                 }
             }
 

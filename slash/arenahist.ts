@@ -46,7 +46,7 @@ export default class ArenaHist extends Command {
     async run({ interaction, language }: CommandContext) {
         const userID = interaction.user.id;
 
-        // Patreon check — before deferReply so we can use interaction.reply() directly
+        // Patreon check - before deferReply so we can use interaction.reply() directly
         const pat = await patreonFuncs.getPatronUser(userID);
         if (!pat || pat.amount_cents < 100) {
             return interaction.reply({

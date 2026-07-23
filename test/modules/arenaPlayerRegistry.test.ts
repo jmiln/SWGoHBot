@@ -83,7 +83,7 @@ describe("ArenaPlayerRegistry", () => {
         });
 
         it("does not overwrite stored fields with null when a key is explicitly undefined", async () => {
-            // The driver serializes `undefined` as null in a $set unless stripped first —
+            // The driver serializes `undefined` as null in a $set unless stripped first -
             // re-adding a watched code without one arena type must not clobber the stored rank
             await client
                 .db(db)
@@ -122,7 +122,7 @@ describe("ArenaPlayerRegistry", () => {
         });
 
         it("round-trips docs fetched via batchGet (arenaTick flush path)", async () => {
-            // arenaTick flushes the very docs batchGet returned — those carry Mongo's _id,
+            // arenaTick flushes the very docs batchGet returned - those carry Mongo's _id,
             // which must never end up inside the $set payload
             await client.db(db).collection("arenaPlayers").insertOne({ allyCode: 333333333, name: "Cycle", lastCharRank: 4 });
 

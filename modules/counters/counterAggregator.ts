@@ -146,7 +146,7 @@ import type { CounterDoc, CounterEntry } from "../../schemas/counters.schema.ts"
 const WILSON_Z = 1.96;
 
 /**
- * Lower bound of the Wilson score interval for a win rate — "how good is this team, pessimistically?"
+ * Lower bound of the Wilson score interval for a win rate - "how good is this team, pessimistically?"
  *
  * Ranking on raw win% is the wrong question: it cannot tell a 5-battle 100% fluke from a genuinely
  * dominant team, so tiny perfect records crowd out the teams people actually field. The Wilson lower

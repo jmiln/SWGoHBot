@@ -182,7 +182,7 @@ The default language on `createMockInteraction()` / `createCommandContext()` is 
 for an unknown key it returns the raw key string and **drops any interpolation args** (it only fills
 `{{0}}`/`{{name}}`-style placeholders, which the real keys don't contain). That is ideal for asserting
 *which branch* a command took (`assertErrorReply(interaction, "COMMAND_X_KEY")`), but it means computed
-values, joined lists, and formatted numbers never reach the reply — and any message built by passing
+values, joined lists, and formatted numbers never reach the reply - and any message built by passing
 sub-strings as args (e.g. an error list) collapses to just its wrapper key.
 
 When you need to assert the **real rendered output**, opt into the real `en_US` language per test:
@@ -193,7 +193,7 @@ import { createRealLanguage } from "../mocks/index.ts";
 const ctx = createCommandContext({ interaction, language: createRealLanguage() });
 await command.run(ctx);
 
-// Replies now contain real English, so assert real substrings — NOT "COMMAND_*" key names.
+// Replies now contain real English, so assert real substrings - NOT "COMMAND_*" key names.
 const reply = getLastReply(interaction);
 assert.ok(reply.content.includes("100 → 85 → 72 → 61 → 51 → 43")); // arenarank progression
 ```

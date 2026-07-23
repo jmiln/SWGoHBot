@@ -10,8 +10,8 @@ This directory contains the MongoDB index configuration for SWGoHBot and the ver
 ## Index Configuration
 
 The `indexes.ts` file defines all indexes that should exist on MongoDB collections across two databases.
-Database keys are resolved from env (`config.ts`) — `MONGODB_SWGOHBOT_DB` (default `swgohbot`) and
-`MONGODB_SWAPI_DB` (default `swapi`) — not hardcoded, so the verifier targets the same databases the app
+Database keys are resolved from env (`config.ts`) - `MONGODB_SWGOHBOT_DB` (default `swgohbot`) and
+`MONGODB_SWAPI_DB` (default `swapi`) - not hardcoded, so the verifier targets the same databases the app
 reads/writes. (Hardcoding `swapidb` previously created every game-data index on an unused phantom DB
 while the real `swapi` collections went unindexed; see `docs/BUG_REFERENCE.md`.)
 

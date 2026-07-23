@@ -59,7 +59,7 @@ describe("commandStats module", () => {
                 count: 1,
                 success: true,
                 timestamp: now,
-                // no options field — should be excluded from argument aggregation
+                // no options field - should be excluded from argument aggregation
             },
             {
                 commandName: "mycharacter",

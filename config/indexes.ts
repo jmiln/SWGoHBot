@@ -62,7 +62,7 @@ export const indexConfig: DatabaseIndexes = {
             },
         ],
 
-        // Arena player rank and history data — one document per ally code
+        // Arena player rank and history data - one document per ally code
         arenaPlayers: [
             {
                 key: { allyCode: 1 },
@@ -320,7 +320,7 @@ export const indexConfig: DatabaseIndexes = {
             },
         ],
 
-        // GAC battle counter data — derived win rates per leader
+        // GAC battle counter data - derived win rates per leader
         counterData: [
             {
                 key: { mode: 1, battleType: 1, leader: 1, instanceId: 1 },

@@ -20,7 +20,7 @@ const BATCH_SIZE = 100;
 const MAX_BATCH_SIZE = 1000;
 const FLUSH_INTERVAL_MS = 60000; // Flush every 60 seconds
 
-// 90 days — matches the TTL index on this collection
+// 90 days - matches the TTL index on this collection
 export const STATS_WINDOW_MS = 90 * 24 * 60 * 60 * 1000;
 
 export interface CommandDetail {

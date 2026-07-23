@@ -119,7 +119,7 @@ describe("Versus", () => {
         assert.ok(general.includes("85"), "Expected level 85 in the general table");
         assert.ok(general.includes("13"), "Expected gear 13 in the general table");
 
-        // Stats table: the real comparison — Speed 180 (user1) vs 200 (user2), Health formatted with a locale comma.
+        // Stats table: the real comparison - Speed 180 (user1) vs 200 (user2), Health formatted with a locale comma.
         const stats = fieldValue("Stats");
         assert.ok(stats.includes("180"), "Expected user1 Speed 180 in the stats table");
         assert.ok(stats.includes("200"), "Expected user2 Speed 200 in the stats table");

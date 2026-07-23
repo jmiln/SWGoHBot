@@ -5,7 +5,7 @@ import type { ArenaHistEntry } from "../../types/types.ts";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-// Fixed reference point: 2026-06-09 12:00 UTC — injected so tests are deterministic
+// Fixed reference point: 2026-06-09 12:00 UTC - injected so tests are deterministic
 const NOW = Date.UTC(2026, 5, 9, 12, 0, 0);
 
 function makeEntry(daysAgo: number, rank: number): ArenaHistEntry {
@@ -22,7 +22,7 @@ describe("buildArenaHistChart", () => {
     });
 
     it("returns null when all entries are outside the window", () => {
-        const charHist = [makeEntry(10, 99)]; // 10 days ago — outside 7-day window
+        const charHist = [makeEntry(10, 99)]; // 10 days ago - outside 7-day window
         assert.strictEqual(buildArenaHistChart(charHist, [], 7, NOW, "Test"), null);
     });
 
@@ -85,7 +85,7 @@ describe("buildArenaHistChart", () => {
         assert.strictEqual(nonNull.length, 3);
     });
 
-    it("uses weekly ticks for 90-day window — non-multiple-of-7 labels are empty strings", () => {
+    it("uses weekly ticks for 90-day window - non-multiple-of-7 labels are empty strings", () => {
         const result = buildArenaHistChart([makeEntry(1, 50)], [], 90, NOW, "Test");
         assert.ok(result);
         assert.strictEqual(result.labels.length, 90);

@@ -114,7 +114,7 @@ describe("autocompleteCache", () => {
             const first = await getCachedGuildAliases(AC_GUILD_ID);
             assert.deepStrictEqual(first, aliasDoc("dv"));
 
-            // Change the DB inside the TTL window — the cached copy must still be served
+            // Change the DB inside the TTL window - the cached copy must still be served
             await client
                 .db(db)
                 .collection("guildConfigs")
@@ -136,12 +136,12 @@ describe("autocompleteCache", () => {
         await getCachedAllyCodeChoices(AC_USER_ID, "");
         assert.strictEqual(batchGetCalls, 1);
 
-        // Still inside the TTL window — cached
+        // Still inside the TTL window - cached
         t.mock.timers.setTime(start + AUTOCOMPLETE_CACHE_TTL_MS - 1);
         await getCachedAllyCodeChoices(AC_USER_ID, "");
         assert.strictEqual(batchGetCalls, 1);
 
-        // Past the TTL — must refetch
+        // Past the TTL - must refetch
         t.mock.timers.setTime(start + AUTOCOMPLETE_CACHE_TTL_MS + 1);
         await getCachedAllyCodeChoices(AC_USER_ID, "");
         assert.strictEqual(batchGetCalls, 2);
