@@ -1,6 +1,13 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import Datacron, { buildDatacronSetEmbeds, buildSetChoices } from "../../slash/datacron.ts";
+import type { DatacronTargetMatch, DatacronTargetRef } from "../../modules/datacrons.ts";
+import Datacron, {
+    buildDatacronSetEmbeds,
+    buildSetChoices,
+    buildTargetChoices,
+    buildTargetSearchEmbeds,
+    resolveTargetInput,
+} from "../../slash/datacron.ts";
 import type { DatacronAbilityRef, DatacronSetRef } from "../../types/datacron_types.ts";
 import { createRealLanguage } from "../mocks/mockInteraction.ts";
 
@@ -36,6 +43,109 @@ describe("/datacron metadata", () => {
         assert.strictEqual(opt("set")?.required ?? false, false, "set is optional - defaults to current");
         assert.strictEqual(opt("set")?.autocomplete, true);
         assert.strictEqual(opt("tier")?.required ?? false, false);
+    });
+
+    it("has an optional target search option with name autocomplete", () => {
+        const target = Datacron.metadata.options.find((o) => o.name === "target");
+        assert.ok(target, "target option should exist");
+        assert.strictEqual(target?.required ?? false, false);
+        assert.strictEqual(target?.autocomplete, true);
+    });
+});
+
+describe("target search", () => {
+    const targets: DatacronTargetRef[] = [
+        { targetRule: "target_datacron_jedi", name: "Jedi" },
+        { targetRule: "target_datacron_darkside", name: "Dark Side" },
+        { targetRule: "target_datacron_grievous", name: "General Grievous" },
+    ];
+
+    describe("buildTargetChoices", () => {
+        it("matches by display name and returns the exact targetRule as the value", () => {
+            const choices = buildTargetChoices(targets, "jedi");
+            assert.deepStrictEqual(choices, [{ name: "Jedi", value: "target_datacron_jedi" }]);
+        });
+
+        it("returns everything (sorted) for an empty query", () => {
+            const choices = buildTargetChoices(targets, "");
+            assert.strictEqual(choices.length, 3);
+            assert.deepStrictEqual(
+                choices.map((c) => c.name),
+                ["Dark Side", "General Grievous", "Jedi"],
+            );
+        });
+    });
+
+    describe("resolveTargetInput", () => {
+        it("prefers an exact targetRule (what autocomplete sends)", () => {
+            assert.strictEqual(resolveTargetInput(targets, "target_datacron_darkside")?.name, "Dark Side");
+        });
+
+        it("falls back to an exact then a substring name match for typed input", () => {
+            assert.strictEqual(resolveTargetInput(targets, "jedi")?.targetRule, "target_datacron_jedi");
+            assert.strictEqual(resolveTargetInput(targets, "grievous")?.name, "General Grievous");
+        });
+
+        it("returns null when nothing matches", () => {
+            assert.strictEqual(resolveTargetInput(targets, "no such target"), null);
+        });
+    });
+
+    describe("buildTargetSearchEmbeds", () => {
+        // 1900000000000 = year 2030 (active); 1500000000000 = 2017 (expired).
+        const activeSet: DatacronSetRef = {
+            setId: 33,
+            nameKey: "DATACRON_SET_33_NAME",
+            expirationTimeMs: 1900000000000,
+            allowReroll: true,
+            tiers: [
+                { tier: 3, requiredRelicTier: 5, affixPool: [{ abilityId: "a", targetRule: "target_datacron_jedi" }] },
+                { tier: 6, affixPool: [{ abilityId: "b", targetRule: "target_datacron_jedi" }] },
+            ],
+        };
+        const expiredSet: DatacronSetRef = {
+            setId: 24,
+            nameKey: "DATACRON_SET_24_NAME",
+            expirationTimeMs: 1500000000000,
+            allowReroll: true,
+            tiers: [{ tier: 9, requiredRelicTier: 8, affixPool: [{ abilityId: "c", targetRule: "target_datacron_jedi" }] }],
+        };
+        const matches: DatacronTargetMatch[] = [
+            { set: expiredSet, tiers: [9] },
+            { set: activeSet, tiers: [3, 6] },
+        ];
+        const textMap = new Map<string, string>([
+            ["DATACRON_SET_33_NAME", "Supremacy Directive"],
+            ["DATACRON_SET_24_NAME", "Bounty Protocol"],
+        ]);
+
+        it("titles with the target and lists each matching set with its tiers and relic reqs", () => {
+            const embeds = buildTargetSearchEmbeds("Jedi", matches, textMap, language);
+            assert.ok(embeds[0].title?.includes("Jedi"), `title should name the target: ${embeds[0].title}`);
+            const text = JSON.stringify(embeds);
+            assert.ok(text.includes("Supremacy Directive"), "matching set name shown");
+            assert.ok(text.includes("Tier 3") && text.includes("Tier 6"), `tiers listed: ${text}`);
+            assert.ok(/Relic 5\+/.test(text), `relic requirement noted: ${text}`);
+        });
+
+        it("puts active sets first and marks expired ones", () => {
+            const fields = buildTargetSearchEmbeds("Jedi", matches, textMap, language)[0].fields ?? [];
+            assert.ok(fields[0].name.includes("33"), `active set should sort first: ${fields[0].name}`);
+            const expiredField = fields.find((f) => f.name.includes("24"));
+            assert.ok(expiredField?.name.includes("expired"), `expired set must be marked: ${expiredField?.name}`);
+        });
+
+        it("handles a target no set can boost", () => {
+            const embeds = buildTargetSearchEmbeds("Nobody", [], textMap, language);
+            assert.ok(embeds[0].description?.toLowerCase().includes("no datacron"), `expected a no-match message: ${embeds[0].description}`);
+        });
+
+        it("states possibilities, never reroll instructions (presentation rule)", () => {
+            const text = JSON.stringify(buildTargetSearchEmbeds("Jedi", matches, textMap, language)).toLowerCase();
+            for (const banned of ["you should", "recommend", "best choice", "worth rerolling", "don't reroll"]) {
+                assert.ok(!text.includes(banned), `presentation rule violated by: "${banned}"`);
+            }
+        });
     });
 });
 

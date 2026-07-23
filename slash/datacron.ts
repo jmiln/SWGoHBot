@@ -7,11 +7,15 @@ import {
 import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
 import {
+    type DatacronTargetMatch,
+    type DatacronTargetRef,
+    findSetsForTarget,
     formatPoolAffix,
     getAllDatacronSets,
     getCurrentDatacronSet,
     getDatacronAbilities,
     getDatacronSet,
+    getDatacronTargets,
     resolveTargetName,
     statName,
 } from "../modules/datacrons.ts";
@@ -112,7 +116,7 @@ export function buildDatacronSetEmbeds(
 export default class Datacron extends Command {
     static readonly metadata = {
         name: "datacron",
-        description: "Look up a datacron set: what it boosts, when it expires, and what each tier can roll",
+        description: "Look up a datacron set, or search which sets can boost a given unit/faction/role",
         category: "Gamedata",
         permLevel: 0,
         contexts: [InteractionContextType.Guild, InteractionContextType.BotDM],
@@ -128,6 +132,12 @@ export default class Datacron extends Command {
                 type: ApplicationCommandOptionType.Integer,
                 description: "Show everything one tier can roll, with full ability text",
             },
+            {
+                name: "target",
+                type: ApplicationCommandOptionType.String,
+                description: "Find which sets can boost a unit, faction, role, or alignment",
+                autocomplete: true,
+            },
         ],
     };
 
@@ -138,6 +148,24 @@ export default class Datacron extends Command {
     async run({ interaction, language, swgohLanguage }: CommandContext) {
         const setId = interaction.options.getInteger("set");
         const tier = interaction.options.getInteger("tier");
+        const targetInput = interaction.options.getString("target");
+
+        // Target search takes precedence: it's the more specific intent than a set lookup. Resolve
+        // it synchronously (in-memory) so an unknown target errors before we defer.
+        if (targetInput) {
+            const targets = getDatacronTargets(swgohLanguage);
+            const chosen = resolveTargetInput(targets, targetInput);
+            if (!chosen) {
+                return super.error(interaction, language.get("COMMAND_DATACRON_TARGET_NOT_FOUND", targetInput));
+            }
+            await interaction.deferReply();
+            const textMap = await swgohAPI.datacronText(swgohLanguage);
+            const embeds = buildTargetSearchEmbeds(chosen.name, findSetsForTarget(chosen.targetRule), textMap, language);
+            if (setId !== null || tier !== null) {
+                embeds[0].description = `${embeds[0].description ?? ""} ${language.get("COMMAND_DATACRON_TARGET_OVERRIDE")}`.trim();
+            }
+            return interaction.editReply({ embeds });
+        }
 
         const set = setId === null ? getCurrentDatacronSet() : getDatacronSet(setId);
         if (!set) {
@@ -156,8 +184,11 @@ export default class Datacron extends Command {
         return interaction.editReply({ embeds });
     }
 
-    async autocomplete(interaction: AutocompleteInteraction, _focused: AutocompleteFocusedOption, context: AutocompleteContext) {
-        const query = interaction.options.getFocused()?.toString().toLowerCase() ?? "";
+    async autocomplete(interaction: AutocompleteInteraction, focused: AutocompleteFocusedOption, context: AutocompleteContext) {
+        const query = focused.value?.toString().toLowerCase() ?? "";
+        if (focused.name === "target") {
+            return interaction.respond(buildTargetChoices(getDatacronTargets(context.swgohLanguage), query));
+        }
         const sets = await getSetChoices(context.swgohLanguage);
         return interaction.respond(buildSetChoices(sets, query, context.language.get("COMMAND_DATACRON_EXPIRED_MARK")));
     }
@@ -204,4 +235,75 @@ export function buildSetChoices(sets: SetChoice[], query: string, expiredMark: s
             name: `${s.name ? `${s.id} - ${s.name}` : `Set ${s.id}`}${s.expired ? ` (${expiredMark})` : ""}`.slice(0, 100),
             value: s.id,
         }));
+}
+
+/**
+ * Autocomplete choices for the target search, matched by display name. The choice value is the
+ * exact targetRule so the search is unambiguous even when two targets share a name. Exported for
+ * testing.
+ */
+export function buildTargetChoices(targets: DatacronTargetRef[], query: string): { name: string; value: string }[] {
+    return targets
+        .filter((t) => !query || t.name.toLowerCase().includes(query))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .slice(0, 25)
+        .map((t) => ({ name: t.name.slice(0, 100), value: t.targetRule.slice(0, 100) }));
+}
+
+/**
+ * Resolves the raw `target:` input to a known target. Prefers an exact targetRule (what autocomplete
+ * sends), then an exact name, then a name substring so a typed-but-not-selected value still lands.
+ * Exported for testing.
+ */
+export function resolveTargetInput(targets: DatacronTargetRef[], input: string): DatacronTargetRef | null {
+    const q = input.trim().toLowerCase();
+    return (
+        targets.find((t) => t.targetRule === input) ??
+        targets.find((t) => t.name.toLowerCase() === q) ??
+        targets.find((t) => t.name.toLowerCase().includes(q)) ??
+        null
+    );
+}
+
+/**
+ * Builds the target-search result: one field per set that can boost the target, showing the tiers
+ * (with relic requirements) where it can. Active sets first, expired below and marked, consistent
+ * with the picker. Per the presentation rule this states what CAN boost a target, never reroll
+ * advice. Exported for testing.
+ */
+export function buildTargetSearchEmbeds(
+    targetName: string,
+    matches: DatacronTargetMatch[],
+    textMap: Map<string, string>,
+    language: Language,
+): DatacronEmbed[] {
+    const title = language.get("COMMAND_DATACRON_TARGET_TITLE", targetName);
+    if (!matches.length) {
+        return [{ title, description: language.get("COMMAND_DATACRON_TARGET_NONE", targetName) }];
+    }
+
+    const now = Date.now();
+    const expired = (m: DatacronTargetMatch) => !!m.set.expirationTimeMs && m.set.expirationTimeMs < now;
+    const sorted = [...matches].sort((a, b) => Number(expired(a)) - Number(expired(b)) || b.set.setId - a.set.setId);
+
+    const fields: EmbedField[] = sorted.map((m) => {
+        const setName = textMap.get(m.set.nameKey);
+        const heading = `${language.get("COMMAND_DATACRON_TITLE", m.set.setId, setName ?? "")}${
+            expired(m) ? ` (${language.get("COMMAND_DATACRON_EXPIRED_MARK")})` : ""
+        }`;
+        const tierLabels = m.tiers.map((n) => {
+            const relic = m.set.tiers.find((t) => t.tier === n)?.requiredRelicTier;
+            const label = language.get("COMMAND_DATACRON_TIER_LABEL", n);
+            return relic ? `${label} (${language.get("COMMAND_DATACRON_REQUIRES_RELIC", relic)})` : label;
+        });
+        return { name: heading.slice(0, 256), value: truncate(tierLabels.join(", ") || "-") };
+    });
+
+    const embeds: DatacronEmbed[] = [];
+    for (let i = 0; i < fields.length && embeds.length < MAX_EMBEDS; i += FIELDS_PER_EMBED) {
+        embeds.push({ fields: fields.slice(i, i + FIELDS_PER_EMBED) });
+    }
+    embeds[0].title = title;
+    embeds[0].description = `_${language.get("COMMAND_DATACRON_TARGET_HINT")}_`;
+    return embeds;
 }

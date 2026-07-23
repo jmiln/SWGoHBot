@@ -442,6 +442,12 @@ export default class extends Language {
             COMMAND_DATACRON_OVERVIEW_HINT: "Use `tier:` to see the full ability text a tier can roll.",
             COMMAND_DATACRON_STAT_TIER: (count) => `Stat boosts (${count} options)`,
             COMMAND_DATACRON_EXPIRED_MARK: "expired",
+            COMMAND_DATACRON_TARGET_TITLE: (target) => `Datacrons that can boost ${target}`,
+            COMMAND_DATACRON_TARGET_HINT: "Use `set:` and `tier:` to see the full ability text.",
+            COMMAND_DATACRON_TARGET_OVERRIDE: "(Showing the target search; drop `target:` to look up a set.)",
+            COMMAND_DATACRON_TARGET_NONE: (target) => `No datacron set can boost ${target}.`,
+            COMMAND_DATACRON_TARGET_NOT_FOUND: (target) =>
+                `I don't have a datacron target matching "${target}". Try one of the autocomplete suggestions.`,
 
             // MyDatacrons Command
             COMMAND_MYDATACRONS_NONE: (name) => `${name} doesn't have any datacrons.`,

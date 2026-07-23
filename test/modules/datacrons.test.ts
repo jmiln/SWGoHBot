@@ -1,6 +1,15 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { descaleStatValue, formatPlayerAffix, formatPoolAffix, resolveTargetName, statName } from "../../modules/datacrons.ts";
+import {
+    descaleStatValue,
+    findSetsForTarget,
+    formatPlayerAffix,
+    formatPoolAffix,
+    getAllDatacronSets,
+    getDatacronTargets,
+    resolveTargetName,
+    statName,
+} from "../../modules/datacrons.ts";
 import type { DatacronAbilityRef, DatacronAffix, DatacronAffixOption } from "../../types/datacron_types.ts";
 
 // Text comes from the Mongo `datacrons` collection at runtime; tests inject a fake map so the
@@ -84,6 +93,45 @@ describe("formatPlayerAffix", () => {
         const affix: DatacronAffix = { abilityId: "datacron_alignment_generic_003" };
         const line = formatPlayerAffix(affix, abilities, new Map([["DATACRON_ALIGNMENT_MECHANIC_NAME", "Alignment"]]));
         assert.strictEqual(line, "Alignment");
+    });
+});
+
+describe("getDatacronTargets", () => {
+    // Runs against the real derived data/datacrons.json, so assertions stay self-consistent rather
+    // than hard-coding target IDs that shift when the game adds sets.
+    it("lists distinct targets, deduped by rule, each with a readable name and no raw id", () => {
+        const targets = getDatacronTargets();
+        assert.ok(targets.length > 0, "expected at least one boostable target");
+        const rules = targets.map((t) => t.targetRule);
+        assert.strictEqual(rules.length, new Set(rules).size, "targets must be deduped by rule");
+        for (const t of targets) {
+            assert.ok(t.name && !t.name.includes("target_datacron"), `name must be resolved, not the raw id: ${t.name}`);
+        }
+    });
+});
+
+describe("findSetsForTarget", () => {
+    it("returns only sets that actually have a tier boosting the target, with the right tiers", () => {
+        const [first] = getDatacronTargets();
+        assert.ok(first, "need a target to search for");
+        const matches = findSetsForTarget(first.targetRule);
+        assert.ok(matches.length > 0, `every listed target must map back to at least one set: ${first.targetRule}`);
+        for (const m of matches) {
+            for (const tierNum of m.tiers) {
+                const tier = m.set.tiers.find((t) => t.tier === tierNum);
+                assert.ok(
+                    tier?.affixPool.some((o) => o.targetRule === first.targetRule),
+                    `set ${m.set.setId} tier ${tierNum} was reported but does not boost ${first.targetRule}`,
+                );
+            }
+        }
+    });
+
+    it("excludes sets that cannot boost the target", () => {
+        const matches = findSetsForTarget("target_datacron_not_a_real_target");
+        assert.deepStrictEqual(matches, []);
+        // sanity: there is real data to have matched against
+        assert.ok(getAllDatacronSets().length > 0);
     });
 });
 

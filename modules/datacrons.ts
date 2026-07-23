@@ -99,6 +99,50 @@ export function getDatacronAbilities(): Record<string, DatacronAbilityRef> {
     return file.abilities;
 }
 
+/** One selectable target for the /datacron target search: its rule and resolved display name. */
+export interface DatacronTargetRef {
+    targetRule: string;
+    name: string;
+}
+
+/**
+ * Every distinct target a datacron ability can boost, across all sets' tiers, resolved to display
+ * names and deduped by targetRule. Powers the `/datacron target:` autocomplete. Pure over the
+ * in-memory data, so a keystroke costs no I/O.
+ */
+export function getDatacronTargets(lang: SWAPILang = "eng_us"): DatacronTargetRef[] {
+    const byRule = new Map<string, string>();
+    for (const set of file.sets) {
+        for (const tier of set.tiers) {
+            for (const opt of tier.affixPool) {
+                if (opt.targetRule && !byRule.has(opt.targetRule)) {
+                    byRule.set(opt.targetRule, resolveTargetName(opt.targetRule, lang) ?? opt.targetRule);
+                }
+            }
+        }
+    }
+    return [...byRule].map(([targetRule, name]) => ({ targetRule, name }));
+}
+
+/** A set that can boost a searched target, with the tier numbers (ascending) where it can. */
+export interface DatacronTargetMatch {
+    set: DatacronSetRef;
+    tiers: number[];
+}
+
+/**
+ * Every set with a tier that can roll an ability boosting `targetRule`, each with the matching tier
+ * numbers. Sets with no matching tier are omitted. Tiers come out ascending (set.tiers order).
+ */
+export function findSetsForTarget(targetRule: string): DatacronTargetMatch[] {
+    const matches: DatacronTargetMatch[] = [];
+    for (const set of file.sets) {
+        const tiers = set.tiers.filter((t) => t.affixPool.some((o) => o.targetRule === targetRule)).map((t) => t.tier);
+        if (tiers.length) matches.push({ set, tiers });
+    }
+    return matches;
+}
+
 /**
  * Converts the game's scaled-integer stat value into a display number.
  * Reuses the scaling rule from modules/swapi.ts:690. Returns null for absent or zero values so
