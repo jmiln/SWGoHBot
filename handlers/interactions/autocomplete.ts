@@ -2,7 +2,7 @@ import type { AutocompleteInteraction } from "discord.js";
 import type slashCommand from "../../base/slashCommand.ts";
 import { characterNameList, factions, journeyNames, shipNameList } from "../../data/constants/units.ts";
 import factionMap from "../../data/factionMap.ts";
-import { getCachedAllyCodeChoices, getCachedGuildAliases } from "../../modules/autocompleteCache.ts";
+import { getCachedAllyCodeChoices, getCachedGuildAliases, getCachedUserLang } from "../../modules/autocompleteCache.ts";
 import logger from "../../modules/Logger.ts";
 import type { GuildAlias } from "../../types/types.ts";
 import { getCommandNames } from "../slashHandler.ts";
@@ -112,9 +112,12 @@ export function processUnitAutocomplete(focusedOption: { name: string; value: st
 export async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
     const focusedOption = interaction.options.getFocused(true);
 
-    // If command has custom autocomplete handler, use it
+    // If command has custom autocomplete handler, use it. Resolve the user's language here (only on
+    // this branch, so the hot unit-autocomplete default path below pays nothing) so the picker can
+    // localize and query game data the same way the command body will.
     if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
-        await cmd.autocomplete(interaction, focusedOption);
+        const context = await getCachedUserLang(interaction.user.id);
+        await cmd.autocomplete(interaction, focusedOption, context);
         return;
     }
 
@@ -158,7 +161,7 @@ export async function handleAutocomplete(interaction: AutocompleteInteraction, c
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
             filtered = await getCachedAllyCodeChoices(interaction.user.id, searchKey);
         } else {
-            // Process unit/character/ship autocomplete — the only path that needs guild
+            // Process unit/character/ship autocomplete - the only path that needs guild
             // aliases, served from a short-TTL cache so typing doesn't re-query per keystroke
             const aliases = await getCachedGuildAliases(interaction?.guild?.id);
             filtered = processUnitAutocomplete(focusedOption, aliases);

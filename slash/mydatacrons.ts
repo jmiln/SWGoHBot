@@ -28,8 +28,15 @@ interface PlayerLike {
 const FIELDS_PER_EMBED = 20;
 const MAX_EMBEDS = 10;
 
+/** A datacron is dead once its set expires, so that is worth flagging above focused/locked. */
+function isExpired(datacron: PlayerDatacron): boolean {
+    const expiry = getDatacronSet(datacron.setId)?.expirationTimeMs;
+    return !!expiry && expiry < Date.now();
+}
+
 function flagSuffix(datacron: PlayerDatacron, language: Language): string {
     const flags = [
+        isExpired(datacron) ? language.get("COMMAND_MYDATACRONS_EXPIRED") : null,
         datacron.focused ? language.get("COMMAND_MYDATACRONS_FOCUSED") : null,
         datacron.locked ? language.get("COMMAND_MYDATACRONS_LOCKED") : null,
     ].filter(Boolean);
@@ -56,12 +63,19 @@ export function buildDatacronField(
     language: Language,
     lang: SWAPILang,
 ): EmbedField {
-    const setName = textMap.get(getDatacronSet(datacron.setId)?.nameKey ?? "") ?? `Set ${datacron.setId}`;
+    const set = getDatacronSet(datacron.setId);
+    const setName = textMap.get(set?.nameKey ?? "") ?? `Set ${datacron.setId}`;
     const target = headlineTarget(datacron, lang);
     const lines = datacron.affix.map((a) => `- ${formatPlayerAffix(a, abilities, textMap, lang)}`).filter((l) => l !== "- ");
+
+    // Expiry as a live relative timestamp on its own line below the field name (embed field names
+    // don't render <t:...:R>, only values do), so a player can see how long each datacron has left.
+    const body = set?.expirationTimeMs
+        ? [language.get("COMMAND_MYDATACRONS_EXPIRES", `<t:${Math.floor(set.expirationTimeMs / 1000)}:R>`), ...lines]
+        : lines;
     return {
         name: `${setName}${target ? ` - ${target}` : ""}${flagSuffix(datacron, language)}`.slice(0, 256),
-        value: (lines.join("\n") || "-").slice(0, 1024),
+        value: (body.join("\n") || "-").slice(0, 1024),
     };
 }
 
@@ -88,12 +102,17 @@ export function buildPlayerDatacronEmbeds(
         return [{ title, description: language.get("COMMAND_MYDATACRONS_NONE", player.name) }];
     }
 
-    const fields = player.datacron.map((dc) => buildDatacronField(dc, textMap, abilities, language, lang));
+    // Live datacrons first, then newest set first - an expired one is dead weight and should not
+    // push the set the player is actually using down the list.
+    const ordered = [...player.datacron].sort((a, b) => Number(isExpired(a)) - Number(isExpired(b)) || b.setId - a.setId);
+
+    const fields = ordered.map((dc) => buildDatacronField(dc, textMap, abilities, language, lang));
     const embeds: DatacronEmbed[] = [];
     for (let i = 0; i < fields.length && embeds.length < MAX_EMBEDS; i += FIELDS_PER_EMBED) {
         embeds.push({ fields: fields.slice(i, i + FIELDS_PER_EMBED) });
     }
     embeds[0].title = title;
+    embeds[0].description = `_${language.get("COMMAND_MYDATACRONS_SET_HINT")}_`;
     return embeds;
 }
 

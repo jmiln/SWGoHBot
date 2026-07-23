@@ -152,6 +152,16 @@ export interface CommandContext {
     permLevel: number;
 }
 
+/**
+ * The user's resolved language, passed to a command's `autocomplete` handler so the picker can
+ * localize and query game data in the same language the command body will use. Resolved centrally in
+ * the autocomplete handler, mirroring how CommandContext is built for `run`.
+ */
+export interface AutocompleteContext {
+    language: Language;
+    swgohLanguage: SWAPILang;
+}
+
 export interface BotDefaultSettings {
     adminRole: string[];
     enableWelcome: boolean;

@@ -40,41 +40,56 @@ describe("/datacron metadata", () => {
 });
 
 describe("buildSetChoices", () => {
-    const names = new Map<number, string>([
-        [32, "Necessary Means"],
-        [31, "For Old Times"],
-        [30, "Peace & Power"],
-    ]);
+    // Mirrors the real spread: a few active sets and a pile of long-expired ones.
+    const choicesIn = [
+        { id: 33, name: "Supremacy Directive", expired: false },
+        { id: 32, name: "Necessary Means", expired: false },
+        { id: 29, name: "Edict and Uprising", expired: true },
+        { id: 26, name: "Bounty Protocol", expired: true },
+    ];
 
     it("labels every choice with the set name, since the number means nothing to a player", () => {
-        const choices = buildSetChoices(names, "");
-        assert.strictEqual(choices.length, 3);
+        const choices = buildSetChoices(choicesIn, "", "expired");
+        assert.strictEqual(choices.length, 4);
         for (const c of choices) {
             assert.ok(/^\d+ - .+/.test(c.name), `choice should be "num - name", got: ${c.name}`);
-            assert.ok(!/^Set \d+$/.test(c.name), `bare "Set N" means the name lookup failed: ${c.name}`);
         }
-        assert.strictEqual(choices[0].name, "32 - Necessary Means", "newest set first");
-        assert.strictEqual(choices[0].value, 32, "value stays the numeric id");
+        assert.strictEqual(choices[0].value, 33, "newest active set first");
+    });
+
+    it("marks expired sets and sorts them below the active ones", () => {
+        const choices = buildSetChoices(choicesIn, "", "expired");
+        assert.deepStrictEqual(
+            choices.map((c) => c.value),
+            [33, 32, 29, 26],
+            "active sets first, each group newest-first",
+        );
+        assert.ok(!choices[0].name.includes("expired"), `active set should not be marked: ${choices[0].name}`);
+        assert.ok(choices[2].name.includes("expired"), `expired set must be marked: ${choices[2].name}`);
     });
 
     it("matches on the name, so a player who only knows the name can find it", () => {
-        const byName = buildSetChoices(names, "peace");
         assert.deepStrictEqual(
-            byName.map((c) => c.value),
-            [30],
+            buildSetChoices(choicesIn, "bounty", "expired").map((c) => c.value),
+            [26],
         );
     });
 
     it("still matches on the set number", () => {
         assert.deepStrictEqual(
-            buildSetChoices(names, "31").map((c) => c.value),
-            [31],
+            buildSetChoices(choicesIn, "32", "expired").map((c) => c.value),
+            [32],
         );
     });
 
     it("falls back to 'Set N' only when a name is genuinely missing", () => {
-        const choices = buildSetChoices(new Map([[29, ""]]), "");
+        const choices = buildSetChoices([{ id: 29, name: "", expired: false }], "", "expired");
         assert.strictEqual(choices[0].name, "Set 29");
+    });
+
+    it("uses the caller-supplied (localizable) expired marker, not a hardcoded English one", () => {
+        const choices = buildSetChoices([{ id: 26, name: "Bounty Protocol", expired: true }], "", "abgelaufen");
+        assert.ok(choices[0].name.includes("abgelaufen"), `expected the passed marker: ${choices[0].name}`);
     });
 });
 

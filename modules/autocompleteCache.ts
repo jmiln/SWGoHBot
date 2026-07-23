@@ -1,3 +1,4 @@
+import Language from "../base/Language.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { ArenaPlayer, GuildAlias } from "../types/types.ts";
@@ -75,19 +76,36 @@ export async function getCachedGuildAliases(guildId: string | undefined): Promis
     return getCached(`aliases:${guildId}`, () => getGuildAliases({ guildId }));
 }
 
+interface UserLang {
+    language: Language;
+    swgohLanguage: SWAPILang;
+}
+
+// A quick per-user config cache: userId -> resolved languages. Each entry self-removes after a
+// short TTL via setTimeout, so a user's language change shows up on their next command once the
+// window lapses. .unref() keeps the pending timer from holding the process open.
+const userLangCache = new Map<string, UserLang>();
+
 /**
- * Return the user's configured SWGoH game-data language for autocomplete, served from the
- * per-user cache when fresh.
+ * Return the user's resolved languages (the bot UI Language instance and the SWGoH game-data
+ * language), served from the per-user cache when present.
  *
- * Resolved exactly as `handlers/interactions/chatInput.ts` does for command runs, so an
- * autocomplete and the command body agree. Deliberately NOT Discord's `interaction.locale`:
- * that is the user's client language, and would silently override the language they chose.
+ * Resolved exactly as `handlers/interactions/chatInput.ts` does for command runs, so an autocomplete
+ * and the command body agree. Deliberately NOT Discord's `interaction.locale`: that is the user's
+ * client language, and would silently override the language they chose in their bot settings.
  */
-export async function getCachedSwgohLanguage(userId: string): Promise<SWAPILang> {
-    return getCached(`swgohlang:${userId}`, async () => {
-        const user = await userReg.getUser(userId);
-        return (user?.lang?.swgohLanguage || defaultSettings.swgohLanguage) as SWAPILang;
-    });
+export async function getCachedUserLang(userId: string): Promise<UserLang> {
+    const cached = userLangCache.get(userId);
+    if (cached) return cached;
+
+    const user = await userReg.getUser(userId);
+    const value: UserLang = {
+        language: Language.getLanguageOrDefault(user?.lang?.language || defaultSettings.language),
+        swgohLanguage: (user?.lang?.swgohLanguage || defaultSettings.swgohLanguage) as SWAPILang,
+    };
+    userLangCache.set(userId, value);
+    setTimeout(() => userLangCache.delete(userId), AUTOCOMPLETE_CACHE_TTL_MS).unref();
+    return value;
 }
 
 /**

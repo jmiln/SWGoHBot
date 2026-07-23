@@ -1,7 +1,11 @@
-import { ApplicationCommandOptionType, type AutocompleteInteraction, InteractionContextType } from "discord.js";
+import {
+    ApplicationCommandOptionType,
+    type AutocompleteFocusedOption,
+    type AutocompleteInteraction,
+    InteractionContextType,
+} from "discord.js";
 import type Language from "../base/Language.ts";
 import Command from "../base/slashCommand.ts";
-import { getCachedSwgohLanguage } from "../modules/autocompleteCache.ts";
 import {
     formatPoolAffix,
     getAllDatacronSets,
@@ -14,7 +18,7 @@ import {
 import swgohAPI from "../modules/swapi.ts";
 import type { DatacronAbilityRef, DatacronSetRef } from "../types/datacron_types.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { AutocompleteContext, CommandContext } from "../types/types.ts";
 
 interface EmbedField {
     name: string;
@@ -152,36 +156,52 @@ export default class Datacron extends Command {
         return interaction.editReply({ embeds });
     }
 
-    async autocomplete(interaction: AutocompleteInteraction) {
+    async autocomplete(interaction: AutocompleteInteraction, _focused: AutocompleteFocusedOption, context: AutocompleteContext) {
         const query = interaction.options.getFocused()?.toString().toLowerCase() ?? "";
-        // Resolve the user's configured game-data language the same way a command run does.
-        const lang = await getCachedSwgohLanguage(interaction.user.id);
-        const names = await getSetNames(lang);
-        return interaction.respond(buildSetChoices(names, query));
+        const sets = await getSetChoices(context.swgohLanguage);
+        return interaction.respond(buildSetChoices(sets, query, context.language.get("COMMAND_DATACRON_EXPIRED_MARK")));
     }
 }
 
+/** One selectable set for the picker. */
+export interface SetChoice {
+    id: number;
+    name: string;
+    expired: boolean;
+}
+
 // Set names only change when the game adds a set (a dataUpdater run), so cache them per language
-// rather than hitting Mongo on every autocomplete keystroke.
+// rather than hitting Mongo on every autocomplete keystroke. Expiry is recomputed per call since it
+// is time-based, not data-based.
 const cachedSetNames = new Map<SWAPILang, Map<number, string>>();
-async function getSetNames(lang: SWAPILang): Promise<Map<number, string>> {
-    const cached = cachedSetNames.get(lang);
-    if (cached) return cached;
-    const textMap = await swgohAPI.datacronText(lang);
-    const names = new Map(getAllDatacronSets().map((s) => [s.setId, textMap.get(s.nameKey) ?? ""]));
-    cachedSetNames.set(lang, names);
-    return names;
+async function getSetChoices(lang: SWAPILang): Promise<SetChoice[]> {
+    let names = cachedSetNames.get(lang);
+    if (!names) {
+        const textMap = await swgohAPI.datacronText(lang);
+        names = new Map(getAllDatacronSets().map((s) => [s.setId, textMap.get(s.nameKey) ?? ""]));
+        cachedSetNames.set(lang, names);
+    }
+    const now = Date.now();
+    return getAllDatacronSets().map((s) => ({
+        id: s.setId,
+        name: names.get(s.setId) ?? "",
+        expired: !!s.expirationTimeMs && s.expirationTimeMs < now,
+    }));
 }
 
 /**
  * Builds the autocomplete choices as "32 - Necessary Means", matched by set number OR name so a
- * player who only knows the name can find it. Exported for testing. Falls back to "Set N" only when
- * a name is genuinely missing.
+ * player who only knows the name can find it. Expired sets are marked and sorted below the active
+ * ones - most sets on file are long expired, and an unmarked picker makes a dead set look current.
+ * Exported for testing. Falls back to "Set N" only when a name is genuinely missing.
  */
-export function buildSetChoices(names: Map<number, string>, query: string): { name: string; value: number }[] {
-    return [...names.entries()]
-        .filter(([id, name]) => !query || String(id).includes(query) || name.toLowerCase().includes(query))
-        .sort(([a], [b]) => b - a)
+export function buildSetChoices(sets: SetChoice[], query: string, expiredMark: string): { name: string; value: number }[] {
+    return sets
+        .filter((s) => !query || String(s.id).includes(query) || s.name.toLowerCase().includes(query))
+        .sort((a, b) => Number(a.expired) - Number(b.expired) || b.id - a.id)
         .slice(0, 25)
-        .map(([id, name]) => ({ name: name ? `${id} - ${name}` : `Set ${id}`, value: id }));
+        .map((s) => ({
+            name: `${s.name ? `${s.id} - ${s.name}` : `Set ${s.id}`}${s.expired ? ` (${expiredMark})` : ""}`.slice(0, 100),
+            value: s.id,
+        }));
 }

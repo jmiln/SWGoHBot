@@ -12,7 +12,7 @@ import {
 import constants from "../data/constants/constants.ts";
 import logger from "../modules/Logger.ts";
 import type { CommandOption, SlashEmbedOptions } from "../types/base_types.ts";
-import type { CommandContext } from "../types/types.ts";
+import type { AutocompleteContext, CommandContext } from "../types/types.ts";
 
 const defCmdData = {
     name: "",
@@ -39,7 +39,13 @@ export default abstract class slashCommand {
     commandData: CommandMetadata;
     devServerOnly: boolean;
 
-    async autocomplete?(interaction: AutocompleteInteraction, focusedOption: AutocompleteFocusedOption): Promise<void>;
+    // `context` carries the user's resolved language; older handlers that only need the interaction
+    // may ignore it (a 2-param method satisfies this type).
+    async autocomplete?(
+        interaction: AutocompleteInteraction,
+        focusedOption: AutocompleteFocusedOption,
+        context: AutocompleteContext,
+    ): Promise<void>;
 
     constructor(commandData: Partial<CommandMetadata> = {}) {
         this.commandData = {

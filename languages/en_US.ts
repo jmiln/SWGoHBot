@@ -441,6 +441,7 @@ export default class extends Language {
             COMMAND_DATACRON_POOL_HEADER: "This tier can roll:",
             COMMAND_DATACRON_OVERVIEW_HINT: "Use `tier:` to see the full ability text a tier can roll.",
             COMMAND_DATACRON_STAT_TIER: (count) => `Stat boosts (${count} options)`,
+            COMMAND_DATACRON_EXPIRED_MARK: "expired",
 
             // MyDatacrons Command
             COMMAND_MYDATACRONS_NONE: (name) => `${name} doesn't have any datacrons.`,
@@ -452,6 +453,9 @@ export default class extends Language {
             COMMAND_MYDATACRONS_ENTRY: (set, affixes) => `**Set ${set}** - ${affixes} affixes`,
             COMMAND_MYDATACRONS_FOCUSED: "focused",
             COMMAND_MYDATACRONS_LOCKED: "locked",
+            COMMAND_MYDATACRONS_EXPIRED: "expired",
+            COMMAND_MYDATACRONS_EXPIRES: (when) => `Expires ${when}`,
+            COMMAND_MYDATACRONS_SET_HINT: "Use `/datacron set:` for everything a set can roll.",
 
             // Challenges Command
             COMMAND_CHALLENGES_TRAINING: "Training Droids",

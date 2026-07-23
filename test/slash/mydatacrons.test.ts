@@ -58,6 +58,36 @@ describe("buildPlayerDatacronEmbeds", () => {
         assert.ok(!text.includes("datacron_role_healer"), "no internal id");
     });
 
+    it("puts live datacrons first and marks expired ones, so dead sets don't bury the current one", () => {
+        // set 24 expired back in Jan 2026; set 32 is active. Feed them worst-order on purpose.
+        const expiredOne: PlayerDatacron = { ...datacron, id: "old", setId: 24, focused: false };
+        const embeds = buildPlayerDatacronEmbeds(
+            { name: "Bob", datacron: [expiredOne, datacron] },
+            textMap,
+            abilities,
+            language,
+            "eng_us",
+        );
+        const fields = embeds[0].fields ?? [];
+        assert.ok(fields[0].name.includes("32") || fields[0].name.includes("Necessary Means"), `live set should sort first: ${fields[0].name}`);
+        const expiredField = fields.find((f) => f.name.includes("24"));
+        assert.ok(expiredField?.name.includes("expired"), `expired datacron must be flagged: ${expiredField?.name}`);
+    });
+
+    it("shows an 'expires' line as a live relative timestamp in the field body, not the field name", () => {
+        // set 32 is active, so its set carries a future expirationTimeMs. The line goes in the value
+        // (which renders <t:...:R> as "in 3 days"), never the name (embed names don't render timestamps).
+        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
+        const field = (embeds[0].fields ?? [])[0];
+        assert.ok(/<t:\d+:R>/.test(field.value), `expiry should be a relative timestamp in the value: ${field.value}`);
+        assert.ok(!field.name.includes("<t:"), `expiry timestamp must not be in the field name: ${field.name}`);
+    });
+
+    it("points at /datacron for the full set detail", () => {
+        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [datacron] }, textMap, abilities, language, "eng_us");
+        assert.ok(embeds[0].description?.includes("/datacron"), `expected a cross-link: ${embeds[0].description}`);
+    });
+
     it("spreads many datacrons across multiple embeds (Discord's 10-per-message cap)", () => {
         const many = Array.from({ length: 45 }, (_, i) => ({ ...datacron, id: `d${i}` }));
         const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: many }, textMap, abilities, language, "eng_us");
