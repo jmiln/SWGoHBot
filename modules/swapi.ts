@@ -624,14 +624,23 @@ class SWAPI {
             if (needUpdating.length) {
                 let updatedBare: SWAPIPlayer[] = [];
                 try {
+                    // Shared across the batch so a comlink-wide outage can't make every ally code pay for its
+                    // own retries at once - see createRetryBudget
+                    const retryBudget = createRetryBudget(needUpdating.length);
                     await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
-                        const tempBare: ComlinkPlayer | null = await (
-                            comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>
-                        ).catch((err: unknown) => {
-                            const message = err instanceof Error ? err.message : String(err);
-                            logger.throttleError("swapi-getPlayer", `[swapi getPlayer] Failed to fetch player ${ac}: ${message}`);
-                            return null;
-                        });
+                        const tempBare: ComlinkPlayer | null = await fetchWithRetry(
+                            () => comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>,
+                            {
+                                retries: FETCH_RETRIES,
+                                baseDelayMs: FETCH_RETRY_BASE_MS,
+                                budget: retryBudget,
+                                onGiveUp: (message, statusCode) =>
+                                    logger.throttleError(
+                                        "swapi-getPlayer",
+                                        `[swapi getPlayer] Failed to fetch player ${ac}: ${describeFetchFailure(message, statusCode)}`,
+                                    ),
+                            },
+                        );
                         if (tempBare) {
                             const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
                             updatedBare.push(formattedComlinkPlayer);
@@ -643,13 +652,16 @@ class SWAPI {
                     if (missingRosters.length) {
                         updatedBare = updatedBare.filter((p) => p?.roster?.length);
                         for (const missing of missingRosters) {
-                            const tempBare = await (comlinkStub.getPlayer(missing?.allyCode?.toString()) as Promise<ComlinkPlayer>).catch(
-                                (err: unknown) => {
-                                    const message = err instanceof Error ? err.message : String(err);
-                                    logger.error(
-                                        `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${message}`,
-                                    );
-                                    return null;
+                            const tempBare = await fetchWithRetry(
+                                () => comlinkStub.getPlayer(missing?.allyCode?.toString()) as Promise<ComlinkPlayer>,
+                                {
+                                    retries: FETCH_RETRIES,
+                                    baseDelayMs: FETCH_RETRY_BASE_MS,
+                                    budget: retryBudget,
+                                    onGiveUp: (message, statusCode) =>
+                                        logger.error(
+                                            `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${describeFetchFailure(message, statusCode)}`,
+                                        ),
                                 },
                             );
                             if (tempBare) {
@@ -1395,6 +1407,9 @@ class SWAPI {
         }
 
         const members: SWAPIGuildMember[] = [];
+        // Shared across the batch so a comlink-wide outage can't make every member pay for its
+        // own retries at once - see createRetryBudget
+        const retryBudget = createRetryBudget(member.length);
         await eachLimit(
             member,
             MAX_CONCURRENT,
@@ -1410,7 +1425,20 @@ class SWAPI {
             }) => {
                 // Grab each player and process their info
                 try {
-                    const { name, level, allyCode, profileStat } = (await comlinkStub.getPlayer(null, playerId)) as ComlinkPlayer;
+                    // A transient blip here silently drops the member from the guild roster, so
+                    // retry before giving up - see BUG_REFERENCE.md
+                    const player = await fetchWithRetry(() => comlinkStub.getPlayer(null, playerId) as Promise<ComlinkPlayer>, {
+                        retries: FETCH_RETRIES,
+                        baseDelayMs: FETCH_RETRY_BASE_MS,
+                        budget: retryBudget,
+                        onGiveUp: (message, statusCode) =>
+                            logger.throttleError(
+                                "formatGuild-getPlayer",
+                                `[formatGuild] Failed to fetch player ${playerId}: ${describeFetchFailure(message, statusCode)}`,
+                            ),
+                    });
+                    if (!player) return;
+                    const { name, level, allyCode, profileStat } = player;
 
                     let gp = 0;
                     let gpChar = 0;
@@ -1442,7 +1470,9 @@ class SWAPI {
                         updated: Date.now(),
                     } as unknown as SWAPIGuildMember);
                 } catch (err) {
-                    logger.error(`[formatGuild] Failed to fetch player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
+                    // The fetch itself reports its own give-up above, so anything reaching here
+                    // came from formatting the member rather than retrieving them
+                    logger.error(`[formatGuild] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`);
                 }
             },
         );
