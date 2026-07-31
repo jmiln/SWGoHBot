@@ -188,3 +188,94 @@ describe("swapi.isNonRetryableFetchError", () => {
         assert.strictEqual(isNonRetryableFetchError("Response code 504 (Gateway Timeout)"), false);
     });
 });
+
+// @swgoh-utils/comlink's _modifyErrorResponse overwrites error.message with the upstream body's
+// own message, so got's "Response code NNN (...)" wording is gone by the time we classify. Every
+// error comlink describes therefore reached the status check above as unmatched prose, and a
+// rotated SWAPI_* credential - the exact case the 4xx rule exists for - was read as retryable.
+// The status survives on error.response.statusCode, so classify from that and keep the message
+// match as the fallback for transport errors and plain-string callers.
+function comlinkError(message: string, statusCode?: number) {
+    const err: Error & { response?: { statusCode: number } } = new Error(message);
+    if (statusCode !== undefined) err.response = { statusCode };
+    return err;
+}
+
+describe("swapi.isNonRetryableFetchError with a comlink-rewritten message", () => {
+    it("reads auth failures off the status when the message no longer names a code", () => {
+        // The literal body comlink returns for an unsigned/misSigned request
+        const err = comlinkError('Authorization header "authorization" not present in request headers', 403);
+        assert.strictEqual(isNonRetryableFetchError(err), true);
+    });
+
+    it("treats a bad request or not-found as non-retryable off the status", () => {
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Bad request", 400)), true);
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Unauthorized", 401)), true);
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Not found", 404)), true);
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Slow down", 429)), true);
+    });
+
+    it("keeps 408 and 5xx transient when read off the status", () => {
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Request timed out", 408)), false);
+        // The upstream game-server failure behind the "Connection pool shut down" log spam
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("IllegalStateException: Connection pool shut down", 500)), false);
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Bad gateway", 502)), false);
+    });
+
+    it("treats an error with no response as transient", () => {
+        // Transport failures (ECONNREFUSED, socket timeouts) never carry a response
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("connect ECONNREFUSED 127.0.0.1:3000")), false);
+        assert.strictEqual(isNonRetryableFetchError(new Error("An error occurred. For more information, enable sentry.io")), false);
+    });
+
+    it("still honours the message rules when a status is present", () => {
+        // comlink answers a dead ally code with a 500 carrying this body - the code is dead
+        // either way, so the message rule must win over the transient status
+        assert.strictEqual(isNonRetryableFetchError(comlinkError("Failed to find ally code 999547527", 500)), true);
+    });
+});
+
+// The give-up line is the only record we get of a fetch that failed every attempt. It logged the
+// rewritten message alone, which for a comlink error omits the status entirely - leaving no way to
+// tell an upstream 5xx from a rejected request after the fact.
+describe("swapi.fetchWithRetry give-up reporting", () => {
+    it("passes the response status alongside the message", async () => {
+        let reported: { message: string; statusCode?: number } | null = null;
+        await fetchWithRetry(
+            async () => {
+                throw comlinkError("IllegalStateException: Connection pool shut down", 500);
+            },
+            {
+                retries: 1,
+                baseDelayMs: 0,
+                onGiveUp: (message, statusCode) => {
+                    reported = { message, statusCode };
+                },
+            },
+        );
+        assert.deepStrictEqual(reported, {
+            message: "IllegalStateException: Connection pool shut down",
+            statusCode: 500,
+        });
+    });
+
+    it("reports no status for a transport error", async () => {
+        let reported: { message: string; statusCode?: number } | null = null;
+        await fetchWithRetry(
+            async () => {
+                throw comlinkError("connect ECONNREFUSED 127.0.0.1:3000");
+            },
+            {
+                retries: 0,
+                baseDelayMs: 0,
+                onGiveUp: (message, statusCode) => {
+                    reported = { message, statusCode };
+                },
+            },
+        );
+        assert.deepStrictEqual(reported, {
+            message: "connect ECONNREFUSED 127.0.0.1:3000",
+            statusCode: undefined,
+        });
+    });
+});

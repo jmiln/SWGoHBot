@@ -121,6 +121,30 @@ const FETCH_RETRY_BASE_MS = 500;
 // request the server will reject identically next time.
 const RETRYABLE_CLIENT_ERROR = 408;
 
+/**
+ * Pulls the HTTP status off a thrown comlink/got error, or undefined when the failure carried
+ * no response at all (transport errors: ECONNREFUSED, socket timeouts).
+ *
+ * This is the only status signal that survives the round trip. @swgoh-utils/comlink's
+ * _modifyErrorResponse overwrites error.message with the upstream body's own message before
+ * rethrowing, so got's "Response code NNN (...)" wording is gone for every error comlink
+ * describes - but it leaves error.response untouched.
+ */
+export function getFetchErrorStatus(err: unknown): number | undefined {
+    if (typeof err !== "object" || err === null || !("response" in err)) return undefined;
+    const { response } = err;
+    if (typeof response !== "object" || response === null || !("statusCode" in response)) return undefined;
+    const { statusCode } = response;
+    return typeof statusCode === "number" ? statusCode : undefined;
+}
+
+// Prefixes the status onto a give-up message so a rejected request can be told apart from an
+// upstream 5xx after the fact. comlink's rewritten message names neither - "IllegalStateException:
+// Connection pool shut down" reads identically whether it arrived as a 500 or a 400.
+function describeFetchFailure(message: string, statusCode?: number): string {
+    return statusCode ? `[${statusCode}] ${message}` : message;
+}
+
 // Errors where a retry cannot help and only costs us API budget:
 // - "Failed to find ally code <n>": a dead or renamed code never resolves.
 // - 429 / rate limited: the throttle is account-wide, not per-request (see the multi-IP
@@ -130,12 +154,17 @@ const RETRYABLE_CLIENT_ERROR = 408;
 //   retry is rejected the same way. A rotated SWAPI_* credential fails this way for every
 //   watched account at once, which is exactly when the extra attempts plus backoff can push
 //   an arena tick past its minute.
-export function isNonRetryableFetchError(message: string): boolean {
+//
+// The status is read off the error object first (see getFetchErrorStatus); matching it out of
+// the message only works for errors comlink did not rewrite, which is why the rules above are
+// checked against the message before falling back to it.
+export function isNonRetryableFetchError(err: unknown): boolean {
+    const message = typeof err === "string" ? err : err instanceof Error ? err.message : String(err);
     if (/failed to find ally code/i.test(message)) return true;
     if (/too many requests|rate limit/i.test(message)) return true;
     // Match the status only where it is labelled as one, so an ally code that happens to
     // start with 4xx digits isn't read as a response code
-    const status = Number(message.match(/response code (\d{3})\b/i)?.[1]);
+    const status = getFetchErrorStatus(err) ?? Number(message.match(/response code (\d{3})\b/i)?.[1]);
     return status >= 400 && status < 500 && status !== RETRYABLE_CLIENT_ERROR;
 }
 
@@ -159,8 +188,9 @@ export function createRetryBudget(batchSize: number): RetryBudget {
 /**
  * Runs `fn`, retrying transient failures up to `retries` times with linear backoff.
  * Returns the resolved value, or null once the retries are exhausted / the error is
- * non-retryable. `onGiveUp` fires once with the final error message when null is returned,
- * so callers can log a single throttled line instead of one per attempt.
+ * non-retryable. `onGiveUp` fires once with the final error message and its response status
+ * (undefined for transport errors) when null is returned, so callers can log a single
+ * throttled line instead of one per attempt.
  *
  * Pass a shared `budget` to cap the retries a whole batch may spend between them; calls fall
  * back to a single attempt once it is exhausted. Only retries drawn against it count - a
@@ -173,16 +203,21 @@ export async function fetchWithRetry<T>(
         baseDelayMs,
         onGiveUp,
         budget,
-    }: { retries: number; baseDelayMs: number; onGiveUp?: (message: string) => void; budget?: RetryBudget },
+    }: {
+        retries: number;
+        baseDelayMs: number;
+        onGiveUp?: (message: string, statusCode?: number) => void;
+        budget?: RetryBudget;
+    },
 ): Promise<T | null> {
     for (let attempt = 0; ; attempt++) {
         try {
             return await fn();
         } catch (err) {
             const message = err instanceof Error ? err.message : String(err);
-            const willRetry = attempt < retries && !isNonRetryableFetchError(message) && (!budget || budget.remaining > 0);
+            const willRetry = attempt < retries && !isNonRetryableFetchError(err) && (!budget || budget.remaining > 0);
             if (!willRetry) {
-                onGiveUp?.(message);
+                onGiveUp?.(message, getFetchErrorStatus(err));
                 return null;
             }
             if (budget) budget.remaining--;
@@ -360,8 +395,11 @@ class SWAPI {
                     retries: FETCH_RETRIES,
                     baseDelayMs: FETCH_RETRY_BASE_MS,
                     budget: retryBudget,
-                    onGiveUp: (message) =>
-                        logger.throttleError("swapi-arena-profile", `Error fetching arena profile for ${ac}: ${message}`),
+                    onGiveUp: (message, statusCode) =>
+                        logger.throttleError(
+                            "swapi-arena-profile",
+                            `Error fetching arena profile for ${ac}: ${describeFetchFailure(message, statusCode)}`,
+                        ),
                 },
             );
             if (p) {
@@ -408,7 +446,11 @@ class SWAPI {
                     retries: FETCH_RETRIES,
                     baseDelayMs: FETCH_RETRY_BASE_MS,
                     budget: retryBudget,
-                    onGiveUp: (message) => logger.throttleError("swapi-getPlayer", `Error in eachLimit getPlayer (${ac}): ${message}`),
+                    onGiveUp: (message, statusCode) =>
+                        logger.throttleError(
+                            "swapi-getPlayer",
+                            `Error in eachLimit getPlayer (${ac}): ${describeFetchFailure(message, statusCode)}`,
+                        ),
                 },
             );
             if (tempBare) {
