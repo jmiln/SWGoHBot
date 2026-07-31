@@ -227,6 +227,8 @@ export interface UserConfig {
         payoutWarning: number;
         enablePayoutResult?: boolean;
         payoutResult?: string;
+        // Per-cycle DM warn/result markers keyed by ally code - see users.schema.ts
+        alerted?: Record<string, { charWarn?: number; fleetWarn?: number; charResult?: number; fleetResult?: number }>;
     };
     updated: number;
     lang?: {
@@ -304,6 +306,11 @@ export interface ArenaWatchAcct {
     mark?: string;
     warn?: { min?: number; arena?: string };
     result?: string;
+    // Mirrors ArenaWatchConfig - hydrateWatchAccounts clones these off the stored watch entry so
+    // the per-recipient payout markers and last-announced ranks survive into processShardPatron
+    alerted?: { charWarn?: number; fleetWarn?: number; charResult?: number; fleetResult?: number };
+    lastCharAnnounced?: number;
+    lastShipAnnounced?: number;
     lastCharChange?: number;
     lastShipChange?: number;
 

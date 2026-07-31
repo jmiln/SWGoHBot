@@ -9,7 +9,7 @@ import {
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import arenaPlayerRegistry from "../modules/arenaPlayerRegistry.ts";
-import { isAllyCode, isUserMention, msgArray } from "../modules/functions.ts";
+import { isAllyCode, isArenaChannelOn, isUserMention, msgArray } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -201,17 +201,18 @@ export default class ArenaWatch extends Command {
                     {
                         name: "report",
                         type: ApplicationCommandOptionType.Subcommand,
-                        description: "Choose whether you want it to report on climbs, drops, or both",
+                        description: "Choose which rank changes to report: climbs, drops, both, or none",
                         options: [
                             {
                                 name: "arena",
                                 type: ApplicationCommandOptionType.String,
-                                description: "Choose whether you want it to report on climbs, drops, or both",
+                                description: "Which rank changes to report (none keeps payout warn/result only)",
                                 required: true,
                                 choices: [
                                     { name: "climb", value: "climb" },
                                     { name: "drop", value: "drop" },
                                     { name: "both", value: "both" },
+                                    { name: "none", value: "none" },
                                 ],
                             },
                         ],
@@ -600,7 +601,13 @@ export async function processAWChanges({
                 };
                 aw.allyCodes.push(exists);
 
-                result.outLog = `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`;
+                const warnLines = [
+                    `Your warn setting for ${code} has been updated to ${mins} minute${mins !== 1 ? "s" : ""} in ${arena === "none" ? "no" : arena} arena.`,
+                ];
+                // Only worth flagging when they're actually turning a warning on
+                const warnMissing = arena === "none" || !mins || mins <= 0 ? [] : arenasWithoutLog(aw, arena);
+                if (warnMissing.length) warnLines.push(noLogNote(warnMissing));
+                result.outLog = warnLines.join("\n");
             } else if (setting === "report") {
                 const arena = interactionOptions.arena ?? "";
                 if (aw.report === arena.toLowerCase()) {
@@ -608,7 +615,21 @@ export async function processAWChanges({
                     break;
                 }
                 aw.report = arena.toLowerCase();
-                result.outLog = `Your report setting has been set to ${arena}`;
+                if (aw.report !== "none") {
+                    result.outLog = `Your report setting has been set to ${arena}`;
+                } else {
+                    // Warn/result post to the arena log channel, so "none" only leaves them running
+                    // if at least one arena is actually enabled with a channel to post to.
+                    const missing = arenasWithoutLog(aw, "both");
+                    const lines = ["Your report setting has been set to **none**, so rank changes won't be posted."];
+                    if (missing.length < 2) {
+                        lines.push("Payout warnings and results will still go to your arena log channel.");
+                    } else {
+                        lines.push("Payout warnings and results need an enabled arena log channel.");
+                        lines.push(noLogNote(missing));
+                    }
+                    result.outLog = lines.join("\n");
+                }
             } else if (setting === "showvs") {
                 // Enable or disable showing when one person hits another
                 const isEnabled = interactionOptions.enabled ?? false;
@@ -642,7 +663,10 @@ export async function processAWChanges({
 
                 // Put the user back in
                 aw.allyCodes.push(exists);
-                result.outLog = `Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`;
+                const resultLines = [`Your result setting for ${code} has been updated to ${arena === "none" ? "no" : arena} arena.`];
+                const resultMissing = arena === "none" ? [] : arenasWithoutLog(aw, arena);
+                if (resultMissing.length) resultLines.push(noLogNote(resultMissing));
+                result.outLog = resultLines.join("\n");
             } else if (setting === "use_marks_in_log") {
                 const useMarksInLog = interactionOptions.enabled ?? false;
                 if (aw.useMarksInLog === useMarksInLog) {
@@ -910,6 +934,21 @@ function getChannelStr(aw: UserConfig["arenaWatch"], alertType: string, arenaTyp
     return thisAW?.channel ? `<#${thisAW.channel}>` : "N/A";
 }
 
+// Which of a setting's target arenas ("char" | "fleet" | "both") have no usable log, so the
+// confirmation can say the setting was saved but won't fire yet instead of implying it will.
+// Everything the arena log sends - rank changes and the per-ally-code payout warn/result lines
+// alike - goes to that arena's own channel and needs it enabled, so this shares the same
+// isArenaChannelOn predicate as processShardPatron's charLogOn/shipLogOn on the sending side.
+function arenasWithoutLog(aw: FilledAW, target: string): ("char" | "fleet")[] {
+    const targets: ("char" | "fleet")[] = target === "both" ? ["char", "fleet"] : target === "fleet" ? ["fleet"] : ["char"];
+    return targets.filter((arenaType) => !isArenaChannelOn(arenaType === "fleet" ? aw.arena.fleet : aw.arena.char));
+}
+
+// One short trailing subtext note naming the arenas that still need a log set up
+function noLogNote(missing: ("char" | "fleet")[]): string {
+    return `-# No ${missing.join(" or ")} arena log is set up, so this won't send yet. Enable one with \`/arenawatch arena_log arena\` and \`/arenawatch arena_log channel\`.`;
+}
+
 function getAcMention(code: string): [number, string | null] {
     const [acRaw, mentionRaw] = code.split(":");
     if (!isAllyCode(acRaw)) throw new Error(`Invalid code (${acRaw})!`);
@@ -1007,8 +1046,8 @@ async function formatForViewing(aw: FilledAW, allyCode: string | null, view_by: 
         fields.push({
             name: "**Payout Settings**",
             value: [
-                `Char:     **${aw.payout.char.enabled && aw.payout.char.channel ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
-                `Ship:     **${aw.payout.fleet.enabled && aw.payout.fleet.channel ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`,
+                `Char:     **${isArenaChannelOn(aw.payout.char) ? "ON " : "OFF"}**  -  ${charPayoutChan}`,
+                `Ship:     **${isArenaChannelOn(aw.payout.fleet) ? "ON " : "OFF"}**  -  ${fleetPayoutChan}`,
             ].join("\n"),
         });
 
@@ -1017,8 +1056,13 @@ async function formatForViewing(aw: FilledAW, allyCode: string | null, view_by: 
         result.embedOut = {
             title: "Arena Watch Settings",
             description: [
-                `Char:     **${aw.arena.char.enabled && aw.arena.char.channel ? "ON " : "OFF"}**  -  ${charChan}`,
-                `Ship:     **${aw.arena.fleet.enabled && aw.arena.fleet.channel ? "ON " : "OFF"}**  -  ${fleetChan}`,
+                `Char:     **${isArenaChannelOn(aw.arena.char) ? "ON " : "OFF"}**  -  ${charChan}`,
+                `Ship:     **${isArenaChannelOn(aw.arena.fleet) ? "ON " : "OFF"}**  -  ${fleetChan}`,
+                // Worth surfacing: report=none leaves the arenas above ON while silencing every rank
+                // change, so the channels alone don't explain why only payout lines show up. Stated
+                // as the bare setting - whether anything actually sends also depends on the channels
+                // above and on per-account warn/result, which the Members list already tags.
+                `Rank changes: **${aw.report}**`,
             ].join("\n"),
             fields: fields,
         };

@@ -22,6 +22,8 @@ export interface BotCache {
         matchCondition: Filter<T>,
         saveObject: T,
         autoUpdate?: boolean,
+        // Pass false when writing a partial document - see the note on Cache.put
+        upsert?: boolean,
     ) => Promise<T>;
     putMany: <T extends Document>(
         database: string,

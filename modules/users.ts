@@ -55,6 +55,19 @@ class UserReg {
         return newUser;
     }
 
+    /**
+     * Write individual fields by dotted path (e.g. "arenaWatch.payout.char.msgID"), leaving the
+     * rest of the document alone. For callers that own only a couple of fields and would
+     * otherwise roll back whatever another task wrote since their copy was loaded - updateUser
+     * `$set`s every top-level field of the object it is given.
+     */
+    async updateUserFields(userId: string, fields: Record<string, unknown>) {
+        // No upsert: these are partial writes, so a user deleted since the caller loaded them must
+        // stay deleted rather than be rebuilt from the id plus whichever paths this call happened
+        // to carry. Nothing validates user documents on read, so such a record would go unnoticed.
+        await this.cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, fields, true, false);
+    }
+
     async removeAllyCode(userId: string, allyCode: number) {
         const user = (await this.cache.getOne(env.MONGODB_SWGOHBOT_DB, "users", { id: userId })) as UserConfig | null;
         if (!user) throw new Error("Could not find specified user");
@@ -62,6 +75,13 @@ class UserReg {
         user.accounts = user.accounts.filter((a) => a !== allyCode);
         if (user.primaryAllyCode === allyCode) {
             user.primaryAllyCode = user.accounts[0] ?? null;
+        }
+        // Payout alert markers are keyed by ally code and are only ever read for linked accounts,
+        // so a leftover entry is inert - until the same code is relinked within the payout cycle it
+        // last recorded, when it would suppress that cycle's alert. Drop it with the link.
+        // (The arenaWatch equivalents live on the watch entry itself, so they go with it already.)
+        if (user.arenaAlert?.alerted) {
+            delete user.arenaAlert.alerted[String(allyCode)];
         }
         return await this.cache.put(env.MONGODB_SWGOHBOT_DB, "users", { id: userId }, user);
     }

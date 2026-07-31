@@ -1,5 +1,14 @@
 import { z } from "zod";
 
+// Payout instant (ms) of the cycle a warn/result alert was last sent for, per arena. Stored per
+// recipient (each watcher has their own warn minute) so one watcher's alert can't suppress another's.
+const AlertedCyclesSchema = z.object({
+    charWarn: z.number().optional(),
+    fleetWarn: z.number().optional(),
+    charResult: z.number().optional(),
+    fleetResult: z.number().optional(),
+});
+
 /**
  * Lean watch-config entry - player data lives in arenaPlayers collection
  */
@@ -17,6 +26,13 @@ export const ArenaWatchConfigSchema = z.object({
         })
         .optional(),
     result: z.string().optional(),
+    // Per-cycle payout warn/result markers for this watcher's channel alerts
+    alerted: AlertedCyclesSchema.optional(),
+    // Rank last successfully announced to this watcher's channel, per arena. Channel rank alerts
+    // compare against this (not the shared observed rank) so a failed send or skipped tick is
+    // recovered by the next alert covering the whole span, rather than being silently dropped.
+    lastCharAnnounced: z.number().optional(),
+    lastShipAnnounced: z.number().optional(),
 });
 
 export type ArenaWatchConfig = z.infer<typeof ArenaWatchConfigSchema>;
@@ -34,6 +50,9 @@ export const UserConfigSchema = z.object({
         payoutWarning: z.number(),
         enablePayoutResult: z.boolean().optional(),
         payoutResult: z.string().optional(),
+        // Per-cycle DM warn/result markers, keyed by ally code (a user can link several accounts,
+        // each with its own payout instant). Kept per-user so a shared account doesn't collide.
+        alerted: z.record(z.string(), AlertedCyclesSchema).optional(),
     }),
     updated: z.number(),
     lang: z

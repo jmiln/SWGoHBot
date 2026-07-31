@@ -6,7 +6,7 @@ import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
-import { convertMS, readJSON } from "../modules/functions.ts";
+import { convertMS, readJSON, wait } from "../modules/functions.ts";
 import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type {
     ComlinkAbility,
@@ -108,6 +108,88 @@ export const flatStats = [
 ];
 
 const MAX_CONCURRENT = 20;
+
+// Per-player comlink fetches (arena profile, player) intermittently fail with transient
+// errors (502, timeouts, the generic "An error occurred" sentry message). Retry those a
+// couple of times before dropping the player - a single blip on a payout-minute tick was
+// permanently losing that player's arena alert. See isNonRetryableFetchError for the cases
+// that are dropped immediately instead.
+const FETCH_RETRIES = 2;
+const FETCH_RETRY_BASE_MS = 500;
+
+// 408 Request Timeout is the one 4xx that describes a transient condition rather than a
+// request the server will reject identically next time.
+const RETRYABLE_CLIENT_ERROR = 408;
+
+// Errors where a retry cannot help and only costs us API budget:
+// - "Failed to find ally code <n>": a dead or renamed code never resolves.
+// - 429 / rate limited: the throttle is account-wide, not per-request (see the multi-IP
+//   experiment that failed to raise it), so retrying in-tick just deepens the hole - every
+//   failing ally code would triple its calls at exactly the moment we're over budget.
+// - Any other 4xx (bad request, auth, not found): the request itself is rejected, so the
+//   retry is rejected the same way. A rotated SWAPI_* credential fails this way for every
+//   watched account at once, which is exactly when the extra attempts plus backoff can push
+//   an arena tick past its minute.
+export function isNonRetryableFetchError(message: string): boolean {
+    if (/failed to find ally code/i.test(message)) return true;
+    if (/too many requests|rate limit/i.test(message)) return true;
+    // Match the status only where it is labelled as one, so an ally code that happens to
+    // start with 4xx digits isn't read as a response code
+    const status = Number(message.match(/response code (\d{3})\b/i)?.[1]);
+    return status >= 400 && status < 500 && status !== RETRYABLE_CLIENT_ERROR;
+}
+
+// Retries allowed across one batch, shared by every call in it. Per-code retries are right for an
+// isolated blip, but they run inside eachLimit(MAX_CONCURRENT) where each backoff holds a
+// concurrency slot - and a comlink-wide outage (502s, timeouts) is transient by classification, so
+// every watched account would pay the full retries plus backoff at the same time. That stretches an
+// arena tick past its minute, and clientReady's arenaTickRunning guard then drops the entire next
+// minute. The ceiling scales with the batch so a large tick gets proportionally more slack, with a
+// floor so small batches still retry freely. Isolated failures never come close to it; only a
+// systemic outage exhausts it, which is exactly when the retries are pointless anyway.
+const RETRY_BUDGET_FRACTION = 0.25;
+const RETRY_BUDGET_MIN = 10;
+
+export type RetryBudget = { remaining: number };
+
+export function createRetryBudget(batchSize: number): RetryBudget {
+    return { remaining: Math.max(RETRY_BUDGET_MIN, Math.ceil(batchSize * RETRY_BUDGET_FRACTION)) };
+}
+
+/**
+ * Runs `fn`, retrying transient failures up to `retries` times with linear backoff.
+ * Returns the resolved value, or null once the retries are exhausted / the error is
+ * non-retryable. `onGiveUp` fires once with the final error message when null is returned,
+ * so callers can log a single throttled line instead of one per attempt.
+ *
+ * Pass a shared `budget` to cap the retries a whole batch may spend between them; calls fall
+ * back to a single attempt once it is exhausted. Only retries drawn against it count - a
+ * success or a non-retryable error leaves it untouched.
+ */
+export async function fetchWithRetry<T>(
+    fn: () => Promise<T>,
+    {
+        retries,
+        baseDelayMs,
+        onGiveUp,
+        budget,
+    }: { retries: number; baseDelayMs: number; onGiveUp?: (message: string) => void; budget?: RetryBudget },
+): Promise<T | null> {
+    for (let attempt = 0; ; attempt++) {
+        try {
+            return await fn();
+        } catch (err) {
+            const message = err instanceof Error ? err.message : String(err);
+            const willRetry = attempt < retries && !isNonRetryableFetchError(message) && (!budget || budget.remaining > 0);
+            if (!willRetry) {
+                onGiveUp?.(message);
+                return null;
+            }
+            if (budget) budget.remaining--;
+            await wait(baseDelayMs * (attempt + 1));
+        }
+    }
+}
 
 /**
  * Maps comlink's datacron payload onto our player shape.
@@ -268,14 +350,20 @@ class SWAPI {
         if (!acArr.length) throw new Error("No valid ally code(s) entered");
 
         const playersOut: SWAPIPlayerArenaProfile[] = [];
+        // Shared across the batch so a comlink-wide outage can't make every ally code pay for its
+        // own retries at once - see createRetryBudget
+        const retryBudget = createRetryBudget(acArr.length);
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const p: SWAPIPlayerArenaProfile | null = await (
-                comlinkStub.getPlayerArenaProfile(ac.toString()) as Promise<SWAPIPlayerArenaProfile>
-            ).catch((err: unknown) => {
-                const message = err instanceof Error ? err.message : String(err);
-                logger.throttleError("swapi-arena-profile", `Error fetching arena profile for ${ac}: ${message}`);
-                return null;
-            });
+            const p: SWAPIPlayerArenaProfile | null = await fetchWithRetry(
+                () => comlinkStub.getPlayerArenaProfile(ac.toString()) as Promise<SWAPIPlayerArenaProfile>,
+                {
+                    retries: FETCH_RETRIES,
+                    baseDelayMs: FETCH_RETRY_BASE_MS,
+                    budget: retryBudget,
+                    onGiveUp: (message) =>
+                        logger.throttleError("swapi-arena-profile", `Error fetching arena profile for ${ac}: ${message}`),
+                },
+            );
             if (p) {
                 playersOut.push(p);
             }
@@ -310,12 +398,17 @@ class SWAPI {
         const acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
         const updatedBare: SWAPIPlayer[] = [];
+        // Shared across the batch so a comlink-wide outage can't make every ally code pay for its
+        // own retries at once - see createRetryBudget
+        const retryBudget = createRetryBudget(acArr.length);
         await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const tempBare: ComlinkPlayer | null = await (comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>).catch(
-                (err: unknown) => {
-                    const message = err instanceof Error ? err.message : String(err);
-                    logger.throttleError("swapi-getPlayer", `Error in eachLimit getPlayer (${ac}): ${message}`);
-                    return null;
+            const tempBare: ComlinkPlayer | null = await fetchWithRetry(
+                () => comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>,
+                {
+                    retries: FETCH_RETRIES,
+                    baseDelayMs: FETCH_RETRY_BASE_MS,
+                    budget: retryBudget,
+                    onGiveUp: (message) => logger.throttleError("swapi-getPlayer", `Error in eachLimit getPlayer (${ac}): ${message}`),
                 },
             );
             if (tempBare) {

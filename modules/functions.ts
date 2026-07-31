@@ -363,8 +363,22 @@ export function getSetTimeForTimezone(mmddyyyy_HHmm: string, zone: string): numb
         .epochMilliseconds;
 }
 
-export function getUTCFromOffset(offset: number): number {
-    return Temporal.Now.plainDateISO("UTC").toZonedDateTime("UTC").toInstant().epochMilliseconds - offset * constants.minMS;
+// UTC midnight of `now`'s date, shifted back by the payout offset. Unix time has no leap
+// seconds, so flooring to a whole day is exactly UTC midnight - and unlike a Temporal.Now
+// lookup it honours the caller's `now` and is cheap enough to call per account per tick.
+export function getUTCFromOffset(offset: number, now: number = Date.now()): number {
+    return Math.floor(now / constants.dayMS) * constants.dayMS - offset * constants.minMS;
+}
+
+// An arenaWatch channel config (arena log or payout times) can only post when the arena is
+// enabled AND has somewhere to post to. Shared so the sending gate (patreonFuncs) and the
+// /arenawatch UI that reports whether it will fire can't drift apart.
+// Narrows `channel` to a string as well, so callers that go on to use it keep the narrowing
+// the old inline `enabled && channel` checks gave them.
+export function isArenaChannelOn<T extends { channel?: string | null; enabled?: boolean }>(
+    cfg: T | null | undefined,
+): cfg is T & { channel: string } {
+    return !!(cfg?.enabled && cfg.channel);
 }
 
 // Arena payout offsets (hours difference from daily reset)
@@ -378,7 +392,7 @@ const ARENA_OFFSETS = {
 // an explicit now so callers deriving an absolute time from the result can use
 // the same base timestamp
 export function getPayoutTimeLeft(poUTCOffsetMinutes: number, arenaType: "char" | "fleet", now: number = Date.now()): number {
-    const then = getUTCFromOffset(poUTCOffsetMinutes) + ARENA_OFFSETS[arenaType] * constants.hrMS;
+    const then = getUTCFromOffset(poUTCOffsetMinutes, now) + ARENA_OFFSETS[arenaType] * constants.hrMS;
     // Normalize into [0, dayMS) - a single `+= dayMS` isn't enough when the raw
     // target lands more than a day away (e.g. large positive offsets push char's
     // 18h mark past tomorrow's UTC midnight, showing 26h+ until payout)

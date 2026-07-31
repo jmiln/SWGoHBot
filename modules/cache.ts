@@ -43,6 +43,10 @@ class Cache implements BotCache {
         matchCondition: Filter<T>,
         saveObject: T,
         autoUpdate = true,
+        // Callers writing a partial document (individual fields, dotted paths) must pass false: an
+        // upsert would build a document out of the filter plus those paths alone, which for a
+        // document that was deleted underneath them means a malformed record rather than a no-op.
+        upsert = true,
     ): Promise<T> {
         const col = this.getCol<T>(database, collection);
 
@@ -55,7 +59,7 @@ class Cache implements BotCache {
         // Destructure to ensure _id isn't sent in the $set payload
         const { _id, ...updateData } = saveObject;
 
-        await col.updateOne(matchCondition, { $set: updateData as MatchKeysAndValues<T> }, { upsert: true });
+        await col.updateOne(matchCondition, { $set: updateData as MatchKeysAndValues<T> }, { upsert });
 
         return saveObject;
     }

@@ -233,6 +233,91 @@ describe("ArenaWatch", () => {
                 assert.strictEqual(awRes.report, "both");
                 assert.ok(result.outLog.includes("already"));
             });
+
+            it("should set report to none and note that no arena log is set up", async () => {
+                const aw = createBaseAW();
+                const { result, aw: awRes } = await processAWChanges({
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "report", arena: "none" } as any,
+                    aw,
+                });
+
+                assert.strictEqual(awRes.report, "none");
+                // Warn/result ride on the arena log channel, so with no log enabled the
+                // confirmation must not imply they will keep firing
+                assert.ok(result.outLog.includes("won't send yet"), `expected a no-log note: ${result.outLog}`);
+                assert.ok(result.outLog.includes("arena_log channel"), "should point at the command that fixes it");
+            });
+
+            it("should set report to none and confirm payout alerts continue when a log is enabled", async () => {
+                const aw = createBaseAW();
+                aw.arena.char.enabled = true;
+                aw.arena.char.channel = "123456789";
+                const { result } = await processAWChanges({
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "report", arena: "none" } as any,
+                    aw,
+                });
+
+                assert.ok(result.outLog.includes("still go to your arena log channel"), `expected the positive case: ${result.outLog}`);
+                assert.ok(!result.outLog.includes("won't send yet"), "must not warn when a log is actually set up");
+            });
+        });
+
+        describe("warn/result no-log notes", () => {
+            const withCode = () => {
+                const aw = createBaseAW();
+                aw.allyCodes.push({ allyCode: 123456789, mention: null, poOffset: 0 } as any);
+                return aw;
+            };
+
+            it("notes a missing arena log when enabling a warn", async () => {
+                const { result } = await processAWChanges({
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "warn", allyCode: "123456789", mins: 30, arena: "char" } as any,
+                    aw: withCode(),
+                });
+
+                assert.ok(result.outLog.includes("No char arena log is set up"), `expected a char no-log note: ${result.outLog}`);
+            });
+
+            it("stays quiet about the log when the warn's arena is set up", async () => {
+                const aw = withCode();
+                aw.arena.char.enabled = true;
+                aw.arena.char.channel = "123456789";
+                const { result } = await processAWChanges({
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "warn", allyCode: "123456789", mins: 30, arena: "char" } as any,
+                    aw,
+                });
+
+                assert.ok(!result.outLog.includes("arena log is set up"), `no note expected: ${result.outLog}`);
+            });
+
+            it("stays quiet when the warn is being turned off", async () => {
+                const { result } = await processAWChanges({
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "warn", allyCode: "123456789", mins: 0, arena: "char" } as any,
+                    aw: withCode(),
+                });
+
+                // Disabling a warning that could never fire needs no channel advice
+                assert.ok(!result.outLog.includes("arena log is set up"), `no note expected when disabling: ${result.outLog}`);
+            });
+
+            it("names only the arena that is missing a log when result targets both", async () => {
+                const aw = withCode();
+                aw.arena.char.enabled = true;
+                aw.arena.char.channel = "123456789";
+                const { result } = await processAWChanges({
+                    target: "arena_log",
+                    interactionOptions: { subCommand: "result", allyCode: "123456789", arena: "both" } as any,
+                    aw,
+                });
+
+                assert.ok(result.outLog.includes("No fleet arena log is set up"), `expected fleet only: ${result.outLog}`);
+                assert.ok(!result.outLog.includes("char or fleet"), "char has a log, so it must not be named");
+            });
         });
 
         describe("showvs subcommand", () => {

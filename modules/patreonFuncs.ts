@@ -19,15 +19,24 @@ import type {
 } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
 import cache from "./cache.ts";
-import { chunkArray, expandSpaces, formatDuration, getPayoutTimeLeft, msgArray, toProperCase, wait } from "./functions.ts";
+import {
+    chunkArray,
+    expandSpaces,
+    formatDuration,
+    getPayoutTimeLeft,
+    isArenaChannelOn,
+    msgArray,
+    toProperCase,
+    wait,
+} from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
 import swgohAPI from "./swapi.ts";
 import userReg from "./users.ts";
 
-export function updateArenaHistory(hist: ArenaHistEntry[] | undefined, rank: number): ArenaHistEntry[] {
+export function updateArenaHistory(hist: ArenaHistEntry[] | undefined, rank: number, now: number = Date.now()): ArenaHistEntry[] {
     const entries = hist ? [...hist] : [];
-    entries.push({ rank, ts: Date.now() });
+    entries.push({ rank, ts: now });
     entries.sort((a, b) => a.ts - b.ts);
     while (entries.length > 90) entries.shift(); // oldest entries are always at index 0 after sort
     return entries;
@@ -35,11 +44,11 @@ export function updateArenaHistory(hist: ArenaHistEntry[] | undefined, rank: num
 
 // Returns true when a new payout entry should be written. Prevents duplicate entries when
 // the poll cycle fires multiple times within the same payout minute.
-export function shouldWriteHistory(hist: ArenaHistEntry[] | undefined): boolean {
+export function shouldWriteHistory(hist: ArenaHistEntry[] | undefined, now: number = Date.now()): boolean {
     if (!hist?.length) return true;
     // updateArenaHistory always persists a sorted array, so at(-1) is the newest entry.
     const lastTs = hist.at(-1)?.ts ?? 0;
-    return Date.now() - lastTs > 5 * constants.minMS;
+    return now - lastTs > 5 * constants.minMS;
 }
 
 export function buildArenaHistChart(
@@ -52,7 +61,7 @@ export function buildArenaHistChart(
     const { dayMS } = constants;
     const tickInterval = windowDays === 90 ? 7 : 1;
 
-    // dates[0] = (windowDays-1) days ago … dates[last] = today
+    // dates[0] = (windowDays-1) days ago ... dates[last] = today
     const dates: Date[] = [];
     for (let d = 0; d < windowDays; d++) {
         dates.push(new Date(now - (windowDays - 1 - d) * dayMS));
@@ -127,7 +136,10 @@ type ArenaRankTracking = Pick<ArenaPlayer, "lastCharRank" | "lastCharClimb" | "l
 export type RankSnapshot = Map<number, ArenaRankTracking>;
 
 // A single arena rank change, collected per account and fed to checkRanks for log formatting
-type ArenaRankChange = { allyCode: number; name: string; oldRank: number; newRank: number; mark?: string };
+// `missed` is set when the rank moved across ticks we observed but never announced to this
+// watcher (a skipped/failed send). processShardPatron reads it after checkRanks to decide
+// whether the outgoing message needs the "net change" footer.
+type ArenaRankChange = { allyCode: number; name: string; oldRank: number; newRank: number; mark?: string; missed?: boolean };
 
 export function buildRankSnapshot(arenaPlayerMap: Map<number, ArenaPlayer>): RankSnapshot {
     const snapshot: RankSnapshot = new Map();
@@ -179,6 +191,149 @@ const tiers: Record<
 const TIER_1_CENTS = 100; // $1
 const TIER_5_CENTS = 500; // $5
 const TIER_10_CENTS = 1000; // $10
+
+// What came of a sendToChannel call. FAILED and UNDELIVERABLE are deliberately distinct: callers
+// that hold per-watcher state until delivery (processShardPatron's announce anchors) must retry a
+// FAILED send but must not wait on an UNDELIVERABLE one, which no later tick can change on its own.
+// `enum` is unavailable here - tsconfig sets erasableSyntaxOnly, since the bot runs TypeScript
+// natively with no compile step - so this is the usual const-object-plus-derived-union.
+export const SEND_OUTCOME = {
+    // A shard reported the message as delivered
+    SENT: "sent",
+    // Attempted and threw (Discord error, shard timeout). Transient, so retrying is worthwhile.
+    FAILED: "failed",
+    // No shard has a channel we can post in: deleted, bot removed from the guild, or ViewChannel /
+    // SendMessages revoked. A standing condition, so retrying it every tick changes nothing.
+    UNDELIVERABLE: "undeliverable",
+} as const;
+
+export type SendOutcome = (typeof SEND_OUTCOME)[keyof typeof SEND_OUTCOME];
+
+// Discord API error codes where a resend cannot succeed: the recipient or target refuses the
+// message as a matter of configuration, not a transient fault. Retrying these across the rest of
+// an alert window repeats a guaranteed failure (and an error log line) every cycle, forever.
+const UNDELIVERABLE_DISCORD_CODES = new Set([
+    10003, // Unknown Channel - deleted since we last looked
+    10013, // Unknown User
+    50001, // Missing Access
+    50007, // Cannot send messages to this user - DMs closed, or the bot is blocked
+    50013, // Missing Permissions
+]);
+
+/**
+ * Classifies a thrown send error. discord.js puts a numeric `code` on DiscordAPIError; anything
+ * without one (network blip, timeout, shard error, a plain Error) is transient and worth retrying.
+ */
+export function classifySendError(err: unknown): SendOutcome {
+    const code = (err as { code?: unknown } | null)?.code;
+    return typeof code === "number" && UNDELIVERABLE_DISCORD_CODES.has(code) ? SEND_OUTCOME.UNDELIVERABLE : SEND_OUTCOME.FAILED;
+}
+
+// The character and fleet arenas run identical channel-log logic over different document fields,
+// setting tokens and wording. This table holds everything that varies, so processShardPatron can
+// walk both arenas on one code path - the same shape as the arenaConfig table handleArenaAlerts
+// already uses for the DM path. Keeping them on one path is what stops the two drifting: as
+// hand-written copies they had already diverged in statement order, which reads as a deliberate
+// difference when it is not one.
+const ARENAS = ["char", "fleet"] as const;
+type ArenaKind = (typeof ARENAS)[number];
+
+const ARENA_LOG_CONFIG: Record<
+    ArenaKind,
+    {
+        // Key into the API player's `arena` object - the game calls the fleet arena "ship"
+        apiKey: "char" | "ship";
+        // Values of a watch entry's warn.arena / result that select this arena
+        settingNames: readonly string[];
+        // arenaPlayers doc fields
+        docRankKey: "lastCharRank" | "lastShipRank";
+        docChangeKey: "lastCharChange" | "lastShipChange";
+        histKey: "charHist" | "shipHist";
+        // Hydrated watch-entry (ArenaWatchAcct) fields
+        acctRankKey: "lastChar" | "lastShip";
+        acctChangeKey: "lastCharChange" | "lastShipChange";
+        announcedKey: "lastCharAnnounced" | "lastShipAnnounced";
+        // Per-cycle payout marker fields on the stored watch entry
+        warnMark: "charWarn" | "fleetWarn";
+        resultMark: "charResult" | "fleetResult";
+        // Wording, kept here so both arenas' phrasing is visible side by side
+        header: string;
+        resultSuffix: string;
+        warnLabel: string;
+    }
+> = {
+    char: {
+        apiKey: "char",
+        settingNames: ["char", "both"],
+        docRankKey: "lastCharRank",
+        docChangeKey: "lastCharChange",
+        histKey: "charHist",
+        acctRankKey: "lastChar",
+        acctChangeKey: "lastCharChange",
+        announcedKey: "lastCharAnnounced",
+        warnMark: "charWarn",
+        resultMark: "charResult",
+        header: "**Character Arena:**",
+        resultSuffix: "in character arena",
+        warnLabel: "**character**",
+    },
+    fleet: {
+        apiKey: "ship",
+        settingNames: ["fleet", "both"],
+        docRankKey: "lastShipRank",
+        docChangeKey: "lastShipChange",
+        histKey: "shipHist",
+        acctRankKey: "lastShip",
+        acctChangeKey: "lastShipChange",
+        announcedKey: "lastShipAnnounced",
+        warnMark: "fleetWarn",
+        resultMark: "fleetResult",
+        header: "**Fleet Arena:**",
+        resultSuffix: "in fleet arena",
+        warnLabel: "**fleet**",
+    },
+};
+
+// How long after a payout the "payout ended" result / payout history may still fire. Gives the
+// once-per-cycle result alert (and history write) a few ticks of slack to self-heal a dropped
+// fetch on the payout minute, without acting on a stale payout hours later (e.g. after an outage).
+const PAYOUT_RESULT_WINDOW_MS = 5 * constants.minMS;
+
+// How many minutes past the configured warn minute a dropped tick may still be recovered. Same
+// idea as PAYOUT_RESULT_WINDOW_MS, but the warn side needs the explicit bound: `minTil <= warnMin`
+// alone stays true all the way to payout, so a gap through the real warn minute (outage, restart,
+// or a watcher with no marker yet) would fire "payout is in 400 minutes" at whatever minute we
+// came back on.
+const WARN_CATCHUP_MIN = 5;
+
+// True on the first tick at or just past the configured warn minute, and never once payout has
+// passed. Shared by the channel (processShardPatron) and DM (handleArenaAlerts) warn paths so the
+// two agree on what counts as "close enough" to the warn minute.
+export function isInWarnWindow(minTil: number, warnMin: number | undefined): boolean {
+    if (!warnMin || warnMin <= 0) return false;
+    return minTil > 0 && minTil <= warnMin && minTil > warnMin - WARN_CATCHUP_MIN;
+}
+
+// Cycle math shared by the DM (handleArenaAlerts), channel (processShardPatron) and history
+// paths, all keyed off one tick timestamp so they agree on which payout cycle a tick belongs to.
+// - nextPayout: the upcoming payout instant (stable across the pre-payout window)
+// - lastPayout: the most recent payout instant, i.e. the cycle id for post-payout events
+// - minTil: whole minutes until payout (matches the old floored display value)
+// - justAfterPayout: true only within PAYOUT_RESULT_WINDOW_MS after payout, so result/history
+//   self-heal a dropped minute without firing before payout or long after it
+export function payoutCycleInfo(
+    now: number,
+    timeLeft: number,
+): { nextPayout: number; lastPayout: number; minTil: number; justAfterPayout: boolean } {
+    const nextPayout = now + timeLeft;
+    const lastPayout = nextPayout - constants.dayMS;
+    return {
+        nextPayout,
+        lastPayout,
+        minTil: Math.floor(timeLeft / constants.minMS),
+        justAfterPayout: now - lastPayout <= PAYOUT_RESULT_WINDOW_MS,
+    };
+}
 
 // How many arenaWatch accounts a patron's tier allows
 function getAwAcctCount(amountCents: number): number {
@@ -319,7 +474,13 @@ class PatreonFuncs {
         arenaPlayerMap: Map<number, ArenaPlayer>,
         changedCodes: Set<number>,
         rankSnapshot: RankSnapshot,
-    ): Promise<void> {
+        // One timestamp per arenaTick so every patron watching an account derives the same
+        // payout cycle id (defaults to now for standalone/test callers)
+        now: number = Date.now(),
+    ): Promise<boolean> {
+        // True when a DM warn/result marker was written to user.arenaAlert.alerted, so arenaTick
+        // knows to persist the user doc
+        let userChanged = false;
         if (user.arenaAlert) {
             if (!user.arenaAlert.payoutWarning) user.arenaAlert.payoutWarning = 0;
             if (!user.arenaAlert.arena) user.arenaAlert.arena = "none";
@@ -366,8 +527,9 @@ class PatreonFuncs {
             }
 
             // Record payout history (runs for all patrons regardless of arenaAlert config) and
-            // run DM alerts in a single pass per arena type - both need timeLeft/minTil, and
-            // getPayoutTimeLeft() involves a Temporal lookup, so compute it once and share it.
+            // run DM alerts in a single pass per arena type - both need the same payout cycle,
+            // so derive it once from the shared tick `now` and share it, which also keeps the
+            // history write and the alert on the same cycle id.
             // Live data can omit the payout offset - without it the payout math would go NaN,
             // so payout history/alerts are skipped (null) while rank tracking still runs
             if (typeof player.poUTCOffsetMinutes !== "number") {
@@ -378,12 +540,12 @@ class PatreonFuncs {
                 if (arenaData?.rank == null) continue;
                 const timeLeft =
                     typeof player.poUTCOffsetMinutes === "number"
-                        ? getPayoutTimeLeft(player.poUTCOffsetMinutes, arenaType === "char" ? "char" : "fleet")
+                        ? getPayoutTimeLeft(player.poUTCOffsetMinutes, arenaType === "char" ? "char" : "fleet", now)
                         : null;
-                const minTil = timeLeft === null ? null : Math.floor(timeLeft / constants.minMS);
+                const cycle = timeLeft === null ? null : payoutCycleInfo(now, timeLeft);
 
                 const histKey = arenaType === "char" ? "charHist" : "shipHist";
-                const newHist = this.recordHistoryAtPayout(playerDoc[histKey], arenaData.rank, minTil);
+                const newHist = this.recordHistoryAtPayout(playerDoc[histKey], arenaData.rank, cycle?.justAfterPayout ?? false, now);
                 if (newHist !== playerDoc[histKey]) {
                     playerDoc[histKey] = newHist;
                     changedCodes.add(allyCode);
@@ -394,13 +556,23 @@ class PatreonFuncs {
                 const prevRank = playerDoc[rankKey];
                 const prevClimb = playerDoc[climbKey];
 
-                // DM alerts compare against the tick-start snapshot, not the live doc - another
+                // Rank-drop DMs compare against the tick-start snapshot, not the live doc - another
                 // patron tracking the same account may have already updated the doc this tick
                 const snap = rankSnapshot.get(allyCode);
-                await this.handleArenaAlerts(arenaType, player, playerDoc, user, patron, timeLeft, minTil, {
-                    rank: snap?.[rankKey] ?? 0,
-                    climb: snap?.[climbKey] ?? 0,
-                });
+                userChanged =
+                    (await this.handleArenaAlerts(
+                        arenaType,
+                        player,
+                        playerDoc,
+                        user,
+                        patron,
+                        timeLeft,
+                        {
+                            rank: snap?.[rankKey] ?? 0,
+                            climb: snap?.[climbKey] ?? 0,
+                        },
+                        now,
+                    )) || userChanged;
 
                 if (playerDoc[rankKey] !== prevRank || playerDoc[climbKey] !== prevClimb) {
                     changedCodes.add(allyCode);
@@ -409,7 +581,9 @@ class PatreonFuncs {
 
             arenaPlayerMap.set(allyCode, playerDoc);
         }
-        // No longer writes user doc - arenaTick flushes arenaPlayerMap after all patrons
+        // Rank/history changes flush via arenaPlayerMap; the user doc is only dirty when a DM
+        // warn/result marker was written this tick - arenaTick persists it when userChanged is true
+        return userChanged;
     }
 
     // Single per-minute arena cycle: batch-fetch all ally codes, then run alerts and shard processing
@@ -424,23 +598,44 @@ class PatreonFuncs {
         // patron tracking an account sees the same rank change
         const rankSnapshot = buildRankSnapshot(arenaPlayerMap);
         const changedCodes = new Set<number>();
+        // One timestamp for the whole tick so every patron watching an account derives the
+        // same payout cycle id (see handleArenaAlerts once-per-cycle gating)
+        const now = Date.now();
 
         for (const patron of patrons) {
             if (patron.amount_cents < TIER_1_CENTS) continue;
             const user = userMap.get(patron.discordID);
             if (!user) continue;
+            // Both consumers mutate the same user object (DM markers / watch-entry markers) and
+            // report whether they did; persist it once per patron so we don't double-write the doc.
+            let userChanged = false;
             if (user.accounts?.length) {
-                await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes, rankSnapshot).catch((err) => {
-                    logger.error(
-                        `[arenaTick] processArenaAlerts error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
-                    );
-                });
+                userChanged =
+                    (await this.processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes, rankSnapshot, now).catch(
+                        (err) => {
+                            logger.error(
+                                `[arenaTick] processArenaAlerts error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                            );
+                            return false;
+                        },
+                    )) || userChanged;
             }
-            await this.processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes, rankSnapshot).catch((err) => {
-                logger.error(
-                    `[arenaTick] processShardPatron error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
-                );
-            });
+            userChanged =
+                (await this.processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes, rankSnapshot, now).catch((err) => {
+                    logger.error(
+                        `[arenaTick] processShardPatron error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                    );
+                    return false;
+                })) || userChanged;
+            if (userChanged) {
+                await userReg
+                    .updateUser(patron.discordID, user)
+                    .catch((err) =>
+                        logger.error(
+                            `[arenaTick] updateUser error for ${patron.discordID}: ${err instanceof Error ? err.message : String(err)}`,
+                        ),
+                    );
+            }
         }
 
         // Only write docs that actually changed this tick - the map holds every loaded doc
@@ -493,14 +688,14 @@ class PatreonFuncs {
             const players = hydrateWatchAccounts(watchEntries, playerDocMap);
 
             const [charMsg, fleetMsg] = await Promise.all([
-                aw?.payout?.char?.enabled && aw.payout.char.channel
+                isArenaChannelOn(aw.payout?.char)
                     ? (this.sendBroadcastMsg(
                           aw.payout.char.msgID,
                           aw.payout.char.channel,
                           this.formatPayouts(this.getPayoutTimes(players, "char"), "char"),
                       ) as Promise<Message>)
                     : Promise.resolve(null),
-                aw?.payout?.fleet?.enabled && aw.payout.fleet.channel
+                isArenaChannelOn(aw.payout?.fleet)
                     ? (this.sendBroadcastMsg(
                           aw.payout.fleet.msgID,
                           aw.payout.fleet.channel,
@@ -508,10 +703,17 @@ class PatreonFuncs {
                       ) as Promise<Message>)
                     : Promise.resolve(null),
             ]);
-            if (charMsg) user.arenaWatch.payout.char.msgID = charMsg.id;
-            if (fleetMsg) user.arenaWatch.payout.fleet.msgID = fleetMsg.id;
-            // Update the user in case something changed (Likely message ID)
-            await userReg.updateUser(patron.discordID, user);
+            // The payout msgIDs are the only fields this loop owns, so write just those paths.
+            // A whole-doc updateUser here would `$set` this loop's arenaWatch snapshot, which was
+            // loaded up to five minutes ago - rolling back the per-cycle payout markers and
+            // last-announced ranks arenaTick has written on its own interval since, and re-firing
+            // warn/result alerts that had already been sent.
+            const msgIdFields: Record<string, string> = {};
+            if (charMsg) msgIdFields["arenaWatch.payout.char.msgID"] = charMsg.id;
+            if (fleetMsg) msgIdFields["arenaWatch.payout.fleet.msgID"] = fleetMsg.id;
+            if (Object.keys(msgIdFields).length) {
+                await userReg.updateUserFields(patron.discordID, msgIdFields);
+            }
         }
     }
 
@@ -524,8 +726,10 @@ class PatreonFuncs {
         arenaPlayerMap: Map<number, ArenaPlayer>,
         changedCodes: Set<number>,
         rankSnapshot: RankSnapshot,
-    ): Promise<void> {
-        if (!user?.arenaWatch) return;
+        // One timestamp per arenaTick so payout cycle ids line up with the DM path
+        now: number = Date.now(),
+    ): Promise<boolean> {
+        if (!user?.arenaWatch) return false;
         const aw = user.arenaWatch;
 
         // Fill in missing arena sub-configs with disabled defaults so the rest of the function
@@ -537,28 +741,92 @@ class PatreonFuncs {
         // definite type survives into the broadcastEval closures (which otherwise re-widen to optional).
         const arenaChar = aw.arena.char;
         const arenaFleet = aw.arena.fleet;
+        // Same two configs keyed by arena, so the per-arena loops below can look one up without
+        // re-widening to optional the way indexing aw.arena does
+        const arenaCfg: Record<ArenaKind, typeof arenaChar> = { char: arenaChar, fleet: arenaFleet };
 
-        // Check if they have either alerts or payouts enabled
-        const hasAlerts = (arenaFleet.channel || arenaChar.channel) && (arenaFleet.enabled || arenaChar.enabled);
-        const hasPayouts =
-            aw?.payout &&
-            ((aw.payout?.char?.enabled && aw.payout?.char?.channel) || (aw.payout?.fleet?.enabled && aw.payout?.fleet?.channel));
+        // Whether each arena's log is usable at all. Everything posted for an arena - rank changes
+        // AND payout warn/result - goes to that arena's own log channel and requires it, so a
+        // disabled arena never contributes a line to any message.
+        const logOn: Record<ArenaKind, boolean> = { char: isArenaChannelOn(arenaChar), fleet: isArenaChannelOn(arenaFleet) };
 
-        // If they don't want any alerts or payouts, skip
-        if (!hasAlerts && !hasPayouts) return;
+        // Somewhere to post to, not something waiting to be posted. Per-arena rather than the old
+        // cross-arena test, which counted a channel on one arena plus `enabled` on the other.
+        const anyLogOn = logOn.char || logOn.fleet;
+        // The /arenawatch payout setting: the standing per-account payout-times message that
+        // shardTimes() posts and re-edits. NOT the per-account payout warn/result lines - those
+        // belong to the arena log and ride on logOn[arena]. Only checked here because these
+        // watchers still need their poOffset backfilled below.
+        const payoutTimesOn = isArenaChannelOn(aw.payout?.char) || isArenaChannelOn(aw.payout?.fleet);
+
+        // Nothing to post and nothing to maintain, so skip
+        if (!anyLogOn && !payoutTimesOn) return false;
 
         const acctCount = getAwAcctCount(patron.amount_cents);
         // Hydrate names/ranks from the arenaPlayers docs so every account has a usable name
         // and the persisted rank seeded before the payout/warn logic below runs
         const accountsToCheck = hydrateWatchAccounts(aw.allyCodes.slice(0, acctCount), arenaPlayerMap);
-        if (!accountsToCheck.length) return;
+        if (!accountsToCheck.length) return false;
+
+        // report="none" silences rank-change lines only, so a watcher can keep the log channel for
+        // payout warn/result alone. Announce anchors are tracked only when rank alerts can actually
+        // be posted, so a watcher who wants no rank lines doesn't rewrite their user doc every tick.
+        const rankAlertsOn = aw.report !== "none";
+
+        // Everything accumulated per arena across the account loop, then sent and committed below.
+        // - pendingMark: payout warn/result cycle markers. Committed ONLY on a delivered message, so
+        //   a failed send is retried next tick within its window rather than silently suppressed.
+        // - pendingAnnounce: the last-announced rank anchor. Committed on delivery too, but also when
+        //   no send was attempted for that arena (the change was filtered out by aw.report, or the
+        //   channel is undeliverable) - pinning the anchor there would wedge the account's alerts
+        //   against a stale baseline.
+        const arenaState: Record<
+            ArenaKind,
+            {
+                rankOn: boolean;
+                comp: ArenaRankChange[];
+                out: string[];
+                pendingMark: { allyCode: number; field: "charWarn" | "charResult" | "fleetWarn" | "fleetResult"; cycle: number }[];
+                pendingAnnounce: { allyCode: number; rank: number }[];
+                fields: string[];
+                missed: boolean;
+                // See the send block: `attempted` false means no later tick would post this anyway
+                attempted: boolean;
+                sent: boolean;
+            }
+        > = {
+            char: {
+                rankOn: logOn.char && rankAlertsOn,
+                comp: [],
+                out: [],
+                pendingMark: [],
+                pendingAnnounce: [],
+                fields: [],
+                missed: false,
+                attempted: false,
+                sent: false,
+            },
+            fleet: {
+                rankOn: logOn.fleet && rankAlertsOn,
+                comp: [],
+                out: [],
+                pendingMark: [],
+                pendingAnnounce: [],
+                fields: [],
+                missed: false,
+                attempted: false,
+                sent: false,
+            },
+        };
+
+        // Stored watch entries by ally code, and whether we mutated any of them this tick (poOffset
+        // backfill, announce-baseline seed, or a delivered marker). Declared up front so the loop can
+        // freeze a first-alert announce baseline before the send is attempted.
+        const storedByCode = new Map(user.arenaWatch.allyCodes.map((a) => [a.allyCode, a]));
+        let userChanged = false;
 
         // Go through all the listed players, and see if any of them have shifted arena rank or payouts incoming
-        const compChar: ArenaRankChange[] = [];
-        const compShip: ArenaRankChange[] = [];
-        let charOut: string[] = [];
-        let shipOut: string[] = [];
-        for (const [ix, player] of accountsToCheck.entries()) {
+        for (const player of accountsToCheck) {
             const newPlayer = playerMap.get(player.allyCode) ?? null;
             if (!newPlayer?.arena?.char?.rank && !newPlayer?.arena?.ship?.rank) {
                 // Both, since low level players can have just char arena I believe
@@ -568,7 +836,11 @@ class PatreonFuncs {
             if (newPlayer.name) {
                 player.name = newPlayer.name;
             }
-            if (player.poOffset !== newPlayer.poUTCOffsetMinutes) {
+            // Only adopt the API offset when it is actually a number. Live data can omit
+            // poUTCOffsetMinutes (the DM path guards the same case); copying the undefined through
+            // would clobber the good stored offset and drop the account off the payout schedule
+            // until a later tick restored it.
+            if (typeof newPlayer.poUTCOffsetMinutes === "number" && player.poOffset !== newPlayer.poUTCOffsetMinutes) {
                 player.poOffset = newPlayer.poUTCOffsetMinutes;
             }
 
@@ -586,174 +858,171 @@ class PatreonFuncs {
                 changedCodes.add(player.allyCode);
             }
 
-            // Compare against the tick-start snapshot, not the live doc - processArenaAlerts
-            // (or another patron watching the same account) may have already updated the doc
+            // prevObs = last OBSERVED rank (shared, tick-start snapshot). Advancing the observed
+            // rank on the doc feeds history / the payout list / DM alerts.
             const snap = rankSnapshot.get(player.allyCode);
-            const prevLastChar = snap?.lastCharRank ?? 0;
-            const prevLastShip = snap?.lastShipRank ?? 0;
 
-            if (newPlayer.arena?.char?.rank != null && newPlayer.arena.char.rank !== prevLastChar) {
-                const charOverview = {
-                    name: player.mention ? `<@${player.mention}>` : player.name,
-                    allyCode: player.allyCode,
-                    oldRank: prevLastChar,
-                    newRank: newPlayer.arena.char.rank,
-                    mark: player.mark,
-                };
-                compChar.push(charOverview);
-                player.lastChar = newPlayer.arena.char.rank;
-                player.lastCharChange = prevLastChar - newPlayer.arena.char.rank;
-                playerDoc.lastCharRank = player.lastChar;
-                playerDoc.lastCharChange = player.lastCharChange;
-                changedCodes.add(player.allyCode);
-            }
-            if (newPlayer.arena?.ship?.rank != null && newPlayer.arena.ship.rank !== prevLastShip) {
-                const shipOverview = {
-                    name: player.mention ? `<@${player.mention}>` : player.name,
-                    allyCode: player.allyCode,
-                    oldRank: prevLastShip,
-                    newRank: newPlayer.arena.ship.rank,
-                    mark: player.mark,
-                };
-                compShip.push(shipOverview);
-                player.lastShip = newPlayer.arena.ship.rank;
-                player.lastShipChange = prevLastShip - newPlayer.arena.ship.rank;
-                playerDoc.lastShipRank = player.lastShip;
-                playerDoc.lastShipChange = player.lastShipChange;
-                changedCodes.add(player.allyCode);
-            }
+            // Rank alerts use the bare name; payout warn/result may prefix the watcher's mark
+            const nameForRank = player.mention ? `<@${player.mention}>` : player.name;
+            const pName = aw.useMarksInLog && player.mark ? `${player.mark} ${nameForRank}` : nameForRank;
 
-            const payouts = this.getAllPayoutTimes(player);
-            const charMinLeft = payouts.charDuration;
-            const fleetMinLeft = payouts.fleetDuration;
+            // Payout timing for this account, keyed off the shared tick `now`. Null when the offset
+            // is unknown (live data can omit it), in which case payout history/alerts are skipped.
+            const poOff = typeof player.poOffset === "number" ? player.poOffset : null;
 
-            // Record payout history for all arenaWatch accounts, regardless of notification settings
-            const newCharHist = this.recordHistoryAtPayout(playerDoc.charHist, player.lastChar, charMinLeft);
-            if (newCharHist !== playerDoc.charHist) {
-                playerDoc.charHist = newCharHist;
-                changedCodes.add(player.allyCode);
-            }
-            const newShipHist = this.recordHistoryAtPayout(playerDoc.shipHist, player.lastShip, fleetMinLeft);
-            if (newShipHist !== playerDoc.shipHist) {
-                playerDoc.shipHist = newShipHist;
-                changedCodes.add(player.allyCode);
+            for (const arena of ARENAS) {
+                const cfg = ARENA_LOG_CONFIG[arena];
+                const st = arenaState[arena];
+                const prevObs = snap?.[cfg.docRankKey] ?? 0;
+                const cur = newPlayer.arena?.[cfg.apiKey]?.rank ?? null;
+                if (cur != null) player[cfg.acctRankKey] = cur;
+
+                if (cur != null && cur !== prevObs) {
+                    player[cfg.acctChangeKey] = prevObs - cur;
+                    playerDoc[cfg.docRankKey] = cur;
+                    playerDoc[cfg.docChangeKey] = player[cfg.acctChangeKey];
+                    changedCodes.add(player.allyCode);
+                }
+
+                // Channel rank alerts anchor on the rank we last ANNOUNCED to this watcher, not the
+                // observed rank, so a failed/skipped send is recovered by the next alert covering
+                // the whole span. If the observed rank had already moved past what we announced, the
+                // change bundles updates this watcher never saw - flag it so checkRanks can say so.
+                // anchor 0 means no baseline yet (brand-new account, never observed or announced) -
+                // skip the noise "rank 0 -> X" alert, matching the DM path's `lastRank > 0` guard.
+                // The observed rank persists above, so the next real change has a real baseline.
+                if (st.rankOn && cur != null) {
+                    const announced = player[cfg.announcedKey];
+                    const anchor = announced ?? prevObs;
+                    if (cur !== anchor && anchor > 0) {
+                        // Freeze the announce baseline before the send so a failed first alert (no
+                        // prior announced rank) is retried next tick; delivery advances it to `cur`.
+                        if (announced == null) {
+                            const stored = storedByCode.get(player.allyCode);
+                            if (stored) {
+                                stored[cfg.announcedKey] = anchor;
+                                userChanged = true;
+                            }
+                        }
+                        st.comp.push({
+                            name: nameForRank,
+                            allyCode: player.allyCode,
+                            oldRank: anchor,
+                            newRank: cur,
+                            mark: player.mark,
+                            missed: announced != null && announced !== prevObs,
+                        });
+                        st.pendingAnnounce.push({ allyCode: player.allyCode, rank: cur });
+                    }
+                }
+
+                const cycle = poOff === null ? null : payoutCycleInfo(now, getPayoutTimeLeft(poOff, arena, now));
+
+                // Record payout history for all arenaWatch accounts, regardless of notification settings
+                const newHist = this.recordHistoryAtPayout(
+                    playerDoc[cfg.histKey],
+                    player[cfg.acctRankKey],
+                    cycle?.justAfterPayout ?? false,
+                    now,
+                );
+                if (newHist !== playerDoc[cfg.histKey]) {
+                    playerDoc[cfg.histKey] = newHist;
+                    changedCodes.add(player.allyCode);
+                }
+
+                // Payout warn/result: once per payout cycle, keyed on the payout instant
+                // (per-watcher markers) so a dropped warning-minute / payout tick self-heals within
+                // its window instead of being lost to an exact-minute check. Markers are applied on
+                // send success. These post to the same per-arena log channel as the rank lines, so
+                // an arena whose log is off has nowhere to deliver them - don't build (and re-build
+                // every tick for the whole window) lines that can never be sent.
+                const rank = player[cfg.acctRankKey];
+                if (!logOn[arena] || !cycle || rank == null) continue;
+                if (
+                    cfg.settingNames.includes(player.result ?? "") &&
+                    cycle.justAfterPayout &&
+                    player.alerted?.[cfg.resultMark] !== cycle.lastPayout
+                ) {
+                    st.out.push(`${pName} finished at ${rank} ${cfg.resultSuffix}`);
+                    st.pendingMark.push({ allyCode: player.allyCode, field: cfg.resultMark, cycle: cycle.lastPayout });
+                }
+                if (
+                    cfg.settingNames.includes(player.warn?.arena ?? "") &&
+                    isInWarnWindow(cycle.minTil, player.warn?.min) &&
+                    player.alerted?.[cfg.warnMark] !== cycle.nextPayout
+                ) {
+                    st.out.push(`${pName}'s ${cfg.warnLabel} arena payout is in ${cycle.minTil} minutes`);
+                    st.pendingMark.push({ allyCode: player.allyCode, field: cfg.warnMark, cycle: cycle.nextPayout });
+                }
             }
 
             arenaPlayerMap.set(player.allyCode, playerDoc);
+        }
 
-            if (player.result || (player.warn && (player.warn.min ?? 0) > 0 && player.warn.arena)) {
-                let pName = player.mention ? `<@${player.mention}>` : player.name;
-                if (aw.useMarksInLog && player.mark) {
-                    pName = `${player.mark} ${pName}`;
-                }
-                if (player.lastChar != null && charMinLeft === 0 && ["char", "both"].includes(player.result ?? "")) {
-                    // If they have char payouts turned on, do that here
-                    charOut.push(`${pName} finished at ${player.lastChar} in character arena`);
-                }
-                if (
-                    player.lastChar != null &&
-                    player.warn?.min &&
-                    ["char", "both"].includes(player.warn.arena ?? "") &&
-                    charMinLeft === player.warn.min
-                ) {
-                    // Warn them of their upcoming payout if this is enabled
-                    charOut.push(`${pName}'s **character** arena payout is in ${`${player.warn.min} minutes`}`);
-                }
-                if (player.lastShip != null && fleetMinLeft === 0 && ["fleet", "both"].includes(player.result ?? "")) {
-                    // If they have fleet payouts turned on, do that here
-                    shipOut.push(`${pName} finished at ${player.lastShip} in fleet arena`);
-                }
-                if (
-                    player.lastShip != null &&
-                    player.warn?.min &&
-                    ["fleet", "both"].includes(player.warn.arena ?? "") &&
-                    fleetMinLeft === player.warn.min
-                ) {
-                    // Warn them of their upcoming payout if this is enabled
-                    shipOut.push(`${pName}'s **fleet** arena payout is in ${`${player.warn.min} minutes`}`);
-                }
+        // A single subtext footer when any line bundles updates we observed but never posted, so
+        // the net numbers aren't mistaken for a single move. Kept short so it stays on one line.
+        const MISSED_FOOTER = "-# Some ranks moved more than once since our last post; the numbers show the net change.";
+
+        for (const arena of ARENAS) {
+            const st = arenaState[arena];
+            // st.comp is only populated when the arena's channel alerts are on (see the loop).
+            // checkRanks applies the aw.report climb/drop filter, so it can return nothing even for
+            // a non-empty comp list - the footer keys off its output, not the raw changes. A message
+            // carrying only payout warn/result lines has no net-change numbers to caveat.
+            const rankLines = st.comp.length ? this.checkRanks(st.comp, aw) : [];
+            st.missed = rankLines.length > 0 && st.comp.some((c) => c.missed);
+            const out = st.out.concat(rankLines);
+            if (out.length) {
+                st.fields.push(ARENA_LOG_CONFIG[arena].header);
+                st.fields.push(out.map((c) => `- ${c}`).join("\n"));
             }
-            accountsToCheck[ix] = player;
         }
 
-        if (compChar.length && arenaChar.enabled) {
-            charOut = charOut.concat(this.checkRanks(compChar, aw));
-        }
-        if (compShip.length && arenaFleet.enabled) {
-            shipOut = shipOut.concat(this.checkRanks(compShip, aw));
-        }
-
-        const charFields: string[] = [];
-        const shipFields: string[] = [];
-        if (charOut.length) {
-            charFields.push("**Character Arena:**");
-            charFields.push(charOut.map((c) => `- ${c}`).join("\n"));
-        }
-        if (shipOut.length) {
-            shipFields.push("**Fleet Arena:**");
-            shipFields.push(shipOut.map((c) => `- ${c}`).join("\n"));
-        }
-
-        // Only send the alerts if there have been rank changes, and the user has alerts enabled
-        if ((charFields.length || shipFields.length) && hasAlerts) {
+        // Per-arena send outcome. `attempted` is false when nothing was posted for that arena and
+        // no later tick would change that - either there was nothing to say (all changes filtered
+        // out by aw.report, or its log is off) or the channel is UNDELIVERABLE. Neither is a
+        // delivery failure, so the announce anchors below still advance; pinning them on a channel
+        // no shard can see would rebuild and re-broadcast the same alert every tick indefinitely.
+        // An arena only ever contributes lines when its own log is on (logOn[arena]), so non-empty
+        // fields are themselves proof that arena is enabled with a channel - no branch here needs
+        // to re-check `enabled`, and both branches agree on a disabled arena.
+        if (ARENAS.some((arena) => arenaState[arena].fields.length)) {
             if (arenaChar.channel && arenaChar.channel === arenaFleet.channel) {
-                // If they're both set to the same channel, send it all
-                const fields = charFields.concat(shipFields);
-                await this.client.shard?.broadcastEval(
-                    async (client, { channel, fields }) => {
-                        const chan = client.channels.cache.get(channel);
-                        if (
-                            chan?.type === 0 && // 0 = GUILD_TEXT
-                            // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                            chan?.permissionsFor(client.user)?.has(3072n)
-                        ) {
-                            await chan.send(`>>> ${fields.join("\n")}`);
-                        }
-                    },
-                    { context: { channel: arenaChar.channel, fields: fields } },
-                );
+                // If they're both set to the same channel, send it all in one message
+                const fields = ARENAS.flatMap((arena) => arenaState[arena].fields);
+                if (ARENAS.some((arena) => arenaState[arena].missed)) fields.push(MISSED_FOOTER);
+                const outcome = await this.sendToChannel(arenaChar.channel, `>>> ${fields.join("\n")}`);
+                // One message carries both arenas, but only the arena that contributed lines to it
+                // can count as delivered
+                for (const arena of ARENAS) {
+                    const st = arenaState[arena];
+                    st.attempted = st.fields.length > 0 && outcome !== SEND_OUTCOME.UNDELIVERABLE;
+                    st.sent = outcome === SEND_OUTCOME.SENT && st.fields.length > 0;
+                }
             } else {
-                // Else they each have their own channels, so send em there
-                await Promise.allSettled([
-                    arenaChar.channel && arenaChar.enabled && charFields.length
-                        ? this.client.shard?.broadcastEval(
-                              async (client, { channel, charFields }) => {
-                                  const chan = client.channels.cache.get(channel);
-                                  if (
-                                      chan?.type === 0 && // 0 = GUILD_TEXT
-                                      // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                      chan?.permissionsFor(client.user)?.has(3072n)
-                                  ) {
-                                      await chan.send(`>>> ${charFields.join("\n")}`);
-                                  }
-                              },
-                              { context: { channel: arenaChar.channel, charFields: charFields } },
-                          )
-                        : Promise.resolve(),
-                    arenaFleet.channel && arenaFleet.enabled && shipFields.length
-                        ? this.client.shard?.broadcastEval(
-                              async (client, { channel, shipFields }) => {
-                                  const chan = client.channels.cache.get(channel);
-                                  if (
-                                      chan?.type === 0 && // 0 = GUILD_TEXT
-                                      // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                                      chan?.permissionsFor(client.user)?.has(3072n)
-                                  ) {
-                                      await chan.send(`>>> ${shipFields.join("\n")}`);
-                                  }
-                              },
-                              { context: { channel: arenaFleet.channel, shipFields: shipFields } },
-                          )
-                        : Promise.resolve(),
-                ]);
+                // Else they each have their own channels, so send em there (sendToChannel never
+                // rejects - it resolves an outcome either way - so Promise.all is safe here)
+                for (const arena of ARENAS) {
+                    const st = arenaState[arena];
+                    if (st.missed) st.fields.push(MISSED_FOOTER);
+                }
+                const outcomes = await Promise.all(
+                    ARENAS.map((arena) =>
+                        arenaState[arena].fields.length
+                            ? this.sendToChannel(arenaCfg[arena].channel, `>>> ${arenaState[arena].fields.join("\n")}`)
+                            : Promise.resolve<SendOutcome>(SEND_OUTCOME.UNDELIVERABLE),
+                    ),
+                );
+                ARENAS.forEach((arena, ix) => {
+                    const st = arenaState[arena];
+                    st.attempted = st.fields.length > 0 && outcomes[ix] !== SEND_OUTCOME.UNDELIVERABLE;
+                    st.sent = outcomes[ix] === SEND_OUTCOME.SENT;
+                });
             }
         }
 
-        // Update poOffset in user.arenaWatch.allyCodes after processing - rank/history now live
-        // in the arenaPlayers collection, so poOffset is the only user-doc field this loop can
-        // touch. Only write the doc back when one actually changed.
-        const storedByCode = new Map(user.arenaWatch.allyCodes.map((a) => [a.allyCode, a]));
-        let userChanged = false;
+        // Persist per-watcher state on the user doc: poOffset backfill always, plus the announce /
+        // payout markers for whichever channel delivered. rank/history live in arenaPlayers.
         for (const acct of accountsToCheck) {
             const stored = storedByCode.get(acct.allyCode);
             if (stored && stored.poOffset !== acct.poOffset) {
@@ -761,9 +1030,37 @@ class PatreonFuncs {
                 userChanged = true;
             }
         }
-        if (userChanged) {
-            await userReg.updateUser(patron.discordID, user);
+
+        for (const arena of ARENAS) {
+            const st = arenaState[arena];
+            // Payout markers: only a delivered message counts, so an undelivered warn/result
+            // retries on the next tick inside its window.
+            if (st.sent) {
+                for (const p of st.pendingMark) {
+                    const stored = storedByCode.get(p.allyCode);
+                    if (!stored) continue;
+                    stored.alerted ??= {};
+                    stored.alerted[p.field] = p.cycle;
+                    userChanged = true;
+                }
+            }
+            // Announce anchors: advance unless a send was attempted and failed. Holding the anchor
+            // back when nothing was posted (aw.report filtered the line out, or the channel is gone)
+            // would leave every later alert measured from a rank the watcher has long since moved
+            // past - and with report=climb/drop it would suppress that account's alerts indefinitely.
+            if (st.attempted && !st.sent) continue;
+            const field = ARENA_LOG_CONFIG[arena].announcedKey;
+            for (const p of st.pendingAnnounce) {
+                const stored = storedByCode.get(p.allyCode);
+                if (stored && stored[field] !== p.rank) {
+                    stored[field] = p.rank;
+                    userChanged = true;
+                }
+            }
         }
+        // arenaTick persists the user doc once per patron when userChanged is true (see the loop),
+        // so both consumers avoid double-writing the same doc.
+        return userChanged;
     }
 
     async guildsUpdate(): Promise<void> {
@@ -855,32 +1152,7 @@ class PatreonFuncs {
             const fieldsOut = chunkArray(fields, MAX_FIELDS);
 
             for (const fieldChunk of fieldsOut) {
-                await this.client.shard?.broadcastEval(
-                    async (client, { guChan, fieldChunk }) => {
-                        const channel = client.channels.cache.get(guChan);
-                        if (
-                            channel?.type === 0 && // 0 = GUILD_TEXT
-                            channel?.guild &&
-                            // 3072n = SendMessages (2048n) | ViewChannel (1024n)
-                            channel.permissionsFor(client.user)?.has(3072n)
-                        ) {
-                            return channel.send({
-                                embeds: [
-                                    {
-                                        fields: fieldChunk,
-                                    },
-                                ],
-                            });
-                        }
-                        return false;
-                    },
-                    {
-                        context: {
-                            guChan: gu.channel,
-                            fieldChunk: fieldChunk,
-                        },
-                    },
-                );
+                await this.sendToChannel(gu.channel, { embeds: [{ fields: fieldChunk }] });
             }
         }
     }
@@ -1032,11 +1304,17 @@ class PatreonFuncs {
     private recordHistoryAtPayout(
         hist: ArenaHistEntry[] | undefined,
         rank: number | null | undefined,
-        minLeft: number | null,
+        // True within the post-payout window (payoutCycleInfo.justAfterPayout). Firing across a
+        // few ticks after payout instead of only at the exact minute self-heals a dropped tick;
+        // shouldWriteHistory's 5-minute dedup keeps it to one entry per daily payout cycle.
+        atPayout: boolean,
+        // Tick timestamp - the dedup window and the entry's `ts` use the same clock the
+        // payout math did, so a slow tick can't record an entry stamped after its own cycle
+        now: number = Date.now(),
     ): ArenaHistEntry[] | undefined {
         // No rank means the account hasn't played this arena type - never write a null entry
-        if (minLeft !== 0 || rank == null) return hist;
-        return shouldWriteHistory(hist) ? updateArenaHistory(hist, rank) : hist;
+        if (!atPayout || rank == null) return hist;
+        return shouldWriteHistory(hist, now) ? updateArenaHistory(hist, rank, now) : hist;
     }
 
     private getPatreonTier(user: { amount_cents: number } | null): number {
@@ -1074,6 +1352,59 @@ class PatreonFuncs {
             }
         }
         return patrons;
+    }
+
+    // Send a message (plain text or embed payload) to a channel by ID, across shards, but only
+    // if the bot can see the channel and post in it. Centralizes the GUILD_TEXT + SendMessages/
+    // ViewChannel (3072n) gate that every arena/guild alert used to inline-copy. Runs entirely
+    // inside broadcastEval, so the closure only touches its context - no outer-scope refs (see
+    // the "no logger/imports inside broadcastEval" rule).
+    private async sendToChannel(channelId: string | null | undefined, content: string | { embeds: APIEmbed[] }): Promise<SendOutcome> {
+        if (!channelId) return SEND_OUTCOME.UNDELIVERABLE;
+        try {
+            const results = await this.client.shard?.broadcastEval(
+                async (client, { channelId, content }) => {
+                    const channel = client.channels.cache.get(channelId);
+                    if (
+                        channel?.type === 0 && // 0 = GUILD_TEXT
+                        // 3072n = SendMessages (2048n) | ViewChannel (1024n)
+                        channel.permissionsFor(client.user)?.has(3072n)
+                    ) {
+                        await channel.send(content);
+                        return true;
+                    }
+                    return false;
+                },
+                { context: { channelId, content } },
+            );
+            // The channel lives on one shard; true means that shard actually delivered the message.
+            // Every shard returning false means none of them has a channel we can post in, which is
+            // a standing condition (deleted channel, kicked, ViewChannel revoked) rather than
+            // something a later attempt fixes - so it is reported apart from a failed send.
+            return results?.some((r) => r === true) ? SEND_OUTCOME.SENT : SEND_OUTCOME.UNDELIVERABLE;
+        } catch (err) {
+            // A permission/unknown-channel error raced past the pre-check above and is as standing
+            // a condition as the pre-check's own failure. Anything unclassifiable stays FAILED.
+            // Note discord.js's numeric `code` only reaches us if it survives the broadcastEval IPC
+            // boundary; when it doesn't, this degrades to FAILED, i.e. today's retry behaviour.
+            const outcome = classifySendError(err);
+            logger.error(`[sendToChannel] Failed to send to ${channelId}: ${err instanceof Error ? err.message : String(err)}`);
+            return outcome;
+        }
+    }
+
+    // Send one DM, reporting whether it landed, transiently failed, or can never be delivered to
+    // this recipient. Shared by the payout warn/result paths so both close out a cycle the same way.
+    private async sendAlertDM(pUser: { send: (payload: { embeds: APIEmbed[] }) => Promise<unknown> }, embed: APIEmbed, what: string) {
+        return pUser
+            .send({ embeds: [embed] })
+            .then(() => SEND_OUTCOME.SENT as SendOutcome)
+            .catch((err: unknown) => {
+                const outcome = classifySendError(err);
+                const note = outcome === SEND_OUTCOME.UNDELIVERABLE ? " (undeliverable, closing out this cycle)" : "";
+                logger.error(`[handleArenaAlerts] Failed to send ${what}${note}: ${err}`);
+                return outcome;
+            });
     }
 
     // Helper function to check if a channel is available and has proper permissions
@@ -1145,30 +1476,6 @@ class PatreonFuncs {
             player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
         }
         return players.sort((a, b) => ((a.duration ?? 0) > (b.duration ?? 0) ? 1 : -1));
-    }
-
-    // Go through a given list and get the payout times for both arenas
-    private getAllPayoutTimes(player: ArenaWatchAcct) {
-        const payout: {
-            poOffset: number;
-            charDuration: number | null;
-            charTimeTil: string | null;
-            fleetDuration: number | null;
-            fleetTimeTil: string | null;
-        } = {
-            poOffset: player.poOffset,
-            charDuration: null,
-            charTimeTil: null,
-            fleetDuration: null,
-            fleetTimeTil: null,
-        };
-        for (const arena of ["fleet", "char"] as const) {
-            if (!payout.poOffset && payout.poOffset !== 0) continue;
-            const timeLeft = getPayoutTimeLeft(player.poOffset, arena);
-            payout[`${arena}Duration`] = Math.floor(timeLeft / constants.minMS);
-            payout[`${arena}TimeTil`] = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
-        }
-        return payout;
     }
 
     // Compare ranks to see if we have both sides of the fight or not
@@ -1283,16 +1590,20 @@ class PatreonFuncs {
         patron: { discordID: string },
         // null when the player data is missing poUTCOffsetMinutes - payout-based alerts are skipped
         timeLeft: number | null,
-        minTil: number | null,
-        // Rank/climb as they stood at the start of the tick - see RankSnapshot
+        // Rank/climb as they stood at the start of the tick - see RankSnapshot. Rank-drop DMs
+        // compare against these frozen values so every user tracking the account fires.
         prev: { rank: number; climb: number },
-    ) {
+        // Tick timestamp; combined with timeLeft to derive the payout cycle for once-per-cycle gating
+        now: number = Date.now(),
+    ): Promise<boolean> {
         const arenaConfig = {
             char: {
                 alertType: "both" as const,
                 altType: "char" as const,
                 rankKey: "lastCharRank" as const,
                 climbKey: "lastCharClimb" as const,
+                warnMark: "charWarn" as const,
+                resultMark: "charResult" as const,
                 displayName: "character",
                 capitalName: "Character",
             },
@@ -1301,6 +1612,8 @@ class PatreonFuncs {
                 altType: "fleet" as const,
                 rankKey: "lastShipRank" as const,
                 climbKey: "lastShipClimb" as const,
+                warnMark: "fleetWarn" as const,
+                resultMark: "fleetResult" as const,
                 displayName: "ship",
                 capitalName: "Fleet",
             },
@@ -1309,7 +1622,10 @@ class PatreonFuncs {
         const config = arenaConfig[arenaType];
         const arenaData = arenaType === "char" ? player.arena?.char : player.arena?.ship;
 
-        if (arenaData?.rank == null) return;
+        // True when a per-cycle marker was written, so the caller knows to persist the user doc
+        let userChanged = false;
+
+        if (arenaData?.rank == null) return userChanged;
 
         if (
             user.arenaAlert &&
@@ -1319,37 +1635,79 @@ class PatreonFuncs {
             const payoutTime =
                 timeLeft === null ? null : `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
 
-            const pUser = await this.client.users.fetch(patron.discordID);
-            if (pUser) {
-                try {
-                    // Payout warning
-                    if (user.arenaAlert.payoutWarning > 0 && user.arenaAlert.payoutWarning === minTil) {
-                        await pUser
-                            .send({
-                                embeds: [
-                                    {
-                                        author: { name: "Arena Payout Alert" },
-                                        description: `${player.name}'s ${config.displayName} arena payout is in **${minTil}** minutes!${`\nYour current rank is ${arenaData.rank}`}`,
-                                        color: constants.colors.green,
-                                    },
-                                ],
-                            })
-                            .catch((err) => logger.error(`[handleArenaAlerts] Failed to send payout warning: ${err}`));
+            try {
+                // Fetch inside the try so a transient users.fetch failure is contained here and the
+                // rank/climb tracking below still runs, instead of rejecting out of the whole function.
+                const pUser = await this.client.users.fetch(patron.discordID);
+                if (pUser) {
+                    // Payout cycle for this account this tick; null when the offset is missing, in
+                    // which case the payout-timed alerts below are skipped entirely. The once-per-
+                    // cycle markers live on the user's own arenaAlert (keyed by ally code), so a
+                    // shared account can't let one user's warn minute suppress another's.
+                    const cycle = timeLeft === null ? null : payoutCycleInfo(now, timeLeft);
+                    const markKey = String(player.allyCode);
+                    // Read-only view of this account's markers. The doc itself is only touched by
+                    // markCycle below, once an alert has actually been delivered - reading through
+                    // optional chaining keeps us from persisting an empty `{}` per watched account.
+                    const marks = user.arenaAlert.alerted?.[markKey];
+                    const markCycle = (field: "charWarn" | "fleetWarn" | "charResult" | "fleetResult", cycleId: number) => {
+                        user.arenaAlert.alerted ??= {};
+                        user.arenaAlert.alerted[markKey] ??= {};
+                        user.arenaAlert.alerted[markKey][field] = cycleId;
+                    };
+
+                    // Payout warning: fire once per cycle on the first tick inside the window
+                    // (payoutWarning minutes before payout, but not past it). Keying on the payout
+                    // instant instead of an exact minute self-heals a dropped warning-minute tick.
+                    if (
+                        cycle &&
+                        isInWarnWindow(cycle.minTil, user.arenaAlert.payoutWarning) &&
+                        marks?.[config.warnMark] !== cycle.nextPayout
+                    ) {
+                        // Only mark the cycle once the DM is settled - a transiently failed send is
+                        // retried on the next tick within the window (mirrors the channel path's
+                        // defer-until-delivered handling), instead of being silently suppressed.
+                        // UNDELIVERABLE closes the cycle too: this recipient cannot receive the DM
+                        // at all, so retrying it on every remaining tick repeats a certain failure.
+                        const outcome = await this.sendAlertDM(
+                            pUser,
+                            {
+                                author: { name: "Arena Payout Alert" },
+                                description: `${player.name}'s ${config.displayName} arena payout is in **${cycle.minTil}** minutes!${`\nYour current rank is ${arenaData.rank}`}`,
+                                color: constants.colors.green,
+                            },
+                            "payout warning",
+                        );
+                        if (outcome !== SEND_OUTCOME.FAILED) {
+                            markCycle(config.warnMark, cycle.nextPayout);
+                            userChanged = true;
+                        }
                     }
 
-                    // Payout result
-                    if (minTil === 0 && user.arenaAlert.enablePayoutResult) {
-                        await pUser
-                            .send({
-                                embeds: [
-                                    {
-                                        author: { name: `${config.capitalName} arena` },
-                                        description: `${player.name}'s payout ended at **${arenaData.rank}**!`,
-                                        color: constants.colors.green,
-                                    },
-                                ],
-                            })
-                            .catch((err) => logger.error(`[handleArenaAlerts] Failed to send payout result: ${err}`));
+                    // Payout result: fire once per cycle shortly AFTER payout. The just-passed
+                    // payout instant is the cycle id, so a dropped minTil===0 tick self-heals on
+                    // the next tick within the result window.
+                    if (
+                        cycle &&
+                        user.arenaAlert.enablePayoutResult &&
+                        cycle.justAfterPayout &&
+                        marks?.[config.resultMark] !== cycle.lastPayout
+                    ) {
+                        // Defer the marker until the DM settles so a transient failure retries next
+                        // tick within the result window, matching the warn path above.
+                        const outcome = await this.sendAlertDM(
+                            pUser,
+                            {
+                                author: { name: `${config.capitalName} arena` },
+                                description: `${player.name}'s payout ended at **${arenaData.rank}**!`,
+                                color: constants.colors.green,
+                            },
+                            "payout result",
+                        );
+                        if (outcome !== SEND_OUTCOME.FAILED) {
+                            markCycle(config.resultMark, cycle.lastPayout);
+                            userChanged = true;
+                        }
                     }
 
                     // Rank drop alert
@@ -1372,9 +1730,9 @@ class PatreonFuncs {
                             })
                             .catch((err) => logger.error(`[handleArenaAlerts] Failed to send rank drop alert: ${err}`));
                     }
-                } catch (e) {
-                    logger.error(`[handleArenaAlerts] Error processing ${config.displayName} arena alerts: ${e}`);
                 }
+            } catch (e) {
+                logger.error(`[handleArenaAlerts] Error processing ${config.displayName} arena alerts: ${e}`);
             }
         }
 
@@ -1382,6 +1740,8 @@ class PatreonFuncs {
         // patron tracking the same account produces the identical (idempotent) result.
         acc[config.climbKey] = prev.climb ? (arenaData.rank < prev.rank ? arenaData.rank : prev.climb) : arenaData.rank;
         acc[config.rankKey] = arenaData.rank;
+
+        return userChanged;
     }
 }
 

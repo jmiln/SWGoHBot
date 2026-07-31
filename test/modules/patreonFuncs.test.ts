@@ -5,10 +5,11 @@ import { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
-import { PatreonFuncs, buildRankSnapshot, shouldWriteHistory, updateArenaHistory, collectAllyCodes, hydrateWatchAccounts } from "../../modules/patreonFuncs.ts";
+import { PatreonFuncs, buildRankSnapshot, classifySendError, shouldWriteHistory, updateArenaHistory, collectAllyCodes, hydrateWatchAccounts, isInWarnWindow, payoutCycleInfo } from "../../modules/patreonFuncs.ts";
 import userReg from "../../modules/users.ts";
 import Language from "../../base/Language.ts";
 import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
+import constants from "../../data/constants/constants.ts";
 import { createMockLanguage } from "../mocks/index.ts";
 import type { ActivePatron, ArenaPlayer, ArenaWatchAcct, ArenaWatchConfig, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
@@ -371,6 +372,234 @@ describe("PatreonFuncs Module", () => {
         });
     });
 
+    // Payout warning/result alerts are keyed to a payout cycle, not an exact minute, so a
+    // dropped fetch (transient comlink error) on the payout-warning minute no longer loses
+    // the alert - the next successful tick within the window still fires it, exactly once.
+    describe("handleArenaAlerts() payout self-heal", () => {
+        const ALLY = 888777666;
+        const now = 1_000_000_000_000;
+
+        const mkPlayer = (): PlayerArenaRes => ({
+            name: "PayoutTest",
+            allyCode: ALLY,
+            arena: { char: { rank: 5 }, ship: { rank: null } },
+            poUTCOffsetMinutes: 0,
+        });
+        // now + timeLeft is the payout instant; a later tick advances now and drops timeLeft by
+        // the same amount, so the cycle id stays constant. Callers vary nowOverride/timeLeft together.
+        // The once-per-cycle markers live on user.arenaAlert.alerted, so reusing the same user
+        // object across calls models the persisted state a later tick would read back.
+        const callAlerts = (acc: ArenaPlayer, user: UserConfig, timeLeft: number, nowOverride: number = now) =>
+            (patreonFuncs as any).handleArenaAlerts(
+                "char",
+                mkPlayer(),
+                acc,
+                user,
+                { discordID: "hist_test_user" },
+                timeLeft,
+                { rank: 0, climb: 0 },
+                nowOverride,
+            );
+
+        beforeEach(() => {
+            sentDMs.length = 0;
+        });
+
+        it("fires the payout warning on the first tick inside the window even if the exact minute was missed", async () => {
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            // 29 minutes out with a 30-minute warning - the exact 30 tick was dropped
+            await callAlerts(acc, user, 29 * constants.minMS);
+
+            assert.strictEqual(sentDMs.length, 1, "expected the warning to still fire one minute late");
+            assert.ok(sentDMs[0]?.embeds?.[0]?.description?.includes("arena payout is in"), "expected a payout warning DM");
+        });
+
+        it("does not resend the payout warning within the same payout cycle", async () => {
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            await callAlerts(acc, user, 30 * constants.minMS);
+            assert.strictEqual(sentDMs.length, 1, "first tick in the window should fire once");
+
+            // A minute later (same payout cycle: now +1min, timeLeft -1min) - must not fire again
+            await callAlerts(acc, user, 29 * constants.minMS, now + constants.minMS);
+            assert.strictEqual(sentDMs.length, 1, "the warning must fire at most once per payout cycle");
+        });
+
+        it("records the warn marker on the user's own arenaAlert, keyed by ally code", async () => {
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            await callAlerts(acc, user, 30 * constants.minMS);
+            // Per-recipient storage: a shared account doc must NOT carry the marker
+            assert.strictEqual(user.arenaAlert.alerted?.[String(ALLY)]?.charWarn, now + 30 * constants.minMS);
+        });
+
+        it("fires the payout result just after payout, self-healing a dropped minTil===0 tick", async () => {
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 0, enablePayoutResult: true },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            // Payout happened 2 minutes ago: next payout is ~a day out, so minTil never hit 0 on a live tick
+            const timeLeft = constants.dayMS - 2 * constants.minMS;
+            await callAlerts(acc, user, timeLeft);
+            assert.strictEqual(sentDMs.length, 1, "expected the payout result to fire shortly after payout");
+            assert.ok(sentDMs[0]?.embeds?.[0]?.description?.includes("payout ended"), "expected a payout result DM");
+
+            // A minute later (same payout cycle: now +1min, timeLeft -1min) - must not resend
+            await callAlerts(acc, user, timeLeft - constants.minMS, now + constants.minMS);
+            assert.strictEqual(sentDMs.length, 1, "the payout result must fire at most once per cycle");
+        });
+
+        it("lets two users on the same account each get their own warning at their own minute", async () => {
+            // Regression: a shared-doc marker used to let the first user's alert suppress the second's
+            const userEarly = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 60, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const userLate = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            // 60 min out: only the 60-minute user should fire
+            await callAlerts(acc, userEarly, 60 * constants.minMS);
+            await callAlerts(acc, userLate, 60 * constants.minMS);
+            assert.strictEqual(sentDMs.length, 1, "only the 60-minute user fires at 60 min out");
+
+            // 30 min out: the 30-minute user must still fire even though the other already alerted this cycle
+            await callAlerts(acc, userEarly, 30 * constants.minMS, now + 30 * constants.minMS);
+            await callAlerts(acc, userLate, 30 * constants.minMS, now + 30 * constants.minMS);
+            assert.strictEqual(sentDMs.length, 2, "the 30-minute user must not be suppressed by the other user's marker");
+        });
+
+        it("still tracks rank when the DM user fetch fails, instead of aborting", async () => {
+            // A transient users.fetch rejection must be contained so rank/climb tracking (which runs
+            // after the DM block) still happens - otherwise a blip stops persisting ranks that tick.
+            const failClient = {
+                user: { id: "bot123" },
+                users: {
+                    fetch: async () => {
+                        throw new Error("Unknown User");
+                    },
+                },
+            } as unknown as Client<true>;
+            const funcs = new PatreonFuncs();
+            funcs.init(failClient);
+
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            await assert.doesNotReject(
+                (funcs as any).handleArenaAlerts(
+                    "char",
+                    mkPlayer(),
+                    acc,
+                    user,
+                    { discordID: "fetchfail_user" },
+                    29 * constants.minMS,
+                    { rank: 0, climb: 0 },
+                    now,
+                ),
+                "a users.fetch failure must not reject out of handleArenaAlerts",
+            );
+            assert.strictEqual(acc.lastCharRank, 5, "rank tracking must still run when the DM fetch fails");
+        });
+
+        it("does not mark the warn cycle when the DM send fails, so it retries next tick", async () => {
+            // A failed DM send must NOT record the once-per-cycle marker - otherwise a transient
+            // send blip permanently suppresses the alert (the channel path defers the same way).
+            let sendOk = false;
+            const captured: { embeds?: { description?: string }[] }[] = [];
+            const flakyClient = {
+                user: { id: "bot123" },
+                users: {
+                    fetch: async () => ({
+                        send: async (msg: { embeds?: { description?: string }[] }) => {
+                            if (!sendOk) throw new Error("Cannot send messages to this user");
+                            captured.push(msg);
+                            return msg;
+                        },
+                    }),
+                },
+            } as unknown as Client<true>;
+            const funcs = new PatreonFuncs();
+            funcs.init(flakyClient);
+
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
+
+            const call = (timeLeft: number, nowOverride: number) =>
+                (funcs as any).handleArenaAlerts("char", mkPlayer(), acc, user, { discordID: "senfail_user" }, timeLeft, { rank: 0, climb: 0 }, nowOverride);
+
+            // First tick: send fails -> no marker recorded
+            await call(30 * constants.minMS, now);
+            assert.strictEqual(captured.length, 0, "the DM did not actually deliver");
+            assert.strictEqual(user.arenaAlert.alerted?.[String(ALLY)]?.charWarn, undefined, "a failed send must not mark the cycle");
+
+            // Next tick, same cycle, send now works -> the warning is retried and delivered
+            sendOk = true;
+            await call(29 * constants.minMS, now + constants.minMS);
+            assert.strictEqual(captured.length, 1, "the previously-failed warning must be retried once the DM succeeds");
+            assert.strictEqual(user.arenaAlert.alerted?.[String(ALLY)]?.charWarn, now + 30 * constants.minMS, "a delivered warning records the cycle marker");
+        });
+
+        it("closes out the cycle when the recipient cannot receive DMs at all", async () => {
+            // 50007 = "Cannot send messages to this user" - DMs closed or the bot blocked. Unlike a
+            // transient failure this cannot succeed on a later tick, so retrying it across every
+            // remaining tick of the warn window just repeats a guaranteed failure (and one error
+            // log line each) every cycle, forever. Close the cycle instead.
+            const now = Date.now();
+            let attempts = 0;
+            const blockedClient = {
+                user: { id: "bot123" },
+                users: {
+                    fetch: async () => ({
+                        send: async () => {
+                            attempts++;
+                            throw Object.assign(new Error("Cannot send messages to this user"), { code: 50007 });
+                        },
+                    }),
+                },
+            } as unknown as Client<true>;
+            const funcs = new PatreonFuncs();
+            funcs.init(blockedClient);
+
+            const user = {
+                arenaAlert: { enableRankDMs: "all", arena: "both", payoutWarning: 30, enablePayoutResult: false },
+            } as unknown as UserConfig;
+            const acc: ArenaPlayer = { allyCode: ALLY, name: "BlockedDMs" };
+
+            const call = (timeLeft: number, nowOverride: number) =>
+                (funcs as any).handleArenaAlerts("char", mkPlayer(), acc, user, { discordID: "blocked_user" }, timeLeft, { rank: 0, climb: 0 }, nowOverride);
+
+            await call(30 * constants.minMS, now);
+            assert.strictEqual(attempts, 1, "one attempt is made before we know it is undeliverable");
+            assert.strictEqual(
+                user.arenaAlert.alerted?.[String(ALLY)]?.charWarn,
+                now + 30 * constants.minMS,
+                "an undeliverable recipient must still close the cycle so it is not retried",
+            );
+
+            // Remaining ticks inside the same warn window must not attempt the DM again
+            await call(29 * constants.minMS, now + constants.minMS);
+            await call(28 * constants.minMS, now + 2 * constants.minMS);
+            assert.strictEqual(attempts, 1, "a closed cycle must not re-attempt a DM that cannot be delivered");
+        });
+    });
+
     describe("processArenaAlerts()", () => {
         beforeEach(async () => {
             sentDMs.length = 0;
@@ -649,8 +878,8 @@ describe("PatreonFuncs Module", () => {
         it("keeps the stored doc name when the API name is empty", async () => {
             const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
 
-            // Payout-only config: hasPayouts true, hasAlerts false => no broadcastEval send paths,
-            // and aw.arena.char.enabled false keeps checkRanks() out of the picture.
+            // Payout-times-only config: payoutTimesOn true, anyLogOn false => no broadcastEval send
+            // paths, and aw.arena.char.enabled false keeps checkRanks() out of the picture.
             const user = {
                 id: "shard_test_user",
                 accounts: [],
@@ -754,11 +983,48 @@ describe("PatreonFuncs Module", () => {
                 }],
             ]);
 
-            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+            const changed = await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
 
-            const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
-            assert.ok(written, "the user doc must be written when a poOffset changed");
-            assert.strictEqual(written.arenaWatch.allyCodes[0].poOffset, 120);
+            // arenaTick owns the write now; processShardPatron reports the dirty flag and mutates in place
+            assert.strictEqual(changed, true, "a poOffset change must mark the user doc dirty");
+            assert.strictEqual(user.arenaWatch.allyCodes[0].poOffset, 120);
+        });
+
+        it("keeps the stored poOffset when the API omits poUTCOffsetMinutes", async () => {
+            // A player can return arena ranks with no poUTCOffsetMinutes (the DM path guards the
+            // same case). The stored offset must survive that tick, not be clobbered to undefined -
+            // otherwise the account falls off the payout schedule until a good tick restores it.
+            const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
+
+            const user = {
+                id: "shard_test_user",
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: 888777669, mention: null, poOffset: 120 }],
+                    arena: {
+                        char: { channel: null, enabled: false },
+                        fleet: { channel: null, enabled: false },
+                    },
+                    payout: {
+                        char: { enabled: true, channel: "chan1", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [888777669, {
+                    name: "NoOffset",
+                    allyCode: 888777669,
+                    arena: { char: { rank: 5 }, ship: { rank: null } },
+                    // poUTCOffsetMinutes intentionally omitted
+                }],
+            ] as [number, PlayerArenaRes][]);
+
+            const changed = await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+
+            assert.strictEqual(user.arenaWatch.allyCodes[0].poOffset, 120, "stored poOffset must not be overwritten with undefined");
+            assert.strictEqual(changed, false, "a tick that only lost the offset must not mark the doc dirty");
         });
 
         it("keeps over-limit watch entries in the user doc when writing back", async () => {
@@ -796,14 +1062,14 @@ describe("PatreonFuncs Module", () => {
                 }],
             ]);
 
-            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+            const changed = await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
 
-            const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
-            assert.ok(written, "the poOffset change must trigger a write");
-            assert.strictEqual(written.arenaWatch.allyCodes.length, 3, "over-limit watch entries must not be dropped");
-            assert.strictEqual(written.arenaWatch.allyCodes[0].poOffset, 30);
-            assert.strictEqual(written.arenaWatch.allyCodes[1].poOffset, 60, "unprocessed entries must be untouched");
-            assert.strictEqual(written.arenaWatch.allyCodes[2].poOffset, 120, "unprocessed entries must be untouched");
+            // Over-limit entries stay in the in-memory doc the caller persists; only entry 0 is processed
+            assert.strictEqual(changed, true, "the poOffset change must mark the doc dirty");
+            assert.strictEqual(user.arenaWatch.allyCodes.length, 3, "over-limit watch entries must not be dropped");
+            assert.strictEqual(user.arenaWatch.allyCodes[0].poOffset, 30);
+            assert.strictEqual(user.arenaWatch.allyCodes[1].poOffset, 60, "unprocessed entries must be untouched");
+            assert.strictEqual(user.arenaWatch.allyCodes[2].poOffset, 120, "unprocessed entries must be untouched");
         });
 
         it("refreshes the persisted name when the API name differs from an existing doc", async () => {
@@ -906,18 +1172,24 @@ describe("PatreonFuncs Module", () => {
         it("does not write an entry when the rank is nullish at payout", () => {
             // A watched ship-only (or char-only) account has no rank for the other arena -
             // an entry of { rank: null } must never land in the history
-            const fromUndefined = (patreonFuncs as any).recordHistoryAtPayout(undefined, undefined, 0);
+            const fromUndefined = (patreonFuncs as any).recordHistoryAtPayout(undefined, undefined, true);
             assert.strictEqual(fromUndefined, undefined, "no entry should be created for an undefined rank");
 
             const existing = [{ rank: 5, ts: 1000 }];
-            const fromNull = (patreonFuncs as any).recordHistoryAtPayout(existing, null, 0);
+            const fromNull = (patreonFuncs as any).recordHistoryAtPayout(existing, null, true);
             assert.strictEqual(fromNull, existing, "history must be returned unchanged for a null rank");
         });
 
-        it("still writes an entry for a real rank at payout", () => {
-            const result = (patreonFuncs as any).recordHistoryAtPayout(undefined, 12, 0);
+        it("writes an entry for a real rank inside the post-payout window", () => {
+            const result = (patreonFuncs as any).recordHistoryAtPayout(undefined, 12, true);
             assert.strictEqual(result?.length, 1);
             assert.strictEqual(result?.[0].rank, 12);
+        });
+
+        it("does not write outside the post-payout window", () => {
+            // atPayout=false (payout still upcoming or long past) must never write
+            const result = (patreonFuncs as any).recordHistoryAtPayout(undefined, 12, false);
+            assert.strictEqual(result, undefined, "no entry should be written before the payout window");
         });
     });
 
@@ -931,11 +1203,11 @@ describe("PatreonFuncs Module", () => {
         it("does not record a charHist entry when the account has no char rank", async () => {
             const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
 
-            // Compute a poOffset that puts the char payout (~18h offset) ~30s from now,
-            // so charMinLeft === 0 inside processShardPatron. Fractional offsets are fine.
+            // Compute a poOffset that puts the char payout (~18h offset) ~30s AGO, so we're inside
+            // the post-payout window (justAfterPayout) - the only reason not to write is the null rank.
             const now = Date.now();
             const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
-            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 30000) / 60000;
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now + 30000) / 60000;
 
             const user = {
                 id: "shard_test_user",
@@ -1011,11 +1283,11 @@ describe("PatreonFuncs Module", () => {
         it("never renders 'undefined' as the player name when neither the doc nor the API has one", async () => {
             const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
 
-            // Pin the char payout (~18h offset) ~30s from now so charMinLeft === 0 and the
-            // payout-result line renders
+            // Pin the char payout (~18h offset) ~30s AGO so we're inside the post-payout window
+            // and the payout-result line renders
             const now = Date.now();
             const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
-            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 30000) / 60000;
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now + 30000) / 60000;
 
             const user = {
                 id: "shard_test_user",
@@ -1054,6 +1326,435 @@ describe("PatreonFuncs Module", () => {
         });
     });
 
+    describe("processShardPatron() channel rank anchoring + payout self-heal", () => {
+        // File-unique ally codes so parallel test files don't collide on shared collections
+        const A_ANCHOR = 888777670;
+        const A_FAIL = 888777671;
+        const A_WARN = 888777672;
+        const A_FRESH = 888777673;
+        const A_FILTERED = 888777674;
+        const A_DISABLED = 888777675;
+        const A_STALE_WARN = 888777676;
+        const A_FOOTER = 888777677;
+        const A_REPORT_NONE = 888777678;
+        const A_FLEET_OFF = 888777679;
+        const A_GONE_CHAN = 888777680;
+        const A_RECOVER = 888777681;
+        let awFuncs: PatreonFuncs;
+        let sent: string[];
+        let sendOk: boolean;
+
+        before(() => {
+            sent = [];
+            sendOk = true;
+            const fakeChannel = {
+                type: 0,
+                permissionsFor: () => ({ has: () => true }),
+                send: async (payload: string) => {
+                    if (!sendOk) throw new Error("send failed");
+                    sent.push(payload);
+                    return { id: "m1" };
+                },
+            };
+            const channelsCache = { get: (id: string) => (id === "aw-chan" ? fakeChannel : undefined) };
+            const awClient = {
+                user: { id: "bot123" },
+                channels: { cache: channelsCache },
+                shard: {
+                    broadcastEval: async (fn: (client: unknown, ctx: unknown) => unknown, opts: { context: unknown }) => [
+                        await fn({ channels: { cache: channelsCache }, user: { id: "bot123" } }, opts.context),
+                    ],
+                },
+            } as unknown as Client<true>;
+            awFuncs = new PatreonFuncs();
+            awFuncs.init(awClient);
+        });
+
+        beforeEach(() => {
+            sent.length = 0;
+            sendOk = true;
+        });
+
+        const mkUser = (id: string, entry: Record<string, unknown>, awExtra: Record<string, unknown> = {}) =>
+            ({
+                id,
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [entry],
+                    arena: { char: { channel: "aw-chan", enabled: true }, fleet: { channel: null, enabled: false } },
+                    payout: { char: { enabled: false, channel: null, msgID: null }, fleet: { enabled: false, channel: null, msgID: null } },
+                    ...awExtra,
+                },
+            }) as unknown as UserConfig;
+
+        it("anchors on last-announced, shows the net change, and flags a missed span", async () => {
+            // lastCharAnnounced 5, but the observed rank already advanced to 8 (a prior send failed)
+            const user = mkUser("anchor_user", { allyCode: A_ANCHOR, mention: null, poOffset: 0, lastCharAnnounced: 5 });
+            const patron: ActivePatron = { discordID: "anchor_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_ANCHOR, { allyCode: A_ANCHOR, name: "Anchored", lastCharRank: 8 }]]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_ANCHOR, { name: "Anchored", allyCode: A_ANCHOR, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+            ]);
+
+            const changed = await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+
+            const text = sent.join("\n");
+            assert.ok(text.includes("dropped from 5 to 8"), `expected the net change 5->8: ${text}`);
+            assert.ok(text.includes("net change"), `expected the missed-updates footer: ${text}`);
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 8, "a delivered alert advances last-announced");
+            assert.strictEqual(changed, true);
+        });
+
+        it("does not advance last-announced when the channel send fails", async () => {
+            const user = mkUser("anchorfail_user", { allyCode: A_FAIL, mention: null, poOffset: 0 });
+            const patron: ActivePatron = { discordID: "anchorfail_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_FAIL, { allyCode: A_FAIL, name: "FailSend", lastCharRank: 5 }]]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_FAIL, { name: "FailSend", allyCode: A_FAIL, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+            ]);
+
+            sendOk = false;
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+
+            // A failed send freezes last-announced at the anchor (5), NOT the new rank (8), so the
+            // next tick still sees 8 !== 5 and re-alerts - the change isn't silently dropped.
+            assert.strictEqual(
+                user.arenaWatch.allyCodes[0].lastCharAnnounced,
+                5,
+                "a failed send must leave last-announced at the anchor so the change is retried next tick",
+            );
+
+            // Prove the retry: same change, send now succeeds -> re-alerts and advances to 8
+            sendOk = true;
+            sent.length = 0;
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+            assert.ok(sent.join("\n").includes("from 5 to 8"), "the previously-failed change must be retried on the next tick");
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 8, "a delivered retry advances last-announced");
+        });
+
+        it("advances last-announced when no shard can post to the channel at all", async () => {
+            // A channel no shard can see (deleted, bot kicked, ViewChannel revoked) is not a
+            // delivery failure to retry - there is nothing to retry against. Holding the anchor
+            // here would rebuild and re-broadcast the same alert every tick forever, since nothing
+            // about a missing channel changes on its own.
+            const user = mkUser(
+                "gonechan_user",
+                { allyCode: A_GONE_CHAN, mention: null, poOffset: 0 },
+                { arena: { char: { channel: "gone-chan", enabled: true }, fleet: { channel: null, enabled: false } } },
+            );
+            const patron: ActivePatron = { discordID: "gonechan_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_GONE_CHAN, { allyCode: A_GONE_CHAN, name: "GoneChan", lastCharRank: 5 }]]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [
+                    A_GONE_CHAN,
+                    { name: "GoneChan", allyCode: A_GONE_CHAN, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 },
+                ],
+            ]);
+
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+
+            assert.strictEqual(sent.length, 0, "nothing can be sent to a channel no shard can see");
+            assert.strictEqual(
+                user.arenaWatch.allyCodes[0].lastCharAnnounced,
+                8,
+                "an undeliverable channel must still close out the rank span, or it re-alerts every tick forever",
+            );
+
+            // Prove it terminates: the rank has not moved, so the next tick has nothing to say
+            const secondUser = mkUser(
+                "gonechan_user",
+                { allyCode: A_GONE_CHAN, mention: null, poOffset: 0, lastCharAnnounced: 8 },
+                { arena: { char: { channel: "gone-chan", enabled: true }, fleet: { channel: null, enabled: false } } },
+            );
+            const changed = await (awFuncs as any).processShardPatron(
+                patron,
+                secondUser,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+            assert.strictEqual(changed, false, "a settled anchor on a dead channel must stop dirtying the user doc");
+        });
+
+        it("resumes alerting as soon as a previously undeliverable channel works again", async () => {
+            // Nothing about an undeliverable channel is latched: availability is re-tested inside
+            // broadcastEval on every send, so restoring the channel (or the bot's permissions) needs
+            // no intervention. The cost of advancing the anchor while it was dead is only that the
+            // changes from that period aren't replayed - alerting itself resumes on the next change.
+            const entry = { allyCode: A_RECOVER, mention: null, poOffset: 0 };
+            const user = mkUser(
+                "recover_user",
+                entry,
+                { arena: { char: { channel: "gone-chan", enabled: true }, fleet: { channel: null, enabled: false } } },
+            );
+            const patron: ActivePatron = { discordID: "recover_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_RECOVER, { allyCode: A_RECOVER, name: "Recover", lastCharRank: 5 }]]);
+            const mkPlayerMap = (rank: number) =>
+                new Map<number, PlayerArenaRes>([
+                    [A_RECOVER, { name: "Recover", allyCode: A_RECOVER, arena: { char: { rank }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                ]);
+
+            // While the channel is unreachable the anchor still tracks forward
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                mkPlayerMap(8),
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+            assert.strictEqual(sent.length, 0, "nothing delivered while the channel was unreachable");
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 8);
+
+            // Perms restored: point the same watch entry at a channel the shard can see. The next
+            // rank change must deliver, with no cooldown or manual reset in between.
+            user.arenaWatch.arena.char.channel = "aw-chan";
+            arenaPlayerMap.set(A_RECOVER, { allyCode: A_RECOVER, name: "Recover", lastCharRank: 8 });
+
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                mkPlayerMap(3),
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+            assert.ok(sent.join("\n").includes("from 8 to 3"), `alerts must resume immediately: ${sent.join("\n")}`);
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 3, "and the anchor tracks the delivered rank again");
+        });
+
+        it("does not alert on a brand-new account with no prior rank (no 'rank 0' noise)", async () => {
+            // No arenaPlayers doc and no prior announce => anchor is 0; the rank line must be suppressed
+            const user = mkUser("fresh_user", { allyCode: A_FRESH, mention: null, poOffset: 0 });
+            const patron: ActivePatron = { discordID: "fresh_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>();
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_FRESH, { name: "FreshAcct", allyCode: A_FRESH, arena: { char: { rank: 7 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+
+            assert.ok(!sent.join("\n").includes("from 0 to"), `must not emit a 'rank 0 -> X' alert: ${sent.join("\n")}`);
+            assert.strictEqual(sent.length, 0, "a first-observation with no baseline should send nothing");
+            // The observed rank still persists so the next real change has a baseline
+            assert.strictEqual(arenaPlayerMap.get(A_FRESH)?.lastCharRank, 7, "observed rank is still recorded for next time");
+        });
+
+        it("advances last-announced for a change report=drop filtered out, instead of wedging the anchor", async () => {
+            // report: "drop" means climbs are deliberately not posted. That is NOT a delivery
+            // failure, so the anchor must still move - otherwise every later drop is measured from
+            // a rank the watcher moved past long ago, and while the anchor stays above the current
+            // rank every change reads as a climb and is filtered too, silencing the account for good.
+            const user = mkUser("filtered_user", { allyCode: A_FILTERED, mention: null, poOffset: 0, lastCharAnnounced: 5 }, { report: "drop" });
+            const patron: ActivePatron = { discordID: "filtered_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_FILTERED, { allyCode: A_FILTERED, name: "Filtered", lastCharRank: 5 }],
+            ]);
+
+            // Climb 5 -> 2: filtered out by report=drop, so nothing is sent
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                new Map<number, PlayerArenaRes>([
+                    [A_FILTERED, { name: "Filtered", allyCode: A_FILTERED, arena: { char: { rank: 2 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                ]),
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+            assert.strictEqual(sent.length, 0, "a climb must not be posted when report=drop");
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 2, "an unposted (filtered) change must still move the anchor");
+
+            // Now a real drop 2 -> 3: reported against the current rank, not the stale 5
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                new Map<number, PlayerArenaRes>([
+                    [A_FILTERED, { name: "Filtered", allyCode: A_FILTERED, arena: { char: { rank: 3 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                ]),
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
+            const text = sent.join("\n");
+            assert.ok(text.includes("dropped from 2 to 3"), `expected the drop measured from the current rank: ${text}`);
+            assert.ok(!text.includes("net change"), `a filtered climb is not a missed update: ${text}`);
+        });
+
+        it("does not track an announce anchor for an arena whose channel alerts are off", async () => {
+            // char alerts disabled (fleet on, so the function still runs): no char alert can ever be
+            // posted, so writing an anchor would only churn the user doc on every rank change and
+            // skew the first alert if they re-enable it
+            const user = mkUser(
+                "disabled_user",
+                { allyCode: A_DISABLED, mention: null, poOffset: 0 },
+                { arena: { char: { channel: "aw-chan", enabled: false }, fleet: { channel: "aw-fleet-chan", enabled: true } } },
+            );
+            const patron: ActivePatron = { discordID: "disabled_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_DISABLED, { allyCode: A_DISABLED, name: "Disabled", lastCharRank: 5 }]]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_DISABLED, { name: "Disabled", allyCode: A_DISABLED, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+
+            assert.strictEqual(sent.length, 0, "nothing should be posted for a disabled arena");
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, undefined, "no anchor should be recorded when alerts are off");
+            assert.strictEqual(arenaPlayerMap.get(A_DISABLED)?.lastCharRank, 8, "the observed rank is still tracked");
+        });
+
+        it("fires a channel payout warning late in the window and dedups per cycle", async () => {
+            const now = Date.now();
+            const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
+            // Char payout (~18h offset) ~29 min out => inside a 30-minute warn window
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 29 * 60000) / 60000;
+            const user = mkUser("chanwarn_user", { allyCode: A_WARN, mention: null, poOffset, warn: { min: 30, arena: "char" } });
+            const patron: ActivePatron = { discordID: "chanwarn_user", amount_cents: 100 };
+            // Stable rank so no rank-change line pollutes the assertions
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_WARN, { allyCode: A_WARN, name: "Warned", lastCharRank: 5, lastCharAnnounced: 5 }]]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_WARN, { name: "Warned", allyCode: A_WARN, arena: { char: { rank: 5 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+            assert.ok(sent.join("\n").includes("**character** arena payout is in"), "the warning should fire even past the exact minute");
+            assert.strictEqual(typeof user.arenaWatch.allyCodes[0].alerted?.charWarn, "number", "the warn cycle marker should be recorded");
+
+            // A minute later in the same cycle - must not resend
+            sent.length = 0;
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now + 60000);
+            assert.ok(!sent.join("\n").includes("payout is in"), "the warning must not resend within the same payout cycle");
+        });
+
+        it("does not fire a stale channel payout warning long past its window", async () => {
+            const now = Date.now();
+            const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
+            // Char payout only 5 min out, but the watcher asked for a 30-minute warning. We were
+            // down through minute 30, so warning now would read "payout is in 5 minutes" as if it
+            // were the 30-minute heads-up - worse than skipping the cycle.
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 5 * 60000) / 60000;
+            const user = mkUser("stalewarn_user", { allyCode: A_STALE_WARN, mention: null, poOffset, warn: { min: 30, arena: "char" } });
+            const patron: ActivePatron = { discordID: "stalewarn_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_STALE_WARN, { allyCode: A_STALE_WARN, name: "StaleWarn", lastCharRank: 5, lastCharAnnounced: 5 }],
+            ]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_STALE_WARN, { name: "StaleWarn", allyCode: A_STALE_WARN, arena: { char: { rank: 5 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+
+            assert.strictEqual(sent.length, 0, `a warning 25 min past its window must be skipped: ${sent.join("\n")}`);
+            assert.strictEqual(user.arenaWatch.allyCodes[0].alerted?.charWarn, undefined, "no marker should be written for a skipped warning");
+        });
+
+        it("keeps payout warn/result in the arena log channel when report=none silences rank changes", async () => {
+            const now = Date.now();
+            const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 29 * 60000) / 60000;
+            // report=none: the rank moved 5 -> 2, but only the payout warning should be posted, and
+            // it goes to the same arena log channel - never to another channel.
+            const user = mkUser(
+                "reportnone_user",
+                { allyCode: A_REPORT_NONE, mention: null, poOffset, lastCharAnnounced: 5, warn: { min: 30, arena: "char" } },
+                { report: "none" },
+            );
+            const patron: ActivePatron = { discordID: "reportnone_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_REPORT_NONE, { allyCode: A_REPORT_NONE, name: "NoReport", lastCharRank: 5 }],
+            ]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_REPORT_NONE, { name: "NoReport", allyCode: A_REPORT_NONE, arena: { char: { rank: 2 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+
+            const text = sent.join("\n");
+            assert.ok(text.includes("**character** arena payout is in"), `the payout warning must still be delivered: ${text}`);
+            assert.ok(!text.includes("climbed"), `report=none must silence rank-change lines: ${text}`);
+            assert.ok(!text.includes("dropped"), `report=none must silence rank-change lines: ${text}`);
+            // No rank alerts can ever be posted, so no announce anchor should be written - otherwise
+            // every rank change would churn the user doc for lines this watcher never receives
+            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 5, "report=none must not move the announce anchor");
+            // The observed rank still tracks, so history and the DM path stay correct
+            assert.strictEqual(arenaPlayerMap.get(A_REPORT_NONE)?.lastCharRank, 2, "the observed rank is still recorded");
+        });
+
+        it("drops payout warn/result for an arena whose log is disabled, rather than posting it elsewhere", async () => {
+            const now = Date.now();
+            const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
+            // Fleet payout (~19h offset) ~29 min out, with a fleet warn configured - but the fleet
+            // log is off. Char shares the same channel, which used to smuggle the fleet line out
+            // through the combined-channel send path.
+            const poOffset = (midnightUTC + 19 * 60 * 60 * 1000 - now - 29 * 60000) / 60000;
+            const user = mkUser(
+                "fleetoff_user",
+                { allyCode: A_FLEET_OFF, mention: null, poOffset, warn: { min: 30, arena: "fleet" } },
+                { arena: { char: { channel: "aw-chan", enabled: true }, fleet: { channel: "aw-chan", enabled: false } } },
+            );
+            const patron: ActivePatron = { discordID: "fleetoff_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_FLEET_OFF, { allyCode: A_FLEET_OFF, name: "FleetOff", lastCharRank: 5, lastShipRank: 4, lastCharAnnounced: 5 }],
+            ]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_FLEET_OFF, { name: "FleetOff", allyCode: A_FLEET_OFF, arena: { char: { rank: 5 }, ship: { rank: 4 } }, poUTCOffsetMinutes: poOffset }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+
+            assert.ok(!sent.join("\n").includes("**fleet** arena payout"), `a disabled fleet log must not post fleet lines: ${sent.join("\n")}`);
+            assert.strictEqual(user.arenaWatch.allyCodes[0].alerted?.fleetWarn, undefined, "no marker for a line that was never sent");
+        });
+
+        it("omits the missed-updates footer when no rank line survived the report filter", async () => {
+            const now = Date.now();
+            const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
+            const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 29 * 60000) / 60000;
+            // Announced 5, observed already 8 (a prior send failed) => the change is "missed". But
+            // the current rank 2 reads as a climb off the anchor, which report=drop filters out. The
+            // message that goes out carries only the payout warning, so there are no net-change
+            // numbers for the footer to caveat.
+            const user = mkUser(
+                "footer_user",
+                { allyCode: A_FOOTER, mention: null, poOffset, lastCharAnnounced: 5, warn: { min: 30, arena: "char" } },
+                { report: "drop" },
+            );
+            const patron: ActivePatron = { discordID: "footer_user", amount_cents: 100 };
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_FOOTER, { allyCode: A_FOOTER, name: "Footer", lastCharRank: 8 }]]);
+            const playerMap = new Map<number, PlayerArenaRes>([
+                [A_FOOTER, { name: "Footer", allyCode: A_FOOTER, arena: { char: { rank: 2 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+            ]);
+
+            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+
+            const text = sent.join("\n");
+            assert.ok(text.includes("payout is in"), `the payout warning should still be posted: ${text}`);
+            assert.ok(!text.includes("net change"), `no rank line survived, so the footer must be omitted: ${text}`);
+        });
+    });
+
     describe("formatPayouts()", () => {
         it("does not crash when a player has no stored rank and renders N/A", () => {
             const players = [
@@ -1081,9 +1782,13 @@ describe("PatreonFuncs Module", () => {
         const ST_USER_ID = "shardtimes_test_user";
         let stFuncs: PatreonFuncs;
         let sentPayloads: { embeds?: { fields?: { name: string; value: string }[] }[] }[];
+        // Runs inside the channel send - after shardTimes has loaded the user doc, before it
+        // persists. Lets a test interleave the concurrent write that arenaTick really does.
+        let onSend: (() => Promise<void>) | null;
 
         before(() => {
             sentPayloads = [];
+            onSend = null;
             const fakeChannel = {
                 id: "st-chan",
                 type: 0,
@@ -1091,6 +1796,7 @@ describe("PatreonFuncs Module", () => {
                 permissionsFor: () => ({ has: () => true }),
                 send: async (payload: (typeof sentPayloads)[number]) => {
                     sentPayloads.push(payload);
+                    await onSend?.();
                     return { id: "st-msg-1" };
                 },
             };
@@ -1113,6 +1819,7 @@ describe("PatreonFuncs Module", () => {
 
         beforeEach(async () => {
             sentPayloads.length = 0;
+            onSend = null;
             await client.db(testDbName).collection("users").deleteMany({ id: ST_USER_ID });
             await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: ST_ALLY_CODE });
         });
@@ -1156,6 +1863,58 @@ describe("PatreonFuncs Module", () => {
             assert.ok(field, "expected a payout field in the embed");
             assert.ok(field.value.includes("Hydrated"), `expected hydrated name, got: ${field.value}`);
             assert.ok(field.value.includes("7"), `expected hydrated char rank, got: ${field.value}`);
+        });
+
+        it("persists the payout msgID without clobbering markers arenaTick wrote meanwhile", async () => {
+            // shardTimes (5-minute interval) and arenaTick (1-minute interval) run on separate
+            // timers and each load their own copy of the user doc. shardTimes only ever needs to
+            // save the payout msgIDs, so its write must not carry a stale arenaWatch subtree back
+            // over the per-cycle alert markers arenaTick persisted after shardTimes loaded -
+            // rolling those back re-fires the payout warn/result that was already sent.
+            const patron: ActivePatron = { discordID: ST_USER_ID, amount_cents: 100 };
+            await cache.put(testDbName, "patrons", { discordID: ST_USER_ID }, patron);
+
+            const user = {
+                id: ST_USER_ID,
+                accounts: [],
+                arenaWatch: {
+                    allyCodes: [{ allyCode: ST_ALLY_CODE, mention: null, poOffset: 0 }],
+                    arena: { char: { channel: null, enabled: false }, fleet: { channel: null, enabled: false } },
+                    payout: {
+                        char: { enabled: true, channel: "st-chan", msgID: null },
+                        fleet: { enabled: false, channel: null, msgID: null },
+                    },
+                },
+            } as unknown as UserConfig;
+            await cache.put(testDbName, "users", { id: ST_USER_ID }, user);
+
+            // Land arenaTick's write in the gap between shardTimes' read and its own write
+            onSend = async () => {
+                await client
+                    .db(testDbName)
+                    .collection("users")
+                    .updateOne(
+                        { id: ST_USER_ID },
+                        {
+                            $set: {
+                                "arenaWatch.allyCodes.0.alerted": { charWarn: 1234, charResult: 5678 },
+                                "arenaWatch.allyCodes.0.lastCharAnnounced": 12,
+                            },
+                        },
+                    );
+            };
+
+            await stFuncs.shardTimes();
+
+            const saved = (await client.db(testDbName).collection("users").findOne({ id: ST_USER_ID })) as unknown as UserConfig | null;
+            const entry = saved?.arenaWatch?.allyCodes?.[0];
+            assert.deepStrictEqual(
+                entry?.alerted,
+                { charWarn: 1234, charResult: 5678 },
+                "shardTimes must not roll back the payout markers arenaTick wrote",
+            );
+            assert.strictEqual(entry?.lastCharAnnounced, 12, "shardTimes must not roll back the last-announced rank");
+            assert.strictEqual(saved?.arenaWatch?.payout?.char?.msgID, "st-msg-1", "shardTimes must still persist the payout msgID");
         });
     });
 });
@@ -1362,5 +2121,95 @@ describe("collectAllyCodes()", () => {
         const patrons: ActivePatron[] = [{ discordID: "ghost", amount_cents: 100 }];
         const userMap = new Map<string, UserConfig>();
         assert.deepStrictEqual(collectAllyCodes(patrons, userMap), []);
+    });
+});
+
+describe("payoutCycleInfo()", () => {
+    const now = 1_000_000_000_000;
+    const { dayMS, minMS } = constants;
+
+    it("derives minTil by flooring the minutes until payout", () => {
+        assert.strictEqual(payoutCycleInfo(now, 30 * minMS).minTil, 30);
+        assert.strictEqual(payoutCycleInfo(now, 90 * 1000).minTil, 1, "90s floors to 1 minute");
+        assert.strictEqual(payoutCycleInfo(now, 0).minTil, 0);
+    });
+
+    it("reports the upcoming and just-passed payout instants", () => {
+        const info = payoutCycleInfo(now, 30 * minMS);
+        assert.strictEqual(info.nextPayout, now + 30 * minMS, "nextPayout is now + timeLeft");
+        assert.strictEqual(info.lastPayout, now + 30 * minMS - dayMS, "lastPayout is one cycle before nextPayout");
+    });
+
+    it("flags justAfterPayout only within the window following payout", () => {
+        // timeLeft near a full day == payout just happened
+        assert.strictEqual(payoutCycleInfo(now, dayMS - 2 * minMS).justAfterPayout, true, "2 min after payout is inside the window");
+        assert.strictEqual(payoutCycleInfo(now, dayMS - 5 * minMS).justAfterPayout, true, "exactly at the window edge counts");
+        assert.strictEqual(payoutCycleInfo(now, dayMS - 6 * minMS).justAfterPayout, false, "past the window does not");
+        // small timeLeft == payout is still upcoming, not just after
+        assert.strictEqual(payoutCycleInfo(now, 30 * minMS).justAfterPayout, false, "before payout is never justAfter");
+    });
+});
+
+// Separates "the send broke, try again" from "this target refuses the message as a matter of
+// configuration". Only the latter may close out an alert cycle without the message landing.
+describe("classifySendError()", () => {
+    it("treats blocked DMs and missing permissions as undeliverable", () => {
+        for (const code of [10003, 10013, 50001, 50007, 50013]) {
+            assert.strictEqual(
+                classifySendError(Object.assign(new Error("nope"), { code })),
+                "undeliverable",
+                `Discord code ${code} cannot succeed on a retry`,
+            );
+        }
+    });
+
+    it("treats an error with no Discord code as transient", () => {
+        assert.strictEqual(classifySendError(new Error("socket hang up")), "failed");
+        assert.strictEqual(classifySendError("some string"), "failed");
+        assert.strictEqual(classifySendError(null), "failed");
+    });
+
+    it("treats an unrecognised Discord code as transient", () => {
+        // 500xx is a broad space; only the codes we have reasoned about may suppress a retry
+        assert.strictEqual(classifySendError(Object.assign(new Error("boom"), { code: 50035 })), "failed");
+    });
+
+    it("does not treat a string code as a Discord error code", () => {
+        // Node network errors use string codes (ECONNRESET); those are transient
+        assert.strictEqual(classifySendError(Object.assign(new Error("reset"), { code: "ECONNRESET" })), "failed");
+    });
+});
+
+describe("isInWarnWindow()", () => {
+    it("fires at the configured warn minute", () => {
+        assert.strictEqual(isInWarnWindow(30, 30), true);
+    });
+
+    it("catches up a few missed minutes so a dropped tick still warns", () => {
+        assert.strictEqual(isInWarnWindow(29, 30), true, "one missed tick still warns");
+        assert.strictEqual(isInWarnWindow(26, 30), true, "the far edge of the catch-up window still warns");
+    });
+
+    it("does not fire arbitrarily late after a long gap", () => {
+        // The bound is what stops an outage (or a watcher with no marker yet) from firing
+        // "your payout is in 5 minutes" as the 30-minute warning at whatever minute we came back on
+        assert.strictEqual(isInWarnWindow(25, 30), false, "past the catch-up window is too stale to warn");
+        assert.strictEqual(isInWarnWindow(5, 30), false);
+    });
+
+    it("never fires before the warn minute or after payout", () => {
+        assert.strictEqual(isInWarnWindow(31, 30), false, "too early");
+        assert.strictEqual(isInWarnWindow(0, 30), false, "payout has passed");
+    });
+
+    it("treats a disabled/unset warn minute as off", () => {
+        assert.strictEqual(isInWarnWindow(10, 0), false);
+        assert.strictEqual(isInWarnWindow(10, undefined), false);
+    });
+
+    it("clamps the catch-up window at payout for warn minutes shorter than it", () => {
+        assert.strictEqual(isInWarnWindow(3, 3), true);
+        assert.strictEqual(isInWarnWindow(1, 3), true, "still before payout, so still warnable");
+        assert.strictEqual(isInWarnWindow(0, 3), false, "payout has passed");
     });
 });

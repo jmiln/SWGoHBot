@@ -107,6 +107,32 @@ describe("UserReg Module", () => {
         });
     });
 
+    describe("updateUserFields()", () => {
+        it("writes only the named paths, leaving the rest of the document alone", async () => {
+            const config = makeUserConfig("user-fields-1", 555444333);
+            await userReg.updateUser("user-fields-1", config);
+
+            await userReg.updateUserFields("user-fields-1", { "arenaAlert.payoutWarning": 15 });
+
+            const fetched = await userReg.getUser("user-fields-1");
+            assert.ok(fetched, "Expected user to exist");
+            assert.strictEqual(fetched.arenaAlert.payoutWarning, 15, "the named path is written");
+            assert.strictEqual(fetched.arenaAlert.arena, "none", "sibling fields are untouched");
+            assert.deepStrictEqual(fetched.accounts, [555444333], "unrelated top-level fields are untouched");
+        });
+
+        it("does not create a document when the user is gone", async () => {
+            // The caller loaded a user that has since been deregistered. Upserting here would build
+            // a document out of the filter plus the dotted paths - no accounts, no arenaAlert - and
+            // nothing validates user documents on read, so it would sit there malformed rather than
+            // failing loudly.
+            await userReg.updateUserFields("user-fields-missing", { "arenaWatch.payout.char.msgID": "msg-1" });
+
+            const fetched = await userReg.getUser("user-fields-missing");
+            assert.strictEqual(fetched, null, "a targeted field write must not resurrect a deleted user");
+        });
+    });
+
     describe("removeAllyCode()", () => {
         it("removes the specified ally code from the user", async () => {
             const config = makeUserConfig("user-rem-ac-1", 321654987);
@@ -152,6 +178,40 @@ describe("UserReg Module", () => {
             assert.ok(fetched, "Expected user to still exist");
             assert.strictEqual(fetched.accounts.length, 1, "Should still have 1 account");
             assert.strictEqual(fetched.accounts[0], 222222222, "Remaining account should be 222222222");
+        });
+
+        it("drops the account's payout alert markers so a relink starts clean", async () => {
+            // arenaAlert.alerted is keyed by ally code and records the payout cycle each DM alert
+            // last fired for. Unlinking leaves those entries behind forever, and if the same code
+            // is relinked inside the cycle a surviving marker suppresses that cycle's alert.
+            const config: UserConfig = {
+                id: "user-rem-ac-5",
+                accounts: [111111111, 222222222],
+                primaryAllyCode: 111111111,
+                arenaAlert: {
+                    enableRankDMs: "off",
+                    arena: "none",
+                    payoutWarning: 0,
+                    enablePayoutResult: false,
+                    alerted: {
+                        "111111111": { charWarn: 1234, charResult: 5678 },
+                        "222222222": { fleetWarn: 4321 },
+                    },
+                },
+                lang: { language: null, swgohLanguage: null },
+            } as unknown as UserConfig;
+            await userReg.updateUser("user-rem-ac-5", config);
+
+            await userReg.removeAllyCode("user-rem-ac-5", 111111111);
+
+            const fetched = await userReg.getUser("user-rem-ac-5");
+            assert.ok(fetched, "Expected user to still exist");
+            assert.strictEqual(fetched.arenaAlert.alerted?.["111111111"], undefined, "the removed code's markers must be dropped");
+            assert.deepStrictEqual(
+                fetched.arenaAlert.alerted?.["222222222"],
+                { fleetWarn: 4321 },
+                "a still-linked account's markers must be left alone",
+            );
         });
 
         it("updates primaryAllyCode when the primary account is removed", async () => {
