@@ -3,6 +3,7 @@ import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
+import { PRIORITY, type Priority } from "../data/constants/swapiServe.ts";
 import patreonModule from "../data/patreon.ts";
 import type { RawGuild, SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type {
@@ -370,7 +371,9 @@ class PatreonFuncs {
         this.client = client;
     }
 
-    private async buildPlayerMap(allyCodes: number[]): Promise<Map<number, PlayerArenaRes>> {
+    // Priority is required rather than defaulted: arenaTick and shardTimes both use this, and
+    // they sit in different tiers because only one of them loses data by being late.
+    private async buildPlayerMap(allyCodes: number[], priority: Priority): Promise<Map<number, PlayerArenaRes>> {
         const map = new Map<number, PlayerArenaRes>();
         if (!allyCodes.length) return map;
         const chunks = chunkArray(allyCodes, 50);
@@ -378,7 +381,7 @@ class PatreonFuncs {
             let attempts = 0;
             while (attempts < 3) {
                 try {
-                    const results = await swgohAPI.getPlayersArena(chunk);
+                    const results = await swgohAPI.getPlayersArena(chunk, priority);
                     for (const player of results ?? []) {
                         map.set(player.allyCode, player);
                     }
@@ -442,6 +445,19 @@ class PatreonFuncs {
     //      * Give them the best lowered times available to them
     //  - If the user isn't a subscriber, and no one in their server selected it
     //      * Give them the defaults set in the data/patreon.js file
+    /**
+     * The queue tier a user-initiated command should run at.
+     *
+     * Both signals are checked, matching getPlayerCooldown: the caller may be a patron
+     * themselves, or may be in a server someone else selected as their bonus server. Missing the
+     * second case would put a supporter's whole guild on the public tier.
+     */
+    async commandPriority(userId: string, guildId?: string): Promise<Priority> {
+        if (await this.getPatronUser(userId)) return PRIORITY.SUPPORTER_COMMAND;
+        const supporterTier = await getGuildSupporterTier({ guildId });
+        return supporterTier > 0 ? PRIORITY.SUPPORTER_COMMAND : PRIORITY.PUBLIC_COMMAND;
+    }
+
     async getPlayerCooldown(userId: string, guildId?: string): Promise<{ player: number; guild: number }> {
         const patron = await this.getPatronUser(userId);
 
@@ -592,7 +608,10 @@ class PatreonFuncs {
         const eligibleIds = patrons.filter((p) => p.amount_cents >= TIER_1_CENTS).map((p) => p.discordID);
         const userMap = await userReg.getUsersByIds(eligibleIds);
         const allyCodes = collectAllyCodes(patrons, userMap);
-        const playerMap = await this.buildPlayerMap(allyCodes);
+        // Top tier: a tick that runs past its minute trips the arenaTickRunning guard in
+        // clientReady, and because the payout cycle and the poll interval are exact multiples,
+        // the same minute is then lost every day for whichever accounts pay out in it.
+        const playerMap = await this.buildPlayerMap(allyCodes, PRIORITY.ARENA_TICK);
         const arenaPlayerMap = await arenaPlayerRegistry.batchGet(allyCodes);
         // Freeze the tick-start ranks before any consumer mutates the shared docs, so every
         // patron tracking an account sees the same rank change
@@ -1096,7 +1115,7 @@ class PatreonFuncs {
             // Get any updates for the guild
             let guild: SWAPIGuild | null = null;
             try {
-                guild = await swgohAPI.guild(gu.allyCode);
+                guild = await swgohAPI.guild(gu.allyCode, undefined, PRIORITY.BACKGROUND);
             } catch (err) {
                 const errStr = err instanceof Error ? err.message : String(err);
                 if (errStr.includes("not in a guild")) continue;
@@ -1116,7 +1135,10 @@ class PatreonFuncs {
                     logger.error(`[patreonFuncs/guildsUpdate] Cannot get the roster for ${gu.allyCode}`);
                     continue;
                 }
-                guildLog = await swgohAPI.getPlayerUpdates(guild.roster.map((m) => m.allyCode).filter((a): a is number => a != null));
+                guildLog = await swgohAPI.getPlayerUpdates(
+                    guild.roster.map((m) => m.allyCode).filter((a): a is number => a != null),
+                    PRIORITY.BACKGROUND,
+                );
             } catch (err) {
                 logger.error(`[patreonFuncs/guildsUpdate] rosterLen: ${guild?.roster?.length}\n${err}`);
                 continue;
@@ -1210,7 +1232,7 @@ class PatreonFuncs {
             // Get any updates for the guild
             let rawGuild: RawGuild | null = null;
             try {
-                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, undefined, { forceUpdate: true });
+                rawGuild = await swgohAPI.getRawGuild(gt.allyCode, undefined, { forceUpdate: true, priority: PRIORITY.BACKGROUND });
             } catch (err) {
                 const errStr = err instanceof Error ? err.message : String(err);
                 if (errStr.includes("not in a guild")) continue;
@@ -1761,8 +1783,11 @@ export async function fetchPlayerWithCooldown(
     allyCode: number | string,
 ): Promise<SWAPIPlayer | null> {
     const cooldown = await patreonFuncs.getPlayerCooldown(interaction.user.id, interaction?.guild?.id);
+    // Every command that fetches a player goes through here, so tiering it here is what gets
+    // supporters served ahead of everyone else without touching all 47 command files.
+    const priority = await patreonFuncs.commandPriority(interaction.user.id, interaction?.guild?.id);
     try {
-        return await swgohAPI.player(allyCode, cooldown);
+        return await swgohAPI.player(allyCode, cooldown, priority);
     } catch (e) {
         logger.error(`[fetchPlayerWithCooldown] Error fetching player ${allyCode}: ${e}`);
         return null;

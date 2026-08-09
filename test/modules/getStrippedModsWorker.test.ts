@@ -127,25 +127,26 @@ describe("fetchPlayerData", () => {
         assert.strictEqual(result, undefined);
     });
 
-    it("retries on 502 and returns data on the second attempt", async () => {
-        const payload = { rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed"])] };
-        const stub = makeRetryStub(1, make502Error(), payload);
+    // The worker used to retry 502/503 twice itself. That retry moved to swapiServe, which sees
+    // every call and can pace retries against a shared budget. Keeping both would have stacked
+    // multiplicatively: three worker attempts times three service attempts is up to nine upstream
+    // calls for one player, amplifying load exactly when the backend is already struggling.
+    it("does not retry a 502 itself, leaving retry to swapiServe", async () => {
+        const stub = makeRetryStub(1, make502Error(), { rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed"])] });
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000);
 
-        assert.strictEqual(result?.length, 1);
-        assert.strictEqual(result?.[0].defId, "DARTHVADER");
-        assert.strictEqual(stub.calls(), 2);
+        assert.strictEqual(result, undefined, "the failure should surface rather than being retried here");
+        assert.strictEqual(stub.calls(), 1, "exactly one upstream call per task");
     });
 
-    it("gives up after max retries and returns undefined", async () => {
+    it("makes a single call for a persistently failing player", async () => {
         const stub = makeRetryStub(99, make502Error(), null);
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000);
 
         assert.strictEqual(result, undefined);
-        // 1 initial attempt + 2 retries = 3 total
-        assert.strictEqual(stub.calls(), 3);
+        assert.strictEqual(stub.calls(), 1);
     });
 
     it("does not leave a pending timeout timer after resolving", async () => {

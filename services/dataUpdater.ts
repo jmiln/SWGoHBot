@@ -54,7 +54,8 @@ const MOD_WORKER_THREADS = numericArg("--mod-threads", Math.max(1, Math.min(avai
 const MOD_TASKS_PER_WORKER = numericArg("--mod-tasks", 1);
 const MOD_WORKER_HEAP_MB = numericArg("--worker-heap", 256);
 
-import ComlinkStub from "@swgoh-utils/comlink";
+import type ComlinkStub from "@swgoh-utils/comlink";
+import { resolveBulkStub } from "../modules/swapiQueue.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
 import type { DatacronFile } from "../types/datacron_types.ts";
 import type { HelpJSON } from "../types/help_types.ts";
@@ -228,11 +229,11 @@ async function init() {
         } else {
             logger.log("Skipping database cleanup (pass --cleanup to run it)");
         }
-        const comlinkStub = new ComlinkStub({
-            url: env.SWAPI_CLIENT_URL,
-            accessKey: env.SWAPI_ACCESS_KEY,
-            secretKey: env.SWAPI_SECRET_KEY,
-        });
+        // Every call this cycle makes goes through swapiServe at the bulk tier, so the nightly
+        // pull can never crowd out live commands or the arena payout tick. Resolved once because
+        // this is a single-cycle process; if swapiServe is down it falls back to calling comlink
+        // directly rather than failing the whole run.
+        const comlinkStub = await resolveBulkStub();
 
         // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
         // allocated. PM2 relaunches this daily via cron_restart (see ecosystem.config.cjs).
@@ -364,7 +365,10 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
     // Records which sets of mods each character has and the primary stats per slot.
     debugTime("Aggregating player mods");
     const modMap = await readJSON<ModMap>(path.join(DATA_DIR_PATH, "modMap.json"));
-    const unitsOut = await aggregatePlayerMods(playerIds, modMap);
+    // The workers run in their own threads and cannot see the stub resolved above, so the base
+    // URL it settled on is passed through: they inherit the same swapiServe-or-direct decision
+    // rather than each making their own.
+    const unitsOut = await aggregatePlayerMods(playerIds, modMap, comlinkStub.url);
     debugTimeEnd("Aggregating player mods");
 
     // Go through each character and find the most common versions of
@@ -572,7 +576,7 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
 // Fetch each player's stripped roster and fold its mods straight into the per-defId
 // aggregation as it arrives, so we never hold every player's units in memory at once.
 // Peak memory is bounded by the MAX_CONCURRENT in-flight rosters plus the small accumulator.
-async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise<UnitModAccumulator> {
+async function aggregatePlayerMods(playerIds: string[], modMap: ModMap, comlinkUrl: string): Promise<UnitModAccumulator> {
     debugLog(`Aggregating mods for ${playerIds.length} players (${MAX_CONCURRENT} at a time)`);
     const unitsOut: UnitModAccumulator = {};
 
@@ -589,6 +593,7 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
         maxThreads: MOD_WORKER_THREADS,
         concurrentTasksPerWorker: MOD_TASKS_PER_WORKER,
         resourceLimits: { maxOldGenerationSizeMb: MOD_WORKER_HEAP_MB },
+        workerData: { comlinkUrl },
     });
     logMem(
         `aggregatePlayerMods start (piscina threads=${piscina.threads.length}, tasksPerWorker=${MOD_TASKS_PER_WORKER}, heapCap=${MOD_WORKER_HEAP_MB}MB)`,

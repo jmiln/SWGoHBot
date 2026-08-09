@@ -1,12 +1,13 @@
 import os from "node:os";
 import { Worker } from "node:worker_threads";
-import ComlinkStub from "@swgoh-utils/comlink";
+import type ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
+import { PRIORITY, type Priority } from "../data/constants/swapiServe.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
-import { convertMS, readJSON, wait } from "../modules/functions.ts";
+import { convertMS, readJSON } from "../modules/functions.ts";
 import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type {
     ComlinkAbility,
@@ -34,6 +35,7 @@ import type {
 } from "../types/swapi_types.ts";
 import type { PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
+import { withStub } from "./swapiQueue.ts";
 
 // Shape of the raw comlink getGuild response as consumed by formatGuild.
 // The API returns far more; only the fields actually read are typed, the rest ride the index signatures.
@@ -66,11 +68,6 @@ const abilityCosts = await readJSON<Record<string, Record<string, number>>>(`${i
 // if (!config.backingServices.swapiClient || !config.credentials.swapi) {
 //     throw new Error("Missing SWAPI client config or credentials!");
 // }
-const comlinkStub = new ComlinkStub({
-    url: env.SWAPI_CLIENT_URL,
-    accessKey: env.SWAPI_ACCESS_KEY,
-    secretKey: env.SWAPI_SECRET_KEY,
-});
 
 // Minimal shapes for the JSON lookup maps -- only the fields the bot reads are typed; the index
 // signature keeps the rest of each entry's data accessible without enumerating it.
@@ -107,19 +104,11 @@ export const flatStats = [
     42, // defense
 ];
 
-const MAX_CONCURRENT = 20;
-
-// Per-player comlink fetches (arena profile, player) intermittently fail with transient
-// errors (502, timeouts, the generic "An error occurred" sentry message). Retry those a
-// couple of times before dropping the player - a single blip on a payout-minute tick was
-// permanently losing that player's arena alert. See isNonRetryableFetchError for the cases
-// that are dropped immediately instead.
-const FETCH_RETRIES = 2;
-const FETCH_RETRY_BASE_MS = 500;
-
-// 408 Request Timeout is the one 4xx that describes a transient condition rather than a
-// request the server will reject identically next time.
-const RETRYABLE_CLIENT_ERROR = 408;
+// The real concurrency limit now lives in swapiServe, which owns one global budget across every
+// shard and both updater services. This cap only bounds how many sockets and pending promises a
+// single batch parks while waiting its turn, so it is deliberately far above anything that would
+// bind in practice.
+const MAX_BATCH_IN_FLIGHT = 250;
 
 /**
  * Pulls the HTTP status off a thrown comlink/got error, or undefined when the failure carried
@@ -145,84 +134,26 @@ function describeFetchFailure(message: string, statusCode?: number): string {
     return statusCode ? `[${statusCode}] ${message}` : message;
 }
 
-// Errors where a retry cannot help and only costs us API budget:
-// - "Failed to find ally code <n>": a dead or renamed code never resolves.
-// - 429 / rate limited: the throttle is account-wide, not per-request (see the multi-IP
-//   experiment that failed to raise it), so retrying in-tick just deepens the hole - every
-//   failing ally code would triple its calls at exactly the moment we're over budget.
-// - Any other 4xx (bad request, auth, not found): the request itself is rejected, so the
-//   retry is rejected the same way. A rotated SWAPI_* credential fails this way for every
-//   watched account at once, which is exactly when the extra attempts plus backoff can push
-//   an arena tick past its minute.
-//
-// The status is read off the error object first (see getFetchErrorStatus); matching it out of
-// the message only works for errors comlink did not rewrite, which is why the rules above are
-// checked against the message before falling back to it.
-export function isNonRetryableFetchError(err: unknown): boolean {
-    const message = typeof err === "string" ? err : err instanceof Error ? err.message : String(err);
-    if (/failed to find ally code/i.test(message)) return true;
-    if (/too many requests|rate limit/i.test(message)) return true;
-    // Match the status only where it is labelled as one, so an ally code that happens to
-    // start with 4xx digits isn't read as a response code
-    const status = getFetchErrorStatus(err) ?? Number(message.match(/response code (\d{3})\b/i)?.[1]);
-    return status >= 400 && status < 500 && status !== RETRYABLE_CLIENT_ERROR;
-}
-
-// Retries allowed across one batch, shared by every call in it. Per-code retries are right for an
-// isolated blip, but they run inside eachLimit(MAX_CONCURRENT) where each backoff holds a
-// concurrency slot - and a comlink-wide outage (502s, timeouts) is transient by classification, so
-// every watched account would pay the full retries plus backoff at the same time. That stretches an
-// arena tick past its minute, and clientReady's arenaTickRunning guard then drops the entire next
-// minute. The ceiling scales with the batch so a large tick gets proportionally more slack, with a
-// floor so small batches still retry freely. Isolated failures never come close to it; only a
-// systemic outage exhausts it, which is exactly when the retries are pointless anyway.
-const RETRY_BUDGET_FRACTION = 0.25;
-const RETRY_BUDGET_MIN = 10;
-
-export type RetryBudget = { remaining: number };
-
-export function createRetryBudget(batchSize: number): RetryBudget {
-    return { remaining: Math.max(RETRY_BUDGET_MIN, Math.ceil(batchSize * RETRY_BUDGET_FRACTION)) };
-}
-
 /**
- * Runs `fn`, retrying transient failures up to `retries` times with linear backoff.
- * Returns the resolved value, or null once the retries are exhausted / the error is
- * non-retryable. `onGiveUp` fires once with the final error message and its response status
- * (undefined for transport errors) when null is returned, so callers can log a single
- * throttled line instead of one per attempt.
+ * Runs a queued comlink call, returning null instead of throwing when it fails.
  *
- * Pass a shared `budget` to cap the retries a whole batch may spend between them; calls fall
- * back to a single attempt once it is exhausted. Only retries drawn against it count - a
- * success or a non-retryable error leaves it untouched.
+ * Retry, the retry budget, and the retryable-vs-not classification all moved into swapiServe,
+ * which sees every call and can pace retries against the same budget as new work. What stays here
+ * is only how a BATCH treats a member that ultimately failed: drop it and carry on, exactly as
+ * fetchWithRetry's null return did, rather than losing the whole batch to one bad ally code.
  */
-export async function fetchWithRetry<T>(
-    fn: () => Promise<T>,
-    {
-        retries,
-        baseDelayMs,
-        onGiveUp,
-        budget,
-    }: {
-        retries: number;
-        baseDelayMs: number;
-        onGiveUp?: (message: string, statusCode?: number) => void;
-        budget?: RetryBudget;
-    },
+async function tryCall<T>(
+    priority: Priority,
+    throttleKey: string,
+    describe: (detail: string) => string,
+    fn: (stub: ComlinkStub) => Promise<T>,
 ): Promise<T | null> {
-    for (let attempt = 0; ; attempt++) {
-        try {
-            return await fn();
-        } catch (err) {
-            const message = err instanceof Error ? err.message : String(err);
-            const willRetry = attempt < retries && !isNonRetryableFetchError(err) && (!budget || budget.remaining > 0);
-            if (!willRetry) {
-                onGiveUp?.(message, getFetchErrorStatus(err));
-                return null;
-            }
-            if (budget) budget.remaining--;
-            await wait(baseDelayMs * (attempt + 1));
-        }
+    try {
+        return await withStub(priority, fn);
+    } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        logger.throttleError(throttleKey, describe(describeFetchFailure(message, getFetchErrorStatus(err))));
+        return null;
     }
 }
 
@@ -379,28 +310,18 @@ class SWAPI {
         }
     }
 
-    async getPlayersArena(allyCodes: number | number[]) {
+    async getPlayersArena(allyCodes: number | number[], priority: Priority = PRIORITY.PUBLIC_COMMAND) {
         let acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
         acArr = acArr.filter((ac) => !!ac && ac.toString().length === 9);
         if (!acArr.length) throw new Error("No valid ally code(s) entered");
 
         const playersOut: SWAPIPlayerArenaProfile[] = [];
-        // Shared across the batch so a comlink-wide outage can't make every ally code pay for its
-        // own retries at once - see createRetryBudget
-        const retryBudget = createRetryBudget(acArr.length);
-        await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const p: SWAPIPlayerArenaProfile | null = await fetchWithRetry(
-                () => comlinkStub.getPlayerArenaProfile(ac.toString()) as Promise<SWAPIPlayerArenaProfile>,
-                {
-                    retries: FETCH_RETRIES,
-                    baseDelayMs: FETCH_RETRY_BASE_MS,
-                    budget: retryBudget,
-                    onGiveUp: (message, statusCode) =>
-                        logger.throttleError(
-                            "swapi-arena-profile",
-                            `Error fetching arena profile for ${ac}: ${describeFetchFailure(message, statusCode)}`,
-                        ),
-                },
+        await eachLimit(acArr, MAX_BATCH_IN_FLIGHT, async (ac) => {
+            const p = await tryCall<SWAPIPlayerArenaProfile>(
+                priority,
+                "swapi-arena-profile",
+                (detail) => `Error fetching arena profile for ${ac}: ${detail}`,
+                (stub) => stub.getPlayerArenaProfile(ac.toString()) as Promise<SWAPIPlayerArenaProfile>,
             );
             if (p) {
                 playersOut.push(p);
@@ -431,27 +352,17 @@ class SWAPI {
             .filter((p) => !!p);
     }
 
-    async getPlayerUpdates(allyCodes: number | number[]) {
+    async getPlayerUpdates(allyCodes: number | number[], priority: Priority = PRIORITY.PUBLIC_COMMAND) {
         const specialAbilities = await this.getSpecialAbilities();
         const acArr = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
 
         const updatedBare: SWAPIPlayer[] = [];
-        // Shared across the batch so a comlink-wide outage can't make every ally code pay for its
-        // own retries at once - see createRetryBudget
-        const retryBudget = createRetryBudget(acArr.length);
-        await eachLimit(acArr, MAX_CONCURRENT, async (ac) => {
-            const tempBare: ComlinkPlayer | null = await fetchWithRetry(
-                () => comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>,
-                {
-                    retries: FETCH_RETRIES,
-                    baseDelayMs: FETCH_RETRY_BASE_MS,
-                    budget: retryBudget,
-                    onGiveUp: (message, statusCode) =>
-                        logger.throttleError(
-                            "swapi-getPlayer",
-                            `Error in eachLimit getPlayer (${ac}): ${describeFetchFailure(message, statusCode)}`,
-                        ),
-                },
+        await eachLimit(acArr, MAX_BATCH_IN_FLIGHT, async (ac) => {
+            const tempBare = await tryCall<ComlinkPlayer>(
+                priority,
+                "swapi-getPlayer",
+                (detail) => `Error in eachLimit getPlayer (${ac}): ${detail}`,
+                (stub) => stub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>,
             );
             if (tempBare) {
                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
@@ -572,8 +483,9 @@ class SWAPI {
             player: this.playerMaxCooldown,
             guild: this.guildMaxCooldown,
         },
-        options: { force?: boolean; defId?: string } = { force: false },
+        options: { force?: boolean; defId?: string; priority?: Priority } = { force: false },
     ): Promise<SWAPIPlayer[]> {
+        const priority = options.priority ?? PRIORITY.PUBLIC_COMMAND;
         // Make sure the allyCode(s) are in an array
         if (!allyCodes) return [];
         const acArr: number[] = Array.isArray(allyCodes) ? allyCodes : [allyCodes];
@@ -624,22 +536,12 @@ class SWAPI {
             if (needUpdating.length) {
                 let updatedBare: SWAPIPlayer[] = [];
                 try {
-                    // Shared across the batch so a comlink-wide outage can't make every ally code pay for its
-                    // own retries at once - see createRetryBudget
-                    const retryBudget = createRetryBudget(needUpdating.length);
-                    await eachLimit(needUpdating, MAX_CONCURRENT, async (ac) => {
-                        const tempBare: ComlinkPlayer | null = await fetchWithRetry(
-                            () => comlinkStub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>,
-                            {
-                                retries: FETCH_RETRIES,
-                                baseDelayMs: FETCH_RETRY_BASE_MS,
-                                budget: retryBudget,
-                                onGiveUp: (message, statusCode) =>
-                                    logger.throttleError(
-                                        "swapi-getPlayer",
-                                        `[swapi getPlayer] Failed to fetch player ${ac}: ${describeFetchFailure(message, statusCode)}`,
-                                    ),
-                            },
+                    await eachLimit(needUpdating, MAX_BATCH_IN_FLIGHT, async (ac) => {
+                        const tempBare = await tryCall<ComlinkPlayer>(
+                            priority,
+                            "swapi-getPlayer",
+                            (detail) => `[swapi getPlayer] Failed to fetch player ${ac}: ${detail}`,
+                            (stub) => stub.getPlayer(ac?.toString()) as Promise<ComlinkPlayer>,
                         );
                         if (tempBare) {
                             const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
@@ -652,17 +554,12 @@ class SWAPI {
                     if (missingRosters.length) {
                         updatedBare = updatedBare.filter((p) => p?.roster?.length);
                         for (const missing of missingRosters) {
-                            const tempBare = await fetchWithRetry(
-                                () => comlinkStub.getPlayer(missing?.allyCode?.toString()) as Promise<ComlinkPlayer>,
-                                {
-                                    retries: FETCH_RETRIES,
-                                    baseDelayMs: FETCH_RETRY_BASE_MS,
-                                    budget: retryBudget,
-                                    onGiveUp: (message, statusCode) =>
-                                        logger.error(
-                                            `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${describeFetchFailure(message, statusCode)}`,
-                                        ),
-                                },
+                            const tempBare = await tryCall<ComlinkPlayer>(
+                                priority,
+                                "swapi-getPlayer-missing-roster",
+                                (detail) =>
+                                    `[swapi getPlayer retry] Failed to fetch player ${missing?.allyCode} with missing roster: ${detail}`,
+                                (stub) => stub.getPlayer(missing?.allyCode?.toString()) as Promise<ComlinkPlayer>,
                             );
                             if (tempBare) {
                                 const formattedComlinkPlayer = await this.formatComlinkPlayer(tempBare);
@@ -762,8 +659,12 @@ class SWAPI {
         }
     }
 
-    async player(allyCode: string | number, cooldown?: PlayerCooldown): Promise<SWAPIPlayer | null> {
-        const res = await this.unitStats(Number.parseInt(String(allyCode), 10), cooldown);
+    async player(
+        allyCode: string | number,
+        cooldown?: PlayerCooldown,
+        priority: Priority = PRIORITY.PUBLIC_COMMAND,
+    ): Promise<SWAPIPlayer | null> {
+        const res = await this.unitStats(Number.parseInt(String(allyCode), 10), cooldown, { force: false, priority });
         return res?.[0] ?? null;
     }
 
@@ -1225,15 +1126,19 @@ class SWAPI {
     async getRawGuild(
         allyCode: number,
         cooldown: PlayerCooldown = { player: this.playerMaxCooldown, guild: this.guildMaxCooldown },
-        { forceUpdate } = { forceUpdate: false },
+        { forceUpdate, priority }: { forceUpdate?: boolean; priority?: Priority } = {},
     ) {
+        priority ??= PRIORITY.PUBLIC_COMMAND;
         const tempGuild: RawGuild = {} as RawGuild;
         const thisAc = allyCode?.toString().replace(/[^\d]/g, "");
         if (!thisAc || Number.isNaN(thisAc) || thisAc.length !== 9) {
             throw new Error("Please provide a valid ally code");
         }
 
-        const player = (await comlinkStub.getPlayer(thisAc)) as ComlinkPlayer;
+        // Not routed through tryCall: this is a single user-facing lookup, so a failure must
+        // surface as an error rather than being swallowed into a null the caller misreads as
+        // "no such player".
+        const player = (await withStub(priority, (stub) => stub.getPlayer(thisAc))) as ComlinkPlayer;
         if (!player) throw new Error("I cannot find a matching profile for this ally code, please make sure it's typed in correctly");
 
         if (!player.guildId) throw new Error("This player is not in a guild");
@@ -1247,7 +1152,7 @@ class SWAPI {
             !rawGuild.profile ||
             this.isExpired(rawGuild.updated, cooldown, true)
         ) {
-            rawGuild = (await comlinkStub.getGuild(player.guildId, true)) as RawGuild;
+            rawGuild = (await withStub(priority, (stub) => stub.getGuild(player.guildId, true))) as RawGuild;
 
             // The comlink API wraps the whole payload under a 'guild' key; unwrap it
             // so the loop below iterates the real guild fields (profile, member, ...)
@@ -1310,13 +1215,13 @@ class SWAPI {
         return guild;
     }
 
-    async guild(allyCode: number | string, cooldown?: PlayerCooldown) {
+    async guild(allyCode: number | string, cooldown?: PlayerCooldown, priority: Priority = PRIORITY.PUBLIC_COMMAND) {
         const thisAcStr = allyCode?.toString().replace(/[^\d]/g, "");
         if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid ally code");
         const thisAc = Number.parseInt(thisAcStr, 10);
 
         /** Get player from cache */
-        let player: SWAPIPlayer | SWAPIPlayer[] = await this.unitStats(thisAc);
+        let player: SWAPIPlayer | SWAPIPlayer[] = await this.unitStats(thisAc, undefined, { force: false, priority });
         if (Array.isArray(player)) player = player[0];
         if (!player) {
             throw new Error("I don't know this player, make sure they're registered first");
@@ -1330,7 +1235,7 @@ class SWAPI {
             /** If not found or expired, fetch new from API and save to cache */
             let tempGuild: SWAPIGuild;
             try {
-                tempGuild = await this.fetchGuild(player.guildId);
+                tempGuild = await this.fetchGuild(player.guildId, priority);
             } catch (err) {
                 // Probably API timeout
                 logger.error(
@@ -1367,14 +1272,14 @@ class SWAPI {
         return this.filterGuildRoster(guild);
     }
 
-    private async fetchGuild(guildId: string) {
-        const comlinkGuild = (await comlinkStub.getGuild(guildId, true)) as unknown as ComlinkGuildResponse;
+    private async fetchGuild(guildId: string, priority: Priority = PRIORITY.PUBLIC_COMMAND) {
+        const comlinkGuild = (await withStub(priority, (stub) => stub.getGuild(guildId, true))) as unknown as ComlinkGuildResponse;
 
-        const formattedGuild = await this.formatGuild(comlinkGuild);
+        const formattedGuild = await this.formatGuild(comlinkGuild, priority);
         return formattedGuild;
     }
 
-    private async formatGuild({ guild, raidLaunchConfig, ...topRest }: ComlinkGuildResponse) {
+    private async formatGuild({ guild, raidLaunchConfig, ...topRest }: ComlinkGuildResponse, priority: Priority = PRIORITY.PUBLIC_COMMAND) {
         const { profile, guildEventTracker, nextChallengesRefresh, recentTerritoryWarResult, recentRaidResult, member, ...guildRest } =
             guild;
         const {
@@ -1407,12 +1312,9 @@ class SWAPI {
         }
 
         const members: SWAPIGuildMember[] = [];
-        // Shared across the batch so a comlink-wide outage can't make every member pay for its
-        // own retries at once - see createRetryBudget
-        const retryBudget = createRetryBudget(member.length);
         await eachLimit(
             member,
-            MAX_CONCURRENT,
+            MAX_BATCH_IN_FLIGHT,
             async ({
                 playerId,
                 memberLevel,
@@ -1426,17 +1328,13 @@ class SWAPI {
                 // Grab each player and process their info
                 try {
                     // A transient blip here silently drops the member from the guild roster, so
-                    // retry before giving up - see BUG_REFERENCE.md
-                    const player = await fetchWithRetry(() => comlinkStub.getPlayer(null, playerId) as Promise<ComlinkPlayer>, {
-                        retries: FETCH_RETRIES,
-                        baseDelayMs: FETCH_RETRY_BASE_MS,
-                        budget: retryBudget,
-                        onGiveUp: (message, statusCode) =>
-                            logger.throttleError(
-                                "formatGuild-getPlayer",
-                                `[formatGuild] Failed to fetch player ${playerId}: ${describeFetchFailure(message, statusCode)}`,
-                            ),
-                    });
+                    // swapiServe retries before giving up - see BUG_REFERENCE.md
+                    const player = await tryCall<ComlinkPlayer>(
+                        priority,
+                        "formatGuild-getPlayer",
+                        (detail) => `[formatGuild] Failed to fetch player ${playerId}: ${detail}`,
+                        (stub) => stub.getPlayer(null, playerId) as Promise<ComlinkPlayer>,
+                    );
                     if (!player) return;
                     const { name, level, allyCode, profileStat } = player;
 

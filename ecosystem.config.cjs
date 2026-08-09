@@ -18,5 +18,14 @@ module.exports = {
                 APP_NAME: "EventServe",
             },
         },
+        {
+            name: "swapiServe",
+            node_args: ["--env-file=.env"],
+            interpreter: "node",
+            script: "./services/swapiServe/index.ts",
+            env: {
+                APP_NAME: "SwapiServe",
+            },
+        },
     ],
 };
