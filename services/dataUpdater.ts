@@ -233,7 +233,7 @@ async function init() {
         // pull can never crowd out live commands or the arena payout tick. Resolved once because
         // this is a single-cycle process; if swapiServe is down it falls back to calling comlink
         // directly rather than failing the whole run.
-        const comlinkStub = await resolveBulkStub();
+        const { stub: comlinkStub, url: comlinkUrl } = await resolveBulkStub();
 
         // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
         // allocated. PM2 relaunches this daily via cron_restart (see ecosystem.config.cjs).
@@ -279,7 +279,7 @@ async function init() {
                     logger.log("Skipping mod updaters (--skip-mods)");
                 } else {
                     debugTime("Running mod updaters");
-                    await runModUpdaters(comlinkStub);
+                    await runModUpdaters(comlinkStub, comlinkUrl);
                     debugTimeEnd("Running mod updaters");
                     logMem("after mod updaters");
                 }
@@ -350,7 +350,7 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
     return { isMetadataUpdated, newMetadata: metadataOut as Metadata, oldMetadata: oldMetadata as Metadata };
 }
 
-async function runModUpdaters(comlinkStub: ComlinkStub) {
+async function runModUpdaters(comlinkStub: ComlinkStub, comlinkUrl: string) {
     debugTime("Getting guildIds");
     const guildIds = await getGuildIds(comlinkStub);
     debugTimeEnd("Getting guildIds");
@@ -365,10 +365,10 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
     // Records which sets of mods each character has and the primary stats per slot.
     debugTime("Aggregating player mods");
     const modMap = await readJSON<ModMap>(path.join(DATA_DIR_PATH, "modMap.json"));
-    // The workers run in their own threads and cannot see the stub resolved above, so the base
-    // URL it settled on is passed through: they inherit the same swapiServe-or-direct decision
-    // rather than each making their own.
-    const unitsOut = await aggregatePlayerMods(playerIds, modMap, comlinkStub.url);
+    // The workers run in their own threads, so they cannot be handed a stub. They get the base URL
+    // resolveBulkStub settled on instead, inheriting that one swapiServe-or-direct decision rather
+    // than each probing the service themselves.
+    const unitsOut = await aggregatePlayerMods(playerIds, modMap, comlinkUrl);
     debugTimeEnd("Aggregating player mods");
 
     // Go through each character and find the most common versions of

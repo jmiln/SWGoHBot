@@ -1,4 +1,5 @@
 import { type Priority, RETRY } from "../../data/constants/swapiServe.ts";
+import logger from "../../modules/Logger.ts";
 import { type Clock, systemClock, type TimerHandle } from "./clock.ts";
 import { createHttpForwarder, type Forwarder } from "./forwarder.ts";
 import { type BlockedBy, Governor } from "./governor.ts";
@@ -57,6 +58,12 @@ interface PendingRequest {
      * would double-count the terminal reason and break the one-reason-per-request guarantee.
      */
     settled: boolean;
+    /**
+     * The queue entry currently holding this request, or null while it is in flight or waiting out
+     * a retry. A retry re-enters the queue as a NEW entry, so cancellation has to follow the
+     * request rather than the entry it happened to be in when the caller first submitted it.
+     */
+    entry: QueueEntry<PendingRequest> | null;
     resolve: (response: ProxyResponse) => void;
 }
 
@@ -89,6 +96,13 @@ export class Dispatcher {
     private readonly endpointCosts = new Map<string, { count: number; totalLatencyMs: number; totalBytes: number }>();
     private stopped = false;
     private wakeup: TimerHandle | null = null;
+    /**
+     * Requests waiting out a retry backoff, which are held by a timer rather than by the queue and
+     * so cannot be reached by draining it. Tracked so shutdown can settle them too: a Retry-After
+     * honoured from upstream can be tens of seconds, and every one of those is a socket the HTTP
+     * layer is still holding open.
+     */
+    private readonly retryTimers = new Map<TimerHandle, PendingRequest>();
     private lastRequestId = 0;
     private dispatchCount = 0;
     private retryCount = 0;
@@ -160,7 +174,7 @@ export class Dispatcher {
      */
     submit(request: ProxyRequest, signal?: AbortSignal): Promise<ProxyResponse> {
         return new Promise<ProxyResponse>((resolve) => {
-            const pending: PendingRequest = { request, attempt: 0, id: ++this.lastRequestId, settled: false, resolve };
+            const pending: PendingRequest = { request, attempt: 0, id: ++this.lastRequestId, settled: false, entry: null, resolve };
 
             if (this.stopped) {
                 this.settle(pending, "shutting_down", shedResponse("swapiServe is shutting down"));
@@ -183,14 +197,17 @@ export class Dispatcher {
                 this.settle(pending, "queue_overflow", shedResponse("swapiServe queue is full for this priority"));
                 return;
             }
+            pending.entry = entry;
 
             signal?.addEventListener(
                 "abort",
                 () => {
-                    // The queue discards cancelled entries on its next sweep; resolving here means
-                    // the HTTP layer stops waiting immediately either way.
-                    entry.cancelled = true;
+                    // Marks whichever entry currently holds the request, which after a retry is
+                    // not the one created above. The queue discards cancelled entries on its next
+                    // sweep; resolving here means the HTTP layer stops waiting immediately either
+                    // way, and settling first is what stops any further retry being scheduled.
                     this.settle(pending, "cancelled", shedResponse("Client cancelled the request"));
+                    if (pending.entry) pending.entry.cancelled = true;
                 },
                 { once: true },
             );
@@ -261,11 +278,29 @@ export class Dispatcher {
         };
     }
 
+    /**
+     * Stops dispatching and answers everything still waiting.
+     *
+     * Draining the queue is what makes shutdown terminate. A queued request is a caller holding an
+     * unresolved promise, which for the HTTP layer is a response that never ends and a socket that
+     * never closes, so server.close() would wait on it forever and the process would only die to
+     * SIGKILL. Requests already in flight are left alone: the upstream cost is paid either way and
+     * they settle on their own, which is what makes this a graceful stop rather than an abort.
+     */
     stop(): void {
         this.stopped = true;
         if (this.wakeup) {
             this.clock.clearTimeout(this.wakeup);
             this.wakeup = null;
+        }
+        for (const [timer, pending] of this.retryTimers) {
+            this.clock.clearTimeout(timer);
+            this.settle(pending, "shutting_down", shedResponse("swapiServe is shutting down"));
+        }
+        this.retryTimers.clear();
+
+        for (const entry of this.queue.drainAll()) {
+            this.settle(entry.payload, "shutting_down", shedResponse("swapiServe is shutting down"));
         }
     }
 
@@ -303,6 +338,9 @@ export class Dispatcher {
                 return;
             }
 
+            // No longer queued, so a later cancellation has nothing to mark: the request is about
+            // to be in flight and the upstream cost is paid either way.
+            next.payload.entry = null;
             void this.forward(next.payload, backendUrl);
         }
     }
@@ -348,7 +386,27 @@ export class Dispatcher {
         this.retryBudget.recordDispatch(startedAt);
         this.dispatchCount++;
 
-        const { status, headers: responseHeaders, body } = await this.forwarder(backendUrl, request);
+        let result: Awaited<ReturnType<Forwarder>>;
+        try {
+            result = await this.forwarder(backendUrl, request);
+        } catch (err) {
+            // The production forwarder resolves even for transport errors and timeouts, so
+            // reaching here means a defect on our side rather than anything the backend did.
+            //
+            // Handing the slot back matters more than what caused it: the slot was taken before
+            // the forward and is only returned by reporting an outcome, so without this it is lost
+            // for the process's lifetime. With MIN_LIMIT at 1, a few of these wedge the backend
+            // entirely and nothing in the design ever recovers it. releaseUnused rather than
+            // report, because blaming the backend's health for our bug would halve the limit of a
+            // backend that may be perfectly healthy.
+            this.governor.releaseUnused(backendUrl);
+            logger.error(`SwapiServe: Forwarder threw for ${request.uri}: ${err instanceof Error ? err.message : String(err)}`);
+            this.settle(pending, "upstream_error", shedResponse("Upstream request failed"));
+            this.pump();
+            return;
+        }
+
+        const { status, headers: responseHeaders, body } = result;
 
         const outcome = classifyOutcome(status, status !== undefined && status >= 400 ? readMessage(body) : undefined);
         const now = this.clock.now();
@@ -364,25 +422,33 @@ export class Dispatcher {
             this.retryCount++;
             const backoffMs = Math.max(this.retryDelayMs * pending.attempt, readRetryAfterMs(responseHeaders));
 
-            this.clock.setTimeout(() => {
+            const timer = this.clock.setTimeout(() => {
+                this.retryTimers.delete(timer);
                 if (this.stopped) {
                     this.settle(pending, "shutting_down", shedResponse("swapiServe is shutting down"));
                     return;
                 }
+                // The caller went away while the backoff was running, so this retry now has
+                // nobody to answer. Re-queueing it would spend a slot on a discarded response.
+                if (pending.settled) return;
+
                 // A retry is the same request with attempt incremented, re-entering the same
                 // queue with the same id. There is no separate retry path or retry queue.
-                const requeued = this.queue.enqueue({
+                const entry: QueueEntry<PendingRequest> = {
                     priority: request.priority,
                     deadline: request.deadline,
                     enqueuedAt: this.clock.now(),
                     cost: request.cost ?? 1,
                     payload: pending,
-                });
-                if (!requeued) {
+                };
+                if (!this.queue.enqueue(entry)) {
                     this.settle(pending, "queue_overflow", shedResponse("swapiServe queue is full for this priority"));
+                } else {
+                    pending.entry = entry;
                 }
                 this.pump();
             }, backoffMs);
+            this.retryTimers.set(timer, pending);
             return;
         }
 
@@ -395,6 +461,10 @@ export class Dispatcher {
     }
 
     private shouldRetry(pending: PendingRequest, outcome: Outcome, now: number): boolean {
+        // Already answered, which for a request still in flight means the caller cancelled or the
+        // service is shutting down. Retrying would spend upstream budget on a response nobody is
+        // waiting for, which is the exact cost cancellation exists to avoid.
+        if (pending.settled) return false;
         if (!isRetryable(outcome)) return false;
         if (pending.attempt >= RETRY.ATTEMPTS) return false;
         if (pending.request.deadline <= now) return false;

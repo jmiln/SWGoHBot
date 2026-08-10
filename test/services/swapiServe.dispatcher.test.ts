@@ -412,3 +412,145 @@ describe("swapiServe.Dispatcher control", () => {
         assert.strictEqual(dispatcher.control("sim://a", "set-limit", null).ok, false);
     });
 });
+
+describe("swapiServe.Dispatcher forwarder defects", () => {
+    // A slot is taken before the forward and handed back by reporting the outcome. If the forward
+    // throws instead of returning one, the slot is never handed back, and nothing in the design
+    // ever recovers it: with MIN_LIMIT at 1, a handful of these wedge the backend until a restart.
+    it("releases the backend slot when the forwarder throws", { timeout: 5000 }, async () => {
+        let shouldThrow = true;
+        const forwarder: Forwarder = async () => {
+            if (shouldThrow) throw new Error("forwarder defect");
+            return { status: 200, headers: {}, body: Buffer.from("{}") };
+        };
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, startLimit: 2 });
+        after(() => dispatcher.stop());
+
+        for (let i = 0; i < 4; i++) {
+            const response = await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+            assert.strictEqual(response.status, 503, "the caller must be answered rather than left hanging");
+        }
+
+        assert.strictEqual(dispatcher.status().backends[0].inFlight, 0, "every slot should have been handed back");
+
+        // The real proof: the backend still works afterwards.
+        shouldThrow = false;
+        const recovered = await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+        assert.strictEqual(recovered.status, 200, "the backend should still be usable");
+    });
+
+    // The forwarder throwing is our defect, not the backend misbehaving. Halving its limit would
+    // punish a healthy backend for a bug on this side.
+    it("does not blame the backend's health for a local defect", { timeout: 5000 }, async () => {
+        const forwarder: Forwarder = async () => {
+            throw new Error("forwarder defect");
+        };
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, startLimit: 8 });
+        after(() => dispatcher.stop());
+
+        for (let i = 0; i < 3; i++) await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+
+        const backend = dispatcher.status().backends[0];
+        assert.strictEqual(backend.limit, 8, "a local defect must not shrink the learned limit");
+        assert.strictEqual(backend.state, "closed", "nor open the circuit");
+    });
+});
+
+describe("swapiServe.Dispatcher cancellation", () => {
+    // Cancellation exists to stop spending upstream budget on a response nobody can receive, so
+    // retrying a cancelled request spends it on precisely the request we just gave up on.
+    it("does not retry a request whose caller has gone away", { timeout: 5000 }, async () => {
+        let attempts = 0;
+        const forwarder: Forwarder = async () => {
+            attempts++;
+            return { status: 500, headers: {}, body: Buffer.from(JSON.stringify({ message: "boom" })) };
+        };
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, retryDelayMs: 80 });
+        after(() => dispatcher.stop());
+
+        const abandoned = new AbortController();
+        const response = dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND), abandoned.signal);
+
+        // Abort while the first attempt's retry is waiting out its backoff.
+        await new Promise((resolve) => setTimeout(resolve, 20));
+        abandoned.abort();
+        assert.strictEqual((await response).status, 503, "the caller should be answered immediately on abort");
+
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        assert.strictEqual(attempts, 1, `a cancelled request must not be sent again, was sent ${attempts} times`);
+    });
+});
+
+describe("swapiServe.Dispatcher shutdown", () => {
+    // A queued request is a caller holding an unresolved promise, and for the HTTP layer that is a
+    // response that never ends and a socket that never closes. Leaving them behind means
+    // server.close() waits forever and the process only dies to SIGKILL.
+    it("settles everything still queued when it stops", { timeout: 5000 }, async () => {
+        let release: (() => void) | null = null;
+        const gate = new Promise<void>((resolve) => {
+            release = resolve;
+        });
+
+        let first = true;
+        const forwarder: Forwarder = async () => {
+            if (first) {
+                first = false;
+                await gate;
+            }
+            return { status: 200, headers: {}, body: Buffer.alloc(0) };
+        };
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, startLimit: 1 });
+
+        // The first request occupies the only slot, so the rest are still queued when we stop.
+        const occupying = dispatcher.submit(request(PRIORITY.BULK, "/occupying"));
+        await new Promise((resolve) => setImmediate(resolve));
+        const queued = Array.from({ length: 5 }, (_, i) => dispatcher.submit(request(PRIORITY.BULK, `/queued-${i}`)));
+        await new Promise((resolve) => setImmediate(resolve));
+
+        assert.strictEqual(dispatcher.status().queue.depths[PRIORITY.BULK], 5, "requests should be queued before stopping");
+
+        dispatcher.stop();
+
+        const responses = await Promise.all(queued);
+        for (const response of responses) {
+            assert.strictEqual(response.status, 503, "a queued request must be answered, not abandoned");
+        }
+        assert.strictEqual(dispatcher.status().terminal.shutting_down, 5);
+
+        release?.();
+        await occupying;
+    });
+
+    it("answers a request submitted after it has stopped", { timeout: 5000 }, async () => {
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: okForwarder });
+        dispatcher.stop();
+
+        const response = await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+        assert.strictEqual(response.status, 503);
+    });
+
+    // A request waiting out a backoff is held by a timer, not by the queue, so draining the queue
+    // cannot reach it. Upstream sets the wait via Retry-After, so it is not ours to bound.
+    it("settles a request waiting out a retry backoff", { timeout: 5000 }, async () => {
+        const forwarder: Forwarder = async () => ({
+            status: 429,
+            headers: { "retry-after": "30" },
+            body: Buffer.from(JSON.stringify({ message: "slow down" })),
+        });
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder });
+
+        const inBackoff = dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+        await new Promise((resolve) => setImmediate(resolve));
+        assert.ok(dispatcher.status().retries > 0, "the request should be waiting on a retry");
+
+        dispatcher.stop();
+
+        const response = await inBackoff;
+        assert.strictEqual(response.status, 503, "shutdown must not wait out an upstream Retry-After");
+    });
+});

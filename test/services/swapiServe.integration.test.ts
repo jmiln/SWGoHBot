@@ -1,7 +1,31 @@
 import assert from "node:assert";
+import { connect } from "node:net";
 import { after, describe, it } from "node:test";
-import { parsePriorityPath, startSwapiServe } from "../../services/swapiServe/index.ts";
+import { PRIORITY } from "../../data/constants/swapiServe.ts";
+import { parsePriorityPath, resolveDeadlineMs, startSwapiServe } from "../../services/swapiServe/index.ts";
+
+// The interval arenaTick runs on, mirrored from events/clientReady.ts where it is a local const.
+const ARENA_TICK_INTERVAL_MS = 60_000;
 import { startFakeComlink } from "../helpers/fakeComlink.ts";
+
+/**
+ * Sends a request that promises more body than it delivers, then destroys the socket, which is
+ * what a shard dying mid-request looks like from the service's side.
+ */
+function sendTruncatedRequest(url: string): Promise<void> {
+    const { hostname, port } = new URL(url);
+    return new Promise((resolve, reject) => {
+        const socket = connect({ host: hostname, port: Number(port) }, () => {
+            socket.write("POST /p2/player HTTP/1.1\r\nHost: localhost\r\nContent-Length: 200\r\n\r\n");
+            socket.write('{"payload":');
+            setTimeout(() => {
+                socket.destroy();
+                resolve();
+            }, 20);
+        });
+        socket.on("error", reject);
+    });
+}
 
 const CREDS = { accessKey: "a", secretKey: "s", ratePerSecond: 1000 };
 
@@ -26,6 +50,38 @@ describe("swapiServe.parsePriorityPath", () => {
     });
 });
 
+describe("swapiServe.resolveDeadlineMs", () => {
+    // The whole reason arenaTick outranks everything: a tick still waiting when the next one fires
+    // is dropped by the arenaTickRunning guard, and the payout cycle and poll interval being exact
+    // multiples means the same minute is lost every day after that.
+    it("expires arena tick work inside the minute it has to land in", () => {
+        assert.ok(
+            resolveDeadlineMs(PRIORITY.ARENA_TICK, undefined) < ARENA_TICK_INTERVAL_MS,
+            "an arena request must not outlive the tick that issued it",
+        );
+    });
+
+    it("gives each tier a deadline matching what being late costs it", () => {
+        const arena = resolveDeadlineMs(PRIORITY.ARENA_TICK, undefined);
+        const command = resolveDeadlineMs(PRIORITY.PUBLIC_COMMAND, undefined);
+        const bulk = resolveDeadlineMs(PRIORITY.BULK, undefined);
+
+        assert.ok(arena < command, "a tick fails faster than a user command");
+        assert.ok(command < bulk, "bulk work nobody is watching can wait longest");
+    });
+
+    it("prefers a caller's own deadline over the tier default", () => {
+        assert.strictEqual(resolveDeadlineMs(PRIORITY.BULK, "5000"), 5000);
+    });
+
+    it("falls back to the tier default for a missing or nonsense header", () => {
+        const bulk = resolveDeadlineMs(PRIORITY.BULK, undefined);
+        assert.strictEqual(resolveDeadlineMs(PRIORITY.BULK, "soon"), bulk);
+        assert.strictEqual(resolveDeadlineMs(PRIORITY.BULK, "-1"), bulk);
+        assert.strictEqual(resolveDeadlineMs(PRIORITY.BULK, "0"), bulk);
+    });
+});
+
 describe("swapiServe end to end", () => {
     it("proxies a request through to the backend and returns its response", async () => {
         const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ player: "found" }) }));
@@ -43,6 +99,24 @@ describe("swapiServe end to end", () => {
 
         assert.strictEqual(response.status, 200);
         assert.deepStrictEqual(await response.json(), { player: "found" });
+    });
+
+    // The forwarder requests gzip, so whether the backend compresses is the backend's choice, not
+    // ours. Every real client (got, with decompress on) will try to decode whatever encoding the
+    // response claims, so a proxied response must never claim one it no longer carries.
+    it("delivers a compressed upstream response intact", async () => {
+        const payload = JSON.stringify({ player: "found", padding: "x".repeat(2000) });
+        const comlink = await startFakeComlink(() => ({ status: 200, body: payload, gzip: true }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS });
+        after(async () => {
+            await service.close();
+            await comlink.close();
+        });
+
+        const response = await fetch(`${service.url}/p2/player`, { method: "POST", body: "{}" });
+
+        assert.strictEqual(response.status, 200);
+        assert.deepStrictEqual(await response.json(), JSON.parse(payload));
     });
 
     it("forwards the exact body bytes it received, so the re-signed md5 stays valid", async () => {
@@ -74,6 +148,46 @@ describe("swapiServe end to end", () => {
         await fetch(`${service.url}/p1/guild`, { method: "POST", body: "{}" });
 
         assert.strictEqual(seenUri, "/guild");
+    });
+
+    // Every shard and both updaters depend on this one process, so a request that fails while
+    // being read must not be able to take it down. Reading the body rejects when the client
+    // vanishes mid-request, and an unhandled rejection in the request handler ends the process.
+    it("survives a client that disconnects while its body is still being read", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ ok: true }) }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS });
+        after(async () => {
+            await service.close();
+            await comlink.close();
+        });
+
+        await sendTruncatedRequest(service.url);
+        await new Promise((resolve) => setTimeout(resolve, 50));
+
+        const response = await fetch(`${service.url}/p2/player`, { method: "POST", body: "{}" });
+        assert.strictEqual(response.status, 200, "the service should still be serving afterwards");
+        assert.deepStrictEqual(await response.json(), { ok: true });
+    });
+
+    // pm2 restarts this service; if close() cannot finish, the restart only completes on SIGKILL.
+    it("shuts down promptly with work still queued", { timeout: 5000 }, async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, delayMs: 200 }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, startLimit: 1 });
+        after(async () => await comlink.close());
+
+        const inFlight = Array.from({ length: 6 }, (_, i) =>
+            fetch(`${service.url}/p4/queued-${i}`, { method: "POST", body: "{}" }).catch(() => undefined),
+        );
+        await new Promise((resolve) => setTimeout(resolve, 30));
+
+        const startedAt = Date.now();
+        await service.close();
+        const took = Date.now() - startedAt;
+        await Promise.all(inFlight);
+
+        // Should be bounded by the one request actually in flight (200ms), not by the keep-alive
+        // idle timeout of the five clients whose requests were shed.
+        assert.ok(took < 1000, `close() should not wait on idle keep-alive connections, took ${took}ms`);
     });
 
     it("rejects a request with no priority prefix", async () => {

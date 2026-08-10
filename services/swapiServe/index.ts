@@ -1,20 +1,23 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { env } from "../../config/config.ts";
-import { PRIORITY_COUNT, type Priority } from "../../data/constants/swapiServe.ts";
+import { DEADLINE_MS, PRIORITY_COUNT, type Priority } from "../../data/constants/swapiServe.ts";
 import logger from "../../modules/Logger.ts";
 import { Dispatcher } from "./dispatcher.ts";
 
 const BAD_REQUEST = 400;
+const INTERNAL_SERVER_ERROR = 500;
 const SERVICE_UNAVAILABLE = 503;
 const LOOPBACK = "127.0.0.1";
 const JSON_HEADERS = { "Content-Type": "application/json" };
 
-// Clients express how long the request is still worth sending via this header. Anything without
-// one gets the default, which is generous enough for a bulk pull.
+// Clients express how long the request is still worth sending via this header. ComlinkStub has no
+// per-request header hook, so in practice everything falls through to the per-tier default.
 const DEADLINE_HEADER = "x-swapi-deadline-ms";
-const DEFAULT_DEADLINE_MS = 120_000;
 
 const CONTROL_PATH = /^\/backend\/([^/]+)\/(drain|enable|set-limit)$/;
+
+// How often shutdown re-checks for keep-alive connections that have gone idle since the last look.
+const SHUTDOWN_SWEEP_MS = 20;
 
 /**
  * Reads the priority tier off the path prefix and returns the real comlink path.
@@ -42,10 +45,13 @@ function readBody(req: IncomingMessage): Promise<Buffer> {
     });
 }
 
-function readDeadlineMs(req: IncomingMessage): number {
-    const raw = req.headers[DEADLINE_HEADER];
-    const value = Number(Array.isArray(raw) ? raw[0] : raw);
-    return Number.isFinite(value) && value > 0 ? value : DEFAULT_DEADLINE_MS;
+/**
+ * How long this request is worth sending: the caller's header if it gave a usable one, otherwise
+ * the tier's default. Exported so the per-tier defaults are testable without waiting one out.
+ */
+export function resolveDeadlineMs(priority: Priority, header: string | string[] | undefined): number {
+    const value = Number(Array.isArray(header) ? header[0] : header);
+    return Number.isFinite(value) && value > 0 ? value : DEADLINE_MS[priority];
 }
 
 export interface RunningService {
@@ -80,7 +86,11 @@ export async function startSwapiServe({
     const dispatcher = new Dispatcher({ backends, accessKey, secretKey, ratePerSecond, startLimit });
     let isShuttingDown = false;
 
-    const server: Server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    /**
+     * Answers one request. Every failure path is caught by the wrapper below rather than here, so
+     * that routing stays readable and no future edit can add an unguarded await.
+     */
+    const handleRequest = async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         const url = req.url ?? "";
 
         if (url === "/status") {
@@ -117,7 +127,7 @@ export async function startSwapiServe({
         }
 
         const body = req.method === "GET" ? null : await readBody(req);
-        const deadline = Date.now() + readDeadlineMs(req);
+        const deadline = Date.now() + resolveDeadlineMs(parsed.priority, req.headers[DEADLINE_HEADER]);
 
         // A client that hangs up is a client whose response can no longer be delivered, so the
         // queued request is withdrawn rather than spending scarce upstream capacity on it.
@@ -142,6 +152,30 @@ export async function startSwapiServe({
 
         res.writeHead(response.status, response.headers);
         res.end(response.body);
+    };
+
+    /**
+     * Nothing a single request does may end this process.
+     *
+     * Node terminates on an unhandled rejection, and an async request handler turns any throw into
+     * one. The routine case is a client that disappears mid-request, which rejects the body read
+     * with ECONNRESET: entirely expected from a shard that died or restarted, and not worth
+     * logging every time. Every shard and both updaters queue through this one process, so taking
+     * it down over that would convert one client's failure into an outage for all of them.
+     */
+    const server: Server = createServer((req: IncomingMessage, res: ServerResponse) => {
+        handleRequest(req, res).catch((err: unknown) => {
+            const clientGone = res.writableEnded || !res.writable;
+            if (!clientGone) {
+                logger.error(`SwapiServe: Request handler failed: ${err instanceof Error ? err.message : String(err)}`);
+            }
+            if (res.headersSent || clientGone) {
+                res.destroy();
+                return;
+            }
+            res.writeHead(INTERNAL_SERVER_ERROR, JSON_HEADERS);
+            res.end(JSON.stringify({ message: "swapiServe failed to handle the request" }));
+        });
     });
 
     await new Promise<void>((resolve) => server.listen(port, LOOPBACK, resolve));
@@ -152,9 +186,23 @@ export async function startSwapiServe({
         url: `http://${LOOPBACK}:${address.port}`,
         close: async () => {
             isShuttingDown = true;
+            // Settles everything queued, so no caller is left holding a response that never ends.
             dispatcher.stop();
             await new Promise<void>((resolve, reject) => {
                 server.close((err) => (err ? reject(err) : resolve()));
+
+                // server.close() only stops accepting new connections; it then waits for every
+                // existing one, and a keep-alive socket that has finished its response is still
+                // "existing". Every shard holds one open permanently, so shutdown would otherwise
+                // wait out their idle timeouts (measured at ~3.2s here, and pm2 restarts this).
+                //
+                // Swept repeatedly rather than once, because a connection still flushing its
+                // response is not idle yet: a single call at this point catches none of them.
+                // Connections mid-request are never touched, so in-flight work still finishes.
+                const sweep = setInterval(() => server.closeIdleConnections(), SHUTDOWN_SWEEP_MS);
+                sweep.unref();
+                server.once("close", () => clearInterval(sweep));
+                server.closeIdleConnections();
             });
         },
     };

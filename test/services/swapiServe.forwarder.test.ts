@@ -40,6 +40,36 @@ describe("swapiServe.createHttpForwarder", () => {
         assert.strictEqual(comlink.lastBody(), body);
     });
 
+    // fetch decodes a gzipped body but leaves content-encoding and content-length describing the
+    // compressed bytes. Returning those alongside the decoded body gives whoever writes the
+    // response a body that contradicts its own headers: got tries to gunzip plain JSON, and Node
+    // refuses the write outright once it runs past the declared content-length.
+    it("drops the encoding headers that describe the compressed bytes rather than the body it returns", async () => {
+        const payload = JSON.stringify({ player: "found", padding: "x".repeat(500) });
+        const comlink = await startFakeComlink(() => ({ status: 200, body: payload, gzip: true }));
+        after(async () => await comlink.close());
+
+        const forward = createHttpForwarder(CREDENTIALS);
+        const result = await forward(comlink.url, { method: "POST", uri: "/player", body: Buffer.from("{}") });
+
+        assert.strictEqual(result.body.toString(), payload, "the body should arrive decoded");
+        assert.strictEqual(result.headers["content-encoding"], undefined, "content-encoding describes bytes we no longer have");
+        assert.strictEqual(result.headers["content-length"], undefined, "content-length would be the compressed length");
+        assert.strictEqual(result.headers["content-type"], "application/json", "headers that still describe the body are kept");
+    });
+
+    it("drops hop-by-hop headers, which belong to the upstream connection and not to the response", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, headers: { "Transfer-Encoding": "chunked" } }));
+        after(async () => await comlink.close());
+
+        const forward = createHttpForwarder(CREDENTIALS);
+        const result = await forward(comlink.url, { method: "POST", uri: "/player", body: Buffer.from("{}") });
+
+        for (const header of ["connection", "keep-alive", "transfer-encoding"]) {
+            assert.strictEqual(result.headers[header], undefined, `${header} must not be forwarded`);
+        }
+    });
+
     it("reports an undefined status when the upstream is unreachable", async () => {
         const forward = createHttpForwarder(CREDENTIALS);
         // Port 1 on loopback reliably refuses

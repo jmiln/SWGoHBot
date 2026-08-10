@@ -17,12 +17,17 @@ function completeClean(governor: Governor, url: string, times: number, now = 0):
 describe("swapiServe.Governor capacity", () => {
     it("starts each backend at the conservative starting limit", () => {
         const governor = new Governor([A]);
-        assert.strictEqual(governor.capacity(), GOVERNOR.START_LIMIT);
+        assert.strictEqual(governor.snapshot()[0].limit, GOVERNOR.START_LIMIT);
     });
 
-    it("sums capacity across backends", () => {
+    // Per-backend budgets being independent is the point: it is what makes adding a second comlink
+    // instance and comparing the two learned limits answer whether it bought any capacity.
+    it("gives each backend its own budget rather than a shared one", () => {
         const governor = new Governor([A, B]);
-        assert.strictEqual(governor.capacity(), GOVERNOR.START_LIMIT * 2);
+        assert.deepStrictEqual(
+            governor.snapshot().map((backend) => backend.limit),
+            [GOVERNOR.START_LIMIT, GOVERNOR.START_LIMIT],
+        );
     });
 
     it("hands out slots until a backend is saturated, then refuses", () => {

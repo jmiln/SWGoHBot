@@ -190,11 +190,6 @@ export class Governor {
         backend.bucket.setRate(backend.bucket.getRate() + 1);
     }
 
-    /** Total concurrency currently available across all backends. */
-    capacity(): number {
-        return this.backends.reduce((total, backend) => total + backend.limit, 0);
-    }
-
     /**
      * Operator controls, deliberately separate from the circuit state so a manual drain is never
      * confused with a health-driven one and is never undone by a successful probe. Debugging a

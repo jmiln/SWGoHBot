@@ -129,7 +129,7 @@ describe("swapiQueue.resolveBulkStub", () => {
         after(async () => await serve.close());
 
         __setUrlsForTesting({ serveUrl: serve.url, directUrl: "http://unused.invalid" });
-        const stub = await resolveBulkStub();
+        const { stub } = await resolveBulkStub();
         await stub.getPlayer("123456789");
 
         assert.strictEqual(seenUri, "/p4/player", "bulk work must be queued at the lowest tier");
@@ -144,9 +144,30 @@ describe("swapiQueue.resolveBulkStub", () => {
         after(async () => await direct.close());
 
         __setUrlsForTesting({ serveUrl: "http://127.0.0.1:1", directUrl: direct.url });
-        const stub = await resolveBulkStub();
+        const { stub } = await resolveBulkStub();
         await stub.getPlayer("123456789");
 
         assert.strictEqual(seenUri, "/player", "a nightly cycle should still run without the governor");
+    });
+
+    // The Piscina threads cannot be handed a stub, and the mod worker signs its own requests so it
+    // can attach an AbortSignal. Both need the same base URL the stub was built from, so the two
+    // must never be able to disagree about where bulk traffic goes.
+    it("returns a url matching the stub it built, on both paths", async () => {
+        const serve = await startFakeComlink(({ uri }) => {
+            return uri === "/status" ? { status: 200, body: JSON.stringify({ backends: [] }) } : { status: 200, body: "{}" };
+        });
+        after(async () => await serve.close());
+
+        __setUrlsForTesting({ serveUrl: serve.url, directUrl: "http://unused.invalid" });
+        const queued = await resolveBulkStub();
+        assert.strictEqual(queued.url, `${serve.url}/p4`, "the queued path points at the bulk tier");
+        assert.strictEqual(queued.url, queued.stub.url, "and the stub agrees");
+
+        __resetForTesting();
+        __setUrlsForTesting({ serveUrl: "http://127.0.0.1:1", directUrl: "http://direct.invalid" });
+        const fallback = await resolveBulkStub();
+        assert.strictEqual(fallback.url, "http://direct.invalid", "the fallback points straight at comlink");
+        assert.strictEqual(fallback.url, fallback.stub.url, "and the stub agrees");
     });
 });

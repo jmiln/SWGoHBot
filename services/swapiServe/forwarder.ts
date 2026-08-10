@@ -11,6 +11,41 @@ export interface ForwardResult {
 export type Forwarder = (backendUrl: string, request: { method: string; uri: string; body: Buffer | null }) => Promise<ForwardResult>;
 
 /**
+ * Response headers that must not be passed on to the client.
+ *
+ * `content-encoding` and `content-length` describe the bytes that arrived on the wire, but fetch
+ * decodes the body before we ever see it, so both would describe something we are no longer
+ * holding. Forwarding them hands the client a response that contradicts itself: ComlinkStub runs
+ * got with `decompress: true` and fails with Z_DATA_ERROR trying to gunzip plain JSON, and Node
+ * rejects the write outright once the decoded body runs past the declared length. Whether this
+ * fires is the backend's choice, not ours, since fetch advertises gzip support on every request.
+ *
+ * The rest are hop-by-hop: they describe the connection to the backend, which is not the
+ * connection the client is on. Node sets the correct values for its own response.
+ */
+const STRIPPED_RESPONSE_HEADERS = new Set([
+    "content-encoding",
+    "content-length",
+    "connection",
+    "keep-alive",
+    "transfer-encoding",
+    "upgrade",
+    "proxy-authenticate",
+    "proxy-authorization",
+    "te",
+    "trailer",
+]);
+
+/** Drops the headers that describe the upstream connection or the body's pre-decode form. */
+function forwardableHeaders(headers: Headers): Record<string, string> {
+    const forwardable: Record<string, string> = {};
+    for (const [name, value] of headers.entries()) {
+        if (!STRIPPED_RESPONSE_HEADERS.has(name.toLowerCase())) forwardable[name] = value;
+    }
+    return forwardable;
+}
+
+/**
  * The only part of the service that touches the network.
  *
  * Kept as a separate injectable function so the scheduler can be tested, simulated, and
@@ -54,7 +89,7 @@ export function createHttpForwarder({
 
             return {
                 status: response.status,
-                headers: Object.fromEntries(response.headers.entries()),
+                headers: forwardableHeaders(response.headers),
                 body: Buffer.from(await response.arrayBuffer()),
             };
         } catch {

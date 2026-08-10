@@ -94,35 +94,36 @@ export async function withStub<T>(priority: Priority, fn: (stub: ComlinkStub) =>
     }
 }
 
-/** Fetches the service's health snapshot, for diagnostics. */
-export async function getStatus(): Promise<unknown> {
-    const response = await fetch(`${serveUrl}/status`);
-    return await response.json();
-}
-
 /**
- * Resolves a single bulk-tier stub for the batch services, checking once whether swapiServe is up.
+ * Decides once where a batch service's comlink traffic goes, returning both the base URL and a stub
+ * pointed at it.
  *
- * dataUpdater and the mod worker cannot use withStub: they build one stub and thread it through a
- * dozen functions, one of which reaches for the library's private _postRequestPromiseAPI because
- * there is no wrapper for /getGuildLeaderboard. Pointing the base URL at the bulk prefix routes
- * every call through the queue regardless of which method is used.
+ * dataUpdater cannot use withStub: it builds one stub and threads it through a dozen functions, one
+ * of which reaches for the library's private _postRequestPromiseAPI because there is no wrapper for
+ * /getGuildLeaderboard. Pointing the base URL at the bulk prefix routes every call through the queue
+ * regardless of which method is used.
+ *
+ * The URL is returned alongside the stub because not every caller wants one: the mod worker signs
+ * and sends its own requests so it can attach an AbortSignal, which ComlinkStub gives it no way to
+ * pass, and its Piscina threads cannot receive a stub anyway. Both callers need the same decision,
+ * so it is made once here rather than read back off the stub afterwards.
  *
  * The health check happens once because these are single-cycle processes, not long-lived ones.
  * Falling back keeps a nightly cycle running when the governor is down, which matches the bot's
  * behaviour rather than failing the whole run.
  */
-export async function resolveBulkStub(): Promise<ComlinkStub> {
+export async function resolveBulkStub(): Promise<{ stub: ComlinkStub; url: string }> {
     const credentials = { accessKey: env.SWAPI_ACCESS_KEY, secretKey: env.SWAPI_SECRET_KEY };
 
     try {
         const response = await fetch(`${serveUrl}/status`);
         if (!response.ok) throw new Error(`status endpoint returned ${response.status}`);
-        return new ComlinkStub({ url: `${serveUrl}/p${PRIORITY.BULK}`, ...credentials });
+        const url = `${serveUrl}/p${PRIORITY.BULK}`;
+        return { stub: new ComlinkStub({ url, ...credentials }), url };
     } catch (err) {
         const message = err instanceof Error ? err.message : String(err);
         logger.error(`[swapiQueue] swapiServe unreachable (${message}); this run will call comlink directly and uncoordinated`);
-        return new ComlinkStub({ url: directUrl, ...credentials });
+        return { stub: new ComlinkStub({ url: directUrl, ...credentials }), url: directUrl };
     }
 }
 

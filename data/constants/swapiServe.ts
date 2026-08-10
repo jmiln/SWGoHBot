@@ -82,6 +82,27 @@ export const RETRY = {
 
 export const UPSTREAM_TIMEOUT_MS = 60_000;
 
+// How long a request is still worth sending, indexed by priority. Past this the queue drops it and
+// answers 503 rather than spending upstream budget on a response whose caller has moved on.
+//
+// These are per-tier because the tiers differ in what being late costs, and a single default gets
+// the most important tier exactly backwards. arenaTick runs on a 60s interval guarded by
+// arenaTickRunning in events/clientReady.ts: a tick still waiting when the next one fires drops
+// that minute entirely, and since the payout cycle and the poll interval are exact multiples, the
+// same minute is lost every day. So its work must fail well inside the minute rather than survive
+// past it. Bulk work is at the other extreme: nothing is watching, and it is cheaper to wait than
+// to re-run a nightly cycle.
+//
+// Clients may override with the x-swapi-deadline-ms header, but ComlinkStub has no per-request
+// header hook, so in practice these defaults are what every caller gets.
+export const DEADLINE_MS: readonly number[] = [
+    45_000, // ARENA_TICK: inside its minute, with room to answer
+    120_000, // SUPPORTER_COMMAND
+    120_000, // PUBLIC_COMMAND
+    300_000, // BACKGROUND
+    600_000, // BULK
+];
+
 // Per-process cap used when swapiServe is unreachable and clients fall back to calling comlink
 // directly. Deliberately far below the old MAX_CONCURRENT of 20, since every shard applies it
 // independently with no coordination.
