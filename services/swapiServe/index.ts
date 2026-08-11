@@ -19,6 +19,16 @@ const CONTROL_PATH = /^\/backend\/([^/]+)\/(drain|enable|set-limit)$/;
 // How often shutdown re-checks for keep-alive connections that have gone idle since the last look.
 const SHUTDOWN_SWEEP_MS = 20;
 
+// How long shutdown waits for in-flight requests before closing their connections anyway.
+//
+// Queued work is settled immediately by dispatcher.stop(), but a request already at the backend is
+// left to finish, and UPSTREAM_TIMEOUT_MS allows it a full minute. Waiting that out is not an
+// option: pm2 SIGKILLs at its kill_timeout, so an unbounded wait does not buy a graceful shutdown,
+// it just replaces one with a kill. Ending deliberately at a known point means the remaining
+// callers get a closed socket instead of a half-written response, and ecosystem.config.cjs gives
+// pm2 a kill_timeout comfortably past this.
+const SHUTDOWN_GRACE_MS = 5_000;
+
 /**
  * Reads the priority tier off the path prefix and returns the real comlink path.
  *
@@ -189,6 +199,12 @@ export async function startSwapiServe({
             // Settles everything queued, so no caller is left holding a response that never ends.
             dispatcher.stop();
             await new Promise<void>((resolve, reject) => {
+                // Bounds the wait for in-flight requests. Without it a single slow upstream call
+                // holds shutdown open for the full upstream timeout.
+                const deadline = setTimeout(() => server.closeAllConnections(), SHUTDOWN_GRACE_MS);
+                deadline.unref();
+                server.once("close", () => clearTimeout(deadline));
+
                 server.close((err) => (err ? reject(err) : resolve()));
 
                 // server.close() only stops accepting new connections; it then waits for every
@@ -216,8 +232,42 @@ if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
         accessKey: env.SWAPI_ACCESS_KEY,
         secretKey: env.SWAPI_SECRET_KEY,
     })
-        .then(() => {
+        .then((service) => {
             logger.log("SwapiServe: Service started");
+
+            // Without these the close() above is unreachable in production: pm2 sends SIGTERM,
+            // Node exits on the spot, and every queued caller gets a dropped socket instead of the
+            // 503 the dispatcher is holding ready for it. Every shard and both updaters queue
+            // through this one process, so that is a lot of unexplained failures per restart.
+            let shuttingDown = false;
+            const gracefulShutdown = async (signal: string): Promise<void> => {
+                if (shuttingDown) return;
+                shuttingDown = true;
+
+                logger.log(`SwapiServe: Received ${signal}, starting graceful shutdown`);
+                try {
+                    await service.close();
+                    logger.log("SwapiServe: Graceful shutdown complete");
+                    process.exit(0);
+                } catch (err: unknown) {
+                    logger.error(`SwapiServe: Error during shutdown: ${err instanceof Error ? err.message : String(err)}`);
+                    process.exit(1);
+                }
+            };
+
+            process.on("SIGTERM", () => void gracefulShutdown("SIGTERM"));
+            process.on("SIGINT", () => void gracefulShutdown("SIGINT"));
+
+            // Logged rather than fatal, matching eventServe. One malformed response must not cost
+            // every client its queue.
+            process.on("uncaughtException", (err: Error) => {
+                logger.error(`SwapiServe: Uncaught exception - ${err.message}`);
+                logger.error(String(err.stack));
+            });
+            process.on("unhandledRejection", (reason, promise) => {
+                logger.error(`SwapiServe: Unhandled rejection at ${promise}`);
+                logger.error(`Reason: ${reason}`);
+            });
         })
         .catch((err: unknown) => {
             logger.error(`SwapiServe: Failed to start: ${err instanceof Error ? err.message : String(err)}`);

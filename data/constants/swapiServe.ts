@@ -86,19 +86,29 @@ export const UPSTREAM_TIMEOUT_MS = 60_000;
 // answers 503 rather than spending upstream budget on a response whose caller has moved on.
 //
 // These are per-tier because the tiers differ in what being late costs, and a single default gets
-// the most important tier exactly backwards. arenaTick runs on a 60s interval guarded by
-// arenaTickRunning in events/clientReady.ts: a tick still waiting when the next one fires drops
-// that minute entirely, and since the payout cycle and the poll interval are exact multiples, the
-// same minute is lost every day. So its work must fail well inside the minute rather than survive
-// past it. Bulk work is at the other extreme: nothing is watching, and it is cheaper to wait than
-// to re-run a nightly cycle.
+// the most important tier exactly backwards. Bulk work is the easy end: nothing is watching, and
+// it is cheaper to wait than to re-run a nightly cycle.
+//
+// The deadline also decides who survives an outage, because Dispatcher.shedDoomed sheds whatever
+// expires within one CIRCUIT_PROBE_INTERVAL_MS: no probe can land in time to serve it. So the two
+// user-facing tiers sit AT that interval, which sheds them on the very first pump rather than
+// letting them wait out probe after probe. That is deliberate and must stay true - a user staring
+// at a Discord spinner is better served by a prompt failure than by a two-minute one - so keep
+// these at or below CIRCUIT_PROBE_INTERVAL_MS. swapiServe.integration.test.ts asserts it.
+//
+// The tick is the exception, and is longer than a user command rather than shorter. It runs on a
+// 60s interval guarded by arenaTickRunning in events/clientReady.ts, so it must fail well inside
+// its minute, but no human is waiting on it: a tick that queued 30s and still landed is a win,
+// where a command that took 30s has already lost its user. Being past the probe interval means a
+// tick waits out part of an outage, which costs nothing, since it is shed with 15s to spare and
+// the next tick fires on schedule regardless.
 //
 // Clients may override with the x-swapi-deadline-ms header, but ComlinkStub has no per-request
 // header hook, so in practice these defaults are what every caller gets.
 export const DEADLINE_MS: readonly number[] = [
     45_000, // ARENA_TICK: inside its minute, with room to answer
-    120_000, // SUPPORTER_COMMAND
-    120_000, // PUBLIC_COMMAND
+    15_000, // SUPPORTER_COMMAND: one probe interval, so an outage fails it at once
+    15_000, // PUBLIC_COMMAND: likewise; priority buys precedence, not extra patience
     300_000, // BACKGROUND
     600_000, // BULK
 ];

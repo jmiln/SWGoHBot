@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { connect } from "node:net";
 import { after, describe, it } from "node:test";
-import { PRIORITY } from "../../data/constants/swapiServe.ts";
+import { GOVERNOR, PRIORITY } from "../../data/constants/swapiServe.ts";
 import { parsePriorityPath, resolveDeadlineMs, startSwapiServe } from "../../services/swapiServe/index.ts";
 
 // The interval arenaTick runs on, mirrored from events/clientReady.ts where it is a local const.
@@ -66,8 +66,24 @@ describe("swapiServe.resolveDeadlineMs", () => {
         const command = resolveDeadlineMs(PRIORITY.PUBLIC_COMMAND, undefined);
         const bulk = resolveDeadlineMs(PRIORITY.BULK, undefined);
 
-        assert.ok(arena < command, "a tick fails faster than a user command");
-        assert.ok(command < bulk, "bulk work nobody is watching can wait longest");
+        // A user command gives up soonest of all, ahead of even the tick. Priority orders who is
+        // served first; the deadline orders who is worth still serving, and a human watching a
+        // spinner runs out of patience long before an automated tick with a minute to fill does.
+        assert.ok(command < arena, "a user command gives up before a tick nobody is watching");
+        assert.ok(arena < bulk, "bulk work nobody is watching can wait longest");
+    });
+
+    // Dispatcher.shedDoomed sheds whatever expires within one probe interval, since no probe can
+    // land in time to serve it. Holding the user-facing tiers at or below that interval is what
+    // makes a dead pool fail them on the first pump instead of walking them through failed probe
+    // after failed probe until their deadline runs out.
+    it("fails user-facing work at once when the pool is down, rather than waiting out probes", () => {
+        for (const tier of [PRIORITY.SUPPORTER_COMMAND, PRIORITY.PUBLIC_COMMAND] as const) {
+            assert.ok(
+                resolveDeadlineMs(tier, undefined) <= GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS,
+                `tier ${tier} must not outlive a probe interval, or an outage leaves its user waiting`,
+            );
+        }
     });
 
     it("prefers a caller's own deadline over the tier default", () => {

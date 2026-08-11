@@ -13,13 +13,13 @@ const CREDENTIALS = { accessKey: "a", secretKey: "s" };
 // thousands of iterations just to get through a handful of probes.
 const STEP_MS = 100;
 
-function submit(dispatcher: Dispatcher, clock: FakeClock, priority: Priority, uri = "/player"): Promise<ProxyResponse> {
+function submit(dispatcher: Dispatcher, clock: FakeClock, priority: Priority, uri = "/player", deadlineMs = 3_600_000): Promise<ProxyResponse> {
     return dispatcher.submit({
         method: "POST",
         uri,
         body: Buffer.from("{}"),
         priority,
-        deadline: clock.now() + 3_600_000,
+        deadline: clock.now() + deadlineMs,
     });
 }
 
@@ -139,28 +139,25 @@ describe("swapiServe controller simulation", () => {
                     : { status: undefined, headers: {}, body: Buffer.alloc(0) },
         });
 
-        const failing = Array.from({ length: 12 }, () => submit(dispatcher, clock, PRIORITY.BULK));
+        // Short deadlines, so that once the breaker opens the rest of the batch is shed rather
+        // than waiting: nothing here is meant to survive the outage, it only has to cause it.
+        const failing = Array.from({ length: 12 }, () => submit(dispatcher, clock, PRIORITY.BULK, "/player", 10_000));
         await drain(dispatcher, clock);
         await Promise.all(failing);
         assert.strictEqual(dispatcher.status().backends[0].state, "open", "sustained failure should open the breaker");
 
         healthy = true;
 
-        // Submit over time rather than all at once. While the breaker is open, requests are shed
-        // immediately instead of queueing, so recovery comes from a request arriving after the
-        // probe interval has elapsed and becoming the probe. A live bot always has such traffic;
-        // a single batch submitted during the open window would all be shed with nothing left to
-        // probe with.
-        let recovered = false;
-        for (let i = 0; i < 200 && !recovered; i++) {
-            const response = await submit(dispatcher, clock, PRIORITY.BULK);
-            if (response.status === 200) recovered = true;
-            clock.advance(1000);
-            await clock.flush();
-        }
+        // A request whose deadline outlasts the probe interval keeps its place through the outage,
+        // so recovery needs nothing but time: the breaker reaches half-open at the probe interval,
+        // the waiting request becomes the probe, and it succeeds. Nothing has to arrive at exactly
+        // the right moment for the pool to come back.
+        const recovering = submit(dispatcher, clock, PRIORITY.BULK);
+        await drain(dispatcher, clock);
+        const response = await recovering;
         dispatcher.stop();
 
-        assert.ok(recovered, "a request should eventually get through once the backend is healthy again");
+        assert.strictEqual(response.status, 200, "the request that waited out the outage should be served");
         assert.strictEqual(dispatcher.status().backends[0].state, "closed", "the breaker must recover once the backend does");
     });
 });

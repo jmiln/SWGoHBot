@@ -2,7 +2,6 @@ import { workerData } from "node:worker_threads";
 import { env } from "../../config/config.ts";
 import { signRequest } from "../../services/swapiServe/signer.ts";
 import type { ComlinkPlayer } from "../../types/swapi_types.ts";
-import logger from "../Logger.ts";
 
 interface ModMap {
     [key: string]: {
@@ -22,11 +21,6 @@ function getComlinkUrl(): string {
     // outside that pool.
     const { comlinkUrl } = (workerData ?? {}) as { comlinkUrl?: string };
     return comlinkUrl ?? env.SWAPI_CLIENT_URL;
-}
-
-function getStatusCode(err: unknown): number | undefined {
-    if (!(err instanceof Error)) return undefined;
-    return (err as Error & { status?: number }).status;
 }
 
 /**
@@ -110,17 +104,23 @@ export function stripRoster(player: ComlinkPlayer | undefined, modMap: ModMap) {
  * with a shared budget and paces those retries against live traffic, which this thread cannot see.
  *
  * The timeout stays, because it bounds how long a worker thread is held by one wedged request.
+ *
+ * Failures reject rather than resolving with undefined, so that a player who could not be fetched
+ * and a player who owns no mods do not look identical to the caller. They used to: every failure
+ * became undefined, the pool resolved normally, and aggregatePlayerMods folded nothing in and
+ * counted nothing. A cycle that lost most of its sample to an outage then wrote a mod aggregate
+ * built from the survivors over the good data, logging exactly as much as a clean run did.
  */
 export async function fetchPlayerData(baseUrl: string, playerId: number, modMap: ModMap, timeoutMs = PLAYER_FETCH_TIMEOUT_MS) {
     try {
         return stripRoster(await fetchPlayerRoster(baseUrl, playerId, timeoutMs), modMap);
     } catch (err: unknown) {
-        const timedOut = err instanceof Error && err.name === "TimeoutError";
-        const message = timedOut ? `timed out after ${timeoutMs}ms` : err instanceof Error ? err.message : String(err);
-        const code = getStatusCode(err);
-        const statusStr = code != null ? ` [status ${code}]` : "";
-        logger.error(`[getStrippedModsWorker] Error fetching player ${playerId}:${statusStr} ${message}`);
-        return undefined;
+        // AbortSignal.timeout reports as a bare "The operation was aborted", which reads as a
+        // cancellation rather than as this worker's own limit being hit.
+        if (err instanceof Error && err.name === "TimeoutError") {
+            throw new Error(`getPlayer(${playerId}) timed out after ${timeoutMs}ms`, { cause: err });
+        }
+        throw err;
     }
 }
 

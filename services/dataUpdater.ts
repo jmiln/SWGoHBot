@@ -54,6 +54,13 @@ const MOD_WORKER_THREADS = numericArg("--mod-threads", Math.max(1, Math.min(avai
 const MOD_TASKS_PER_WORKER = numericArg("--mod-tasks", 1);
 const MOD_WORKER_HEAP_MB = numericArg("--worker-heap", 256);
 
+// Share of players that may fail to fetch before the resulting mod aggregate stops being worth
+// writing. See isModSampleUsable.
+const MAX_MOD_FAILURE_RATE = 0.1;
+// Per-player failures are logged up to this many times, then only counted. A backend outage fails
+// every player in the run, and a hundred thousand identical lines buries the summary that says so.
+const MAX_LOGGED_MOD_FAILURES = 20;
+
 import type ComlinkStub from "@swgoh-utils/comlink";
 import { resolveBulkStub } from "../modules/swapiQueue.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
@@ -609,9 +616,16 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap, comlinkU
                 if (strippedUnits?.length) foldUnitMods(unitsOut, strippedUnits);
             } catch (err) {
                 failedCount++;
-                logger.error(
-                    `[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`,
-                );
+                if (failedCount <= MAX_LOGGED_MOD_FAILURES) {
+                    logger.error(
+                        `[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`,
+                    );
+                    if (failedCount === MAX_LOGGED_MOD_FAILURES) {
+                        logger.error(
+                            "[dataUpdater/aggregatePlayerMods] Further player failures will be counted but not logged individually",
+                        );
+                    }
+                }
             }
             // Sample memory periodically to catch any transient peak from in-flight worker payloads
             if (++processedCount % 1000 === 0) logMem(`aggregatePlayerMods after ${processedCount} players`);
@@ -620,6 +634,12 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap, comlinkU
         if (failedCount > 0) {
             logger.error(`[dataUpdater/aggregatePlayerMods] Failed to process ${failedCount}/${playerIds.length} players`);
         }
+        if (!isModSampleUsable(failedCount, playerIds.length)) {
+            throw new Error(
+                `Mod aggregation lost ${failedCount}/${playerIds.length} players, past the ${MAX_MOD_FAILURE_RATE * 100}% limit; ` +
+                    "refusing to overwrite character mod data with a partial sample",
+            );
+        }
     } finally {
         // Always close, even if errors occurred
         await piscina.close();
@@ -627,6 +647,20 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap, comlinkU
     }
 
     return unitsOut;
+}
+
+/**
+ * Whether a mod run fetched enough players to be worth writing.
+ *
+ * The aggregate is the most common mod set and primaries per character, taken over roughly a
+ * hundred thousand players, so losing a slice of the sample changes nothing while losing most of
+ * it produces noise. Since mergeModsToCharacters overwrites the previous data rather than merging
+ * with it, a degraded run is worse than no run at all: stale mod data is still broadly correct,
+ * whereas an aggregate built from the few players who happened to survive an outage is not.
+ */
+export function isModSampleUsable(failedCount: number, totalCount: number): boolean {
+    if (totalCount === 0) return true;
+    return failedCount / totalCount <= MAX_MOD_FAILURE_RATE;
 }
 
 // Fold one batch of stripped units (typically a single player's roster) into the running
@@ -2577,6 +2611,7 @@ export default {
     buildUnitNamesMap,
 
     processModResults,
+    isModSampleUsable,
 
     processJourneyReqs,
     saveRaidNames,

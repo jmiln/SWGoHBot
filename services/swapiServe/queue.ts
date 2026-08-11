@@ -145,12 +145,28 @@ export class PriorityQueue<T> {
      * the backends recover.
      */
     drainAll(): QueueEntry<T>[] {
+        return this.drainWhere(() => true);
+    }
+
+    /**
+     * Removes the entries matching `predicate` and returns the ones with a caller still waiting.
+     *
+     * Cancelled entries are dropped without being returned, the same as in a full drain: their
+     * caller has already been answered, so handing them back would settle them twice.
+     */
+    drainWhere(predicate: (entry: QueueEntry<T>) => boolean): QueueEntry<T>[] {
         const drained: QueueEntry<T>[] = [];
         for (const bucket of this.buckets) {
+            let kept = 0;
             for (const entry of bucket) {
-                if (!entry.cancelled) drained.push(entry);
+                if (!predicate(entry)) {
+                    bucket[kept] = entry;
+                    kept++;
+                } else if (!entry.cancelled) {
+                    drained.push(entry);
+                }
             }
-            bucket.length = 0;
+            bucket.length = kept;
         }
         return drained;
     }

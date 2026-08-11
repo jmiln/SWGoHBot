@@ -1,4 +1,4 @@
-import { type Priority, RETRY } from "../../data/constants/swapiServe.ts";
+import { GOVERNOR, type Priority, RETRY } from "../../data/constants/swapiServe.ts";
 import logger from "../../modules/Logger.ts";
 import { type Clock, systemClock, type TimerHandle } from "./clock.ts";
 import { createHttpForwarder, type Forwarder } from "./forwarder.ts";
@@ -93,6 +93,8 @@ export class Dispatcher {
     private readonly clock: Clock;
     private readonly forwarder: Forwarder;
     private readonly retryDelayMs: number;
+    /** Mirrors the Governor's probe cadence, which is the horizon shedDoomed measures against. */
+    private readonly probeIntervalMs: number;
     private readonly endpointCosts = new Map<string, { count: number; totalLatencyMs: number; totalBytes: number }>();
     private stopped = false;
     private wakeup: TimerHandle | null = null;
@@ -149,6 +151,7 @@ export class Dispatcher {
     }) {
         this.clock = clock ?? systemClock;
         this.forwarder = forwarder ?? createHttpForwarder({ accessKey, secretKey, timeoutMs });
+        this.probeIntervalMs = circuitProbeIntervalMs ?? GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS;
         this.governor = new Governor(backends, { probeIntervalMs: circuitProbeIntervalMs });
 
         // Tests need deterministic pacing; production uses GOVERNOR.START_LIMIT and RATE.START_PER_SEC.
@@ -316,13 +319,14 @@ export class Dispatcher {
             if (!backendUrl) {
                 if (blockedBy) this.blocked[blockedBy]++;
 
-                // No backend is usable at all, so holding the queue helps nobody. Without this,
-                // work drains at the circuit-probe rate: one request every 15 seconds, each one
-                // failing anyway, so a hundred callers would learn over 25 minutes what we knew
-                // in the first second. Interactive callers would sit past their Discord token's
-                // lifetime before hearing anything.
+                // No backend is usable at all, so anyone who cannot outlive the outage is told now
+                // rather than later. Without this, work drains at the circuit-probe rate: one
+                // request every 15 seconds, each one failing anyway, so a hundred callers would
+                // learn over 25 minutes what we knew in the first second, and interactive callers
+                // would sit past their Discord token's lifetime before hearing anything.
                 if (blockedBy === "health") {
-                    this.shedAll("No comlink backend is currently available");
+                    this.shedDoomed(now);
+                    this.scheduleWakeup(now);
                     return;
                 }
 
@@ -346,15 +350,24 @@ export class Dispatcher {
     }
 
     /**
-     * Fails every waiting request at once, for when no backend can serve any of them.
+     * Fails the waiting requests that cannot survive long enough to be served, for when no backend
+     * can serve any of them right now.
      *
-     * The circuit probe keeps running on its own cadence, so normal service resumes the moment a
-     * probe succeeds; requests arriving during the outage are shed the same way, except the one
-     * that happens to arrive after the probe interval has elapsed, which becomes the next probe.
+     * The cutoff is one probe interval, because a probe is the only thing that can restore service:
+     * a request expiring before the next one lands cannot be served whatever happens, so telling
+     * its caller immediately costs nothing and saves it a pointless wait. Anything with more
+     * headroom keeps its place, which is the whole of what bulk work wants. Its deadline is ten
+     * minutes against a fifteen-second probe, nothing is watching it, and re-running a nightly
+     * cycle is far more expensive than waiting out a blip. Shedding those too turned every
+     * transient outage into a failed dataUpdater run.
+     *
+     * Requests that keep their place are re-examined on the next pump, so a probe that fails
+     * simply sheds the next tranche as their deadlines come into range.
      */
-    private shedAll(reason: string): void {
-        for (const entry of this.queue.drainAll()) {
-            this.settle(entry.payload, "backend_unavailable", shedResponse(reason));
+    private shedDoomed(now: number): void {
+        const cutoff = now + this.probeIntervalMs;
+        for (const entry of this.queue.drainWhere((waiting) => waiting.deadline <= cutoff)) {
+            this.settle(entry.payload, "backend_unavailable", shedResponse("No comlink backend is currently available"));
         }
     }
 

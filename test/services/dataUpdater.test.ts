@@ -17,6 +17,7 @@ const {
     unitsToUnitFiles,
     resolveLocKey,
     buildUnitNamesMap,
+    isModSampleUsable,
 } = dataUpdater;
 
 // ---------------------------------------------------------------------------
@@ -297,6 +298,32 @@ describe("processAbilities", () => {
 // ---------------------------------------------------------------------------
 // processModResults
 // ---------------------------------------------------------------------------
+
+// The aggregate is "most common mod set and primaries per character" over roughly a hundred
+// thousand players, so it tolerates losing a slice of the sample but not most of it. Writing a
+// result built from a fraction of the players overwrites good character data with noise, and
+// before this gate existed nothing distinguished that run from a clean one.
+describe("isModSampleUsable", () => {
+    it("accepts a run where every player was fetched", () => {
+        assert.strictEqual(isModSampleUsable(0, 100_000), true);
+    });
+
+    it("accepts the routine handful of failures", () => {
+        assert.strictEqual(isModSampleUsable(500, 100_000), true);
+    });
+
+    it("rejects a run that lost most of its sample", () => {
+        assert.strictEqual(isModSampleUsable(90_000, 100_000), false);
+    });
+
+    it("rejects a run where every fetch failed", () => {
+        assert.strictEqual(isModSampleUsable(100, 100), false);
+    });
+
+    it("accepts a run with no players to fetch, since there is nothing to write badly", () => {
+        assert.strictEqual(isModSampleUsable(0, 0), true);
+    });
+});
 
 describe("processModResults", () => {
     it("picks the most common primary string", () => {

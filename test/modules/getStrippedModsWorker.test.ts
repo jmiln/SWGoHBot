@@ -90,9 +90,7 @@ describe("fetchPlayerData", () => {
         const comlink = await startFakeComlink(() => ({ status: 200, body: "{}", delayMs: 5000 }));
         after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(comlink.url, 123456789, MOD_MAP, 50);
-
-        assert.strictEqual(result, undefined, "the caller gives up");
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP, 50), /timed out after 50ms/);
         assert.strictEqual(comlink.requestCount(), 1, "and does so without re-sending");
 
         // The server sees the socket close, which is what swapiServe reads as a cancellation.
@@ -100,20 +98,26 @@ describe("fetchPlayerData", () => {
         assert.strictEqual(comlink.abandonedCount(), 1, "the upstream request must actually be withdrawn");
     });
 
-    it("returns undefined when the upstream fails", async () => {
+    // A player that could not be fetched and a player with no mods must not look the same to the
+    // caller. Returning undefined for both let a run where every fetch failed produce a mod
+    // aggregate built from nothing and write it over good data, with no count and no log.
+    it("rejects when the upstream fails, rather than reporting an empty roster", async () => {
         const comlink = await startFakeComlink(() => ({ status: 502, body: JSON.stringify({ message: "Bad Gateway" }) }));
         after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(comlink.url, 123456789, MOD_MAP);
-
-        assert.strictEqual(result, undefined);
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP), /status 502/);
     });
 
-    it("returns undefined when the upstream is unreachable", async () => {
+    it("rejects when the upstream is unreachable", async () => {
         // Port 1 on loopback reliably refuses
-        const result = await fetchPlayerData("http://127.0.0.1:1", 123456789, MOD_MAP);
+        await assert.rejects(() => fetchPlayerData("http://127.0.0.1:1", 123456789, MOD_MAP));
+    });
 
-        assert.strictEqual(result, undefined);
+    it("still resolves for a player who genuinely has no modded units", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ rosterUnit: [] }) }));
+        after(async () => await comlink.close());
+
+        assert.deepStrictEqual(await fetchPlayerData(comlink.url, 123456789, MOD_MAP), []);
     });
 
     // The worker used to retry 502/503 twice itself. That retry moved to swapiServe, which sees
@@ -128,9 +132,7 @@ describe("fetchPlayerData", () => {
         );
         after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(comlink.url, 123456789, MOD_MAP);
-
-        assert.strictEqual(result, undefined, "the failure should surface rather than being retried here");
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP), "the failure should surface rather than being retried here");
         assert.strictEqual(comlink.requestCount(), 1, "exactly one upstream call per task");
     });
 

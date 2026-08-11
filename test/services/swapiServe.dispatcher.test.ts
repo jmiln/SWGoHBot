@@ -3,6 +3,7 @@ import { after, describe, it } from "node:test";
 import { PRIORITY } from "../../data/constants/swapiServe.ts";
 import { Dispatcher } from "../../services/swapiServe/dispatcher.ts";
 import type { Forwarder } from "../../services/swapiServe/forwarder.ts";
+import { FakeClock } from "../helpers/fakeClock.ts";
 import { startFakeComlink } from "../helpers/fakeComlink.ts";
 
 // The token bucket defaults to a deliberately slow production rate. Tests that are not
@@ -15,6 +16,32 @@ function request(priority: 0 | 1 | 2 | 3 | 4, uri = "/player") {
 }
 
 const okForwarder: Forwarder = async () => ({ status: 200, headers: {}, body: Buffer.from(JSON.stringify({ ok: true })) });
+
+/** A request whose deadline is expressed against virtual time rather than the wall clock. */
+function requestAt(clock: FakeClock, priority: 0 | 1 | 2 | 3 | 4, deadlineMs: number, uri = "/player") {
+    return { method: "POST", uri, body: Buffer.from("{}"), priority, deadline: clock.now() + deadlineMs };
+}
+
+/**
+ * Runs a pending dispatcher call to completion on virtual time.
+ *
+ * Any test that drives a backend to failure has to be on a fake clock. The governor halves the
+ * token rate on every unhealthy outcome, down to RATE.MIN_PER_SEC, which is one token every two
+ * seconds; on the real clock a handful of failures then costs the suite most of a minute waiting
+ * out refills that prove nothing about the behaviour under test.
+ */
+async function settle<T>(clock: FakeClock, pending: Promise<T>, maxSteps = 2_000): Promise<T> {
+    let done = false;
+    const tracked = pending.then((value) => {
+        done = true;
+        return value;
+    });
+    for (let step = 0; step < maxSteps && !done; step++) {
+        clock.advance(100);
+        await clock.flush();
+    }
+    return tracked;
+}
 
 describe("swapiServe.Dispatcher forwarding", () => {
     it("forwards the request and returns the upstream response untouched", async () => {
@@ -158,15 +185,22 @@ describe("swapiServe.Dispatcher retry", () => {
 
 describe("swapiServe.Dispatcher health adaptation", () => {
     it("collapses the limit after a burst of 429s", async () => {
-        const comlink = await startFakeComlink(() => ({ status: 429, body: JSON.stringify({ message: "Too Many Requests" }) }));
-        const dispatcher = new Dispatcher({ backends: [comlink.url], ...CREDENTIALS, retryDelayMs: 0 });
-        after(async () => {
-            dispatcher.stop();
-            await comlink.close();
+        const clock = new FakeClock();
+        const throttling: Forwarder = async () => ({
+            status: 429,
+            headers: {},
+            body: Buffer.from(JSON.stringify({ message: "Too Many Requests" })),
         });
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: throttling, clock, retryDelayMs: 0 });
+        after(() => dispatcher.stop());
 
         const startingLimit = dispatcher.status().backends[0].limit;
-        await Promise.all(Array.from({ length: 8 }, () => dispatcher.submit(request(PRIORITY.BULK))));
+        // Deadlines inside the probe interval, so the tail of the burst is shed once the breaker
+        // opens rather than waiting the outage out. This test is about the limit, not the queue.
+        await settle(
+            clock,
+            Promise.all(Array.from({ length: 8 }, () => dispatcher.submit(requestAt(clock, PRIORITY.BULK, 5_000)))),
+        );
 
         assert.ok(dispatcher.status().backends[0].limit < startingLimit, "limit should shrink under throttling");
     });
@@ -289,55 +323,98 @@ describe("swapiServe.Dispatcher shedding", () => {
     });
 });
 
+/**
+ * Drives a failing backend until its breaker opens, and stops there.
+ *
+ * Deliberately not a fixed number of submits: once the breaker is open, a request carrying a
+ * deadline past the probe interval keeps its place instead of being shed, so an overshooting loop
+ * would wait out that deadline rather than stopping when the breaker trips.
+ */
+async function openBreaker(dispatcher: Dispatcher, clock: FakeClock): Promise<void> {
+    for (let i = 0; i < 30 && dispatcher.status().backends[0].state !== "open"; i++) {
+        await settle(clock, dispatcher.submit(requestAt(clock, PRIORITY.BULK, 5_000)));
+    }
+    assert.strictEqual(dispatcher.status().backends[0].state, "open", "the breaker should be open by now");
+}
+
 describe("swapiServe.Dispatcher dead pool", () => {
-    // Without fast-fail, a backlog behind a dead backend drains at the circuit-probe rate: one
+    const deadForwarder: Forwarder = async () => ({ status: undefined, headers: {}, body: Buffer.alloc(0) });
+
+    // Without a mass shed, a backlog behind a dead backend drains at the circuit-probe rate: one
     // request every 15 seconds, each failing anyway. A hundred callers would take 25 minutes to
     // learn what was knowable in the first second, well past a Discord interaction token's life.
-    it("fails the whole queue at once when no backend is usable", async () => {
-        const forwarder: Forwarder = async () => ({ status: undefined, headers: {}, body: Buffer.alloc(0) });
-        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, retryDelayMs: 0 });
+    // Everything doomed goes at once instead, in a single pass, however deep the backlog is.
+    it("fails the whole doomed queue at once rather than one request per probe", async () => {
+        const clock = new FakeClock();
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: deadForwarder, clock, retryDelayMs: 0 });
         after(() => dispatcher.stop());
 
-        // Open the breaker
-        for (let i = 0; i < 15; i++) await dispatcher.submit(request(PRIORITY.BULK));
-        assert.strictEqual(dispatcher.status().backends[0].state, "open", "the breaker should be open by now");
+        await openBreaker(dispatcher, clock);
 
-        const startedAt = Date.now();
-        const responses = await Promise.all(Array.from({ length: 50 }, () => dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND))));
-        const elapsed = Date.now() - startedAt;
+        const startedAt = clock.now();
+        // Deadlines inside the probe interval, so no probe can land in time to serve any of them.
+        const responses = await Promise.all(
+            Array.from({ length: 50 }, () => dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, 5_000))),
+        );
 
         assert.strictEqual(responses.length, 50);
         assert.ok(
             responses.every((response) => response.status === 503),
             "every request should be told the backend is unavailable",
         );
-        assert.ok(elapsed < 1000, `should fail fast, took ${elapsed}ms`);
+        // The sharp version of "fails fast": the whole backlog is answered without a single probe
+        // interval passing, which a one-request-per-probe drain could never do.
+        assert.strictEqual(clock.now(), startedAt, "the backlog should be shed in one pass, with no time passing");
         assert.ok(dispatcher.status().terminal.backend_unavailable > 0, "and the reason should be recorded distinctly");
     });
 
-    it("resumes normally once a probe succeeds", async () => {
+    // Fast-fail is right for a caller that is watching a clock, and wrong for one that is not.
+    // Bulk work carries a ten-minute deadline against a fifteen-second probe, so waiting out an
+    // outage is exactly what it wants; shedding it turned a blip into a failed nightly cycle.
+    it("keeps work that can outlast the outage and sheds only what cannot", async () => {
+        const clock = new FakeClock();
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: deadForwarder, clock, retryDelayMs: 0 });
+        after(() => dispatcher.stop());
+
+        await openBreaker(dispatcher, clock);
+
+        // Deadline shorter than the 15s probe interval: this one cannot live to see a recovery.
+        const doomed = dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, 5_000));
+        // Deadline well past it: several probes will land before this expires.
+        let patientSettled = false;
+        const patient = dispatcher.submit(requestAt(clock, PRIORITY.BULK, 600_000)).then((response) => {
+            patientSettled = true;
+            return response;
+        });
+
+        assert.strictEqual((await doomed).status, 503, "a caller that cannot outlive the outage is told immediately");
+
+        await clock.flush();
+        assert.strictEqual(patientSettled, false, "a caller that can outlive the outage keeps its place");
+        assert.strictEqual(dispatcher.status().queue.depths[PRIORITY.BULK], 1, "and stays queued rather than being dropped");
+
+        // Settle it deliberately rather than leaving the test to wait out a ten-minute deadline.
+        dispatcher.stop();
+        assert.strictEqual((await patient).status, 503, "and is answered on shutdown rather than left hanging");
+    });
+
+    it("serves the request that waited, once a probe succeeds", async () => {
+        const clock = new FakeClock();
         let healthy = false;
         const forwarder: Forwarder = async () =>
             healthy
                 ? { status: 200, headers: {}, body: Buffer.from(JSON.stringify({ ok: true })) }
                 : { status: undefined, headers: {}, body: Buffer.alloc(0) };
-        const dispatcher = new Dispatcher({
-            backends: ["sim://a"],
-            ...CREDENTIALS,
-            forwarder,
-            retryDelayMs: 0,
-            // Short probe interval so the test does not wait out the production 15s.
-            circuitProbeIntervalMs: 20,
-        });
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, clock, retryDelayMs: 0 });
         after(() => dispatcher.stop());
 
-        for (let i = 0; i < 15; i++) await dispatcher.submit(request(PRIORITY.BULK));
-        assert.strictEqual(dispatcher.status().backends[0].state, "open");
+        await openBreaker(dispatcher, clock);
 
         healthy = true;
-        await new Promise((resolve) => setTimeout(resolve, 30));
+        // Queued while the pool is still dead, and with the headroom to outlast it: recovery needs
+        // nothing to arrive at the right moment, since this request becomes the probe itself.
+        const response = await settle(clock, dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, 120_000)));
 
-        const response = await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
         assert.strictEqual(response.status, 200, "a successful probe should re-admit the backend");
         assert.strictEqual(dispatcher.status().backends[0].state, "closed");
     });
