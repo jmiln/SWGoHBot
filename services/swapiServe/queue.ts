@@ -93,7 +93,7 @@ export class PriorityQueue<T> {
      * what keeps scheduling policy and backend health as separate concerns.
      */
     dequeue(now: number): QueueEntry<T> | null {
-        this.dropExpired(now);
+        this.sweepExpired(now);
 
         let firstWaiting: Priority | null = null;
         for (let priority = 0; priority < PRIORITY_COUNT; priority++) {
@@ -208,13 +208,36 @@ export class PriorityQueue<T> {
     }
 
     /**
+     * The soonest deadline waiting anywhere in the queue, or null when nothing is waiting.
+     *
+     * Exists so the owner can arm a timer for it. Deadlines would otherwise only be noticed on the
+     * way to a dispatch, and the case where they matter most is precisely the one with no dispatch
+     * coming: a saturated or rate-blocked pool, where the queue sits still while callers give up.
+     *
+     * Scans every tier rather than just the heads, because a tier is FIFO by arrival and not sorted
+     * by deadline: callers may pass their own, and a later arrival can expire first.
+     */
+    earliestDeadline(): number | null {
+        let earliest: number | null = null;
+        for (const bucket of this.buckets) {
+            for (const entry of bucket) {
+                if (earliest === null || entry.deadline < earliest) earliest = entry.deadline;
+            }
+        }
+        return earliest;
+    }
+
+    /**
      * Removes entries that are past their deadline or whose client has gone away.
      *
      * Both are the same idea: upstream capacity is the scarce resource, and spending it on a
      * response nobody can receive is pure waste. Expiry catches the deadline passing; cancellation
      * catches a client that gave up early or a shard that died.
+     *
+     * Public because dispatch is not the only occasion for it: when no capacity is available there
+     * is no dequeue to sweep on the way through, and that is when deadlines are passing.
      */
-    private dropExpired(now: number): void {
+    sweepExpired(now: number): void {
         for (const [priority, bucket] of this.buckets.entries()) {
             let kept = 0;
             for (const entry of bucket) {

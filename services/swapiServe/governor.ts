@@ -36,6 +36,16 @@ export interface AcquireResult {
     url: string | null;
     /** Set only when url is null. */
     blockedBy?: BlockedBy;
+    /**
+     * True when this slot is the half-open circuit's probe, which the caller must pass back to
+     * `report` or `releaseUnused`.
+     *
+     * The probe is one specific request, not "whatever comes back next while half-open". Requests
+     * dispatched before the breaker opened can still be in flight when it probes, so the state
+     * machine cannot infer this from the backend alone: only the caller knows which request it is
+     * reporting on.
+     */
+    isProbe?: boolean;
 }
 
 interface BackendState {
@@ -115,7 +125,7 @@ export class Governor {
                 if (!backend.bucket.tryTake(now)) continue;
                 backend.probeInFlight = true;
                 backend.inFlight++;
-                return { url: backend.url };
+                return { url: backend.url, isProbe: true };
             }
 
             if (backend.limit - backend.inFlight > 0) candidates.push(backend);
@@ -145,15 +155,23 @@ export class Governor {
         return { url: null, blockedBy: "token" };
     }
 
-    /** Releases the slot and applies the AIMD update for the observed outcome. */
-    report(url: string, outcome: Outcome, now: number): void {
+    /**
+     * Releases the slot and applies the AIMD update for the observed outcome.
+     *
+     * `wasProbe` must be the `isProbe` the matching `acquire` returned. Only the probe's own outcome
+     * decides whether a half-open backend is re-admitted, because only the probe was sent to find
+     * out: a request dispatched before the breaker opened can still be in flight when it probes, and
+     * crediting that to the probe reads a minute-old observation as current evidence. A stale
+     * success re-admits a backend nothing has tested; a stale failure discards a probe that was
+     * about to prove the backend healthy, costing another full interval of downtime.
+     */
+    report(url: string, outcome: Outcome, now: number, wasProbe = false): void {
         const backend = this.backends.find((candidate) => candidate.url === url);
         if (!backend) return;
 
         backend.inFlight = Math.max(0, backend.inFlight - 1);
         backend.outcomes[outcome] = (backend.outcomes[outcome] ?? 0) + 1;
-        const wasProbe = backend.probeInFlight;
-        backend.probeInFlight = false;
+        if (wasProbe) backend.probeInFlight = false;
 
         if (affectsHealth(outcome)) {
             backend.cleanStreak = 0;
@@ -258,12 +276,16 @@ export class Governor {
      * Returns a slot that was acquired but never used, because the queue turned out to be empty.
      * Deliberately not `report("ok")`: no request was made, so it must not count towards the
      * clean streak that grows the limit, or an idle service would inflate its own budget.
+     *
+     * `wasProbe` carries the same meaning as in `report`: only the probe's own slot coming back
+     * frees the backend to probe again. Clearing the flag for an unrelated request would let a
+     * second probe run alongside the first.
      */
-    releaseUnused(url: string): void {
+    releaseUnused(url: string, wasProbe = false): void {
         const backend = this.backends.find((candidate) => candidate.url === url);
         if (!backend) return;
         backend.inFlight = Math.max(0, backend.inFlight - 1);
-        backend.probeInFlight = false;
+        if (wasProbe) backend.probeInFlight = false;
         backend.bucket.refund();
     }
 

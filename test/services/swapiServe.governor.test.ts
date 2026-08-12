@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { GOVERNOR } from "../../data/constants/swapiServe.ts";
+import { GOVERNOR, RATE } from "../../data/constants/swapiServe.ts";
 import { Governor } from "../../services/swapiServe/governor.ts";
 
 const A = "http://a.test";
@@ -203,8 +203,8 @@ describe("swapiServe.Governor circuit breaker", () => {
         openTheCircuit(governor);
 
         const probeTime = GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1;
-        governor.acquire(probeTime);
-        governor.report(A, "ok", probeTime);
+        const probe = governor.acquire(probeTime);
+        governor.report(A, "ok", probeTime, probe.isProbe);
 
         assert.strictEqual(governor.snapshot()[0].state, "closed");
         // The failures that opened the breaker also collapsed the rate to its floor, so the
@@ -219,8 +219,8 @@ describe("swapiServe.Governor circuit breaker", () => {
         const collapsedLimit = governor.snapshot()[0].limit;
 
         const probeTime = GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1;
-        governor.acquire(probeTime);
-        governor.report(A, "ok", probeTime);
+        const probe = governor.acquire(probeTime);
+        governor.report(A, "ok", probeTime, probe.isProbe);
 
         assert.strictEqual(governor.snapshot()[0].limit, collapsedLimit);
     });
@@ -230,8 +230,8 @@ describe("swapiServe.Governor circuit breaker", () => {
         openTheCircuit(governor);
 
         const probeTime = GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1;
-        governor.acquire(probeTime);
-        governor.report(A, "transport_failure", probeTime);
+        const probe = governor.acquire(probeTime);
+        governor.report(A, "transport_failure", probeTime, probe.isProbe);
 
         assert.strictEqual(governor.snapshot()[0].state, "open");
         assert.strictEqual(governor.acquire(probeTime + 1).url, null, "interval restarts from the failed probe");
@@ -250,9 +250,81 @@ describe("swapiServe.Governor circuit breaker", () => {
         let now = 0;
         for (let round = 0; round < 5; round++) {
             now += GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1;
-            assert.strictEqual(governor.acquire(now).url, A, `probe ${round} should be allowed`);
-            governor.report(A, "transport_failure", now);
+            const probe = governor.acquire(now);
+            assert.strictEqual(probe.url, A, `probe ${round} should be allowed`);
+            governor.report(A, "transport_failure", now, probe.isProbe);
         }
+    });
+});
+
+/**
+ * A probe is one specific request, not "whatever comes back next while half-open". Requests
+ * dispatched before the breaker opened can still be in flight when it probes, and crediting one of
+ * those to the probe reads a minute-old observation as current evidence: a stale success re-admits
+ * a backend nothing has actually tested, and a stale failure discards a probe that was about to
+ * prove the backend healthy, costing another full interval of downtime.
+ */
+describe("swapiServe.Governor probe attribution", () => {
+    /**
+     * Opens the breaker while requests dispatched before the collapse are still in flight, which is
+     * what a partly-wedged backend actually produces.
+     *
+     * The learned limit collapses far faster than the in-flight work drains: from 40 it is at the
+     * floor after six failures, so thirty-odd requests are still out there when the tenth failure
+     * trips the breaker. Returns how many, so the test can assert the scenario really was set up.
+     */
+    const LEARNED_LIMIT = 40;
+    const DISPATCH_SPACING_MS = 100;
+    const OPENED_AT = LEARNED_LIMIT * DISPATCH_SPACING_MS;
+    const probeTime = OPENED_AT + GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1;
+
+    function openTheCircuitWithStragglers(governor: Governor): number {
+        governor.setLimit(A, LEARNED_LIMIT);
+        governor.setRate(A, RATE.MAX_PER_SEC);
+        // Spaced out because the bucket only ever holds a burst, so filling 40 slots needs tokens
+        // to refill along the way, exactly as a backend that really climbed to 40 would have.
+        for (let i = 0; i < LEARNED_LIMIT; i++) governor.acquire(i * DISPATCH_SPACING_MS);
+        for (let i = 0; i < GOVERNOR.CIRCUIT_OPEN_AFTER_FAILURES; i++) governor.report(A, "transport_failure", OPENED_AT);
+
+        assert.strictEqual(governor.snapshot()[0].state, "open", "the breaker should be open");
+        return governor.snapshot()[0].inFlight;
+    }
+
+    it("does not credit an unrelated in-flight completion as the probe", () => {
+        const governor = new Governor([A]);
+        const stragglers = openTheCircuitWithStragglers(governor);
+        assert.ok(stragglers > 0, "the scenario needs work still in flight when the breaker opens");
+
+        assert.strictEqual(governor.acquire(probeTime).isProbe, true, "the breaker should be probing");
+
+        // A request sent before the collapse, finally coming back. It says nothing about the state
+        // of the backend now: it was dispatched a probe interval ago.
+        governor.report(A, "ok", probeTime, false);
+
+        assert.strictEqual(governor.snapshot()[0].state, "half-open", "only the probe's own outcome may re-admit a backend");
+    });
+
+    it("re-admits the backend when its own probe succeeds, even if a straggler failed meanwhile", () => {
+        const governor = new Governor([A]);
+        openTheCircuitWithStragglers(governor);
+
+        const probe = governor.acquire(probeTime);
+        assert.strictEqual(probe.isProbe, true);
+
+        governor.report(A, "transport_failure", probeTime, false);
+        governor.report(A, "ok", probeTime + 100, probe.isProbe);
+
+        assert.strictEqual(governor.snapshot()[0].state, "closed", "the probe is the freshest evidence there is");
+    });
+
+    it("keeps the probe outstanding when an unrelated request releases its slot unused", () => {
+        const governor = new Governor([A]);
+        openTheCircuitWithStragglers(governor);
+
+        assert.strictEqual(governor.acquire(probeTime).isProbe, true);
+        governor.releaseUnused(A, false);
+
+        assert.strictEqual(governor.acquire(probeTime).url, null, "a second probe must not run alongside the first");
     });
 });
 

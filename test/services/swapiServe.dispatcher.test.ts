@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, describe, it } from "node:test";
-import { PRIORITY } from "../../data/constants/swapiServe.ts";
+import { DEADLINE_MS, PRIORITY } from "../../data/constants/swapiServe.ts";
 import { Dispatcher } from "../../services/swapiServe/dispatcher.ts";
 import type { Forwarder } from "../../services/swapiServe/forwarder.ts";
 import { FakeClock } from "../helpers/fakeClock.ts";
@@ -323,6 +323,69 @@ describe("swapiServe.Dispatcher shedding", () => {
     });
 });
 
+describe("swapiServe.Dispatcher deadlines under saturation", () => {
+    // A backend that hangs rather than fails never trips the breaker, so the dead-pool shed never
+    // runs: it holds every slot for the full upstream timeout while the queue behind it goes stale.
+    // Expiry rides along with a dispatch, and there is no dispatch to ride, so without a deadline
+    // wakeup the caller waits out the hang instead of its own deadline.
+    it("answers an expired request at its deadline while a hung backend holds every slot", { timeout: 5000 }, async () => {
+        const clock = new FakeClock(1_000);
+        // Never resolves, which is what a wedged comlink looks like from here.
+        const hungForwarder: Forwarder = () => new Promise(() => {});
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: hungForwarder, clock, startLimit: 1 });
+        after(() => dispatcher.stop());
+
+        // Takes the only slot and never gives it back.
+        void dispatcher.submit(requestAt(clock, PRIORITY.BULK, DEADLINE_MS[PRIORITY.BULK]));
+        await clock.flush();
+
+        const waiting = dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, DEADLINE_MS[PRIORITY.PUBLIC_COMMAND]));
+        const response = await settle(clock, waiting);
+
+        assert.strictEqual(response.status, 503);
+        assert.strictEqual(dispatcher.status().terminal.deadline, 1, "the caller should be answered for its own deadline");
+    });
+
+    // The wakeup is a single timer, so an armed one must not outlast a deadline that lands sooner:
+    // a rate-blocked queue at the collapsed floor waits two seconds per token, which is long enough
+    // to bury several interactive deadlines behind it.
+    it("brings a wakeup forward when a nearer deadline arrives", { timeout: 5000 }, async () => {
+        const clock = new FakeClock(1_000);
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            forwarder: okForwarder,
+            clock,
+            ratePerSecond: 0.5,
+            startLimit: 10,
+        });
+        after(() => dispatcher.stop());
+
+        // Spend the burst so the queue is rate-blocked, arming a wakeup two seconds out.
+        const paced = Array.from({ length: 4 }, () => dispatcher.submit(requestAt(clock, PRIORITY.BULK, DEADLINE_MS[PRIORITY.BULK])));
+        await clock.flush();
+        assert.ok(dispatcher.status().blocked.token > 0, "the rate should be the binding constraint");
+
+        const shortDeadlineMs = 200;
+        const impatient = dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, shortDeadlineMs));
+
+        let answered = false;
+        void impatient.then(() => {
+            answered = true;
+        });
+
+        clock.advance(shortDeadlineMs + 1);
+        await clock.flush();
+
+        assert.ok(answered, "the nearer deadline should have been served by the wakeup, not left to the token wait");
+        assert.strictEqual((await impatient).status, 503);
+
+        dispatcher.stop();
+        await Promise.all(paced);
+    });
+});
+
 /**
  * Drives a failing backend until its breaker opens, and stops there.
  *
@@ -629,5 +692,43 @@ describe("swapiServe.Dispatcher shutdown", () => {
 
         const response = await inBackoff;
         assert.strictEqual(response.status, 503, "shutdown must not wait out an upstream Retry-After");
+    });
+
+    // A request already at the backend when we stop is left to finish, but its failure must not
+    // start a new backoff: the retry timers are drained once, so one scheduled after that drain
+    // holds its caller until the timer fires, and shutdown waits on a socket for a request the
+    // service has no intention of sending.
+    it("does not schedule a retry for a request that fails after it has stopped", { timeout: 5000 }, async () => {
+        const clock = new FakeClock(1_000);
+        let attempts = 0;
+        let release: (() => void) | null = null;
+        const gate = new Promise<void>((resolve) => {
+            release = resolve;
+        });
+        const forwarder: Forwarder = async () => {
+            attempts++;
+            await gate;
+            return { status: 502, headers: {}, body: Buffer.from(JSON.stringify({ message: "Bad Gateway" })) };
+        };
+
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder, clock });
+
+        const inFlight = dispatcher.submit(requestAt(clock, PRIORITY.PUBLIC_COMMAND, DEADLINE_MS[PRIORITY.PUBLIC_COMMAND]));
+        await clock.flush();
+        assert.strictEqual(attempts, 1, "the request should be at the backend before we stop");
+
+        dispatcher.stop();
+        release?.();
+
+        let answered = false;
+        void inFlight.then(() => {
+            answered = true;
+        });
+        // Deliberately without advancing the clock: a scheduled backoff would leave this unanswered.
+        for (let i = 0; i < 5; i++) await clock.flush();
+
+        assert.ok(answered, "the caller should be answered as soon as its request comes back");
+        assert.strictEqual(clock.pendingTimers(), 0, "no retry timer should be left holding shutdown open");
+        assert.strictEqual(attempts, 1, `a stopped service must not send the request again, was sent ${attempts} times`);
     });
 });

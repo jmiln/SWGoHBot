@@ -200,6 +200,40 @@ describe("swapiServe.PriorityQueue deadlines", () => {
         assert.strictEqual(queue.dequeue(1000), null);
         assert.strictEqual(queue.size(), 0);
     });
+
+    // Expiry cannot only happen on the way to a dispatch: when no capacity is available there is
+    // no dispatch to ride along with, and the waiting callers are exactly the ones whose deadlines
+    // are passing.
+    it("sweeps expired entries without being asked for one to dispatch", () => {
+        const expired: string[] = [];
+        const queue = new PriorityQueue<string>({ onExpire: (e) => expired.push(e.payload) });
+        queue.enqueue(entry(PRIORITY.PUBLIC_COMMAND, "stale", 100));
+        queue.enqueue(entry(PRIORITY.BULK, "patient", 500_000));
+
+        queue.sweepExpired(1000);
+
+        assert.deepStrictEqual(expired, ["stale"]);
+        assert.strictEqual(queue.size(), 1, "work that has not expired must keep its place");
+    });
+
+    it("reports the earliest deadline across every tier, so a wakeup can be armed for it", () => {
+        const queue = new PriorityQueue<string>({});
+        assert.strictEqual(queue.earliestDeadline(), null, "an empty queue has nothing to wake for");
+
+        queue.enqueue(entry(PRIORITY.BULK, "patient", 500_000));
+        queue.enqueue(entry(PRIORITY.PUBLIC_COMMAND, "impatient", 15_000));
+        queue.enqueue(entry(PRIORITY.ARENA_TICK, "tick", 45_000));
+
+        assert.strictEqual(queue.earliestDeadline(), 15_000);
+    });
+
+    it("reports the earliest deadline within a tier, not just the entry at its head", () => {
+        const queue = new PriorityQueue<string>({});
+        queue.enqueue(entry(PRIORITY.PUBLIC_COMMAND, "first", 30_000));
+        queue.enqueue(entry(PRIORITY.PUBLIC_COMMAND, "shorter", 10_000));
+
+        assert.strictEqual(queue.earliestDeadline(), 10_000);
+    });
 });
 
 describe("swapiServe.PriorityQueue metrics", () => {

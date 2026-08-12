@@ -98,6 +98,8 @@ export class Dispatcher {
     private readonly endpointCosts = new Map<string, { count: number; totalLatencyMs: number; totalBytes: number }>();
     private stopped = false;
     private wakeup: TimerHandle | null = null;
+    /** Epoch ms the outstanding wakeup is due, so a nearer need can bring it forward. */
+    private wakeupAt = 0;
     /**
      * Requests waiting out a retry backoff, which are held by a timer rather than by the queue and
      * so cannot be reached by draining it. Tracked so shutdown can settle them too: a Retry-After
@@ -315,7 +317,7 @@ export class Dispatcher {
             // Take the slot BEFORE taking the work. Dequeuing first and putting the entry back on
             // a full pool would append it to the tail of its tier, so a request could be starved
             // by later arrivals at its own priority.
-            const { url: backendUrl, blockedBy } = this.governor.acquire(now);
+            const { url: backendUrl, blockedBy, isProbe } = this.governor.acquire(now);
             if (!backendUrl) {
                 if (blockedBy) this.blocked[blockedBy]++;
 
@@ -330,6 +332,12 @@ export class Dispatcher {
                     return;
                 }
 
+                // Deadlines are enforced on the way to a dispatch, and there is no dispatch to ride
+                // along with here, so they are swept explicitly. A backend that hangs rather than
+                // fails never trips the breaker, so it holds every slot for the full upstream
+                // timeout: without this the queue behind it goes stale and its callers wait out the
+                // hang instead of their own deadline.
+                this.queue.sweepExpired(now);
                 this.scheduleWakeup(now);
                 return;
             }
@@ -338,14 +346,14 @@ export class Dispatcher {
             if (!next) {
                 // Nothing to send: hand the slot straight back. Deliberately not reported as a
                 // success, because no request was made and it must not grow the limit.
-                this.governor.releaseUnused(backendUrl);
+                this.governor.releaseUnused(backendUrl, isProbe);
                 return;
             }
 
             // No longer queued, so a later cancellation has nothing to mark: the request is about
             // to be in flight and the upstream cost is paid either way.
             next.payload.entry = null;
-            void this.forward(next.payload, backendUrl);
+            void this.forward(next.payload, backendUrl, isProbe === true);
         }
     }
 
@@ -380,11 +388,21 @@ export class Dispatcher {
      * schedule thousands of them.
      */
     private scheduleWakeup(now: number): void {
-        if (this.wakeup || this.queue.size() === 0) return;
+        if (this.queue.size() === 0) return;
 
-        const wait = this.governor.nextAvailableAt(now);
+        const wait = this.nextWakeupDelay(now);
         if (wait === null) return;
 
+        // An armed timer is kept unless the new need lands sooner, which keeps a deep queue from
+        // scheduling thousands of them while still answering a request whose deadline falls inside
+        // an already-armed wait.
+        const dueAt = now + wait;
+        if (this.wakeup) {
+            if (dueAt >= this.wakeupAt) return;
+            this.clock.clearTimeout(this.wakeup);
+        }
+
+        this.wakeupAt = dueAt;
         this.wakeup = this.clock.setTimeout(() => {
             this.wakeup = null;
             this.pump();
@@ -392,7 +410,33 @@ export class Dispatcher {
         this.wakeup.unref?.();
     }
 
-    private async forward(pending: PendingRequest, backendUrl: string): Promise<void> {
+    /**
+     * How long until the queue next needs attention: the sooner of capacity freeing up and the next
+     * queued deadline passing.
+     *
+     * The deadline half is not redundant. A saturated pool reports no capacity time at all, because
+     * a backend with no free slot has no time to report: it is waiting on a completion, and a
+     * wedged backend's completion is a minute away. Meanwhile the callers behind it have deadlines
+     * of fifteen seconds, and those have to be answered on their own schedule.
+     */
+    private nextWakeupDelay(now: number): number | null {
+        const capacityWait = this.governor.nextAvailableAt(now);
+        const earliestDeadline = this.queue.earliestDeadline();
+        if (earliestDeadline === null) return capacityWait;
+
+        const deadlineWait = Math.max(0, earliestDeadline - now);
+        return capacityWait === null ? deadlineWait : Math.min(capacityWait, deadlineWait);
+    }
+
+    /**
+     * Sends one request and settles it, retries it, or hands it back to the queue.
+     *
+     * `isProbe` says whether the slot this request holds is the half-open circuit's probe, which the
+     * governor cannot work out for itself once more than one request is in flight. It is carried
+     * here rather than on PendingRequest because it describes the dispatch, not the request: a retry
+     * is the same request acquiring a different slot, which may or may not be a probe in its turn.
+     */
+    private async forward(pending: PendingRequest, backendUrl: string, isProbe: boolean): Promise<void> {
         const { request } = pending;
 
         const startedAt = this.clock.now();
@@ -412,7 +456,7 @@ export class Dispatcher {
             // entirely and nothing in the design ever recovers it. releaseUnused rather than
             // report, because blaming the backend's health for our bug would halve the limit of a
             // backend that may be perfectly healthy.
-            this.governor.releaseUnused(backendUrl);
+            this.governor.releaseUnused(backendUrl, isProbe);
             logger.error(`SwapiServe: Forwarder threw for ${request.uri}: ${err instanceof Error ? err.message : String(err)}`);
             this.settle(pending, "upstream_error", shedResponse("Upstream request failed"));
             this.pump();
@@ -423,7 +467,7 @@ export class Dispatcher {
 
         const outcome = classifyOutcome(status, status !== undefined && status >= 400 ? readMessage(body) : undefined);
         const now = this.clock.now();
-        this.governor.report(backendUrl, outcome, now);
+        this.governor.report(backendUrl, outcome, now, isProbe);
 
         const latency = now - startedAt;
         this.latencyTotal += latency;
@@ -478,6 +522,14 @@ export class Dispatcher {
         // service is shutting down. Retrying would spend upstream budget on a response nobody is
         // waiting for, which is the exact cost cancellation exists to avoid.
         if (pending.settled) return false;
+
+        // Requests in flight when stop() ran are left to finish, but their failures must not start
+        // a new backoff: the retry timers were drained once already, so a timer armed after that
+        // holds its caller, and the socket behind it, until it fires. Upstream sets that wait with
+        // Retry-After and it can be tens of seconds, well past the shutdown grace period, which
+        // turns a graceful stop into a SIGKILL. Answering with the failure we have is both faster
+        // and truer: the service is going away and is not going to send this again.
+        if (this.stopped) return false;
         if (!isRetryable(outcome)) return false;
         if (pending.attempt >= RETRY.ATTEMPTS) return false;
         if (pending.request.deadline <= now) return false;
