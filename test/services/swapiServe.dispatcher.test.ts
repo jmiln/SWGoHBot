@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, describe, it } from "node:test";
-import { DEADLINE_MS, PRIORITY } from "../../data/constants/swapiServe.ts";
+import { DEADLINE_MS, PRIORITY, RETRY } from "../../data/constants/swapiServe.ts";
 import { Dispatcher } from "../../services/swapiServe/dispatcher.ts";
 import type { Forwarder } from "../../services/swapiServe/forwarder.ts";
 import { FakeClock } from "../helpers/fakeClock.ts";
@@ -180,6 +180,67 @@ describe("swapiServe.Dispatcher retry", () => {
 
         assert.strictEqual(response.status, 502, "the caller should see the real upstream failure");
         assert.ok(comlink.requestCount() > 1, "and it should have been retried first");
+    });
+
+    // The retry allowance is the last scarce resource that used to be shared across tiers, which
+    // made it the one place a nightly bulk run could still crowd out the payout tick.
+    it("retries an arena tick even when a bulk run has spent its own retry allowance", { timeout: 5000 }, async () => {
+        const clock = new FakeClock(1_000);
+        const attemptsByUri = new Map<string, number>();
+        // 408 is the one failure that is retryable without being the backend's fault, so the breaker
+        // stays closed and the retry budget is the only thing deciding whether a request is sent
+        // again. A 502 flood would collapse the limit and open the circuit, and the tick would then
+        // be shed for an unavailable backend rather than for want of budget.
+        const forwarder: Forwarder = async (_url, req) => {
+            attemptsByUri.set(req.uri, (attemptsByUri.get(req.uri) ?? 0) + 1);
+            return { status: 408, headers: {}, body: Buffer.from(JSON.stringify({ message: "Request Timeout" })) };
+        };
+
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            forwarder,
+            clock,
+            retryDelayMs: 1,
+            startLimit: 30,
+        });
+        after(() => dispatcher.stop());
+
+        // A nightly cycle failing throughout. The tick has to land while this is still running,
+        // which is what production does: the cycle runs for hours and the tick fires every minute.
+        // Waiting for the flood to finish would prove nothing, because a shared allowance recovers
+        // its ceiling as soon as the pressure stops.
+        const bulk = Array.from({ length: 400 }, (_, i) =>
+            dispatcher.submit(requestAt(clock, PRIORITY.BULK, DEADLINE_MS[PRIORITY.BULK], `/bulk-${i}`)),
+        );
+        clock.advance(100);
+        await clock.flush();
+        assert.ok(dispatcher.status().retryBudget.denied[PRIORITY.BULK] > 0, "the bulk run should be over its own allowance by now");
+
+        // The tick's requests for this minute, arriving mid-cycle. Kept to a number whose full
+        // retry allowance (requests times RETRY.ATTEMPTS) fits inside the tier's own floor, since
+        // the point here is that bulk cannot take the tick's share, not that the share is unbounded.
+        const tickUris = Array.from({ length: 4 }, (_, i) => `/arena-${i}`);
+        const tick = tickUris.map((uri) => dispatcher.submit(requestAt(clock, PRIORITY.ARENA_TICK, DEADLINE_MS[PRIORITY.ARENA_TICK], uri)));
+
+        const responses = await settle(clock, Promise.all(tick));
+        await settle(clock, Promise.all(bulk));
+
+        const status = dispatcher.status();
+        assert.strictEqual(
+            status.retryBudget.denied[PRIORITY.ARENA_TICK],
+            0,
+            "the tick must never be refused a retry, however much bulk is failing beside it",
+        );
+        for (const [i, response] of responses.entries()) {
+            assert.strictEqual(response.status, 408, `tick request ${i} should get the real upstream failure back`);
+            assert.strictEqual(
+                attemptsByUri.get(tickUris[i]),
+                RETRY.ATTEMPTS + 1,
+                `tick request ${i} should have used its full retry allowance`,
+            );
+        }
+        assert.ok(status.retryBudget.denied[PRIORITY.BULK] > 0, "while bulk stayed capped by its own allowance");
     });
 });
 

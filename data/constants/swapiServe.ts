@@ -72,6 +72,15 @@ export const QUEUE = {
 // rounds down to zero at low traffic, so an isolated blip on a quiet service could never be
 // retried at all, which is the one case retries exist for. Only a systemic outage should ever
 // exhaust the budget.
+//
+// Both apply PER TIER, not to one shared pool. A shared pool is a priority inversion: bulk work
+// dispatches orders of magnitude more than anything else, so a nightly cycle failing its way
+// through a window could spend the allowance the arena tick needed, and a tick request hitting one
+// transient 502 would then be dropped. That loses the account's payout alert for a minute the
+// payout cycle repeats every day. Per tier, each funds its own retries and bulk cannot reach the
+// tick's. The cost is that the floor now applies five times over, so a total outage allows up to
+// PRIORITY_COUNT * MIN_IN_WINDOW retries per window rather than MIN_IN_WINDOW; a few dozen extra
+// requests a minute is a trade worth making to keep the tick's retries out of bulk's reach.
 export const RETRY = {
     ATTEMPTS: 2,
     BASE_DELAY_MS: 500,

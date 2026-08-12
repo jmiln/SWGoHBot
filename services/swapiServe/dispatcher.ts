@@ -257,6 +257,7 @@ export class Dispatcher {
         latencyMs: { mean: number; max: number };
         dispatches: number;
         retries: number;
+        retryBudget: ReturnType<RetryBudget["metrics"]>;
         endpoints: Record<string, { count: number; meanLatencyMs: number; meanBytes: number }>;
     } {
         return {
@@ -270,6 +271,7 @@ export class Dispatcher {
             },
             dispatches: this.dispatchCount,
             retries: this.retryCount,
+            retryBudget: this.retryBudget.metrics(),
             endpoints: Object.fromEntries(
                 [...this.endpointCosts].map(([uri, cost]) => [
                     uri,
@@ -440,7 +442,7 @@ export class Dispatcher {
         const { request } = pending;
 
         const startedAt = this.clock.now();
-        this.retryBudget.recordDispatch(startedAt);
+        this.retryBudget.recordDispatch(request.priority, startedAt);
         this.dispatchCount++;
 
         let result: Awaited<ReturnType<Forwarder>>;
@@ -533,7 +535,9 @@ export class Dispatcher {
         if (!isRetryable(outcome)) return false;
         if (pending.attempt >= RETRY.ATTEMPTS) return false;
         if (pending.request.deadline <= now) return false;
-        return this.retryBudget.tryConsume(now);
+        // Drawn against the request's own tier, so a nightly bulk run cannot spend the allowance the
+        // payout tick depends on.
+        return this.retryBudget.tryConsume(pending.request.priority, now);
     }
 
     /**
