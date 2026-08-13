@@ -1,4 +1,4 @@
-import { GOVERNOR, type Priority, RETRY } from "../../data/constants/swapiServe.ts";
+import { GOVERNOR, type Priority, RETRY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
 import logger from "../../modules/Logger.ts";
 import { type Clock, systemClock, type TimerHandle } from "./clock.ts";
 import { createHttpForwarder, type Forwarder } from "./forwarder.ts";
@@ -70,11 +70,33 @@ interface PendingRequest {
 const SERVICE_UNAVAILABLE = 503;
 const JSON_HEADERS = { "content-type": "application/json" };
 
-function shedResponse(reason: string): ProxyResponse {
+/** Every terminal reason except the one where the caller gets a real upstream response. */
+type ShedReason = Exclude<TerminalReason, "completed">;
+
+/**
+ * What the caller is told for each shed reason. One entry per reason so the prose, the header token
+ * and the counter cannot drift from each other: they are all derived from the same value.
+ */
+const SHED_MESSAGES: Record<ShedReason, string> = {
+    upstream_error: "Upstream request failed",
+    backend_unavailable: "No comlink backend is currently available",
+    cancelled: "Client cancelled the request",
+    deadline: "Request expired before dispatch",
+    queue_overflow: "swapiServe queue is full for this priority",
+    [SHED_SHUTTING_DOWN]: "swapiServe is shutting down",
+};
+
+/**
+ * The 503 a shed request is answered with, labelled with why.
+ *
+ * The header is what lets a client tell our shed from an upstream 503, which matters because only
+ * shutting_down means the queue is not there to be used. See SHED_REASON_HEADER.
+ */
+function shedResponse(reason: ShedReason): ProxyResponse {
     return {
         status: SERVICE_UNAVAILABLE,
-        headers: JSON_HEADERS,
-        body: Buffer.from(JSON.stringify({ message: reason })),
+        headers: { ...JSON_HEADERS, [SHED_REASON_HEADER]: reason },
+        body: Buffer.from(JSON.stringify({ message: SHED_MESSAGES[reason] })),
     };
 }
 
@@ -164,7 +186,7 @@ export class Dispatcher {
 
         this.queue = new PriorityQueue<PendingRequest>({
             depthLimits,
-            onExpire: (entry) => this.settle(entry.payload, "deadline", shedResponse("Request expired before dispatch")),
+            onExpire: (entry) => this.shed(entry.payload, "deadline"),
         });
         this.retryBudget = new RetryBudget({});
         this.retryDelayMs = retryDelayMs ?? RETRY.BASE_DELAY_MS;
@@ -182,11 +204,11 @@ export class Dispatcher {
             const pending: PendingRequest = { request, attempt: 0, id: ++this.lastRequestId, settled: false, entry: null, resolve };
 
             if (this.stopped) {
-                this.settle(pending, "shutting_down", shedResponse("swapiServe is shutting down"));
+                this.shed(pending, "shutting_down");
                 return;
             }
             if (request.deadline <= this.clock.now()) {
-                this.settle(pending, "deadline", shedResponse("Request expired before dispatch"));
+                this.shed(pending, "deadline");
                 return;
             }
 
@@ -199,7 +221,7 @@ export class Dispatcher {
             };
 
             if (!this.queue.enqueue(entry)) {
-                this.settle(pending, "queue_overflow", shedResponse("swapiServe queue is full for this priority"));
+                this.shed(pending, "queue_overflow");
                 return;
             }
             pending.entry = entry;
@@ -211,7 +233,7 @@ export class Dispatcher {
                     // not the one created above. The queue discards cancelled entries on its next
                     // sweep; resolving here means the HTTP layer stops waiting immediately either
                     // way, and settling first is what stops any further retry being scheduled.
-                    this.settle(pending, "cancelled", shedResponse("Client cancelled the request"));
+                    this.shed(pending, "cancelled");
                     if (pending.entry) pending.entry.cancelled = true;
                 },
                 { once: true },
@@ -302,12 +324,12 @@ export class Dispatcher {
         }
         for (const [timer, pending] of this.retryTimers) {
             this.clock.clearTimeout(timer);
-            this.settle(pending, "shutting_down", shedResponse("swapiServe is shutting down"));
+            this.shed(pending, "shutting_down");
         }
         this.retryTimers.clear();
 
         for (const entry of this.queue.drainAll()) {
-            this.settle(entry.payload, "shutting_down", shedResponse("swapiServe is shutting down"));
+            this.shed(entry.payload, "shutting_down");
         }
     }
 
@@ -377,7 +399,7 @@ export class Dispatcher {
     private shedDoomed(now: number): void {
         const cutoff = now + this.probeIntervalMs;
         for (const entry of this.queue.drainWhere((waiting) => waiting.deadline <= cutoff)) {
-            this.settle(entry.payload, "backend_unavailable", shedResponse("No comlink backend is currently available"));
+            this.shed(entry.payload, "backend_unavailable");
         }
     }
 
@@ -460,7 +482,7 @@ export class Dispatcher {
             // backend that may be perfectly healthy.
             this.governor.releaseUnused(backendUrl, isProbe);
             logger.error(`SwapiServe: Forwarder threw for ${request.uri}: ${err instanceof Error ? err.message : String(err)}`);
-            this.settle(pending, "upstream_error", shedResponse("Upstream request failed"));
+            this.shed(pending, "upstream_error");
             this.pump();
             return;
         }
@@ -484,7 +506,7 @@ export class Dispatcher {
             const timer = this.clock.setTimeout(() => {
                 this.retryTimers.delete(timer);
                 if (this.stopped) {
-                    this.settle(pending, "shutting_down", shedResponse("swapiServe is shutting down"));
+                    this.shed(pending, "shutting_down");
                     return;
                 }
                 // The caller went away while the backoff was running, so this retry now has
@@ -501,7 +523,7 @@ export class Dispatcher {
                     payload: pending,
                 };
                 if (!this.queue.enqueue(entry)) {
-                    this.settle(pending, "queue_overflow", shedResponse("swapiServe queue is full for this priority"));
+                    this.shed(pending, "queue_overflow");
                 } else {
                     pending.entry = entry;
                 }
@@ -512,7 +534,7 @@ export class Dispatcher {
         }
 
         if (status === undefined) {
-            this.settle(pending, "upstream_error", shedResponse("Upstream request failed"));
+            this.shed(pending, "upstream_error");
         } else {
             this.settle(pending, "completed", { status, headers: responseHeaders, body });
         }
@@ -538,6 +560,16 @@ export class Dispatcher {
         // Drawn against the request's own tier, so a nightly bulk run cannot spend the allowance the
         // payout tick depends on.
         return this.retryBudget.tryConsume(pending.request.priority, now);
+    }
+
+    /**
+     * Answers a request that will not be sent, with the reason it will not be sent.
+     *
+     * Takes only the reason, so the counter it is recorded under, the header the client reads and
+     * the message it is given are all the same value rather than three that have to be kept in step.
+     */
+    private shed(pending: PendingRequest, reason: ShedReason): void {
+        this.settle(pending, reason, shedResponse(reason));
     }
 
     /**

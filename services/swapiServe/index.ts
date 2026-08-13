@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from "node:http";
 import { env } from "../../config/config.ts";
-import { DEADLINE_MS, PRIORITY_COUNT, type Priority } from "../../data/constants/swapiServe.ts";
+import { DEADLINE_MS, PRIORITY_COUNT, type Priority, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
 import logger from "../../modules/Logger.ts";
 import { Dispatcher } from "./dispatcher.ts";
 
@@ -131,7 +131,9 @@ export async function startSwapiServe({
         }
 
         if (isShuttingDown) {
-            res.writeHead(SERVICE_UNAVAILABLE, JSON_HEADERS);
+            // Labelled like the dispatcher's own shed, so a client sees the same reason whether the
+            // request arrived just before or just after stop() ran.
+            res.writeHead(SERVICE_UNAVAILABLE, { ...JSON_HEADERS, [SHED_REASON_HEADER]: SHED_SHUTTING_DOWN });
             res.end(JSON.stringify({ message: "swapiServe is shutting down" }));
             return;
         }

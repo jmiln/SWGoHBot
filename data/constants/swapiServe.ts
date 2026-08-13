@@ -122,10 +122,28 @@ export const DEADLINE_MS: readonly number[] = [
     600_000, // BULK
 ];
 
+// Response header naming why swapiServe shed a request, carrying the same token as the terminal
+// reason it was counted under.
+//
+// A shed request and a genuine upstream 503 are the same status code, and a client that cannot tell
+// them apart has to guess. It matters because exactly one shed reason means the queue is not there
+// to be used: SHED_SHUTTING_DOWN, where calling comlink directly is the right answer and is what
+// keeps a pm2 restart from failing every queued call across every shard and both updaters. Every
+// other reason is the governor doing its job, and bypassing it on a full queue or a dead backend
+// would send uncoordinated load at comlink at exactly the wrong moment.
+export const SHED_REASON_HEADER = "x-swapi-shed";
+export const SHED_SHUTTING_DOWN = "shutting_down";
+
 // Per-process cap used when swapiServe is unreachable and clients fall back to calling comlink
 // directly. Deliberately far below the old MAX_CONCURRENT of 20, since every shard applies it
 // independently with no coordination.
 export const FALLBACK_MAX_CONCURRENT = 5;
 
-// How long a client waits before retrying swapiServe after a connection failure.
+// How long a client waits before retrying swapiServe after finding it unavailable.
 export const SERVICE_RECHECK_MS = 30_000;
+
+// Slack added to a client's watchdog bound, on top of the tier deadline and the upstream timeout,
+// to cover loopback and queue jitter. See watchdogMsForTier in modules/swapiQueue.ts: the watchdog
+// exists because a service that accepts connections and never answers produces no error to fall back
+// on, and ComlinkStub offers no way to set a request timeout.
+export const WATCHDOG_SLACK_MS = 5_000;

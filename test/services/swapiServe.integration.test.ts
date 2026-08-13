@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { connect } from "node:net";
 import { after, describe, it } from "node:test";
-import { GOVERNOR, PRIORITY } from "../../data/constants/swapiServe.ts";
+import { GOVERNOR, PRIORITY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
 import { parsePriorityPath, resolveDeadlineMs, startSwapiServe } from "../../services/swapiServe/index.ts";
 
 // The interval arenaTick runs on, mirrored from events/clientReady.ts where it is a local const.
@@ -28,6 +28,7 @@ function sendTruncatedRequest(url: string): Promise<void> {
 }
 
 const CREDS = { accessKey: "a", secretKey: "s", ratePerSecond: 1000 };
+const SERVICE_UNAVAILABLE = 503;
 
 describe("swapiServe.parsePriorityPath", () => {
     it("reads the priority from the path prefix and strips it", () => {
@@ -206,6 +207,33 @@ describe("swapiServe end to end", () => {
         assert.ok(took < 1000, `close() should not wait on idle keep-alive connections, took ${took}ms`);
     });
 
+    // The reason a client needs to tell a shutdown shed from any other 503: with it, a pm2 restart
+    // costs each client a fallback to direct comlink calls, and without it every queued call across
+    // every shard and both updaters simply fails.
+    it("labels the work it sheds on shutdown, so clients can fall back rather than fail", { timeout: 5000 }, async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, delayMs: 200 }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, startLimit: 1 });
+        after(async () => await comlink.close());
+
+        const queued = Array.from({ length: 6 }, (_, i) =>
+            fetch(`${service.url}/p4/queued-${i}`, { method: "POST", body: "{}" }).catch(() => undefined),
+        );
+        await new Promise((resolve) => setTimeout(resolve, 30));
+
+        await service.close();
+        const responses = await Promise.all(queued);
+
+        const shed = responses.filter((response) => response?.status === SERVICE_UNAVAILABLE);
+        assert.ok(shed.length > 0, "the queued work should have been shed, not abandoned");
+        for (const response of shed) {
+            assert.strictEqual(
+                response?.headers.get(SHED_REASON_HEADER),
+                SHED_SHUTTING_DOWN,
+                "a shed on the way down has to be distinguishable from an upstream 503",
+            );
+        }
+    });
+
     it("rejects a request with no priority prefix", async () => {
         const comlink = await startFakeComlink(() => ({ status: 200 }));
         const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS });
@@ -240,6 +268,7 @@ describe("swapiServe end to end", () => {
             terminal: Record<string, number>;
             dispatches: number;
             retries: number;
+            retryBudget: { granted: number[]; denied: number[] };
             endpoints: Record<string, { count: number }>;
         };
 
@@ -259,6 +288,11 @@ describe("swapiServe end to end", () => {
         assert.strictEqual(status.terminal.completed, 1);
         assert.strictEqual(status.endpoints["/player"].count, 1);
         assert.ok("token" in status.blocked, "blocked reasons should be reported");
+        for (const series of [status.retryBudget.granted, status.retryBudget.denied]) {
+            // Per tier, because the allowance is per tier: a shared number could not show bulk
+            // spending what the arena tick needed, which is the thing worth watching here.
+            assert.strictEqual(series.length, 5, "retry budget is reported per priority tier");
+        }
     });
 
     it("drains traffic to a healthy backend when another is failing", async () => {

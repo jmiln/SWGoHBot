@@ -1,7 +1,22 @@
 import assert from "node:assert";
 import { after, beforeEach, describe, it } from "node:test";
-import { FALLBACK_MAX_CONCURRENT, PRIORITY } from "../../data/constants/swapiServe.ts";
-import { __resetForTesting, __serviceDownForTesting, __setUrlsForTesting, resolveBulkStub, withStub } from "../../modules/swapiQueue.ts";
+import {
+    DEADLINE_MS,
+    FALLBACK_MAX_CONCURRENT,
+    PRIORITY,
+    SHED_REASON_HEADER,
+    SHED_SHUTTING_DOWN,
+    UPSTREAM_TIMEOUT_MS,
+} from "../../data/constants/swapiServe.ts";
+import {
+    __resetForTesting,
+    __serviceDownForTesting,
+    __setUrlsForTesting,
+    __setWatchdogMsForTesting,
+    resolveBulkStub,
+    watchdogMsForTier,
+    withStub,
+} from "../../modules/swapiQueue.ts";
 import { startFakeComlink } from "../helpers/fakeComlink.ts";
 
 describe("swapiQueue routing", () => {
@@ -98,6 +113,64 @@ describe("swapiQueue fail-open fallback", () => {
         assert.strictEqual(direct.requestCount(), 0, "a 400 is not a reason to bypass the queue");
     });
 
+    // A pm2 restart of swapiServe used to fail every queued call across every shard and both
+    // updaters: the service answers 503 on the way down, which is a real HTTP answer rather than a
+    // connection error, so the fallback never engaged and the calls were simply dropped. That is the
+    // outcome the direct-call fallback exists to prevent.
+    it("falls back when swapiServe sheds because it is shutting down", async () => {
+        const serve = await startFakeComlink(() => ({
+            status: 503,
+            headers: { [SHED_REASON_HEADER]: SHED_SHUTTING_DOWN },
+            body: JSON.stringify({ message: "swapiServe is shutting down" }),
+        }));
+        const direct = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ viaDirect: true }) }));
+        after(async () => {
+            await serve.close();
+            await direct.close();
+        });
+
+        __setUrlsForTesting({ serveUrl: serve.url, directUrl: direct.url });
+
+        const result = (await withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789"))) as { viaDirect: boolean };
+
+        assert.strictEqual(result.viaDirect, true, "the call should have completed against comlink directly");
+        assert.ok(__serviceDownForTesting(), "and the service should be latched down so the next call does not retry it");
+    });
+
+    // The other shed reasons are the governor working as designed. Bypassing it would send the
+    // request straight at comlink with no coordination, which is the load it exists to prevent.
+    it("does not fall back when swapiServe sheds for a reason of its own", async () => {
+        const serve = await startFakeComlink(() => ({
+            status: 503,
+            headers: { [SHED_REASON_HEADER]: "queue_overflow" },
+            body: JSON.stringify({ message: "swapiServe queue is full for this priority" }),
+        }));
+        const direct = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ viaDirect: true }) }));
+        after(async () => {
+            await serve.close();
+            await direct.close();
+        });
+
+        __setUrlsForTesting({ serveUrl: serve.url, directUrl: direct.url });
+
+        await assert.rejects(async () => await withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789")));
+        assert.strictEqual(direct.requestCount(), 0, "a full queue is not a reason to bypass the queue");
+    });
+
+    it("does not fall back on an upstream 503 relayed through swapiServe", async () => {
+        const serve = await startFakeComlink(() => ({ status: 503, body: JSON.stringify({ message: "comlink is down" }) }));
+        const direct = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ viaDirect: true }) }));
+        after(async () => {
+            await serve.close();
+            await direct.close();
+        });
+
+        __setUrlsForTesting({ serveUrl: serve.url, directUrl: direct.url });
+
+        await assert.rejects(async () => await withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789")));
+        assert.strictEqual(direct.requestCount(), 0, "comlink being down is not a reason to call comlink directly");
+    });
+
     it("caps concurrency on the fallback path, since nothing else is coordinating it", async () => {
         const direct = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ ok: true }), delayMs: 20 }));
         after(async () => await direct.close());
@@ -111,6 +184,82 @@ describe("swapiQueue fail-open fallback", () => {
             direct.peakConcurrent() <= FALLBACK_MAX_CONCURRENT,
             `fallback concurrency reached ${direct.peakConcurrent()}, above the cap of ${FALLBACK_MAX_CONCURRENT}`,
         );
+    });
+});
+
+/**
+ * A wedged swapiServe is the one failure the fallback cannot see for itself.
+ *
+ * Nothing on this side bounds a comlink call: ComlinkStub hardcodes its got options with no timeout,
+ * so a service that accepts a connection and never answers holds every caller forever, and unlike a
+ * dead process it never produces a connection error to fall back on. Since every shard and both
+ * updaters queue through one process, that is one hang shared by all of them.
+ *
+ * The watchdog does not abandon the call it is watching. Abandoning would leave a loser still holding
+ * a socket, a swapiServe slot and a share of the retry budget, which is the mistake the mod worker's
+ * comment documents. It only stops NEW work being sent into a service that has stopped answering.
+ */
+describe("swapiQueue unresponsive-service watchdog", () => {
+    beforeEach(() => {
+        __resetForTesting();
+        __setWatchdogMsForTesting(40);
+    });
+    after(() => __setWatchdogMsForTesting(null));
+
+    it("stops sending new work to a service that accepts requests and does not answer", async () => {
+        const serve = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ viaServe: true }), delayMs: 300 }));
+        const direct = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ viaDirect: true }) }));
+        after(async () => {
+            await serve.close();
+            await direct.close();
+        });
+
+        __setUrlsForTesting({ serveUrl: serve.url, directUrl: direct.url });
+
+        const slow = withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789"));
+        await new Promise((resolve) => setTimeout(resolve, 120));
+
+        assert.ok(__serviceDownForTesting(), "the service should be latched down once it has missed its own bound");
+
+        const next = (await withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789"))) as { viaDirect: boolean };
+        assert.strictEqual(next.viaDirect, true, "new work should go direct rather than queue behind a wedged service");
+
+        // The watched call is left alone, and still returns the service's answer when it arrives.
+        const answered = (await slow) as { viaServe: boolean };
+        assert.strictEqual(answered.viaServe, true, "the watchdog must not abandon the call it was watching");
+    });
+
+    it("leaves the service alone when a call answers inside its bound", async () => {
+        const serve = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ viaServe: true }) }));
+        after(async () => await serve.close());
+
+        __setUrlsForTesting({ serveUrl: serve.url, directUrl: "http://unused.invalid" });
+
+        await withStub(PRIORITY.PUBLIC_COMMAND, (stub) => stub.getPlayer("123456789"));
+        await new Promise((resolve) => setTimeout(resolve, 80));
+
+        assert.strictEqual(__serviceDownForTesting(), false, "a call that answered must not arm anything");
+    });
+});
+
+/**
+ * The bound the watchdog uses, checked against the constants it is derived from rather than by
+ * waiting one out.
+ */
+describe("swapiQueue.watchdogMsForTier", () => {
+    beforeEach(() => __setWatchdogMsForTesting(null));
+
+    // The bound has to allow for swapiServe answering LATER than the deadline it advertises. A
+    // request dispatched just before its deadline runs to completion, since the upstream cost is
+    // already paid, so a healthy call can legitimately take its tier deadline plus the full upstream
+    // timeout. A bound tighter than that would call a slow comlink a wedged service.
+    it("allows for a request dispatched just before its deadline running the full upstream timeout", () => {
+        for (const tier of [PRIORITY.ARENA_TICK, PRIORITY.PUBLIC_COMMAND, PRIORITY.BULK] as const) {
+            assert.ok(
+                watchdogMsForTier(tier) > DEADLINE_MS[tier] + UPSTREAM_TIMEOUT_MS,
+                `tier ${tier} would flag a legitimately slow call as unresponsive`,
+            );
+        }
     });
 });
 

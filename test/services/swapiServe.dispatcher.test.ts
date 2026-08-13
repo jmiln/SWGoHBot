@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, describe, it } from "node:test";
-import { DEADLINE_MS, PRIORITY, RETRY } from "../../data/constants/swapiServe.ts";
+import { DEADLINE_MS, PRIORITY, RETRY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
 import { Dispatcher } from "../../services/swapiServe/dispatcher.ts";
 import type { Forwarder } from "../../services/swapiServe/forwarder.ts";
 import { FakeClock } from "../helpers/fakeClock.ts";
@@ -381,6 +381,79 @@ describe("swapiServe.Dispatcher shedding", () => {
 
         assert.ok(!seen.includes("/abandoned"), "an abandoned request must never reach the backend");
         assert.strictEqual(dispatcher.status().terminal.cancelled, 1);
+    });
+});
+
+/**
+ * A shed request and a genuine upstream 503 are the same status code, and a client cannot act on
+ * "503" alone. Only one shed reason means the queue is not there to be used: shutting_down, where
+ * falling back to calling comlink directly is right. Every other reason is the governor doing its
+ * job, and bypassing it would defeat the point.
+ */
+describe("swapiServe.Dispatcher shed reasons", () => {
+    it("labels an expired request with the reason it was shed for", async () => {
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: okForwarder });
+        after(() => dispatcher.stop());
+
+        const response = await dispatcher.submit({ ...request(PRIORITY.PUBLIC_COMMAND), deadline: Date.now() - 1 });
+
+        assert.strictEqual(response.status, 503);
+        assert.strictEqual(response.headers[SHED_REASON_HEADER], "deadline");
+    });
+
+    it("labels an overflowing queue distinctly, since that is not a reason to bypass the queue", async () => {
+        let release: (() => void) | null = null;
+        const gate = new Promise<void>((resolve) => {
+            release = resolve;
+        });
+        const forwarder: Forwarder = async () => {
+            await gate;
+            return { status: 200, headers: {}, body: Buffer.alloc(0) };
+        };
+
+        const dispatcher = new Dispatcher({
+            backends: ["sim://a"],
+            ...CREDENTIALS,
+            forwarder,
+            startLimit: 1,
+            depthLimits: [1, 1, 1, 1, 1],
+        });
+        after(() => dispatcher.stop());
+
+        const responses = Array.from({ length: 6 }, () => dispatcher.submit(request(PRIORITY.BULK)));
+        await new Promise((resolve) => setImmediate(resolve));
+        release?.();
+        const settled = await Promise.all(responses);
+
+        const shed = settled.filter((response) => response.status === 503);
+        assert.ok(shed.length > 0, "at least one request should have been shed");
+        for (const response of shed) {
+            assert.strictEqual(response.headers[SHED_REASON_HEADER], "queue_overflow");
+        }
+    });
+
+    it("labels shutdown, which is the one reason a client should fall back on", async () => {
+        const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: okForwarder });
+        dispatcher.stop();
+
+        const response = await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+
+        assert.strictEqual(response.status, 503);
+        assert.strictEqual(response.headers[SHED_REASON_HEADER], SHED_SHUTTING_DOWN);
+    });
+
+    it("does not label a real upstream response, which is not ours to annotate", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 503, body: JSON.stringify({ message: "comlink is down" }) }));
+        const dispatcher = new Dispatcher({ backends: [comlink.url], ...CREDENTIALS, retryDelayMs: 0 });
+        after(async () => {
+            dispatcher.stop();
+            await comlink.close();
+        });
+
+        const response = await dispatcher.submit(request(PRIORITY.PUBLIC_COMMAND));
+
+        assert.strictEqual(response.status, 503, "the upstream status should pass through untouched");
+        assert.strictEqual(response.headers[SHED_REASON_HEADER], undefined, "an upstream 503 is not a shed");
     });
 });
 
