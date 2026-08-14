@@ -1,6 +1,8 @@
 import assert from "node:assert";
-import { describe, it } from "node:test";
-import { fetchPlayerData } from "../../modules/workers/getStrippedModsWorker.ts";
+import { after, describe, it } from "node:test";
+import { fetchPlayerData, stripRoster } from "../../modules/workers/getStrippedModsWorker.ts";
+import type { ComlinkPlayer } from "../../types/swapi_types.ts";
+import { startFakeComlink } from "../helpers/fakeComlink.ts";
 
 // mod slots are stored as 2-7 in the API; the worker subtracts 1
 const MOD_MAP = {
@@ -18,44 +20,13 @@ function makeRosterUnit(defId: string, modIds: string[]) {
     };
 }
 
-function makeStub(payload: unknown, delayMs = 0) {
-    return {
-        getPlayer: (_allyCode: null, _playerId: string) =>
-            new Promise<unknown>((resolve) => setTimeout(() => resolve(payload), delayMs)),
-    };
+function makePlayer(units: ReturnType<typeof makeRosterUnit>[]): ComlinkPlayer {
+    return { rosterUnit: units } as unknown as ComlinkPlayer;
 }
 
-function makeFailingStub(err: Error, delayMs = 0) {
-    return {
-        getPlayer: (_allyCode: null, _playerId: string) =>
-            new Promise<unknown>((_, reject) => setTimeout(() => reject(err), delayMs)),
-    };
-}
-
-// Stub that fails for the first `failCount` calls, then succeeds with `payload`
-function makeRetryStub(failCount: number, err: Error, payload: unknown) {
-    let calls = 0;
-    return {
-        calls: () => calls,
-        getPlayer: (_allyCode: null, _playerId: string) => {
-            calls++;
-            if (calls <= failCount) return Promise.reject(err);
-            return Promise.resolve(payload);
-        },
-    };
-}
-
-function make502Error() {
-    return Object.assign(new Error("Response code 502 (Bad Gateway)"), {
-        response: { statusCode: 502 },
-    });
-}
-
-describe("fetchPlayerData", () => {
-    it("returns stripped units for a player with mods", async () => {
-        const stub = makeStub({ rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed", "mod_health"])] });
-
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP);
+describe("stripRoster", () => {
+    it("returns stripped units for a player with mods", () => {
+        const result = stripRoster(makePlayer([makeRosterUnit("DARTHVADER", ["mod_speed", "mod_health"])]), MOD_MAP);
 
         assert.deepStrictEqual(result, [
             {
@@ -68,104 +39,113 @@ describe("fetchPlayerData", () => {
         ]);
     });
 
-    it("excludes units with no equipped mods", async () => {
-        const stub = makeStub({
-            rosterUnit: [
-                makeRosterUnit("DARTHVADER", ["mod_speed"]),
-                { definitionId: "LUKESKYWALKER:SEVEN_STAR", equippedStatMod: [] },
-            ],
-        });
+    it("excludes units with no equipped mods", () => {
+        const player = makePlayer([
+            makeRosterUnit("DARTHVADER", ["mod_speed"]),
+            { definitionId: "LUKESKYWALKER:SEVEN_STAR", equippedStatMod: [] },
+        ]);
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP);
+        const result = stripRoster(player, MOD_MAP);
 
         assert.strictEqual(result?.length, 1);
         assert.strictEqual(result?.[0].defId, "DARTHVADER");
     });
 
-    it("filters out mods not present in modMap", async () => {
-        const stub = makeStub({
-            rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed", "mod_unknown"])],
-        });
-
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP);
+    it("filters out mods not present in modMap", () => {
+        const result = stripRoster(makePlayer([makeRosterUnit("DARTHVADER", ["mod_speed", "mod_unknown"])]), MOD_MAP);
 
         assert.strictEqual(result?.[0].mods.length, 1);
         assert.strictEqual(result?.[0].mods[0].set, 4);
     });
+});
 
-    it("returns undefined when request times out", async () => {
-        // stub resolves after 200ms; timeout is set to 50ms
-        const stub = makeStub({ rosterUnit: [] }, 200);
+describe("fetchPlayerData", () => {
+    it("fetches and strips a player's roster", async () => {
+        const comlink = await startFakeComlink(() => ({
+            status: 200,
+            body: JSON.stringify({ rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed"])] }),
+        }));
+        after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 50);
+        const result = await fetchPlayerData(comlink.url, 123456789, MOD_MAP);
 
-        assert.strictEqual(result, undefined);
+        assert.deepStrictEqual(result, [{ defId: "DARTHVADER", mods: [{ slot: 1, set: 4, primaryStat: 5 }] }]);
     });
 
-    it("returns undefined when comlink throws an error", async () => {
-        const stub = makeFailingStub(new Error("Bad Gateway"));
+    it("sends a signed request to /player, so it works against comlink directly too", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ rosterUnit: [] }) }));
+        after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP);
+        await fetchPlayerData(comlink.url, 123456789, MOD_MAP);
 
-        assert.strictEqual(result, undefined);
+        const headers = comlink.lastHeaders();
+        assert.ok(headers["x-date"], "should stamp X-Date");
+        assert.match(String(headers.authorization), /^HMAC-SHA256 Credential=/);
+        assert.deepStrictEqual(JSON.parse(comlink.lastBody()), { payload: { playerId: "123456789" } });
     });
 
-    it("returns undefined when comlink throws an error with a status code on the error itself", async () => {
-        const err = Object.assign(new Error("Bad Gateway"), { status: 502 });
-        const stub = makeFailingStub(err);
+    // The point of the change: the timeout has to cancel the request, not just stop waiting for it.
+    // A request left running holds a socket and a swapiServe slot long after this side gave up.
+    it("cancels the request when the timeout fires", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, body: "{}", delayMs: 5000 }));
+        after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP, 50), /timed out after 50ms/);
+        assert.strictEqual(comlink.requestCount(), 1, "and does so without re-sending");
 
-        assert.strictEqual(result, undefined);
+        // The server sees the socket close, which is what swapiServe reads as a cancellation.
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        assert.strictEqual(comlink.abandonedCount(), 1, "the upstream request must actually be withdrawn");
     });
 
-    it("returns undefined when comlink throws a got-style error with response.statusCode", async () => {
-        const stub = makeFailingStub(make502Error());
+    // A player that could not be fetched and a player with no mods must not look the same to the
+    // caller. Returning undefined for both let a run where every fetch failed produce a mod
+    // aggregate built from nothing and write it over good data, with no count and no log.
+    it("rejects when the upstream fails, rather than reporting an empty roster", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 502, body: JSON.stringify({ message: "Bad Gateway" }) }));
+        after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
-
-        assert.strictEqual(result, undefined);
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP), /status 502/);
     });
 
-    it("retries on 502 and returns data on the second attempt", async () => {
-        const payload = { rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed"])] };
-        const stub = makeRetryStub(1, make502Error(), payload);
-
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
-
-        assert.strictEqual(result?.length, 1);
-        assert.strictEqual(result?.[0].defId, "DARTHVADER");
-        assert.strictEqual(stub.calls(), 2);
+    it("rejects when the upstream is unreachable", async () => {
+        // Port 1 on loopback reliably refuses
+        await assert.rejects(() => fetchPlayerData("http://127.0.0.1:1", 123456789, MOD_MAP));
     });
 
-    it("gives up after max retries and returns undefined", async () => {
-        const stub = makeRetryStub(99, make502Error(), null);
+    it("still resolves for a player who genuinely has no modded units", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ rosterUnit: [] }) }));
+        after(async () => await comlink.close());
 
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
+        assert.deepStrictEqual(await fetchPlayerData(comlink.url, 123456789, MOD_MAP), []);
+    });
 
-        assert.strictEqual(result, undefined);
-        // 1 initial attempt + 2 retries = 3 total
-        assert.strictEqual(stub.calls(), 3);
+    // The worker used to retry 502/503 twice itself. That retry moved to swapiServe, which sees
+    // every call and can pace retries against a shared budget. Keeping both would have stacked
+    // multiplicatively: three worker attempts times three service attempts is up to nine upstream
+    // calls for one player, amplifying load exactly when the backend is already struggling.
+    it("does not retry a 502 itself, leaving retry to swapiServe", async () => {
+        const comlink = await startFakeComlink(({ count }) =>
+            count === 1
+                ? { status: 502, body: JSON.stringify({ message: "Bad Gateway" }) }
+                : { status: 200, body: JSON.stringify({ rosterUnit: [makeRosterUnit("DARTHVADER", ["mod_speed"])] }) },
+        );
+        after(async () => await comlink.close());
+
+        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP), "the failure should surface rather than being retried here");
+        assert.strictEqual(comlink.requestCount(), 1, "exactly one upstream call per task");
     });
 
     it("does not leave a pending timeout timer after resolving", async () => {
-        const countTimeouts = () => process.getActiveResourcesInfo().filter((r) => r === "Timeout").length;
-        const stub = makeStub({ rosterUnit: [] });
+        const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ rosterUnit: [] }) }));
+        after(async () => await comlink.close());
 
-        const before = countTimeouts();
-        await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000);
-        const after = countTimeouts();
+        const countTimeouts = () => process.getActiveResourcesInfo().filter((resource) => resource === "Timeout").length;
 
-        assert.strictEqual(after, before, "fetchPlayerData should clear its timeout timer once the request settles");
-    });
+        const timersBefore = countTimeouts();
+        await fetchPlayerData(comlink.url, 123456789, MOD_MAP, 30_000);
+        const timersAfter = countTimeouts();
 
-    it("does not retry on non-502 errors", async () => {
-        const err = Object.assign(new Error("Not Found"), { response: { statusCode: 404 } });
-        const stub = makeRetryStub(99, err, null);
-
-        const result = await fetchPlayerData(stub as never, 123456789, MOD_MAP, 30_000, 0);
-
-        assert.strictEqual(result, undefined);
-        assert.strictEqual(stub.calls(), 1);
+        assert.strictEqual(timersAfter, timersBefore, "the timeout must not outlive the request that settled");
     });
 });

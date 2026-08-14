@@ -54,7 +54,15 @@ const MOD_WORKER_THREADS = numericArg("--mod-threads", Math.max(1, Math.min(avai
 const MOD_TASKS_PER_WORKER = numericArg("--mod-tasks", 1);
 const MOD_WORKER_HEAP_MB = numericArg("--worker-heap", 256);
 
-import ComlinkStub from "@swgoh-utils/comlink";
+// Share of players that may fail to fetch before the resulting mod aggregate stops being worth
+// writing. See isModSampleUsable.
+const MAX_MOD_FAILURE_RATE = 0.1;
+// Per-player failures are logged up to this many times, then only counted. A backend outage fails
+// every player in the run, and a hundred thousand identical lines buries the summary that says so.
+const MAX_LOGGED_MOD_FAILURES = 20;
+
+import type ComlinkStub from "@swgoh-utils/comlink";
+import { resolveBulkStub } from "../modules/swapiQueue.ts";
 import type { components, operations } from "../types/comlinkGamedata.js";
 import type { DatacronFile } from "../types/datacron_types.ts";
 import type { HelpJSON } from "../types/help_types.ts";
@@ -228,11 +236,11 @@ async function init() {
         } else {
             logger.log("Skipping database cleanup (pass --cleanup to run it)");
         }
-        const comlinkStub = new ComlinkStub({
-            url: env.SWAPI_CLIENT_URL,
-            accessKey: env.SWAPI_ACCESS_KEY,
-            secretKey: env.SWAPI_SECRET_KEY,
-        });
+        // Every call this cycle makes goes through swapiServe at the bulk tier, so the nightly
+        // pull can never crowd out live commands or the arena payout tick. Resolved once because
+        // this is a single-cycle process; if swapiServe is down it falls back to calling comlink
+        // directly rather than failing the whole run.
+        const { stub: comlinkStub, url: comlinkUrl } = await resolveBulkStub();
 
         // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
         // allocated. PM2 relaunches this daily via cron_restart (see ecosystem.config.cjs).
@@ -278,7 +286,7 @@ async function init() {
                     logger.log("Skipping mod updaters (--skip-mods)");
                 } else {
                     debugTime("Running mod updaters");
-                    await runModUpdaters(comlinkStub);
+                    await runModUpdaters(comlinkStub, comlinkUrl);
                     debugTimeEnd("Running mod updaters");
                     logMem("after mod updaters");
                 }
@@ -349,7 +357,7 @@ async function updateMetadata(dataDir: string, comlinkStub: ComlinkStub) {
     return { isMetadataUpdated, newMetadata: metadataOut as Metadata, oldMetadata: oldMetadata as Metadata };
 }
 
-async function runModUpdaters(comlinkStub: ComlinkStub) {
+async function runModUpdaters(comlinkStub: ComlinkStub, comlinkUrl: string) {
     debugTime("Getting guildIds");
     const guildIds = await getGuildIds(comlinkStub);
     debugTimeEnd("Getting guildIds");
@@ -364,7 +372,10 @@ async function runModUpdaters(comlinkStub: ComlinkStub) {
     // Records which sets of mods each character has and the primary stats per slot.
     debugTime("Aggregating player mods");
     const modMap = await readJSON<ModMap>(path.join(DATA_DIR_PATH, "modMap.json"));
-    const unitsOut = await aggregatePlayerMods(playerIds, modMap);
+    // The workers run in their own threads, so they cannot be handed a stub. They get the base URL
+    // resolveBulkStub settled on instead, inheriting that one swapiServe-or-direct decision rather
+    // than each probing the service themselves.
+    const unitsOut = await aggregatePlayerMods(playerIds, modMap, comlinkUrl);
     debugTimeEnd("Aggregating player mods");
 
     // Go through each character and find the most common versions of
@@ -572,7 +583,7 @@ async function getGuildPlayerIds(comlinkStub: ComlinkStub, guildIds: string[]) {
 // Fetch each player's stripped roster and fold its mods straight into the per-defId
 // aggregation as it arrives, so we never hold every player's units in memory at once.
 // Peak memory is bounded by the MAX_CONCURRENT in-flight rosters plus the small accumulator.
-async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise<UnitModAccumulator> {
+async function aggregatePlayerMods(playerIds: string[], modMap: ModMap, comlinkUrl: string): Promise<UnitModAccumulator> {
     debugLog(`Aggregating mods for ${playerIds.length} players (${MAX_CONCURRENT} at a time)`);
     const unitsOut: UnitModAccumulator = {};
 
@@ -589,6 +600,7 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
         maxThreads: MOD_WORKER_THREADS,
         concurrentTasksPerWorker: MOD_TASKS_PER_WORKER,
         resourceLimits: { maxOldGenerationSizeMb: MOD_WORKER_HEAP_MB },
+        workerData: { comlinkUrl },
     });
     logMem(
         `aggregatePlayerMods start (piscina threads=${piscina.threads.length}, tasksPerWorker=${MOD_TASKS_PER_WORKER}, heapCap=${MOD_WORKER_HEAP_MB}MB)`,
@@ -604,9 +616,16 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
                 if (strippedUnits?.length) foldUnitMods(unitsOut, strippedUnits);
             } catch (err) {
                 failedCount++;
-                logger.error(
-                    `[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`,
-                );
+                if (failedCount <= MAX_LOGGED_MOD_FAILURES) {
+                    logger.error(
+                        `[dataUpdater/aggregatePlayerMods] Failed to process player ${playerId}: ${err instanceof Error ? err.message : String(err)}`,
+                    );
+                    if (failedCount === MAX_LOGGED_MOD_FAILURES) {
+                        logger.error(
+                            "[dataUpdater/aggregatePlayerMods] Further player failures will be counted but not logged individually",
+                        );
+                    }
+                }
             }
             // Sample memory periodically to catch any transient peak from in-flight worker payloads
             if (++processedCount % 1000 === 0) logMem(`aggregatePlayerMods after ${processedCount} players`);
@@ -615,6 +634,12 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
         if (failedCount > 0) {
             logger.error(`[dataUpdater/aggregatePlayerMods] Failed to process ${failedCount}/${playerIds.length} players`);
         }
+        if (!isModSampleUsable(failedCount, playerIds.length)) {
+            throw new Error(
+                `Mod aggregation lost ${failedCount}/${playerIds.length} players, past the ${MAX_MOD_FAILURE_RATE * 100}% limit; ` +
+                    "refusing to overwrite character mod data with a partial sample",
+            );
+        }
     } finally {
         // Always close, even if errors occurred
         await piscina.close();
@@ -622,6 +647,20 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap): Promise
     }
 
     return unitsOut;
+}
+
+/**
+ * Whether a mod run fetched enough players to be worth writing.
+ *
+ * The aggregate is the most common mod set and primaries per character, taken over roughly a
+ * hundred thousand players, so losing a slice of the sample changes nothing while losing most of
+ * it produces noise. Since mergeModsToCharacters overwrites the previous data rather than merging
+ * with it, a degraded run is worse than no run at all: stale mod data is still broadly correct,
+ * whereas an aggregate built from the few players who happened to survive an outage is not.
+ */
+export function isModSampleUsable(failedCount: number, totalCount: number): boolean {
+    if (totalCount === 0) return true;
+    return failedCount / totalCount <= MAX_MOD_FAILURE_RATE;
 }
 
 // Fold one batch of stripped units (typically a single player's roster) into the running
@@ -2572,6 +2611,7 @@ export default {
     buildUnitNamesMap,
 
     processModResults,
+    isModSampleUsable,
 
     processJourneyReqs,
     saveRaidNames,

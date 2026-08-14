@@ -22,15 +22,15 @@ fi
 FAILED=0
 
 print_success() {
-    printf "${GREEN}✓  %s${NC}\n" "$1"
+    printf "${GREEN}[ok]   %s${NC}\n" "$1"
 }
 
 print_error() {
-    printf "${RED}✗  %s${NC}\n" "$1"
+    printf "${RED}[fail] %s${NC}\n" "$1"
 }
 
 print_warning() {
-    printf "${YELLOW}⚠  %s${NC}\n" "$1"
+    printf "${YELLOW}[warn] %s${NC}\n" "$1"
 }
 
 print_section() {
@@ -84,7 +84,7 @@ fi
 if [ $FAILED -ne 0 ]; then
     echo ""
     print_section "Pre-Commit Summary"
-    print_error "Some checks failed — skipping tests"
+    print_error "Some checks failed, skipping tests"
     echo ""
     print_bypass_hint
     echo ""

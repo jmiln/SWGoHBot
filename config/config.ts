@@ -94,6 +94,12 @@ const envSchema = z.object({
     SWAPI_ACCESS_KEY: z.string().min(1, "SWAPI_ACCESS_KEY is required"),
     SWAPI_SECRET_KEY: z.string().min(1, "SWAPI_SECRET_KEY is required"),
 
+    // swapiServe: the local queueing proxy every comlink request passes through. No secret,
+    // because ComlinkStub uses the Authorization header for its HMAC signature; the service binds
+    // to loopback instead and every client runs on this host.
+    SWAPI_SERVE_URL: urlString({ default: "http://localhost:3800" }),
+    SWAPI_SERVE_PORT: z.coerce.number().int().positive().default(3800),
+
     // Patreon V2 API Configuration (all optional)
     PATREON_API_URL: urlString({ default: "https://www.patreon.com/api/oauth2/v2" }),
     PATREON_CAMPAIGN_ID: z.string().optional(),

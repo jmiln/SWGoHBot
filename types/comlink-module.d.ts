@@ -10,6 +10,8 @@ declare module "@swgoh-utils/comlink" {
 
     export default class ComlinkStub {
         constructor(options?: ComlinkStubOptions);
+        /** The base URL the stub was built with. Set in the constructor (index.js:27). */
+        readonly url: string;
         getMetaData(): Promise<unknown>;
         getGameData(version: string, includePveUnits?: boolean, requestSegment?: number): Promise<unknown>;
         getLocalizationBundle(id: string, unzip?: boolean): Promise<unknown>;
