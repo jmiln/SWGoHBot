@@ -13,6 +13,8 @@ import constants from "../../data/constants/constants.ts";
 import { createMockLanguage } from "../mocks/index.ts";
 import type { ActivePatron, ArenaPlayer, ArenaWatchAcct, ArenaWatchConfig, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { PRIORITY } from "../../data/constants/swapiServe.ts";
+import swgohAPI from "../../modules/swapi.ts";
 
 describe("PatreonFuncs Module", () => {
     let client: MongoClient;
@@ -1110,6 +1112,32 @@ describe("PatreonFuncs Module", () => {
             assert.ok(doc, "the existing doc must remain in the map");
             assert.strictEqual(doc.name, "NewApiName", "the persisted name must be refreshed to the new API name");
             assert.ok(changedCodes.has(888777666), "a name refresh must mark the doc changed");
+        });
+    });
+
+    describe("buildPlayerMap()", () => {
+        // The chunking this replaces ran chunks of 50 in a sequential for-loop, so 120 codes cost
+        // three serial round trips inside a tick that has a hard 60s interval and a 45s deadline.
+        // Concurrency is already bounded twice over, by eachLimit inside getPlayersArena and by
+        // swapiServe's governor, so the chunking only added latency.
+        it("fetches every ally code in a single request rather than one batch per 50", async (t) => {
+            const codes = Array.from({ length: 120 }, (_, i) => 900000001 + i);
+            const calls: number[][] = [];
+
+            t.mock.method(swgohAPI, "getPlayersArena", async (allyCodes: number[]) => {
+                calls.push([...allyCodes]);
+                return [];
+            });
+
+            // buildPlayerMap is private; bracket access is the test seam rather than widening the API.
+            await (
+                patreonFuncs as unknown as {
+                    buildPlayerMap: (codes: number[], priority: number) => Promise<Map<number, unknown>>;
+                }
+            ).buildPlayerMap(codes, PRIORITY.ARENA_TICK);
+
+            assert.strictEqual(calls.length, 1, "should issue exactly one fetch for the whole set");
+            assert.deepStrictEqual(calls[0], codes, "and it should carry every ally code");
         });
     });
 

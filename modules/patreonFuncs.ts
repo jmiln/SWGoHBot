@@ -20,16 +20,7 @@ import type {
 } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
 import cache from "./cache.ts";
-import {
-    chunkArray,
-    expandSpaces,
-    formatDuration,
-    getPayoutTimeLeft,
-    isArenaChannelOn,
-    msgArray,
-    toProperCase,
-    wait,
-} from "./functions.ts";
+import { chunkArray, expandSpaces, formatDuration, getPayoutTimeLeft, isArenaChannelOn, msgArray, toProperCase } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
 import swgohAPI from "./swapi.ts";
@@ -376,29 +367,18 @@ class PatreonFuncs {
     private async buildPlayerMap(allyCodes: number[], priority: Priority): Promise<Map<number, PlayerArenaRes>> {
         const map = new Map<number, PlayerArenaRes>();
         if (!allyCodes.length) return map;
-        const chunks = chunkArray(allyCodes, 50);
-        for (const chunk of chunks) {
-            let attempts = 0;
-            while (attempts < 3) {
-                try {
-                    const results = await swgohAPI.getPlayersArena(chunk, priority);
-                    for (const player of results ?? []) {
-                        map.set(player.allyCode, player);
-                    }
-                    break;
-                } catch (e) {
-                    const code = e instanceof Error && "code" in e ? (e as Error & { code: unknown }).code : null;
-                    if (code === 6 && attempts < 2) {
-                        await wait(1000 * (attempts + 1));
-                        attempts++;
-                    } else {
-                        logger.error(
-                            `[buildPlayerMap] Failed to fetch chunk of ${chunk.length} codes: ${e instanceof Error ? e.message : String(e)}`,
-                        );
-                        break;
-                    }
-                }
+
+        // No chunking and no retry loop here on purpose. Concurrency is bounded by eachLimit inside
+        // getPlayersArena and again by swapiServe's governor, and retry belongs to swapiServe's
+        // per-tier budget, which exists precisely so the tick funds its own retries. The catch stays
+        // because the result mapping can still throw on a malformed payload.
+        try {
+            const results = await swgohAPI.getPlayersArena(allyCodes, priority);
+            for (const player of results ?? []) {
+                map.set(player.allyCode, player);
             }
+        } catch (e) {
+            logger.error(`[buildPlayerMap] Failed to fetch ${allyCodes.length} codes: ${e instanceof Error ? e.message : String(e)}`);
         }
         return map;
     }
@@ -611,8 +591,12 @@ class PatreonFuncs {
         // Top tier: a tick that runs past its minute trips the arenaTickRunning guard in
         // clientReady, and because the payout cycle and the poll interval are exact multiples,
         // the same minute is then lost every day for whichever accounts pay out in it.
-        const playerMap = await this.buildPlayerMap(allyCodes, PRIORITY.ARENA_TICK);
-        const arenaPlayerMap = await arenaPlayerRegistry.batchGet(allyCodes);
+        // Both take the same allyCodes and neither depends on the other, so the Mongo read should
+        // not wait out the comlink batch. Two independent awaits, not a fan-out over many items.
+        const [playerMap, arenaPlayerMap] = await Promise.all([
+            this.buildPlayerMap(allyCodes, PRIORITY.ARENA_TICK),
+            arenaPlayerRegistry.batchGet(allyCodes),
+        ]);
         // Freeze the tick-start ranks before any consumer mutates the shared docs, so every
         // patron tracking an account sees the same rank change
         const rankSnapshot = buildRankSnapshot(arenaPlayerMap);

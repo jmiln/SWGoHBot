@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
 import { GOVERNOR, RATE } from "../../data/constants/swapiServe.ts";
-import { Governor } from "../../services/swapiServe/governor.ts";
+import { Governor, RECENT_PEAKS } from "../../services/swapiServe/governor.ts";
 
 const A = "http://a.test";
 const B = "http://b.test";
@@ -499,5 +499,76 @@ describe("swapiServe.Governor rate limiting", () => {
         governor.report(A, "not_found", 0);
 
         assert.strictEqual(governor.snapshot()[0].ratePerSecond, startingRate);
+    });
+});
+
+describe("swapiServe.Governor settling metrics", () => {
+    // The first report only anchors the accounting clock. Without an anchor, a service whose first
+    // traffic arrives an hour after start would book that idle hour at the starting limit.
+    it("accumulates time-weighted limit and rate across reported activity", () => {
+        const governor = new Governor([A]);
+
+        governor.acquire(0);
+        governor.report(A, "ok", 0);
+        governor.acquire(1000);
+        governor.report(A, "ok", 1000);
+
+        const snap = governor.snapshot()[0];
+        assert.strictEqual(snap.observedMs, 1000);
+        assert.strictEqual(snap.limitMsIntegral, GOVERNOR.START_LIMIT * 1000);
+        assert.strictEqual(snap.rateMsIntegral, RATE.START_PER_SEC * 1000);
+    });
+
+    it("books no observed time before the first report", () => {
+        const governor = new Governor([A]);
+        const snap = governor.snapshot()[0];
+
+        assert.strictEqual(snap.observedMs, 0);
+        assert.strictEqual(snap.limitMsIntegral, 0);
+        assert.strictEqual(snap.backoffs, 0);
+        assert.deepStrictEqual(snap.recentPeaks, []);
+    });
+
+    // The peak is the whole point of the ring: the time-weighted mean says where the sawtooth
+    // centres, but only the pre-backoff value says how high the controller got before the backend
+    // pushed back, which is what the ceiling constants get pinned against.
+    it("records the pre-backoff peak, not the halved value", () => {
+        const governor = new Governor([A]);
+        completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN);
+        const climbedTo = governor.snapshot()[0].limit;
+
+        governor.acquire(20_000);
+        governor.report(A, "throttled", 20_000);
+
+        const snap = governor.snapshot()[0];
+        assert.strictEqual(snap.backoffs, 1);
+        assert.strictEqual(snap.recentPeaks.at(-1)?.limit, climbedTo);
+        assert.strictEqual(snap.recentPeaks.at(-1)?.at, 20_000);
+        assert.ok(snap.limit < climbedTo, "and the live limit should have halved below it");
+    });
+
+    it("keeps only the most recent peaks", () => {
+        const governor = new Governor([A]);
+
+        for (let i = 0; i < RECENT_PEAKS + 2; i++) {
+            const at = 1000 * (i + 1);
+            governor.acquire(at);
+            governor.report(A, "throttled", at);
+        }
+
+        const snap = governor.snapshot()[0];
+        assert.strictEqual(snap.backoffs, RECENT_PEAKS + 2);
+        assert.strictEqual(snap.recentPeaks.length, RECENT_PEAKS);
+        assert.strictEqual(snap.recentPeaks[0].at, 3000, "the two oldest should have been dropped");
+    });
+
+    it("does not let a caller mutate the stored peaks through the snapshot", () => {
+        const governor = new Governor([A]);
+        governor.acquire(1000);
+        governor.report(A, "throttled", 1000);
+
+        governor.snapshot()[0].recentPeaks[0].limit = -1;
+
+        assert.notStrictEqual(governor.snapshot()[0].recentPeaks[0].limit, -1);
     });
 });

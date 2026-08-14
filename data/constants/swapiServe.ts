@@ -20,7 +20,13 @@ export const LOWEST_PRIORITY: Priority = 4;
 export const GOVERNOR = {
     START_LIMIT: 5,
     MIN_LIMIT: 1,
-    MAX_LIMIT: 60,
+    // 150 rather than 60 because SWAPI_CLIENT_URL is an nginx round-robin over five comlink
+    // containers, each on its own egress IP, so this ceiling is an aggregate across all five.
+    // Concurrency is what binds the nightly dataUpdater cycle: /player averages 1614ms, so 60 slots
+    // cap it near 37/s no matter how many rate tokens are free. swapiServe buffers whole response
+    // bodies, so in-flight memory is roughly this times the mean response size, about 400MB at 150
+    // against the host's 11GB free.
+    MAX_LIMIT: 150,
     INCREASE_AFTER_CLEAN: 10,
     DECREASE_FACTOR: 0.5,
     COOLDOWN_MS: 30_000,
@@ -35,7 +41,11 @@ export const GOVERNOR = {
 export const RATE = {
     START_PER_SEC: 5,
     MIN_PER_SEC: 0.5,
-    MAX_PER_SEC: 60,
+    // Five egress IPs at the 60/s a single IP already sustained. Rate is what binds the arena tick,
+    // where /playerArena averages 315ms so 60 slots would allow ~190/s while the old 60/s ceiling
+    // did not. Unlike MAX_LIMIT this costs no memory: more requests per second through the same
+    // number of slots does not increase bytes in flight.
+    MAX_PER_SEC: 300,
     BURST_FACTOR: 2,
 } as const;
 

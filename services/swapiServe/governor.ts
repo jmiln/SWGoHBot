@@ -14,6 +14,19 @@ import { TokenBucket } from "./tokenBucket.ts";
  */
 export type CircuitState = "closed" | "open" | "half-open";
 
+/** How high the controller had climbed at the moment a backend pushed back. */
+export interface BackendPeak {
+    limit: number;
+    ratePerSecond: number;
+    at: number;
+}
+
+/**
+ * How many pre-backoff peaks to retain per backend. Enough to take a median from across one heavy
+ * window, small enough that the status payload stays readable.
+ */
+export const RECENT_PEAKS = 10;
+
 export interface BackendSnapshot {
     url: string;
     limit: number;
@@ -22,6 +35,16 @@ export interface BackendSnapshot {
     state: CircuitState;
     drained: boolean;
     outcomes: Record<string, number>;
+    /**
+     * Time-weighted accumulators, monotonic, covering only time in which the backend was being
+     * used. Difference two samples to get the mean over that window:
+     * delta(limitMsIntegral) / delta(observedMs).
+     */
+    limitMsIntegral: number;
+    rateMsIntegral: number;
+    observedMs: number;
+    backoffs: number;
+    recentPeaks: BackendPeak[];
 }
 
 /**
@@ -63,6 +86,13 @@ interface BackendState {
     probeInFlight: boolean;
     bucket: TokenBucket;
     outcomes: Record<string, number>;
+    limitMsIntegral: number;
+    rateMsIntegral: number;
+    observedMs: number;
+    /** -1 until the first report anchors the accounting clock. See `account`. */
+    lastAccountedAt: number;
+    backoffs: number;
+    recentPeaks: BackendPeak[];
 }
 
 /**
@@ -96,6 +126,12 @@ export class Governor {
             probeInFlight: false,
             bucket: new TokenBucket({ ratePerSecond: RATE.START_PER_SEC }),
             outcomes: {},
+            limitMsIntegral: 0,
+            rateMsIntegral: 0,
+            observedMs: 0,
+            lastAccountedAt: -1,
+            backoffs: 0,
+            recentPeaks: [],
         }));
     }
 
@@ -165,15 +201,45 @@ export class Governor {
      * success re-admits a backend nothing has tested; a stale failure discards a probe that was
      * about to prove the backend healthy, costing another full interval of downtime.
      */
+    /**
+     * Advances the time-weighted accumulators to `now`, then anchors to it.
+     *
+     * Called at the top of every report, which means the integrals only ever cover time in which
+     * the backend was actually being used. Excluding idle stretches is deliberate: the question
+     * these metrics answer is where the controller settles under load, and averaging in eight quiet
+     * hours would drag that toward whatever the limit happened to be when traffic stopped.
+     */
+    private account(backend: BackendState, now: number): void {
+        if (backend.lastAccountedAt < 0) {
+            backend.lastAccountedAt = now;
+            return;
+        }
+        const elapsed = Math.max(0, now - backend.lastAccountedAt);
+        backend.lastAccountedAt = now;
+        if (elapsed === 0) return;
+
+        backend.limitMsIntegral += backend.limit * elapsed;
+        backend.rateMsIntegral += backend.bucket.getRate() * elapsed;
+        backend.observedMs += elapsed;
+    }
+
     report(url: string, outcome: Outcome, now: number, wasProbe = false): void {
         const backend = this.backends.find((candidate) => candidate.url === url);
         if (!backend) return;
+
+        this.account(backend, now);
 
         backend.inFlight = Math.max(0, backend.inFlight - 1);
         backend.outcomes[outcome] = (backend.outcomes[outcome] ?? 0) + 1;
         if (wasProbe) backend.probeInFlight = false;
 
         if (affectsHealth(outcome)) {
+            // Captured before the halving below: this is how high the controller had climbed when
+            // the backend pushed back, which is the number the ceiling constants get pinned against.
+            backend.recentPeaks.push({ limit: backend.limit, ratePerSecond: backend.bucket.getRate(), at: now });
+            if (backend.recentPeaks.length > RECENT_PEAKS) backend.recentPeaks.shift();
+            backend.backoffs++;
+
             backend.cleanStreak = 0;
             backend.consecutiveFailures++;
             backend.limit = Math.max(GOVERNOR.MIN_LIMIT, Math.floor(backend.limit * GOVERNOR.DECREASE_FACTOR));
@@ -298,6 +364,11 @@ export class Governor {
             state: backend.state,
             drained: backend.drained,
             outcomes: { ...backend.outcomes },
+            limitMsIntegral: backend.limitMsIntegral,
+            rateMsIntegral: backend.rateMsIntegral,
+            observedMs: backend.observedMs,
+            backoffs: backend.backoffs,
+            recentPeaks: backend.recentPeaks.map((peak) => ({ ...peak })),
         }));
     }
 }

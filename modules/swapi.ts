@@ -33,7 +33,7 @@ import type {
     SWAPIWorkerGuildLog,
     SWAPIWorkerOutput,
 } from "../types/swapi_types.ts";
-import type { PlayerCooldown } from "../types/types.ts";
+import type { PlayerArenaRes, PlayerCooldown } from "../types/types.ts";
 import logger from "./Logger.ts";
 import { withStub } from "./swapiQueue.ts";
 
@@ -155,6 +155,34 @@ async function tryCall<T>(
         logger.throttleError(throttleKey, describe(describeFetchFailure(message, getFetchErrorStatus(err))));
         return null;
     }
+}
+
+/**
+ * Maps one comlink arena profile onto the shape the arena tick consumes.
+ *
+ * Returns null rather than throwing on a payload without a pvpProfile array. getPlayersArena maps
+ * a whole batch, and the arena tick passes every watched ally code in one call, so a throw here
+ * would discard every player in that batch: a lost minute of rank tracking for all of them, and a
+ * lost payout record for anyone whose payout cycle fell on that minute.
+ */
+export function mapArenaProfile(profile: SWAPIPlayerArenaProfile | null): PlayerArenaRes | null {
+    if (!profile || !Array.isArray(profile.pvpProfile)) return null;
+
+    const charArena = profile.pvpProfile.find((t: SWAPIPlayerArenaProfilePVP) => t.tab === 1);
+    const shipArena = profile.pvpProfile.find((t: SWAPIPlayerArenaProfilePVP) => t.tab === 2);
+    return {
+        name: profile.name,
+        allyCode: Number.parseInt(profile.allyCode, 10),
+        arena: {
+            char: {
+                rank: charArena ? charArena.rank : null,
+            },
+            ship: {
+                rank: shipArena ? shipArena.rank : null,
+            },
+        },
+        poUTCOffsetMinutes: profile.localTimeZoneOffsetMinutes,
+    };
 }
 
 /**
@@ -328,28 +356,7 @@ class SWAPI {
             }
         });
 
-        return playersOut
-            .map((p) => {
-                if (p) {
-                    const charArena = p.pvpProfile.find((t: SWAPIPlayerArenaProfilePVP) => t.tab === 1);
-                    const shipArena = p.pvpProfile.find((t: SWAPIPlayerArenaProfilePVP) => t.tab === 2);
-                    return {
-                        name: p.name,
-                        allyCode: Number.parseInt(p.allyCode, 10),
-                        arena: {
-                            char: {
-                                rank: charArena ? charArena.rank : null,
-                            },
-                            ship: {
-                                rank: shipArena ? shipArena.rank : null,
-                            },
-                        },
-                        poUTCOffsetMinutes: p.localTimeZoneOffsetMinutes,
-                    };
-                }
-                return null;
-            })
-            .filter((p) => !!p);
+        return playersOut.map(mapArenaProfile).filter((p): p is PlayerArenaRes => p !== null);
     }
 
     async getPlayerUpdates(allyCodes: number | number[], priority: Priority = PRIORITY.PUBLIC_COMMAND) {
