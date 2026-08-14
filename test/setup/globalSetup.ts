@@ -1,6 +1,9 @@
 import type { StartedMongoDBContainer } from "@testcontainers/mongodb";
 import { MongoDBContainer } from "@testcontainers/mongodb";
 
+const MONGO_CONTAINER_PORT = 27017;
+const MONGO_HOST_PORT = 27018;
+
 let container: StartedMongoDBContainer | undefined;
 
 export async function globalSetup(): Promise<void> {
@@ -14,7 +17,7 @@ export async function globalSetup(): Promise<void> {
     process.env.DISCORD_OWNER_ID ??= "000000000000000001";
     process.env.DISCORD_CLIENT_ID ??= "000000000000000002";
     process.env.DISCORD_TOKEN ??= "test.token.stub";
-    process.env.MONGODB_URL ??= "mongodb://localhost:27018";
+    process.env.MONGODB_URL ??= `mongodb://localhost:${MONGO_HOST_PORT}`;
     process.env.SWAPI_STATCALC_URL ??= "http://localhost:3000";
     process.env.SWAPI_CLIENT_URL ??= "http://localhost:3001";
     process.env.SWAPI_ACCESS_KEY ??= "test-access-key";
@@ -24,14 +27,14 @@ export async function globalSetup(): Promise<void> {
         return;
     }
 
-    console.log("🚀 Starting MongoDB testcontainer...");
+    console.log("[info] Starting MongoDB testcontainer...");
     container = await new MongoDBContainer("mongo:7.0")
-        .withExposedPorts({ container: 27017, host: 27018 })
+        .withExposedPorts({ container: MONGO_CONTAINER_PORT, host: MONGO_HOST_PORT })
         .start();
 
     const connectionString = `${container.getConnectionString()}?directConnection=true`;
     process.env.MONGO_URL = connectionString;
-    console.log("✅ MongoDB testcontainer ready on port 27018");
+    console.log(`[ok]   MongoDB testcontainer ready on port ${container.getMappedPort(MONGO_CONTAINER_PORT)}`);
 }
 
 export async function globalTeardown(): Promise<void> {
@@ -39,11 +42,11 @@ export async function globalTeardown(): Promise<void> {
         try {
             await container.stop();
         } catch (error) {
-            console.error("❌ Failed to stop MongoDB testcontainer:", error);
+            console.error("[fail] Failed to stop MongoDB testcontainer:", error);
         } finally {
             container = undefined;
             delete process.env.MONGO_URL;
-            console.log("✅ MongoDB testcontainer stopped");
+            console.log("[ok]   MongoDB testcontainer stopped");
         }
     }
 }
