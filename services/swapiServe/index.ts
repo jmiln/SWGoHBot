@@ -227,7 +227,15 @@ export async function startSwapiServe({
 }
 
 // Entry point when run as a service rather than imported by tests.
-if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
+//
+// pm2 runs fork-mode apps through its own wrapper script, so process.argv[1] is that wrapper and
+// not this file. Checking argv alone meant the module loaded, nothing started, and Node exited 0
+// with no output at all, while pm2 reported the app online and every client quietly fell back to
+// direct comlink calls. pm_exec_path is the script pm2 was asked to run, and is unset outside
+// pm2, so the argv fallback still covers `node services/swapiServe/index.ts` and still leaves
+// tests free to import this module without binding a port.
+const entryPath = process.env.pm_exec_path ?? process.argv[1];
+if (entryPath?.endsWith("swapiServe/index.ts")) {
     startSwapiServe({
         port: env.SWAPI_SERVE_PORT,
         backends: [env.SWAPI_CLIENT_URL],
