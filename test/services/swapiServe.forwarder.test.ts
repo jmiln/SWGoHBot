@@ -87,4 +87,28 @@ describe("swapiServe.createHttpForwarder", () => {
 
         assert.strictEqual(result.status, undefined, "a timeout must not hold the slot indefinitely");
     });
+    // /metadata is the only comlink call that sends no payload: ComlinkStub calls
+    // _postRequestPromiseAPI with an undefined body, so got sends neither a body nor a
+    // content-type. Declaring JSON over an empty body makes comlink's parser materialise {},
+    // so it verifies the signature against md5("{}") while signRequest hashed md5("") - a 403
+    // on the one endpoint that dataUpdater calls first.
+    it("does not declare a JSON content-type on a request with no body", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        after(async () => await comlink.close());
+
+        const forward = createHttpForwarder(CREDENTIALS);
+        await forward(comlink.url, { method: "POST", uri: "/metadata", body: Buffer.alloc(0) });
+
+        assert.strictEqual(comlink.lastHeaders()["content-type"], undefined, "an empty body must not claim to be JSON");
+    });
+
+    it("still declares a JSON content-type when there is a body", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        after(async () => await comlink.close());
+
+        const forward = createHttpForwarder(CREDENTIALS);
+        await forward(comlink.url, { method: "POST", uri: "/player", body: Buffer.from('{"payload":{}}') });
+
+        assert.strictEqual(comlink.lastHeaders()["content-type"], "application/json");
+    });
 });
