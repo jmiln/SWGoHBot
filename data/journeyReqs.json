@@ -2770,9 +2770,69 @@
                 "tier": 7
             },
             {
-                "defId": "ROTTATHEHUTT",
+                "defId": "RACCOON",
                 "type": "RELIC",
                 "tier": 6
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
+            },
+            {
+                "defId": "INVENTORY_CHARACTERS",
+                "type": "DESCRIPTION",
+                "tier": null
             }
         ]
     },

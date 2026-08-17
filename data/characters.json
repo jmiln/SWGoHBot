@@ -738,7 +738,7 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
+            "triangle": "Crit. Chance",
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
@@ -1262,7 +1262,18 @@
             "New Republic",
             "Rebel"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Offense",
+            "sets": [
+                "Offense x4",
+                "Crit. Chance x2"
+            ]
+        }
     },
     {
         "name": "Captain Drogan",
@@ -1951,7 +1962,18 @@
             "Constable",
             "Leader"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Protection",
+            "cross": "Offense",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        }
     },
     {
         "name": "Colonel Starck",
@@ -1996,7 +2018,18 @@
             "New Republic",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Offense",
+            "circle": "Health",
+            "cross": "Potency",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        }
     },
     {
         "name": "Commander Ahsoka Tano",
@@ -3279,8 +3312,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Offense x4",
+                "Crit. Chance x2"
             ]
         },
         "avatarName": "charui_ezra_s3"
@@ -3425,10 +3458,11 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Health",
             "sets": [
                 "Health x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_firstorder_executioner"
@@ -3512,8 +3546,8 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Defense x2",
-                "Defense x2",
+                "Health x2",
+                "Health x2",
                 "Defense x2"
             ]
         },
@@ -3808,7 +3842,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -4125,7 +4159,18 @@
             "New Republic",
             "Unaligned Force User"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Tenacity",
+            "sets": [
+                "Speed x4",
+                "Tenacity x2"
+            ]
+        }
     },
     {
         "name": "Gungan Boomadier",
@@ -4971,9 +5016,8 @@
             "circle": "Protection",
             "cross": "Potency",
             "sets": [
-                "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4",
+                "Potency x2"
             ]
         },
         "avatarName": "charui_jawa_scavenger"
@@ -5651,9 +5695,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Health",
-            "circle": "Health",
-            "cross": "Potency",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5678,15 +5722,15 @@
         ],
         "mods": {
             "square": "Offense",
-            "arrow": "Speed",
+            "arrow": "Health",
             "diamond": "Defense",
             "triangle": "Health",
             "circle": "Health",
-            "cross": "Tenacity",
+            "cross": "Health",
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Tenacity x2"
+                "Defense x2"
             ]
         }
     },
@@ -6000,8 +6044,9 @@
             "circle": "Protection",
             "cross": "Protection",
             "sets": [
-                "Crit. Chance x2",
-                "Crit. Damage x4"
+                "Health x2",
+                "Health x2",
+                "Health x2"
             ]
         },
         "avatarName": "charui_luke_ep4"
@@ -7361,7 +7406,18 @@
             "Rebel Fighter",
             "Support"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
+            "sets": [
+                "Speed x4",
+                "Potency x2"
+            ]
+        }
     },
     {
         "name": "Range Trooper",
@@ -7497,7 +7553,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Offense",
+            "cross": "Potency",
             "sets": [
                 "Offense x4",
                 "Potency x2"
@@ -7720,7 +7776,18 @@
             "Hutt Cartel",
             "Leader"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Crit. Damage",
+            "circle": "Health",
+            "cross": "Health",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        }
     },
     {
         "name": "Royal Guard",
@@ -8357,7 +8424,18 @@
             "Leader",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Protection",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Speed x4"
+            ]
+        }
     },
     {
         "name": "STAP",
@@ -8501,7 +8579,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ]
         },
         "avatarName": "charui_trooperstorm_han"
@@ -8844,9 +8922,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Chance",
+            "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Offense",
             "sets": [
                 "Crit. Chance x2",
                 "Crit. Damage x4"
@@ -9092,7 +9170,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Protection",
+            "cross": "Potency",
             "sets": [
                 "Speed x4",
                 "Potency x2"
@@ -9143,13 +9221,12 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Crit. Damage",
+            "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Speed x4"
             ]
         },
         "avatarName": "charui_ugnaught"
@@ -9708,7 +9785,19 @@
             "New Republic",
             "Tank"
         ],
-        "mods": {}
+        "mods": {
+            "square": "Offense",
+            "arrow": "Speed",
+            "diamond": "Defense",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
+            "sets": [
+                "Health x2",
+                "Health x2",
+                "Defense x2"
+            ]
+        }
     },
     {
         "name": "Zorii Bliss",

@@ -2515,7 +2515,13 @@
     {
         "name": "Jaxxon",
         "defId": "JAXXON",
-        "locations": []
+        "locations": [
+            {
+                "type": "Marquee",
+                "locId": "EVENT_MARQUEE_JAXXON_NAME",
+                "name": "Action Jaxxon"
+            }
+        ]
     },
     {
         "name": "Jedi Consular",
@@ -3686,6 +3692,10 @@
         "name": "R5-D4",
         "defId": "R5D4",
         "locations": [
+            {
+                "type": "Hard Modes (L)",
+                "locId": "HARD_LIGHT"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_R5D4_NAME",

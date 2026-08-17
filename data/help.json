@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-07-23T22:13:16.451Z",
+        "generatedAt": "2026-08-17T11:05:53.301Z",
         "totalCommands": 49,
         "categories": 5
     },
@@ -1283,7 +1283,7 @@
                     {
                         "name": "revoke",
                         "type": 1,
-                        "description": "Revoke a strike — it remains visible in the member's history",
+                        "description": "Revoke a strike - it remains visible in the member's history",
                         "options": [
                             {
                                 "name": "allycode",
@@ -1679,12 +1679,12 @@
                             {
                                 "name": "report",
                                 "type": 1,
-                                "description": "Choose whether you want it to report on climbs, drops, or both",
+                                "description": "Choose which rank changes to report: climbs, drops, both, or none",
                                 "options": [
                                     {
                                         "name": "arena",
                                         "type": 3,
-                                        "description": "Choose whether you want it to report on climbs, drops, or both",
+                                        "description": "Which rank changes to report (none keeps payout warn/result only)",
                                         "required": true,
                                         "choices": [
                                             {
@@ -1698,6 +1698,10 @@
                                             {
                                                 "name": "both",
                                                 "value": "both"
+                                            },
+                                            {
+                                                "name": "none",
+                                                "value": "none"
                                             }
                                         ]
                                     }
@@ -2250,9 +2254,9 @@
             },
             {
                 "name": "datacron",
-                "description": "Look up a datacron set: what it boosts, when it expires, and what each tier can roll",
+                "description": "Look up a datacron set, or search which sets can boost a given unit/faction/role",
                 "usage": [
-                    "**/datacron** [set] [tier]"
+                    "**/datacron** [set] [tier] [target]"
                 ],
                 "options": [
                     {
@@ -2265,6 +2269,12 @@
                         "name": "tier",
                         "type": 4,
                         "description": "Show everything one tier can roll, with full ability text"
+                    },
+                    {
+                        "name": "target",
+                        "type": 3,
+                        "description": "Find which sets can boost a unit, faction, role, or alignment",
+                        "autocomplete": true
                     }
                 ],
                 "permLevel": 0,
