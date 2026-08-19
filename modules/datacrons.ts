@@ -2,15 +2,47 @@ import { unitNameOf } from "../data/constants/units.ts";
 import factionMap from "../data/factionMap.ts";
 import type { DatacronAbilityRef, DatacronAffix, DatacronAffixOption, DatacronFile, DatacronSetRef } from "../types/datacron_types.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
+import type { RefreshCount } from "../types/types.ts";
 import { readJSON } from "./functions.ts";
 import { flatStats } from "./swapi.ts";
 
 // Loaded the same way as the other data/*.json reference files (see modules/swapi.ts).
-const file = await readJSON<DatacronFile>(`${import.meta.dirname}/../data/datacrons.json`);
-const setsById = new Map(file.sets.map((s) => [s.setId, s]));
+const datacronDataDir = `${import.meta.dirname}/../data`;
 
-const unitMap = await readJSON<Record<string, unknown>>(`${import.meta.dirname}/../data/unitMap.json`);
-const unitDefIds = new Set(Object.keys(unitMap).map((k) => k.toUpperCase()));
+// `let` rather than `const`: this state is module private (every reader below goes through a
+// function that reads it at call time), so a refresh can simply reassign it. Exported bindings
+// elsewhere have to be mutated in place instead.
+let file = await readJSON<DatacronFile>(`${datacronDataDir}/datacrons.json`);
+let setsById = new Map(file.sets.map((s) => [s.setId, s]));
+
+let unitMap = await readJSON<Record<string, unknown>>(`${datacronDataDir}/unitMap.json`);
+let unitDefIds = new Set(Object.keys(unitMap).map((k) => k.toUpperCase()));
+
+export const DATACRON_DATA_FILES: string[] = [`${datacronDataDir}/datacrons.json`, `${datacronDataDir}/unitMap.json`];
+
+/**
+ * Re-read the datacron structure and unit map. Both files are read before either is applied, so a
+ * parse failure leaves the previous data in place.
+ *
+ * `dir` is injectable for tests only.
+ */
+export async function refreshDatacronData(dir: string = datacronDataDir): Promise<RefreshCount[]> {
+    const [freshFile, freshUnitMap] = await Promise.all([
+        readJSON<DatacronFile>(`${dir}/datacrons.json`),
+        readJSON<Record<string, unknown>>(`${dir}/unitMap.json`),
+    ]);
+
+    // --- apply phase: synchronous, no await below this line ---
+    file = freshFile;
+    setsById = new Map(freshFile.sets.map((s) => [s.setId, s]));
+    unitMap = freshUnitMap;
+    unitDefIds = new Set(Object.keys(freshUnitMap).map((k) => k.toUpperCase()));
+
+    return [
+        { label: "datacronSets", total: file.sets.length, noun: "sets" },
+        { label: "datacronUnitMap", total: unitDefIds.size, noun: "keys" },
+    ];
+}
 
 // A datacron affix targetRule is `target_datacron_<suffix>`. Most suffixes are a unit defId or a
 // faction/role/alignment category; these are the ones whose suffix does not match either directly.

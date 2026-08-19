@@ -24,7 +24,7 @@ const FORCE_GAMEDATA = process.argv.includes("--force-gamedata") || false;
 const SKIP_MODS = process.argv.includes("--skip-mods") || false;
 
 // databaseCleanup deletes old player stats/guilds/rosters, so it's opt-in rather than opt-out: a
-// manual run must never quietly destroy data. The scheduled run passes this (dataUpdater.config.cjs).
+// manual run must never quietly destroy data. The scheduled crontab line passes this explicitly.
 const RUN_CLEANUP = process.argv.includes("--cleanup") || false;
 
 // Parse a numeric `--flag value` CLI override, falling back to a default when absent or unparseable.
@@ -2395,7 +2395,7 @@ Options:
                         dominate the cycle's runtime; nothing else depends on them.
   --cleanup             Run the database cleanup (deletes old player stats, guilds and empty
                         rosters). Off by default so a manual run never destroys data; the
-                        scheduled run passes it via dataUpdater.config.cjs.
+                        scheduled crontab line passes it explicitly.
   --max-concurrent N    Max in-flight player fetches queued to the worker pool (default 80).
   --mod-threads N       Player-fetch worker threads (default min(cpuCount, ${MOD_FETCH_CONCURRENCY_CAP}); here ${defaultThreads}).
   --mod-tasks N         Concurrent tasks per worker thread (default 1).

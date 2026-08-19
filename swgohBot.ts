@@ -9,11 +9,11 @@ import arenaPlayerRegistry from "./modules/arenaPlayerRegistry.ts";
 import cache from "./modules/cache.ts";
 import commandStats from "./modules/commandStats.ts";
 import database from "./modules/database.ts";
+import { defaultSources, startDataRefresh, stopDataRefresh } from "./modules/dataRefresh.ts";
 import eventFuncs from "./modules/eventFuncs.ts";
 import { reloadLanguages } from "./modules/functions.ts";
 import logger from "./modules/Logger.ts";
 import patreonFuncs from "./modules/patreonFuncs.ts";
-import swgohAPI from "./modules/swapi.ts";
 import userReg from "./modules/users.ts";
 
 const client = new Client({
@@ -83,8 +83,8 @@ async function gracefulShutdown(signal: string): Promise<void> {
         // Clean up intervals from clientReady
         cleanupIntervals();
 
-        // Clean up SWAPI reload interval
-        swgohAPI.cleanup();
+        // Clean up the data refresh interval
+        stopDataRefresh();
 
         // Flush any pending command stats
         await commandStats.shutdown();
@@ -133,16 +133,12 @@ const init = async () => {
     userReg.init(cache);
     arenaPlayerRegistry.init(cache);
 
-    if (env.SWAPI_CLIENT_URL) {
-        // Load up the api connector/ helpers
-        try {
-            swgohAPI.init();
-        } catch (err) {
-            logger.error(`Failed to initialize swgohAPI: ${err instanceof Error ? err.message : String(err)}`);
-        }
-    } else {
+    if (!env.SWAPI_CLIENT_URL) {
         logger.error("Failed to load swapi: No swapiConfig found");
     }
+
+    // Pick up dataUpdater's nightly rewrites of data/*.json without a restart.
+    startDataRefresh(defaultSources());
 
     // Initialize patreon functions
     patreonFuncs.init(client);

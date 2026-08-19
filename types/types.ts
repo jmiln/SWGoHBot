@@ -365,3 +365,24 @@ export interface PatreonAPIUser {
         };
     };
 }
+
+/**
+ * One dataset's worth of change accounting from a refresh, used only to build the log line.
+ * `added`/`removed`/`updated` are set by merge-based refreshes; `noun` labels the unit for
+ * wholesale replacements ("keys", "entries", "sets").
+ */
+export interface RefreshCount {
+    label: string;
+    total: number;
+    noun?: string;
+    added?: number;
+    removed?: number;
+    updated?: number;
+}
+
+/** A module that owns data files and can reload them in place. */
+export interface RefreshSource {
+    name: string;
+    files: string[];
+    refresh: () => Promise<RefreshCount[]>;
+}

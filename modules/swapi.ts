@@ -3,7 +3,6 @@ import { Worker } from "node:worker_threads";
 import type ComlinkStub from "@swgoh-utils/comlink";
 import { eachLimit } from "async";
 import { env } from "../config/config.ts";
-import constants from "../data/constants/constants.ts";
 import { PRIORITY, type Priority } from "../data/constants/swapiServe.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
@@ -33,7 +32,7 @@ import type {
     SWAPIWorkerGuildLog,
     SWAPIWorkerOutput,
 } from "../types/swapi_types.ts";
-import type { PlayerArenaRes, PlayerCooldown } from "../types/types.ts";
+import type { PlayerArenaRes, PlayerCooldown, RefreshCount } from "../types/types.ts";
 import logger from "./Logger.ts";
 import { withStub } from "./swapiQueue.ts";
 
@@ -91,6 +90,35 @@ interface ModMapEntry {
 let modMap = await readJSON<Record<string, ModMapEntry>>(`${import.meta.dirname}/../data/modMap.json`);
 let unitMap = await readJSON<Record<string, UnitMapEntry>>(`${import.meta.dirname}/../data/unitMap.json`);
 let skillMap = await readJSON<Record<string, SkillMapEntry>>(`${import.meta.dirname}/../data/skillMap.json`);
+
+const swapiDataDir = `${import.meta.dirname}/../data`;
+
+export const SWAPI_DATA_FILES: string[] = [`${swapiDataDir}/modMap.json`, `${swapiDataDir}/unitMap.json`, `${swapiDataDir}/skillMap.json`];
+
+/**
+ * Re-read the three API map files. Previously driven by this module's own 6 minute interval; now
+ * called by modules/dataRefresh.ts so there is a single refresh cadence.
+ *
+ * `dir` is injectable for tests only.
+ */
+export async function refreshMapFiles(dir: string = swapiDataDir): Promise<RefreshCount[]> {
+    const [modMapData, unitMapData, skillMapData] = await Promise.all([
+        readJSON<Record<string, ModMapEntry>>(`${dir}/modMap.json`),
+        readJSON<Record<string, UnitMapEntry>>(`${dir}/unitMap.json`),
+        readJSON<Record<string, SkillMapEntry>>(`${dir}/skillMap.json`),
+    ]);
+
+    // --- apply phase: synchronous, no await below this line ---
+    modMap = modMapData;
+    unitMap = unitMapData;
+    skillMap = skillMapData;
+
+    return [
+        { label: "modMap", total: Object.keys(modMap).length, noun: "keys" },
+        { label: "unitMap", total: Object.keys(unitMap).length, noun: "keys" },
+        { label: "skillMap", total: Object.keys(skillMap).length, noun: "keys" },
+    ];
+}
 
 // const statLang = { "0": "None", "1": "Health", "2": "Strength", "3": "Agility", "4": "Tactics", "5": "Speed", "6": "Physical Damage", "7": "Special Damage", "8": "Armor", "9": "Resistance", "10": "Armor Penetration", "11": "Resistance Penetration", "12": "Dodge Chance", "13": "Deflection Chance", "14": "Physical Critical Chance", "15": "Special Critical Chance", "16": "Critical Damage", "17": "Potency", "18": "Tenacity", "19": "Dodge", "20": "Deflection", "21": "Physical Critical Chance", "22": "Special Critical Chance", "23": "Armor", "24": "Resistance", "25": "Armor Penetration", "26": "Resistance Penetration", "27": "Health Steal", "28": "Protection", "29": "Protection Ignore", "30": "Health Regeneration", "31": "Physical Damage", "32": "Special Damage", "33": "Physical Accuracy", "34": "Special Accuracy", "35": "Physical Critical Avoidance", "36": "Special Critical Avoidance", "37": "Physical Accuracy", "38": "Special Accuracy", "39": "Physical Critical Avoidance", "40": "Special Critical Avoidance", "41": "Offense", "42": "Defense", "43": "Defense Penetration", "44": "Evasion", "45": "Critical Chance", "46": "Accuracy", "47": "Critical Avoidance", "48": "Offense", "49": "Defense", "50": "Defense Penetration", "51": "Evasion", "52": "Accuracy", "53": "Critical Chance", "54": "Critical Avoidance", "55": "Health", "56": "Protection", "57": "Speed", "58": "Counter Attack", "59": "UnitStat_Taunt", "61": "Mastery" };
 
@@ -243,49 +271,12 @@ const WORKER_TIMEOUT_MS = 60_000;
 
 class SWAPI {
     private specialAbilityList: SWAPIUnitAbility[] | null = null;
-    private reloadIntervalId: NodeJS.Timeout | null = null;
 
     // Set the max cooldowns (In minutes)
     private readonly playerMinCooldown = 1; // 1 min
     private readonly playerMaxCooldown = 3 * 60; // 3 hours
     private readonly guildMinCooldown = 1; // 1 min
     private readonly guildMaxCooldown = 6 * 60; // 6 hours
-
-    /**
-     * Initialize the SWAPI module
-     */
-    init(): void {
-        // Reload the api map files every 6 minutes
-        this.reloadIntervalId = setInterval(async () => {
-            try {
-                const [modMapData, unitMapData, skillMapData] = await Promise.all([
-                    readJSON<Record<string, ModMapEntry>>(`${import.meta.dirname}/../data/modMap.json`),
-                    readJSON<Record<string, UnitMapEntry>>(`${import.meta.dirname}/../data/unitMap.json`),
-                    readJSON<Record<string, SkillMapEntry>>(`${import.meta.dirname}/../data/skillMap.json`),
-                ]);
-
-                modMap = modMapData;
-                unitMap = unitMapData;
-                skillMap = skillMapData;
-
-                // logger.log("[SWAPI] Reloaded API map files");
-            } catch (err) {
-                const message = err instanceof Error ? err.message : String(err);
-                logger.error(`[SWAPI] Failed to reload map files: ${message}`);
-            }
-        }, 6 * constants.minMS); // 6 minutes
-    }
-
-    /**
-     * Cleanup resources for graceful shutdown
-     */
-    cleanup(): void {
-        if (this.reloadIntervalId) {
-            clearInterval(this.reloadIntervalId);
-            this.reloadIntervalId = null;
-            logger.log("[SWAPI] Cleanup: cleared reload interval");
-        }
-    }
 
     // Grab the abilities that have Zeta / Omicron levels for future reference
     private async getSpecialAbilities(): Promise<SWAPIUnitAbility[]> {
