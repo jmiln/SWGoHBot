@@ -1,4 +1,8 @@
 import assert from "node:assert";
+import { mkdtempSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { describe, it } from "node:test";
 import dataUpdater from "../../services/dataUpdater.ts";
 
@@ -18,6 +22,7 @@ const {
     resolveLocKey,
     buildUnitNamesMap,
     isModSampleUsable,
+    fetchExternalDataFile,
 } = dataUpdater;
 
 // ---------------------------------------------------------------------------
@@ -781,5 +786,81 @@ describe("buildUnitNamesMap", () => {
     it("omits locales that lack a name for the unit", () => {
         const map = buildUnitNamesMap(units, locales);
         assert.deepStrictEqual(map.HAN, { eng_us: "Han Solo" });
+    });
+});
+
+// ---------------------------------------------------------------------------
+// fetchExternalDataFile
+// ---------------------------------------------------------------------------
+
+describe("fetchExternalDataFile", () => {
+    const makeCacheDir = () => mkdtempSync(path.join(tmpdir(), "dataUpdater-external-"));
+    const payload = [{ campaignId: "C1" }];
+
+    it("fetches the file from the Kidori78 repo and returns the parsed body", async (t) => {
+        const fetchMock = t.mock.method(globalThis, "fetch", async () => new Response(JSON.stringify(payload)));
+
+        const result = await fetchExternalDataFile("campaignMapNames.json", makeCacheDir());
+
+        assert.deepStrictEqual(result, payload);
+        assert.strictEqual(
+            fetchMock.mock.calls[0].arguments[0],
+            "https://raw.githubusercontent.com/Kidori78/swgoh-json-files/main/campaignMapNames.json",
+        );
+    });
+
+    it("writes the fetched body to the cache dir so a later run can fall back to it", async (t) => {
+        t.mock.method(globalThis, "fetch", async () => new Response(JSON.stringify(payload)));
+        const cacheDir = makeCacheDir();
+
+        await fetchExternalDataFile("campaignMapNames.json", cacheDir);
+
+        const cached = JSON.parse(await readFile(path.join(cacheDir, "campaignMapNames.json"), "utf-8"));
+        assert.deepStrictEqual(cached, payload);
+    });
+
+    it("falls back to the cached copy when the fetch rejects", async (t) => {
+        t.mock.method(globalThis, "fetch", async () => {
+            throw new Error("ENOTFOUND");
+        });
+        const cacheDir = makeCacheDir();
+        await writeFile(path.join(cacheDir, "campaignMapNodes.json"), JSON.stringify([{ campaignId: "CACHED" }]));
+
+        const result = await fetchExternalDataFile("campaignMapNodes.json", cacheDir);
+
+        assert.deepStrictEqual(result, [{ campaignId: "CACHED" }]);
+    });
+
+    it("falls back to the cached copy on a non-ok response", async (t) => {
+        t.mock.method(globalThis, "fetch", async () => new Response("not found", { status: 404 }));
+        const cacheDir = makeCacheDir();
+        await writeFile(path.join(cacheDir, "featureStoreList.json"), JSON.stringify([{ id: "CACHED" }]));
+
+        const result = await fetchExternalDataFile("featureStoreList.json", cacheDir);
+
+        assert.deepStrictEqual(result, [{ id: "CACHED" }]);
+    });
+
+    it("leaves the cached copy intact when the response body is not valid JSON", async (t) => {
+        t.mock.method(globalThis, "fetch", async () => new Response("<html>rate limited</html>"));
+        const cacheDir = makeCacheDir();
+        const cachePath = path.join(cacheDir, "featureStoreList.json");
+        await writeFile(cachePath, JSON.stringify([{ id: "CACHED" }]));
+
+        const result = await fetchExternalDataFile("featureStoreList.json", cacheDir);
+
+        assert.deepStrictEqual(result, [{ id: "CACHED" }]);
+        assert.deepStrictEqual(JSON.parse(await readFile(cachePath, "utf-8")), [{ id: "CACHED" }]);
+    });
+
+    it("throws naming both the url and the cache path when there is no cached copy", async (t) => {
+        t.mock.method(globalThis, "fetch", async () => new Response("nope", { status: 500 }));
+        const cacheDir = makeCacheDir();
+
+        await assert.rejects(fetchExternalDataFile("campaignMapNames.json", cacheDir), (error: Error) => {
+            assert.match(error.message, /raw\.githubusercontent\.com\/Kidori78\/swgoh-json-files\/main\/campaignMapNames\.json/);
+            assert.match(error.message, new RegExp(path.join(cacheDir, "campaignMapNames.json").replace(/[/\\]/g, "\\$&")));
+            return true;
+        });
     });
 });

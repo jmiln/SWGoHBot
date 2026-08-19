@@ -1,4 +1,4 @@
-import { readdir, unlink, writeFile } from "node:fs/promises";
+import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import { availableParallelism } from "node:os";
 import path from "node:path";
 import { inspect } from "node:util";
@@ -154,6 +154,12 @@ const DATACRON_FILE_PATH = path.join(DATA_DIR_PATH, "datacrons.json");
 const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
 const UNIT_CHECKLIST_FILE_PATH = path.join(DATA_DIR_PATH, "unitChecklist.json");
 const HELP_JSON_PATH = path.join(DATA_DIR_PATH, "help.json");
+
+// Campaign/store data maintained by hand outside the game API, fetched fresh each run. The local
+// directory is a fallback cache for a GitHub outage, not a checkout to keep in sync.
+const EXTERNAL_DATA_BASE_URL = "https://raw.githubusercontent.com/Kidori78/swgoh-json-files/main";
+const EXTERNAL_DATA_DIR_PATH = path.join(DATA_DIR_PATH, "swgoh-json-files");
+const EXTERNAL_DATA_TIMEOUT_MS = 30000;
 
 // The metadata keys we actually care about
 const META_KEYS: (keyof Metadata)[] = ["assetVersion", "latestGamedataVersion", "latestLocalizationBundleVersion"];
@@ -441,6 +447,47 @@ async function saveFile(filePath: string, jsonData: [] | object, doPretty = true
     } catch (error) {
         logError("dataUpdater/saveFile", `Failed to save file ${filePath}:`, error);
         throw error;
+    }
+}
+
+/**
+ * Fetch one of the Kidori78/swgoh-json-files blobs, keeping the fetched copy on disk as a fallback.
+ *
+ * These files are maintained outside the game API and used to be a git submodule, which meant a
+ * checkout silently went stale until someone remembered to pull it. Fetching on each run keeps them
+ * current; the on-disk copy only covers a GitHub outage, so a transient failure can't blank out the
+ * location data derived from them.
+ *
+ * @param fileName File name in the repo root, e.g. `campaignMapNames.json`
+ * @param cacheDirPath Directory holding the last-good copies (overridable for tests)
+ */
+export async function fetchExternalDataFile<T>(fileName: string, cacheDirPath: string = EXTERNAL_DATA_DIR_PATH): Promise<T> {
+    const url = `${EXTERNAL_DATA_BASE_URL}/${fileName}`;
+    const cachePath = path.join(cacheDirPath, fileName);
+
+    let fetchErrInfo: string;
+    try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(EXTERNAL_DATA_TIMEOUT_MS) });
+        if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        const parsed = (await response.json()) as T;
+
+        // Only refresh the fallback once the body has parsed, so a broken response can't overwrite
+        // a good copy.
+        await mkdir(cacheDirPath, { recursive: true });
+        await saveFile(cachePath, parsed as object);
+        debugLog(`Fetched ${fileName} from ${EXTERNAL_DATA_BASE_URL}`);
+        return parsed;
+    } catch (error) {
+        fetchErrInfo = error instanceof Error ? error.message : String(error);
+        logger.warn(`[fetchExternalDataFile] Failed to fetch ${url} (${fetchErrInfo}), falling back to cached copy at ${cachePath}`);
+    }
+
+    try {
+        return await readJSON<T>(cachePath);
+    } catch (error) {
+        throw new Error(
+            `Could not load ${fileName}: fetching ${url} failed (${fetchErrInfo}) and no usable cached copy at ${cachePath} (${fsErrInfo(error)})`,
+        );
     }
 }
 
@@ -844,9 +891,9 @@ async function updateLocs(
     await cache.putMany(env.MONGODB_SWAPI_DB, "locations", bulkLocPut);
 
     const [campaignMapNames, campaignMapNodes, featureStoreList] = await Promise.all([
-        readJSON<CampaignMapNames[]>(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNames.json")).then((data) => data[0]),
-        readJSON<CampaignMapNodes[]>(path.join(DATA_DIR_PATH, "swgoh-json-files/campaignMapNodes.json")).then((data) => data[0]),
-        readJSON<FeatureStore[]>(path.join(DATA_DIR_PATH, "swgoh-json-files/featureStoreList.json")),
+        fetchExternalDataFile<CampaignMapNames[]>("campaignMapNames.json").then((data) => data[0]),
+        fetchExternalDataFile<CampaignMapNodes[]>("campaignMapNodes.json").then((data) => data[0]),
+        fetchExternalDataFile<FeatureStore[]>("featureStoreList.json"),
     ]);
 
     const outArr: { defId: string; locations: Location[] }[] = [];
@@ -2612,6 +2659,7 @@ export default {
 
     processModResults,
     isModSampleUsable,
+    fetchExternalDataFile,
 
     processJourneyReqs,
     saveRaidNames,
