@@ -20,6 +20,14 @@ let mongo: MongoClient | null = null;
 let isShuttingDown = false;
 
 const server = createServer(async (req: IncomingMessage, res: ServerResponse) => {
+    // Above the POST and bearer guards on purpose: this exists for the container healthcheck, which
+    // sends a plain GET and holds no secret.
+    if (req.method === "GET" && req.url === "/health") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ status: "ok" }));
+        return;
+    }
+
     if (req.method !== "POST") {
         res.writeHead(405, { "Content-Type": "application/json" });
         res.end(JSON.stringify({ error: "Method not allowed" }));

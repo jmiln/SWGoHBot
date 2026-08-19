@@ -1,0 +1,85 @@
+services:
+  bot:
+    image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
+    # `build:` is for local iteration only. Anything deployed is built and published by CI.
+    build: .
+    container_name: swgohbot
+    restart: unless-stopped
+    command: ["node", "swgohBotShard.ts"]
+    env_file: .env
+    environment:
+      # tini (Docker's bundled init) signals only its direct child by default, which would reach the
+      # ShardingManager but not the shards, since Shard.spawn forks them as separate processes. This
+      # is tini's documented env equivalent of -g: signal the whole process group, so every shard
+      # runs its own gracefulShutdown and flushes command stats, as pm2's treekill does today.
+      TINI_KILL_PROCESS_GROUP: "1"
+    init: true
+    # pm2 currently gives the shards 1600ms and most do not finish closing Mongo. 15s is generous.
+    stop_grace_period: 15s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - swgoh
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data:ro
+    # No healthcheck: the bot exposes no HTTP surface, and Docker cannot see whether a Discord
+    # gateway connection is live. A check that cannot fail correctly is worse than none.
+
+  eventserve:
+    image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
+    build: .
+    container_name: swgoh-eventserve
+    restart: unless-stopped
+    command: ["node", "services/eventServe.ts"]
+    env_file: .env
+    init: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:${EVENT_SERVER_PORT:-3700}:${EVENT_SERVER_PORT:-3700}"
+    networks:
+      - swgoh
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:'+(process.env.EVENT_SERVER_PORT||3700)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+
+  swapiserve:
+    image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
+    build: .
+    container_name: swgoh-swapiserve
+    restart: unless-stopped
+    command: ["node", "services/swapiServe/index.ts"]
+    env_file: .env
+    environment:
+      # Must listen on all of this container's interfaces to be reachable from the bot container.
+      # That is the container's own network namespace, not the host's: the published port below
+      # stays on loopback, and the control routes are guarded by SWAPI_SERVE_CONTROL_SECRET.
+      SWAPI_SERVE_HOST: "0.0.0.0"
+    init: true
+    # Past SHUTDOWN_GRACE_MS in services/swapiServe/index.ts, so the service finishes its own
+    # shutdown rather than being killed partway through it.
+    stop_grace_period: 15s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "127.0.0.1:${SWAPI_SERVE_PORT:-3800}:${SWAPI_SERVE_PORT:-3800}"
+    networks:
+      - swgoh
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:'+(process.env.SWAPI_SERVE_PORT||3800)+'/status').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+
+# Owned by the separate `fake-help` compose project, which runs comlink, nginx and swgoh-ae2.
+# That project must be up first; compose will neither create nor destroy this network.
+networks:
+  swgoh:
+    name: fake-help_default
+    external: true

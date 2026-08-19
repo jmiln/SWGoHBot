@@ -16,7 +16,9 @@
         "test": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/**/*.test.ts",
         "test:modules": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/modules/*.test.ts",
         "test:slash": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/slash/*.test.ts",
-        "test:services": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/services/*.test.ts"
+        "test:services": "LOG_LEVEL=silent node --test --test-global-setup ./test/setup/globalSetup.ts ./test/services/*.test.ts",
+        "changelog:draft": "scripts/changelog-draft.sh",
+        "version": "git add CHANGELOG.md"
     },
     "author": "Jeffrey Milner",
     "license": "MIT",

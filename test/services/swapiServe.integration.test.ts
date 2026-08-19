@@ -2,6 +2,7 @@ import assert from "node:assert";
 import { connect } from "node:net";
 import { after, describe, it } from "node:test";
 import { GOVERNOR, PRIORITY, SHED_REASON_HEADER, SHED_SHUTTING_DOWN } from "../../data/constants/swapiServe.ts";
+import logger from "../../modules/Logger.ts";
 import { parsePriorityPath, resolveDeadlineMs, startSwapiServe } from "../../services/swapiServe/index.ts";
 
 // The interval arenaTick runs on, mirrored from events/clientReady.ts where it is a local const.
@@ -397,5 +398,116 @@ describe("swapiServe control API", () => {
 
         const response = await fetch(`${service.url}/backend/${encodeURIComponent("http://nope.test")}/drain`, { method: "POST" });
         assert.strictEqual(response.status, 400);
+    });
+
+    it("rejects control calls with no or wrong bearer when a control secret is set", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, controlSecret: "s3cret" });
+        after(async () => {
+            await service.close();
+            await comlink.close();
+        });
+        const target = encodeURIComponent(comlink.url);
+
+        const noHeader = await fetch(`${service.url}/backend/${target}/drain`, { method: "POST" });
+        assert.strictEqual(noHeader.status, 401);
+
+        const wrong = await fetch(`${service.url}/backend/${target}/drain`, {
+            method: "POST",
+            headers: { authorization: "Bearer nope" },
+        });
+        assert.strictEqual(wrong.status, 401);
+
+        const status = (await (await fetch(`${service.url}/status`)).json()) as { backends: { drained: boolean }[] };
+        assert.strictEqual(status.backends[0].drained, false, "a rejected call must not have taken effect");
+    });
+
+    it("accepts control calls with the right bearer, and leaves /status open", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, controlSecret: "s3cret" });
+        after(async () => {
+            await service.close();
+            await comlink.close();
+        });
+
+        const ok = await fetch(`${service.url}/backend/${encodeURIComponent(comlink.url)}/drain`, {
+            method: "POST",
+            headers: { authorization: "Bearer s3cret" },
+        });
+        assert.strictEqual(ok.status, 200);
+
+        // /status carries no secret and must stay reachable: it is the diagnostic that tells a
+        // serving instance from a merely running one.
+        const statusRes = await fetch(`${service.url}/status`);
+        assert.strictEqual(statusRes.status, 200);
+        const status = (await statusRes.json()) as { backends: { drained: boolean }[] };
+        assert.strictEqual(status.backends[0].drained, true);
+    });
+
+    it("leaves the control routes open when no secret is configured", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS });
+        after(async () => {
+            await service.close();
+            await comlink.close();
+        });
+
+        const res = await fetch(`${service.url}/backend/${encodeURIComponent(comlink.url)}/drain`, { method: "POST" });
+        assert.strictEqual(res.status, 200, "unset secret must preserve today's behaviour");
+    });
+
+    it("warns at startup only when the control API is unauthenticated and not on loopback", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        const started: { close: () => Promise<void> }[] = [];
+        const warnings: string[] = [];
+        const originalWarn = logger.warn;
+        logger.warn = (content: unknown) => {
+            warnings.push(String(content));
+        };
+        // Registered before anything binds: a failed assertion below must not leave a listening
+        // server behind, or the test runner hangs instead of reporting the failure.
+        after(async () => {
+            logger.warn = originalWarn;
+            for (const service of started) await service.close();
+            await comlink.close();
+        });
+
+        // 127.0.0.2 stands in for a non-loopback bind: a different address from the default, which
+        // is what the warning keys on, without putting a port on the network.
+        started.push(await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, host: "127.0.0.2" }));
+        assert.ok(
+            warnings.some((line) => line.includes("SWAPI_SERVE_CONTROL_SECRET")),
+            `expected a warning naming the env var, got: ${warnings.join(" | ")}`,
+        );
+
+        warnings.length = 0;
+        started.push(
+            await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, host: "127.0.0.2", controlSecret: "s3cret" }),
+        );
+        assert.deepStrictEqual(warnings, [], "a secret set means no warning");
+
+        warnings.length = 0;
+        started.push(await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS }));
+        assert.deepStrictEqual(warnings, [], "loopback with no secret is the status quo, not a warning");
+    });
+});
+
+describe("swapiServe bind address", () => {
+    // 127.0.0.2 rather than a real interface address: all of 127.0.0.0/8 is loopback, so this
+    // proves the bind is honoured without ever putting a listening port on the network. Every
+    // other test in this file covers the default, which stays loopback.
+    it("binds the address it is given, and nothing else", async () => {
+        const comlink = await startFakeComlink(() => ({ status: 200 }));
+        const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, host: "127.0.0.2" });
+        after(async () => {
+            await service.close();
+            await comlink.close();
+        });
+
+        assert.strictEqual((await fetch(`${service.url}/status`)).status, 200);
+
+        // The default address must not answer too, or "bound to X" would not mean anything.
+        const port = new URL(service.url).port;
+        await assert.rejects(fetch(`http://127.0.0.1:${port}/status`), "a bind to 127.0.0.2 must not also answer on 127.0.0.1");
     });
 });

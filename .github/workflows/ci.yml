@@ -1,0 +1,164 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ['[0-9]+.[0-9]+.[0-9]+']
+  pull_request:
+    branches: [master]
+
+# Least privilege by default; only `publish` widens this.
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      # Starts a MongoDB testcontainer, so this is slower than a pure unit suite.
+      - run: npm test
+
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+
+      # load: true puts the image in the runner's local daemon so it can be `docker run`.
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          load: true
+          tags: swgohbot:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Node version matches engines
+        run: docker run --rm swgohbot:ci node --version | grep -q '^v26\.'
+
+      # The runtime reads these from data/; a broken .dockerignore would ship an image that boots
+      # and then fails on the first command.
+      - name: Runtime data files are present
+        run: docker run --rm swgohbot:ci sh -c 'test -s data/characters.json && test -s data/ships.json'
+
+      # These are read only by dataUpdater, which stays on the host, and must not be in the image.
+      - name: dataUpdater-only directories are absent
+        run: |
+          if docker run --rm swgohbot:ci sh -c 'test -e data/gameDataFiles -o -e data/swgoh-json-files'; then
+            echo "dataUpdater-only files leaked into the image" >&2
+            exit 1
+          fi
+
+      # No .env exists in the image or on the runner. Starting purely from environment variables is
+      # the property that makes this deployable at all, so it is asserted rather than assumed.
+      - name: swapiServe starts and serves from environment alone
+        run: |
+          docker run -d --name swapiserve-ci --network host \
+            -e SWAPI_SERVE_HOST=0.0.0.0 \
+            -e SWAPI_SERVE_PORT=3899 \
+            -e SWAPI_CLIENT_URL=http://localhost:9998 \
+            -e SWAPI_STATCALC_URL=http://localhost:9997 \
+            -e SWAPI_ACCESS_KEY=ci \
+            -e SWAPI_SECRET_KEY=ci \
+            -e MONGODB_URL=mongodb://localhost:27017 \
+            -e DISCORD_TOKEN=ci \
+            -e DISCORD_CLIENT_ID=0 \
+            -e DISCORD_OWNER_ID=0 \
+            swgohbot:ci node services/swapiServe/index.ts
+          for i in $(seq 1 30); do
+            if curl -fsS localhost:3899/status >/dev/null; then echo "serving"; exit 0; fi
+            sleep 2
+          done
+          echo "swapiServe never served /status" >&2
+          docker logs swapiserve-ci
+          exit 1
+
+      # The bind is the control API's only guard when no secret is set, so an exposed bind must say
+      # so. A silent start here would mean the warning has been lost.
+      - name: swapiServe warns when the control API is unauthenticated and exposed
+        run: docker logs swapiserve-ci 2>&1 | grep -q 'SWAPI_SERVE_CONTROL_SECRET'
+
+      # eventServe's init() connects to MongoDB before it listens, so it needs one to start.
+      - name: Start MongoDB for eventServe
+        run: docker run -d --name mongo-ci --network host mongo:8
+
+      - name: eventServe answers /health without a bearer
+        run: |
+          docker run -d --name eventserve-ci --network host \
+            -e MONGODB_URL=mongodb://localhost:27017 \
+            -e EVENT_SERVER_PORT=3799 \
+            -e EVENT_SERVER_SECRET=ci-secret \
+            -e SWAPI_CLIENT_URL=http://localhost:9998 \
+            -e SWAPI_STATCALC_URL=http://localhost:9997 \
+            -e SWAPI_ACCESS_KEY=ci \
+            -e SWAPI_SECRET_KEY=ci \
+            -e DISCORD_TOKEN=ci \
+            -e DISCORD_CLIENT_ID=0 \
+            -e DISCORD_OWNER_ID=0 \
+            swgohbot:ci node services/eventServe.ts
+          for i in $(seq 1 30); do
+            if curl -fsS localhost:3799/health | grep -q '"status":"ok"'; then echo "healthy"; exit 0; fi
+            sleep 2
+          done
+          echo "eventServe never answered /health" >&2
+          docker logs eventserve-ci
+          exit 1
+
+      # /health must not require the bearer, or the compose healthcheck would need to carry it.
+      # EVENT_SERVER_SECRET is set above precisely so this proves the guards still apply elsewhere.
+      - name: eventServe still rejects unauthenticated POSTs
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST localhost:3799/checkEvents)
+          test "$code" = "401" || { echo "expected 401, got $code" >&2; exit 1; }
+
+      - name: Container logs on failure
+        if: failure()
+        run: |
+          docker logs swapiserve-ci || true
+          docker logs eventserve-ci || true
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [check, image]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/jmiln/swgohbot
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+
+      # Reuses the layers the image job just built, via the shared gha cache.
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha

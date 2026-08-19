@@ -1,0 +1,21 @@
+*
+!package.json
+!package-lock.json
+!swgohBot.ts
+!swgohBotShard.ts
+!base/
+!config/
+!data/
+!events/
+!handlers/
+!languages/
+!modules/
+!schemas/
+!services/
+!slash/
+!types/
+
+# Read only by services/dataUpdater.ts, which stays on the host: a git submodule and a download
+# cache respectively. Neither is touched by the bot, eventServe or swapiServe.
+data/swgoh-json-files/
+data/gameDataFiles/

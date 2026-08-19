@@ -5,6 +5,7 @@ import logger from "../../modules/Logger.ts";
 import { Dispatcher } from "./dispatcher.ts";
 
 const BAD_REQUEST = 400;
+const UNAUTHORIZED = 401;
 const INTERNAL_SERVER_ERROR = 500;
 const SERVICE_UNAVAILABLE = 503;
 const LOOPBACK = "127.0.0.1";
@@ -72,9 +73,13 @@ export interface RunningService {
 /**
  * Starts the queueing reverse proxy.
  *
- * Binds to loopback only. Unlike eventServe there is no bearer secret: ComlinkStub puts its HMAC
- * signature in the Authorization header, so a bearer token would collide with it. Every client
- * (bot shards, dataUpdater, counterUpdater) runs on this host by design.
+ * Binds to loopback by default; `host` overrides that for containers, where the bot reaches this
+ * service across a bridge network rather than from this host.
+ *
+ * The queue path carries no bearer secret: ComlinkStub puts its HMAC signature in the Authorization
+ * header, so a token would collide with it. The control routes are never ComlinkStub calls, so they
+ * can and do use that header - `controlSecret` guards them, and matters as soon as the bind is not
+ * loopback, since the bind is otherwise their only protection.
  */
 export async function startSwapiServe({
     port,
@@ -83,6 +88,8 @@ export async function startSwapiServe({
     secretKey,
     ratePerSecond,
     startLimit,
+    host,
+    controlSecret,
 }: {
     port: number;
     backends: string[];
@@ -92,6 +99,10 @@ export async function startSwapiServe({
     ratePerSecond?: number;
     /** Overrides the starting concurrency limit. Tests use it to force deterministic queueing. */
     startLimit?: number;
+    /** Bind address. Defaults to loopback; containers set 0.0.0.0. */
+    host?: string;
+    /** Guards the control routes. Unset leaves them open, which is safe only on loopback. */
+    controlSecret?: string;
 }): Promise<RunningService> {
     const dispatcher = new Dispatcher({ backends, accessKey, secretKey, ratePerSecond, startLimit });
     let isShuttingDown = false;
@@ -114,6 +125,14 @@ export async function startSwapiServe({
         // learned budget along with it.
         const control = CONTROL_PATH.exec(url);
         if (control) {
+            // Checked before the target is parsed, so an unauthorised caller learns nothing about
+            // which backends exist.
+            if (controlSecret && req.headers.authorization !== `Bearer ${controlSecret}`) {
+                res.writeHead(UNAUTHORIZED, JSON_HEADERS);
+                res.end(JSON.stringify({ message: "Unauthorized" }));
+                return;
+            }
+
             const target = decodeURIComponent(control[1]);
             const payload = req.method === "GET" ? null : await readBody(req);
             const applied = dispatcher.control(target, control[2], payload);
@@ -190,12 +209,19 @@ export async function startSwapiServe({
         });
     });
 
-    await new Promise<void>((resolve) => server.listen(port, LOOPBACK, resolve));
+    const boundHost = host ?? LOOPBACK;
+    await new Promise<void>((resolve) => server.listen(port, boundHost, resolve));
     const address = server.address();
     if (address === null || typeof address === "string") throw new Error("swapiServe failed to bind a port");
 
+    // Unset-and-loopback is the long-standing status quo. Unset-and-exposed is the combination that
+    // arrives silently the first time this runs in a container, so it says so out loud.
+    if (!controlSecret && boundHost !== LOOPBACK) {
+        logger.warn(`SwapiServe: control API is unauthenticated and bound to ${boundHost}. Set SWAPI_SERVE_CONTROL_SECRET.`);
+    }
+
     return {
-        url: `http://${LOOPBACK}:${address.port}`,
+        url: `http://${boundHost}:${address.port}`,
         close: async () => {
             isShuttingDown = true;
             // Settles everything queued, so no caller is left holding a response that never ends.
@@ -238,6 +264,8 @@ const entryPath = process.env.pm_exec_path ?? process.argv[1];
 if (entryPath?.endsWith("swapiServe/index.ts")) {
     startSwapiServe({
         port: env.SWAPI_SERVE_PORT,
+        host: env.SWAPI_SERVE_HOST,
+        controlSecret: env.SWAPI_SERVE_CONTROL_SECRET,
         backends: [env.SWAPI_CLIENT_URL],
         accessKey: env.SWAPI_ACCESS_KEY,
         secretKey: env.SWAPI_SECRET_KEY,

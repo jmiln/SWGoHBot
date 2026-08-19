@@ -3,7 +3,17 @@ import { z } from "zod";
 // Load environment variables from .env file (Node.js 20.6+)
 // Will load ".env" file if present.
 // If you want a specific file, use `node --env-file=.other-env <file>`
-process.loadEnvFile?.();
+//
+// The file is genuinely optional, so a missing one is not an error: containers get their config
+// from the environment (compose `env_file`/`environment`, docker `--env-file`), all of which set
+// variables without creating a file. loadEnvFile throws ENOENT rather than returning quietly, and
+// an unguarded call makes the image unable to start at all. Nothing is lost by ignoring it: the
+// schema below still fails loudly, and by name, if a required variable is missing either way.
+try {
+    process.loadEnvFile?.();
+} catch {
+    // No .env on disk; the environment is expected to carry the config.
+}
 
 // Helper for URL validation (Zod v4 deprecated .url() method)
 // Usage:
@@ -99,6 +109,15 @@ const envSchema = z.object({
     // to loopback instead and every client runs on this host.
     SWAPI_SERVE_URL: urlString({ default: "http://localhost:3800" }),
     SWAPI_SERVE_PORT: z.coerce.number().int().positive().default(3800),
+
+    // swapiServe binds loopback by default, which is its only access control. A container must set
+    // 0.0.0.0 to be reachable from the bot container, and should pair that with
+    // SWAPI_SERVE_CONTROL_SECRET (see services/swapiServe/index.ts).
+    SWAPI_SERVE_HOST: z.string().default("127.0.0.1"),
+
+    // Guards the /backend/<url>/drain|enable|set-limit control routes. Optional: unset leaves them
+    // open, which is safe only while the service is bound to loopback.
+    SWAPI_SERVE_CONTROL_SECRET: z.string().optional(),
 
     // Patreon V2 API Configuration (all optional)
     PATREON_API_URL: urlString({ default: "https://www.patreon.com/api/oauth2/v2" }),
