@@ -1381,7 +1381,7 @@ async function processGameData(gameData: GameData, locales: Locales) {
         validateGameData(gameData);
 
         debugTime("Finished processing Abilities");
-        const { abilitiesOut, skillMap } = processAbilities(gameData.ability, gameData.skill);
+        const { abilitiesOut, skillMap } = processAbilities(gameData.ability, gameData.skill, gameData.recipe);
         await saveFile(path.join(DATA_DIR_PATH, "skillMap.json"), skillMap, false);
         await processLocalization(abilitiesOut, "abilities", ["nameKey", "descKey", "abilityTiers"], "id", locales);
         debugTimeEnd("Finished processing Abilities");
@@ -1611,7 +1611,37 @@ async function saveRaidNames(locales: Locales) {
     return raidNamesOut;
 }
 
-function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: comlinkComponents["SkillDefinition"][]) {
+// Anything not listed here (ship materials, ability_mat_ULTIMATE) is kept under its own id.
+const ABILITY_COST_NAMES: Record<string, string> = {
+    GRIND: "Credits",
+    ability_mat_A: "AbilityMatMk1",
+    ability_mat_B: "AbilityMatMk2",
+    ability_mat_C: "AbilityMatMk3",
+    ability_mat_D: "AbilityMatOmega",
+    ability_mat_E: "AbilityMatZeta",
+    ability_mat_F: "AbilityMatOmicron",
+};
+
+// Total cost of taking one ability from untrained to its highest tier.
+function sumAbilityCost(tierList: string[], recipesById: Map<string, comlinkComponents["Recipe"]>): Record<string, number> {
+    const cost: Record<string, number> = {};
+    for (const tier of tierList) {
+        const recipe = recipesById.get(tier);
+        if (!recipe) continue;
+        for (const ingredient of recipe.ingredients ?? []) {
+            if (!ingredient.id) continue;
+            const key = ABILITY_COST_NAMES[ingredient.id] ?? ingredient.id;
+            cost[key] = (cost[key] ?? 0) + (ingredient.maxQuantity ?? 0);
+        }
+    }
+    return cost;
+}
+
+function processAbilities(
+    abilityIn: comlinkComponents["Ability"][],
+    skillIn: comlinkComponents["SkillDefinition"][],
+    recipeIn: comlinkComponents["Recipe"][] = [],
+) {
     const abilitiesOut = [] as ComlinkAbility[];
     const skillMap = {} as {
         [key: string]: {
@@ -1622,8 +1652,9 @@ function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: co
         };
     };
 
-    // Build lookup map for O(1) access
+    // Build lookup maps for O(1) access
     const skillsByAbilityRef = new Map(skillIn.map((skill) => [skill.abilityReference, skill]));
+    const recipesById = new Map(recipeIn.map((recipe) => [recipe.id ?? "", recipe]));
 
     // tierList: [
     //     'SKILLRECIPE_PASSIVE_T1',
@@ -1667,6 +1698,7 @@ function processAbilities(abilityIn: comlinkComponents["Ability"][], skillIn: co
             abilityTiers: abTiers,
             skillId: skill.id,
             tierList,
+            cost: sumAbilityCost(tierList, recipesById),
             isZeta,
             zetaTier,
             isOmicron,

@@ -62,7 +62,6 @@ interface ComlinkGuildResponse {
 }
 
 const THREAD_COUNT = os.cpus().length;
-const abilityCosts = await readJSON<Record<string, Record<string, number>>>(`${import.meta.dirname}/../data/abilityCosts.json`);
 
 // if (!config.backingServices.swapiClient || !config.credentials.swapi) {
 //     throw new Error("Missing SWAPI client config or credentials!");
@@ -981,16 +980,7 @@ class SWAPI {
             if (abTierCount && skill.abilityTiers[abTierCount - 1].includes(skill.abilityTiers[abTierCount - 2])) {
                 s.zetaDesc = skill.abilityTiers[abTierCount - 1].replace(skill.abilityTiers[abTierCount - 2], "").trim();
             }
-            if (skill.tierList.length) {
-                s.cost = {};
-                for (const tier of skill.tierList) {
-                    if (abilityCosts[tier]) {
-                        for (const key of Object.keys(abilityCosts[tier])) {
-                            s.cost[key] = s.cost[key] ? s.cost[key] + abilityCosts[tier][key] : abilityCosts[tier][key];
-                        }
-                    }
-                }
-            }
+            s.cost = skill.cost ?? {};
         }
 
         for (const tier of char.unitTierList) {

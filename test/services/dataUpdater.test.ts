@@ -298,6 +298,75 @@ describe("processAbilities", () => {
         const { abilitiesOut } = processAbilities([ability] as any, skills);
         assert.strictEqual(abilitiesOut[0].descKey, "ab1_TIER2_DESC");
     });
+
+    // Replaces data/abilityCosts.json, whose entries were running totals summed once per tier, so
+    // a skill with both a T6 and a T7 entry charged the T1-T6 materials twice.
+    describe("ability cost", () => {
+        const makeRecipe = (id: string, ingredients: [string, number][]) => ({
+            id,
+            ingredients: ingredients.map(([ingId, maxQuantity]) => ({ id: ingId, maxQuantity })),
+        });
+
+        it("charges each tier's recipe exactly once", () => {
+            const abilities = [makeAbility("ab1")] as any;
+            const skills = [makeSkill("ab1", ["SKILLRECIPE_PASSIVE_T1", "SKILLRECIPE_PASSIVE_T2"])] as any;
+            const recipes = [
+                makeRecipe("SKILLRECIPE_PASSIVE_T1", [["GRIND", 100], ["ability_mat_A", 2]]),
+                makeRecipe("SKILLRECIPE_PASSIVE_T2", [["GRIND", 200], ["ability_mat_A", 3]]),
+            ] as any;
+            const { abilitiesOut } = processAbilities(abilities, skills, recipes);
+            assert.deepStrictEqual(abilitiesOut[0].cost, { Credits: 300, AbilityMatMk1: 5 });
+        });
+
+        it("maps game ingredient ids to the names the character command displays", () => {
+            const abilities = [makeAbility("ab1")] as any;
+            const skills = [makeSkill("ab1", ["RECIPE_T1"])] as any;
+            const recipes = [
+                makeRecipe("RECIPE_T1", [
+                    ["GRIND", 1],
+                    ["ability_mat_A", 2],
+                    ["ability_mat_B", 3],
+                    ["ability_mat_C", 4],
+                    ["ability_mat_D", 5],
+                    ["ability_mat_E", 6],
+                    ["ability_mat_F", 7],
+                ]),
+            ] as any;
+            const { abilitiesOut } = processAbilities(abilities, skills, recipes);
+            assert.deepStrictEqual(abilitiesOut[0].cost, {
+                Credits: 1,
+                AbilityMatMk1: 2,
+                AbilityMatMk2: 3,
+                AbilityMatMk3: 4,
+                AbilityMatOmega: 5,
+                AbilityMatZeta: 6,
+                AbilityMatOmicron: 7,
+            });
+        });
+
+        it("keeps unmapped ingredients under their own id rather than dropping them", () => {
+            const abilities = [makeAbility("ab1")] as any;
+            const skills = [makeSkill("ab1", ["SHIPSKILLRECIPE_BASIC_T1"])] as any;
+            const recipes = [makeRecipe("SHIPSKILLRECIPE_BASIC_T1", [["shipability_mat_A", 4]])] as any;
+            const { abilitiesOut } = processAbilities(abilities, skills, recipes);
+            assert.deepStrictEqual(abilitiesOut[0].cost, { shipability_mat_A: 4 });
+        });
+
+        it("skips tiers with no matching recipe instead of failing", () => {
+            const abilities = [makeAbility("ab1")] as any;
+            const skills = [makeSkill("ab1", ["RECIPE_T1", "RECIPE_MISSING"])] as any;
+            const recipes = [makeRecipe("RECIPE_T1", [["ability_mat_A", 2]])] as any;
+            const { abilitiesOut } = processAbilities(abilities, skills, recipes);
+            assert.deepStrictEqual(abilitiesOut[0].cost, { AbilityMatMk1: 2 });
+        });
+
+        it("returns an empty cost when no recipes are supplied", () => {
+            const abilities = [makeAbility("ab1")] as any;
+            const skills = [makeSkill("ab1", ["RECIPE_T1"])] as any;
+            const { abilitiesOut } = processAbilities(abilities, skills);
+            assert.deepStrictEqual(abilitiesOut[0].cost, {});
+        });
+    });
 });
 
 // ---------------------------------------------------------------------------

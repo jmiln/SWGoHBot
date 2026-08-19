@@ -5,7 +5,6 @@ import type { BotUnit, JourneyName, JourneyReqs, OmicronCategories, RefreshCount
 const __dirname = new URL(".", import.meta.url).pathname;
 const dataDir = __dirname + "/../../data";
 
-export const abilityCosts = await readJSON(`${dataDir}/abilityCosts.json`);
 export const acronyms: Record<string, string> = await readJSON(`${dataDir}/acronyms.json`);
 export const arenaJumps: Record<string, number> = await readJSON(`${dataDir}/arenaJumps.json`);
 export const charLocs: UnitLocation[] = await readJSON(`${dataDir}/charLocations.json`);
@@ -16,13 +15,10 @@ export const charLocs: UnitLocation[] = await readJSON(`${dataDir}/charLocations
 // function, which is what every consumer does today, is always correct.
 export const characters: BotUnit[] = await readJSON(`${dataDir}/characters.json`);
 export const journeyReqs: JourneyReqs = await readJSON(`${dataDir}/journeyReqs.json`);
-export const missions = await readJSON(`${dataDir}/missions.json`);
 export const omicrons: OmicronCategories = await readJSON(`${dataDir}/omicrons.json`);
 export const raidNames: Record<string, Record<string, string>> = await readJSON(`${dataDir}/raidNames.json`);
-export const resources = await readJSON(`${dataDir}/resources.json`);
 export const shipLocs: UnitLocation[] = await readJSON(`${dataDir}/shipLocations.json`);
 export const ships: BotUnit[] = await readJSON(`${dataDir}/ships.json`);
-export const timezones = await readJSON(`${dataDir}/timezones.json`);
 
 // New build artifact from dataUpdater; may be absent before the first run, so default to an
 // empty map rather than crashing boot. resolveUnitName falls back to the defId in that case.
@@ -93,8 +89,8 @@ function mapUnitNames(units: BotUnit[], addGLSuffix = false) {
 }
 
 
-// The eight files dataUpdater rewrites. The other six loaded above (abilityCosts, acronyms,
-// arenaJumps, missions, resources, timezones) are static, so nothing watches or reloads them.
+// The eight files dataUpdater rewrites. The other two loaded above (acronyms, arenaJumps) are
+// hand-maintained, so nothing watches or reloads them.
 export const UNIT_DATA_FILES: string[] = [
     `${dataDir}/characters.json`,
     `${dataDir}/ships.json`,

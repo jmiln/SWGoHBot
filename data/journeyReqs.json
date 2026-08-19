@@ -2775,24 +2775,24 @@
                 "tier": 6
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "IG11",
+                "type": "RELIC",
+                "tier": 9
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "CARSONTEVA",
+                "type": "RELIC",
+                "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "RANGERZEB",
+                "type": "RELIC",
+                "tier": 7
             },
             {
-                "defId": "INVENTORY_CHARACTERS",
-                "type": "DESCRIPTION",
-                "tier": null
+                "defId": "BISHOP",
+                "type": "RELIC",
+                "tier": 7
             },
             {
                 "defId": "INVENTORY_CHARACTERS",

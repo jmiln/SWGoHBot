@@ -390,6 +390,8 @@ export interface ComlinkAbility {
     nameKey: string;
     skillId: string;
     tierList: string[];
+    /** Total materials to take the ability from untrained to max, keyed by material name. */
+    cost: Record<string, number>;
     type: string;
     isZeta: boolean;
     zetaTier: number | null;

@@ -2518,8 +2518,8 @@
         "locations": [
             {
                 "type": "Marquee",
-                "locId": "EVENT_MARQUEE_JAXXON_NAME",
-                "name": "Action Jaxxon"
+                "locId": "EVENT_MARQUEE_JAXXON_NAME_V2",
+                "name": "Action Jaxxon Special Marquee Event"
             }
         ]
     },
@@ -4908,6 +4908,10 @@
         "name": "Zeb Orrelios (New Republic Pilot)",
         "defId": "RANGERZEB",
         "locations": [
+            {
+                "type": "Cantina",
+                "locId": "CANTINA"
+            },
             {
                 "type": "Marquee",
                 "locId": "EVENT_MARQUEE_RANGERZEB_NAME",

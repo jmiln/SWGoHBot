@@ -1248,23 +1248,6 @@ export default class extends Language {
                 ]
             },
 
-            // Resources Command
-            COMMAND_RESOURCES_HEADER: "SWGoH Quellen",
-            COMMAND_RESOURCES_INVALID_CATEGORY: (list) => `Ungueltige Kategorie. Bitte waehle eine der folgenden aus: \`${list}\``,
-            COMMAND_RESOURCES_HELP: {
-                description: "Zeigt nuetzliche SWGoH-Quellen an.",
-                actions: [
-                    {
-                        action: "",
-                        actionDesc: "",
-                        usage: ";resources <Kategorie>",
-                        args: {
-                            "Kategorie": "Eine der verfuegbaren Kategorien (Bots, Game Changers, Websites)."
-                        }
-                    }
-                ]
-            },
-
             // Setconf Command
             COMMAND_SETCONF_MISSING_PERMS: "Entschuldige, aber entweder bist du kein Admin oder der Anfuehrer dieses Servers hat die Konfiguration nicht eingestellt.",
             COMMAND_SETCONF_MISSING_OPTION: "Du musst eine Konfig-Option auswaehlen zum aendern.",
