@@ -1,6 +1,7 @@
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
 import cache from "../../modules/cache.ts";
+import { factionNames } from "../../data/constants/units.ts";
 import Faction from "../../slash/faction.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
@@ -83,6 +84,35 @@ describe("Faction", () => {
         const embedData = embed.data || embed;
         assert.ok(embedData.author?.name?.includes("Sith"), "Expected Sith in author name");
         assert.ok(embedData.description?.includes("Darth Vader") || embedData.description?.includes("Count Dooku"), "Expected character name in description");
+    });
+
+    // The category the hand-maintained factionMap never had. Its absence there is what made the
+    // picker unable to offer anything the game added in years.
+    it("names a faction the old hardcoded map was missing", async () => {
+        setMockCacheData([{ baseId: "CHEWBACCALEGENDARY", nameKey: "Chewbacca" }]);
+
+        const interaction = createMockInteraction({ optionsData: { faction: "species_wookiee" } });
+        const command = new Faction();
+        await command.run(createCommandContext({ interaction }));
+
+        const embedData = (interaction as any)._getReplies()[0].embeds?.[0];
+        assert.ok(embedData.author?.name?.includes("Wookiee"), "Expected the resolved faction name in the author line");
+    });
+
+    it("names the faction in the requesting user's language", async () => {
+        // Read the expected name from the generated map rather than hardcoding it, so a retranslation
+        // upstream does not fail the suite. Asserted against the english name to stay meaningful.
+        const localized = factionNames.species_wookiee?.rus_ru;
+        assert.ok(localized && localized !== factionNames.species_wookiee?.eng_us, "fixture needs a distinct localized name");
+
+        setMockCacheData([{ baseId: "CHEWBACCALEGENDARY", nameKey: "Chewbacca" }]);
+
+        const interaction = createMockInteraction({ optionsData: { faction: "species_wookiee" } });
+        const command = new Faction();
+        await command.run(createCommandContext({ interaction, swgohLanguage: "rus_ru" as any }));
+
+        const embedData = (interaction as any)._getReplies()[0].embeds?.[0];
+        assert.ok(embedData.author?.name?.includes(localized), "Expected the localized faction name, not the english one");
     });
 
     it("should successfully process jedi faction selection", async () => {        setMockCacheData([

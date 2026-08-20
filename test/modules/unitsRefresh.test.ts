@@ -7,6 +7,9 @@ import {
     allUnitsList,
     characterNameList,
     characters,
+    factionChoicesFor,
+    factionNameOf,
+    factionNames,
     factions,
     journeyReqs,
     omicrons,
@@ -33,6 +36,7 @@ async function writeFixtures(chars: BotUnit[], shipList: BotUnit[], extra: Recor
         "omicrons.json": { testcat: [] },
         "raidNames.json": { testraid: { eng_us: "Test Raid" } },
         "unitNames.json": { TESTUNIT_A: { eng_us: "Test Unit A" } },
+        "factionNames.json": { testfaction: { eng_us: "Test Faction" } },
         ...extra,
     };
     for (const [name, contents] of Object.entries(files)) {
@@ -138,5 +142,76 @@ describe("refreshUnitData", () => {
         await refreshUnitData(dir);
 
         assert.deepEqual(Object.keys(unitNames), []);
+    });
+
+    it("tolerates factionNames.json being absent", async () => {
+        await writeFixtures([{ ...baseChar, uniqueName: "TESTUNIT_I", name: "I", factions: [] }], []);
+        await rm(path.join(dir, "factionNames.json"));
+
+        await refreshUnitData(dir);
+
+        assert.deepEqual(Object.keys(factionNames), []);
+        assert.deepEqual(factionChoicesFor("eng_us"), []);
+    });
+
+    it("applies fresh faction names and invalidates the cached choice lists", async () => {
+        await writeFixtures([{ ...baseChar, uniqueName: "TESTUNIT_J", name: "J", factions: [] }], [], {
+            "factionNames.json": { species_wookiee: { eng_us: "Wookiee" } },
+        });
+        await refreshUnitData(dir);
+        assert.deepEqual(
+            factionChoicesFor("eng_us").map((c) => c.name),
+            ["Wookiee"],
+        );
+
+        await writeFixtures([{ ...baseChar, uniqueName: "TESTUNIT_J", name: "J", factions: [] }], [], {
+            "factionNames.json": { species_wookiee: { eng_us: "Wookiee" }, profession_pirate: { eng_us: "Pirate" } },
+        });
+        await refreshUnitData(dir);
+
+        assert.deepEqual(
+            factionChoicesFor("eng_us").map((c) => c.name),
+            ["Pirate", "Wookiee"],
+            "a refresh must not be served a stale memoised list",
+        );
+    });
+});
+
+describe("factionNameOf", () => {
+    const map = { species_wookiee: { eng_us: "Wookiee", ger_de: "Wookiee-DE" }, profession_pirate: { eng_us: "Pirate" } };
+
+    it("returns the name for the requested language", () => {
+        assert.equal(factionNameOf("species_wookiee", "ger_de", map), "Wookiee-DE");
+    });
+
+    it("falls back to eng_us when the language has no name", () => {
+        assert.equal(factionNameOf("profession_pirate", "ger_de", map), "Pirate");
+    });
+
+    it("falls back to the raw id for an unknown category", () => {
+        assert.equal(factionNameOf("species_ghost", "eng_us", map), "species_ghost");
+    });
+});
+
+describe("factionChoicesFor", () => {
+    const map = {
+        species_wookiee: { eng_us: "Wookiee", ger_de: "Wookiee-DE" },
+        profession_pirate: { eng_us: "Pirate" },
+        role_attacker: { eng_us: "Attacker" },
+    };
+
+    it("returns id/name pairs sorted by name", () => {
+        assert.deepEqual(factionChoicesFor("eng_us", map), [
+            { name: "Attacker", value: "role_attacker" },
+            { name: "Pirate", value: "profession_pirate" },
+            { name: "Wookiee", value: "species_wookiee" },
+        ]);
+    });
+
+    it("uses the requested language, falling back per entry", () => {
+        assert.deepEqual(
+            factionChoicesFor("ger_de", map).map((c) => c.name),
+            ["Attacker", "Pirate", "Wookiee-DE"],
+        );
     });
 });

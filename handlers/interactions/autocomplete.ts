@@ -1,7 +1,6 @@
 import type { AutocompleteInteraction } from "discord.js";
 import type slashCommand from "../../base/slashCommand.ts";
-import { characterNameList, factions, journeyNames, shipNameList } from "../../data/constants/units.ts";
-import factionMap from "../../data/factionMap.ts";
+import { characterNameList, factionChoicesFor, factions, journeyNames, shipNameList } from "../../data/constants/units.ts";
 import { getCachedAllyCodeChoices, getCachedGuildAliases, getCachedUserLang } from "../../modules/autocompleteCache.ts";
 import logger from "../../modules/Logger.ts";
 import type { GuildAlias } from "../../types/types.ts";
@@ -12,6 +11,9 @@ import { logErr } from "./errors.ts";
 // "already been acknowledged" (DiscordAPIError 40060) mirrors the guard in chatInput.ts:
 // a shard replay / duplicate gateway delivery means the first handler already responded,
 // so the second respond is expected noise rather than a real failure.
+// Commands whose faction option is a category id fed to a db query, rather than a display name.
+const CATEGORY_ID_FACTION_COMMANDS = ["faction", "need"];
+
 const AUTOCOMPLETE_IGNORED_ERRORS = [
     "unknown interaction",
     "already been acknowledged",
@@ -138,14 +140,12 @@ export async function handleAutocomplete(interaction: AutocompleteInteraction, c
             // Process faction autocomplete
             const searchKey = focusedOption.value?.trim().toLowerCase() || "";
 
-            if (interaction.commandName === "faction") {
-                // Use factionMap for /faction command (needs database query values)
-                filtered = factionMap
-                    .filter((faction) => faction.name.toLowerCase().includes(searchKey))
-                    .map((faction) => ({
-                        name: faction.name,
-                        value: faction.value,
-                    }));
+            if (CATEGORY_ID_FACTION_COMMANDS.includes(interaction.commandName)) {
+                // These query the db by category id, so the value has to be the id rather than the
+                // display name. Resolving the language here rather than at the top keeps the hot
+                // unit-autocomplete path below free of the lookup.
+                const { swgohLanguage } = await getCachedUserLang(interaction.user.id);
+                filtered = factionChoicesFor(swgohLanguage).filter((faction) => faction.name.toLowerCase().includes(searchKey));
             } else {
                 // Use factions array for other commands (like grandarena)
                 filtered = factions

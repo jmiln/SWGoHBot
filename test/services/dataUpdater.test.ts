@@ -21,6 +21,7 @@ const {
     unitsToUnitFiles,
     resolveLocKey,
     buildUnitNamesMap,
+    buildFactionNamesMap,
     isModSampleUsable,
     fetchExternalDataFile,
 } = dataUpdater;
@@ -855,6 +856,56 @@ describe("buildUnitNamesMap", () => {
     it("omits locales that lack a name for the unit", () => {
         const map = buildUnitNamesMap(units, locales);
         assert.deepStrictEqual(map.HAN, { eng_us: "Han Solo" });
+    });
+});
+
+// ---------------------------------------------------------------------------
+// buildFactionNamesMap
+// ---------------------------------------------------------------------------
+
+describe("buildFactionNamesMap", () => {
+    const locales = {
+        eng_us: { CATEGORY_WOOKIEE_DESC: "Wookiee", CATEGORY_PIRATE_DESC: "Pirate", CATEGORY_GHOST_DESC: "Ghost" },
+        ger_de: { CATEGORY_WOOKIEE_DESC: "Wookiee" }, // Pirate deliberately missing in de
+    };
+    const catMap = [
+        { id: "species_wookiee", descKey: "CATEGORY_WOOKIEE_DESC" },
+        { id: "profession_pirate", descKey: "CATEGORY_PIRATE_DESC" },
+        { id: "species_ghost", descKey: "CATEGORY_GHOST_DESC" },
+    ];
+    const units = [
+        { baseId: "CHEWBACCA", categoryIdList: ["species_wookiee", "profession_pirate"] },
+        { baseId: "HONDO", categoryIdList: ["profession_pirate"] },
+    ];
+
+    it("maps each category id to its localized names", () => {
+        const map = buildFactionNamesMap(catMap, units, locales);
+        assert.deepStrictEqual(map.species_wookiee, { eng_us: "Wookiee", ger_de: "Wookiee" });
+    });
+
+    it("omits locales that lack a name for the category", () => {
+        const map = buildFactionNamesMap(catMap, units, locales);
+        assert.deepStrictEqual(map.profession_pirate, { eng_us: "Pirate" });
+    });
+
+    // A category no unit carries can only ever be offered in a picker that then finds nothing, so
+    // the generated list is scoped to what the units actually claim.
+    it("excludes categories no unit is tagged with", () => {
+        const map = buildFactionNamesMap(catMap, units, locales);
+        assert.ok(!("species_ghost" in map));
+    });
+
+    it("excludes categories with no localized name at all", () => {
+        const map = buildFactionNamesMap(
+            [{ id: "species_wookiee", descKey: "MISSING_KEY" }],
+            [{ baseId: "CHEWBACCA", categoryIdList: ["species_wookiee"] }],
+            locales,
+        );
+        assert.deepStrictEqual(map, {});
+    });
+
+    it("returns an empty map when there are no units", () => {
+        assert.deepStrictEqual(buildFactionNamesMap(catMap, [], locales), {});
     });
 });
 

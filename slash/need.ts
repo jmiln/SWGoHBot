@@ -1,8 +1,7 @@
 import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
-import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
-import factionMap from "../data/factionMap.ts";
+import { characters, charLocs, factionNameOf, factionNames, shipLocs, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode, msgArray, toProperCase } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
@@ -66,19 +65,11 @@ export default class Need extends Command {
                 type: ApplicationCommandOptionType.String,
                 choices: shopMap,
             },
-            // The faction tags listed as in game, but needed to be split up into multiple lists because of
-            // how many there are (Choices are limited to 20 choices...)
             {
-                name: "faction_group_1",
+                name: "faction",
                 description: "Which faction you want to check the progress on",
                 type: ApplicationCommandOptionType.String,
-                choices: factionMap.slice(0, 20),
-            },
-            {
-                name: "faction_group_2",
-                description: "Which faction you want to check the progress on",
-                type: ApplicationCommandOptionType.String,
-                choices: factionMap.slice(20, 40),
+                autocomplete: true,
             },
         ],
     };
@@ -96,12 +87,11 @@ export default class Need extends Command {
         }
 
         const battle = interaction.options.getString("battle");
-        const faction1 = interaction.options.getString("faction_group_1");
-        const faction2 = interaction.options.getString("faction_group_2");
+        const faction = interaction.options.getString("faction");
         const keyword = interaction.options.getString("keyword");
         const shop = interaction.options.getString("shop");
 
-        if (!battle && !faction1 && !faction2 && !keyword && !shop) {
+        if (!battle && !faction && !keyword && !shop) {
             return super.error(interaction, language.get("COMMAND_NEED_NO_LOCATION"));
         }
         await interaction.reply({ content: language.get("BASE_SWGOH_PLS_WAIT_FETCH") });
@@ -120,15 +110,10 @@ export default class Need extends Command {
         if (battle) {
             namesToSearch.push(battle);
         }
-        if (faction1) {
-            const factionUnits = await getFactionUnits(faction1);
+        if (faction) {
+            const factionUnits = await getFactionUnits(faction);
             units.push(...factionUnits);
-            namesToSearch.push(faction1);
-        }
-        if (faction2) {
-            const factionUnits = await getFactionUnits(faction2);
-            units.push(...factionUnits);
-            namesToSearch.push(faction2);
+            namesToSearch.push(faction);
         }
         if (shop) {
             namesToSearch.push(shop);
@@ -272,8 +257,8 @@ export default class Need extends Command {
                 if (!n) {
                     n = battleMap.find((k) => k.value === name)?.name;
                 }
-                if (!n) {
-                    n = factionMap.find((k) => k.value === name)?.name;
+                if (!n && factionNames[name]) {
+                    n = factionNameOf(name, swgohLanguage);
                 }
                 if (n) {
                     namesOut.push(n);

@@ -1,5 +1,4 @@
-import { unitNameOf } from "../data/constants/units.ts";
-import factionMap from "../data/factionMap.ts";
+import { factionNameOf, factionNames, unitNameOf } from "../data/constants/units.ts";
 import type { DatacronAbilityRef, DatacronAffix, DatacronAffixOption, DatacronFile, DatacronSetRef } from "../types/datacron_types.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { RefreshCount } from "../types/types.ts";
@@ -67,11 +66,10 @@ const TARGET_NAME_ALIASES: Record<string, string> = {
     mercenary: "Mercenary",
     ufu: "Unaligned Force User",
 };
-// factionMap value "affiliation_badbatch" -> keyed by both "badbatch" and "affiliationbadbatch".
-const factionNameBySuffix = new Map<string, string>();
-for (const f of factionMap) {
-    factionNameBySuffix.set(f.value.replace(/^[^_]+_/, ""), f.name);
-    factionNameBySuffix.set(f.value.replace(/_/g, ""), f.name);
+// A suffix matches category id "affiliation_badbatch" as either "badbatch" or "affiliationbadbatch".
+// Scanned per call rather than indexed at module scope, since factionNames is refreshed in place.
+function findFactionIdBySuffix(suffix: string): string | undefined {
+    return Object.keys(factionNames).find((id) => id.replace(/^[^_]+_/, "") === suffix || id.replace(/_/g, "") === suffix);
 }
 
 /**
@@ -86,8 +84,8 @@ export function resolveTargetName(targetRule: string | undefined, lang: SWAPILan
     const defId = TARGET_UNIT_ALIASES[suffix] ?? suffix.toUpperCase().replace(/-/g, "_");
     if (unitDefIds.has(defId)) return unitNameOf(defId, lang);
     if (TARGET_NAME_ALIASES[suffix]) return TARGET_NAME_ALIASES[suffix];
-    const faction = factionNameBySuffix.get(suffix);
-    if (faction) return faction;
+    const factionId = findFactionIdBySuffix(suffix);
+    if (factionId) return factionNameOf(factionId, lang);
     return suffix.replace(/[_-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 

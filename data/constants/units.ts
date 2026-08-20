@@ -26,6 +26,11 @@ export const unitNames: Record<string, Record<string, string>> = await readJSON<
     `${dataDir}/unitNames.json`,
 ).catch((): Record<string, Record<string, string>> => ({}));
 
+// Category id -> localized name, for the faction pickers. Same absent-file tolerance as unitNames.
+export const factionNames: Record<string, Record<string, string>> = await readJSON<Record<string, Record<string, string>>>(
+    `${dataDir}/factionNames.json`,
+).catch((): Record<string, Record<string, string>> => ({}));
+
 /**
  * Resolve a defId to a localized display name from a given map.
  * Fallback chain: requested lang -> eng_us -> the raw defId, so it never returns undefined.
@@ -39,6 +44,37 @@ export function resolveUnitName(map: Record<string, Record<string, string>>, def
 /** defId -> localized display name using the boot-loaded unitNames map. */
 export function unitNameOf(defId: string, lang: SWAPILang = "eng_us"): string {
     return resolveUnitName(unitNames, defId, lang);
+}
+
+/** Category id -> localized name, falling back to the requested lang -> eng_us -> the raw id. */
+export function factionNameOf(
+    id: string,
+    lang: SWAPILang = "eng_us",
+    map: Record<string, Record<string, string>> = factionNames,
+): string {
+    const byLang = map[id];
+    if (!byLang) return id;
+    return byLang[lang.toLowerCase()] ?? byLang.eng_us ?? id;
+}
+
+// One {name, value} list per language, built on first use rather than for all 14 up front, since a
+// picker only ever needs the caller's own language. Cleared by rebuildDerived().
+const factionChoiceCache = new Map<string, { name: string; value: string }[]>();
+
+/** The faction picker's choices in one language, sorted by name. */
+export function factionChoicesFor(
+    lang: SWAPILang = "eng_us",
+    map: Record<string, Record<string, string>> = factionNames,
+): { name: string; value: string }[] {
+    const useCache = map === factionNames;
+    const cached = useCache ? factionChoiceCache.get(lang) : undefined;
+    if (cached) return cached;
+
+    const choices = Object.keys(map)
+        .map((id) => ({ name: factionNameOf(id, lang, map), value: id }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    if (useCache) factionChoiceCache.set(lang, choices);
+    return choices;
 }
 
 function buildFactions(): string[] {
@@ -89,7 +125,7 @@ function mapUnitNames(units: BotUnit[], addGLSuffix = false) {
 }
 
 
-// The eight files dataUpdater rewrites. The other two loaded above (acronyms, arenaJumps) are
+// The nine files dataUpdater rewrites. The other two loaded above (acronyms, arenaJumps) are
 // hand-maintained, so nothing watches or reloads them.
 export const UNIT_DATA_FILES: string[] = [
     `${dataDir}/characters.json`,
@@ -100,6 +136,7 @@ export const UNIT_DATA_FILES: string[] = [
     `${dataDir}/omicrons.json`,
     `${dataDir}/raidNames.json`,
     `${dataDir}/unitNames.json`,
+    `${dataDir}/factionNames.json`,
 ];
 
 /** Swap an array's contents without replacing the array object importers hold. */
@@ -167,10 +204,11 @@ function rebuildDerived(): void {
     replaceArray(characterNameList, mapUnitNames(characters, true));
     replaceArray(shipNameList, mapUnitNames(ships));
     replaceArray(journeyNames, buildJourneyNames());
+    factionChoiceCache.clear();
 }
 
 /**
- * Re-read the eight live data files and apply them to the exported bindings.
+ * Re-read the nine live data files and apply them to the exported bindings.
  *
  * Reads and parses everything first: if any file fails, this throws and no state has been touched.
  * The apply phase below runs synchronously with no await, so no command handler can observe a
@@ -179,8 +217,17 @@ function rebuildDerived(): void {
  * `dir` is injectable for tests only; production always uses the module's own data directory.
  */
 export async function refreshUnitData(dir: string = dataDir): Promise<RefreshCount[]> {
-    const [freshChars, freshShips, freshCharLocs, freshShipLocs, freshJourneyReqs, freshOmicrons, freshRaidNames, freshUnitNames] =
-        await Promise.all([
+    const [
+        freshChars,
+        freshShips,
+        freshCharLocs,
+        freshShipLocs,
+        freshJourneyReqs,
+        freshOmicrons,
+        freshRaidNames,
+        freshUnitNames,
+        freshFactionNames,
+    ] = await Promise.all([
             readJSON<BotUnit[]>(`${dir}/characters.json`),
             readJSON<BotUnit[]>(`${dir}/ships.json`),
             readJSON<UnitLocation[]>(`${dir}/charLocations.json`),
@@ -190,6 +237,9 @@ export async function refreshUnitData(dir: string = dataDir): Promise<RefreshCou
             readJSON<Record<string, Record<string, string>>>(`${dir}/raidNames.json`),
             // Same fallback as the boot-time load: absent before dataUpdater's first run.
             readJSON<Record<string, Record<string, string>>>(`${dir}/unitNames.json`).catch(
+                (): Record<string, Record<string, string>> => ({}),
+            ),
+            readJSON<Record<string, Record<string, string>>>(`${dir}/factionNames.json`).catch(
                 (): Record<string, Record<string, string>> => ({}),
             ),
         ]);
@@ -203,6 +253,7 @@ export async function refreshUnitData(dir: string = dataDir): Promise<RefreshCou
     const omicronTotal = replaceRecord(omicrons, freshOmicrons);
     const raidTotal = replaceRecord(raidNames, freshRaidNames);
     const unitNameTotal = replaceRecord(unitNames, freshUnitNames);
+    const factionNameTotal = replaceRecord(factionNames, freshFactionNames);
     rebuildDerived();
 
     return [
@@ -214,5 +265,6 @@ export async function refreshUnitData(dir: string = dataDir): Promise<RefreshCou
         { label: "omicrons", total: omicronTotal, noun: "keys" },
         { label: "raidNames", total: raidTotal, noun: "keys" },
         { label: "unitNames", total: unitNameTotal, noun: "keys" },
+        { label: "factionNames", total: factionNameTotal, noun: "keys" },
     ];
 }

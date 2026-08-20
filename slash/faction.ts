@@ -2,8 +2,7 @@ import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextTyp
 import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import { characters } from "../data/constants/units.ts";
-import factionMap from "../data/factionMap.ts";
+import { characters, factionNameOf } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
 import { getAllyCode, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
@@ -76,7 +75,7 @@ export default class Faction extends Command {
             { categoryIdList: query, language: swgohLanguage.toLowerCase() },
             { _id: 0, baseId: 1, nameKey: 1 },
         );
-        const searchName = factionMap.find((f) => f.value === query)?.name ?? query;
+        const searchName = factionNameOf(query, swgohLanguage);
 
         // Filter out any ships that show up
         chars = chars.filter((c) => characters.find((char) => char.uniqueName === c.baseId));

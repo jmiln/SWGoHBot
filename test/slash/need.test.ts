@@ -38,6 +38,25 @@ describe("Need", () => {
         assertErrorReply(interaction, "COMMAND_NEED_NO_LOCATION");
     });
 
+    // The two capped faction_group_N options were replaced by one autocompleted `faction`, so the
+    // no-filter guard has to recognise it.
+    it("accepts the faction option as a filter", async () => {
+        const interaction = createMockInteraction({ optionsData: { allycode: "123456789", faction: "species_wookiee" } });
+        const ctx = createCommandContext({ interaction });
+        const command = new Need();
+        await command.run(ctx);
+
+        const replies = (interaction as any)._getReplies();
+        const descriptions = replies.map((r: any) => {
+            const embed = r.embeds?.[0];
+            return (embed?.data ?? embed)?.description ?? r.content ?? "";
+        });
+        assert.ok(
+            !descriptions.some((d: string) => d.includes("COMMAND_NEED_NO_LOCATION")),
+            `faction must count as a filter, not fall through to the no-location error. Got: ${descriptions.join(" | ")}`,
+        );
+    });
+
     it("should return error when no allycode is registered and none provided", async () => {
         const interaction = createMockInteraction({ optionsData: { battle: "Cantina" } });
         const ctx = createCommandContext({ interaction });

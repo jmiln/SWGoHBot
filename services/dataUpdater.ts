@@ -154,6 +154,7 @@ const DATACRON_FILE_PATH = path.join(DATA_DIR_PATH, "datacrons.json");
 const SHIP_LOCATIONS_FILE_PATH = path.join(DATA_DIR_PATH, "shipLocations.json");
 const UNIT_CHECKLIST_FILE_PATH = path.join(DATA_DIR_PATH, "unitChecklist.json");
 const HELP_JSON_PATH = path.join(DATA_DIR_PATH, "help.json");
+const FACTION_NAMES_FILE_PATH = path.join(DATA_DIR_PATH, "factionNames.json");
 
 // Campaign/store data maintained by hand outside the game API, fetched fresh each run. The local
 // directory is a fallback cache for a GitHub outage, not a checkout to keep in sync.
@@ -1460,6 +1461,9 @@ async function processGameData(gameData: GameData, locales: Locales) {
 
         const unitNamesOut = buildUnitNamesMap(processedUnitList, locales);
         await saveFile(path.join(DATA_DIR_PATH, "unitNames.json"), unitNamesOut);
+
+        const factionNamesOut = buildFactionNamesMap(catMapOut, processedUnitList, locales);
+        await saveFile(FACTION_NAMES_FILE_PATH, factionNamesOut);
         debugTimeEnd("Finished processing Units");
         logMem("after units processing");
 
@@ -1886,6 +1890,31 @@ function buildUnitNamesMap(
             if (name) byLang[lang] = name;
         }
         out[unit.baseId] = byLang;
+    }
+    return out;
+}
+
+/**
+ * Build the category id -> { lang: localized name } map written to data/factionNames.json.
+ * Scoped to categories at least one unit carries, so a picker can never offer a faction the
+ * unit lookup would then find nothing for.
+ */
+function buildFactionNamesMap(
+    catMap: { id: string; descKey: string }[],
+    units: { categoryIdList?: string[] }[],
+    locales: Record<string, Record<string, string>>,
+): Record<string, Record<string, string>> {
+    const usedCategories = new Set(units.flatMap((unit) => unit.categoryIdList ?? []));
+    const out: Record<string, Record<string, string>> = {};
+    const langs = Object.keys(locales);
+    for (const category of catMap) {
+        if (!usedCategories.has(category.id)) continue;
+        const byLang: Record<string, string> = {};
+        for (const lang of langs) {
+            const name = locales[lang]?.[category.descKey];
+            if (name) byLang[lang] = name;
+        }
+        if (Object.keys(byLang).length) out[category.id] = byLang;
     }
     return out;
 }
@@ -2688,6 +2717,7 @@ export default {
     unitsToUnitFiles,
     resolveLocKey,
     buildUnitNamesMap,
+    buildFactionNamesMap,
 
     processModResults,
     isModSampleUsable,

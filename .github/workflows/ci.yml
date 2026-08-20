@@ -51,7 +51,7 @@ jobs:
       # The runtime reads these from data/; a broken .dockerignore would ship an image that boots
       # and then fails on the first command.
       - name: Runtime data files are present
-        run: docker run --rm swgohbot:ci sh -c 'test -s data/characters.json && test -s data/ships.json'
+        run: docker run --rm swgohbot:ci sh -c 'test -s data/characters.json && test -s data/ships.json && test -s data/factionNames.json'
 
       # These are read only by dataUpdater, which stays on the host, and must not be in the image.
       - name: dataUpdater-only directories are absent
