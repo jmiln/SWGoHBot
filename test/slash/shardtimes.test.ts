@@ -112,6 +112,73 @@ describe("Shardtimes", () => {
             const embedData = embed.data || embed;
             assert.ok(embedData.fields?.length > 0, "Expected at least one field in embed");
         });
+
+        it("renders the rest of the table when a stored timezone is no longer a valid zone", async () => {
+            // Legacy rows predate `zoneType` and were validated by moment-timezone, which
+            // normalized names before lookup. Those forms throw in Temporal, and one bad
+            // row used to take down the whole view.
+            await setGuildShardTimes({
+                guildId: GUILD_ID,
+                stOut: [
+                    {
+                        channelId: CHANNEL_ID,
+                        times: {
+                            GoodPlayer: { type: "name", timezone: "America/New_York", zoneType: "zone", flag: "" },
+                            LegacyPlayer: { type: "name", timezone: "America_New_York", flag: "" } as any,
+                        },
+                    },
+                ],
+            });
+
+            const interaction = makeShardInteraction({ _subcommand: "view" });
+            const ctx = createCommandContext({ interaction });
+            const command = new Shardtimes();
+            await command.run(ctx);
+
+            const replies = (interaction as any)._getReplies();
+            const embedData = replies[replies.length - 1].embeds[0].data || replies[replies.length - 1].embeds[0];
+            const fields = embedData.fields as { name: string; value: string }[];
+
+            const goodField = fields.find((f) => f.value.includes("GoodPlayer"));
+            assert.ok(goodField, "Expected the valid entry to still be rendered");
+            assert.match(goodField.name, /^\d{2}:\d{2}$/, "Expected a real time for the valid entry");
+
+            const badField = fields.find((f) => f.value.includes("LegacyPlayer"));
+            assert.ok(badField, "Expected the invalid entry to be rendered too");
+            assert.strictEqual(badField.name, "??:??", "Expected the unusable entry to show a placeholder");
+        });
+
+        it("never reports a negative time until payout, whatever the local time is", async () => {
+            // Offsets -12..+14 span 26 hours, so at any given instant several of these
+            // zones are past their 18:00 payout and must roll over to tomorrow's.
+            const times: Record<string, any> = {};
+            for (let offset = -14; offset <= 12; offset++) {
+                // Etc/GMT signs are inverted: Etc/GMT+5 is UTC-5
+                times[`Player${offset + 14}`] = {
+                    type: "name",
+                    timezone: `Etc/GMT${offset >= 0 ? "+" : "-"}${Math.abs(offset)}`,
+                    zoneType: "zone",
+                    flag: "",
+                };
+            }
+            await setGuildShardTimes({ guildId: GUILD_ID, stOut: [{ channelId: CHANNEL_ID, times: times }] });
+
+            const interaction = makeShardInteraction({ _subcommand: "view" });
+            const ctx = createCommandContext({ interaction });
+            const command = new Shardtimes();
+            await command.run(ctx);
+
+            const replies = (interaction as any)._getReplies();
+            const embedData = replies[replies.length - 1].embeds[0].data || replies[replies.length - 1].embeds[0];
+            const fields = embedData.fields as { name: string; value: string }[];
+
+            for (const field of fields) {
+                assert.match(field.name, /^\d{2}:\d{2}$/, `Expected a positive hh:mm, got "${field.name}"`);
+                const [hour, minute] = field.name.split(":").map((n) => Number.parseInt(n, 10));
+                assert.ok(hour < 24, `Expected under a day until payout, got "${field.name}"`);
+                assert.ok(minute < 60, `Expected a valid minute, got "${field.name}"`);
+            }
+        });
     });
 
     describe("add subcommand", () => {

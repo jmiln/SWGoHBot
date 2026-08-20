@@ -15,6 +15,9 @@ import logger from "../modules/Logger.ts";
 import type { GuildConfigShardTimes } from "../types/guildConfig_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
+// Shown in place of a payout time when a stored entry can't be resolved
+const UNKNOWN_TIME = "??:??";
+
 export default class Shardtimes extends Command {
     static readonly metadata = {
         name: "shardtimes",
@@ -157,10 +160,11 @@ export default class Shardtimes extends Command {
         // Shard ID will be guild.id-channel.id
         if (!interaction.inCachedGuild() || !interaction.channel) return super.error(interaction, language.get("BASE_COMMAND_UNAVAILABLE"));
         // const shardID = `${interaction.guild?.id}-${interaction.channel?.id}`;
-        // Captured after the guard so the narrowed (non-null) channel id carries into the closures below
+        // Captured after the guard so the narrowed (non-null) channel/guild ids carry into the closures below
         const channelId = interaction.channel.id;
+        const guildId = interaction.guild.id;
 
-        const shardArr = await getGuildShardTimes({ guildId: interaction.guild.id });
+        const shardArr = await getGuildShardTimes({ guildId: guildId });
         const targetIndex = shardArr.findIndex((sh) => sh.channelId === channelId);
         const shardTimes = targetIndex > -1 ? JSON.parse(JSON.stringify(shardArr[targetIndex])) : { channelId: channelId, times: {} };
 
@@ -414,6 +418,7 @@ export default class Shardtimes extends Command {
                     shardTimes.times[user].timezone,
                     timeToAdd,
                     shardTimes.times[user]?.zoneType ? shardTimes.times[user].zoneType : "zone",
+                    user,
                 );
                 if (shardOut[diff]) {
                     shardOut[diff].push(user);
@@ -475,14 +480,22 @@ export default class Shardtimes extends Command {
             });
         }
 
-        function timeTil(zone: string | number, timeToAdd: number, type: string) {
+        function timeTil(zone: string | number, timeToAdd: number, type: string, user: string) {
             const nowTime = Date.now();
             const { hrMS, dayMS } = constants;
 
             let targetTime: number;
             if (type === "zone" && typeof zone === "string") {
+                // Stored rows are only validated when they're written, and the rules for that
+                // have changed over the years (moment-timezone, now Intl), so a row can hold a
+                // zone this bot can no longer resolve. Skip it rather than killing the table
+                if (!isValidZone(zone)) {
+                    logger.error(`[shardtimes view] Unusable timezone "${zone}" for ${user} in guild ${guildId}, channel ${channelId}`);
+                    return UNKNOWN_TIME;
+                }
                 const target = getStartOfDay(zone).getTime() + hrMS * timeToAdd;
-                targetTime = target + nowTime > target ? target : target + dayMS;
+                // If today's payout has already passed, grab tomorrow's
+                targetTime = target + (target < nowTime ? dayMS : 0);
             } else {
                 const target =
                     type === "hhmm" && typeof zone === "string" ? getUTCAtTime(zone) : getUTCFromOffset(zone as number) + hrMS * timeToAdd;
