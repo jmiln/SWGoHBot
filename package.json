@@ -48,7 +48,8 @@
         "@types/async": "^3.2.25",
         "@types/node": "^26.1.1",
         "discord-api-types": "^0.38.50",
-        "husky": "^9.1.7"
+        "husky": "^9.1.7",
+        "typescript": "^7.0.2"
     },
     "overrides": {
         "minimatch": "^10.2.2"
