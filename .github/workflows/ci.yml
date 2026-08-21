@@ -51,7 +51,17 @@ jobs:
       # The runtime reads these from data/; a broken .dockerignore would ship an image that boots
       # and then fails on the first command.
       - name: Runtime data files are present
-        run: docker run --rm swgohbot:ci sh -c 'test -s data/characters.json && test -s data/ships.json && test -s data/factionNames.json'
+        run: docker run --rm swgohbot:ci sh -c 'test -s data/characters.json && test -s data/ships.json && test -s data/factionNames.json && test -s /app/data-dist/characters.json'
+
+      # The regression test for the clone-free deploy: an empty bind mount must end up populated,
+      # because a bind mount never inherits image content the way a named volume does.
+      - name: Seeding populates an empty data directory
+        run: |
+          SEED_TMP=$(mktemp -d)
+          docker run --rm --user root -v "$SEED_TMP:/app/data" swgohbot:ci node scripts/seedData.ts
+          test -s "$SEED_TMP/characters.json"
+          test -s "$SEED_TMP/factionNames.json"
+          test -s "$SEED_TMP/acronyms.json"
 
       # These are read only by dataUpdater, which stays on the host, and must not be in the image.
       - name: dataUpdater-only directories are absent

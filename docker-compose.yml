@@ -1,4 +1,42 @@
 services:
+  # Runs to completion before the services below, copying any data/ file that is missing from the
+  # mount out of the image's pristine copy. A bind mount never inherits image content, so without
+  # this a host with no checkout mounts an empty directory over /app/data and the bot dies reading
+  # characters.json during module load.
+  dataseed:
+    image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
+    build: .
+    container_name: swgoh-dataseed
+    # root: a bind-mount directory Docker just created is owned by root, and the seed has to write
+    # into it and then hand it to the runtime uid.
+    user: root
+    restart: "no"
+    command: ["node", "scripts/seedData.ts"]
+    env_file: .env
+    environment:
+      DATA_UID: "${DATA_UID:-1000}"
+      DATA_GID: "${DATA_GID:-1000}"
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data
+
+  # Never started by `docker compose up` - `profiles:` keeps it out unless it is named explicitly.
+  # It exists so the host crontab can run the updater from the image instead of from a checkout:
+  #   0 4 * * * cd /srv/swgohbot && docker compose run --rm dataupdater >> <log> 2>&1
+  # Still run-once-and-exit, so the OS reclaims the cycle's large transient allocations between runs.
+  dataupdater:
+    image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
+    build: .
+    profiles: ["updater"]
+    restart: "no"
+    command: ["node", "services/dataUpdater.ts", "--cleanup"]
+    env_file: .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - swgoh
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data
+
   bot:
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
     # `build:` is for local iteration only. Anything deployed is built and published by CI.
@@ -20,6 +58,9 @@ services:
       - "host.docker.internal:host-gateway"
     networks:
       - swgoh
+    depends_on:
+      dataseed:
+        condition: service_completed_successfully
     volumes:
       - ${DATA_DIR:-./data}:/app/data:ro
     # No healthcheck: the bot exposes no HTTP surface, and Docker cannot see whether a Discord
@@ -39,6 +80,9 @@ services:
       - "127.0.0.1:${EVENT_SERVER_PORT:-3700}:${EVENT_SERVER_PORT:-3700}"
     networks:
       - swgoh
+    depends_on:
+      dataseed:
+        condition: service_completed_successfully
     volumes:
       - ${DATA_DIR:-./data}:/app/data:ro
     healthcheck:
@@ -69,6 +113,9 @@ services:
       - "127.0.0.1:${SWAPI_SERVE_PORT:-3800}:${SWAPI_SERVE_PORT:-3800}"
     networks:
       - swgoh
+    depends_on:
+      dataseed:
+        condition: service_completed_successfully
     volumes:
       - ${DATA_DIR:-./data}:/app/data:ro
     healthcheck:

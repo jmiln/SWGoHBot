@@ -13,6 +13,11 @@ RUN npm ci --omit=dev --ignore-scripts
 
 COPY . .
 
+# A bind mount at /app/data hides the image's own copy, so keep a pristine one at a sibling path for
+# scripts/seedData.ts to restore from. 1.7MB: the large dataUpdater caches are excluded by
+# .dockerignore.
+RUN cp -a /app/data /app/data-dist
+
 USER node
 
 # Overridden per service by compose. The bot is the sensible default for a bare `docker run`.

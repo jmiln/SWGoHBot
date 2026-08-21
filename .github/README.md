@@ -55,6 +55,9 @@ npm run deploy
 npm start
 ```
 
+Running from the published image needs no clone at all: see "Deploying without a checkout" in
+`docs/CONFIG.md`.
+
 ## Development Commands
 
 ```bash

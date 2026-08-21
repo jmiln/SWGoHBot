@@ -11,11 +11,12 @@
 !languages/
 !modules/
 !schemas/
+!scripts/
 !services/
 !slash/
 !types/
 
-# Read only by services/dataUpdater.ts, which stays on the host: a git submodule and a download
-# cache respectively. Neither is touched by the bot, eventServe or swapiServe.
+# Read only by services/dataUpdater.ts: a fetch cache for the Kidori78 files and a download cache
+# for gameData respectively. Neither is touched by the bot, eventServe or swapiServe.
 data/swgoh-json-files/
 data/gameDataFiles/
