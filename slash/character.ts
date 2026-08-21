@@ -7,14 +7,14 @@ import {
     expandSpaces,
     findChar,
     getAbilityType,
-    getBlankUnitImage,
     getSideColor,
     msgArray,
     msgArrayToFields,
-    toProperCase,
 } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { toProperCase } from "../modules/utils/text.ts";
+import { getBlankUnitImage } from "../modules/utils/unitImages.ts";
 import type { RawCharacter } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 

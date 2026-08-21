@@ -1,11 +1,30 @@
 import { Writable } from "node:stream";
-import { EmbedBuilder } from "discord.js";
+import { type Embed, EmbedBuilder, WebhookClient } from "discord.js";
 import pino, { type Logger as PinoInstance } from "pino";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import { sendWebhook, toProperCase } from "./functions.ts";
+import { toProperCase } from "./utils/text.ts";
 
 const MAX_THROTTLE_KEYS = 500;
+
+// These live here rather than in modules/functions.ts because this is their only consumer, and
+// importing them from there made Logger and functions.ts import each other.
+function parseWebhook(url: string): { id: string; token: string } {
+    if (!url || typeof url !== "string") {
+        throw new Error("Invalid webhook URL: URL must be a non-empty string");
+    }
+
+    // Validate Discord webhook URL format
+    const webhookPattern = /^https?:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/api\/webhooks\/(\d+)\/([a-zA-Z0-9_-]+)\/?$/;
+    const match = url.match(webhookPattern);
+
+    if (!match) {
+        throw new Error(`Invalid webhook URL format: ${url.slice(0, 50)}...`);
+    }
+
+    const [, id, token] = match;
+    return { id, token };
+}
 
 type LogType = "log" | "warn" | "error" | "debug" | "cmd" | "ready" | "info";
 
@@ -126,7 +145,30 @@ class Logger {
             .setColor(color)
             .setTimestamp();
 
-        sendWebhook(env.DISCORD_WEBHOOK_URL, embed as never);
+        this.postWebhook(env.DISCORD_WEBHOOK_URL, embed as never);
+    }
+
+    /**
+     * Post an embed to a Discord webhook. Failures are reported straight to pino rather than through
+     * this.log, since this is the webhook path itself and routing its own errors back through it
+     * would re-enter sendDiscordWebhook.
+     */
+    private postWebhook(hookUrl: string, embed: Embed): void {
+        try {
+            const { id, token } = parseWebhook(hookUrl);
+            const hook = new WebhookClient({ id, token });
+            hook.send({ embeds: [embed] })
+                .catch((err) => {
+                    const message = err instanceof Error ? err.message : String(err);
+                    this.pino.error(`[postWebhook] Failed to send webhook message: ${message}`);
+                    throw err;
+                })
+                .finally(() => hook.destroy());
+        } catch (err) {
+            const message = err instanceof Error ? err.message : String(err);
+            this.pino.error(`[postWebhook] ${message}`);
+            throw err;
+        }
     }
 
     error(content: unknown, webhook = false): void {

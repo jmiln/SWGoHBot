@@ -2,18 +2,11 @@ import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextTyp
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
-import {
-    charListFromSearch,
-    chunkArray,
-    findChar,
-    getAllyCode,
-    getBlankUnitImage,
-    msgArray,
-    updatedFooterStr,
-} from "../modules/functions.ts";
+import { charListFromSearch, chunkArray, findChar, getAllyCode, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { getBlankUnitImage } from "../modules/utils/unitImages.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 

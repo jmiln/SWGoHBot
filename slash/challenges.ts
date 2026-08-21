@@ -1,6 +1,7 @@
 import { ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getCurrentWeekday, toProperCase } from "../modules/functions.ts";
+import { getCurrentWeekday } from "../modules/functions.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Challenges extends Command {

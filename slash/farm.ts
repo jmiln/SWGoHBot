@@ -3,9 +3,10 @@ import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import { characters, charLocs, shipLocs, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
-import { charListFromSearch, expandSpaces, findCharOrShip, getSideColor, toProperCase } from "../modules/functions.ts";
+import { charListFromSearch, expandSpaces, findCharOrShip, getSideColor } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { CommandContext, UnitLocation } from "../types/types.ts";
 
 export default class Farm extends Command {

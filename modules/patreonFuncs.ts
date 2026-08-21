@@ -20,11 +20,12 @@ import type {
 } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
 import cache from "./cache.ts";
-import { chunkArray, expandSpaces, formatDuration, getPayoutTimeLeft, isArenaChannelOn, msgArray, toProperCase } from "./functions.ts";
+import { chunkArray, expandSpaces, formatDuration, getPayoutTimeLeft, isArenaChannelOn, msgArray } from "./functions.ts";
 import { getGuildSupporterTier } from "./guildConfig/patreonSettings.ts";
 import logger from "./Logger.ts";
 import swgohAPI from "./swapi.ts";
 import userReg from "./users.ts";
+import { toProperCase } from "./utils/text.ts";
 
 export function updateArenaHistory(hist: ArenaHistEntry[] | undefined, rank: number, now: number = Date.now()): ArenaHistEntry[] {
     const entries = hist ? [...hist] : [];

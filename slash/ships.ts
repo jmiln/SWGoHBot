@@ -1,17 +1,10 @@
 import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import {
-    expandSpaces,
-    findChar,
-    getAbilityType,
-    getBlankUnitImage,
-    getSideColor,
-    msgArray,
-    msgArrayToFields,
-    toProperCase,
-} from "../modules/functions.ts";
+import { expandSpaces, findChar, getAbilityType, getSideColor, msgArray, msgArrayToFields } from "../modules/functions.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { toProperCase } from "../modules/utils/text.ts";
+import { getBlankUnitImage } from "../modules/utils/unitImages.ts";
 import type { CommandContext } from "../types/types.ts";
 
 export default class Ships extends Command {

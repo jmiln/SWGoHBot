@@ -10,7 +10,6 @@ import {
     msgArray,
     shortenNum,
     summarizeCharLevels,
-    toProperCase,
     updatedFooterStr,
 } from "../modules/functions.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
@@ -19,6 +18,7 @@ import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext, TWList } from "../types/types.ts";
 

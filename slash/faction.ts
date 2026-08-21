@@ -4,9 +4,10 @@ import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, factionNameOf } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
-import { getAllyCode, msgArray, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { getAllyCode, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { RawCharacter, SWAPIUnit } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 

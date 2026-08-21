@@ -1,9 +1,10 @@
 import { ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { getAllyCode, isAllyCode, toProperCase } from "../modules/functions.ts";
+import { getAllyCode, isAllyCode } from "../modules/functions.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { CommandContext } from "../types/types.ts";
 
 const updateTypeStrings = {

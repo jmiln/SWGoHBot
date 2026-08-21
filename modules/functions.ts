@@ -3,7 +3,6 @@ import { inspect } from "node:util";
 import {
     type ChatInputCommandInteraction,
     type Client,
-    type Embed,
     type Guild,
     type GuildBasedChannel,
     GuildMember,
@@ -12,17 +11,16 @@ import {
     TextChannel,
     time,
     type User,
-    WebhookClient,
 } from "discord.js";
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import { allUnitsList, factions } from "../data/constants/units.ts";
 import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { ArenaPlayer, BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";
 import userReg from "./users.ts";
+import { toProperCase } from "./utils/text.ts";
 
 /**
  * Helper function to read and parse JSON files asynchronously
@@ -234,42 +232,6 @@ export function findChar(searchName: string, unitList: BotUnit[], isShip = false
 }
 
 // Parse the webhook url, and get the id & token from the end
-export function parseWebhook(url: string): { id: string; token: string } {
-    if (!url || typeof url !== "string") {
-        throw new Error("Invalid webhook URL: URL must be a non-empty string");
-    }
-
-    // Validate Discord webhook URL format
-    const webhookPattern = /^https?:\/\/(?:canary\.|ptb\.)?discord(?:app)?\.com\/api\/webhooks\/(\d+)\/([a-zA-Z0-9_-]+)\/?$/;
-    const match = url.match(webhookPattern);
-
-    if (!match) {
-        throw new Error(`Invalid webhook URL format: ${url.slice(0, 50)}...`);
-    }
-
-    const [, id, token] = match;
-    return { id, token };
-}
-
-// Send a message to a webhook url, takes the url & the embed to send
-export function sendWebhook(hookUrl: string, embed: Embed): void {
-    try {
-        const { id, token } = parseWebhook(hookUrl);
-        const hook = new WebhookClient({ id, token });
-        hook.send({ embeds: [embed] })
-            .catch((err) => {
-                const message = err instanceof Error ? err.message : String(err);
-                logger.error(`[sendWebhook] Failed to send webhook message: ${message}`);
-                throw err;
-            })
-            .finally(() => hook.destroy());
-    } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        logger.error(`[sendWebhook] ${message}`);
-        throw err;
-    }
-}
-
 // Return a duration string
 // Accepts Language or CommandContext
 export function duration(time: number, languageOrContext: Language | CommandContext | null = null): string {
@@ -589,29 +551,6 @@ export function makeTable(
     return out;
 }
 
-// Small function to search the factions
-export function findFaction(fact: string): string | string[] | null {
-    const formattedFact = fact.toLowerCase().replace(/\s+/g, "");
-    let found = factions.find((f) => f.toLowerCase().replace(/\s+/g, "") === formattedFact);
-    if (found) {
-        return found.toLowerCase();
-    }
-    found = factions.find((f) => f.toLowerCase().replace(/\s+/g, "") === formattedFact.substring(0, formattedFact.length - 1));
-    if (formattedFact.endsWith("s") && found) {
-        return found.toLowerCase();
-    }
-    found = factions.find((f) => f.toLowerCase().replace(/\s+/g, "") === `${formattedFact}s`);
-    if (!formattedFact.endsWith("s") && found) {
-        return found.toLowerCase();
-    }
-    const close = factions.filter((f) => f.toLowerCase().replace(/\s+/g, "").includes(formattedFact.toLowerCase()));
-    if (close.length) {
-        return close.map((f) => f.toLowerCase());
-    }
-
-    return null;
-}
-
 // Convert from milliseconds
 export function convertMS(milliseconds: number): { hour: number; minute: number; totalMin: number; seconds: number } {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -684,15 +623,6 @@ export function summarizeCharLevels(guildMembers: SWAPIPlayer[], type: string): 
     return [levels, avgLvls];
 }
 
-const ROMAN_REGEX = /^(X|XX|XXX|XL|L|LX|LXX|LXXX|XC|C)?(I|II|III|IV|V|VI|VII|VIII|IX)$/i;
-export function toProperCase(strIn: string): string {
-    if (!strIn) return strIn;
-    return strIn.replace(/([^\W_]+[^\s-]*) */g, (txt) => {
-        if (ROMAN_REGEX.test(txt)) return txt.toUpperCase();
-        return txt.charAt(0).toUpperCase() + txt.substring(1).toLowerCase();
-    });
-}
-
 // Trim down large numbers to be more easily readable
 export function shortenNum(number: number, trimTo = 2): string {
     const million = 1_000_000;
@@ -723,64 +653,6 @@ export async function hasViewAndSend(channel: GuildBasedChannel, user: User | Gu
             channel.permissionsFor(user)?.has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages])) ||
         false
     );
-}
-
-export async function getBlankUnitImage(defId: string): Promise<Buffer | null> {
-    return await getUnitImage(defId, {
-        gear: -1,
-        level: -1,
-        rarity: -1,
-        skills: undefined,
-        relic: null,
-    });
-}
-
-export async function getUnitImage(defId: string, { rarity, level, gear, skills, relic }: Partial<SWAPIUnit>): Promise<Buffer | null> {
-    let thisChar: BotUnit | undefined;
-
-    try {
-        thisChar = allUnitsList.find((ch) => ch.uniqueName === defId);
-    } catch (err) {
-        logger.error("[functions/getUnitImage] Issue getting character image:");
-        logger.error(err);
-        return null;
-    }
-
-    if (!thisChar) {
-        logger.error(`[functions/getUnitImage] Cannot find matching defId: ${defId}`);
-        return null;
-    }
-    const fetchBody = {
-        defId,
-        charUrl: thisChar?.avatarURL,
-        avatarName: thisChar?.avatarName,
-        rarity,
-        level,
-        gear,
-        zetas: skills?.filter((s) => s.isZeta && s.zetaTier != null && s.tier >= s.zetaTier).length || 0,
-        relic: relic?.currentTier || 0,
-        omicron: skills?.filter((s) => s.isOmicron && s.omicronTier != null && s.tier >= s.omicronTier).length || 0,
-        side: thisChar.side,
-    };
-
-    try {
-        const res = await fetch(`${env.IMAGE_SERVER_URL}/char/`, {
-            method: "post",
-            body: JSON.stringify(fetchBody),
-            headers: { "Content-Type": "application/json" },
-        });
-
-        if (!res.ok) {
-            logger.error(`[functions/getUnitImage] Image server returned error status: ${res.status} ${res.statusText}`);
-            return null;
-        }
-
-        const resBuf = await res.arrayBuffer();
-        return resBuf ? Buffer.from(resBuf) : null;
-    } catch (e) {
-        logger.error(`[functions/getUnitImage] Error requesting image from server.\n${e}`);
-        return null;
-    }
 }
 
 export async function announceMsg({

@@ -3,19 +3,12 @@ import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, Interactio
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
-import {
-    charListFromSearch,
-    expandSpaces,
-    findChar,
-    getAllyCode,
-    getUnitImage,
-    msgArray,
-    toProperCase,
-    updatedFooterStr,
-} from "../modules/functions.ts";
+import { charListFromSearch, expandSpaces, findChar, getAllyCode, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { toProperCase } from "../modules/utils/text.ts";
+import { getUnitImage } from "../modules/utils/unitImages.ts";
 import type { SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { CommandContext } from "../types/types.ts";
 

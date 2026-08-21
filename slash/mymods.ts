@@ -4,9 +4,10 @@ import constants from "../data/constants/constants.ts";
 import { characters } from "../data/constants/units.ts";
 import emoteStrings from "../data/emoteStrings.ts";
 import statEnums from "../data/statEnum.ts";
-import { charListFromSearch, findChar, getAllyCode, getSideColor, toProperCase, updatedFooterStr } from "../modules/functions.ts";
+import { charListFromSearch, findChar, getAllyCode, getSideColor, updatedFooterStr } from "../modules/functions.ts";
 import { fetchPlayerWithCooldown } from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 

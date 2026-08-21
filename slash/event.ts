@@ -12,10 +12,11 @@ import {
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import eventSocket from "../modules/eventSocket.ts";
-import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray, toProperCase } from "../modules/functions.ts";
+import { getSetTimeForTimezone, hasViewAndSend, isChannelId, isValidZone, msgArray } from "../modules/functions.ts";
 import { getGuildEvents, updateGuildEvent } from "../modules/guildConfig/events.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import logger from "../modules/Logger.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { GuildConfigEvent } from "../types/guildConfig_types.ts";
 import type { CommandContext } from "../types/types.ts";
 

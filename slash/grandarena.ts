@@ -1,17 +1,8 @@
 import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { characters, ships } from "../data/constants/units.ts";
-import {
-    findChar,
-    findFaction,
-    getAllyCode,
-    getGearStr,
-    makeTable,
-    shortenNum,
-    summarizeCharLevels,
-    updatedFooterStr,
-} from "../modules/functions.ts";
+import { characters, factions, ships } from "../data/constants/units.ts";
+import { findChar, getAllyCode, getGearStr, makeTable, shortenNum, summarizeCharLevels, updatedFooterStr } from "../modules/functions.ts";
 import { getUnitChecklist } from "../modules/guildConfig/twlist.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import swgohAPI from "../modules/swapi.ts";
@@ -623,6 +614,29 @@ function getOverview(user1: SWAPIPlayer, user2: SWAPIPlayer, labels: { [key: str
             { boldHeader: false, useHeader: false },
         ).join("\n"),
     );
+}
+
+// Small function to search the factions
+function findFaction(fact: string): string | string[] | null {
+    const formattedFact = fact.toLowerCase().replace(/\s+/g, "");
+    let found = factions.find((f) => f.toLowerCase().replace(/\s+/g, "") === formattedFact);
+    if (found) {
+        return found.toLowerCase();
+    }
+    found = factions.find((f) => f.toLowerCase().replace(/\s+/g, "") === formattedFact.substring(0, formattedFact.length - 1));
+    if (formattedFact.endsWith("s") && found) {
+        return found.toLowerCase();
+    }
+    found = factions.find((f) => f.toLowerCase().replace(/\s+/g, "") === `${formattedFact}s`);
+    if (!formattedFact.endsWith("s") && found) {
+        return found.toLowerCase();
+    }
+    const close = factions.filter((f) => f.toLowerCase().replace(/\s+/g, "").includes(formattedFact.toLowerCase()));
+    if (close.length) {
+        return close.map((f) => f.toLowerCase());
+    }
+
+    return null;
 }
 
 // Quick little function to add up all the gp frm a given chunk of roster

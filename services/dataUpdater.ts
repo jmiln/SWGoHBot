@@ -9,8 +9,9 @@ import { FixedQueue, Piscina } from "piscina";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
 import databaseCleanup from "../modules/databaseCleanup.ts";
-import { readJSON, toProperCase } from "../modules/functions.ts";
+import { readJSON } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 
 const DEBUG_LOGS = process.argv.includes("--debug") || false;
 

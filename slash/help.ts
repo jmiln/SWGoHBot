@@ -2,7 +2,8 @@ import path from "node:path";
 import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
-import { msgArray, readJSON, toProperCase } from "../modules/functions.ts";
+import { msgArray, readJSON } from "../modules/functions.ts";
+import { toProperCase } from "../modules/utils/text.ts";
 import type { HelpCommand, HelpJSON } from "../types/help_types.ts";
 import type { CommandContext } from "../types/types.ts";
 
