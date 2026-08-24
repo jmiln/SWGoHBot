@@ -5,6 +5,36 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.0] - 2026-08-24
+
+### Changed
+
+- **GAC counter ingestion is now a phase of the nightly `dataUpdater`** rather than a service of its
+  own. It runs between the game data and mod phases, so a `--skip-mods` run still refreshes it.
+  Counters are now at most a day stale instead of an hour, which does not matter when `/counter`
+  shows the previous few seasons. A failure in one mode is isolated: the other mode still runs, the
+  cycle finishes, and the exit code becomes 1 so a source outage shows up in the cron log.
+- The ingestion bookmark moved from `modules/counters/counterMetadata.json` to
+  `data/counterMetadata.json`. Under `modules/` it was baked into the image and its writes landed in
+  a container layer that `docker compose run --rm` discards, so the bookmark could never advance and
+  every run would re-ingest. `data/` is a bind mount, so it persists. Both it and
+  `data/metadata.json` are now gitignored, being runtime state rather than source.
+
+### Added
+
+- `dataUpdater` flags: `--skip-counters`, `--counters-only` (mutually exclusive), plus
+  `--counter-concurrency`, `--max-per-10s` and `--min-battles`. `--counters-only` exists so an
+  ad-hoc ingest does not need a full cycle.
+
+### Removed
+
+- `services/counterUpdater.ts` and `counterUpdater.config.cjs`. The hourly cron line its comment
+  documented was never actually installed, so nothing had run it since the feature shipped.
+- `ecosystem.config.cjs`. All three processes it defined now run as containers; pm2 is no longer
+  used by this project at all. A deployment still starting the bot with
+  `pm2 start ecosystem.config.cjs` must switch to `docker compose up -d`.
+- `jsconfig.json`, inert since the TypeScript migration and superseded by `tsconfig.json`.
+
 ## [4.0.0] - 2026-08-21
 
 Roughly seven months and 382 commits since the 3.0.0 baseline, so this is a curated summary rather
@@ -16,7 +46,7 @@ Read these before upgrading; each needs an action.
 
 - **Configuration moved to environment variables.** `config.js` is gone. Copy `.env.example` to
   `.env` and fill it in; the Zod schema in `config/config.ts` fails at startup, naming the missing
-  variable. See `docs/CONFIG.md`.
+  variable.
 - **The `users` collection changed shape, and ally codes are numbers rather than strings.** Existing
   databases must be migrated before starting 4.0.0. Run all three, in this order, since each reads
   the shape the previous one produces:
