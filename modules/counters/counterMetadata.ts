@@ -4,7 +4,7 @@ import { type CounterMetadata, type CounterMetadataFile, CounterMetadataFileSche
 import logger from "../Logger.ts";
 import type { Mode } from "./gahistoryClient.ts";
 
-export const META_FILE = path.join(import.meta.dirname, "counterMetadata.json");
+export const META_FILE = path.resolve(import.meta.dirname, "../../data/counterMetadata.json");
 
 async function readMetaFile(file: string): Promise<CounterMetadataFile> {
     let raw: string;

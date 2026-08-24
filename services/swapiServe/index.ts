@@ -24,10 +24,10 @@ const SHUTDOWN_SWEEP_MS = 20;
 //
 // Queued work is settled immediately by dispatcher.stop(), but a request already at the backend is
 // left to finish, and UPSTREAM_TIMEOUT_MS allows it a full minute. Waiting that out is not an
-// option: pm2 SIGKILLs at its kill_timeout, so an unbounded wait does not buy a graceful shutdown,
-// it just replaces one with a kill. Ending deliberately at a known point means the remaining
-// callers get a closed socket instead of a half-written response, and ecosystem.config.cjs gives
-// pm2 a kill_timeout comfortably past this.
+// option: the supervisor SIGKILLs once its grace period expires, so an unbounded wait does not buy
+// a graceful shutdown, it just replaces one with a kill. Ending deliberately at a known point means
+// the remaining callers get a closed socket instead of a half-written response, and the compose
+// service sets stop_grace_period comfortably past this.
 const SHUTDOWN_GRACE_MS = 5_000;
 
 /**

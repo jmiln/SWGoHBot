@@ -17,6 +17,10 @@ config.json
 settings.json
 TODO.md
 
+# Runtime state: Rewritten by every dataUpdater run
+/data/counterMetadata.json
+/data/metadata.json
+
 # Commands
 /slash/test.js
 /slash/test.ts

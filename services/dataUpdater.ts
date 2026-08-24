@@ -8,6 +8,9 @@ import { type AnyBulkWriteOperation, MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
 import { env } from "../config/config.ts";
 import cache from "../modules/cache.ts";
+import { DEFAULT_BUILD_OPTIONS } from "../modules/counters/counterAggregator.ts";
+import { runAllModes } from "../modules/counters/counterIngest.ts";
+import { createGahistoryClient } from "../modules/counters/gahistoryClient.ts";
 import databaseCleanup from "../modules/databaseCleanup.ts";
 import { readJSON } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
@@ -27,6 +30,15 @@ const SKIP_MODS = process.argv.includes("--skip-mods") || false;
 // databaseCleanup deletes old player stats/guilds/rosters, so it's opt-in rather than opt-out: a
 // manual run must never quietly destroy data. The scheduled crontab line passes this explicitly.
 const RUN_CLEANUP = process.argv.includes("--cleanup") || false;
+
+// GAC counter ingestion. It shares nothing with the comlink phases, so it can be skipped on its own
+// or run alone; --counters-only exists so an ad-hoc ingest doesn't need a full cycle.
+const SKIP_COUNTERS = process.argv.includes("--skip-counters") || false;
+const COUNTERS_ONLY = process.argv.includes("--counters-only") || false;
+if (SKIP_COUNTERS && COUNTERS_ONLY) {
+    logger.error("[dataUpdater] --skip-counters and --counters-only are mutually exclusive");
+    process.exit(1);
+}
 
 // Parse a numeric `--flag value` CLI override, falling back to a default when absent or unparseable.
 function numericArg(flag: string, fallback: number): number {
@@ -251,43 +263,75 @@ async function init() {
         const { stub: comlinkStub, url: comlinkUrl } = await resolveBulkStub();
 
         // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
-        // allocated. PM2 relaunches this daily via cron_restart (see ecosystem.config.cjs).
+        // allocated. The host crontab relaunches it daily via `docker compose run --rm dataupdater`.
         await (async function runUpdaters() {
             let exitCode = 0;
             try {
                 debugTime("Total update cycle");
                 logMem("cycle start");
 
-                debugTime("Checking metadata");
-                const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
-                debugTimeEnd("Checking metadata");
-
-                if (isMetadataUpdated || FORCE_GAMEDATA) {
-                    const log: string[] = [];
-                    if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
-                        log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
-                    }
-                    if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
-                        log.push(
-                            ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
-                        );
-                    }
-                    if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
-                        log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
-                    }
-                    if (log.length) {
-                        logger.log(["Found new metadata, running updaters", ...log].join("\n"));
-                    } else {
-                        logger.log("Metadata unchanged, but --force-gamedata was passed; running game data updaters anyway");
-                    }
-
-                    debugTime("Running game data updaters");
-                    await runGameDataUpdaters(newMetadata, comlinkStub);
-                    debugTimeEnd("Running game data updaters");
-                    debugLog("Finished running game data updater for new metadata");
-                    logMem("after game data updaters");
+                if (COUNTERS_ONLY) {
+                    logger.log("Running counter ingestion only (--counters-only)");
                 } else {
-                    logMem("metadata unchanged, skipping game data updaters");
+                    debugTime("Checking metadata");
+                    const { isMetadataUpdated, newMetadata, oldMetadata } = await updateMetadata(DATA_DIR_PATH, comlinkStub);
+                    debugTimeEnd("Checking metadata");
+
+                    if (isMetadataUpdated || FORCE_GAMEDATA) {
+                        const log: string[] = [];
+                        if (oldMetadata.latestGamedataVersion !== newMetadata.latestGamedataVersion) {
+                            log.push(` - GameData: ${oldMetadata.latestGamedataVersion} -> ${newMetadata.latestGamedataVersion}`);
+                        }
+                        if (oldMetadata.latestLocalizationBundleVersion !== newMetadata.latestLocalizationBundleVersion) {
+                            log.push(
+                                ` - Localization: ${oldMetadata.latestLocalizationBundleVersion} -> ${newMetadata.latestLocalizationBundleVersion}`,
+                            );
+                        }
+                        if (oldMetadata.assetVersion !== newMetadata.assetVersion) {
+                            log.push(` - Assets: ${oldMetadata.assetVersion} -> ${newMetadata.assetVersion}`);
+                        }
+                        if (log.length) {
+                            logger.log(["Found new metadata, running updaters", ...log].join("\n"));
+                        } else {
+                            logger.log("Metadata unchanged, but --force-gamedata was passed; running game data updaters anyway");
+                        }
+
+                        debugTime("Running game data updaters");
+                        await runGameDataUpdaters(newMetadata, comlinkStub);
+                        debugTimeEnd("Running game data updaters");
+                        debugLog("Finished running game data updater for new metadata");
+                        logMem("after game data updaters");
+                    } else {
+                        logMem("metadata unchanged, skipping game data updaters");
+                    }
+                }
+
+                // Ahead of the mod updaters, which dominate the runtime: counters depend on neither
+                // comlink nor game data, so a --skip-mods run still refreshes them.
+                if (SKIP_COUNTERS) {
+                    logger.log("Skipping counter ingestion (--skip-counters)");
+                } else {
+                    debugTime("Running counter ingestion");
+                    const counters = await runAllModes({
+                        // 800/10s = 80 req/s, well under the source's 2000/10s/IP cap.
+                        client: createGahistoryClient({ maxPer10s: numericArg("--max-per-10s", 800) }),
+                        db: env.MONGODB_SWAPI_DB,
+                        // Sized to keep the 80 req/s limiter saturated (~80 x avg-latency in flight); the
+                        // limiter, not this number, is the hard cap, so a generous default is safe.
+                        concurrency: numericArg("--counter-concurrency", 50),
+                        options: { ...DEFAULT_BUILD_OPTIONS, minBattles: numericArg("--min-battles", DEFAULT_BUILD_OPTIONS.minBattles) },
+                        debug: DEBUG_LOGS,
+                    });
+                    // A GAC source outage must not cost the rest of the cycle, but must still show
+                    // up in the exit status rather than passing silently.
+                    if (!counters.ok) exitCode = 1;
+                    debugTimeEnd("Running counter ingestion");
+                    logMem("after counter ingestion");
+                }
+
+                if (COUNTERS_ONLY) {
+                    debugTimeEnd("Total update cycle");
+                    return;
                 }
 
                 if (SKIP_MODS) {
@@ -2492,7 +2536,8 @@ function printHelp() {
 Usage: node --env-file=.env services/dataUpdater.ts [options]
 
 Runs a single update cycle then exits: checks game metadata, refreshes game data when the
-version changed, recalculates mod stats from the top guilds, and exports command docs.
+version changed, ingests GAC counter data when a new event has been posted, recalculates mod
+stats from the top guilds, and exports command docs.
 
 Options:
   -h, --help            Show this help and exit.
@@ -2502,10 +2547,18 @@ Options:
                         path is normally skipped when the version has not moved.
   --skip-mods           Skip the mod updaters. They fetch every player in the top 100 guilds and
                         dominate the cycle's runtime; nothing else depends on them.
+  --skip-counters       Skip the GAC counter ingestion.
+  --counters-only       Run only the counter ingestion, skipping metadata, game data, mods and
+                        the command doc export. For an ad-hoc ingest without a full cycle.
+                        Mutually exclusive with --skip-counters.
   --cleanup             Run the database cleanup (deletes old player stats, guilds and empty
                         rosters). Off by default so a manual run never destroys data; the
                         scheduled crontab line passes it explicitly.
   --max-concurrent N    Max in-flight player fetches queued to the worker pool (default 80).
+  --counter-concurrency N
+                        Concurrent GAC player fetches during counter ingestion (default 50).
+  --max-per-10s N       Rate cap for the GAC history source (default 800 per 10s).
+  --min-battles N       Minimum battles before a counter is included (default ${DEFAULT_BUILD_OPTIONS.minBattles}).
   --mod-threads N       Player-fetch worker threads (default min(cpuCount, ${MOD_FETCH_CONCURRENCY_CAP}); here ${defaultThreads}).
   --mod-tasks N         Concurrent tasks per worker thread (default 1).
   --worker-heap N       Per-worker V8 old-space cap in MB; bounds peak rss (default 256).`);

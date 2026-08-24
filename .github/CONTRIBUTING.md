@@ -163,16 +163,31 @@ This runs `node swgohBotShard.ts` which spawns the shard manager and starts the 
 
 > If at any point it says "cannot find module X" just run `npm install` to ensure all dependencies are installed.
 
-### Using PM2
-The repo includes `ecosystem.config.cjs` which defines all three processes. To start them all:
+### Running the supporting services
+
+`npm start` runs the bot alone, which is enough for most command work. The two background services
+are separate processes, each in its own terminal:
+
 ```bash
-pm2 start ecosystem.config.cjs
+node services/swapiServe/index.ts   # queueing proxy for all comlink traffic
+node services/eventServe.ts         # HTTP server for cross-shard guild event management
 ```
 
-This starts:
-- `swhohBotShard` - the Discord bot (shard manager)
-- `dataUpdater` - game data refresh and player update service
-- `eventServe` - HTTP server for cross-shard guild event management
+Neither is required to work on a command:
+
+- Without `swapiServe`, the bot calls comlink directly under a reduced per-process cap and logs a
+  warning. You lose the shared rate governor and prioritisation, not functionality.
+- Without `eventServe`, only the event commands are affected.
+
+`dataUpdater` is not a long-running service. It runs one cycle and exits, so invoke it directly when
+you need fresh game data:
+
+```bash
+node --env-file=.env services/dataUpdater.ts --force-gamedata --skip-mods
+```
+
+Production runs these as containers rather than as bare processes; see `docker-compose.yml`. There
+is no need to reproduce that setup to contribute.
 
 
 # Contributing to the website (swgohbot.com)

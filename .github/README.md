@@ -55,8 +55,8 @@ npm run deploy
 npm start
 ```
 
-Running from the published image needs no clone at all: see "Deploying without a checkout" in
-`docs/CONFIG.md`.
+Running from the published image needs no clone at all: pull `ghcr.io/jmiln/swgohbot`, write a
+`.env` from `.env.example`, and bring up `docker-compose.yml`.
 
 ## Development Commands
 
@@ -118,7 +118,8 @@ Configuration is loaded from a `.env` file using Node.js's built-in `process.loa
 - **Game API**: `SWAPI_URL`, `SWAPI_ACCESS_KEY`, `SWAPI_SECRET_KEY`
 - **Optional**: webhook URLs, Patreon integration (`PATREON_*`), image server URL
 
-See [docs/CONFIG.md](../docs/CONFIG.md) for the full variable reference.
+`.env.example` lists every variable, and `config/config.ts` is the authoritative schema: it validates
+on startup and names anything missing.
 
 ## Links
 
