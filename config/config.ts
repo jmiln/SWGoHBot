@@ -120,7 +120,6 @@ const envSchema = z.object({
     SWAPI_SERVE_CONTROL_SECRET: z.string().optional(),
 
     // Patreon V2 API Configuration (all optional)
-    PATREON_API_URL: urlString({ default: "https://www.patreon.com/api/oauth2/v2" }),
     PATREON_CAMPAIGN_ID: z.string().optional(),
     PATREON_CLIENT_ID: z.string().optional(),
     PATREON_CLIENT_SECRET: z.string().optional(),

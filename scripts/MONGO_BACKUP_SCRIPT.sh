@@ -5,18 +5,25 @@ set -eou pipefail
 #
 #   Update the USER_HOME variable
 #   Set up the ~/.mongo_creds file with user, pass, and authDb
-#   Set up the crontab as such, full paths all around:
-#   "00 02 * * * /bin/bash /home/USER/swgohbot/scripts/MONGO_BACKUP_SCRIPT.sh >> /home/$USER_HOME/backups/backup.log 2>&1"
+#   Set up the crontab as such, full paths all around, naming the databases to back up:
+#   "00 02 * * * /bin/bash /home/USER/swgohbot/scripts/MONGO_BACKUP_SCRIPT.sh swgohbot otherDb >> /home/$USER_HOME/backups/backup.log 2>&1"
 #
 ##########################################
 
 # Configuration
 USER_HOME="USER_HOME_HERE"
-DB_NAME="swgohbot"
 TIMESTAMP=$(date +%F_%H-%M-%S)
-BACKUP_DIR="$USER_HOME/backups/mongo/$DB_NAME"
-DEST_DIR="$BACKUP_DIR/$TIMESTAMP"
 CREDS_FILE="$USER_HOME/.mongo_creds"
+
+# Just backing up the configs part of the db, so it'll be small
+RETENTION_DAYS=28
+
+# Databases to back up: pass as arguments, or fall back to the default.
+if [ $# -gt 0 ]; then
+    DATABASES=("$@")
+else
+    DATABASES=("swgohbot")
+fi
 
 # Load Credentials
 if [ -f "$CREDS_FILE" ]; then
@@ -26,34 +33,43 @@ else
     exit 1
 fi
 
-# Just backing up the configs part of the db, so it'll be small
-RETENTION_DAYS=28
+FAILED=()
 
-# Create backup directory
-mkdir -p "$DEST_DIR"
+for DB_NAME in "${DATABASES[@]}"; do
+    BACKUP_DIR="$USER_HOME/backups/mongo/$DB_NAME"
+    DEST_DIR="$BACKUP_DIR/$TIMESTAMP"
+    ARCHIVE="$BACKUP_DIR/${DB_NAME}_${TIMESTAMP}.tar.gz"
 
-echo "Starting backup of $DB_NAME at $TIMESTAMP..."
-mongodump \
-  --host "localhost" \
-  --username "$MONGO_USER" \
-  --password "$MONGO_PASS" \
-  --authenticationDatabase "$MONGO_AUTH_DB" \
-  --db "$DB_NAME" \
-  --out "$DEST_DIR"
+    mkdir -p "$DEST_DIR"
 
-# Make sure the backup was successful
-if [ $? -eq 0 ]; then
-    tar -czf "$DEST_DIR.tar.gz" -C "$BACKUP_DIR" "$TIMESTAMP"
-    rm -rf "$DEST_DIR"
+    echo "Starting backup of $DB_NAME at $TIMESTAMP..."
+    # mongodump goes in the `if` condition on purpose: under `set -e` a bare failing command aborts
+    # the script, so the else branch below would be unreachable and one bad database would skip the rest.
+    if mongodump \
+      --host "localhost" \
+      --username "$MONGO_USER" \
+      --password "$MONGO_PASS" \
+      --authenticationDatabase "$MONGO_AUTH_DB" \
+      --db "$DB_NAME" \
+      --out "$DEST_DIR"; then
 
-    # --- Future SCP Step ---
-    # scp "$DEST_DIR.tar.gz" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
+        tar -czf "$ARCHIVE" -C "$BACKUP_DIR" "$TIMESTAMP"
+        rm -rf "$DEST_DIR"
 
-    # Delete backups older than $RETENTION_DAYS
-    find "$BACKUP_DIR" -type f -name "*.tar.gz" -mtime +$RETENTION_DAYS -delete
+        # --- Future SCP Step ---
+        # scp "$ARCHIVE" "$REMOTE_USER@$REMOTE_HOST:$REMOTE_PATH"
 
-    echo "Backup complete: $DEST_DIR.tar.gz"
-else
-    echo "[$(date)] Mongodump failed!" >> "$USER_HOME/mongo_backup.log"
+        # Delete backups older than $RETENTION_DAYS
+        find "$BACKUP_DIR" -type f -name "*.tar.gz" -mtime +"$RETENTION_DAYS" -delete
+
+        echo "Backup complete: $ARCHIVE"
+    else
+        echo "[$(date)] Mongodump failed for $DB_NAME!" >> "$USER_HOME/mongo_backup.log"
+        FAILED+=("$DB_NAME")
+    fi
+done
+
+if [ ${#FAILED[@]} -gt 0 ]; then
+    echo "The following databases failed to back up: ${FAILED[*]}"
     exit 1
 fi
