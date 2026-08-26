@@ -119,6 +119,12 @@ const envSchema = z.object({
     // open, which is safe only while the service is bound to loopback.
     SWAPI_SERVE_CONTROL_SECRET: z.string().optional(),
 
+    // shardStatus: the shard manager's health surface, read by the container healthcheck and later
+    // by Uptime Kuma. It carries no secret, so like swapiServe the bind is its only access control:
+    // loopback by default, and the container sets 0.0.0.0 so the published port can reach it.
+    SHARD_STATUS_PORT: z.coerce.number().int().positive().default(3810),
+    SHARD_STATUS_HOST: z.string().default("127.0.0.1"),
+
     // Patreon V2 API Configuration (all optional)
     PATREON_CAMPAIGN_ID: z.string().optional(),
     PATREON_CLIENT_ID: z.string().optional(),

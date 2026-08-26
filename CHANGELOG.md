@@ -5,6 +5,35 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.2.0] - 2026-08-25
+
+### Added
+
+- **The shard manager now serves fleet health over HTTP** on `SHARD_STATUS_PORT` (3810), backed by
+  `modules/shardStatus/`. `swgohBotShard.ts` is the only process that sees every shard, and until
+  now it did nothing with that beyond logging lifecycle events, which is why the `bot` service
+  carried no healthcheck.
+  - `GET /health` returns `200` while the fleet is starting, ready or degraded, and `503` only on
+    total fleet loss. That is the one case a container restart fixes; a single sick shard is left
+    to the `ShardingManager`'s own `respawn`, because restarting would kill every healthy shard to
+    fix one.
+  - `GET /status` always returns `200` while the manager answers, carrying per-shard status, ping,
+    guild count, uptime and RSS. It deliberately does not mirror `/health`'s status code: a `503`
+    there would fail every per-shard monitor at once.
+  - Each shard reports itself every 15s over the existing IPC channel. Heartbeats are the state
+    because they are level-sampled, so a shard that dies, hangs, or silently loses its gateway
+    stops sending and one staleness check catches all three. The endpoint never messages a shard,
+    since a request-time fan-out would not resolve against a wedged shard and the healthcheck would
+    hang rather than report it.
+- `SHARD_STATUS_PORT` and `SHARD_STATUS_HOST` settings. As with swapiServe's queue path there is no
+  shared secret, so the bind is the only access control: loopback by default, `0.0.0.0` in the
+  container, with the host-side port published to `127.0.0.1` only.
+
+### Changed
+
+- The `bot` service in `docker-compose.yml` now has a healthcheck, replacing the comment explaining
+  why it could not have one.
+
 ## [4.1.0] - 2026-08-24
 
 ### Changed

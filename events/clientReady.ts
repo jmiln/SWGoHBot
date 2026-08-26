@@ -1,4 +1,4 @@
-import { type Client, Events } from "discord.js";
+import { type Client, Events, Status } from "discord.js";
 import { env } from "../config/config.ts";
 import eventFuncs from "../modules/eventFuncs.ts";
 import eventSocket from "../modules/eventSocket.ts";
@@ -6,6 +6,7 @@ import { getShardId, isMain } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
 import patreonSync from "../modules/patreonSync.ts";
+import { HEARTBEAT_INTERVAL_MS, type ShardHeartbeat, type ShardStatusName } from "../modules/shardStatus/registry.ts";
 
 // Constants
 const MAX_CONSECUTIVE_FAILURES = 5;
@@ -15,6 +16,41 @@ const PRESENCE_NAME = "swgohbot.com";
 
 // Track intervals for cleanup
 const activeIntervals: NodeJS.Timeout[] = [];
+
+const BYTES_PER_MB = 1024 * 1024;
+
+/**
+ * The discord.js statuses the registry distinguishes. Everything else is in-flight connection
+ * setup, which it treats as not-ready without needing a name of its own.
+ */
+function toShardStatusName(status: Status | undefined): ShardStatusName {
+    switch (status) {
+        case Status.Ready:
+            return "ready";
+        case Status.Reconnecting:
+            return "reconnecting";
+        case Status.Idle:
+            return "idle";
+        case undefined:
+            return "unknown";
+        default:
+            return "connecting";
+    }
+}
+
+function buildHeartbeat(client: Client<true>, shardId: number): ShardHeartbeat {
+    // This shard's own WebSocketShard rather than the manager average, so a fleet of several shards
+    // does not report one blended ping for all of them.
+    const ws = client.ws.shards.get(shardId);
+    return {
+        shardId,
+        status: toShardStatusName(ws?.status),
+        pingMs: ws ? Math.round(ws.ping) : null,
+        guilds: client.guilds.cache.size,
+        uptimeMs: client.uptime ?? 0,
+        memoryRssMb: Math.round(process.memoryUsage().rss / BYTES_PER_MB),
+    };
+}
 
 /**
  * Clears all active intervals on shard shutdown
@@ -57,6 +93,7 @@ export default {
         if (client.shard) {
             readyString += ` Shard #${shardId}`;
 
+            setupHeartbeat(client, shardId);
             setupBackgroundTasks(client, shardId);
         }
 
@@ -64,6 +101,26 @@ export default {
         setPresence(client);
     },
 };
+
+/**
+ * Reports this shard's own state up to the manager on an interval.
+ *
+ * Level-sampled, unlike the manager's lifecycle events: when this stops arriving, the manager can
+ * see a wedged shard that never emitted a death event. The payload is built here, in the shard's
+ * own scope, and sent as plain data - never through broadcastEval, whose callbacks run in a foreign
+ * context where these imports do not exist.
+ */
+function setupHeartbeat(client: Client<true>, shardId: number): void {
+    const intervalId = setInterval(() => {
+        try {
+            client.shard?.send({ type: "shardHeartbeat", payload: buildHeartbeat(client, shardId) });
+        } catch (err) {
+            logger.error(`[${shardId}] Heartbeat send failed: ${err instanceof Error ? err.message : String(err)}`);
+        }
+    }, HEARTBEAT_INTERVAL_MS);
+
+    activeIntervals.push(intervalId);
+}
 
 /**
  * Sets up background tasks for arena tracking, guild updates, and event checking

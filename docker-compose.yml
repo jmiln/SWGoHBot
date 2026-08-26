@@ -51,6 +51,10 @@ services:
       # is tini's documented env equivalent of -g: signal the whole process group, so every shard
       # runs its own gracefulShutdown and flushes command stats, as pm2's treekill does today.
       TINI_KILL_PROCESS_GROUP: "1"
+      # Loopback inside a container is that container's own, so the healthcheck and the published
+      # port could not reach it. The host-side 127.0.0.1 prefix below is what keeps this off the
+      # network.
+      SHARD_STATUS_HOST: 0.0.0.0
     init: true
     # pm2 currently gives the shards 1600ms and most do not finish closing Mongo. 15s is generous.
     stop_grace_period: 15s
@@ -63,8 +67,18 @@ services:
         condition: service_completed_successfully
     volumes:
       - ${DATA_DIR:-./data}:/app/data:ro
-    # No healthcheck: the bot exposes no HTTP surface, and Docker cannot see whether a Discord
-    # gateway connection is live. A check that cannot fail correctly is worse than none.
+    ports:
+      - "127.0.0.1:${SHARD_STATUS_PORT:-3810}:${SHARD_STATUS_PORT:-3810}"
+    healthcheck:
+      # Fails only on total fleet loss, which is the one case restarting fixes. A single sick shard
+      # shows in /status and is left to the ShardingManager's own respawn, since restarting here
+      # would kill every healthy shard to fix one.
+      test: ["CMD", "node", "-e", "fetch('http://localhost:'+(process.env.SHARD_STATUS_PORT||3810)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      # Past the 60s Manager.spawn timeout with room to spare. /health reports 200 while starting,
+      # so this only has to outlast the spawn itself.
+      start_period: 180s
 
   eventserve:
     image: ghcr.io/jmiln/swgohbot:${IMAGE_TAG:-latest}
