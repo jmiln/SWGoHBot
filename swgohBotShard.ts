@@ -67,11 +67,19 @@ async function formatSpawnError(err: unknown): Promise<string> {
     return err instanceof Error ? err.message : String(err);
 }
 
-const statusServer = await startShardStatusServer(registry, {
-    port: env.SHARD_STATUS_PORT,
-    host: env.SHARD_STATUS_HOST,
-});
-console.log(`Shard status endpoint on ${statusServer.url}`);
+// Diagnostics must never be able to stop the bot: this is awaited before spawn, so an occupied
+// port would otherwise mean no shards at all, and `restart: unless-stopped` would make that a
+// loop. Losing the endpoint costs visibility; losing the shards costs the service.
+try {
+    const statusServer = await startShardStatusServer(registry, {
+        port: env.SHARD_STATUS_PORT,
+        host: env.SHARD_STATUS_HOST,
+    });
+    console.log(`Shard status endpoint on ${statusServer.url}`);
+} catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`Shard status endpoint failed to start, continuing without it: ${message}`);
+}
 
 // Give it a large timeout since it refuses to work otherwise
 Manager.spawn({ timeout: 60000 }).catch(async (err) => {

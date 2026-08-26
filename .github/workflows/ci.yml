@@ -100,6 +100,46 @@ jobs:
       - name: swapiServe warns when the control API is unauthenticated and exposed
         run: docker logs swapiserve-ci 2>&1 | grep -q 'SWAPI_SERVE_CONTROL_SECRET'
 
+      # The shard manager itself cannot be smoke-tested: Manager.spawn fails against a dummy token
+      # and the process exits, racing the probe. So the status surface is started directly, which
+      # is what this needs to prove anyway - that the module resolves inside the image (nothing in
+      # .dockerignore lost it) and binds from environment alone.
+      #
+      # curl -fsS requires a 2xx, so this also pins the startup rule: /health must answer 200 while
+      # the fleet is starting. If that ever regressed to 503, every deploy would go unhealthy for
+      # the length of the spawn.
+      - name: shardStatus starts and serves from environment alone
+        run: |
+          docker run -d --name shardstatus-ci --network host \
+            -e SHARD_STATUS_HOST=0.0.0.0 \
+            -e SHARD_STATUS_PORT=3898 \
+            -e SWAPI_CLIENT_URL=http://localhost:9998 \
+            -e SWAPI_STATCALC_URL=http://localhost:9997 \
+            -e SWAPI_ACCESS_KEY=ci \
+            -e SWAPI_SECRET_KEY=ci \
+            -e MONGODB_URL=mongodb://localhost:27017 \
+            -e DISCORD_TOKEN=ci \
+            -e DISCORD_CLIENT_ID=0 \
+            -e DISCORD_OWNER_ID=0 \
+            swgohbot:ci node --input-type=module -e "
+              import { ShardRegistry } from '/app/modules/shardStatus/registry.ts';
+              import { startShardStatusServer } from '/app/modules/shardStatus/server.ts';
+              import { systemClock } from '/app/services/swapiServe/clock.ts';
+              const registry = new ShardRegistry(systemClock);
+              registry.registerShard(0);
+              await startShardStatusServer(registry, {
+                port: Number(process.env.SHARD_STATUS_PORT),
+                host: process.env.SHARD_STATUS_HOST,
+              });
+            "
+          for i in $(seq 1 30); do
+            if curl -fsS localhost:3898/health | grep -q '"state":"starting"'; then echo "serving"; exit 0; fi
+            sleep 2
+          done
+          echo "shardStatus never served /health" >&2
+          docker logs shardstatus-ci
+          exit 1
+
       # eventServe's init() connects to MongoDB before it listens, so it needs one to start.
       - name: Start MongoDB for eventServe
         run: docker run -d --name mongo-ci --network host mongo:8
@@ -137,6 +177,7 @@ jobs:
         if: failure()
         run: |
           docker logs swapiserve-ci || true
+          docker logs shardstatus-ci || true
           docker logs eventserve-ci || true
 
   publish:
