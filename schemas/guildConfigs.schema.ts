@@ -9,6 +9,34 @@ export const GuildAliasSchema = z.object({
 });
 
 /**
+ * Languages the bot itself can be displayed in. The single source of truth for both the
+ * BotLanguage type and the /setconf language choices.
+ */
+export const BOT_LANGUAGES = ["en_US", "de_DE", "es_SP", "ko_KR", "pt_BR"] as const;
+export type BotLanguage = (typeof BOT_LANGUAGES)[number];
+
+/**
+ * Languages in-game data can be fetched in. A subset of SWAPILang (types/swapi_types.ts),
+ * which also carries the lowercase forms the API itself takes.
+ */
+export const SWGOH_LANGUAGES = [
+    "ENG_US",
+    "GER_DE",
+    "SPA_XM",
+    "FRE_FR",
+    "RUS_RU",
+    "POR_BR",
+    "KOR_KR",
+    "ITA_IT",
+    "TUR_TR",
+    "CHS_CN",
+    "CHT_CN",
+    "IND_ID",
+    "JPN_JP",
+    "THA_TH",
+] as const;
+
+/**
  * Schema for guild configuration settings
  */
 export const GuildConfigSettingsSchema = z.object({
@@ -21,8 +49,8 @@ export const GuildConfigSettingsSchema = z.object({
     timezone: z.string(),
     announceChan: z.string(),
     eventCountdown: z.array(z.number()),
-    language: z.string(),
-    swgohLanguage: z.string(),
+    language: z.enum(BOT_LANGUAGES),
+    swgohLanguage: z.enum(SWGOH_LANGUAGES),
     shardtimeVertical: z.boolean(),
 });
 
@@ -153,3 +181,25 @@ export type GuildConfigEvent = z.infer<typeof GuildConfigEventSchema>;
 export type GuildConfigPoll = z.infer<typeof GuildConfigPollSchema>;
 export type GuildConfigTWList = z.infer<typeof GuildConfigTWListSchema>;
 export type GuildAlias = z.infer<typeof GuildAliasSchema>;
+
+/**
+ * The settings a guild gets before it has saved any of its own. The annotation is the
+ * enforcement: miss a key or a language code here and this fails to compile.
+ *
+ * Kept in this file, rather than beside the /setconf option metadata, so that consumers
+ * outside this repo (the website) can import it without pulling in discord.js.
+ */
+export const defaultGuildSettings: GuildConfigSettings = {
+    adminRole: ["Administrator"],
+    enableWelcome: false,
+    welcomeMessage: "Say hello to {{user}}, everyone! We all need a warm welcome sometimes :D",
+    enablePart: false,
+    partMessage: "Goodbye {{user}}, thanks for stopping by!",
+    timezone: "America/Los_Angeles",
+    announceChan: "",
+    useEventPages: false,
+    eventCountdown: [2880, 1440, 720, 360, 180, 120, 60, 30, 10, 5],
+    language: "en_US",
+    swgohLanguage: "ENG_US",
+    shardtimeVertical: false,
+};

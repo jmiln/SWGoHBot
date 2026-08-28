@@ -2,9 +2,9 @@ import type { APIEmbed, ChatInputCommandInteraction, Client, Message } from "dis
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
 import { PRIORITY, type Priority } from "../data/constants/swapiServe.ts";
 import patreonModule from "../data/patreon.ts";
+import { defaultGuildSettings } from "../schemas/guildConfigs.schema.ts";
 import type { RawGuild, SWAPIGuild, SWAPIPlayer } from "../types/swapi_types.ts";
 import type {
     ActivePatron,
@@ -1253,13 +1253,13 @@ class PatreonFuncs {
 
             if (refreshTime > nowTime) {
                 // It's in the future
-                timeUntilReset = formatDuration(refreshTime - nowTime, Language.getLanguages()[defaultSettings.language]);
+                timeUntilReset = formatDuration(refreshTime - nowTime, Language.getLanguages()[defaultGuildSettings.language]);
             } else {
                 // It's in the past; use modulo to find time until the next daily reset
                 // regardless of how stale the timestamp is
                 timeUntilReset = formatDuration(
                     constants.dayMS - ((nowTime - refreshTime) % constants.dayMS),
-                    Language.getLanguages()[defaultSettings.language],
+                    Language.getLanguages()[defaultGuildSettings.language],
                 );
             }
 
@@ -1480,7 +1480,7 @@ class PatreonFuncs {
 
             const timeLeft = getPayoutTimeLeft(player.poOffset, arena);
             player.duration = Math.floor(timeLeft / constants.minMS);
-            player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
+            player.timeTil = `${formatDuration(timeLeft, Language.getLanguages()[defaultGuildSettings.language])} until payout.`;
         }
         return players.sort((a, b) => ((a.duration ?? 0) > (b.duration ?? 0) ? 1 : -1));
     }
@@ -1640,7 +1640,9 @@ class PatreonFuncs {
             [config.alertType, config.altType].includes(user.arenaAlert.arena as "char" | "fleet" | "both")
         ) {
             const payoutTime =
-                timeLeft === null ? null : `${formatDuration(timeLeft, Language.getLanguages()[defaultSettings.language])} until payout.`;
+                timeLeft === null
+                    ? null
+                    : `${formatDuration(timeLeft, Language.getLanguages()[defaultGuildSettings.language])} until payout.`;
 
             try {
                 // Fetch inside the try so a transient users.fetch failure is contained here and the

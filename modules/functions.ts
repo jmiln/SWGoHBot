@@ -15,7 +15,7 @@ import {
 import Language from "../base/Language.ts";
 import { env } from "../config/config.ts";
 import constants from "../data/constants/constants.ts";
-import type { GuildConfigSettings } from "../types/guildConfig_types.ts";
+import type { GuildConfigSettings } from "../schemas/guildConfigs.schema.ts";
 import type { SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { ArenaPlayer, BotDefaultSettings, BotUnit, CommandContext, UserConfig } from "../types/types.ts";
 import logger from "./Logger.ts";

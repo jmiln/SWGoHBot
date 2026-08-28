@@ -2,12 +2,12 @@ import { inspect } from "node:util";
 import { type ChatInputCommandInteraction, DiscordAPIError, MessageFlags } from "discord.js";
 import Language from "../../base/Language.ts";
 import type slashCommand from "../../base/slashCommand.ts";
-import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
 import commandStats from "../../modules/commandStats.ts";
 import { permLevel } from "../../modules/functions.ts";
 import { getGuildSettings } from "../../modules/guildConfig/settings.ts";
 import logger from "../../modules/Logger.ts";
 import userReg from "../../modules/users.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import type { CommandContext } from "../../types/types.ts";
 import { isIgnoredError, logErr, sendErrorReply } from "./errors.ts";
 
@@ -20,8 +20,8 @@ export async function handleChatInputCommand(interaction: ChatInputCommandIntera
 
     // Load user language settings
     const user = await userReg.getUser(interaction.user.id);
-    const selectedLanguage = user?.lang?.language || defaultSettings.language;
-    const swgohLanguage = user?.lang?.swgohLanguage || defaultSettings.swgohLanguage;
+    const selectedLanguage = user?.lang?.language || defaultGuildSettings.language;
+    const swgohLanguage = user?.lang?.swgohLanguage || defaultGuildSettings.swgohLanguage;
 
     const language = Language.getLanguageOrDefault(selectedLanguage);
 

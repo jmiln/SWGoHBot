@@ -1,27 +1,27 @@
-import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
+import { defaultGuildSettings, type GuildConfigSettings } from "../../schemas/guildConfigs.schema.ts";
 import { guildConfigDB } from "./db.ts";
 
 // Get the guildsettings from the mongo db
 export async function getGuildSettings({ guildId }: { guildId?: string }) {
-    if (!guildId) return defaultSettings;
+    if (!guildId) return defaultGuildSettings;
 
     const guildSettings = await guildConfigDB.getOne({ guildId: guildId }, { settings: 1 });
-    if (!guildSettings) return defaultSettings;
-    return { ...defaultSettings, ...(guildSettings.settings as object) };
+    if (!guildSettings) return defaultGuildSettings;
+    return { ...defaultGuildSettings, ...(guildSettings.settings as object) };
 }
 
-// Set any guildSettings that do not match the defaultSettings in the bot's config
-export async function setGuildSettings({ guildId, settings }: { guildId: string; settings: typeof defaultSettings }) {
+// Set any guildSettings that do not match the defaultGuildSettings in the bot's config
+export async function setGuildSettings({ guildId, settings }: { guildId: string; settings: GuildConfigSettings }) {
     // Filter out any settings that are the same as the defaults
     const customSettings: Record<string, unknown> = {};
 
-    for (const key of Object.keys(defaultSettings) as (keyof typeof defaultSettings)[]) {
-        const configVal = defaultSettings[key];
+    for (const key of Object.keys(defaultGuildSettings) as (keyof GuildConfigSettings)[]) {
+        const configVal = defaultGuildSettings[key];
         if (Array.isArray(configVal)) {
             if (!arrayEquals(configVal, settings[key])) {
                 customSettings[key] = settings[key];
             }
-        } else if (defaultSettings[key] !== settings[key]) {
+        } else if (defaultGuildSettings[key] !== settings[key]) {
             customSettings[key] = settings[key];
         }
     }

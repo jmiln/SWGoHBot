@@ -8,7 +8,7 @@ import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import { PatreonFuncs, buildRankSnapshot, classifySendError, shouldWriteHistory, updateArenaHistory, collectAllyCodes, hydrateWatchAccounts, isInWarnWindow, payoutCycleInfo } from "../../modules/patreonFuncs.ts";
 import userReg from "../../modules/users.ts";
 import Language from "../../base/Language.ts";
-import { defaultSettings } from "../../data/constants/defaultGuildConf.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import constants from "../../data/constants/constants.ts";
 import { createMockLanguage } from "../mocks/index.ts";
 import type { ActivePatron, ArenaPlayer, ArenaWatchAcct, ArenaWatchConfig, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
@@ -49,7 +49,7 @@ describe("PatreonFuncs Module", () => {
         } as unknown as Client<true>;
 
         // handleArenaAlerts() formats payout time via the default registered language
-        Language.registerLanguage(defaultSettings.language, createMockLanguage());
+        Language.registerLanguage(defaultGuildSettings.language, createMockLanguage());
 
         patreonFuncs = new PatreonFuncs();
         patreonFuncs.init(mockClient);

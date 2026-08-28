@@ -1,5 +1,6 @@
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
 import type Language from "../base/Language.ts";
+import type { BotLanguage } from "../schemas/guildConfigs.schema.ts";
 import type { ArenaWatchConfig } from "../schemas/users.schema.ts";
 import type { SWAPILang } from "./swapi_types.ts";
 
@@ -15,7 +16,7 @@ export interface OperationResult {
     error: string | null;
 }
 
-export type BotLanguage = "en_US" | "de_DE" | "es_SP" | "ko_KR" | "pt_BR";
+export type { BotLanguage };
 export type UnitSide = "light" | "dark" | "neutral";
 
 export interface JourneyName {

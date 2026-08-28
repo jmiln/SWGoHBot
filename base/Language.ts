@@ -1,4 +1,4 @@
-import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
+import { defaultGuildSettings } from "../schemas/guildConfigs.schema.ts";
 
 export default class Language {
     // Static registry for all language instances
@@ -40,9 +40,9 @@ export default class Language {
      * Throws if neither the requested code nor the default language is registered.
      */
     static getLanguageOrDefault(code: string): Language {
-        const lang = Language._languages[code] || Language._languages[defaultSettings.language];
+        const lang = Language._languages[code] || Language._languages[defaultGuildSettings.language];
         if (!lang) {
-            throw new Error(`No language registered for "${code}" or default "${defaultSettings.language}"`);
+            throw new Error(`No language registered for "${code}" or default "${defaultGuildSettings.language}"`);
         }
         return lang;
     }
@@ -56,7 +56,7 @@ export default class Language {
 
     get(str: string, ...args: (string | number | boolean | object)[]): string {
         if (!this.language[str]) {
-            const defLang = Language._languages[defaultSettings.language];
+            const defLang = Language._languages[defaultGuildSettings.language];
             let res = "";
             try {
                 if (!args.length) {

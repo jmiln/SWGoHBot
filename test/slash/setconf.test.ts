@@ -47,7 +47,7 @@ describe("SetConf", () => {
     });
 
     it("should return error when set subcommand has no options to update", async () => {
-        // getGuildSettings returns defaultSettings (not null), set subcommand with no options → nothing to update
+        // getGuildSettings returns defaultGuildSettings (not null), set subcommand with no options -> nothing to update
         const interaction = createMockInteraction({
             optionsData: { _subcommand: "set" },
         });

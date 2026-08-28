@@ -1,7 +1,8 @@
 import type { Client } from "discord.js";
 import Language from "../base/Language.ts";
 import { getGuildSettings } from "../modules/guildConfig/settings.ts";
-import type { GuildConfigEvent, GuildConfigEventWithGuild, GuildConfigSettings } from "../types/guildConfig_types.ts";
+import type { GuildConfigSettings } from "../schemas/guildConfigs.schema.ts";
+import type { GuildConfigEvent, GuildConfigEventWithGuild } from "../types/guildConfig_types.ts";
 import { formatDuration } from "./functions.ts";
 import { deleteGuildEvent, getGuildEvents, setEvents } from "./guildConfig/events.ts";
 import logger from "./Logger.ts";

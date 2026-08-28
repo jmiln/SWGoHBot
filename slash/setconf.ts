@@ -6,7 +6,7 @@ import {
     InteractionContextType,
 } from "discord.js";
 import Command from "../base/slashCommand.ts";
-import { typedDefaultSettings } from "../data/constants/defaultGuildConf.ts";
+import { setconfOptions } from "../data/constants/setconfOptions.ts";
 import { characterNameList, characters, shipNameList, ships } from "../data/constants/units.ts";
 import { isValidZone } from "../modules/functions.ts";
 import { getGuildAliases } from "../modules/guildConfig/aliases.ts";
@@ -93,7 +93,7 @@ const options = {
 };
 
 // Check out each option in the config file, and set it up in each subarg as needed
-for (const [key, value] of Object.entries(typedDefaultSettings)) {
+for (const [key, value] of Object.entries(setconfOptions)) {
     // Fill out the options based on the default settings in the config file
     const optOut: OptOut = {
         name: key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`),
@@ -279,7 +279,7 @@ export default class SetConf extends Command {
         const settingsIn: Record<string, unknown> = {};
         const errors: string[] = [];
         const changeLog: string[] = [];
-        for (const [key, defConf] of Object.entries(typedDefaultSettings)) {
+        for (const [key, defConf] of Object.entries(setconfOptions)) {
             const optionKey = key.replace(/[A-Z]/g, (char) => `_${char.toLowerCase()}`);
             const keyType = defConf?.type;
             let settingStr: string | number | boolean | null = null;

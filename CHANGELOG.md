@@ -5,6 +5,25 @@ All notable changes to this project are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **A failure to bind the shard status endpoint no longer stops the bot starting.** It is awaited
+  before `Manager.spawn`, so an occupied port previously meant no shards spawned at all, and
+  `restart: unless-stopped` would turn that into a loop. The bot would have been down because its
+  diagnostics could not start. It now logs and continues: losing the endpoint costs visibility,
+  losing the shards costs the service.
+
+### Added
+
+- CI smoke test for the shard status surface, matching the ones swapiServe and eventServe already
+  have. It starts the module directly rather than booting the shard manager, because
+  `Manager.spawn` fails against a dummy token and exits before a probe could land. Using
+  `curl -fsS` also pins the startup rule: `/health` must answer `200` while the fleet is
+  `starting`, since a regression to `503` there would make every deploy report unhealthy for the
+  length of the spawn.
+
 ## [4.2.0] - 2026-08-25
 
 ### Added

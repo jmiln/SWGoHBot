@@ -1,6 +1,5 @@
-import type { ApplicationCommandOptionType } from "discord.js";
-import type { SWAPILang } from "./swapi_types.ts";
-import type { BotLanguage, GuildAlias, OperationResult } from "./types.ts";
+import type { GuildConfigSettings } from "../schemas/guildConfigs.schema.ts";
+import type { GuildAlias, OperationResult } from "./types.ts";
 
 export interface Strike {
     id: string;
@@ -30,29 +29,6 @@ export interface GuildConfig {
     patreonSettings: GuildConfigPatreonSettings;
     twList: GuildConfigTWList;
     strikes: PlayerStrikes[];
-}
-export interface GuildConfigSettings {
-    useEventPages?: boolean;
-    adminRole: string[];
-    enableWelcome: boolean;
-    welcomeMessage: string;
-    enablePart: boolean;
-    partMessage: string;
-    timezone: string;
-    announceChan: string;
-    eventCountdown: number[];
-    language: BotLanguage;
-    swgohLanguage: SWAPILang;
-    shardtimeVertical: boolean;
-}
-export interface TypedDefaultSettings {
-    [key: string]: {
-        value: string | string[] | number[] | boolean;
-        type: ApplicationCommandOptionType;
-        description: string;
-        choices?: string[];
-        isArray?: boolean;
-    };
 }
 export interface GuildConfigShardTimes {
     times: {

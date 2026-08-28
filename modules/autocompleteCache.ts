@@ -1,5 +1,5 @@
 import Language from "../base/Language.ts";
-import { defaultSettings } from "../data/constants/defaultGuildConf.ts";
+import { defaultGuildSettings } from "../schemas/guildConfigs.schema.ts";
 import type { SWAPILang } from "../types/swapi_types.ts";
 import type { ArenaPlayer, GuildAlias } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
@@ -100,8 +100,8 @@ export async function getCachedUserLang(userId: string): Promise<UserLang> {
 
     const user = await userReg.getUser(userId);
     const value: UserLang = {
-        language: Language.getLanguageOrDefault(user?.lang?.language || defaultSettings.language),
-        swgohLanguage: (user?.lang?.swgohLanguage || defaultSettings.swgohLanguage) as SWAPILang,
+        language: Language.getLanguageOrDefault(user?.lang?.language || defaultGuildSettings.language),
+        swgohLanguage: (user?.lang?.swgohLanguage || defaultGuildSettings.swgohLanguage) as SWAPILang,
     };
     userLangCache.set(userId, value);
     setTimeout(() => userLangCache.delete(userId), AUTOCOMPLETE_CACHE_TTL_MS).unref();
