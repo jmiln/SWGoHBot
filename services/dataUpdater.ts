@@ -2,7 +2,6 @@ import { mkdir, readdir, unlink, writeFile } from "node:fs/promises";
 import { availableParallelism } from "node:os";
 import path from "node:path";
 import { inspect } from "node:util";
-import { eachLimit } from "async";
 import { ApplicationCommandOptionType } from "discord.js";
 import { type AnyBulkWriteOperation, MongoClient } from "mongodb";
 import { FixedQueue, Piscina } from "piscina";
@@ -14,6 +13,7 @@ import { createGahistoryClient } from "../modules/counters/gahistoryClient.ts";
 import databaseCleanup from "../modules/databaseCleanup.ts";
 import { readJSON } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
+import { eachLimit } from "../modules/utils/concurrency.ts";
 import { toProperCase } from "../modules/utils/text.ts";
 
 const DEBUG_LOGS = process.argv.includes("--debug") || false;

@@ -1,12 +1,12 @@
 import os from "node:os";
 import { Worker } from "node:worker_threads";
 import type ComlinkStub from "@swgoh-utils/comlink";
-import { eachLimit } from "async";
 import { env } from "../config/config.ts";
 import { PRIORITY, type Priority } from "../data/constants/swapiServe.ts";
 import statEnums from "../data/statEnum.ts";
 import cache from "../modules/cache.ts";
 import { convertMS, readJSON } from "../modules/functions.ts";
+import { eachLimit } from "../modules/utils/concurrency.ts";
 import type { PlayerDatacron } from "../types/datacron_types.ts";
 import type {
     ComlinkAbility,

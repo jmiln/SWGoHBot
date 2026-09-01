@@ -1,7 +1,7 @@
-import { eachLimit } from "async";
 import type { CounterMetadata } from "../../schemas/counters.schema.ts";
 import cache from "../cache.ts";
 import logger from "../Logger.ts";
+import { eachLimit } from "../utils/concurrency.ts";
 import { type Accumulator, type BuildOptions, buildCounterDocs, foldPlayer } from "./counterAggregator.ts";
 import { readMetadata, writeMetadata } from "./counterMetadata.ts";
 import type { GahistoryClient, InfoDoc, Mode } from "./gahistoryClient.ts";
