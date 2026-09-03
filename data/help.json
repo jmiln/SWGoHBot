@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "generatedAt": "2026-08-19T22:55:22.975Z",
+        "generatedAt": "2026-09-02T11:39:43.144Z",
         "totalCommands": 49,
         "categories": 5
     },
@@ -3085,7 +3085,7 @@
                 "name": "need",
                 "description": "Shows your progress towards 7* characters from a faction or shop.",
                 "usage": [
-                    "**/need** [allycode] [battle] [keyword] [shop] [faction_group_1] [faction_group_2]"
+                    "**/need** [allycode] [battle] [keyword] [shop] [faction]"
                 ],
                 "options": [
                     {
@@ -3172,170 +3172,10 @@
                         ]
                     },
                     {
-                        "name": "faction_group_1",
+                        "name": "faction",
                         "description": "Which faction you want to check the progress on",
                         "type": 3,
-                        "choices": [
-                            {
-                                "name": "Galactic Legend",
-                                "value": "galactic_legend"
-                            },
-                            {
-                                "name": "Leader",
-                                "value": "role_leader"
-                            },
-                            {
-                                "name": "Light Side",
-                                "value": "alignment_light"
-                            },
-                            {
-                                "name": "Dark Side",
-                                "value": "alignment_dark"
-                            },
-                            {
-                                "name": "501st",
-                                "value": "affiliation_501st"
-                            },
-                            {
-                                "name": "Attacker",
-                                "value": "role_attacker"
-                            },
-                            {
-                                "name": "Bad Batch",
-                                "value": "affiliation_badbatch"
-                            },
-                            {
-                                "name": "Bounty Hunter",
-                                "value": "profession_bountyhunter"
-                            },
-                            {
-                                "name": "Clone Trooper",
-                                "value": "profession_clonetrooper"
-                            },
-                            {
-                                "name": "Droid",
-                                "value": "species_droid"
-                            },
-                            {
-                                "name": "Empire",
-                                "value": "affiliation_empire"
-                            },
-                            {
-                                "name": "Ewok",
-                                "value": "species_ewok"
-                            },
-                            {
-                                "name": "First Order",
-                                "value": "affiliation_firstorder"
-                            },
-                            {
-                                "name": "Fleet Commander",
-                                "value": "character_fleetcommander"
-                            },
-                            {
-                                "name": "Galactic Republic",
-                                "value": "affiliation_republic"
-                            },
-                            {
-                                "name": "Geonosian",
-                                "value": "species_geonosian"
-                            },
-                            {
-                                "name": "Healer",
-                                "value": "role_healer"
-                            },
-                            {
-                                "name": "Imperial Remnant",
-                                "value": "affiliation_imperialremnant"
-                            },
-                            {
-                                "name": "Imperial Trooper",
-                                "value": "affiliation_imperialtrooper"
-                            },
-                            {
-                                "name": "Jawa",
-                                "value": "species_jawa"
-                            }
-                        ]
-                    },
-                    {
-                        "name": "faction_group_2",
-                        "description": "Which faction you want to check the progress on",
-                        "type": 3,
-                        "choices": [
-                            {
-                                "name": "Jedi",
-                                "value": "profession_jedi"
-                            },
-                            {
-                                "name": "Mandalorian",
-                                "value": "affiliation_mandalorian"
-                            },
-                            {
-                                "name": "Nightsister",
-                                "value": "affiliation_nightsisters"
-                            },
-                            {
-                                "name": "Old Republic",
-                                "value": "affiliation_oldrepublic"
-                            },
-                            {
-                                "name": "Phoenix",
-                                "value": "affiliation_phoenix"
-                            },
-                            {
-                                "name": "Rebel",
-                                "value": "affiliation_rebels"
-                            },
-                            {
-                                "name": "Rebel Fighter",
-                                "value": "affiliation_rebelfighter"
-                            },
-                            {
-                                "name": "Resistance",
-                                "value": "affiliation_resistance"
-                            },
-                            {
-                                "name": "Rogue One",
-                                "value": "affiliation_rogue_one"
-                            },
-                            {
-                                "name": "Scoundrel",
-                                "value": "profession_scoundrel"
-                            },
-                            {
-                                "name": "Separaitst",
-                                "value": "affiliation_separatist"
-                            },
-                            {
-                                "name": "Sith",
-                                "value": "profession_sith"
-                            },
-                            {
-                                "name": "Sith Empire",
-                                "value": "affiliation_sithempire"
-                            },
-                            {
-                                "name": "Smuggler",
-                                "value": "profession_smuggler"
-                            },
-                            {
-                                "name": "Support",
-                                "value": "role_support"
-                            },
-                            {
-                                "name": "Tank",
-                                "value": "role_tank"
-                            },
-                            {
-                                "name": "Tusken",
-                                "value": "species_tusken"
-                            },
-                            {
-                                "name": "Unaligned Force User",
-                                "value": "unaligned_force_user"
-                            }
-                        ]
+                        "autocomplete": true
                     }
                 ],
                 "permLevel": 0,

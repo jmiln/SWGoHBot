@@ -1497,8 +1497,9 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Health x2",
-                "Offense x4"
+                "Defense x2",
+                "Defense x2",
+                "Defense x2"
             ]
         }
     },
@@ -2022,9 +2023,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Offense",
-            "circle": "Health",
-            "cross": "Potency",
+            "triangle": "Protection",
+            "circle": "Protection",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -2356,7 +2357,8 @@
             "cross": "Protection",
             "sets": [
                 "Health x2",
-                "Speed x4"
+                "Health x2",
+                "Health x2"
             ]
         }
     },
@@ -3458,11 +3460,10 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Health",
-            "cross": "Health",
+            "cross": "Offense",
             "sets": [
                 "Health x2",
-                "Health x2",
-                "Health x2"
+                "Crit. Damage x4"
             ]
         },
         "avatarName": "charui_firstorder_executioner"
@@ -3842,7 +3843,7 @@
             "diamond": "Defense",
             "triangle": "Crit. Damage",
             "circle": "Protection",
-            "cross": "Offense",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5695,9 +5696,9 @@
             "square": "Offense",
             "arrow": "Speed",
             "diamond": "Defense",
-            "triangle": "Protection",
-            "circle": "Protection",
-            "cross": "Protection",
+            "triangle": "Health",
+            "circle": "Health",
+            "cross": "Potency",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -5822,7 +5823,7 @@
             "sets": [
                 "Health x2",
                 "Health x2",
-                "Health x2"
+                "Defense x2"
             ]
         },
         "avatarName": "charui_kylo_unmasked"
@@ -6887,7 +6888,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Tenacity",
+            "cross": "Protection",
             "sets": [
                 "Health x2",
                 "Speed x4"
@@ -9145,8 +9146,8 @@
             "circle": "Protection",
             "cross": "Offense",
             "sets": [
-                "Offense x4",
-                "Tenacity x2"
+                "Health x2",
+                "Offense x4"
             ]
         },
         "avatarName": "charui_tuskenraider"
@@ -9170,7 +9171,7 @@
             "diamond": "Defense",
             "triangle": "Protection",
             "circle": "Protection",
-            "cross": "Potency",
+            "cross": "Protection",
             "sets": [
                 "Speed x4",
                 "Potency x2"
