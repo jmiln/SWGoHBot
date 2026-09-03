@@ -1,10 +1,16 @@
 import { z } from "zod";
 
 /**
+ * Longest alias a guild can set. Budgeted against Discord's 100-char cap on an autocomplete choice
+ * name, which renders as "<localized unit name> (GL) (<alias>)" - 56 + 5 + 3 + 32 = 96.
+ */
+export const MAX_ALIAS_LENGTH = 32;
+
+/**
  * Schema for guild alias entries
  */
 export const GuildAliasSchema = z.object({
-    alias: z.string(),
+    alias: z.string().max(MAX_ALIAS_LENGTH),
     defId: z.string(),
 });
 

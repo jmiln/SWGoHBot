@@ -73,6 +73,7 @@ export default class extends Language {
             BASE_ON: "ON",
             BASE_OFF: "OFF",
             BASE_NA: "N/A",
+            BASE_GL_SUFFIX: "(GL)",
 
             // Base swgohBot.js file
             BASE_LAST_EVENT_NOTIFICATION: "\n\nThis is the last instance of this event. To continue receiving this announcement, create a new event.",
@@ -1865,6 +1866,7 @@ export default class extends Language {
             COMMAND_ALIASES_FIELDS_REQUIRED: "Both fields MUST be filled in. Please try again.",
             COMMAND_ALIASES_UNIT_NOT_FOUND: (key) => `I couldn't find a matching unit for '${key}'`,
             COMMAND_ALIASES_IN_USE: (unit) => `This alias is already in use for ***${unit}***`,
+            COMMAND_ALIASES_TOO_LONG: (max) => `That alias is too long. Please keep it to ${max} characters or fewer.`,
             COMMAND_ALIASES_ADDED: (alias, unit) => `Your alias (${alias}) for ***${unit}*** has been successfully submitted`,
             COMMAND_ALIASES_SUBMIT_ERROR: (error) => `There was an issue when submitting that: \n${error}`,
             COMMAND_ALIASES_NOT_FOUND: "That isn't a current alias.",

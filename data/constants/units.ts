@@ -46,6 +46,19 @@ export function unitNameOf(defId: string, lang: SWAPILang = "eng_us"): string {
     return resolveUnitName(unitNames, defId, lang);
 }
 
+/**
+ * Display name for an autocomplete row. Unlike unitNameOf, falls back to the caller's English name
+ * rather than the raw defId, so a missing unitNames.json shows names instead of "GRANDINQUISITOR".
+ */
+export function localizedUnitName(
+    defId: string,
+    fallbackName: string,
+    lang: SWAPILang = "eng_us",
+    map: Record<string, Record<string, string>> = unitNames,
+): string {
+    return map[defId]?.[lang.toLowerCase()] ?? fallbackName;
+}
+
 /** Category id -> localized name, falling back to the requested lang -> eng_us -> the raw id. */
 export function factionNameOf(
     id: string,
@@ -55,6 +68,29 @@ export function factionNameOf(
     const byLang = map[id];
     if (!byLang) return id;
     return byLang[lang.toLowerCase()] ?? byLang.eng_us ?? id;
+}
+
+// SWGoH's codes are not BCP-47, which is what localeCompare needs to order umlauts and Korean.
+const LOCALE_TAGS: Record<string, string> = {
+    eng_us: "en-US",
+    ger_de: "de-DE",
+    spa_xm: "es-MX",
+    fre_fr: "fr-FR",
+    rus_ru: "ru-RU",
+    por_br: "pt-BR",
+    kor_kr: "ko-KR",
+    ita_it: "it-IT",
+    tur_tr: "tr-TR",
+    chs_cn: "zh-Hans-CN",
+    cht_cn: "zh-Hant-TW",
+    ind_id: "id-ID",
+    jpn_jp: "ja-JP",
+    tha_th: "th-TH",
+};
+
+/** BCP-47 tag for a SWGoH language code, or undefined so localeCompare uses default collation. */
+export function localeTagFor(lang: SWAPILang = "eng_us"): string | undefined {
+    return LOCALE_TAGS[lang.toLowerCase()];
 }
 
 // One {name, value} list per language, built on first use rather than for all 14 up front, since a
@@ -72,7 +108,7 @@ export function factionChoicesFor(
 
     const choices = Object.keys(map)
         .map((id) => ({ name: factionNameOf(id, lang, map), value: id }))
-        .sort((a, b) => a.name.localeCompare(b.name));
+        .sort((a, b) => a.name.localeCompare(b.name, localeTagFor(lang)));
     if (useCache) factionChoiceCache.set(lang, choices);
     return choices;
 }
@@ -112,14 +148,16 @@ export const journeyNames: JourneyName[] = buildJourneyNames();
 
 function mapUnitNames(units: BotUnit[], addGLSuffix = false) {
     return units.map((unit) => {
+        const isGL = !!unit.factions?.includes("Galactic Legend");
         let suffix = "";
-        if (addGLSuffix && unit.factions?.includes("Galactic Legend")) {
+        if (addGLSuffix && isGL) {
             suffix = "(GL)";
         }
         return {
             name: `${unit.name} ${suffix}`.trim(),
             defId: unit.uniqueName,
             aliases: unit.aliases || [],
+            isGL,
         };
     });
 }

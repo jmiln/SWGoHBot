@@ -20,8 +20,8 @@ export async function handleChatInputCommand(interaction: ChatInputCommandIntera
 
     // Load user language settings
     const user = await userReg.getUser(interaction.user.id);
-    const selectedLanguage = user?.lang?.language || defaultGuildSettings.language;
-    const swgohLanguage = user?.lang?.swgohLanguage || defaultGuildSettings.swgohLanguage;
+    const selectedLanguage = user?.lang?.language || guildSettings?.language || defaultGuildSettings.language;
+    const swgohLanguage = user?.lang?.swgohLanguage || guildSettings?.swgohLanguage || defaultGuildSettings.swgohLanguage;
 
     const language = Language.getLanguageOrDefault(selectedLanguage);
 

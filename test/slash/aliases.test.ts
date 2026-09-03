@@ -3,6 +3,7 @@ import { after, before, describe, it } from "node:test";
 import { MongoClient } from "mongodb";
 import {env} from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
+import { MAX_ALIAS_LENGTH } from "../../schemas/guildConfigs.schema.ts";
 import Aliases from "../../slash/aliases.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
@@ -131,6 +132,59 @@ describe("Aliases Command Functionality", () => {
             assert.ok(
                 description?.includes("COMMAND_ALIASES_UNIT_NOT_FOUND"),
                 "Expected error message about unit not found"
+            );
+        });
+
+        it("should reject an alias longer than the cap, and not store it", async () => {
+            const command = new Aliases();
+            const tooLong = "x".repeat(MAX_ALIAS_LENGTH + 1);
+
+            const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "TRIPLEZERO",
+                    alias: tooLong,
+                },
+            });
+
+            await command.run(createCommandContext({ interaction }));
+
+            const replies = (interaction as any)._getReplies();
+            assert.strictEqual(replies.length, 1, "Expected one reply");
+            assert.ok(
+                getReplyDescription(replies[0])?.includes("COMMAND_ALIASES_TOO_LONG"),
+                "Expected error message about the alias being too long",
+            );
+
+            const savedData = await cache.get(testDbName, "guildConfigs", { guildId: ALIASES_GUILD_ID }, { aliases: 1 });
+            const stored = savedData?.[0]?.aliases || [];
+            assert.ok(
+                !stored.some((al: { alias: string }) => al.alias === tooLong),
+                "An over-length alias must not reach the database",
+            );
+        });
+
+        it("should accept an alias exactly at the cap", async () => {
+            const command = new Aliases();
+            const atCap = "y".repeat(MAX_ALIAS_LENGTH);
+
+            const interaction = createMockInteraction({
+                guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
+                optionsData: {
+                    _subcommand: "add",
+                    unit: "TRIPLEZERO",
+                    alias: atCap,
+                },
+            });
+
+            await command.run(createCommandContext({ interaction }));
+
+            const savedData = await cache.get(testDbName, "guildConfigs", { guildId: ALIASES_GUILD_ID }, { aliases: 1 });
+            const stored = savedData?.[0]?.aliases || [];
+            assert.ok(
+                stored.some((al: { alias: string }) => al.alias === atCap),
+                "An alias at exactly the cap must be accepted",
             );
         });
 

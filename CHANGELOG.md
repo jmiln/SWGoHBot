@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Unit autocomplete is localized.** Every unit picker (`unit`/`character`/`ship`), the `/panic`
+  journey picker, and guild alias rows now render in the user's `swgohLanguage`. Searching matches
+  the localized name **or** the English one, since SWGoH's wikis and counters chat are English and a
+  localized-only picker would take away a lookup path players actually use. The option `value` is
+  still the defId, so no command behaviour changed. Results sort using the language's own collation
+  rather than the host default, which had been misordering umlauts and Korean.
+
+### Fixed
+
+- **Guild aliases are capped at 32 characters.** They were unbounded, and a long one could push an
+  autocomplete choice name past Discord's 100-character limit, which fails the whole response and
+  broke that guild's picker for everyone. Enforced on the `/aliases add` option, in the command, and
+  in the schema. Existing over-length aliases keep working; they are truncated for display only.
+- **`/setconf swgohLanguage` was accepted and then ignored.** The setting existed at both guild and
+  user level, but only the user's own value was ever read, so a server-wide language never took
+  effect for anyone who had not set their own. Resolution is now user, then guild, then default.
+  Guilds that set the value and never saw it work will see a visible change.
+
 ### Changed
 
 - **A failure to bind the shard status endpoint no longer stops the bot starting.** It is awaited

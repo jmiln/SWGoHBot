@@ -5,6 +5,7 @@ import type { ArenaPlayer, GuildAlias } from "../types/types.ts";
 import arenaPlayerRegistry from "./arenaPlayerRegistry.ts";
 import { buildAllyCodeChoices } from "./functions.ts";
 import { getGuildAliases } from "./guildConfig/aliases.ts";
+import { getGuildSettings } from "./guildConfig/settings.ts";
 import userReg from "./users.ts";
 
 /**
@@ -84,6 +85,7 @@ interface UserLang {
 // A quick per-user config cache: userId -> resolved languages. Each entry self-removes after a
 // short TTL via setTimeout, so a user's language change shows up on their next command once the
 // window lapses. .unref() keeps the pending timer from holding the process open.
+// Keyed userId:guildId, since the guild's swgohLanguage is part of the answer.
 const userLangCache = new Map<string, UserLang>();
 
 /**
@@ -94,17 +96,18 @@ const userLangCache = new Map<string, UserLang>();
  * and the command body agree. Deliberately NOT Discord's `interaction.locale`: that is the user's
  * client language, and would silently override the language they chose in their bot settings.
  */
-export async function getCachedUserLang(userId: string): Promise<UserLang> {
-    const cached = userLangCache.get(userId);
+export async function getCachedUserLang(userId: string, guildId?: string): Promise<UserLang> {
+    const key = `${userId}:${guildId ?? "none"}`;
+    const cached = userLangCache.get(key);
     if (cached) return cached;
 
-    const user = await userReg.getUser(userId);
+    const [user, guildSettings] = await Promise.all([userReg.getUser(userId), getGuildSettings({ guildId })]);
     const value: UserLang = {
-        language: Language.getLanguageOrDefault(user?.lang?.language || defaultGuildSettings.language),
-        swgohLanguage: (user?.lang?.swgohLanguage || defaultGuildSettings.swgohLanguage) as SWAPILang,
+        language: Language.getLanguageOrDefault(user?.lang?.language || guildSettings?.language || defaultGuildSettings.language),
+        swgohLanguage: (user?.lang?.swgohLanguage || guildSettings?.swgohLanguage || defaultGuildSettings.swgohLanguage) as SWAPILang,
     };
-    userLangCache.set(userId, value);
-    setTimeout(() => userLangCache.delete(userId), AUTOCOMPLETE_CACHE_TTL_MS).unref();
+    userLangCache.set(key, value);
+    setTimeout(() => userLangCache.delete(key), AUTOCOMPLETE_CACHE_TTL_MS).unref();
     return value;
 }
 

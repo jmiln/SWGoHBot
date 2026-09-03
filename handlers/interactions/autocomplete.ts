@@ -1,8 +1,18 @@
 import type { AutocompleteInteraction } from "discord.js";
+import type Language from "../../base/Language.ts";
 import type slashCommand from "../../base/slashCommand.ts";
-import { characterNameList, factionChoicesFor, factions, journeyNames, shipNameList } from "../../data/constants/units.ts";
+import {
+    characterNameList,
+    factionChoicesFor,
+    factions,
+    journeyNames,
+    localeTagFor,
+    localizedUnitName,
+    shipNameList,
+} from "../../data/constants/units.ts";
 import { getCachedAllyCodeChoices, getCachedGuildAliases, getCachedUserLang } from "../../modules/autocompleteCache.ts";
 import logger from "../../modules/Logger.ts";
+import type { SWAPILang } from "../../types/swapi_types.ts";
 import type { GuildAlias } from "../../types/types.ts";
 import { getCommandNames } from "../slashHandler.ts";
 import { logErr } from "./errors.ts";
@@ -27,6 +37,10 @@ const AUTOCOMPLETE_SILENT_ERRORS = ["unknown interaction", "already been acknowl
 
 const MAX_AUTOCOMPLETE_RESULTS = 24;
 
+// Discord rejects a choice name over 100 chars, which fails the whole response. Reachable with a
+// long alias beside a long localized name.
+const MAX_CHOICE_NAME_LENGTH = 100;
+
 const UNIT_OPTION_NAMES = ["unit", "character", "ship"] as const;
 type UnitOptionName = (typeof UNIT_OPTION_NAMES)[number];
 
@@ -37,6 +51,7 @@ export interface UnitAutocompleteItem {
     aliases: string[];
     isAlias?: boolean;
     alias?: string;
+    isGL?: boolean;
 }
 
 // Helper Functions
@@ -44,19 +59,28 @@ export interface UnitAutocompleteItem {
 /**
  * Filters autocomplete options based on search term
  * Searches by alias, name prefix, name contains, and then aliases array
+ *
+ * Each tier matches the localized name or the English one, so English names from the wikis still
+ * work for a user reading a localized picker.
  */
-export function filterAutocomplete(arrIn: UnitAutocompleteItem[], search: string) {
+export function filterAutocomplete(
+    arrIn: UnitAutocompleteItem[],
+    search: string,
+    lang: SWAPILang = "eng_us",
+    nameMap?: Record<string, Record<string, string>>,
+) {
     const searchTerm = search?.toLowerCase() || "";
+    const displayOf = (unit: UnitAutocompleteItem) => localizedUnitName(unit.defId, unit.name, lang, nameMap).toLowerCase();
 
     // Try prefix match first (most relevant)
     let filtered = arrIn.filter((unit) => {
         if (unit.isAlias) return unit?.alias?.toLowerCase().startsWith(searchTerm);
-        return unit?.name?.toLowerCase().startsWith(searchTerm);
+        return displayOf(unit).startsWith(searchTerm) || unit?.name?.toLowerCase().startsWith(searchTerm);
     });
 
     // Fall back to contains match
     if (!filtered.length) {
-        filtered = arrIn.filter((unit) => unit.name?.toLowerCase().includes(searchTerm));
+        filtered = arrIn.filter((unit) => displayOf(unit).includes(searchTerm) || unit.name?.toLowerCase().includes(searchTerm));
     }
 
     // Fall back to aliases array match
@@ -85,27 +109,47 @@ export function buildUnitList(optionName: UnitOptionName, aliases: GuildAlias[])
 
 /**
  * Formats unit autocomplete results
+ *
+ * The (GL) suffix comes from the language file, since localizing by defId drops the one baked into
+ * the English name. Sorting is on the localized name, so it happens after the mapping.
  */
-export function formatUnitResults(units: UnitAutocompleteItem[]) {
-    return units
-        .sort((a, b) => a.name.localeCompare(b.name))
-        .map((unit) => ({
-            name: unit.isAlias ? `${unit.name} (${unit.alias})` : unit.name,
+export function formatUnitResults(
+    units: UnitAutocompleteItem[],
+    lang: SWAPILang = "eng_us",
+    language?: Language,
+    nameMap?: Record<string, Record<string, string>>,
+) {
+    const suffix = language?.get("BASE_GL_SUFFIX") ?? "(GL)";
+    const displayed = units.map((unit) => {
+        const base = localizedUnitName(unit.defId, unit.name, lang, nameMap);
+        const withSuffix = unit.isGL ? `${base} ${suffix}` : base;
+        const name = unit.isAlias ? `${withSuffix} (${unit.alias})` : withSuffix;
+        return {
+            name: name.slice(0, MAX_CHOICE_NAME_LENGTH),
             value: unit.defId,
-        }));
+        };
+    });
+    const collator = new Intl.Collator(localeTagFor(lang));
+    return displayed.sort((a, b) => collator.compare(a.name, b.name));
 }
 
 /**
  * Processes autocomplete for unit-related options
  */
-export function processUnitAutocomplete(focusedOption: { name: string; value: string }, aliases: GuildAlias[]) {
+export function processUnitAutocomplete(
+    focusedOption: { name: string; value: string },
+    aliases: GuildAlias[],
+    lang: SWAPILang = "eng_us",
+    language?: Language,
+    nameMap?: Record<string, Record<string, string>>,
+) {
     if (!UNIT_OPTION_NAMES.includes(focusedOption.name as UnitOptionName)) {
         return [];
     }
 
     const unitList = buildUnitList(focusedOption.name as UnitOptionName, aliases);
-    const filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase());
-    return formatUnitResults(filtered);
+    const filtered = filterAutocomplete(unitList, focusedOption.value?.toLowerCase(), lang, nameMap);
+    return formatUnitResults(filtered, lang, language, nameMap);
 }
 
 /**
@@ -114,23 +158,27 @@ export function processUnitAutocomplete(focusedOption: { name: string; value: st
 export async function handleAutocomplete(interaction: AutocompleteInteraction, cmd: slashCommand): Promise<void> {
     const focusedOption = interaction.options.getFocused(true);
 
-    // If command has custom autocomplete handler, use it. Resolve the user's language here (only on
-    // this branch, so the hot unit-autocomplete default path below pays nothing) so the picker can
-    // localize and query game data the same way the command body will.
-    if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
-        const context = await getCachedUserLang(interaction.user.id);
-        await cmd.autocomplete(interaction, focusedOption, context);
-        return;
-    }
-
-    // Otherwise, handle default autocomplete
     let filtered: Array<{ name: string; value: string }> = [];
 
     try {
+        // Inside the try: interactionCreate.ts does not catch, so a failure here must not leave the
+        // interaction unanswered.
+        const context = await getCachedUserLang(interaction.user.id, interaction?.guild?.id);
+        const { swgohLanguage, language } = context;
+
+        if (cmd?.autocomplete && typeof cmd.autocomplete === "function") {
+            await cmd.autocomplete(interaction, focusedOption, context);
+            return;
+        }
+
         if (interaction.commandName === "panic") {
             // Process the autocompletions for the /panic command
-            const journeyFiltered = filterAutocomplete(journeyNames as UnitAutocompleteItem[], focusedOption.value?.toLowerCase());
-            filtered = journeyFiltered.map((unit) => ({ name: unit.name, value: unit.defId }));
+            const journeyFiltered = filterAutocomplete(
+                journeyNames as UnitAutocompleteItem[],
+                focusedOption.value?.toLowerCase(),
+                swgohLanguage,
+            );
+            filtered = formatUnitResults(journeyFiltered, swgohLanguage, language);
         } else if (focusedOption.name === "command") {
             // Process command name autocomplete
             const commandNames = getCommandNames();
@@ -142,9 +190,7 @@ export async function handleAutocomplete(interaction: AutocompleteInteraction, c
 
             if (CATEGORY_ID_FACTION_COMMANDS.includes(interaction.commandName)) {
                 // These query the db by category id, so the value has to be the id rather than the
-                // display name. Resolving the language here rather than at the top keeps the hot
-                // unit-autocomplete path below free of the lookup.
-                const { swgohLanguage } = await getCachedUserLang(interaction.user.id);
+                // display name.
                 filtered = factionChoicesFor(swgohLanguage).filter((faction) => faction.name.toLowerCase().includes(searchKey));
             } else {
                 // Use factions array for other commands (like grandarena)
@@ -164,7 +210,7 @@ export async function handleAutocomplete(interaction: AutocompleteInteraction, c
             // Process unit/character/ship autocomplete - the only path that needs guild
             // aliases, served from a short-TTL cache so typing doesn't re-query per keystroke
             const aliases = await getCachedGuildAliases(interaction?.guild?.id);
-            filtered = processUnitAutocomplete(focusedOption, aliases);
+            filtered = processUnitAutocomplete(focusedOption, aliases, swgohLanguage, language);
         }
     } catch (err) {
         logErr(`[interactionCreate, autocomplete, cmd=${interaction.commandName}] Autocomplete error: ${String(err)}`);

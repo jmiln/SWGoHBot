@@ -7,9 +7,12 @@ import {
     AUTOCOMPLETE_CACHE_TTL_MS,
     getCachedAllyCodeChoices,
     getCachedGuildAliases,
+    getCachedUserLang,
     invalidateAllyCodeCache,
 } from "../../modules/autocompleteCache.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import cache from "../../modules/cache.ts";
+import { reloadLanguages } from "../../modules/functions.ts";
 import userReg from "../../modules/users.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
@@ -29,6 +32,9 @@ describe("autocompleteCache", () => {
         cache.init(client);
         userReg.init(cache);
         arenaPlayerRegistry.init(cache);
+
+        // getCachedUserLang builds a Language, which throws unless the files are registered.
+        await reloadLanguages();
 
         arenaPlayerRegistry.batchGet = async (codes: number[]) => {
             batchGetCalls++;
@@ -126,6 +132,60 @@ describe("autocompleteCache", () => {
             t.mock.timers.setTime(start + AUTOCOMPLETE_CACHE_TTL_MS + 1);
             const fresh = await getCachedGuildAliases(AC_GUILD_ID);
             assert.deepStrictEqual(fresh, aliasDoc("vader"), "after the TTL the new aliases must be fetched");
+        });
+    });
+
+    describe("getCachedUserLang() precedence", () => {
+        // File-unique ids per the shared-Mongo rule. Do not reuse the mock defaults.
+        const LANG_USER_BARE = "ac_lang_user_bare";
+        const LANG_USER_OWN = "ac_lang_user_own";
+        const LANG_USER_TWO = "ac_lang_user_two";
+        const LANG_GUILD_DE = "ac_lang_guild_de";
+        const LANG_GUILD_FR = "ac_lang_guild_fr";
+        const LANG_GUILD_UNSET = "ac_lang_guild_unset";
+        const LANG_USERS = [LANG_USER_BARE, LANG_USER_OWN, LANG_USER_TWO];
+        const LANG_GUILDS = [LANG_GUILD_DE, LANG_GUILD_FR, LANG_GUILD_UNSET];
+
+        beforeEach(async () => {
+            await client.db(db).collection("users").deleteMany({ id: { $in: LANG_USERS } });
+            await client.db(db).collection("guildConfigs").deleteMany({ guildId: { $in: LANG_GUILDS } });
+
+            // Settings live under a `settings` subdocument, which is what getGuildSettings reads.
+            await client
+                .db(db)
+                .collection("guildConfigs")
+                .insertMany([
+                    { guildId: LANG_GUILD_DE, settings: { swgohLanguage: "GER_DE" } },
+                    { guildId: LANG_GUILD_FR, settings: { swgohLanguage: "FRE_FR" } },
+                ]);
+            await client.db(db).collection("users").insertOne({ id: LANG_USER_OWN, lang: { swgohLanguage: "KOR_KR" } });
+        });
+
+        after(async () => {
+            await client.db(db).collection("users").deleteMany({ id: { $in: LANG_USERS } });
+            await client.db(db).collection("guildConfigs").deleteMany({ guildId: { $in: LANG_GUILDS } });
+        });
+
+        it("uses the guild's swgohLanguage when the user has not set one", async () => {
+            const res = await getCachedUserLang(LANG_USER_BARE, LANG_GUILD_DE);
+            assert.strictEqual(res.swgohLanguage, "GER_DE");
+        });
+
+        it("lets the user's own setting win over the guild's", async () => {
+            const res = await getCachedUserLang(LANG_USER_OWN, LANG_GUILD_DE);
+            assert.strictEqual(res.swgohLanguage, "KOR_KR");
+        });
+
+        it("falls back to the default when neither is set", async () => {
+            const res = await getCachedUserLang(LANG_USER_BARE, LANG_GUILD_UNSET);
+            assert.strictEqual(res.swgohLanguage, defaultGuildSettings.swgohLanguage);
+        });
+
+        it("keys the cache by guild so one user in two servers gets two answers", async () => {
+            const de = await getCachedUserLang(LANG_USER_TWO, LANG_GUILD_DE);
+            const fr = await getCachedUserLang(LANG_USER_TWO, LANG_GUILD_FR);
+            assert.strictEqual(de.swgohLanguage, "GER_DE");
+            assert.strictEqual(fr.swgohLanguage, "FRE_FR");
         });
     });
 

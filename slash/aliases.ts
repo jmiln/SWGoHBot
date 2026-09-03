@@ -10,6 +10,7 @@ import Command from "../base/slashCommand.ts";
 import { env } from "../config/config.ts";
 import { characters, ships } from "../data/constants/units.ts";
 import cache from "../modules/cache.ts";
+import { MAX_ALIAS_LENGTH } from "../schemas/guildConfigs.schema.ts";
 import type { CommandContext, GuildAlias } from "../types/types.ts";
 
 export default class Aliases extends Command {
@@ -36,6 +37,7 @@ export default class Aliases extends Command {
                         type: ApplicationCommandOptionType.String,
                         description: "The alias for the selected unit",
                         required: true,
+                        maxLength: MAX_ALIAS_LENGTH,
                     },
                 ],
             },
@@ -133,6 +135,10 @@ export default class Aliases extends Command {
 
         if (!unit) {
             return super.error(interaction, language.get("COMMAND_ALIASES_UNIT_NOT_FOUND", unitKey));
+        }
+
+        if (alias.length > MAX_ALIAS_LENGTH) {
+            return super.error(interaction, language.get("COMMAND_ALIASES_TOO_LONG", MAX_ALIAS_LENGTH));
         }
 
         if (guildAliases.some((al) => al.alias === alias)) {
