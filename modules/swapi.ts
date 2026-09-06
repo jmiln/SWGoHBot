@@ -268,6 +268,14 @@ export function pruneModFields(mod: SWAPIMod): SWAPIMod {
 // seconds; this only exists to kill a stalled worker before it pins its heap for the process lifetime.
 const WORKER_TIMEOUT_MS = 60_000;
 
+/** Thrown for failures the user can act on; commands may show these messages verbatim. */
+export class SwapiUserError extends Error {
+    constructor(message: string) {
+        super(message);
+        this.name = "SwapiUserError";
+    }
+}
+
 class SWAPI {
     private specialAbilityList: SWAPIUnitAbility[] | null = null;
 
@@ -1205,16 +1213,16 @@ class SWAPI {
 
     async guild(allyCode: number | string, cooldown?: PlayerCooldown, priority: Priority = PRIORITY.PUBLIC_COMMAND) {
         const thisAcStr = allyCode?.toString().replace(/[^\d]/g, "");
-        if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new Error("Please provide a valid ally code");
+        if (thisAcStr?.length !== 9 || Number.isNaN(thisAcStr)) throw new SwapiUserError("Please provide a valid ally code");
         const thisAc = Number.parseInt(thisAcStr, 10);
 
         /** Get player from cache */
         let player: SWAPIPlayer | SWAPIPlayer[] = await this.unitStats(thisAc, undefined, { force: false, priority });
         if (Array.isArray(player)) player = player[0];
         if (!player) {
-            throw new Error("I don't know this player, make sure they're registered first");
+            throw new SwapiUserError("I don't know this player, make sure they're registered first");
         }
-        if (!player.guildId) throw new Error("Sorry, that player is not in a guild");
+        if (!player.guildId) throw new SwapiUserError("Sorry, that player is not in a guild");
 
         const guild: SWAPIGuild | null = await cache.getOne(env.MONGODB_SWAPI_DB, "guilds", { id: player.guildId });
 

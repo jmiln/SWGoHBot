@@ -82,6 +82,7 @@ export default class extends Language {
 
             // Base swgohAPI
             BASE_SWGOH_NO_GUILD: "I cannot find any users for that guild. \nPlease make sure you have spelled the name correctly, and that the capitalization is correct.",
+            BASE_SWGOH_GUILD_FETCH_FAILED: "Sorry, I couldn't fetch that guild's data right now. Please try again in a bit.",
             BASE_SWGOH_MISSING_CHAR: "You need to enter a character to check for",
             BASE_SWGOH_NO_CHAR_FOUND: (character) => `I did not find any results for ${character}`,
             BASE_SWGOH_CHAR_LIST: (chars) => `Your search came up with too many results, please be more specific. \nHere's a list of the close matches.\n\`\`\`${chars}\`\`\``,

@@ -185,7 +185,7 @@ describe("GuildQuality", () => {
         const ctx = createCommandContext({ interaction });
         await command.run(ctx);
 
-        assertErrorReply(interaction, "Issue getting guild");
+        assertErrorReply(interaction, "BASE_SWGOH_GUILD_FETCH_FAILED");
     });
 
     it("should return error when unitStats fails", async () => {

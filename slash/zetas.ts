@@ -5,7 +5,7 @@ import { characters } from "../data/constants/units.ts";
 import { charListFromSearch, chunkArray, findChar, getAllyCode, msgArray, updatedFooterStr } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import swgohAPI from "../modules/swapi.ts";
+import swgohAPI, { SwapiUserError } from "../modules/swapi.ts";
 import { getBlankUnitImage } from "../modules/utils/unitImages.ts";
 import type { SWAPIGuild, SWAPIPlayer, SWAPIUnit } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
@@ -263,7 +263,7 @@ export default class Zetas extends Command {
             } catch (e) {
                 const errorMessage = e instanceof Error ? e.message : String(e);
                 logger.error(`[Zetas] Failed to get guild: ${errorMessage}`);
-                return super.error(interaction, errorMessage);
+                return super.error(interaction, e instanceof SwapiUserError ? e.message : language.get("BASE_SWGOH_GUILD_FETCH_FAILED"));
             }
             try {
                 guildGG = await swgohAPI.unitStats(

@@ -16,7 +16,7 @@ import { getGuildSettings } from "../modules/guildConfig/settings.ts";
 import { getFullTWList } from "../modules/guildConfig/twlist.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import swgohAPI from "../modules/swapi.ts";
+import swgohAPI, { SwapiUserError } from "../modules/swapi.ts";
 import userReg from "../modules/users.ts";
 import { toProperCase } from "../modules/utils/text.ts";
 import type { RawGuild, SWAPIGuild, SWAPIGuildMember, SWAPIPlayer } from "../types/swapi_types.ts";
@@ -269,10 +269,7 @@ export default class Guilds extends Command {
         } catch (e) {
             const errorMessage = e instanceof Error ? e.message : String(e);
             logger.error(`[Guilds] Failed to get guild: ${errorMessage}`);
-            return super.error(
-                interaction,
-                "Sorry, I couldn't fetch guild data right now. Please make sure you have a valid ally code and try again later.",
-            );
+            return super.error(interaction, e instanceof SwapiUserError ? e.message : language.get("BASE_SWGOH_GUILD_FETCH_FAILED"));
         }
 
         if (!guild) {

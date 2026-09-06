@@ -1,4 +1,4 @@
-import { type APIEmbedField, ApplicationCommandOptionType, codeBlock, InteractionContextType } from "discord.js";
+import { type APIEmbedField, ApplicationCommandOptionType, InteractionContextType } from "discord.js";
 import Command from "../base/slashCommand.ts";
 import constants from "../data/constants/constants.ts";
 import { characters, ships } from "../data/constants/units.ts";
@@ -14,7 +14,7 @@ import {
 } from "../modules/functions.ts";
 import logger from "../modules/Logger.ts";
 import patreonFuncs from "../modules/patreonFuncs.ts";
-import swgohAPI from "../modules/swapi.ts";
+import swgohAPI, { SwapiUserError } from "../modules/swapi.ts";
 import type { RawCharacter, SWAPIGuild, SWAPIUnit, SWAPIUnitStatTypes } from "../types/swapi_types.ts";
 import type { BotUnit, CommandContext } from "../types/types.ts";
 
@@ -238,7 +238,8 @@ export default class GuildSearch extends Command {
             if (String(e).indexOf("player is not in a guild") > -1) {
                 return super.error(interaction, language.get("COMMAND_GUILDSEARCH_NOT_IN_GUILD"));
             }
-            return super.error(interaction, `${codeBlock(String(e))}Please try again in a bit.`, {
+            logger.error(`[GuildSearch] Failed to get guild: ${e instanceof Error ? e.message : String(e)}`);
+            return super.error(interaction, e instanceof SwapiUserError ? e.message : language.get("BASE_SWGOH_GUILD_FETCH_FAILED"), {
                 title: "Something Broke while getting your guild's roster",
             });
         }
@@ -254,7 +255,8 @@ export default class GuildSearch extends Command {
         try {
             guildChar = await swgohAPI.guildUnitStats(guildAllycodes, foundUnit.uniqueName, cooldown);
         } catch (e) {
-            return super.error(interaction, codeBlock(String(e)), {
+            logger.error(`[GuildSearch] Failed to get guild units: ${e instanceof Error ? e.message : String(e)}`);
+            return super.error(interaction, language.get("BASE_SWGOH_GUILD_FETCH_FAILED"), {
                 title: "Something Broke while getting your guild's characters",
                 footer: "Please try again in a bit",
             });
