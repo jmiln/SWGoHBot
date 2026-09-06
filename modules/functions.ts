@@ -332,11 +332,8 @@ export function getUTCFromOffset(offset: number, now: number = Date.now()): numb
     return Math.floor(now / constants.dayMS) * constants.dayMS - offset * constants.minMS;
 }
 
-// An arenaWatch channel config (arena log or payout times) can only post when the arena is
-// enabled AND has somewhere to post to. Shared so the sending gate (patreonFuncs) and the
-// /arenawatch UI that reports whether it will fire can't drift apart.
-// Narrows `channel` to a string as well, so callers that go on to use it keep the narrowing
-// the old inline `enabled && channel` checks gave them.
+// Shared by the sending gate (patreonFuncs) and the /arenawatch UI so the two can't drift, and
+// narrows `channel` to a string for callers that go on to use it.
 export function isArenaChannelOn<T extends { channel?: string | null; enabled?: boolean }>(
     cfg: T | null | undefined,
 ): cfg is T & { channel: string } {

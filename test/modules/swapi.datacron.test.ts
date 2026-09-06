@@ -2,10 +2,8 @@ import assert from "node:assert";
 import { describe, it } from "node:test";
 import { mapPlayerDatacrons } from "../../modules/swapi.ts";
 
-// Field shapes verified 2026-07-21 against a live comlink payload:
-//  - statValue arrives as a STRING of scaled integers ("26807422"), not a number
-//  - stat-only affixes carry targetRule: "" (empty string), not undefined
-//  - reroll fields are retained deliberately; the follow-on analysis work (Spec B) needs them
+// Verified 2026-07-21 against a live comlink payload: statValue is a STRING of scaled integers,
+// and stat-only affixes carry targetRule: "" rather than undefined.
 describe("mapPlayerDatacrons", () => {
     it("maps comlink datacrons, keeping reroll fields for later analysis", () => {
         const out = mapPlayerDatacrons([

@@ -374,10 +374,8 @@ describe("processAbilities", () => {
 // processModResults
 // ---------------------------------------------------------------------------
 
-// The aggregate is "most common mod set and primaries per character" over roughly a hundred
-// thousand players, so it tolerates losing a slice of the sample but not most of it. Writing a
-// result built from a fraction of the players overwrites good character data with noise, and
-// before this gate existed nothing distinguished that run from a clean one.
+// Losing a slice of the ~100k-player sample is fine, losing most of it is not: the result would
+// overwrite good character data with noise.
 describe("isModSampleUsable", () => {
     it("accepts a run where every player was fetched", () => {
         assert.strictEqual(isModSampleUsable(0, 100_000), true);

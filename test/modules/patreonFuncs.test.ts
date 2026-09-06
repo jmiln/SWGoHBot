@@ -374,9 +374,8 @@ describe("PatreonFuncs Module", () => {
         });
     });
 
-    // Payout warning/result alerts are keyed to a payout cycle, not an exact minute, so a
-    // dropped fetch (transient comlink error) on the payout-warning minute no longer loses
-    // the alert - the next successful tick within the window still fires it, exactly once.
+    // Payout alerts are keyed to a cycle, not an exact minute, so a dropped fetch on the warning
+    // minute still fires on the next successful tick within the window, exactly once.
     describe("handleArenaAlerts() payout self-heal", () => {
         const ALLY = 888777666;
         const now = 1_000_000_000_000;
@@ -387,10 +386,8 @@ describe("PatreonFuncs Module", () => {
             arena: { char: { rank: 5 }, ship: { rank: null } },
             poUTCOffsetMinutes: 0,
         });
-        // now + timeLeft is the payout instant; a later tick advances now and drops timeLeft by
-        // the same amount, so the cycle id stays constant. Callers vary nowOverride/timeLeft together.
-        // The once-per-cycle markers live on user.arenaAlert.alerted, so reusing the same user
-        // object across calls models the persisted state a later tick would read back.
+        // now + timeLeft is the payout instant, so callers vary the two together to keep one cycle
+        // id. Reusing the user object models the arenaAlert.alerted state a later tick reads back.
         const callAlerts = (acc: ArenaPlayer, user: UserConfig, timeLeft: number, nowOverride: number = now) =>
             (patreonFuncs as any).handleArenaAlerts(
                 "char",
@@ -559,10 +556,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("closes out the cycle when the recipient cannot receive DMs at all", async () => {
-            // 50007 = "Cannot send messages to this user" - DMs closed or the bot blocked. Unlike a
-            // transient failure this cannot succeed on a later tick, so retrying it across every
-            // remaining tick of the warn window just repeats a guaranteed failure (and one error
-            // log line each) every cycle, forever. Close the cycle instead.
+            // 50007 = "Cannot send messages to this user", which no later tick can change, so it
+            // closes the cycle instead of being retried through the rest of the warn window.
             const now = Date.now();
             let attempts = 0;
             const blockedClient = {
@@ -993,9 +988,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("keeps the stored poOffset when the API omits poUTCOffsetMinutes", async () => {
-            // A player can return arena ranks with no poUTCOffsetMinutes (the DM path guards the
-            // same case). The stored offset must survive that tick, not be clobbered to undefined -
-            // otherwise the account falls off the payout schedule until a good tick restores it.
+            // A player can return arena ranks with no poUTCOffsetMinutes. The stored offset must
+            // survive that tick, or the account falls off the payout schedule.
             const patron: ActivePatron = { discordID: "shard_test_user", amount_cents: 100 };
 
             const user = {
@@ -1116,10 +1110,8 @@ describe("PatreonFuncs Module", () => {
     });
 
     describe("buildPlayerMap()", () => {
-        // The chunking this replaces ran chunks of 50 in a sequential for-loop, so 120 codes cost
-        // three serial round trips inside a tick that has a hard 60s interval and a 45s deadline.
-        // Concurrency is already bounded twice over, by eachLimit inside getPlayersArena and by
-        // swapiServe's governor, so the chunking only added latency.
+        // No chunking: concurrency is already bounded by eachLimit inside getPlayersArena and by
+        // swapiServe's governor, and serial round trips cost the tick its 45s deadline.
         it("fetches every ally code in a single request rather than one batch per 50", async (t) => {
             const codes = Array.from({ length: 120 }, (_, i) => 900000001 + i);
             const calls: number[][] = [];
@@ -1469,10 +1461,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("advances last-announced when no shard can post to the channel at all", async () => {
-            // A channel no shard can see (deleted, bot kicked, ViewChannel revoked) is not a
-            // delivery failure to retry - there is nothing to retry against. Holding the anchor
-            // here would rebuild and re-broadcast the same alert every tick forever, since nothing
-            // about a missing channel changes on its own.
+            // A channel no shard can see is not a delivery failure to retry, so holding the anchor
+            // would rebuild and re-broadcast the same alert every tick forever.
             const user = mkUser(
                 "gonechan_user",
                 { allyCode: A_GONE_CHAN, mention: null, poOffset: 0 },
@@ -1523,10 +1513,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("resumes alerting as soon as a previously undeliverable channel works again", async () => {
-            // Nothing about an undeliverable channel is latched: availability is re-tested inside
-            // broadcastEval on every send, so restoring the channel (or the bot's permissions) needs
-            // no intervention. The cost of advancing the anchor while it was dead is only that the
-            // changes from that period aren't replayed - alerting itself resumes on the next change.
+            // Nothing is latched: broadcastEval re-tests availability on every send, so advancing
+            // the anchor while a channel was dead costs only the unreplayed changes.
             const entry = { allyCode: A_RECOVER, mention: null, poOffset: 0 };
             const user = mkUser(
                 "recover_user",
@@ -1589,10 +1577,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("advances last-announced for a change report=drop filtered out, instead of wedging the anchor", async () => {
-            // report: "drop" means climbs are deliberately not posted. That is NOT a delivery
-            // failure, so the anchor must still move - otherwise every later drop is measured from
-            // a rank the watcher moved past long ago, and while the anchor stays above the current
-            // rank every change reads as a climb and is filtered too, silencing the account for good.
+            // A filtered-out climb is not a delivery failure, so the anchor must still move, or it
+            // stays above the current rank and every later change reads as a climb and is filtered.
             const user = mkUser("filtered_user", { allyCode: A_FILTERED, mention: null, poOffset: 0, lastCharAnnounced: 5 }, { report: "drop" });
             const patron: ActivePatron = { discordID: "filtered_user", amount_cents: 100 };
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
@@ -1632,9 +1618,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("does not track an announce anchor for an arena whose channel alerts are off", async () => {
-            // char alerts disabled (fleet on, so the function still runs): no char alert can ever be
-            // posted, so writing an anchor would only churn the user doc on every rank change and
-            // skew the first alert if they re-enable it
+            // char disabled but fleet on, so the function still runs: writing a char anchor would
+            // churn the user doc on every rank change and skew the first alert after a re-enable.
             const user = mkUser(
                 "disabled_user",
                 { allyCode: A_DISABLED, mention: null, poOffset: 0 },
@@ -1679,9 +1664,8 @@ describe("PatreonFuncs Module", () => {
         it("does not fire a stale channel payout warning long past its window", async () => {
             const now = Date.now();
             const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
-            // Char payout only 5 min out, but the watcher asked for a 30-minute warning. We were
-            // down through minute 30, so warning now would read "payout is in 5 minutes" as if it
-            // were the 30-minute heads-up - worse than skipping the cycle.
+            // Past the requested 30-minute warning and now only 5 min out, so the cycle is skipped
+            // rather than sending a heads-up that has already stopped being one.
             const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 5 * 60000) / 60000;
             const user = mkUser("stalewarn_user", { allyCode: A_STALE_WARN, mention: null, poOffset, warn: { min: 30, arena: "char" } });
             const patron: ActivePatron = { discordID: "stalewarn_user", amount_cents: 100 };
@@ -1733,9 +1717,8 @@ describe("PatreonFuncs Module", () => {
         it("drops payout warn/result for an arena whose log is disabled, rather than posting it elsewhere", async () => {
             const now = Date.now();
             const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
-            // Fleet payout (~19h offset) ~29 min out, with a fleet warn configured - but the fleet
-            // log is off. Char shares the same channel, which used to smuggle the fleet line out
-            // through the combined-channel send path.
+            // Fleet warn configured but the fleet log is off, while char shares the same channel:
+            // the combined-channel send path must not smuggle the fleet line out.
             const poOffset = (midnightUTC + 19 * 60 * 60 * 1000 - now - 29 * 60000) / 60000;
             const user = mkUser(
                 "fleetoff_user",
@@ -1760,10 +1743,8 @@ describe("PatreonFuncs Module", () => {
             const now = Date.now();
             const midnightUTC = new Date(now).setUTCHours(0, 0, 0, 0);
             const poOffset = (midnightUTC + 18 * 60 * 60 * 1000 - now - 29 * 60000) / 60000;
-            // Announced 5, observed already 8 (a prior send failed) => the change is "missed". But
-            // the current rank 2 reads as a climb off the anchor, which report=drop filters out. The
-            // message that goes out carries only the payout warning, so there are no net-change
-            // numbers for the footer to caveat.
+            // Announced 5, observed 8 (a prior send failed), current 2: "missed", but it reads as a
+            // climb off the anchor and report=drop filters it, leaving only the payout warning.
             const user = mkUser(
                 "footer_user",
                 { allyCode: A_FOOTER, mention: null, poOffset, lastCharAnnounced: 5, warn: { min: 30, arena: "char" } },
@@ -1894,11 +1875,8 @@ describe("PatreonFuncs Module", () => {
         });
 
         it("persists the payout msgID without clobbering markers arenaTick wrote meanwhile", async () => {
-            // shardTimes (5-minute interval) and arenaTick (1-minute interval) run on separate
-            // timers and each load their own copy of the user doc. shardTimes only ever needs to
-            // save the payout msgIDs, so its write must not carry a stale arenaWatch subtree back
-            // over the per-cycle alert markers arenaTick persisted after shardTimes loaded -
-            // rolling those back re-fires the payout warn/result that was already sent.
+            // shardTimes (5 min) and arenaTick (1 min) each load their own copy of the user doc, so
+            // shardTimes must write only msgIDs or it rolls back markers arenaTick set since.
             const patron: ActivePatron = { discordID: ST_USER_ID, amount_cents: 100 };
             await cache.put(testDbName, "patrons", { discordID: ST_USER_ID }, patron);
 
@@ -2023,9 +2001,8 @@ describe("shouldWriteHistory()", () => {
     });
 
     it("reads the last entry (newest) not an arbitrary element", () => {
-        // Array sorted ascending by ts: last element is newest.
-        // If shouldWriteHistory correctly uses at(-1), it sees the recent entry and returns false.
-        // If it used at(0) by mistake, it would see the old entry and return true.
+        // Sorted ascending by ts, so at(-1) sees the recent entry and returns false where at(0)
+        // would see the old one and return true.
         const old = { rank: 3, ts: 1 };
         const recent = { rank: 5, ts: Date.now() - 60 * 1000 };
         assert.strictEqual(shouldWriteHistory([old, recent]), false);

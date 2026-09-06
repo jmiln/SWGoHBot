@@ -172,9 +172,8 @@ describe("buildCounterDocs", () => {
         assert.strictEqual(docs.length, 0);
     });
 
-    // A tiny perfect record is luck, not a counter. Ranking on raw win% let a 5/5 outrank a
-    // thousands-of-battles staple, so every stored slot filled with flukes and the real meta
-    // teams were discarded at ingestion. Rank on the Wilson lower bound instead.
+    // A tiny perfect record is luck, not a counter: on raw win% a 5/5 outranks a thousands-of-
+    // battles staple and flukes fill every slot, so ranking uses the Wilson lower bound.
     it("ranks a high-volume strong team above a tiny perfect record", () => {
         const acc: Accumulator = new Map();
         const duel = (atk: string, outcome: number) => ({
@@ -277,9 +276,8 @@ describe("selectVariants (via buildCounterDocs)", () => {
         // Smaller variant: sampleN 10, single attack team, all wins -- qualifies (total 10 >= minBattles 5).
         for (let i = 0; i < 10; i++) foldDuel(acc, variantDuel(["M3", "M4"], "SMALLATK", 1));
 
-        // lead.sampleN = 60, target = 60 * 0.5 = 30. Under the old (buggy) unconditional-increment
-        // behavior, the skipped 50-sample variant alone would push cumulative to 50 >= 30 and the
-        // loop would break before ever reaching the smaller variant.
+        // lead.sampleN = 60, target = 30. If the skipped 50-sample variant still incremented
+        // cumulative it would reach 50 >= 30 and break before ever reaching the smaller variant.
         const docs = buildCounterDocs(acc, meta, { ...DEFAULT_BUILD_OPTIONS, minBattles: 5, variantCoverage: 0.5 });
         const doc = docs.find((d) => d.leader === "GRIEVOUS");
         assert.ok(doc);

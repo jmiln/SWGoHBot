@@ -7,14 +7,8 @@ import swgohAPI from "../../modules/swapi.ts";
 import type { SWAPILang } from "../../types/swapi_types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
-// Regression coverage for the production crash:
-//   TypeError: Cannot read properties of null (reading 'toLowerCase')
-//       at SWAPI.abilities (modules/swapi.ts)
-// /zetas guild called abilities(skill, null, { min: true }). The default parameter
-// value ("eng_us") only applies to `undefined`, so a `null` lang reached
-// `lang.toLowerCase()` and threw. Every sibling lang method (gear/units/unitNames/
-// recipes/getCharacter/langChar) already guards against a falsy lang; abilities was
-// the lone outlier. These tests lock in that abilities tolerates a missing language.
+// Regression: a `null` lang reached `lang.toLowerCase()` and threw, since the default parameter
+// value only applies to `undefined`. Locks in that abilities tolerates a missing language.
 describe("SWAPI abilities() language handling", () => {
     let client: MongoClient;
     const SKILL_ID = "test_skill_abilities_lang";

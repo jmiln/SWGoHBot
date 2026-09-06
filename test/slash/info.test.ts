@@ -84,9 +84,8 @@ describe("Info", () => {
     describe("/info cmdstats", () => {
         const col = () => mongoClient.db(env.MONGODB_SWGOHBOT_DB).collection("commandStats");
 
-        // Command names are unique to this file: test files run in parallel against the
-        // shared commandStats collection (commandStats.test.ts also writes it), so names
-        // must not overlap or the aggregations pollute each other's percentages.
+        // Names unique to this file: test files run in parallel against the shared commandStats
+        // collection, and overlapping names pollute each other's percentages.
         const INFO_CMD_NAMES = ["info_mychar", "info_noargs", "info_manyargs"];
 
         before(async () => {

@@ -8,11 +8,8 @@ const dataDir = __dirname + "/../../data";
 export const acronyms: Record<string, string> = await readJSON(`${dataDir}/acronyms.json`);
 export const arenaJumps: Record<string, number> = await readJSON(`${dataDir}/arenaJumps.json`);
 export const charLocs: UnitLocation[] = await readJSON(`${dataDir}/charLocations.json`);
-// These values are refreshed in place by refreshUnitData(), so the arrays and objects themselves
-// are stable for the life of the process while their contents change. Two rules follow:
-// never reassign one of these bindings, and never copy one at module scope - a module-level
-// `[...characters]` becomes a snapshot that silently stops updating. Reading them inside a
-// function, which is what every consumer does today, is always correct.
+// refreshUnitData() mutates these in place, so never reassign a binding and never copy one at
+// module scope - a module-level `[...characters]` is a snapshot that silently stops updating.
 export const characters: BotUnit[] = await readJSON(`${dataDir}/characters.json`);
 export const journeyReqs: JourneyReqs = await readJSON(`${dataDir}/journeyReqs.json`);
 export const omicrons: OmicronCategories = await readJSON(`${dataDir}/omicrons.json`);

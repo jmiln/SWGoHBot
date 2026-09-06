@@ -26,10 +26,8 @@ async function mockUnits(defId?: string, language: string = "eng_us") {
     return [];
 }
 
-// These tests drive the command against fixtures rather than the live data/*.json files. Those
-// files are regenerated from CG's game data, so asserting on real units couples the suite to
-// whatever CG renames next (an event rename silently broke this file once already -- see
-// BUG_REFERENCE.md). The fixtures below cover every rendering branch in slash/farm.ts.
+// Fixtures rather than the live data/*.json files, which are regenerated from CG's game data:
+// asserting on real units couples the suite to whatever CG renames next.
 const mockChar = (uniqueName: string, name: string): BotUnit =>
     ({ uniqueName, name, aliases: [name], side: "dark", avatarName: "", avatarURL: "", factions: [] }) as BotUnit;
 
@@ -99,9 +97,8 @@ const FIXTURE_SHIP_LOCS: UnitLocation[] = [
     },
 ] as unknown as UnitLocation[];
 
-// units.ts exports these as module-level arrays that slash/farm.ts closes over, so swap their
-// contents in place and restore afterwards. Each test file runs in its own process, so this
-// cannot leak into other files.
+// slash/farm.ts closes over these module-level arrays, so swap contents in place and restore.
+// Each test file runs in its own process, so this cannot leak into other files.
 function replaceArray<T>(target: T[], next: T[]): T[] {
     const original = [...target];
     target.length = 0;

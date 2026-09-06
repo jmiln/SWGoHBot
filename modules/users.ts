@@ -76,10 +76,8 @@ class UserReg {
         if (user.primaryAllyCode === allyCode) {
             user.primaryAllyCode = user.accounts[0] ?? null;
         }
-        // Payout alert markers are keyed by ally code and are only ever read for linked accounts,
-        // so a leftover entry is inert - until the same code is relinked within the payout cycle it
-        // last recorded, when it would suppress that cycle's alert. Drop it with the link.
-        // (The arenaWatch equivalents live on the watch entry itself, so they go with it already.)
+        // A leftover payout marker would suppress the alert if this code is relinked inside the
+        // cycle it last recorded, so drop it with the link.
         if (user.arenaAlert?.alerted) {
             delete user.arenaAlert.alerted[String(allyCode)];
         }

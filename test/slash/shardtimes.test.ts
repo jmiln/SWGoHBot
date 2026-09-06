@@ -7,10 +7,8 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
-// Guild/channel IDs used across tests.
-// NOTE: This must be unique to this file. Test files run in parallel against a shared
-// MongoDB, and other files (e.g. showconf.test.ts) delete the entire guildConfigs doc
-// for their guild ID. Sharing an ID caused intermittent REM_MISSING failures here.
+// Must be unique to this file: tests run in parallel against a shared MongoDB, where other
+// suites wipe whole guildConfigs docs.
 const GUILD_ID = "shardtimes-test-guild";
 const CHANNEL_ID = "test-channel-shard";
 
@@ -114,9 +112,8 @@ describe("Shardtimes", () => {
         });
 
         it("renders the rest of the table when a stored timezone is no longer a valid zone", async () => {
-            // Legacy rows predate `zoneType` and were validated by moment-timezone, which
-            // normalized names before lookup. Those forms throw in Temporal, and one bad
-            // row used to take down the whole view.
+            // Legacy rows predate `zoneType` and carry moment-timezone-normalized names, which
+            // throw in Temporal; one bad row must not take down the whole view.
             await setGuildShardTimes({
                 guildId: GUILD_ID,
                 stOut: [

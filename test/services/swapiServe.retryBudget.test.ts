@@ -59,9 +59,8 @@ describe("swapiServe.RetryBudget", () => {
  * the payout cycle and the poll interval are exact multiples, so it is the same minute every day.
  */
 describe("swapiServe.RetryBudget tier isolation", () => {
-    // Ordered the way production runs: the tick fires on its minute, and the nightly cycle floods
-    // the same window around it. A shared allowance lets bulk spend the share the tick's own
-    // dispatches funded, which is what leaves the tick with nothing when it needs a retry.
+    // Ordered as production runs, with the nightly cycle flooding the window around the tick's
+    // minute: a shared allowance lets bulk spend the share the tick's own dispatches funded.
     it("does not let a bulk run spend the arena tier's allowance", () => {
         const budget = new RetryBudget({ windowMs: 60_000, maxFraction: 0.25, minInWindow: 0 });
 

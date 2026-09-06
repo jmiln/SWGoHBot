@@ -11,9 +11,8 @@ describe("commandStats module", () => {
     const db = () => mongoClient.db(env.MONGODB_SWGOHBOT_DB);
     const col = () => db().collection("commandStats");
 
-    // Command names are unique to this file: test files run in parallel against the
-    // shared commandStats collection (info.test.ts also writes it), so names must not
-    // overlap and cleanup must be scoped to these rather than dropping the collection.
+    // Names unique to this file: test files run in parallel against the shared commandStats
+    // collection, so cleanup must be scoped to these rather than dropping the collection.
     const CS_CMD_NAMES = ["mods", "mymods", "mycharacter", "notimed"];
 
     before(async () => {

@@ -49,10 +49,8 @@ describe("swapiServe.isRetryable", () => {
         assert.strictEqual(isRetryable("client_timeout"), true);
     });
 
-    // The old code never retried a 429, on the reasoning that the throttle is account-wide so a
-    // retry only deepens the hole. That held when nothing paced us. Now a 429 halves the
-    // backend's rate and the retry re-enters the queue, so it is paced by the collapsed rate;
-    // dropping it instead would just lose the request for no benefit.
+    // A 429 halves the backend's rate and the retry re-enters the queue, so it is paced by the
+    // collapsed rate; dropping it instead would lose the request for no benefit.
     it("retries a throttle, because the governor has already slowed the backend down", () => {
         assert.strictEqual(isRetryable("throttled"), true);
     });

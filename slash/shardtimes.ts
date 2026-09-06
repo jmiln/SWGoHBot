@@ -259,10 +259,8 @@ export default class Shardtimes extends Command {
             } else {
                 flag = "";
             }
-            // The stored entry, augmented at runtime with a transient `tempZone` display value
-            // (used only for the "user moved" message; it is never written back to the DB)
-            // The previously-stored entry (if any), augmented at runtime with a transient `tempZone`
-            // display value used only for the "user moved" message; it is never written back to the DB.
+            // `tempZone` is transient display state for the "user moved" message only, and is
+            // never written back to the DB.
             const tempUser: (GuildConfigShardTimes["times"][string] & { tempZone?: string | number }) | undefined =
                 shardTimes.times[`${userID}`];
             if (tempUser) {

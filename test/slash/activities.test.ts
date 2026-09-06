@@ -5,9 +5,8 @@ import Activities from "../../slash/activities.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount, getLastReply } from "./helpers.ts";
 
-// activities maps the chosen day to the lang key COMMAND_ACTIVITIES_<DAY> and replies with it
-// inside an asciiDoc code block. MockLanguage echoes the key, so asserting the exact key verifies
-// the day -> key construction (split + uppercase), not just that a reply happened.
+// MockLanguage echoes the key, so asserting the exact COMMAND_ACTIVITIES_<DAY> key verifies the
+// day -> key construction (split + uppercase), not just that a reply happened.
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 async function runForDay(day?: string) {

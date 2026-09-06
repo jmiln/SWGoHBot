@@ -2,9 +2,8 @@ import assert from "node:assert";
 import { readFile } from "node:fs/promises";
 import { describe, it } from "node:test";
 
-// These assert the wiring that decides who waits behind whom. A priority silently reverting to
-// the default would be invisible at runtime until a payout minute got dropped, which is exactly
-// the failure this whole service exists to prevent.
+// A priority silently reverting to the default is invisible at runtime until a payout minute
+// gets dropped, so the wiring that decides who waits behind whom is asserted here.
 describe("comlink call priorities", () => {
     async function readSource(relativePath: string): Promise<string> {
         return await readFile(new URL(relativePath, import.meta.url), "utf8");

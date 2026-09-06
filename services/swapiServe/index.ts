@@ -20,14 +20,8 @@ const CONTROL_PATH = /^\/backend\/([^/]+)\/(drain|enable|set-limit)$/;
 // How often shutdown re-checks for keep-alive connections that have gone idle since the last look.
 const SHUTDOWN_SWEEP_MS = 20;
 
-// How long shutdown waits for in-flight requests before closing their connections anyway.
-//
-// Queued work is settled immediately by dispatcher.stop(), but a request already at the backend is
-// left to finish, and UPSTREAM_TIMEOUT_MS allows it a full minute. Waiting that out is not an
-// option: the supervisor SIGKILLs once its grace period expires, so an unbounded wait does not buy
-// a graceful shutdown, it just replaces one with a kill. Ending deliberately at a known point means
-// the remaining callers get a closed socket instead of a half-written response, and the compose
-// service sets stop_grace_period comfortably past this.
+// A request already at the backend has up to UPSTREAM_TIMEOUT_MS, longer than the supervisor's
+// grace period, so shutdown gives up here. compose sets stop_grace_period comfortably past it.
 const SHUTDOWN_GRACE_MS = 5_000;
 
 /**
@@ -235,14 +229,8 @@ export async function startSwapiServe({
 
                 server.close((err) => (err ? reject(err) : resolve()));
 
-                // server.close() only stops accepting new connections; it then waits for every
-                // existing one, and a keep-alive socket that has finished its response is still
-                // "existing". Every shard holds one open permanently, so shutdown would otherwise
-                // wait out their idle timeouts (measured at ~3.2s here, and pm2 restarts this).
-                //
-                // Swept repeatedly rather than once, because a connection still flushing its
-                // response is not idle yet: a single call at this point catches none of them.
-                // Connections mid-request are never touched, so in-flight work still finishes.
+                // server.close() waits on keep-alive sockets, and every shard holds one open.
+                // Swept repeatedly since a connection still flushing a response is not idle yet.
                 const sweep = setInterval(() => server.closeIdleConnections(), SHUTDOWN_SWEEP_MS);
                 sweep.unref();
                 server.once("close", () => clearInterval(sweep));
@@ -252,16 +240,8 @@ export async function startSwapiServe({
     };
 }
 
-// Entry point when run as a service rather than imported by tests.
-//
-// pm2 runs fork-mode apps through its own wrapper script, so process.argv[1] is that wrapper and
-// not this file. Checking argv alone meant the module loaded, nothing started, and Node exited 0
-// with no output at all, while pm2 reported the app online and every client quietly fell back to
-// direct comlink calls. pm_exec_path is the script pm2 was asked to run, and is unset outside
-// pm2, so the argv fallback still covers `node services/swapiServe/index.ts` and still leaves
-// tests free to import this module without binding a port.
-const entryPath = process.env.pm_exec_path ?? process.argv[1];
-if (entryPath?.endsWith("swapiServe/index.ts")) {
+// Guarded so tests can import this module without binding a port.
+if (process.argv[1]?.endsWith("swapiServe/index.ts")) {
     startSwapiServe({
         port: env.SWAPI_SERVE_PORT,
         host: env.SWAPI_SERVE_HOST,
@@ -273,10 +253,8 @@ if (entryPath?.endsWith("swapiServe/index.ts")) {
         .then((service) => {
             logger.log("SwapiServe: Service started");
 
-            // Without these the close() above is unreachable in production: pm2 sends SIGTERM,
-            // Node exits on the spot, and every queued caller gets a dropped socket instead of the
-            // 503 the dispatcher is holding ready for it. Every shard and both updaters queue
-            // through this one process, so that is a lot of unexplained failures per restart.
+            // Without these the close() above is unreachable in production: Node exits on SIGTERM
+            // and every queued caller gets a dropped socket instead of a 503.
             let shuttingDown = false;
             const gracefulShutdown = async (signal: string): Promise<void> => {
                 if (shuttingDown) return;

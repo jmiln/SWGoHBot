@@ -65,12 +65,8 @@ export function createHttpForwarder({
     const limit = timeoutMs ?? UPSTREAM_TIMEOUT_MS;
 
     return async (backendUrl, request) => {
-        // Only declare JSON when there is actually a body. ComlinkStub's one bodyless call,
-        // getMetaData, reaches got as `json: undefined`, which sends neither a body nor a
-        // content-type, so comlink's parser skips and the server verifies against md5(""). Sending
-        // a content-type over an empty body makes that parser materialise {} instead, so the server
-        // checks md5("{}") against a signature computed over md5("") and answers 403. That is a
-        // failure on /metadata alone, which happens to be dataUpdater's first call.
+        // On a bodyless call (getMetaData) a content-type makes comlink's parser materialise {},
+        // so it checks md5("{}") against a signature computed over md5("") and answers 403.
         const hasBody = !!request.body?.length;
         const headers: Record<string, string> = {
             ...signRequest({ accessKey, secretKey, method: request.method, uri: request.uri, body: request.body }),
@@ -80,10 +76,8 @@ export function createHttpForwarder({
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), limit);
 
-        // Node's fetch accepts a Buffer directly, but the DOM typings TypeScript resolves here
-        // describe BodyInit without it, so the type is asserted rather than the value converted.
-        // Deliberately not `body.toString()`: the signature's md5 was computed over these exact
-        // bytes, and a string round-trip would re-encode them.
+        // Asserted rather than converted: the DOM typings here omit Buffer, and the signature's
+        // md5 was computed over these exact bytes, so `toString()` would break it.
         const body = hasBody ? (request.body as unknown as BodyInit) : undefined;
 
         try {

@@ -8,9 +8,8 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { getLastReply } from "./helpers.ts";
 
-// Unique to this file: test files run in parallel against the shared test DB, and this
-// suite deletes the whole guildConfigs doc for its guild. Sharing the mock default
-// "987654321" raced with poll/aliases and caused intermittent failures.
+// Unique to this file: tests run in parallel against the shared DB and this suite deletes the
+// whole guildConfigs doc for its guild.
 const TEST_GUILD_ID = "showconf-test-guild";
 const ROLE_ID = "123456789012345678";
 const CHANNEL_ID = "111222333444555666";

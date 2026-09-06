@@ -17,10 +17,6 @@ import type { GuildAlias } from "../../types/types.ts";
 import { getCommandNames } from "../slashHandler.ts";
 import { logErr } from "./errors.ts";
 
-// Constants
-// "already been acknowledged" (DiscordAPIError 40060) mirrors the guard in chatInput.ts:
-// a shard replay / duplicate gateway delivery means the first handler already responded,
-// so the second respond is expected noise rather than a real failure.
 // Commands whose faction option is a category id fed to a db query, rather than a display name.
 const CATEGORY_ID_FACTION_COMMANDS = ["faction", "need"];
 

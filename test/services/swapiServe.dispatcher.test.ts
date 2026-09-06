@@ -6,9 +6,8 @@ import type { Forwarder } from "../../services/swapiServe/forwarder.ts";
 import { FakeClock } from "../helpers/fakeClock.ts";
 import { startFakeComlink } from "../helpers/fakeComlink.ts";
 
-// The token bucket defaults to a deliberately slow production rate. Tests that are not
-// specifically about pacing set it high so the rate never binds and only the behaviour under
-// test is measured.
+// The token bucket defaults to a slow production rate, so tests not about pacing set it high and
+// let only the behaviour under test bind.
 const CREDENTIALS = { accessKey: "test-access", secretKey: "test-secret", ratePerSecond: 1000 };
 
 function request(priority: 0 | 1 | 2 | 3 | 4, uri = "/player") {
@@ -187,10 +186,8 @@ describe("swapiServe.Dispatcher retry", () => {
     it("retries an arena tick even when a bulk run has spent its own retry allowance", { timeout: 5000 }, async () => {
         const clock = new FakeClock(1_000);
         const attemptsByUri = new Map<string, number>();
-        // 408 is the one failure that is retryable without being the backend's fault, so the breaker
-        // stays closed and the retry budget is the only thing deciding whether a request is sent
-        // again. A 502 flood would collapse the limit and open the circuit, and the tick would then
-        // be shed for an unavailable backend rather than for want of budget.
+        // 408 is retryable without being the backend's fault, so the breaker stays closed and only
+        // the retry budget decides. A 502 flood would shed the tick for an unavailable backend.
         const forwarder: Forwarder = async (_url, req) => {
             attemptsByUri.set(req.uri, (attemptsByUri.get(req.uri) ?? 0) + 1);
             return { status: 408, headers: {}, body: Buffer.from(JSON.stringify({ message: "Request Timeout" })) };
@@ -206,10 +203,8 @@ describe("swapiServe.Dispatcher retry", () => {
         });
         after(() => dispatcher.stop());
 
-        // A nightly cycle failing throughout. The tick has to land while this is still running,
-        // which is what production does: the cycle runs for hours and the tick fires every minute.
-        // Waiting for the flood to finish would prove nothing, because a shared allowance recovers
-        // its ceiling as soon as the pressure stops.
+        // The tick must land while the failing cycle is still running, as in production. Waiting
+        // for the flood to finish proves nothing: a shared allowance recovers once pressure stops.
         const bulk = Array.from({ length: 400 }, (_, i) =>
             dispatcher.submit(requestAt(clock, PRIORITY.BULK, DEADLINE_MS[PRIORITY.BULK], `/bulk-${i}`)),
         );
@@ -217,9 +212,8 @@ describe("swapiServe.Dispatcher retry", () => {
         await clock.flush();
         assert.ok(dispatcher.status().retryBudget.denied[PRIORITY.BULK] > 0, "the bulk run should be over its own allowance by now");
 
-        // The tick's requests for this minute, arriving mid-cycle. Kept to a number whose full
-        // retry allowance (requests times RETRY.ATTEMPTS) fits inside the tier's own floor, since
-        // the point here is that bulk cannot take the tick's share, not that the share is unbounded.
+        // Kept to a count whose full retry allowance fits inside the tier's own floor: the point
+        // is that bulk cannot take the tick's share, not that the share is unbounded.
         const tickUris = Array.from({ length: 4 }, (_, i) => `/arena-${i}`);
         const tick = tickUris.map((uri) => dispatcher.submit(requestAt(clock, PRIORITY.ARENA_TICK, DEADLINE_MS[PRIORITY.ARENA_TICK], uri)));
 
@@ -285,9 +279,8 @@ describe("swapiServe.Dispatcher health adaptation", () => {
 });
 
 describe("swapiServe.Dispatcher rate pacing", () => {
-    // A queue held back by the rate rather than by concurrency gets no completion event to wake
-    // it. Without the wakeup timer these requests would hang until something else happened to
-    // pump the queue, which in a quiet moment is never.
+    // A queue held back by rate rather than concurrency gets no completion event to wake it, so
+    // without the wakeup timer these hang until something else happens to pump the queue.
     it("drains a queue that is blocked on tokens rather than on slots", async () => {
         const dispatcher = new Dispatcher({
             backends: ["sim://a"],
@@ -458,10 +451,8 @@ describe("swapiServe.Dispatcher shed reasons", () => {
 });
 
 describe("swapiServe.Dispatcher deadlines under saturation", () => {
-    // A backend that hangs rather than fails never trips the breaker, so the dead-pool shed never
-    // runs: it holds every slot for the full upstream timeout while the queue behind it goes stale.
-    // Expiry rides along with a dispatch, and there is no dispatch to ride, so without a deadline
-    // wakeup the caller waits out the hang instead of its own deadline.
+    // A hanging backend never trips the breaker, so the dead-pool shed never runs and expiry has
+    // no dispatch to ride along with; without a deadline wakeup the caller waits out the hang.
     it("answers an expired request at its deadline while a hung backend holds every slot", { timeout: 5000 }, async () => {
         const clock = new FakeClock(1_000);
         // Never resolves, which is what a wedged comlink looks like from here.
@@ -481,9 +472,8 @@ describe("swapiServe.Dispatcher deadlines under saturation", () => {
         assert.strictEqual(dispatcher.status().terminal.deadline, 1, "the caller should be answered for its own deadline");
     });
 
-    // The wakeup is a single timer, so an armed one must not outlast a deadline that lands sooner:
-    // a rate-blocked queue at the collapsed floor waits two seconds per token, which is long enough
-    // to bury several interactive deadlines behind it.
+    // The wakeup is a single timer, so an armed one must not outlast a sooner deadline: a
+    // rate-blocked queue at the floor waits two seconds per token, burying interactive deadlines.
     it("brings a wakeup forward when a nearer deadline arrives", { timeout: 5000 }, async () => {
         const clock = new FakeClock(1_000);
         const dispatcher = new Dispatcher({
@@ -537,10 +527,8 @@ async function openBreaker(dispatcher: Dispatcher, clock: FakeClock): Promise<vo
 describe("swapiServe.Dispatcher dead pool", () => {
     const deadForwarder: Forwarder = async () => ({ status: undefined, headers: {}, body: Buffer.alloc(0) });
 
-    // Without a mass shed, a backlog behind a dead backend drains at the circuit-probe rate: one
-    // request every 15 seconds, each failing anyway. A hundred callers would take 25 minutes to
-    // learn what was knowable in the first second, well past a Discord interaction token's life.
-    // Everything doomed goes at once instead, in a single pass, however deep the backlog is.
+    // Without a mass shed a backlog behind a dead backend drains at the probe rate, one failing
+    // request every 15 seconds, well past a Discord interaction token's life.
     it("fails the whole doomed queue at once rather than one request per probe", async () => {
         const clock = new FakeClock();
         const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: deadForwarder, clock, retryDelayMs: 0 });
@@ -565,9 +553,8 @@ describe("swapiServe.Dispatcher dead pool", () => {
         assert.ok(dispatcher.status().terminal.backend_unavailable > 0, "and the reason should be recorded distinctly");
     });
 
-    // Fast-fail is right for a caller that is watching a clock, and wrong for one that is not.
-    // Bulk work carries a ten-minute deadline against a fifteen-second probe, so waiting out an
-    // outage is exactly what it wants; shedding it turned a blip into a failed nightly cycle.
+    // Bulk carries a ten-minute deadline against a fifteen-second probe, so it should wait an
+    // outage out; shedding it turns a blip into a failed nightly cycle.
     it("keeps work that can outlast the outage and sheds only what cannot", async () => {
         const clock = new FakeClock();
         const dispatcher = new Dispatcher({ backends: ["sim://a"], ...CREDENTIALS, forwarder: deadForwarder, clock, retryDelayMs: 0 });
@@ -688,9 +675,8 @@ describe("swapiServe.Dispatcher control", () => {
 });
 
 describe("swapiServe.Dispatcher forwarder defects", () => {
-    // A slot is taken before the forward and handed back by reporting the outcome. If the forward
-    // throws instead of returning one, the slot is never handed back, and nothing in the design
-    // ever recovers it: with MIN_LIMIT at 1, a handful of these wedge the backend until a restart.
+    // A slot is only handed back by reporting an outcome, so a forward that throws leaks it
+    // permanently; with MIN_LIMIT at 1, a handful wedge the backend until a restart.
     it("releases the backend slot when the forwarder throws", { timeout: 5000 }, async () => {
         let shouldThrow = true;
         const forwarder: Forwarder = async () => {
@@ -759,9 +745,8 @@ describe("swapiServe.Dispatcher cancellation", () => {
 });
 
 describe("swapiServe.Dispatcher shutdown", () => {
-    // A queued request is a caller holding an unresolved promise, and for the HTTP layer that is a
-    // response that never ends and a socket that never closes. Leaving them behind means
-    // server.close() waits forever and the process only dies to SIGKILL.
+    // A queued request is an unresolved promise, which to the HTTP layer is a socket that never
+    // closes, so leaving them behind makes server.close() wait until SIGKILL.
     it("settles everything still queued when it stops", { timeout: 5000 }, async () => {
         let release: (() => void) | null = null;
         const gate = new Promise<void>((resolve) => {
@@ -828,10 +813,8 @@ describe("swapiServe.Dispatcher shutdown", () => {
         assert.strictEqual(response.status, 503, "shutdown must not wait out an upstream Retry-After");
     });
 
-    // A request already at the backend when we stop is left to finish, but its failure must not
-    // start a new backoff: the retry timers are drained once, so one scheduled after that drain
-    // holds its caller until the timer fires, and shutdown waits on a socket for a request the
-    // service has no intention of sending.
+    // Retry timers are drained once, so a failure after that must not arm another: it would hold
+    // its caller, and shutdown's socket, waiting on a request the service will never send.
     it("does not schedule a retry for a request that fails after it has stopped", { timeout: 5000 }, async () => {
         const clock = new FakeClock(1_000);
         let attempts = 0;

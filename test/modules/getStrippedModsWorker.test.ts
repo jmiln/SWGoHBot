@@ -98,9 +98,8 @@ describe("fetchPlayerData", () => {
         assert.strictEqual(comlink.abandonedCount(), 1, "the upstream request must actually be withdrawn");
     });
 
-    // A player that could not be fetched and a player with no mods must not look the same to the
-    // caller. Returning undefined for both let a run where every fetch failed produce a mod
-    // aggregate built from nothing and write it over good data, with no count and no log.
+    // A failed fetch and a player with no mods must stay distinguishable, or a run where every
+    // fetch failed silently overwrites good data with an empty aggregate.
     it("rejects when the upstream fails, rather than reporting an empty roster", async () => {
         const comlink = await startFakeComlink(() => ({ status: 502, body: JSON.stringify({ message: "Bad Gateway" }) }));
         after(async () => await comlink.close());
@@ -120,10 +119,8 @@ describe("fetchPlayerData", () => {
         assert.deepStrictEqual(await fetchPlayerData(comlink.url, 123456789, MOD_MAP), []);
     });
 
-    // The worker used to retry 502/503 twice itself. That retry moved to swapiServe, which sees
-    // every call and can pace retries against a shared budget. Keeping both would have stacked
-    // multiplicatively: three worker attempts times three service attempts is up to nine upstream
-    // calls for one player, amplifying load exactly when the backend is already struggling.
+    // Retry belongs to swapiServe, which paces it against a shared budget. Retrying here too would
+    // stack multiplicatively - nine upstream calls for one player when the backend is struggling.
     it("does not retry a 502 itself, leaving retry to swapiServe", async () => {
         const comlink = await startFakeComlink(({ count }) =>
             count === 1

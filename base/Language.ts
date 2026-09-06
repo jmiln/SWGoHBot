@@ -4,11 +4,8 @@ export default class Language {
     // Static registry for all language instances
     private static _languages: Record<string, Language> = {};
 
-    // Values can be plain strings, lookup objects (e.g. BASE_MOD_TYPES), or template
-    // functions; params are intentionally untyped (any) so each language file's inline
-    // arrow functions stay unannotated. get() narrows results back to string.
-    // These are always populated by each language subclass's constructor (see languages/*.ts);
-    // the base class is never instantiated directly, so the definite-assignment assertions are safe.
+    // Params are untyped so each language file's inline arrow functions stay unannotated; get()
+    // narrows back to string. Populated by each subclass's constructor, so the assertions hold.
     // biome-ignore lint/suspicious/noExplicitAny: contextual typing for 7k+ lines of lang strings
     language!: Record<string, string | object | ((...args: any[]) => unknown)>;
     DAYSOFWEEK!: Record<string, Record<string, string>>;

@@ -46,17 +46,15 @@ services:
     command: ["node", "swgohBotShard.ts"]
     env_file: .env
     environment:
-      # tini (Docker's bundled init) signals only its direct child by default, which would reach the
-      # ShardingManager but not the shards, since Shard.spawn forks them as separate processes. This
-      # is tini's documented env equivalent of -g: signal the whole process group, so every shard
-      # runs its own gracefulShutdown and flushes command stats, as pm2's treekill does today.
+      # tini's env equivalent of -g. Without it only its direct child is signalled, reaching the
+      # ShardingManager but not the shards, which Shard.spawn forks as separate processes.
       TINI_KILL_PROCESS_GROUP: "1"
       # Loopback inside a container is that container's own, so the healthcheck and the published
       # port could not reach it. The host-side 127.0.0.1 prefix below is what keeps this off the
       # network.
       SHARD_STATUS_HOST: 0.0.0.0
     init: true
-    # pm2 currently gives the shards 1600ms and most do not finish closing Mongo. 15s is generous.
+    # Shards need well past a second or two to finish closing Mongo. 15s is generous.
     stop_grace_period: 15s
     extra_hosts:
       - "host.docker.internal:host-gateway"

@@ -11,9 +11,8 @@ export async function globalSetup(): Promise<void> {
     // running during tests. Set before any test file is loaded.
     process.env.TESTING_ENV = "1";
 
-    // Stub required config vars with safe dummy values when not already set by .env.
-    // Pure-function tests don't use these at runtime; they're only needed to satisfy
-    // Zod validation when config.ts is first imported.
+    // Dummy values only to satisfy Zod validation when config.ts is first imported; pure-function
+    // tests never read them at runtime.
     process.env.DISCORD_OWNER_ID ??= "000000000000000001";
     process.env.DISCORD_CLIENT_ID ??= "000000000000000002";
     process.env.DISCORD_TOKEN ??= "test.token.stub";

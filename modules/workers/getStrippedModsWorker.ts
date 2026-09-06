@@ -15,10 +15,8 @@ const PLAYER_FETCH_TIMEOUT_MS = 30_000;
 const PLAYER_URI = "/player";
 
 function getComlinkUrl(): string {
-    // dataUpdater resolves once whether swapiServe is reachable and passes the base URL it settled
-    // on through workerData, so every thread inherits that one decision instead of each probing the
-    // service separately. The fallback to the direct URL only matters if this worker is ever run
-    // outside that pool.
+    // dataUpdater resolves swapiServe's reachability once and passes the base URL through
+    // workerData, so every thread inherits that decision instead of probing separately.
     const { comlinkUrl } = (workerData ?? {}) as { comlinkUrl?: string };
     return comlinkUrl ?? env.SWAPI_CLIENT_URL;
 }

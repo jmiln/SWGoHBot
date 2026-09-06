@@ -15,16 +15,13 @@ function makeRandom(seed: number): () => number {
     };
 }
 
-// Several seeds rather than one, because a single seed pins one interleaving and every property
-// here is about interleavings. Kept small enough that the whole file stays well inside the suite's
-// time budget; the workload size matters less than the number of distinct orderings tried.
+// Several seeds rather than one: a single seed pins one interleaving, and every property here is
+// about interleavings. The number of distinct orderings matters more than the workload size.
 const SEEDS = [20260807, 981, 44_711];
 const REQUEST_COUNT = 2_000;
 
-// Real traffic hits a dozen comlink paths, not one per request. Using unique URIs here would
-// inflate the per-endpoint cost map to REQUEST_COUNT entries and make every status() call scan
-// it, which measures the test harness rather than the scheduler. Request identity travels in the
-// body instead.
+// Real traffic hits a dozen comlink paths, not one per request; unique URIs would inflate the
+// per-endpoint cost map and measure the harness. Request identity travels in the body instead.
 const ENDPOINTS = ["/player", "/guild", "/playerArenaProfile", "/data", "/metadata"];
 
 interface WorkloadOptions {
@@ -74,9 +71,8 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
     const random = makeRandom(seed);
     const clock = new FakeClock();
 
-    // A retry is a legitimate second dispatch of the same request, so "dispatched twice" is
-    // not by itself a defect. What must never happen is a request in flight twice at once,
-    // or dispatched again after it has already been answered.
+    // A retry is a legitimate second dispatch, so "dispatched twice" is not itself a defect. In
+    // flight twice at once, or dispatched after being answered, is.
     const inFlightIds = new Set<string>();
     const settledIds = new Set<string>();
     const cancelledIds = new Set<string>();
@@ -121,32 +117,22 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
         if (cancelledIds.has(id)) dispatchedAfterCancel = id;
         inFlightIds.add(id);
 
-        // The governor must never believe FEWER requests are in flight than really are: its count
-        // is what caps concurrency, so undercounting is how the cap gets exceeded, and it is what a
-        // premature or duplicated slot release looks like from here.
-        //
-        // Deliberately a lower bound rather than equality. A request keeps its slot until its
-        // outcome is reported, which happens a microtask after this function returns, so the
-        // governor legitimately counts requests whose forwarder has already finished. The matching
-        // leak check (nothing left behind) is asserted once everything has drained.
+        // Undercounting in-flight requests is how the concurrency cap gets exceeded. A lower bound
+        // rather than equality, since a slot is held until the outcome reports a microtask later.
         const live = (liveByBackend.get(backendUrl) ?? 0) + 1;
         liveByBackend.set(backendUrl, live);
         const governed = dispatcher?.status().backends.find((backend) => backend.url === backendUrl);
         if (governed && governed.inFlight < live) {
             accountingMismatch = `${backendUrl}: governor says ${governed.inFlight} in flight, ${live} really are`;
         }
-        // A slot is only granted while inFlight is below the limit, and the half-open probe is the
-        // one dispatch allowed to ignore it, so nothing can ever put more than one request past the
+        // Only the half-open probe may ignore the limit, so at most one request can sit over the
         // ceiling however the limit moves underneath it.
         if (live > GOVERNOR.MAX_LIMIT + 1) {
             accountingMismatch = `${backendUrl}: ${live} concurrent requests, past the ceiling of ${GOVERNOR.MAX_LIMIT} + 1 probe`;
         }
 
-        // Sampled here as well as between clock steps, because half-open exists only while its
-        // probe is in flight: it opens in acquire and closes when the probe reports, which on a
-        // fake clock is inside a single flush. A sampler that only looks between steps therefore
-        // records closed -> open -> closed and cannot tell a legal recovery from a state machine
-        // that skipped the probe entirely. Inside the forwarder, a probe is by definition running.
+        // Sampled here too: half-open opens in acquire and closes when the probe reports, which on
+        // a fake clock is one flush, so a between-steps sampler cannot see it happen at all.
         recordState();
 
         concurrent++;
@@ -156,17 +142,14 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
         inFlightIds.delete(id);
         liveByBackend.set(backendUrl, (liveByBackend.get(backendUrl) ?? 1) - 1);
 
-        // A total outage while the storm is running: this is what drives the breakers through open
-        // and back to closed, and what puts stragglers in flight at the moment one trips, which is
-        // the state probe attribution has to get right.
+        // A total outage mid-storm is what drives the breakers open and back, and what leaves
+        // stragglers in flight as one trips - the state probe attribution has to get right.
         if (stormActive) {
             return { status: 503, headers: {}, body: Buffer.from(JSON.stringify({ message: "Service Unavailable" })) };
         }
 
-        // Every failure mode fires, but at rates a real backend might plausibly show. A
-        // sustained double-digit hard-failure rate drives AIMD to its floor and keeps it
-        // there, which is correct behaviour but means the run measures the controller's
-        // minimum throughput rather than the scheduler's correctness.
+        // Every failure mode fires, at plausible rates: a sustained double-digit hard-failure rate
+        // pins AIMD at its floor, which measures minimum throughput rather than correctness.
         if (roll < 0.02) return { status: 429, headers: {}, body: Buffer.from(JSON.stringify({ message: "Too Many Requests" })) };
         if (roll < 0.04) return { status: 500, headers: {}, body: Buffer.from(JSON.stringify({ message: "boom" })) };
         if (roll < 0.05) return { status: undefined, headers: {}, body: Buffer.alloc(0) };
@@ -198,11 +181,8 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
         const id = String(i);
         const uri = ENDPOINTS[i % ENDPOINTS.length];
 
-        // Three deadline bands, because the paths a request can leave by depend entirely on which
-        // one it is in. A very short deadline exercises expiry under load. A deadline inside one
-        // circuit-probe interval is the profile of the two user-facing tiers, and it is the only
-        // band the dead-pool shed can act on: anything longer keeps its place through an outage by
-        // design. Without this band the shed path went untested here, whatever the failure rate.
+        // Three bands, since the exits a request can take depend on which it is in. The middle one
+        // (inside a probe interval) is the only band the dead-pool shed can act on.
         const deadlineRoll = random();
         const deadlineMs = deadlineRoll < 0.1 ? 20 : deadlineRoll < 0.25 ? 12_000 : 3_600_000;
 
@@ -241,21 +221,9 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
 
     submitted = requestCount;
 
-    // Drain until every request has actually settled, NOT until the queue looks empty. A
-    // request waiting out its retry backoff is not in any queue, so an empty queue is a false
-    // completion signal: the loop would exit, the clock would stop, and the pending retry
-    // timer would never fire.
-    //
-    // State is sampled every iteration rather than periodically, because a missed sample is a
-    // missed transition: half-open in particular lasts only until the probe reports, and a coarse
-    // sample would leave the legality check with gaps it cannot see.
-    //
-    // The loop gives up early once nothing has settled for a long stretch of virtual time, rather
-    // than grinding out its whole budget. A wedged scheduler is exactly what this file is here to
-    // catch, and it should say so in seconds: leaking a single backend slot makes the drain spin the
-    // full budget, which took nearly four minutes and reported a file-level timeout instead of a
-    // failed assertion. The longest legitimate gap between settles is a circuit-probe interval plus
-    // a retry backoff, so this threshold is far beyond anything healthy.
+    // Drain on settles, not on an empty queue: a request waiting out its backoff is in no queue.
+    // Sample every iteration, since half-open lasts only until the probe reports.
+    // Bail out on a stall so a wedged scheduler fails in seconds instead of timing out the file.
     const STALL_LIMIT_MS = 120_000;
     let drained = false;
     let lastProgressAt = clock.now();
@@ -338,9 +306,8 @@ function assertUniversalInvariants(seed: number, run: WorkloadResult, requestCou
 
     for (const backend of run.status.backends) {
         assert.ok(backend.inFlight >= 0, `seed ${seed}: ${backend.url} reported negative in-flight`);
-        // Everything has drained by now, so this is the "no slot was left behind" check rather
-        // than a statement about capacity; the live comparison in the forwarder is what polices
-        // the limit while work is actually running.
+        // Everything has drained, so this checks no slot was left behind rather than anything
+        // about capacity; the forwarder's live comparison polices the limit during a run.
         assert.strictEqual(backend.inFlight, 0, `seed ${seed}: ${backend.url} still holds ${backend.inFlight} slots after draining`);
     }
 }
@@ -367,9 +334,7 @@ describe("swapiServe scheduler invariants", () => {
     }
 
     // The ordinary mix never produces CIRCUIT_OPEN_AFTER_FAILURES consecutive failures, so without
-    // a deliberate outage the breaker, its probe, and recovery are untouched by this file. That is
-    // the part of the design where a wrong state transition is least visible and most expensive: it
-    // decides how long an outage lasts after the backend itself is healthy again.
+    // a deliberate outage the breaker, its probe and recovery all go untouched.
     it("holds every invariant across an outage that opens the breakers and recovers", async () => {
         const seed = SEEDS[0];
         const requestCount = 1_200;
@@ -414,19 +379,12 @@ describe("swapiServe.Governor state machine invariants", () => {
     const HEALTHY_OUTCOMES = ["ok", "ok", "ok", "not_found", "rejected"] as const;
     const FAILING_OUTCOMES = ["server_error", "throttled", "transport_failure"] as const;
 
-    // Long enough that a run of failures reliably reaches CIRCUIT_OPEN_AFTER_FAILURES. Leaving it
-    // to the random mix does not work: consecutiveFailures resets on any healthy outcome, so ten in
-    // a row is rare enough that some seeds never open a breaker at all and the test silently
-    // proves nothing. Alternating phases keeps the randomness where it matters, which is the order
-    // acquires and reports interleave, not whether the outage happens.
+    // Long enough to reliably reach CIRCUIT_OPEN_AFTER_FAILURES: consecutiveFailures resets on any
+    // healthy outcome, so a random mix leaves some seeds never opening a breaker at all.
     const PHASE_STEPS = 150;
 
-    // Durations are production's, uncompressed. Compressing the probe interval looks tempting for
-    // speed and quietly breaks the test: at 15s the interval comfortably exceeds the two seconds a
-    // collapsed backend needs to earn a token, so a probe fires as soon as it is due, but shrink the
-    // interval to a second and the probe is waiting on a token that has not refilled yet, so it
-    // barely ever runs. The relationships between these constants are the thing under test, so they
-    // are left alone and the step size is what gets tuned instead.
+    // Production durations, uncompressed - the ratios between them are what is under test. Shrink
+    // the probe interval and probes start waiting on tokens that have not refilled. Tune STEP_MS.
     const STEP_MS = 400;
     const STRAGGLER_LIFETIME_MS = UPSTREAM_TIMEOUT_MS;
     const PROBE_LIFETIME_MS = GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS * 3;
@@ -441,16 +399,8 @@ describe("swapiServe.Governor state machine invariants", () => {
             const url = "sim://a";
             const governor = new Governor([url]);
 
-            // Slots taken but not yet reported, each remembering whether it was the probe, so a
-            // report can be paired with the acquire that produced it exactly as the dispatcher
-            // pairs them.
-            //
-            // `dueAt` is what makes this resemble a real backend rather than a queue of tokens.
-            // Requests do not come back in a uniform trickle: a wedged backend holds some for the
-            // full upstream timeout, and a probe sent to test one is itself likely to be slow,
-            // because slow is what is wrong with it. Both are needed here. A probe that is still
-            // outstanding when the breaker next becomes eligible to probe is the state the whole
-            // isProbe contract exists for, and with uniformly short-lived slots it never occurs.
+            // `dueAt` gives slots varied lifetimes, which is what reaches the state the isProbe
+            // contract exists for: a probe still outstanding when the breaker may probe again.
             const outstanding: { isProbe: boolean; dueAt: number }[] = [];
             let now = 0;
             let probesOutstanding = 0;
@@ -460,26 +410,14 @@ describe("swapiServe.Governor state machine invariants", () => {
             let stragglerDuringProbe = 0;
 
             for (let step = 0; step < STEPS; step++) {
-                // At the start of each healthy stretch, put the backend back where a recovered one
-                // would be: a learned limit and rate well above the floor. Without this the driver
-                // never reaches the state being defended against. A token-starved backend can only
-                // open its breaker once its own stragglers report, since nothing else is left to
-                // fail, so the stragglers are always gone by the time it probes. Production opens a
-                // breaker the other way round: a backend carrying dozens of requests fails ten of
-                // them fast while a hung one is still hanging, and that is the overlap that makes
-                // probe attribution matter at all.
+                // Restore a recovered backend's learned limit and rate, or it stays token-starved
+                // and its stragglers have always reported by the time it probes.
                 if (step % (PHASE_STEPS * 2) === 0) {
                     governor.setLimit(url, LEARNED_LIMIT);
                     governor.setRate(url, RATE.MAX_PER_SEC);
                 }
-                // Small steps, deliberately. Report pressure is measured in steps while the probe
-                // interval is measured in time, so coarse steps quietly destroy the case this test
-                // exists for: with big jumps, the ten failures that open a breaker take a minute of
-                // virtual time, every straggler has timed out before the probe goes, and the probe
-                // is then the only thing in flight. Fine steps let a straggler outlive the interval
-                // and still be at the backend when the probe is dispatched, which is what actually
-                // happens when a backend hangs, and is the only way to reach the state where the
-                // governor has to be told which outcome belongs to the probe.
+                // Keep steps small: report pressure is counted in steps but the probe interval in
+                // time, so coarse steps time every straggler out before the probe is dispatched.
                 now += Math.floor(random() * STEP_MS);
 
                 // Acquire sometimes, report sometimes, so stragglers accumulate and outlive the
@@ -503,9 +441,8 @@ describe("swapiServe.Governor state machine invariants", () => {
                         outstanding.push({ isProbe, dueAt: now + Math.floor(lifetime) });
                     }
                 } else if (outstanding.length > 0) {
-                    // Only slots whose response is actually due, and among those in a random order
-                    // rather than FIFO: a straggler coming back long after a probe was dispatched is
-                    // the whole case being defended against.
+                    // Random order rather than FIFO among the due slots: a straggler returning long
+                    // after a probe was dispatched is the case being defended against.
                     const due = outstanding.filter((slot) => slot.dueAt <= now);
                     if (due.length === 0) continue;
                     const slot = due[Math.floor(random() * due.length)];
@@ -529,12 +466,8 @@ describe("swapiServe.Governor state machine invariants", () => {
             }
 
             assert.ok(openedAndProbed > 0, `seed ${seed}: the breaker never probed, so this proved nothing`);
-            // Reachability, asserted rather than assumed. The interesting region here is narrow and
-            // easy to tune out of by accident: every earlier version of this driver ran thousands of
-            // steps, opened dozens of breakers, and never once had a straggler report while a probe
-            // was in flight, which is the only case that can tell a correct implementation from one
-            // that infers the probe from the backend instead of being told. A run that never gets
-            // there passes vacuously, so it fails here instead.
+            // Reachability, asserted rather than assumed: the region is narrow and easy to tune out
+            // of by accident, and a run that never reaches it would pass vacuously.
             assert.ok(
                 stragglerDuringProbe > 0,
                 `seed ${seed}: no unrelated request ever reported while a probe was outstanding, so probe attribution went untested`,
@@ -544,9 +477,8 @@ describe("swapiServe.Governor state machine invariants", () => {
         });
     }
 
-    // Liveness: the property that stops "temporarily unavailable" becoming "dead until restart".
-    // Checked for every outcome that can open a breaker, since each takes its own path through
-    // report() and any one of them could strand the state machine on its own.
+    // Liveness: what stops "temporarily unavailable" becoming "dead until restart". Every outcome
+    // that can open a breaker takes its own path through report(), so each is checked.
     for (const outcome of ["server_error", "throttled", "transport_failure"] as const) {
         it(`returns an open breaker to half-open after ${outcome}, however long it has been open`, () => {
             const url = "sim://a";

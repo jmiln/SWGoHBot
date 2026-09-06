@@ -529,9 +529,8 @@ describe("swapiServe.Governor settling metrics", () => {
         assert.deepStrictEqual(snap.recentPeaks, []);
     });
 
-    // The peak is the whole point of the ring: the time-weighted mean says where the sawtooth
-    // centres, but only the pre-backoff value says how high the controller got before the backend
-    // pushed back, which is what the ceiling constants get pinned against.
+    // Only the pre-backoff value says how high the controller got before the backend pushed back,
+    // which is what the ceiling constants are pinned against; the mean only says where it centres.
     it("records the pre-backoff peak, not the halved value", () => {
         const governor = new Governor([A]);
         completeClean(governor, A, GOVERNOR.INCREASE_AFTER_CLEAN);

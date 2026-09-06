@@ -934,11 +934,8 @@ function getChannelStr(aw: UserConfig["arenaWatch"], alertType: string, arenaTyp
     return thisAW?.channel ? `<#${thisAW.channel}>` : "N/A";
 }
 
-// Which of a setting's target arenas ("char" | "fleet" | "both") have no usable log, so the
-// confirmation can say the setting was saved but won't fire yet instead of implying it will.
-// Everything the arena log sends - rank changes and the per-ally-code payout warn/result lines
-// alike - goes to that arena's own channel and needs it enabled, so this shares the same
-// isArenaChannelOn predicate as processShardPatron's charLogOn/shipLogOn on the sending side.
+// Which of a setting's target arenas have no usable log, so the confirmation can say it was saved
+// but won't fire yet. Shares isArenaChannelOn with the sending gate in processShardPatron.
 function arenasWithoutLog(aw: FilledAW, target: string): ("char" | "fleet")[] {
     const targets: ("char" | "fleet")[] = target === "both" ? ["char", "fleet"] : target === "fleet" ? ["fleet"] : ["char"];
     return targets.filter((arenaType) => !isArenaChannelOn(arenaType === "fleet" ? aw.arena.fleet : aw.arena.char));
@@ -1058,10 +1055,8 @@ async function formatForViewing(aw: FilledAW, allyCode: string | null, view_by: 
             description: [
                 `Char:     **${isArenaChannelOn(aw.arena.char) ? "ON " : "OFF"}**  -  ${charChan}`,
                 `Ship:     **${isArenaChannelOn(aw.arena.fleet) ? "ON " : "OFF"}**  -  ${fleetChan}`,
-                // Worth surfacing: report=none leaves the arenas above ON while silencing every rank
-                // change, so the channels alone don't explain why only payout lines show up. Stated
-                // as the bare setting - whether anything actually sends also depends on the channels
-                // above and on per-account warn/result, which the Members list already tags.
+                // Surfaced because report=none leaves the arenas above ON while silencing every
+                // rank change, so the channels alone don't explain why only payout lines show up.
                 `Rank changes: **${aw.report}**`,
             ].join("\n"),
             fields: fields,

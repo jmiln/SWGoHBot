@@ -113,10 +113,8 @@ describe("swapiQueue fail-open fallback", () => {
         assert.strictEqual(direct.requestCount(), 0, "a 400 is not a reason to bypass the queue");
     });
 
-    // A pm2 restart of swapiServe used to fail every queued call across every shard and both
-    // updaters: the service answers 503 on the way down, which is a real HTTP answer rather than a
-    // connection error, so the fallback never engaged and the calls were simply dropped. That is the
-    // outcome the direct-call fallback exists to prevent.
+    // A shutdown answers 503, which is a real HTTP answer rather than a connection error, so
+    // without this a restart drops every queued call across every shard and both updaters.
     it("falls back when swapiServe sheds because it is shutting down", async () => {
         const serve = await startFakeComlink(() => ({
             status: 503,
@@ -249,10 +247,8 @@ describe("swapiQueue unresponsive-service watchdog", () => {
 describe("swapiQueue.watchdogMsForTier", () => {
     beforeEach(() => __setWatchdogMsForTesting(null));
 
-    // The bound has to allow for swapiServe answering LATER than the deadline it advertises. A
-    // request dispatched just before its deadline runs to completion, since the upstream cost is
-    // already paid, so a healthy call can legitimately take its tier deadline plus the full upstream
-    // timeout. A bound tighter than that would call a slow comlink a wedged service.
+    // A request dispatched just before its deadline still runs to completion, so a healthy call can
+    // take its tier deadline plus the full upstream timeout. Tighter would flag a slow comlink.
     it("allows for a request dispatched just before its deadline running the full upstream timeout", () => {
         for (const tier of [PRIORITY.ARENA_TICK, PRIORITY.PUBLIC_COMMAND, PRIORITY.BULK] as const) {
             assert.ok(
@@ -263,9 +259,8 @@ describe("swapiQueue.watchdogMsForTier", () => {
     });
 });
 
-// dataUpdater and the mod worker cannot use withStub: they build one stub and thread it through
-// a dozen functions, one of which reaches for a private method the library has no wrapper for.
-// So they resolve a stub once at startup instead, and inherit the same fail-open behaviour.
+// dataUpdater and the mod worker cannot use withStub - they thread one stub through a dozen
+// functions, one reaching a private method - so they resolve once and inherit the fail-open path.
 describe("swapiQueue.resolveBulkStub", () => {
     beforeEach(() => __resetForTesting());
 
@@ -299,9 +294,8 @@ describe("swapiQueue.resolveBulkStub", () => {
         assert.strictEqual(seenUri, "/player", "a nightly cycle should still run without the governor");
     });
 
-    // The Piscina threads cannot be handed a stub, and the mod worker signs its own requests so it
-    // can attach an AbortSignal. Both need the same base URL the stub was built from, so the two
-    // must never be able to disagree about where bulk traffic goes.
+    // Piscina threads cannot be handed a stub, so the worker signs its own requests off the same
+    // base URL; the two must never disagree about where bulk traffic goes.
     it("returns a url matching the stub it built, on both paths", async () => {
         const serve = await startFakeComlink(({ uri }) => {
             return uri === "/status" ? { status: 200, body: JSON.stringify({ backends: [] }) } : { status: 200, body: "{}" };

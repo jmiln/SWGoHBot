@@ -5,12 +5,8 @@ import Randomchar from "../../slash/randomchar.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertReplyCount, getLastReply } from "./helpers.ts";
 
-// These tests cover the no-allycode branch, which draws from the in-memory bot `characters`
-// list and needs no network/DB. The allycode branch (roster fetch + rarity filter via
-// swgohAPI/fetchPlayerWithCooldown) is a separate path and is not covered here.
-//
-// Note: the `rarity` option only filters within the allycode branch; it has no effect when
-// no allycode is supplied, so these tests deliberately do not assert rarity behavior.
+// Only the no-allycode branch, which needs no network/DB. The allycode branch and the `rarity`
+// option (which only applies within it) are not covered here.
 
 const validNames = new Set(characters.map((c) => c.name));
 

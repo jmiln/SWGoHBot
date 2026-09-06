@@ -3,10 +3,8 @@ import crypto from "node:crypto";
 import { describe, it } from "node:test";
 import { signRequest } from "../../services/swapiServe/signer.ts";
 
-// swapiServe re-signs every request at dispatch time rather than forwarding the client's
-// signature, because X-Date is stamped when the client signs and a low-priority request may
-// wait minutes in the queue. A stale timestamp risks rejection by comlink's clock-skew check.
-// This must reproduce the library's algorithm exactly (comlink-js index.js signPostRequest).
+// Re-signed at dispatch rather than forwarded, since a queued request's X-Date would go stale
+// past comlink's clock-skew check. Must reproduce comlink-js signPostRequest exactly.
 describe("swapiServe.signRequest", () => {
     it("produces headers matching the comlink algorithm for a known body", () => {
         const accessKey = "test-access";

@@ -3,12 +3,8 @@ import { describe, it } from "node:test";
 import { pruneModFields } from "../../modules/swapi.ts";
 import type { SWAPIMod } from "../../types/swapi_types.ts";
 
-// The statcalc service returns mods carrying raw game-economy fields
-// (sellValue, removeCost, levelCost, xp, locked, bonusQuantity, convertedItem,
-// rerolledCount) that nothing in the bot reads. They were being persisted to
-// playerStats verbatim via `$set: bareP`, accounting for ~31% of each player
-// document. pruneModFields reduces a mod down to only the SWAPIMod fields the
-// bot actually stores and consumes.
+// statcalc returns mods carrying raw game-economy fields nothing in the bot reads, which made up
+// ~31% of each playerStats document when persisted verbatim.
 describe("swapi.pruneModFields", () => {
     const rawMod = {
         // Dead-weight fields that must be dropped

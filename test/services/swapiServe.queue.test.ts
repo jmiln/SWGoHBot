@@ -99,10 +99,8 @@ describe("swapiServe.PriorityQueue reservations", () => {
         assert.ok(served[PRIORITY.SUPPORTER_COMMAND] > 0, "supporter commands must keep flowing");
     });
 
-    // The point of borrowing WDRR's accounting: over a run, service converges on the configured
-    // shares rather than on whatever a sampling window happened to catch. The contract is a
-    // floor, not an exact split, so every tier must clear its guarantee. The unreserved
-    // remainder (shares total 0.8) lands wherever priority and credit take it.
+    // The contract is a floor, not an exact split, so every tier must clear its guarantee and the
+    // unreserved remainder (shares total 0.8) lands wherever priority and credit take it.
     it("gives every tier at least its guaranteed share under saturation", () => {
         const queue = new PriorityQueue<string>({ depthLimits: NO_DEPTH_LIMIT });
         saturate(queue, 500);
@@ -201,9 +199,8 @@ describe("swapiServe.PriorityQueue deadlines", () => {
         assert.strictEqual(queue.size(), 0);
     });
 
-    // Expiry cannot only happen on the way to a dispatch: when no capacity is available there is
-    // no dispatch to ride along with, and the waiting callers are exactly the ones whose deadlines
-    // are passing.
+    // Expiry cannot ride only on a dispatch: with no capacity there is no dispatch, and the
+    // waiting callers are exactly the ones whose deadlines are passing.
     it("sweeps expired entries without being asked for one to dispatch", () => {
         const expired: string[] = [];
         const queue = new PriorityQueue<string>({ onExpire: (e) => expired.push(e.payload) });

@@ -53,9 +53,8 @@ describe("swapiServe.parsePriorityPath", () => {
 });
 
 describe("swapiServe.resolveDeadlineMs", () => {
-    // The whole reason arenaTick outranks everything: a tick still waiting when the next one fires
-    // is dropped by the arenaTickRunning guard, and the payout cycle and poll interval being exact
-    // multiples means the same minute is lost every day after that.
+    // Why arenaTick outranks everything: the arenaTickRunning guard drops a tick still waiting
+    // when the next fires, and cycle/interval being exact multiples make that loss recur daily.
     it("expires arena tick work inside the minute it has to land in", () => {
         assert.ok(
             resolveDeadlineMs(PRIORITY.ARENA_TICK, undefined) < ARENA_TICK_INTERVAL_MS,
@@ -68,17 +67,14 @@ describe("swapiServe.resolveDeadlineMs", () => {
         const command = resolveDeadlineMs(PRIORITY.PUBLIC_COMMAND, undefined);
         const bulk = resolveDeadlineMs(PRIORITY.BULK, undefined);
 
-        // A user command gives up soonest of all, ahead of even the tick. Priority orders who is
-        // served first; the deadline orders who is worth still serving, and a human watching a
-        // spinner runs out of patience long before an automated tick with a minute to fill does.
+        // Priority orders who is served first; the deadline orders who is worth still serving, so
+        // a user command gives up soonest of all, ahead of even the tick.
         assert.ok(command < arena, "a user command gives up before a tick nobody is watching");
         assert.ok(arena < bulk, "bulk work nobody is watching can wait longest");
     });
 
-    // Dispatcher.shedDoomed sheds whatever expires within one probe interval, since no probe can
-    // land in time to serve it. Holding the user-facing tiers at or below that interval is what
-    // makes a dead pool fail them on the first pump instead of walking them through failed probe
-    // after failed probe until their deadline runs out.
+    // shedDoomed sheds whatever expires within one probe interval, so holding the user-facing
+    // tiers at or below it fails them on the first pump rather than after probe upon probe.
     it("fails user-facing work at once when the pool is down, rather than waiting out probes", () => {
         for (const tier of [PRIORITY.SUPPORTER_COMMAND, PRIORITY.PUBLIC_COMMAND] as const) {
             assert.ok(
@@ -119,9 +115,8 @@ describe("swapiServe end to end", () => {
         assert.deepStrictEqual(await response.json(), { player: "found" });
     });
 
-    // The forwarder requests gzip, so whether the backend compresses is the backend's choice, not
-    // ours. Every real client (got, with decompress on) will try to decode whatever encoding the
-    // response claims, so a proxied response must never claim one it no longer carries.
+    // The forwarder requests gzip but the backend chooses, and clients decode whatever encoding
+    // the response claims, so a proxied response must never claim one it no longer carries.
     it("delivers a compressed upstream response intact", async () => {
         const payload = JSON.stringify({ player: "found", padding: "x".repeat(2000) });
         const comlink = await startFakeComlink(() => ({ status: 200, body: payload, gzip: true }));
@@ -168,9 +163,8 @@ describe("swapiServe end to end", () => {
         assert.strictEqual(seenUri, "/guild");
     });
 
-    // Every shard and both updaters depend on this one process, so a request that fails while
-    // being read must not be able to take it down. Reading the body rejects when the client
-    // vanishes mid-request, and an unhandled rejection in the request handler ends the process.
+    // Reading the body rejects when a client vanishes mid-request, and an unhandled rejection in
+    // the handler ends the one process every shard and both updaters depend on.
     it("survives a client that disconnects while its body is still being read", async () => {
         const comlink = await startFakeComlink(() => ({ status: 200, body: JSON.stringify({ ok: true }) }));
         const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS });
@@ -187,7 +181,7 @@ describe("swapiServe end to end", () => {
         assert.deepStrictEqual(await response.json(), { ok: true });
     });
 
-    // pm2 restarts this service; if close() cannot finish, the restart only completes on SIGKILL.
+    // A close() that cannot finish inside stop_grace_period turns every restart into a SIGKILL.
     it("shuts down promptly with work still queued", { timeout: 5000 }, async () => {
         const comlink = await startFakeComlink(() => ({ status: 200, delayMs: 200 }));
         const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, startLimit: 1 });
@@ -208,9 +202,8 @@ describe("swapiServe end to end", () => {
         assert.ok(took < 1000, `close() should not wait on idle keep-alive connections, took ${took}ms`);
     });
 
-    // The reason a client needs to tell a shutdown shed from any other 503: with it, a pm2 restart
-    // costs each client a fallback to direct comlink calls, and without it every queued call across
-    // every shard and both updaters simply fails.
+    // Why a client must tell a shutdown shed from any other 503: with it a restart costs each
+    // client a fallback to direct calls, without it every queued call simply fails.
     it("labels the work it sheds on shutdown, so clients can fall back rather than fail", { timeout: 5000 }, async () => {
         const comlink = await startFakeComlink(() => ({ status: 200, delayMs: 200 }));
         const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, startLimit: 1 });
@@ -493,9 +486,8 @@ describe("swapiServe control API", () => {
 });
 
 describe("swapiServe bind address", () => {
-    // 127.0.0.2 rather than a real interface address: all of 127.0.0.0/8 is loopback, so this
-    // proves the bind is honoured without ever putting a listening port on the network. Every
-    // other test in this file covers the default, which stays loopback.
+    // 127.0.0.2 rather than a real interface address: all of 127.0.0.0/8 is loopback, so the bind
+    // is proven without ever putting a listening port on the network.
     it("binds the address it is given, and nothing else", async () => {
         const comlink = await startFakeComlink(() => ({ status: 200 }));
         const service = await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, host: "127.0.0.2" });

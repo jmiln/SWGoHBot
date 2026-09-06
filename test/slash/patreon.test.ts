@@ -6,9 +6,8 @@ import Patreon from "../../slash/patreon.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount } from "./helpers.ts";
 
-// Each test file runs in its own process, so reassigning these module singletons is isolated to
-// this file (other files that mock the same functions run in separate processes). Restore after
-// every test regardless.
+// Each test file runs in its own process, so reassigning these module singletons stays isolated
+// to this file. Restore after every test regardless.
 const originalGetPatronUser = patreonFuncs.getPatronUser;
 const originalGetPlayerCooldown = patreonFuncs.getPlayerCooldown;
 const originalGetUser = userReg.getUser;

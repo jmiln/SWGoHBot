@@ -113,9 +113,8 @@ describe("MyCharacter", () => {
         const interaction = createMockInteraction({
             optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789" },
         });
-        // Real language so BASE_STAT_NAMES resolves to a real object and the stat rows render
-        // their computed values. With the key-echoing mock the stat name lookups miss and the
-        // values never appear, so the assertions below would be invisible.
+        // Real language so BASE_STAT_NAMES resolves to an object and the stat rows render; with
+        // the key-echoing mock the lookups miss and the values never appear.
         const ctx = createCommandContext({ interaction, language: createRealLanguage() });
         const command = new MyCharacter();
         await command.run(ctx);
@@ -138,9 +137,8 @@ describe("MyCharacter", () => {
         // Abilities field lists the maxed basic ability.
         assert.ok(fieldValue("Abilities").includes("Basic"), "Expected the ability name in the Abilities field");
 
-        // Stats field: computed final stats formatted with locale commas (Health 50000 -> 50,000).
-        // Note: expandSpaces pads the stat labels with zero-width spaces, so assert the label and
-        // its ":: value" separately rather than with a \s* bridge.
+        // expandSpaces pads the stat labels with zero-width spaces, so assert the label and its
+        // ":: value" separately rather than with a \s* bridge.
         const stats = fieldValue("Stats");
         assert.ok(stats.includes("Speed"), "Expected the Speed stat label");
         assert.ok(stats.includes(":: 180"), "Expected the rendered Speed value");

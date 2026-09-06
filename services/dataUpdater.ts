@@ -53,17 +53,10 @@ function numericArg(flag: string, fallback: number): number {
 // not worth the risk of rate limits.
 const MAX_CONCURRENT = numericArg("--max-concurrent", 80);
 
-// Player-fetch worker pool (see aggregatePlayerMods). One isolate per concurrent request gives the
-// parse parallelism the workload needs (parsing each full-player payload is real CPU, not just
-// I/O), so the thread count tracks the host's available cores -- but it is capped, because the
-// fetch is API rate-limit bound and must NOT scale up on bigger hardware. The cap is the validated
-// safe concurrency; do not raise it. Each worker's V8 old space is also capped so transient
-// payloads get collected instead of ballooning rss: the live set per worker is single-digit MB,
-// but with no memory pressure V8 grew the (default CPU-count) isolates freely until they hit ~5GB.
-// All three knobs are overridable per run (--mod-threads / --mod-tasks / --worker-heap) for tuning;
-// the defaults are the verified config (12 threads, 1 task each, 256MB cap -> ~1.4GB peak).
-const MOD_FETCH_CONCURRENCY_CAP = 12;
-const MOD_WORKER_THREADS = numericArg("--mod-threads", Math.max(1, Math.min(availableParallelism(), MOD_FETCH_CONCURRENCY_CAP)));
+// Capped to bound memory: without a heap cap the isolates grow freely (~5GB observed). Verified
+// defaults are 12 threads, 1 task each, 256MB -> ~1.4GB peak.
+const MOD_WORKER_THREAD_CAP = 12;
+const MOD_WORKER_THREADS = numericArg("--mod-threads", Math.max(1, Math.min(availableParallelism(), MOD_WORKER_THREAD_CAP)));
 const MOD_TASKS_PER_WORKER = numericArg("--mod-tasks", 1);
 const MOD_WORKER_HEAP_MB = numericArg("--worker-heap", 256);
 
@@ -256,10 +249,8 @@ async function init() {
         } else {
             logger.log("Skipping database cleanup (pass --cleanup to run it)");
         }
-        // Every call this cycle makes goes through swapiServe at the bulk tier, so the nightly
-        // pull can never crowd out live commands or the arena payout tick. Resolved once because
-        // this is a single-cycle process; if swapiServe is down it falls back to calling comlink
-        // directly rather than failing the whole run.
+        // Resolved once because this is a single-cycle process; falls back to calling comlink
+        // directly if swapiServe is down.
         const { stub: comlinkStub, url: comlinkUrl } = await resolveBulkStub();
 
         // Run the heavy update cycle once, then exit so the OS reclaims the memory the cycle
@@ -683,9 +674,7 @@ async function aggregatePlayerMods(playerIds: string[], modMap: ModMap, comlinkU
     let failedCount = 0;
     let processedCount = 0;
 
-    // Create pool locally for this operation. Thread count follows the host cores up to the
-    // rate-limit cap (MOD_WORKER_THREADS), instead of Piscina's raw CPU-count default, and each
-    // worker's heap is capped so transient payloads are collected instead of accumulating.
+    // Pool is local to this operation so its threads go away with it.
     const piscina = new Piscina({
         filename: path.resolve(import.meta.dirname, "../modules/workers/getStrippedModsWorker.ts"),
         taskQueue: new FixedQueue(),
@@ -1223,13 +1212,8 @@ function removeDuplicates(locations: Location[]) {
     });
 }
 
-// CG versions localization keys inconsistently and without warning: the same event name has
-// shipped as `KEY`, `KEY_2`, `KEY_V2`, `KEY_V3` and even `KEYV2` (no separator). Hardcoding
-// whichever suffix was current when a branch was written means a rename silently drops the
-// location (see BUG_REFERENCE.md), so resolve the base key against the versions that actually
-// exist and take the newest. Only the V forms are treated as versions -- a trailing `_<n>` is
-// usually an ordinary index (`_01`, `_95`), so only the legacy `_2` that check1or2 used is kept.
-// Versions observed in the wild top out at V7; the cap just bounds the probe.
+// CG versions localization keys inconsistently (`KEY`, `KEY_2`, `KEY_V2`, `KEYV2`), so resolve
+// against the keys that exist. Only V forms and the legacy `_2` count; `_01`/`_95` are indexes.
 const MAX_LOC_KEY_VERSION = 9;
 
 function resolveLocKey(baseKey: string, locale: Record<string, string>): string | null {
@@ -2189,10 +2173,8 @@ function unitsForUnitMapFile(unitsIn: ProcessedUnit[]) {
 // Key prefixes dropped wholesale -- these never contain anything the bot renders.
 const IGNORE_KEY_PREFIXES = ["KEY_MAPPING", "ANNIVERSARY", "PROMO", "SUBSCRIPTION"];
 
-// The gameData blob references 503 distinct DATACRON_* keys. These five prefixes cover what
-// /datacron and /mydatacrons display; MATERIAL (reroll currency), HELP (in-client tutorial copy)
-// and CURRENCY are never shown. Keeping the allowlist is about not storing copy we never render,
-// not about memory -- it only drops ~68 of the 503 keys.
+// These five prefixes cover what /datacron and /mydatacrons display, out of the 503 distinct
+// DATACRON_* keys in the gameData blob; MATERIAL, HELP and CURRENCY copy is never rendered.
 const DATACRON_KEEP_PREFIXES = ["DATACRON_SET_", "DATACRON_CHARACTER_", "DATACRON_FACTION_", "DATACRON_ALIGNMENT_", "DATACRON_ROLE_"];
 
 /**
@@ -2515,10 +2497,8 @@ function debugTimeEnd(name: string) {
     console.timeEnd(name);
 }
 
-// Diagnostic: log a memory snapshot at a phase boundary. rss is process-wide (includes worker
-// threads); heapUsed is the main isolate's JS objects; external/arrayBuffers covers Buffers and
-// off-heap data. rss >> heapUsed points at worker payloads or buffers; high heapUsed points at
-// main-thread JS (e.g. gameData/localization). Gated behind --debug like the other debug helpers.
+// Diagnostic: log a memory snapshot at a phase boundary, behind --debug. rss is process-wide
+// (includes worker threads); heapUsed is the main isolate; external/arrayBuffers is off-heap.
 function logMem(label: string) {
     if (!DEBUG_LOGS) return;
     const m = process.memoryUsage();
@@ -2530,7 +2510,7 @@ function logMem(label: string) {
 
 // Print CLI usage. Defaults shown here must track the numericArg() fallbacks above.
 function printHelp() {
-    const defaultThreads = Math.max(1, Math.min(availableParallelism(), MOD_FETCH_CONCURRENCY_CAP));
+    const defaultThreads = Math.max(1, Math.min(availableParallelism(), MOD_WORKER_THREAD_CAP));
     console.log(`SWGoHBot data updater
 
 Usage: node --env-file=.env services/dataUpdater.ts [options]
@@ -2559,7 +2539,7 @@ Options:
                         Concurrent GAC player fetches during counter ingestion (default 50).
   --max-per-10s N       Rate cap for the GAC history source (default 800 per 10s).
   --min-battles N       Minimum battles before a counter is included (default ${DEFAULT_BUILD_OPTIONS.minBattles}).
-  --mod-threads N       Player-fetch worker threads (default min(cpuCount, ${MOD_FETCH_CONCURRENCY_CAP}); here ${defaultThreads}).
+  --mod-threads N       Player-fetch worker threads (default min(cpuCount, ${MOD_WORKER_THREAD_CAP}); here ${defaultThreads}).
   --mod-tasks N         Concurrent tasks per worker thread (default 1).
   --worker-heap N       Per-worker V8 old-space cap in MB; bounds peak rss (default 256).`);
 }

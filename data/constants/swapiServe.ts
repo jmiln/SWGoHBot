@@ -1,6 +1,5 @@
 // Priority tiers for comlink traffic, highest first. arenaTick outranks live user commands
-// because a missed payout minute is unrecoverable for the affected accounts, while a slow
-// command is only slow.
+// because a missed payout minute is unrecoverable.
 export const PRIORITY = {
     ARENA_TICK: 0,
     SUPPORTER_COMMAND: 1,
@@ -9,23 +8,22 @@ export const PRIORITY = {
     BULK: 4,
 } as const;
 
-export type Priority = 0 | 1 | 2 | 3 | 4;
+export type Priority = (typeof PRIORITY)[keyof typeof PRIORITY];
 
-export const PRIORITY_COUNT = 5;
-export const LOWEST_PRIORITY: Priority = 4;
+// Anything sized to the tier list. Adding a tier to PRIORITY without widening this is a compile
+// error at every table below, rather than a silently short array.
+export type ByPriority<T> = readonly [T, T, T, T, T];
 
-// AIMD controller, one per backend. Shaped like TCP congestion control: grow gently on clean
-// completions, halve on a throttle or server failure, then hold still while the cooldown runs
-// so it does not climb straight back into the wall.
+export const PRIORITY_COUNT = Object.keys(PRIORITY).length;
+export const LOWEST_PRIORITY: Priority = PRIORITY.BULK;
+
+// AIMD controller, one per backend: grow on clean completions, halve on a throttle or server
+// failure, then hold still for the cooldown.
 export const GOVERNOR = {
     START_LIMIT: 5,
     MIN_LIMIT: 1,
-    // 150 rather than 60 because SWAPI_CLIENT_URL is an nginx round-robin over five comlink
-    // containers, each on its own egress IP, so this ceiling is an aggregate across all five.
-    // Concurrency is what binds the nightly dataUpdater cycle: /player averages 1614ms, so 60 slots
-    // cap it near 37/s no matter how many rate tokens are free. swapiServe buffers whole response
-    // bodies, so in-flight memory is roughly this times the mean response size, about 400MB at 150
-    // against the host's 11GB free.
+    // Aggregate across the five comlink containers behind SWAPI_CLIENT_URL, not per-IP. Whole
+    // response bodies are buffered, so in-flight memory is this times mean response size (~400MB).
     MAX_LIMIT: 150,
     INCREASE_AFTER_CLEAN: 10,
     DECREASE_FACTOR: 0.5,
@@ -34,63 +32,26 @@ export const GOVERNOR = {
     CIRCUIT_PROBE_INTERVAL_MS: 15_000,
 } as const;
 
-// Requests-per-second control, paired with GOVERNOR's concurrency control. A concurrency limit
-// alone cannot regulate an upstream that counts requests per second rather than connections, and
-// we do not know which comlink enforces, so both are governed and adapt together.
-// BURST_FACTOR lets a quiet period bank a short burst instead of forcing perfectly even spacing.
+// Requests-per-second control, paired with GOVERNOR's concurrency control; comlink may enforce
+// either, so both adapt together. BURST_FACTOR lets a quiet period bank a short burst.
 export const RATE = {
     START_PER_SEC: 5,
     MIN_PER_SEC: 0.5,
-    // Five egress IPs at the 60/s a single IP already sustained. Rate is what binds the arena tick,
-    // where /playerArena averages 315ms so 60 slots would allow ~190/s while the old 60/s ceiling
-    // did not. Unlike MAX_LIMIT this costs no memory: more requests per second through the same
-    // number of slots does not increase bytes in flight.
+    // Aggregate across the five egress IPs, at the 60/s a single IP sustained.
     MAX_PER_SEC: 300,
     BURST_FACTOR: 2,
 } as const;
 
-// RESERVED_SHARES is indexed by priority: the fraction of capacity each tier is guaranteed and
-// that higher tiers cannot take from it. A tier below its share with work waiting is served ahead
-// of the strict-priority winner, which stops a busy bot stalling the updaters into permanently
-// stale game data AND stops an arena spike head-of-line blocking live users.
-//
-// A reservation is a FLOOR, never a cap: arenaTick keeps strict precedence above its share,
-// because the tick must finish inside its minute. Unused reservation is immediately available to
-// everyone else, so a quiet tier costs nothing.
-//
-// These sum to 0.8, leaving 20 percent allocated purely by priority. They are starting values to
-// be tuned against the queue-age metrics, not fundamentals.
-//
-// DEPTH_LIMITS is indexed by priority; bulk work is rejected early because it has no deadline
-// and will come back around, while interactive tiers get a fast rejection instead of a long
-// wait that outlives the Discord interaction token.
-// MAX_CREDIT bounds the service credit in both directions. Without a ceiling, a tier idle for an
-// hour would bank an hour of claim and then monopolise the queue the moment it wakes; without a
-// floor, a tier that legitimately used spare capacity would be locked out for a long stretch
-// afterwards. A few requests' worth of slack is enough to smooth bursts without either effect.
-export const QUEUE = {
+// Shares are a floor, never a cap - see the PriorityQueue docblock. They total 0.8, leaving 20
+// percent allocated purely by priority; tune against the queue-age metrics.
+export const QUEUE: { RESERVED_SHARES: ByPriority<number>; DEPTH_LIMITS: ByPriority<number>; MAX_CREDIT: number } = {
     RESERVED_SHARES: [0.1, 0.2, 0.2, 0.1, 0.2],
     DEPTH_LIMITS: [200, 500, 500, 500, 5000],
     MAX_CREDIT: 5,
-} as const;
+};
 
-// Retries are capped as a fraction of dispatches in a rolling window. This replaces the
-// per-batch createRetryBudget in modules/swapi.ts, which has no meaning in a service that sees
-// no batches, while preserving its intent: during a systemic outage retries must not multiply
-// load at exactly the moment we are over budget.
-// MIN_IN_WINDOW carries over RETRY_BUDGET_MIN from the code this replaces: the fraction alone
-// rounds down to zero at low traffic, so an isolated blip on a quiet service could never be
-// retried at all, which is the one case retries exist for. Only a systemic outage should ever
-// exhaust the budget.
-//
-// Both apply PER TIER, not to one shared pool. A shared pool is a priority inversion: bulk work
-// dispatches orders of magnitude more than anything else, so a nightly cycle failing its way
-// through a window could spend the allowance the arena tick needed, and a tick request hitting one
-// transient 502 would then be dropped. That loses the account's payout alert for a minute the
-// payout cycle repeats every day. Per tier, each funds its own retries and bulk cannot reach the
-// tick's. The cost is that the floor now applies five times over, so a total outage allows up to
-// PRIORITY_COUNT * MIN_IN_WINDOW retries per window rather than MIN_IN_WINDOW; a few dozen extra
-// requests a minute is a trade worth making to keep the tick's retries out of bulk's reach.
+// Capped as a fraction of dispatches in a rolling window, PER TIER - a shared pool would let a
+// failing nightly cycle spend the allowance the arena tick needs. MIN_IN_WINDOW is a floor.
 export const RETRY = {
     ATTEMPTS: 2,
     BASE_DELAY_MS: 500,
@@ -101,30 +62,9 @@ export const RETRY = {
 
 export const UPSTREAM_TIMEOUT_MS = 60_000;
 
-// How long a request is still worth sending, indexed by priority. Past this the queue drops it and
-// answers 503 rather than spending upstream budget on a response whose caller has moved on.
-//
-// These are per-tier because the tiers differ in what being late costs, and a single default gets
-// the most important tier exactly backwards. Bulk work is the easy end: nothing is watching, and
-// it is cheaper to wait than to re-run a nightly cycle.
-//
-// The deadline also decides who survives an outage, because Dispatcher.shedDoomed sheds whatever
-// expires within one CIRCUIT_PROBE_INTERVAL_MS: no probe can land in time to serve it. So the two
-// user-facing tiers sit AT that interval, which sheds them on the very first pump rather than
-// letting them wait out probe after probe. That is deliberate and must stay true - a user staring
-// at a Discord spinner is better served by a prompt failure than by a two-minute one - so keep
-// these at or below CIRCUIT_PROBE_INTERVAL_MS. swapiServe.integration.test.ts asserts it.
-//
-// The tick is the exception, and is longer than a user command rather than shorter. It runs on a
-// 60s interval guarded by arenaTickRunning in events/clientReady.ts, so it must fail well inside
-// its minute, but no human is waiting on it: a tick that queued 30s and still landed is a win,
-// where a command that took 30s has already lost its user. Being past the probe interval means a
-// tick waits out part of an outage, which costs nothing, since it is shed with 15s to spare and
-// the next tick fires on schedule regardless.
-//
-// Clients may override with the x-swapi-deadline-ms header, but ComlinkStub has no per-request
-// header hook, so in practice these defaults are what every caller gets.
-export const DEADLINE_MS: readonly number[] = [
+// How long a request is still worth sending. Keep the user-facing tiers at or below
+// CIRCUIT_PROBE_INTERVAL_MS so shedDoomed drops them on the first pump; the integration test asserts it.
+export const DEADLINE_MS: ByPriority<number> = [
     45_000, // ARENA_TICK: inside its minute, with room to answer
     15_000, // SUPPORTER_COMMAND: one probe interval, so an outage fails it at once
     15_000, // PUBLIC_COMMAND: likewise; priority buys precedence, not extra patience
@@ -132,28 +72,17 @@ export const DEADLINE_MS: readonly number[] = [
     600_000, // BULK
 ];
 
-// Response header naming why swapiServe shed a request, carrying the same token as the terminal
-// reason it was counted under.
-//
-// A shed request and a genuine upstream 503 are the same status code, and a client that cannot tell
-// them apart has to guess. It matters because exactly one shed reason means the queue is not there
-// to be used: SHED_SHUTTING_DOWN, where calling comlink directly is the right answer and is what
-// keeps a pm2 restart from failing every queued call across every shard and both updaters. Every
-// other reason is the governor doing its job, and bypassing it on a full queue or a dead backend
-// would send uncoordinated load at comlink at exactly the wrong moment.
+// A shed request and a genuine upstream 503 share a status code, so this names the terminal reason.
+// SHED_SHUTTING_DOWN is the only one that should fall back to calling comlink directly.
 export const SHED_REASON_HEADER = "x-swapi-shed";
 export const SHED_SHUTTING_DOWN = "shutting_down";
 
 // Per-process cap used when swapiServe is unreachable and clients fall back to calling comlink
-// directly. Deliberately far below the old MAX_CONCURRENT of 20, since every shard applies it
-// independently with no coordination.
+// directly. Kept low, since every shard applies it independently with no coordination.
 export const FALLBACK_MAX_CONCURRENT = 5;
 
 // How long a client waits before retrying swapiServe after finding it unavailable.
 export const SERVICE_RECHECK_MS = 30_000;
 
-// Slack added to a client's watchdog bound, on top of the tier deadline and the upstream timeout,
-// to cover loopback and queue jitter. See watchdogMsForTier in modules/swapiQueue.ts: the watchdog
-// exists because a service that accepts connections and never answers produces no error to fall back
-// on, and ComlinkStub offers no way to set a request timeout.
+// Slack on a client's watchdog bound (watchdogMsForTier), covering loopback and queue jitter.
 export const WATCHDOG_SLACK_MS = 5_000;

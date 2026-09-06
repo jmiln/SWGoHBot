@@ -8,11 +8,8 @@ interface SetconfOption {
     isArray?: boolean;
 }
 
-// How each guild setting is presented as a /setconf option. The default values themselves live
-// with the schema in schemas/guildConfigs.schema.ts; this file is the discord-facing half.
-//
-// The Record key type is the sync guarantee: adding a setting to GuildConfigSettingsSchema
-// without adding it here is a compile error rather than a silently missing slash command option.
+// The discord-facing half of the guild settings; defaults live in schemas/guildConfigs.schema.ts.
+// The Record key type makes adding a setting without a /setconf option a compile error.
 export const setconfOptions: Record<keyof GuildConfigSettings, SetconfOption> = {
     // Removed the prefix now that it should all be slash commands
     adminRole: {

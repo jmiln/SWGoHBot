@@ -7,10 +7,8 @@ import { createSimulatedBackend } from "../helpers/simulatedBackend.ts";
 
 const CREDENTIALS = { accessKey: "a", secretKey: "s" };
 
-// Virtual time is free, so step coarsely: advance() fires every timer due in the window, in due
-// order, so a bigger step costs nothing in fidelity but covers far more simulated time per
-// iteration. The circuit-breaker probe interval is 15s, so a fine step would need tens of
-// thousands of iterations just to get through a handful of probes.
+// Step coarsely: advance() fires every timer due in the window in due order, so a bigger step
+// costs no fidelity, and at a 15s probe interval fine steps need tens of thousands of iterations.
 const STEP_MS = 100;
 
 function submit(dispatcher: Dispatcher, clock: FakeClock, priority: Priority, uri = "/player", deadlineMs = 3_600_000): Promise<ProxyResponse> {
@@ -148,10 +146,8 @@ describe("swapiServe controller simulation", () => {
 
         healthy = true;
 
-        // A request whose deadline outlasts the probe interval keeps its place through the outage,
-        // so recovery needs nothing but time: the breaker reaches half-open at the probe interval,
-        // the waiting request becomes the probe, and it succeeds. Nothing has to arrive at exactly
-        // the right moment for the pool to come back.
+        // A request outlasting the probe interval keeps its place, so recovery needs only time:
+        // the breaker half-opens and the waiting request becomes the probe.
         const recovering = submit(dispatcher, clock, PRIORITY.BULK);
         await drain(dispatcher, clock);
         const response = await recovering;

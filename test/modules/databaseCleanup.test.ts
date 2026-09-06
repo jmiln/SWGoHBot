@@ -182,9 +182,8 @@ describe("DatabaseCleanup Module", () => {
         });
 
         it("stop() waits for the in-flight initial cleanup instead of abandoning it", async () => {
-            // start() kicks off an immediate cleanup without awaiting it. Callers (dataUpdater's
-            // cleanup()) close the db and process.exit() straight after stop(), so stop() must not
-            // resolve while deletes are still in flight or they get truncated mid-run.
+            // Callers close the db and process.exit() straight after stop(), so stop() must not
+            // resolve while the cleanup start() kicked off is still deleting.
             databaseCleanup.start(24);
             assert.equal(databaseCleanup.isCleanupRunning, true, "start() should kick off an immediate cleanup");
 

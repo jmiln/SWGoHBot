@@ -4,11 +4,8 @@ import dataUpdater from "../../services/dataUpdater.ts";
 
 const { processDatacrons, buildDatacronLocRows } = dataUpdater;
 
-// Shapes verified 2026-07-21 against the cached gameData blob:
-//  - the TEMPLATE's tiers (1-indexed, no tier 0) carry the affix pools
-//  - the SET's tier scopeIdentifier is intentionally ignored: it cannot express the ROLE mechanic,
-//    and each affix's label comes from its ability nameKey instead
-//  - datacron abilities live in gameData.ability with real nameKey + descKey
+// Verified 2026-07-21 against the cached gameData blob. The SET's tier scopeIdentifier is ignored
+// on purpose: it cannot express the ROLE mechanic, so labels come from each ability's nameKey.
 // biome-ignore lint/suspicious/noExplicitAny: narrow test fixture, not a full GameData
 const gameData: any = {
     datacronSet: [

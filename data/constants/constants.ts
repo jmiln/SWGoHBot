@@ -101,10 +101,8 @@ export default {
     // The timezone that the bot will mark any logs in
     timezone: "America/Los_Angeles",
 
-    // Enable the various intents that are needed
-    // - Guilds: core guild/channel data; GuildMembers: welcome/departure events (guildMemberAdd/Remove)
-    // - No message intents: the bot is slash-command only, never reads message events. Fetching/editing
-    //   older messages still works via REST (interaction.editReply, channel.messages.fetch).
+    // No message intents: the bot is slash-command only. Fetching/editing older messages still
+    // works via REST (interaction.editReply, channel.messages.fetch).
     botIntents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
 
     // Partials your bot may need should go here, CHANNEL is required for DM's

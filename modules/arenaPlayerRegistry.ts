@@ -2,11 +2,9 @@ import { env } from "../config/config.ts";
 import type { BotCache } from "../types/cache_types.ts";
 import type { ArenaPlayer } from "../types/types.ts";
 
-// The MongoDB driver serializes explicitly-undefined keys as null inside $set
-// (ignoreUndefined is off), which would clobber stored fields. Strip them first.
-// Also drop Mongo's _id (present on docs that came from batchGet) - an immutable
-// field must never ride along in a $set payload, same as cache.put does.
-function stripUndefined(data: ArenaPlayer): ArenaPlayer {
+// With ignoreUndefined off the driver serializes undefined as null inside $set, clobbering stored
+// fields. _id is immutable, so it is rejected outright if it rides along.
+function toSetPayload(data: ArenaPlayer): ArenaPlayer {
     return Object.fromEntries(Object.entries(data).filter(([key, value]) => value !== undefined && key !== "_id")) as ArenaPlayer;
 }
 
@@ -49,7 +47,7 @@ export class ArenaPlayerRegistry {
      * Insert or update a single arena player document.
      */
     async upsertPlayer(data: ArenaPlayer): Promise<void> {
-        await this.cache.put(env.MONGODB_SWGOHBOT_DB, "arenaPlayers", { allyCode: data.allyCode }, stripUndefined(data), false);
+        await this.cache.put(env.MONGODB_SWGOHBOT_DB, "arenaPlayers", { allyCode: data.allyCode }, toSetPayload(data), false);
     }
 
     /**
@@ -61,7 +59,7 @@ export class ArenaPlayerRegistry {
         const ops = players.map((p) => ({
             updateOne: {
                 filter: { allyCode: p.allyCode },
-                update: { $set: stripUndefined(p) },
+                update: { $set: toSetPayload(p) },
                 upsert: true,
             },
         }));

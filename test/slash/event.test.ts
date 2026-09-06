@@ -61,10 +61,8 @@ function getReplyContent(reply: any): string {
     return "";
 }
 
-// The command wraps per-event validation failures in COMMAND_EVENT_JSON_ERROR_LIST, which passes the
-// individual error messages as interpolation args. The key-echoing mock drops those args, so every
-// validation failure would collapse to the same string. Use the real language so the specific
-// sub-error text actually reaches the reply and the assertions below can tell the branches apart.
+// COMMAND_EVENT_JSON_ERROR_LIST passes the individual error messages as interpolation args, which
+// the key-echoing mock drops, collapsing every failure to one string. Use the real language.
 function realCtx(interaction: any, permLevel: number) {
     return createCommandContext({ interaction, language: createRealLanguage(), permLevel });
 }

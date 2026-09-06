@@ -201,10 +201,6 @@ export async function resolveBulkStub(): Promise<{ stub: ComlinkStub; url: strin
     try {
         const response = await fetch(`${serveUrl}/status`);
         if (!response.ok) throw new Error(`status endpoint returned ${response.status}`);
-        // Deliberately no check for a service that is mid-shutdown: server.close() stops accepting
-        // connections at once, so a process starting during a restart cannot reach /status at all and
-        // takes the connection-failure path below. There is no window where it answers and is going
-        // away, so there is nothing here to test for.
         const url = `${serveUrl}/p${PRIORITY.BULK}`;
         return { stub: new ComlinkStub({ url, ...credentials }), url };
     } catch (err) {

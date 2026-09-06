@@ -170,9 +170,8 @@ describe("Faction", () => {
         assert.ok(clsIndex < yodaIndex, "Expected alphabetical order");
     });
 
-    // Note: Leader and zeta filtering tests require API integration to fetch character
-    // abilities, which is beyond the scope of unit tests. Those features are better
-    // tested with integration tests or end-to-end tests.
+    // Leader and zeta filtering need an API fetch for character abilities, so they are not
+    // covered here.
 
     // Option parsing tests
     it("should parse faction option correctly", async () => {        setMockCacheData([

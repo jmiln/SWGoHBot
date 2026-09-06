@@ -3,16 +3,10 @@ import { z } from "zod";
 // Load environment variables from .env file (Node.js 20.6+)
 // Will load ".env" file if present.
 // If you want a specific file, use `node --env-file=.other-env <file>`
-//
-// The file is genuinely optional, so a missing one is not an error: containers get their config
-// from the environment (compose `env_file`/`environment`, docker `--env-file`), all of which set
-// variables without creating a file. loadEnvFile throws ENOENT rather than returning quietly, and
-// an unguarded call makes the image unable to start at all. Nothing is lost by ignoring it: the
-// schema below still fails loudly, and by name, if a required variable is missing either way.
 try {
     process.loadEnvFile?.();
 } catch {
-    // No .env on disk; the environment is expected to carry the config.
+    // loadEnvFile throws ENOENT; containers carry their config in the environment with no file.
 }
 
 // Helper for URL validation (Zod v4 deprecated .url() method)

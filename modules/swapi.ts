@@ -131,10 +131,8 @@ export const flatStats = [
     42, // defense
 ];
 
-// The real concurrency limit now lives in swapiServe, which owns one global budget across every
-// shard and both updater services. This cap only bounds how many sockets and pending promises a
-// single batch parks while waiting its turn, so it is deliberately far above anything that would
-// bind in practice.
+// swapiServe owns the real concurrency budget; this only bounds the sockets and pending promises
+// one batch parks while waiting its turn, so it is far above anything that binds in practice.
 const MAX_BATCH_IN_FLIGHT = 250;
 
 /**

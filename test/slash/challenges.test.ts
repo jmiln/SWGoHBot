@@ -4,10 +4,8 @@ import Challenges from "../../slash/challenges.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply, assertReplyCount, getLastReply } from "./helpers.ts";
 
-// challenges maps each weekday to the set of challenges available that day. MockLanguage echoes
-// the lang keys, so the challenge names in the output are the COMMAND_CHALLENGES_* keys. These
-// tests assert the exact per-day challenge set (the real logic), plus header/formatting and the
-// unknown-day error branch. Expected sets verified against the challenges map in slash/challenges.ts.
+// MockLanguage echoes the lang keys, so the challenge names in the output are the
+// COMMAND_CHALLENGES_* keys. Expected sets verified against the map in slash/challenges.ts.
 const MONDAY = [
     "COMMAND_CHALLENGES_TRAINING",
     "COMMAND_CHALLENGES_STRENGTH",

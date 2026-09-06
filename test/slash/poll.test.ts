@@ -7,9 +7,8 @@ import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
 
-// Unique to this file: test files run in parallel against the shared test DB, so the
-// guild ID must not collide with other suites (the mock default "987654321" is shared,
-// and showconf/aliases delete the whole guildConfigs doc for their guild).
+// Must not collide with other suites: tests run in parallel against the shared DB, and
+// showconf/aliases delete their guild's entire guildConfigs doc.
 const GUILD_ID = "poll-test-guild";
 const CHANNEL_ID = "poll-channel-1";
 
@@ -166,9 +165,7 @@ describe("Poll", () => {
             const interaction1 = makePollInteraction({ _subcommand: "vote", option: 1 });
             await new Poll().run(createCommandContext({ interaction: interaction1 }));
 
-            // Need to persist the vote - reload the poll from DB and vote again
-            // Re-use the same user ID from the mock (default: "123456789")
-            // to simulate voting for the same option again
+            // Reload from the DB and vote again as the same mock user, to persist the vote.
             const interaction2 = makePollInteraction({ _subcommand: "vote", option: 1 });
             await new Poll().run(createCommandContext({ interaction: interaction2 }));
 

@@ -41,9 +41,7 @@ describe("swapiServe.createHttpForwarder", () => {
     });
 
     // fetch decodes a gzipped body but leaves content-encoding and content-length describing the
-    // compressed bytes. Returning those alongside the decoded body gives whoever writes the
-    // response a body that contradicts its own headers: got tries to gunzip plain JSON, and Node
-    // refuses the write outright once it runs past the declared content-length.
+    // compressed bytes, so passing them on gives a body that contradicts its own headers.
     it("drops the encoding headers that describe the compressed bytes rather than the body it returns", async () => {
         const payload = JSON.stringify({ player: "found", padding: "x".repeat(500) });
         const comlink = await startFakeComlink(() => ({ status: 200, body: payload, gzip: true }));
@@ -87,11 +85,8 @@ describe("swapiServe.createHttpForwarder", () => {
 
         assert.strictEqual(result.status, undefined, "a timeout must not hold the slot indefinitely");
     });
-    // /metadata is the only comlink call that sends no payload: ComlinkStub calls
-    // _postRequestPromiseAPI with an undefined body, so got sends neither a body nor a
-    // content-type. Declaring JSON over an empty body makes comlink's parser materialise {},
-    // so it verifies the signature against md5("{}") while signRequest hashed md5("") - a 403
-    // on the one endpoint that dataUpdater calls first.
+    // /metadata is the only comlink call with no payload. Declaring JSON over an empty body makes
+    // comlink's parser materialise {}, so it verifies md5("{}") against a md5("") signature.
     it("does not declare a JSON content-type on a request with no body", async () => {
         const comlink = await startFakeComlink(() => ({ status: 200 }));
         after(async () => await comlink.close());

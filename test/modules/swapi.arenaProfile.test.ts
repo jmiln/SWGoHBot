@@ -3,9 +3,8 @@ import { describe, it } from "node:test";
 import { mapArenaProfile } from "../../modules/swapi.ts";
 import type { SWAPIPlayerArenaProfile } from "../../types/swapi_types.ts";
 
-// The interface carries a dozen fields the mapping never reads, so fixtures assert only the
-// shape under test and cast. Keeping the cast here rather than loosening the parameter type
-// means production callers still get the full type checked.
+// Fixtures cover only the shape under test and cast, rather than loosening the parameter type,
+// so production callers still get the full type checked.
 function profile(overrides: Partial<SWAPIPlayerArenaProfile> = {}): SWAPIPlayerArenaProfile {
     return {
         name: "Testy",
@@ -31,9 +30,8 @@ describe("mapArenaProfile", () => {
         });
     });
 
-    // This is the batch-loss guard. The arena tick fetches every watched account in one batch,
-    // so a throw here would cost every account in that batch a minute of rank tracking, and a
-    // payout record for anyone whose payout cycle landed on that minute.
+    // Batch-loss guard: the arena tick fetches every watched account at once, so a throw here
+    // costs the whole batch a minute of rank tracking and any payout landing on it.
     it("returns null instead of throwing when pvpProfile is missing", () => {
         assert.strictEqual(mapArenaProfile(profile({ pvpProfile: undefined })), null);
     });

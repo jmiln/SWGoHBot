@@ -231,8 +231,7 @@ export class Dispatcher {
                 () => {
                     // Marks whichever entry currently holds the request, which after a retry is
                     // not the one created above. The queue discards cancelled entries on its next
-                    // sweep; resolving here means the HTTP layer stops waiting immediately either
-                    // way, and settling first is what stops any further retry being scheduled.
+                    // sweep; settling first is what stops a further retry being scheduled.
                     this.shed(pending, "cancelled");
                     if (pending.entry) pending.entry.cancelled = true;
                 },
@@ -345,22 +344,16 @@ export class Dispatcher {
             if (!backendUrl) {
                 if (blockedBy) this.blocked[blockedBy]++;
 
-                // No backend is usable at all, so anyone who cannot outlive the outage is told now
-                // rather than later. Without this, work drains at the circuit-probe rate: one
-                // request every 15 seconds, each one failing anyway, so a hundred callers would
-                // learn over 25 minutes what we knew in the first second, and interactive callers
-                // would sit past their Discord token's lifetime before hearing anything.
+                // No backend is usable, so anyone who cannot outlive the outage is told now rather
+                // than draining at the circuit-probe rate, one failing request every 15 seconds.
                 if (blockedBy === "health") {
                     this.shedDoomed(now);
                     this.scheduleWakeup(now);
                     return;
                 }
 
-                // Deadlines are enforced on the way to a dispatch, and there is no dispatch to ride
-                // along with here, so they are swept explicitly. A backend that hangs rather than
-                // fails never trips the breaker, so it holds every slot for the full upstream
-                // timeout: without this the queue behind it goes stale and its callers wait out the
-                // hang instead of their own deadline.
+                // Deadlines normally ride along with a dispatch, and there is none here. A backend
+                // that hangs never trips the breaker, so it holds every slot for the full timeout.
                 this.queue.sweepExpired(now);
                 this.scheduleWakeup(now);
                 return;
@@ -471,15 +464,8 @@ export class Dispatcher {
         try {
             result = await this.forwarder(backendUrl, request);
         } catch (err) {
-            // The production forwarder resolves even for transport errors and timeouts, so
-            // reaching here means a defect on our side rather than anything the backend did.
-            //
-            // Handing the slot back matters more than what caused it: the slot was taken before
-            // the forward and is only returned by reporting an outcome, so without this it is lost
-            // for the process's lifetime. With MIN_LIMIT at 1, a few of these wedge the backend
-            // entirely and nothing in the design ever recovers it. releaseUnused rather than
-            // report, because blaming the backend's health for our bug would halve the limit of a
-            // backend that may be perfectly healthy.
+            // The forwarder resolves even for transport errors, so reaching here is our own defect.
+            // releaseUnused, or the slot leaks and a healthy backend has its limit halved for it.
             this.governor.releaseUnused(backendUrl, isProbe);
             logger.error(`SwapiServe: Forwarder threw for ${request.uri}: ${err instanceof Error ? err.message : String(err)}`);
             this.shed(pending, "upstream_error");
@@ -547,12 +533,8 @@ export class Dispatcher {
         // waiting for, which is the exact cost cancellation exists to avoid.
         if (pending.settled) return false;
 
-        // Requests in flight when stop() ran are left to finish, but their failures must not start
-        // a new backoff: the retry timers were drained once already, so a timer armed after that
-        // holds its caller, and the socket behind it, until it fires. Upstream sets that wait with
-        // Retry-After and it can be tens of seconds, well past the shutdown grace period, which
-        // turns a graceful stop into a SIGKILL. Answering with the failure we have is both faster
-        // and truer: the service is going away and is not going to send this again.
+        // Requests still in flight at stop() must not arm a new retry timer: a Retry-After of tens
+        // of seconds would hold its caller past the grace period and turn the stop into a SIGKILL.
         if (this.stopped) return false;
         if (!isRetryable(outcome)) return false;
         if (pending.attempt >= RETRY.ATTEMPTS) return false;

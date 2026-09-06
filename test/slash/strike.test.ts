@@ -11,10 +11,8 @@ import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { MockSWAPI, createMockPlayer } from "../mocks/mockSwapi.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
-// Use IDs unique to this file. The mock defaults (guild 987654321, allyCode 123456789) are shared
-// by dozens of test files that run concurrently against the one MongoDB testcontainer; reusing them
-// here lets a concurrent file clobber this file's guild config / player rows mid-test. Owning our
-// own IDs keeps this suite isolated regardless of run order or concurrency.
+// IDs unique to this file: the mock defaults are shared by dozens of files running concurrently
+// against one MongoDB testcontainer, which would clobber this suite's rows mid-test.
 const GUILD_ID = "511100000";
 const ADMIN_PERM = 6;
 const USER_PERM = 0;
@@ -297,9 +295,8 @@ describe("Strike command", () => {
     });
 
     describe("defers reply before slow work (interaction timeout guard)", () => {
-        // Discord invalidates the interaction token after 3s if it isn't acknowledged. Every
-        // subcommand that does DB/API I/O before replying must defer first, or it throws
-        // DiscordAPIError[10062] "Unknown interaction" on slow lookups. See docs/BUG_REFERENCE.md.
+        // Discord invalidates the interaction token after 3s, so any subcommand doing DB/API I/O
+        // before replying must defer or throw DiscordAPIError[10062] on a slow lookup.
         it("defers on add (slowest path: uncached swapi player lookup)", async () => {
             await seedPlayer(PLAYER_AC, "TestPlayer");
             const { interaction, ctx } = makeCtx("add", { allycode: PLAYER_AC, reason: "test" });

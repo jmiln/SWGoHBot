@@ -4,9 +4,8 @@ import dataUpdater from "../../services/dataUpdater.ts";
 
 const { shouldKeepLocalizationRow } = dataUpdater;
 
-// Prefixes verified 2026-07-21 against the cached gameData blob, which references 503 distinct
-// DATACRON_* keys: CHARACTER (273), FACTION (106), MATERIAL (56), ALIGNMENT (38), HELP (10),
-// SET (9), ROLE (9), CURRENCY (2). We render the first, second, fourth, sixth and seventh.
+// Prefixes verified 2026-07-21 against the cached gameData blob: CHARACTER (273), FACTION (106),
+// MATERIAL (56), ALIGNMENT (38), HELP (10), SET (9), ROLE (9), CURRENCY (2), of 503 keys.
 describe("shouldKeepLocalizationRow", () => {
     it("keeps the datacron rows the commands render", () => {
         assert.strictEqual(shouldKeepLocalizationRow("DATACRON_SET_30_NAME|Set 30"), true);

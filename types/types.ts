@@ -141,10 +141,8 @@ export interface BotUnitMods {
 // Union type for event handlers that process both command and autocomplete interactions
 export type AnyBotInteraction = ChatInputCommandInteraction | AutocompleteInteraction;
 
-// CommandContext - new pattern for command execution without mutating Discord types.
-// The interaction handler (events/interactionCreate.ts) always populates every field before
-// calling cmd.run(), so these are required rather than optional. Keeping them required lets
-// commands use language/guildSettings/etc. without per-call undefined guards.
+// Command execution context, so Discord's own types are never mutated. interactionCreate.ts
+// populates every field before calling cmd.run(), hence required rather than optional.
 export interface CommandContext {
     interaction: ChatInputCommandInteraction;
     guildSettings: BotDefaultSettings;

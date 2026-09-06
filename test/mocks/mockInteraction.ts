@@ -4,10 +4,8 @@ import EnUS from "../../languages/en_US.ts";
 import type { SWAPILang } from "../../types/swapi_types.ts";
 import type { CommandContext } from "../../types/types.ts";
 
-// Shared default guild cache for the mock client: ~1500 guilds totalling ~50000
-// members, matching the realistic defaults the bot reports via /info stats.
-// Mirrors discord.js's guilds.cache (a Collection), so it exposes both `.size`
-// (used by guildCount) and `.reduce` (used by userCount over guild.memberCount).
+// Mirrors discord.js's guilds.cache (a Collection), so it exposes both `.size` and `.reduce`.
+// ~1500 guilds / ~50000 members, matching what the bot reports via /info stats.
 const DEFAULT_GUILD_COUNT = 1500;
 const DEFAULT_MEMBERS_PER_GUILD = 33;
 const defaultGuildCache = new Collection<string, { memberCount: number }>();

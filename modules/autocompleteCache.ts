@@ -82,11 +82,10 @@ interface UserLang {
     swgohLanguage: SWAPILang;
 }
 
-// A quick per-user config cache: userId -> resolved languages. Each entry self-removes after a
-// short TTL via setTimeout, so a user's language change shows up on their next command once the
-// window lapses. .unref() keeps the pending timer from holding the process open.
-// Keyed userId:guildId, since the guild's swgohLanguage is part of the answer.
+// Entries self-remove on a short TTL, so a language change lands on the next command once the
+// window lapses. The guild is part of the key because its swgohLanguage is part of the answer.
 const userLangCache = new Map<string, UserLang>();
+const userLangCacheKey = (userId: string, guildId?: string) => `${userId}:${guildId ?? "none"}`;
 
 /**
  * Return the user's resolved languages (the bot UI Language instance and the SWGoH game-data
@@ -97,7 +96,7 @@ const userLangCache = new Map<string, UserLang>();
  * client language, and would silently override the language they chose in their bot settings.
  */
 export async function getCachedUserLang(userId: string, guildId?: string): Promise<UserLang> {
-    const key = `${userId}:${guildId ?? "none"}`;
+    const key = userLangCacheKey(userId, guildId);
     const cached = userLangCache.get(key);
     if (cached) return cached;
 

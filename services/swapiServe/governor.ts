@@ -170,15 +170,12 @@ export class Governor {
         if (candidates.length === 0) return { url: null, blockedBy: sawHealthy ? "slot" : "health" };
 
         // Absolute available slots, NOT the inFlight/limit ratio. The limit is learned, so it
-        // encodes health: a backend proven to carry 40 is healthier than one that just collapsed
-        // to 2. Ratio-based selection would feed the sick backend precisely because its shrunken
+        // encodes health, and a ratio would feed a sick backend precisely because its shrunken
         // limit makes it look idle.
         candidates.sort((a, b) => b.limit - b.inFlight - (a.limit - a.inFlight));
 
-        // Walk the whole list rather than committing to the best one. A backend can have a free
-        // slot but no token, and giving up there would strand the queue: nextAvailableAt scans
-        // every backend, so it would report capacity available, no wakeup would be armed, and
-        // nothing in flight would arrive to pump the queue.
+        // Walk the whole list: a backend can have a free slot but no token, and giving up there
+        // strands the queue, since nextAvailableAt would report capacity and arm no wakeup.
         for (const backend of candidates) {
             if (!backend.bucket.tryTake(now)) continue;
             backend.inFlight++;
