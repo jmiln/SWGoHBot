@@ -1,8 +1,8 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
 import cache from "../../modules/cache.ts";
-import type { CounterDoc } from "../../schemas/counters.schema.ts";
 import { getCounterView } from "../../modules/counters/counterQuery.ts";
+import type { CounterDoc } from "../../schemas/counters.schema.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
 // File-unique isolation: dedicated db + unique leader/instanceId, filtered cleanup only.
@@ -18,7 +18,11 @@ const seed: CounterDoc = {
     season: 80,
     overall: { sampleN: 50, counters: [{ attack: ["CQ_ATK_A"], atkLeader: "CQ_ATK_A", wins: 7, total: 10, draws: 0 }] },
     variants: [
-        { defense: [LEADER, "CQ_DEF_2"], sampleN: 30, counters: [{ attack: ["CQ_ATK_B"], atkLeader: "CQ_ATK_B", wins: 9, total: 10, draws: 0 }] },
+        {
+            defense: [LEADER, "CQ_DEF_2"],
+            sampleN: 30,
+            counters: [{ attack: ["CQ_ATK_B"], atkLeader: "CQ_ATK_B", wins: 9, total: 10, draws: 0 }],
+        },
     ],
 };
 

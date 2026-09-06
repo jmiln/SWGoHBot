@@ -5,7 +5,6 @@ import { PriorityQueue, type QueueEntry } from "../../services/swapiServe/queue.
 
 const FAR_FUTURE = Number.MAX_SAFE_INTEGER;
 
-
 function entry(priority: 0 | 1 | 2 | 3 | 4, payload: string, deadline = FAR_FUTURE, enqueuedAt = 0): QueueEntry<string> {
     return { priority, deadline, enqueuedAt, cost: 1, payload };
 }

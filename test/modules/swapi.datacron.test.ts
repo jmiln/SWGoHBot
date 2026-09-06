@@ -40,9 +40,7 @@ describe("mapPlayerDatacrons", () => {
     });
 
     it("converts the string statValue the game sends into a number", () => {
-        const out = mapPlayerDatacrons([
-            { id: "y", setId: 30, templateId: "t", affix: [{ statType: 49, statValue: "26807422" }] },
-        ]);
+        const out = mapPlayerDatacrons([{ id: "y", setId: 30, templateId: "t", affix: [{ statType: 49, statValue: "26807422" }] }]);
         assert.strictEqual(out[0].affix[0].statValue, 26807422);
         assert.strictEqual(typeof out[0].affix[0].statValue, "number");
     });

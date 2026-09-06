@@ -235,11 +235,7 @@ describe("swapiServe.Governor circuit breaker", () => {
 
         assert.strictEqual(governor.snapshot()[0].state, "open");
         assert.strictEqual(governor.acquire(probeTime + 1).url, null, "interval restarts from the failed probe");
-        assert.strictEqual(
-            governor.acquire(probeTime + GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1).url,
-            A,
-            "and probes again later",
-        );
+        assert.strictEqual(governor.acquire(probeTime + GOVERNOR.CIRCUIT_PROBE_INTERVAL_MS + 1).url, A, "and probes again later");
     });
 
     // The invariant that stops the breaker becoming permanent.

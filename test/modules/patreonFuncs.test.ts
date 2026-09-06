@@ -1,20 +1,38 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { type Client } from "discord.js";
-import { MongoClient } from "mongodb";
-import { env } from "../../config/config.ts";
-import cache from "../../modules/cache.ts";
-import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
-import { PatreonFuncs, buildRankSnapshot, classifySendError, shouldWriteHistory, updateArenaHistory, collectAllyCodes, hydrateWatchAccounts, isInWarnWindow, payoutCycleInfo } from "../../modules/patreonFuncs.ts";
-import userReg from "../../modules/users.ts";
+import type { Client } from "discord.js";
+import type { MongoClient } from "mongodb";
 import Language from "../../base/Language.ts";
-import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
+import { env } from "../../config/config.ts";
 import constants from "../../data/constants/constants.ts";
-import { createMockLanguage } from "../mocks/index.ts";
-import type { ActivePatron, ArenaPlayer, ArenaWatchAcct, ArenaWatchConfig, PatronUser, PlayerArenaRes, UserConfig } from "../../types/types.ts";
-import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { PRIORITY } from "../../data/constants/swapiServe.ts";
+import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
+import cache from "../../modules/cache.ts";
+import {
+    buildRankSnapshot,
+    classifySendError,
+    collectAllyCodes,
+    hydrateWatchAccounts,
+    isInWarnWindow,
+    PatreonFuncs,
+    payoutCycleInfo,
+    shouldWriteHistory,
+    updateArenaHistory,
+} from "../../modules/patreonFuncs.ts";
 import swgohAPI from "../../modules/swapi.ts";
+import userReg from "../../modules/users.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
+import type {
+    ActivePatron,
+    ArenaPlayer,
+    ArenaWatchAcct,
+    ArenaWatchConfig,
+    PatronUser,
+    PlayerArenaRes,
+    UserConfig,
+} from "../../types/types.ts";
+import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
+import { createMockLanguage } from "../mocks/index.ts";
 
 describe("PatreonFuncs Module", () => {
     let client: MongoClient;
@@ -58,10 +76,13 @@ describe("PatreonFuncs Module", () => {
     after(async () => {
         try {
             await client.db(testDbName).collection("patrons").deleteMany({});
-        } catch (e) {
+        } catch (_e) {
             // Ignore cleanup errors
         }
-        await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: { $in: [888777666] } });
+        await client
+            .db(testDbName)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: [888777666] } });
         await closeMongoClient();
     });
 
@@ -69,10 +90,14 @@ describe("PatreonFuncs Module", () => {
         // Clear patrons collection before each test
         try {
             await client.db(testDbName).collection("patrons").deleteMany({});
-        } catch (e) {
+        } catch (_e) {
             // Collection might not exist yet
         }
-        await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: { $in: [888777666] } }).catch(() => {});
+        await client
+            .db(testDbName)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: [888777666] } })
+            .catch(() => {});
     });
 
     describe("init()", () => {
@@ -109,7 +134,6 @@ describe("PatreonFuncs Module", () => {
 
             assert.strictEqual(result, null);
         });
-
 
         it("throws error for missing user ID", async () => {
             await assert.rejects(async () => await patreonFuncs.getPatronUser(""), /Missing user ID/);
@@ -306,7 +330,6 @@ describe("PatreonFuncs Module", () => {
             assert.ok(result);
             assert.strictEqual(result.discordID, "active");
         });
-
     });
 
     describe("edge cases (patreon)", () => {
@@ -541,7 +564,16 @@ describe("PatreonFuncs Module", () => {
             const acc: ArenaPlayer = { allyCode: ALLY, name: "PayoutTest" };
 
             const call = (timeLeft: number, nowOverride: number) =>
-                (funcs as any).handleArenaAlerts("char", mkPlayer(), acc, user, { discordID: "senfail_user" }, timeLeft, { rank: 0, climb: 0 }, nowOverride);
+                (funcs as any).handleArenaAlerts(
+                    "char",
+                    mkPlayer(),
+                    acc,
+                    user,
+                    { discordID: "senfail_user" },
+                    timeLeft,
+                    { rank: 0, climb: 0 },
+                    nowOverride,
+                );
 
             // First tick: send fails -> no marker recorded
             await call(30 * constants.minMS, now);
@@ -552,7 +584,11 @@ describe("PatreonFuncs Module", () => {
             sendOk = true;
             await call(29 * constants.minMS, now + constants.minMS);
             assert.strictEqual(captured.length, 1, "the previously-failed warning must be retried once the DM succeeds");
-            assert.strictEqual(user.arenaAlert.alerted?.[String(ALLY)]?.charWarn, now + 30 * constants.minMS, "a delivered warning records the cycle marker");
+            assert.strictEqual(
+                user.arenaAlert.alerted?.[String(ALLY)]?.charWarn,
+                now + 30 * constants.minMS,
+                "a delivered warning records the cycle marker",
+            );
         });
 
         it("closes out the cycle when the recipient cannot receive DMs at all", async () => {
@@ -580,7 +616,16 @@ describe("PatreonFuncs Module", () => {
             const acc: ArenaPlayer = { allyCode: ALLY, name: "BlockedDMs" };
 
             const call = (timeLeft: number, nowOverride: number) =>
-                (funcs as any).handleArenaAlerts("char", mkPlayer(), acc, user, { discordID: "blocked_user" }, timeLeft, { rank: 0, climb: 0 }, nowOverride);
+                (funcs as any).handleArenaAlerts(
+                    "char",
+                    mkPlayer(),
+                    acc,
+                    user,
+                    { discordID: "blocked_user" },
+                    timeLeft,
+                    { rank: 0, climb: 0 },
+                    nowOverride,
+                );
 
             await call(30 * constants.minMS, now);
             assert.strictEqual(attempts, 1, "one attempt is made before we know it is undeliverable");
@@ -597,13 +642,67 @@ describe("PatreonFuncs Module", () => {
         });
     });
 
+    describe("handleArenaAlerts() arena selection", () => {
+        const ALLY = 888777555;
+        const now = 1_000_000_000_000;
+
+        // sentDMs is only initialised in `before`, so each test has to clear it itself.
+        beforeEach(() => {
+            sentDMs.length = 0;
+        });
+
+        const mkUserFor = (arena: "char" | "fleet"): UserConfig =>
+            ({ arenaAlert: { enableRankDMs: "all", arena, payoutWarning: 30, enablePayoutResult: false } }) as unknown as UserConfig;
+
+        // Both arenas ranked and both payouts 30 minutes out, so the user's arena setting is the
+        // only thing that can differ between the two calls in each test.
+        const callFor = (arenaType: "char" | "ship", user: UserConfig) =>
+            (patreonFuncs as any).handleArenaAlerts(
+                arenaType,
+                {
+                    name: "GateTest",
+                    allyCode: ALLY,
+                    arena: { char: { rank: 5 }, ship: { rank: 7 } },
+                    poUTCOffsetMinutes: 0,
+                } as PlayerArenaRes,
+                { allyCode: ALLY, name: "GateTest" } as ArenaPlayer,
+                user,
+                { discordID: "hist_test_user" },
+                30 * constants.minMS,
+                { rank: 0, climb: 0 },
+                now,
+            );
+
+        it("sends no fleet DM when the user opted into the character arena only", async () => {
+            const user = mkUserFor("char");
+
+            await callFor("ship", user);
+            assert.strictEqual(sentDMs.length, 0, "a char-only watcher must not receive fleet payout DMs");
+
+            // Control: proves the silence above came from the setting, not a dud fixture.
+            await callFor("char", user);
+            assert.strictEqual(sentDMs.length, 1, "the same fixture must still deliver the opted-into arena");
+        });
+
+        it("sends no character DM when the user opted into the fleet arena only", async () => {
+            const user = mkUserFor("fleet");
+
+            await callFor("char", user);
+            assert.strictEqual(sentDMs.length, 0, "a fleet-only watcher must not receive character payout DMs");
+
+            // Control: proves the silence above came from the setting, not a dud fixture.
+            await callFor("ship", user);
+            assert.strictEqual(sentDMs.length, 1, "the same fixture must still deliver the opted-into arena");
+        });
+    });
+
     describe("processArenaAlerts()", () => {
         beforeEach(async () => {
             sentDMs.length = 0;
             try {
                 await client.db(testDbName).collection("users").deleteMany({ id: "hist_test_user" });
                 await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: 888777666 });
-            } catch (e) {
+            } catch (_e) {
                 // ignore
             }
         });
@@ -621,16 +720,26 @@ describe("PatreonFuncs Module", () => {
             await cache.put(testDbName, "users", { id: "hist_test_user" }, user);
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "HistPlayer",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 42 }, ship: { rank: 15 } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "HistPlayer",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 42 }, ship: { rank: 15 } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>();
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             // Flush arenaPlayerMap to DB (normally done by arenaTick)
             await arenaPlayerRegistry.batchUpsert([...arenaPlayerMap.values()]);
@@ -653,12 +762,15 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "DropTest",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 10 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "DropTest",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 10 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             // Stored rank 5, current rank 10 => the player dropped and a DM should fire
@@ -666,7 +778,14 @@ describe("PatreonFuncs Module", () => {
                 [888777666, { allyCode: 888777666, name: "DropTest", lastCharRank: 5, lastCharClimb: 5 }],
             ]);
 
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             assert.strictEqual(sentDMs.length, 1, "expected exactly one rank drop DM");
             const desc = sentDMs[0]?.embeds?.[0]?.description ?? "";
@@ -685,13 +804,16 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "NoOffsetTest",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 10 }, ship: { rank: null } },
-                    // The type requires a number, but live data can omit it - that's the case under test
-                    poUTCOffsetMinutes: undefined as unknown as number,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "NoOffsetTest",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 10 }, ship: { rank: null } },
+                        // The type requires a number, but live data can omit it - that's the case under test
+                        poUTCOffsetMinutes: undefined as unknown as number,
+                    },
+                ],
             ]);
 
             // Stored rank 5, current rank 10 => the player dropped and a DM should still fire
@@ -699,7 +821,14 @@ describe("PatreonFuncs Module", () => {
                 [888777666, { allyCode: 888777666, name: "NoOffsetTest", lastCharRank: 5, lastCharClimb: 5 }],
             ]);
 
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             assert.strictEqual(sentDMs.length, 1, "expected the rank drop DM despite the missing payout offset");
             const embed = sentDMs[0]?.embeds?.[0];
@@ -722,19 +851,29 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "ClimbTest",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 3 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "ClimbTest",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 3 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
                 [888777666, { allyCode: 888777666, name: "ClimbTest", lastCharRank: 5, lastCharClimb: 5 }],
             ]);
 
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             const doc = arenaPlayerMap.get(888777666);
             assert.strictEqual(doc?.lastCharRank, 3, "lastCharRank should track the new rank");
@@ -753,24 +892,41 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "ChangedTest",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 42 }, ship: { rank: 15 } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "ChangedTest",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 42 }, ship: { rank: 15 } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>();
             const firstRun = new Set<number>();
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, firstRun, buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                firstRun,
+                buildRankSnapshot(arenaPlayerMap),
+            );
             assert.ok(firstRun.has(888777666), "first run changed the doc, so it must be marked changed");
             assert.ok(arenaPlayerMap.has(888777666), "new doc must land in the map so the flush can find it");
 
             // Second run with identical data: ranks unchanged, history inside the 5-minute
             // dedup window => nothing changed, nothing should be marked changed.
             const secondRun = new Set<number>();
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, secondRun, buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                secondRun,
+                buildRankSnapshot(arenaPlayerMap),
+            );
             assert.strictEqual(secondRun.size, 0, "unchanged docs must not be marked changed");
         });
 
@@ -785,12 +941,15 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "NewName",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 42 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "NewName",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 42 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
@@ -798,7 +957,14 @@ describe("PatreonFuncs Module", () => {
             ]);
 
             const changedCodes = new Set<number>();
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, changedCodes, buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                changedCodes,
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             assert.strictEqual(arenaPlayerMap.get(888777666)?.name, "NewName");
             assert.ok(changedCodes.has(888777666), "a rename must mark the doc changed");
@@ -816,12 +982,15 @@ describe("PatreonFuncs Module", () => {
                 }) as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "SharedDrop",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 10 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "SharedDrop",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 10 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             // Stored rank 5, current rank 10 => a drop both patrons should hear about
@@ -831,8 +1000,22 @@ describe("PatreonFuncs Module", () => {
             const rankSnapshot = buildRankSnapshot(arenaPlayerMap);
 
             const changedCodes = new Set<number>();
-            await (patreonFuncs as any).processArenaAlerts(patron1, mkUser("hist_test_user"), playerMap, arenaPlayerMap, changedCodes, rankSnapshot);
-            await (patreonFuncs as any).processArenaAlerts(patron2, mkUser("hist_test_user2"), playerMap, arenaPlayerMap, changedCodes, rankSnapshot);
+            await (patreonFuncs as any).processArenaAlerts(
+                patron1,
+                mkUser("hist_test_user"),
+                playerMap,
+                arenaPlayerMap,
+                changedCodes,
+                rankSnapshot,
+            );
+            await (patreonFuncs as any).processArenaAlerts(
+                patron2,
+                mkUser("hist_test_user2"),
+                playerMap,
+                arenaPlayerMap,
+                changedCodes,
+                rankSnapshot,
+            );
 
             assert.strictEqual(sentDMs.length, 2, "both patrons must get the rank drop DM, not just whoever is processed first");
         });
@@ -848,19 +1031,29 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 42 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 42 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
                 [888777666, { allyCode: 888777666, name: "KeepMe", lastCharRank: 42, lastCharClimb: 42 }],
             ]);
 
-            await (patreonFuncs as any).processArenaAlerts(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processArenaAlerts(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             assert.strictEqual(arenaPlayerMap.get(888777666)?.name, "KeepMe");
         });
@@ -868,8 +1061,16 @@ describe("PatreonFuncs Module", () => {
 
     describe("processShardPatron()", () => {
         beforeEach(async () => {
-            await client.db(testDbName).collection("users").deleteMany({ id: { $in: ["shard_test_user", "shard_test_user2"] } }).catch(() => {});
-            await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: 888777666 }).catch(() => {});
+            await client
+                .db(testDbName)
+                .collection("users")
+                .deleteMany({ id: { $in: ["shard_test_user", "shard_test_user2"] } })
+                .catch(() => {});
+            await client
+                .db(testDbName)
+                .collection("arenaPlayers")
+                .deleteMany({ allyCode: 888777666 })
+                .catch(() => {});
         });
 
         it("keeps the stored doc name when the API name is empty", async () => {
@@ -894,20 +1095,28 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             // Post-migration state: the name lives on the arenaPlayers doc, not the watch entry
-            const arenaPlayerMap = new Map<number, ArenaPlayer>([
-                [888777666, { allyCode: 888777666, name: "Stored" }],
-            ]);
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([[888777666, { allyCode: 888777666, name: "Stored" }]]);
             const changedCodes = new Set<number>();
-            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes, buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                changedCodes,
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             const doc = arenaPlayerMap.get(888777666);
             assert.ok(doc, "the doc should still be in the map");
@@ -937,16 +1146,26 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "NoWrite",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "NoWrite",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             // The user doc was intentionally never inserted - an unconditional updateUser would upsert it
-            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+            await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                new Map<number, ArenaPlayer>(),
+                new Set<number>(),
+                new Map(),
+            );
 
             const written = await client.db(testDbName).collection("users").findOne({ id: "shard_test_user" });
             assert.strictEqual(written, null, "the user doc must not be written when nothing in it changed");
@@ -972,15 +1191,25 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "OffsetMoved",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 120,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "OffsetMoved",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 120,
+                    },
+                ],
             ]);
 
-            const changed = await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+            const changed = await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                new Map<number, ArenaPlayer>(),
+                new Set<number>(),
+                new Map(),
+            );
 
             // arenaTick owns the write now; processShardPatron reports the dirty flag and mutates in place
             assert.strictEqual(changed, true, "a poOffset change must mark the user doc dirty");
@@ -1009,15 +1238,25 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777669, {
-                    name: "NoOffset",
-                    allyCode: 888777669,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    // poUTCOffsetMinutes intentionally omitted
-                }],
+                [
+                    888777669,
+                    {
+                        name: "NoOffset",
+                        allyCode: 888777669,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        // poUTCOffsetMinutes intentionally omitted
+                    },
+                ],
             ] as [number, PlayerArenaRes][]);
 
-            const changed = await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+            const changed = await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                new Map<number, ArenaPlayer>(),
+                new Set<number>(),
+                new Map(),
+            );
 
             assert.strictEqual(user.arenaWatch.allyCodes[0].poOffset, 120, "stored poOffset must not be overwritten with undefined");
             assert.strictEqual(changed, false, "a tick that only lost the offset must not mark the doc dirty");
@@ -1050,15 +1289,25 @@ describe("PatreonFuncs Module", () => {
 
             // poOffset change on the processed entry forces the user-doc write
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "KeepRest",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 30,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "KeepRest",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 30,
+                    },
+                ],
             ]);
 
-            const changed = await (patreonFuncs as any).processShardPatron(patron, user, playerMap, new Map<number, ArenaPlayer>(), new Set<number>(), new Map());
+            const changed = await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                new Map<number, ArenaPlayer>(),
+                new Set<number>(),
+                new Map(),
+            );
 
             // Over-limit entries stay in the in-memory doc the caller persists; only entry 0 is processed
             assert.strictEqual(changed, true, "the poOffset change must mark the doc dirty");
@@ -1088,19 +1337,29 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "NewApiName",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "NewApiName",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
                 [888777666, { allyCode: 888777666, name: "OldStoredName", lastCharRank: 5, lastCharClimb: 5 }],
             ]);
             const changedCodes = new Set<number>();
-            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, changedCodes, buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                changedCodes,
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             const doc = arenaPlayerMap.get(888777666);
             assert.ok(doc, "the existing doc must remain in the map");
@@ -1136,8 +1395,16 @@ describe("PatreonFuncs Module", () => {
     describe("arenaTick consumer ordering", () => {
         beforeEach(async () => {
             sentDMs.length = 0;
-            await client.db(testDbName).collection("users").deleteMany({ id: "ordering_test_user" }).catch(() => {});
-            await client.db(testDbName).collection("arenaPlayers").deleteMany({ allyCode: 888777666 }).catch(() => {});
+            await client
+                .db(testDbName)
+                .collection("users")
+                .deleteMany({ id: "ordering_test_user" })
+                .catch(() => {});
+            await client
+                .db(testDbName)
+                .collection("arenaPlayers")
+                .deleteMany({ allyCode: 888777666 })
+                .catch(() => {});
         });
 
         it("still detects a watch rank change after processArenaAlerts already updated the shared doc", async () => {
@@ -1163,12 +1430,15 @@ describe("PatreonFuncs Module", () => {
             } as unknown as UserConfig;
 
             const playerMap = new Map<number, PlayerArenaRes>([
-                [888777666, {
-                    name: "OrderingTest",
-                    allyCode: 888777666,
-                    arena: { char: { rank: 10 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: 0,
-                }],
+                [
+                    888777666,
+                    {
+                        name: "OrderingTest",
+                        allyCode: 888777666,
+                        arena: { char: { rank: 10 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: 0,
+                    },
+                ],
             ]);
 
             // Stored rank 5, current rank 10 - both consumers must see this change
@@ -1184,7 +1454,11 @@ describe("PatreonFuncs Module", () => {
 
             const doc = arenaPlayerMap.get(888777666);
             assert.strictEqual(doc?.lastCharRank, 10, "doc should hold the current rank");
-            assert.strictEqual(doc?.lastCharChange, -5, "watch pass must compute the change from the tick-start rank, not the already-updated doc");
+            assert.strictEqual(
+                doc?.lastCharChange,
+                -5,
+                "watch pass must compute the change from the tick-start rank, not the already-updated doc",
+            );
         });
     });
 
@@ -1247,16 +1521,26 @@ describe("PatreonFuncs Module", () => {
 
             // Ship-only account: char rank is null and there is no stored doc
             const playerMap = new Map<number, PlayerArenaRes>([
-                [PO_ALLY_CODE, {
-                    name: "ShipOnly",
-                    allyCode: PO_ALLY_CODE,
-                    arena: { char: { rank: null }, ship: { rank: 5 } },
-                    poUTCOffsetMinutes: poOffset,
-                }],
+                [
+                    PO_ALLY_CODE,
+                    {
+                        name: "ShipOnly",
+                        allyCode: PO_ALLY_CODE,
+                        arena: { char: { rank: null }, ship: { rank: 5 } },
+                        poUTCOffsetMinutes: poOffset,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>();
-            await (patreonFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (patreonFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             const doc = arenaPlayerMap.get(PO_ALLY_CODE);
             assert.ok(doc, "a stub doc should exist for the watched account");
@@ -1328,16 +1612,26 @@ describe("PatreonFuncs Module", () => {
 
             // No arenaPlayers doc and an empty API name - worst case for name resolution
             const playerMap = new Map<number, PlayerArenaRes>([
-                [LOG_ALLY_CODE, {
-                    name: "",
-                    allyCode: LOG_ALLY_CODE,
-                    arena: { char: { rank: 5 }, ship: { rank: null } },
-                    poUTCOffsetMinutes: poOffset,
-                }],
+                [
+                    LOG_ALLY_CODE,
+                    {
+                        name: "",
+                        allyCode: LOG_ALLY_CODE,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: poOffset,
+                    },
+                ],
             ]);
 
             const arenaPlayerMap = new Map<number, ArenaPlayer>();
-            await (logFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap));
+            await (logFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+            );
 
             assert.ok(sentLogs.length, "expected an alert log message to be sent");
             const logText = sentLogs.join("\n");
@@ -1413,7 +1707,10 @@ describe("PatreonFuncs Module", () => {
             const patron: ActivePatron = { discordID: "anchor_user", amount_cents: 100 };
             const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_ANCHOR, { allyCode: A_ANCHOR, name: "Anchored", lastCharRank: 8 }]]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_ANCHOR, { name: "Anchored", allyCode: A_ANCHOR, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                [
+                    A_ANCHOR,
+                    { name: "Anchored", allyCode: A_ANCHOR, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 },
+                ],
             ]);
 
             const changed = await (awFuncs as any).processShardPatron(
@@ -1442,7 +1739,15 @@ describe("PatreonFuncs Module", () => {
             ]);
 
             sendOk = false;
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
 
             // A failed send freezes last-announced at the anchor (5), NOT the new rank (8), so the
             // next tick still sees 8 !== 5 and re-alerts - the change isn't silently dropped.
@@ -1455,7 +1760,15 @@ describe("PatreonFuncs Module", () => {
             // Prove the retry: same change, send now succeeds -> re-alerts and advances to 8
             sendOk = true;
             sent.length = 0;
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
             assert.ok(sent.join("\n").includes("from 5 to 8"), "the previously-failed change must be retried on the next tick");
             assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 8, "a delivered retry advances last-announced");
         });
@@ -1469,7 +1782,9 @@ describe("PatreonFuncs Module", () => {
                 { arena: { char: { channel: "gone-chan", enabled: true }, fleet: { channel: null, enabled: false } } },
             );
             const patron: ActivePatron = { discordID: "gonechan_user", amount_cents: 100 };
-            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_GONE_CHAN, { allyCode: A_GONE_CHAN, name: "GoneChan", lastCharRank: 5 }]]);
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_GONE_CHAN, { allyCode: A_GONE_CHAN, name: "GoneChan", lastCharRank: 5 }],
+            ]);
             const playerMap = new Map<number, PlayerArenaRes>([
                 [
                     A_GONE_CHAN,
@@ -1516,16 +1831,17 @@ describe("PatreonFuncs Module", () => {
             // Nothing is latched: broadcastEval re-tests availability on every send, so advancing
             // the anchor while a channel was dead costs only the unreplayed changes.
             const entry = { allyCode: A_RECOVER, mention: null, poOffset: 0 };
-            const user = mkUser(
-                "recover_user",
-                entry,
-                { arena: { char: { channel: "gone-chan", enabled: true }, fleet: { channel: null, enabled: false } } },
-            );
+            const user = mkUser("recover_user", entry, {
+                arena: { char: { channel: "gone-chan", enabled: true }, fleet: { channel: null, enabled: false } },
+            });
             const patron: ActivePatron = { discordID: "recover_user", amount_cents: 100 };
             const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_RECOVER, { allyCode: A_RECOVER, name: "Recover", lastCharRank: 5 }]]);
             const mkPlayerMap = (rank: number) =>
                 new Map<number, PlayerArenaRes>([
-                    [A_RECOVER, { name: "Recover", allyCode: A_RECOVER, arena: { char: { rank }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                    [
+                        A_RECOVER,
+                        { name: "Recover", allyCode: A_RECOVER, arena: { char: { rank }, ship: { rank: null } }, poUTCOffsetMinutes: 0 },
+                    ],
                 ]);
 
             // While the channel is unreachable the anchor still tracks forward
@@ -1565,10 +1881,21 @@ describe("PatreonFuncs Module", () => {
             const patron: ActivePatron = { discordID: "fresh_user", amount_cents: 100 };
             const arenaPlayerMap = new Map<number, ArenaPlayer>();
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_FRESH, { name: "FreshAcct", allyCode: A_FRESH, arena: { char: { rank: 7 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                [
+                    A_FRESH,
+                    { name: "FreshAcct", allyCode: A_FRESH, arena: { char: { rank: 7 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
 
             assert.ok(!sent.join("\n").includes("from 0 to"), `must not emit a 'rank 0 -> X' alert: ${sent.join("\n")}`);
             assert.strictEqual(sent.length, 0, "a first-observation with no baseline should send nothing");
@@ -1579,7 +1906,11 @@ describe("PatreonFuncs Module", () => {
         it("advances last-announced for a change report=drop filtered out, instead of wedging the anchor", async () => {
             // A filtered-out climb is not a delivery failure, so the anchor must still move, or it
             // stays above the current rank and every later change reads as a climb and is filtered.
-            const user = mkUser("filtered_user", { allyCode: A_FILTERED, mention: null, poOffset: 0, lastCharAnnounced: 5 }, { report: "drop" });
+            const user = mkUser(
+                "filtered_user",
+                { allyCode: A_FILTERED, mention: null, poOffset: 0, lastCharAnnounced: 5 },
+                { report: "drop" },
+            );
             const patron: ActivePatron = { discordID: "filtered_user", amount_cents: 100 };
             const arenaPlayerMap = new Map<number, ArenaPlayer>([
                 [A_FILTERED, { allyCode: A_FILTERED, name: "Filtered", lastCharRank: 5 }],
@@ -1590,7 +1921,15 @@ describe("PatreonFuncs Module", () => {
                 patron,
                 user,
                 new Map<number, PlayerArenaRes>([
-                    [A_FILTERED, { name: "Filtered", allyCode: A_FILTERED, arena: { char: { rank: 2 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                    [
+                        A_FILTERED,
+                        {
+                            name: "Filtered",
+                            allyCode: A_FILTERED,
+                            arena: { char: { rank: 2 }, ship: { rank: null } },
+                            poUTCOffsetMinutes: 0,
+                        },
+                    ],
                 ]),
                 arenaPlayerMap,
                 new Set<number>(),
@@ -1598,14 +1937,26 @@ describe("PatreonFuncs Module", () => {
                 Date.now(),
             );
             assert.strictEqual(sent.length, 0, "a climb must not be posted when report=drop");
-            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, 2, "an unposted (filtered) change must still move the anchor");
+            assert.strictEqual(
+                user.arenaWatch.allyCodes[0].lastCharAnnounced,
+                2,
+                "an unposted (filtered) change must still move the anchor",
+            );
 
             // Now a real drop 2 -> 3: reported against the current rank, not the stale 5
             await (awFuncs as any).processShardPatron(
                 patron,
                 user,
                 new Map<number, PlayerArenaRes>([
-                    [A_FILTERED, { name: "Filtered", allyCode: A_FILTERED, arena: { char: { rank: 3 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                    [
+                        A_FILTERED,
+                        {
+                            name: "Filtered",
+                            allyCode: A_FILTERED,
+                            arena: { char: { rank: 3 }, ship: { rank: null } },
+                            poUTCOffsetMinutes: 0,
+                        },
+                    ],
                 ]),
                 arenaPlayerMap,
                 new Set<number>(),
@@ -1626,15 +1977,32 @@ describe("PatreonFuncs Module", () => {
                 { arena: { char: { channel: "aw-chan", enabled: false }, fleet: { channel: "aw-fleet-chan", enabled: true } } },
             );
             const patron: ActivePatron = { discordID: "disabled_user", amount_cents: 100 };
-            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_DISABLED, { allyCode: A_DISABLED, name: "Disabled", lastCharRank: 5 }]]);
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_DISABLED, { allyCode: A_DISABLED, name: "Disabled", lastCharRank: 5 }],
+            ]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_DISABLED, { name: "Disabled", allyCode: A_DISABLED, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 }],
+                [
+                    A_DISABLED,
+                    { name: "Disabled", allyCode: A_DISABLED, arena: { char: { rank: 8 }, ship: { rank: null } }, poUTCOffsetMinutes: 0 },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), Date.now());
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                Date.now(),
+            );
 
             assert.strictEqual(sent.length, 0, "nothing should be posted for a disabled arena");
-            assert.strictEqual(user.arenaWatch.allyCodes[0].lastCharAnnounced, undefined, "no anchor should be recorded when alerts are off");
+            assert.strictEqual(
+                user.arenaWatch.allyCodes[0].lastCharAnnounced,
+                undefined,
+                "no anchor should be recorded when alerts are off",
+            );
             assert.strictEqual(arenaPlayerMap.get(A_DISABLED)?.lastCharRank, 8, "the observed rank is still tracked");
         });
 
@@ -1646,18 +2014,39 @@ describe("PatreonFuncs Module", () => {
             const user = mkUser("chanwarn_user", { allyCode: A_WARN, mention: null, poOffset, warn: { min: 30, arena: "char" } });
             const patron: ActivePatron = { discordID: "chanwarn_user", amount_cents: 100 };
             // Stable rank so no rank-change line pollutes the assertions
-            const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_WARN, { allyCode: A_WARN, name: "Warned", lastCharRank: 5, lastCharAnnounced: 5 }]]);
+            const arenaPlayerMap = new Map<number, ArenaPlayer>([
+                [A_WARN, { allyCode: A_WARN, name: "Warned", lastCharRank: 5, lastCharAnnounced: 5 }],
+            ]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_WARN, { name: "Warned", allyCode: A_WARN, arena: { char: { rank: 5 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+                [
+                    A_WARN,
+                    { name: "Warned", allyCode: A_WARN, arena: { char: { rank: 5 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                now,
+            );
             assert.ok(sent.join("\n").includes("**character** arena payout is in"), "the warning should fire even past the exact minute");
             assert.strictEqual(typeof user.arenaWatch.allyCodes[0].alerted?.charWarn, "number", "the warn cycle marker should be recorded");
 
             // A minute later in the same cycle - must not resend
             sent.length = 0;
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now + 60000);
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                now + 60000,
+            );
             assert.ok(!sent.join("\n").includes("payout is in"), "the warning must not resend within the same payout cycle");
         });
 
@@ -1673,13 +2062,33 @@ describe("PatreonFuncs Module", () => {
                 [A_STALE_WARN, { allyCode: A_STALE_WARN, name: "StaleWarn", lastCharRank: 5, lastCharAnnounced: 5 }],
             ]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_STALE_WARN, { name: "StaleWarn", allyCode: A_STALE_WARN, arena: { char: { rank: 5 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+                [
+                    A_STALE_WARN,
+                    {
+                        name: "StaleWarn",
+                        allyCode: A_STALE_WARN,
+                        arena: { char: { rank: 5 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: poOffset,
+                    },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                now,
+            );
 
             assert.strictEqual(sent.length, 0, `a warning 25 min past its window must be skipped: ${sent.join("\n")}`);
-            assert.strictEqual(user.arenaWatch.allyCodes[0].alerted?.charWarn, undefined, "no marker should be written for a skipped warning");
+            assert.strictEqual(
+                user.arenaWatch.allyCodes[0].alerted?.charWarn,
+                undefined,
+                "no marker should be written for a skipped warning",
+            );
         });
 
         it("keeps payout warn/result in the arena log channel when report=none silences rank changes", async () => {
@@ -1698,10 +2107,26 @@ describe("PatreonFuncs Module", () => {
                 [A_REPORT_NONE, { allyCode: A_REPORT_NONE, name: "NoReport", lastCharRank: 5 }],
             ]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_REPORT_NONE, { name: "NoReport", allyCode: A_REPORT_NONE, arena: { char: { rank: 2 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+                [
+                    A_REPORT_NONE,
+                    {
+                        name: "NoReport",
+                        allyCode: A_REPORT_NONE,
+                        arena: { char: { rank: 2 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: poOffset,
+                    },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                now,
+            );
 
             const text = sent.join("\n");
             assert.ok(text.includes("**character** arena payout is in"), `the payout warning must still be delivered: ${text}`);
@@ -1730,12 +2155,31 @@ describe("PatreonFuncs Module", () => {
                 [A_FLEET_OFF, { allyCode: A_FLEET_OFF, name: "FleetOff", lastCharRank: 5, lastShipRank: 4, lastCharAnnounced: 5 }],
             ]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_FLEET_OFF, { name: "FleetOff", allyCode: A_FLEET_OFF, arena: { char: { rank: 5 }, ship: { rank: 4 } }, poUTCOffsetMinutes: poOffset }],
+                [
+                    A_FLEET_OFF,
+                    {
+                        name: "FleetOff",
+                        allyCode: A_FLEET_OFF,
+                        arena: { char: { rank: 5 }, ship: { rank: 4 } },
+                        poUTCOffsetMinutes: poOffset,
+                    },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                now,
+            );
 
-            assert.ok(!sent.join("\n").includes("**fleet** arena payout"), `a disabled fleet log must not post fleet lines: ${sent.join("\n")}`);
+            assert.ok(
+                !sent.join("\n").includes("**fleet** arena payout"),
+                `a disabled fleet log must not post fleet lines: ${sent.join("\n")}`,
+            );
             assert.strictEqual(user.arenaWatch.allyCodes[0].alerted?.fleetWarn, undefined, "no marker for a line that was never sent");
         });
 
@@ -1753,10 +2197,26 @@ describe("PatreonFuncs Module", () => {
             const patron: ActivePatron = { discordID: "footer_user", amount_cents: 100 };
             const arenaPlayerMap = new Map<number, ArenaPlayer>([[A_FOOTER, { allyCode: A_FOOTER, name: "Footer", lastCharRank: 8 }]]);
             const playerMap = new Map<number, PlayerArenaRes>([
-                [A_FOOTER, { name: "Footer", allyCode: A_FOOTER, arena: { char: { rank: 2 }, ship: { rank: null } }, poUTCOffsetMinutes: poOffset }],
+                [
+                    A_FOOTER,
+                    {
+                        name: "Footer",
+                        allyCode: A_FOOTER,
+                        arena: { char: { rank: 2 }, ship: { rank: null } },
+                        poUTCOffsetMinutes: poOffset,
+                    },
+                ],
             ]);
 
-            await (awFuncs as any).processShardPatron(patron, user, playerMap, arenaPlayerMap, new Set<number>(), buildRankSnapshot(arenaPlayerMap), now);
+            await (awFuncs as any).processShardPatron(
+                patron,
+                user,
+                playerMap,
+                arenaPlayerMap,
+                new Set<number>(),
+                buildRankSnapshot(arenaPlayerMap),
+                now,
+            );
 
             const text = sent.join("\n");
             assert.ok(text.includes("payout is in"), `the payout warning should still be posted: ${text}`);
@@ -2012,9 +2472,7 @@ describe("shouldWriteHistory()", () => {
 describe("hydrateWatchAccounts()", () => {
     it("merges name and ranks from arenaPlayers docs onto watch entries", () => {
         const entries = [{ allyCode: 111, mention: null, poOffset: 60 } as ArenaWatchConfig];
-        const playerMap = new Map<number, ArenaPlayer>([
-            [111, { allyCode: 111, name: "Merged", lastCharRank: 4, lastShipRank: 9 }],
-        ]);
+        const playerMap = new Map<number, ArenaPlayer>([[111, { allyCode: 111, name: "Merged", lastCharRank: 4, lastShipRank: 9 }]]);
         const result = hydrateWatchAccounts(entries, playerMap);
         assert.strictEqual(result.length, 1);
         assert.strictEqual(result[0].name, "Merged");
@@ -2041,20 +2499,21 @@ describe("hydrateWatchAccounts()", () => {
 describe("collectAllyCodes()", () => {
     it("returns empty array when no eligible patrons (below tier 1)", () => {
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 50 }];
-        const userMap = new Map<string, UserConfig>([
-            ["u1", { id: "u1", accounts: [111], primaryAllyCode: 111 } as UserConfig],
-        ]);
+        const userMap = new Map<string, UserConfig>([["u1", { id: "u1", accounts: [111], primaryAllyCode: 111 } as UserConfig]]);
         assert.deepStrictEqual(collectAllyCodes(patrons, userMap), []);
     });
 
     it("collects ally codes from user.accounts for eligible patrons", () => {
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
         const userMap = new Map<string, UserConfig>([
-            ["u1", {
-                id: "u1",
-                accounts: [111, 222],
-                primaryAllyCode: 111,
-            } as UserConfig],
+            [
+                "u1",
+                {
+                    id: "u1",
+                    accounts: [111, 222],
+                    primaryAllyCode: 111,
+                } as UserConfig,
+            ],
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.strictEqual(result.length, 2);
@@ -2065,11 +2524,14 @@ describe("collectAllyCodes()", () => {
     it("collects ally codes from arenaWatch.allyCodes", () => {
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
         const userMap = new Map<string, UserConfig>([
-            ["u1", {
-                id: "u1",
-                accounts: [],
-                arenaWatch: { allyCodes: [{ allyCode: 333, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
-            } as UserConfig],
+            [
+                "u1",
+                {
+                    id: "u1",
+                    accounts: [],
+                    arenaWatch: { allyCodes: [{ allyCode: 333, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
+                } as UserConfig,
+            ],
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.ok(result.includes(333));
@@ -2078,11 +2540,15 @@ describe("collectAllyCodes()", () => {
     it("deduplicates a code that appears in both accounts and arenaWatch", () => {
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
         const userMap = new Map<string, UserConfig>([
-            ["u1", {
-                id: "u1",
-                accounts: [111], primaryAllyCode: 111,
-                arenaWatch: { allyCodes: [{ allyCode: 111, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
-            } as UserConfig],
+            [
+                "u1",
+                {
+                    id: "u1",
+                    accounts: [111],
+                    primaryAllyCode: 111,
+                    arenaWatch: { allyCodes: [{ allyCode: 111, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
+                } as UserConfig,
+            ],
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.strictEqual(result.filter((c) => c === 111).length, 1);
@@ -2095,7 +2561,14 @@ describe("collectAllyCodes()", () => {
         ];
         const userMap = new Map<string, UserConfig>([
             ["u1", { id: "u1", accounts: [555], primaryAllyCode: 555 } as UserConfig],
-            ["u2", { id: "u2", accounts: [], arenaWatch: { allyCodes: [{ allyCode: 555, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] } } as UserConfig],
+            [
+                "u2",
+                {
+                    id: "u2",
+                    accounts: [],
+                    arenaWatch: { allyCodes: [{ allyCode: 555, mention: null, poOffset: 0 } satisfies ArenaWatchConfig] },
+                } as UserConfig,
+            ],
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.strictEqual(result.filter((c) => c === 555).length, 1);
@@ -2106,17 +2579,20 @@ describe("collectAllyCodes()", () => {
         // processed, so fetching their game data every tick is wasted work
         const patrons: ActivePatron[] = [{ discordID: "u1", amount_cents: 100 }];
         const userMap = new Map<string, UserConfig>([
-            ["u1", {
-                id: "u1",
-                accounts: [],
-                arenaWatch: {
-                    allyCodes: [
-                        { allyCode: 331, mention: null, poOffset: 0 },
-                        { allyCode: 332, mention: null, poOffset: 0 },
-                        { allyCode: 333, mention: null, poOffset: 0 },
-                    ],
-                },
-            } as UserConfig],
+            [
+                "u1",
+                {
+                    id: "u1",
+                    accounts: [],
+                    arenaWatch: {
+                        allyCodes: [
+                            { allyCode: 331, mention: null, poOffset: 0 },
+                            { allyCode: 332, mention: null, poOffset: 0 },
+                            { allyCode: 333, mention: null, poOffset: 0 },
+                        ],
+                    },
+                } as UserConfig,
+            ],
         ]);
         const result = collectAllyCodes(patrons, userMap);
         assert.deepStrictEqual(result, [331], "codes past the tier limit must not be collected");

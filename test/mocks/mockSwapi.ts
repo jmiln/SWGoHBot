@@ -154,16 +154,13 @@ export class MockSWAPI {
         this.checkError("playerByName");
         if (!name?.length || typeof name !== "string") return null;
 
-        const matchingPlayers = Array.from(this.config.players.values()).filter((p) =>
-            p.name.toLowerCase().includes(name.toLowerCase()),
-        );
+        const matchingPlayers = Array.from(this.config.players.values()).filter((p) => p.name.toLowerCase().includes(name.toLowerCase()));
 
         if (limit > 0) {
             return matchingPlayers.slice(0, limit);
         }
         return matchingPlayers;
     }
-
 
     async getPlayersArena(allycodes: number | number[]): Promise<SWAPIPlayerArenaProfile[]> {
         this.checkError("getPlayersArena");
@@ -297,9 +294,7 @@ export class MockSWAPI {
         }
 
         const skillArr = Array.isArray(skillArray) ? skillArray : [skillArray];
-        const abilities = skillArr
-            .map((skillId) => this.config.abilities.get(skillId))
-            .filter((a) => !!a);
+        const abilities = skillArr.map((skillId) => this.config.abilities.get(skillId)).filter((a) => !!a);
 
         if (opts.min) {
             return abilities.map((a) => ({ nameKey: a.nameKey }));

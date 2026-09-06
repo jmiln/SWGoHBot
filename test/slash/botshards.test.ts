@@ -8,7 +8,7 @@ describe("BotShards", () => {
 
     it("should format single shard info correctly", () => {
         const results: ShardData[] = [
-            [[0], 0, 50, 1500] // [ids, status (0=Ready), ping, guildCount]
+            [[0], 0, 50, 1500], // [ids, status (0=Ready), ping, guildCount]
         ];
         const formatted = formatShardInfo(results, 1);
 
@@ -22,7 +22,7 @@ describe("BotShards", () => {
         const results: ShardData[] = [
             [[0], 0, 45, 1200],
             [[1], 0, 52, 1350],
-            [[2], 0, 48, 1450]
+            [[2], 0, 48, 1450],
         ];
         const formatted = formatShardInfo(results, 3);
 
@@ -35,7 +35,7 @@ describe("BotShards", () => {
 
     it("should include status in formatted output", () => {
         const results: ShardData[] = [
-            [[0], 0, 50, 1500] // Status 0 = Ready
+            [[0], 0, 50, 1500], // Status 0 = Ready
         ];
         const formatted = formatShardInfo(results, 1);
 
@@ -45,7 +45,7 @@ describe("BotShards", () => {
     it("should pad shard numbers correctly for alignment", () => {
         const results: ShardData[] = [
             [[0], 0, 50, 1500],
-            [[9], 0, 52, 1350]
+            [[9], 0, 52, 1350],
         ];
         const formatted = formatShardInfo(results, 10);
 

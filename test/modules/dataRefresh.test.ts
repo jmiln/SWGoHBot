@@ -3,7 +3,7 @@ import { mkdtemp, utimes, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import { QUIESCENCE_MS, checkAndRefresh, resetDataRefreshState, startDataRefresh, stopDataRefresh } from "../../modules/dataRefresh.ts";
+import { checkAndRefresh, QUIESCENCE_MS, resetDataRefreshState, startDataRefresh, stopDataRefresh } from "../../modules/dataRefresh.ts";
 import logger from "../../modules/Logger.ts";
 import type { RefreshCount, RefreshSource } from "../../types/types.ts";
 
@@ -200,10 +200,7 @@ describe("checkAndRefresh", () => {
         const refreshed = await checkAndRefresh([source], now);
 
         assert.equal(refreshed, false);
-        assert.ok(
-            !logged.some((line) => line.includes("ENOENT")),
-            "a not-yet-generated file is expected, not an error",
-        );
+        assert.ok(!logged.some((line) => line.includes("ENOENT")), "a not-yet-generated file is expected, not an error");
     });
 });
 

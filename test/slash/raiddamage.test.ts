@@ -6,7 +6,7 @@ import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 describe("RaidDamage", () => {
     it("should convert percentage to damage for Rancor P1", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "Rancor", phase: "1", amount: "50%" }
+            optionsData: { raid: "Rancor", phase: "1", amount: "50%" },
         });
 
         const command = new RaidDamage();
@@ -23,7 +23,7 @@ describe("RaidDamage", () => {
 
     it("should convert damage to percentage for Sith P3", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "Sith", phase: "3", amount: "1000000" }
+            optionsData: { raid: "Sith", phase: "3", amount: "1000000" },
         });
 
         const command = new RaidDamage();
@@ -40,7 +40,7 @@ describe("RaidDamage", () => {
 
     it("should handle HAAT raid phases", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "HAAT", phase: "2", amount: "25%" }
+            optionsData: { raid: "HAAT", phase: "2", amount: "25%" },
         });
 
         const command = new RaidDamage();
@@ -57,7 +57,7 @@ describe("RaidDamage", () => {
 
     it("should handle Challenge Rancor", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "cRancor", phase: "4", amount: "10%" }
+            optionsData: { raid: "cRancor", phase: "4", amount: "10%" },
         });
 
         const command = new RaidDamage();
@@ -73,7 +73,7 @@ describe("RaidDamage", () => {
 
     it("should return error for invalid amount (non-numeric)", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "Rancor", phase: "1", amount: "abc" }
+            optionsData: { raid: "Rancor", phase: "1", amount: "abc" },
         });
 
         const command = new RaidDamage();
@@ -88,10 +88,9 @@ describe("RaidDamage", () => {
         assert.ok(reply.flags, "Expected ephemeral error");
     });
 
-
     it("should process damage amount and return formatted output", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "Sith", phase: "4", amount: "5000000" }
+            optionsData: { raid: "Sith", phase: "4", amount: "5000000" },
         });
 
         const command = new RaidDamage();
@@ -112,7 +111,7 @@ describe("RaidDamage", () => {
 
     it("should process percentage amount and return formatted output", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "Rancor", phase: "1", amount: "50%" }
+            optionsData: { raid: "Rancor", phase: "1", amount: "50%" },
         });
 
         const command = new RaidDamage();
@@ -133,7 +132,7 @@ describe("RaidDamage", () => {
 
     it("should process plain damage amount correctly", async () => {
         const interaction = createMockInteraction({
-            optionsData: { raid: "HAAT", phase: "2", amount: "1000000" }
+            optionsData: { raid: "HAAT", phase: "2", amount: "1000000" },
         });
 
         const command = new RaidDamage();

@@ -32,7 +32,7 @@ describe("resolveTargetName", () => {
     it("resolves a character target via its unit name", () => {
         // GRIEVOUS exists in unitMap; the alias maps generalgrievous -> GRIEVOUS.
         const name = resolveTargetName("target_datacron_generalgrievous");
-        assert.ok(name && name.toLowerCase().includes("grievous"), `expected Grievous, got: ${name}`);
+        assert.ok(name?.toLowerCase().includes("grievous"), `expected Grievous, got: ${name}`);
     });
 
     it("never returns the raw internal id, even for an unknown target", () => {

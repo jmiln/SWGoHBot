@@ -11,7 +11,13 @@ const CREDENTIALS = { accessKey: "a", secretKey: "s" };
 // costs no fidelity, and at a 15s probe interval fine steps need tens of thousands of iterations.
 const STEP_MS = 100;
 
-function submit(dispatcher: Dispatcher, clock: FakeClock, priority: Priority, uri = "/player", deadlineMs = 3_600_000): Promise<ProxyResponse> {
+function submit(
+    dispatcher: Dispatcher,
+    clock: FakeClock,
+    priority: Priority,
+    uri = "/player",
+    deadlineMs = 3_600_000,
+): Promise<ProxyResponse> {
     return dispatcher.submit({
         method: "POST",
         uri,
@@ -132,9 +138,7 @@ describe("swapiServe controller simulation", () => {
             clock,
             retryDelayMs: 10,
             forwarder: async () =>
-                healthy
-                    ? { status: 200, headers: {}, body: Buffer.from("{}") }
-                    : { status: undefined, headers: {}, body: Buffer.alloc(0) },
+                healthy ? { status: 200, headers: {}, body: Buffer.from("{}") } : { status: undefined, headers: {}, body: Buffer.alloc(0) },
         });
 
         // Short deadlines, so that once the breaker opens the rest of the batch is shed rather

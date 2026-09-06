@@ -1,13 +1,20 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import userReg from "../../modules/users.ts";
 import Guilds from "../../slash/guilds.ts";
 import type { RawGuild, RawGuildMember } from "../../types/swapi_types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
-import { createCommandContext, createMockGuild, createMockGuildMember, createMockInteraction, createMockPlayer, createMockUnit } from "../mocks/index.ts";
+import {
+    createCommandContext,
+    createMockGuild,
+    createMockGuildMember,
+    createMockInteraction,
+    createMockPlayer,
+    createMockUnit,
+} from "../mocks/index.ts";
 
 /**
  * Helper function to extract description from a reply embed.
@@ -78,7 +85,8 @@ describe("Guilds Command Functionality", () => {
     });
 
     describe("functional tests with mocked singleton", () => {
-        it("should display guild overview with proper formatting", async () => {            const command = new Guilds();
+        it("should display guild overview with proper formatting", async () => {
+            const command = new Guilds();
 
             // Mock the guild data
             const mockGuild = createMockGuild({
@@ -106,8 +114,8 @@ describe("Guilds Command Functionality", () => {
                     }),
                 ],
                 raid: {
-                    "rancor": { diffId: "DIFF03_HEROIC" },
-                    "aat": { diffId: "DIFF03_HEROIC" },
+                    rancor: { diffId: "DIFF03_HEROIC" },
+                    aat: { diffId: "DIFF03_HEROIC" },
                 },
             });
 
@@ -140,12 +148,13 @@ describe("Guilds Command Functionality", () => {
             assert.ok(fields && fields.length > 0, "Expected embed fields");
 
             // Verify GP is displayed
-            const statsField = fields?.find(f => f.name?.toLowerCase().includes("stat"));
+            const statsField = fields?.find((f) => f.name?.toLowerCase().includes("stat"));
             assert.ok(statsField, "Expected stats field");
             assert.ok(statsField.value?.includes("250,000,000") || statsField.value?.includes("250"), "Expected GP in stats");
         });
 
-        it("should display gear overview with proper formatting and sorting", async () => {            const command = new Guilds();
+        it("should display gear overview with proper formatting and sorting", async () => {
+            const command = new Guilds();
 
             const mockGuild = createMockGuild({
                 id: "guild123",
@@ -181,7 +190,7 @@ describe("Guilds Command Functionality", () => {
             swgohAPI.guild = async () => mockGuild;
             swgohAPI.unitStats = async (allycodes) => {
                 const codes = Array.isArray(allycodes) ? allycodes : [allycodes];
-                return codes.map(ac => ac === 111111111 ? highGearPlayer : midGearPlayer);
+                return codes.map((ac) => (ac === 111111111 ? highGearPlayer : midGearPlayer));
             };
 
             const interaction = createMockInteraction({
@@ -213,7 +222,8 @@ describe("Guilds Command Functionality", () => {
             assert.ok(description, "Expected description with gear counts");
         });
 
-        it("should display roster with GP in proper format", async () => {            const command = new Guilds();
+        it("should display roster with GP in proper format", async () => {
+            const command = new Guilds();
 
             const mockGuild = createMockGuild({
                 id: "guild123",
@@ -275,7 +285,8 @@ describe("Guilds Command Functionality", () => {
             assert.ok(description?.includes("[M]"), "Expected Member indicator");
         });
 
-        it("should display roster sorted by name", async () => {            const command = new Guilds();
+        it("should display roster sorted by name", async () => {
+            const command = new Guilds();
 
             const mockGuild = createMockGuild({
                 id: "guild123",
@@ -316,7 +327,8 @@ describe("Guilds Command Functionality", () => {
             assert.ok(alphaIndex < zebraIndex, "Expected alphabetical ordering");
         });
 
-        it("should display roster with ally codes when requested", async () => {            const command = new Guilds();
+        it("should display roster with ally codes when requested", async () => {
+            const command = new Guilds();
 
             const mockGuild = createMockGuild({
                 id: "guild123",
@@ -350,7 +362,8 @@ describe("Guilds Command Functionality", () => {
             assert.ok(description?.includes("222222222"), "Expected ally code 222222222");
         });
 
-        it("should display relics overview with proper formatting", async () => {            const command = new Guilds();
+        it("should display relics overview with proper formatting", async () => {
+            const command = new Guilds();
 
             const mockGuild = createMockGuild({
                 id: "guild123",
@@ -383,7 +396,7 @@ describe("Guilds Command Functionality", () => {
             swgohAPI.guild = async () => mockGuild;
             swgohAPI.unitStats = async (allycodes) => {
                 const codes = Array.isArray(allycodes) ? allycodes : [allycodes];
-                return codes.map(ac => ac === 111111111 ? player1 : player2);
+                return codes.map((ac) => (ac === 111111111 ? player1 : player2));
             };
 
             const interaction = createMockInteraction({
@@ -409,7 +422,8 @@ describe("Guilds Command Functionality", () => {
             assert.ok(fields && fields.length > 0, "Expected relic data fields");
         });
 
-        it("should display mods overview with proper formatting", async () => {            const command = new Guilds();
+        it("should display mods overview with proper formatting", async () => {
+            const command = new Guilds();
 
             const mockGuild = createMockGuild({
                 id: "guild123",
@@ -561,7 +575,8 @@ describe("Guilds Command Functionality", () => {
     });
 
     describe("ally code validation", () => {
-        it("should return error when no ally code is registered and none provided", async () => {            const command = new Guilds();
+        it("should return error when no ally code is registered and none provided", async () => {
+            const command = new Guilds();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -577,7 +592,7 @@ describe("Guilds Command Functionality", () => {
             const description = getReplyDescription(lastReply);
             assert.ok(
                 description?.includes("No valid ally code found") || description?.includes("could not find a valid ally code"),
-                "Expected error about missing ally code"
+                "Expected error about missing ally code",
             );
         });
     });

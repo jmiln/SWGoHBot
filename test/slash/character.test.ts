@@ -4,8 +4,9 @@ import Character from "../../slash/character.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 
 describe("Character", () => {
-    it("should respond to character requests with proper embed structure", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" } // Use uniqueName for reliable match
+    it("should respond to character requests with proper embed structure", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "COMMANDERLUKESKYWALKER" }, // Use uniqueName for reliable match
         });
 
         const command = new Character();
@@ -31,8 +32,9 @@ describe("Character", () => {
         assert.ok(embedData.color !== undefined, "Expected embed color");
     });
 
-    it("should include character URL in embed if available", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" }
+    it("should include character URL in embed if available", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "COMMANDERLUKESKYWALKER" },
         });
 
         const command = new Character();
@@ -49,8 +51,9 @@ describe("Character", () => {
         }
     });
 
-    it("should set embed color based on character side", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" }
+    it("should set embed color based on character side", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "COMMANDERLUKESKYWALKER" },
         });
 
         const command = new Character();
@@ -66,8 +69,9 @@ describe("Character", () => {
         assert.ok(typeof embedData.color === "number", "Expected embed color to be a number");
     });
 
-    it("should format factions as proper case", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" }
+    it("should format factions as proper case", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "COMMANDERLUKESKYWALKER" },
         });
 
         const command = new Character();
@@ -85,8 +89,9 @@ describe("Character", () => {
         }
     });
 
-    it("should highlight zeta abilities with bold formatting", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" }
+    it("should highlight zeta abilities with bold formatting", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "COMMANDERLUKESKYWALKER" },
         });
 
         const command = new Character();
@@ -105,8 +110,9 @@ describe("Character", () => {
         }
     });
 
-    it("should process character data from API", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "COMMANDERLUKESKYWALKER" }
+    it("should process character data from API", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "COMMANDERLUKESKYWALKER" },
         });
 
         const command = new Character();
@@ -130,8 +136,9 @@ describe("Character", () => {
         }
     });
 
-    it("should return error for non-existent character", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "NonexistentCharacterXYZ999" }
+    it("should return error for non-existent character", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "NonexistentCharacterXYZ999" },
         });
 
         const command = new Character();
@@ -148,8 +155,9 @@ describe("Character", () => {
         assert.ok(reply.flags, "Expected flags in error reply");
     });
 
-    it("should handle ambiguous searches with multiple matches", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "Luke" } // Matches multiple Luke characters
+    it("should handle ambiguous searches with multiple matches", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "Luke" }, // Matches multiple Luke characters
         });
 
         const command = new Character();
@@ -163,8 +171,9 @@ describe("Character", () => {
         const reply = replies[0];
         assert.ok(reply.embeds && reply.embeds.length > 0, "Expected embed in reply");
     });
-    it("should handle character search by alias", async () => {        const interaction = createMockInteraction({
-            optionsData: { character: "CLS" } // Alias for Commander Luke
+    it("should handle character search by alias", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { character: "CLS" }, // Alias for Commander Luke
         });
 
         const command = new Character();

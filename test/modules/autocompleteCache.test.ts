@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
 import {
@@ -10,10 +10,10 @@ import {
     getCachedUserLang,
     invalidateAllyCodeCache,
 } from "../../modules/autocompleteCache.ts";
-import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import cache from "../../modules/cache.ts";
 import { reloadLanguages } from "../../modules/functions.ts";
 import userReg from "../../modules/users.ts";
+import { defaultGuildSettings } from "../../schemas/guildConfigs.schema.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
 describe("autocompleteCache", () => {
@@ -45,7 +45,10 @@ describe("autocompleteCache", () => {
     after(async () => {
         arenaPlayerRegistry.batchGet = realBatchGet;
         await client.db(db).collection("users").deleteMany({ id: AC_USER_ID });
-        await client.db(db).collection("arenaPlayers").deleteMany({ allyCode: { $in: AC_ALLY_CODES } });
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: AC_ALLY_CODES } });
         await closeMongoClient();
     });
 
@@ -53,13 +56,19 @@ describe("autocompleteCache", () => {
         batchGetCalls = 0;
         invalidateAllyCodeCache(AC_USER_ID);
         await client.db(db).collection("users").deleteMany({ id: AC_USER_ID });
-        await client.db(db).collection("arenaPlayers").deleteMany({ allyCode: { $in: AC_ALLY_CODES } });
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: AC_ALLY_CODES } });
 
         await client.db(db).collection("users").insertOne({ id: AC_USER_ID, accounts: AC_ALLY_CODES });
-        await client.db(db).collection("arenaPlayers").insertMany([
-            { allyCode: 565656561, name: "Alpha" },
-            { allyCode: 565656562, name: "Beta" },
-        ]);
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .insertMany([
+                { allyCode: 565656561, name: "Alpha" },
+                { allyCode: 565656562, name: "Beta" },
+            ]);
     });
 
     it("fetches and returns the user's account choices", async () => {
@@ -88,7 +97,10 @@ describe("autocompleteCache", () => {
 
     it("refetches after explicit invalidation (test-isolation helper)", async () => {
         await getCachedAllyCodeChoices(AC_USER_ID, "");
-        await client.db(db).collection("users").updateOne({ id: AC_USER_ID }, { $set: { accounts: [565656561] } });
+        await client
+            .db(db)
+            .collection("users")
+            .updateOne({ id: AC_USER_ID }, { $set: { accounts: [565656561] } });
         invalidateAllyCodeCache(AC_USER_ID);
 
         const choices = await getCachedAllyCodeChoices(AC_USER_ID, "");
@@ -102,7 +114,10 @@ describe("autocompleteCache", () => {
 
         beforeEach(async () => {
             await client.db(db).collection("guildConfigs").deleteMany({ guildId: AC_GUILD_ID });
-            await client.db(db).collection("guildConfigs").insertOne({ guildId: AC_GUILD_ID, aliases: aliasDoc("dv") });
+            await client
+                .db(db)
+                .collection("guildConfigs")
+                .insertOne({ guildId: AC_GUILD_ID, aliases: aliasDoc("dv") });
         });
 
         after(async () => {
@@ -147,8 +162,14 @@ describe("autocompleteCache", () => {
         const LANG_GUILDS = [LANG_GUILD_DE, LANG_GUILD_FR, LANG_GUILD_UNSET];
 
         beforeEach(async () => {
-            await client.db(db).collection("users").deleteMany({ id: { $in: LANG_USERS } });
-            await client.db(db).collection("guildConfigs").deleteMany({ guildId: { $in: LANG_GUILDS } });
+            await client
+                .db(db)
+                .collection("users")
+                .deleteMany({ id: { $in: LANG_USERS } });
+            await client
+                .db(db)
+                .collection("guildConfigs")
+                .deleteMany({ guildId: { $in: LANG_GUILDS } });
 
             // Settings live under a `settings` subdocument, which is what getGuildSettings reads.
             await client
@@ -158,12 +179,21 @@ describe("autocompleteCache", () => {
                     { guildId: LANG_GUILD_DE, settings: { swgohLanguage: "GER_DE" } },
                     { guildId: LANG_GUILD_FR, settings: { swgohLanguage: "FRE_FR" } },
                 ]);
-            await client.db(db).collection("users").insertOne({ id: LANG_USER_OWN, lang: { swgohLanguage: "KOR_KR" } });
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({ id: LANG_USER_OWN, lang: { swgohLanguage: "KOR_KR" } });
         });
 
         after(async () => {
-            await client.db(db).collection("users").deleteMany({ id: { $in: LANG_USERS } });
-            await client.db(db).collection("guildConfigs").deleteMany({ guildId: { $in: LANG_GUILDS } });
+            await client
+                .db(db)
+                .collection("users")
+                .deleteMany({ id: { $in: LANG_USERS } });
+            await client
+                .db(db)
+                .collection("guildConfigs")
+                .deleteMany({ guildId: { $in: LANG_GUILDS } });
         });
 
         it("uses the guild's swgohLanguage when the user has not set one", async () => {

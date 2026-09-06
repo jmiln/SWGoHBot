@@ -1,5 +1,7 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
+import type { Client } from "discord.js";
+import constants from "../../data/constants/constants.ts";
 import {
     buildAllyCodeChoices,
     charListFromSearch,
@@ -13,13 +15,13 @@ import {
     getCurrentWeekday,
     getDivider,
     getGearStr,
+    getPayoutTimeLeft,
     getSetTimeForTimezone,
     getSideColor,
     getStartOfDay,
     getTimezoneOffset,
     getUserID,
     getUTCFromOffset,
-    getPayoutTimeLeft,
     isAllyCode,
     isChannelId,
     isUserID,
@@ -31,8 +33,6 @@ import {
     trimFloat,
     userCount,
 } from "../../modules/functions.ts";
-import constants from "../../data/constants/constants.ts";
-import type { Client } from "discord.js";
 import type { SWAPIPlayer } from "../../types/swapi_types.ts";
 import type { ArenaPlayer, BotUnit } from "../../types/types.ts";
 import { createMockLanguage } from "../mocks/index.ts";
@@ -268,7 +268,10 @@ describe("chunkArray", () => {
     });
 
     it("handles evenly divisible arrays", () => {
-        assert.deepStrictEqual(chunkArray([1, 2, 3, 4], 2), [[1, 2], [3, 4]]);
+        assert.deepStrictEqual(chunkArray([1, 2, 3, 4], 2), [
+            [1, 2],
+            [3, 4],
+        ]);
     });
 
     it("returns empty array for empty input", () => {
@@ -542,7 +545,7 @@ describe("getSetTimeForTimezone", () => {
 
     it("shifts the timestamp by the timezone offset for a negative-offset zone", () => {
         // America/Phoenix (UTC-7) = -420 min; noon MST = 19:00 UTC
-        const expected = Date.UTC(2025, 6, 4, 12, 0) - (-420) * minMS;
+        const expected = Date.UTC(2025, 6, 4, 12, 0) - -420 * minMS;
         assert.strictEqual(getSetTimeForTimezone("07/04/2025 12:00", "America/Phoenix"), expected);
     });
 

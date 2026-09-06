@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import database from "../../modules/database.ts";
 import Info from "../../slash/info.ts";
@@ -94,7 +94,14 @@ describe("Info", () => {
             // collection, which would race with other suites writing commandStats.
             await col().deleteMany({ commandName: { $in: INFO_CMD_NAMES } });
             await col().insertMany([
-                { commandName: "info_mychar", subcommand: "character", count: 1, success: true, timestamp: now, options: [{ name: "allycode", type: 3, value: "123" }] },
+                {
+                    commandName: "info_mychar",
+                    subcommand: "character",
+                    count: 1,
+                    success: true,
+                    timestamp: now,
+                    options: [{ name: "allycode", type: 3, value: "123" }],
+                },
                 { commandName: "info_mychar", subcommand: "ship", count: 1, success: true, timestamp: now },
                 { commandName: "info_noargs", subcommand: "list", count: 1, success: true, timestamp: now },
                 ...Array.from({ length: 11 }, (_, i) => ({

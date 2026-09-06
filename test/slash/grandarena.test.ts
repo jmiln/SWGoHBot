@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import swgohAPI from "../../modules/swapi.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
+import swgohAPI from "../../modules/swapi.ts";
 import GrandArena from "../../slash/grandarena.ts";
 import { createCommandContext, createMockInteraction, createMockPlayer, createMockUnit, createRealLanguage } from "../mocks/index.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";

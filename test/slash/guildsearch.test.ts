@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import cache from "../../modules/cache.ts";
 import patreonFuncs from "../../modules/patreonFuncs.ts";
 import swgohAPI from "../../modules/swapi.ts";
@@ -61,7 +61,8 @@ describe("GuildSearch Command Functionality", () => {
     });
 
     describe("command initialization", () => {
-        it("should initialize with correct name and subcommands", () => {            const command = new GuildSearch();
+        it("should initialize with correct name and subcommands", () => {
+            const command = new GuildSearch();
 
             assert.strictEqual(command.commandData.name, "guildsearch");
             assert.strictEqual(command.commandData.options.length, 2);
@@ -75,7 +76,8 @@ describe("GuildSearch Command Functionality", () => {
     });
 
     describe("ally code validation", () => {
-        it("should return error when no ally code is registered and none provided", async () => {            const command = new GuildSearch();
+        it("should return error when no ally code is registered and none provided", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -95,7 +97,8 @@ describe("GuildSearch Command Functionality", () => {
     });
 
     describe("input validation", () => {
-        it("should reject invalid top values above maximum with specific error message", async () => {            const command = new GuildSearch();
+        it("should reject invalid top values above maximum with specific error message", async () => {
+            const command = new GuildSearch();
 
             const invalidTop = 100;
             const interaction = createMockInteraction({
@@ -116,7 +119,8 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(description?.includes("COMMAND_GUILDSEARCH_INVALID_TOP"), "Expected error about invalid top value");
         });
 
-        it("should reject invalid top values below minimum with specific error message", async () => {            const command = new GuildSearch();
+        it("should reject invalid top values below minimum with specific error message", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -136,7 +140,8 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(description?.includes("COMMAND_GUILDSEARCH_INVALID_TOP"), "Expected error about invalid top value");
         });
 
-        it("should reject invalid rarity values with specific error message", async () => {            const command = new GuildSearch();
+        it("should reject invalid rarity values with specific error message", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -157,11 +162,12 @@ describe("GuildSearch Command Functionality", () => {
             // The error message should reference "star" since that's what rarity represents
             assert.ok(
                 description?.toLowerCase().includes("star") || description?.toLowerCase().includes("rarity"),
-                "Expected error to mention stars or rarity"
+                "Expected error to mention stars or rarity",
             );
         });
 
-        it("should accept valid top values", async () => {            const command = new GuildSearch();
+        it("should accept valid top values", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -182,7 +188,8 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(!description?.includes("COMMAND_GUILDSEARCH_INVALID_TOP"), "Should not error on valid top value");
         });
 
-        it("should accept valid rarity values", async () => {            const command = new GuildSearch();
+        it("should accept valid rarity values", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -203,7 +210,8 @@ describe("GuildSearch Command Functionality", () => {
     });
 
     describe("character/ship lookup", () => {
-        it("should return specific error message for non-existent character", async () => {            const command = new GuildSearch();
+        it("should return specific error message for non-existent character", async () => {
+            const command = new GuildSearch();
 
             const searchTerm = "NONEXISTENTCHARACTER12345";
             const interaction = createMockInteraction({
@@ -225,7 +233,8 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(description && description.length > 0, "Expected error description for non-existent character");
         });
 
-        it("should return specific error message for non-existent ship", async () => {            const command = new GuildSearch();
+        it("should return specific error message for non-existent ship", async () => {
+            const command = new GuildSearch();
 
             const searchTerm = "NONEXISTENTSHIP9999";
             const interaction = createMockInteraction({
@@ -247,7 +256,8 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(description && description.length > 0, "Expected error description for non-existent ship");
         });
 
-        it("should list all matching characters for ambiguous search", async () => {            const command = new GuildSearch();
+        it("should list all matching characters for ambiguous search", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -299,9 +309,15 @@ describe("GuildSearch Command Functionality", () => {
             const embed = lastReply.embeds[0];
             const embedData = embed.data || embed;
             // Language mock returns the key; verify the right display key is used
-            assert.ok(embedData.author?.name?.includes("BASE_SWGOH_NAMECHAR_HEADER_NUM"), "Expected results header language key in embed author");
+            assert.ok(
+                embedData.author?.name?.includes("BASE_SWGOH_NAMECHAR_HEADER_NUM"),
+                "Expected results header language key in embed author",
+            );
             // Guild member player name should appear in the field values
-            assert.ok(embedData.fields?.some((f: any) => f.value?.includes("GuildMember1")), "Expected guild member name in results");
+            assert.ok(
+                embedData.fields?.some((f: any) => f.value?.includes("GuildMember1")),
+                "Expected guild member name in results",
+            );
         });
 
         it("should find character by partial name match and return same result as exact match", async () => {
@@ -315,7 +331,10 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(lastReply.embeds?.length > 0, "Expected embed - partial 'vader' should resolve to Darth Vader");
             const embedData = lastReply.embeds[0].data || lastReply.embeds[0];
             assert.ok(!lastReply.flags, "Expected non-error response - partial match should succeed");
-            assert.ok(embedData.fields?.some((f: any) => f.value?.includes("GuildMember1")), "Expected guild member in partial match result");
+            assert.ok(
+                embedData.fields?.some((f: any) => f.value?.includes("GuildMember1")),
+                "Expected guild member in partial match result",
+            );
         });
 
         it("should be case-insensitive: 'DARTH VADER' resolves the same as 'Darth Vader'", async () => {
@@ -332,7 +351,8 @@ describe("GuildSearch Command Functionality", () => {
     });
 
     describe("subcommand routing", () => {
-        it("should handle character subcommand", async () => {            const command = new GuildSearch();
+        it("should handle character subcommand", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -348,7 +368,8 @@ describe("GuildSearch Command Functionality", () => {
             assert.ok(replies.length > 0, "Expected reply from character subcommand");
         });
 
-        it("should handle ship subcommand", async () => {            const command = new GuildSearch();
+        it("should handle ship subcommand", async () => {
+            const command = new GuildSearch();
 
             const interaction = createMockInteraction({
                 optionsData: {
@@ -381,10 +402,11 @@ describe("GuildSearch Command Functionality", () => {
 
         it("rarity filter: shows members at or above the specified star level", async () => {
             // Two members: one at 7*, one at 4*
-            swgohAPI.guildUnitStats = async () => [
-                { ...createMockUnit({ rarity: 7, gp: 28000 }), player: "SevenStar", zetas: [] },
-                { ...createMockUnit({ rarity: 4, gp: 10000 }), player: "FourStar", zetas: [] },
-            ] as any;
+            swgohAPI.guildUnitStats = async () =>
+                [
+                    { ...createMockUnit({ rarity: 7, gp: 28000 }), player: "SevenStar", zetas: [] },
+                    { ...createMockUnit({ rarity: 4, gp: 10000 }), player: "FourStar", zetas: [] },
+                ] as any;
 
             const interaction = createMockInteraction({
                 optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789", rarity: 7 },
@@ -400,9 +422,7 @@ describe("GuildSearch Command Functionality", () => {
         });
 
         it("rarity filter: returns error when no members meet the minimum star level", async () => {
-            swgohAPI.guildUnitStats = async () => [
-                { ...createMockUnit({ rarity: 4, gp: 10000 }), player: "FourStar", zetas: [] },
-            ] as any;
+            swgohAPI.guildUnitStats = async () => [{ ...createMockUnit({ rarity: 4, gp: 10000 }), player: "FourStar", zetas: [] }] as any;
 
             const interaction = createMockInteraction({
                 optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789", rarity: 7 },
@@ -416,9 +436,8 @@ describe("GuildSearch Command Functionality", () => {
         });
 
         it("zetas filter: returns error when no members have zetas on the character", async () => {
-            swgohAPI.guildUnitStats = async () => [
-                { ...createMockUnit({ rarity: 7, gp: 28000 }), player: "NoZetaPlayer", zetas: [] },
-            ] as any;
+            swgohAPI.guildUnitStats = async () =>
+                [{ ...createMockUnit({ rarity: 7, gp: 28000 }), player: "NoZetaPlayer", zetas: [] }] as any;
 
             const interaction = createMockInteraction({
                 optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789", zetas: true },
@@ -431,9 +450,10 @@ describe("GuildSearch Command Functionality", () => {
         });
 
         it("stat option: shows stat values for each guild member in the output", async () => {
-            swgohAPI.guildUnitStats = async () => [
-                { ...createMockUnit({ rarity: 7, gp: 28000 }), player: "SpeedyPlayer", stats: { final: { Speed: 214 } }, zetas: [] },
-            ] as any;
+            swgohAPI.guildUnitStats = async () =>
+                [
+                    { ...createMockUnit({ rarity: 7, gp: 28000 }), player: "SpeedyPlayer", stats: { final: { Speed: 214 } }, zetas: [] },
+                ] as any;
 
             const interaction = createMockInteraction({
                 optionsData: { _subcommand: "character", character: "Darth Vader", allycode: "123456789", stat: "Speed" },

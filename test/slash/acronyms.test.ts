@@ -5,8 +5,9 @@ import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertEmbedField, assertErrorReply, getLastReply } from "./helpers.ts";
 
 describe("Acronyms", () => {
-    it("should return definition for a single valid acronym", async () => {        const interaction = createMockInteraction({
-            optionsData: { acronym: "CLS" }
+    it("should return definition for a single valid acronym", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "CLS" },
         });
 
         const command = new Acronyms();
@@ -23,8 +24,9 @@ describe("Acronyms", () => {
         assertEmbedField(interaction, "Results", "Commander Luke Skywalker");
     });
 
-    it("should return definitions for multiple acronyms", async () => {        const interaction = createMockInteraction({
-            optionsData: { acronym: "CLS JKR TB" }
+    it("should return definitions for multiple acronyms", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "CLS JKR TB" },
         });
 
         const command = new Acronyms();
@@ -44,8 +46,9 @@ describe("Acronyms", () => {
         assert.ok(resultsField.value.includes("Territory Battle"), "Expected TB definition");
     });
 
-    it("should return error for unknown acronym", async () => {        const interaction = createMockInteraction({
-            optionsData: { acronym: "UNKNOWN" }
+    it("should return error for unknown acronym", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "UNKNOWN" },
         });
 
         const command = new Acronyms();
@@ -55,8 +58,9 @@ describe("Acronyms", () => {
         assertErrorReply(interaction, "COMMAND_ACRONYMS_NOT_FOUND");
     });
 
-    it("should handle case-insensitive acronym lookup", async () => {        const interaction = createMockInteraction({
-            optionsData: { acronym: "cls" }
+    it("should handle case-insensitive acronym lookup", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "cls" },
         });
 
         const command = new Acronyms();
@@ -70,8 +74,9 @@ describe("Acronyms", () => {
         assertEmbedField(interaction, "Results", "Commander Luke Skywalker");
     });
 
-    it("should handle partial matches in multi-acronym input", async () => {        const interaction = createMockInteraction({
-            optionsData: { acronym: "CLS UNKNOWN JKR" }
+    it("should handle partial matches in multi-acronym input", async () => {
+        const interaction = createMockInteraction({
+            optionsData: { acronym: "CLS UNKNOWN JKR" },
         });
 
         const command = new Acronyms();

@@ -20,10 +20,7 @@ export function assertErrorReply(interaction: any, expectedMessage?: string): vo
         const embed = lastReply.embeds[0];
         const embedData = embed.data || embed;
         const description = embedData.description || "";
-        assert.ok(
-            description.includes(expectedMessage),
-            `Expected error message to include "${expectedMessage}", got: ${description}`,
-        );
+        assert.ok(description.includes(expectedMessage), `Expected error message to include "${expectedMessage}", got: ${description}`);
     }
 }
 
@@ -60,9 +57,6 @@ export function assertEmbedField(interaction: any, fieldName: string, expectedVa
     assert.ok(field, `Expected embed to have field "${fieldName}"`);
 
     if (expectedValue !== undefined) {
-        assert.ok(
-            field.value.includes(expectedValue),
-            `Expected field "${fieldName}" to include "${expectedValue}", got: ${field.value}`,
-        );
+        assert.ok(field.value.includes(expectedValue), `Expected field "${fieldName}" to include "${expectedValue}", got: ${field.value}`);
     }
 }

@@ -3,12 +3,12 @@ import { after, before, beforeEach, describe, it } from "node:test";
 import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import { guildConfigDB } from "../../modules/guildConfig/db.ts";
-import { getAllStrikes, getActiveStrikes } from "../../modules/guildConfig/strikes.ts";
+import { getActiveStrikes, getAllStrikes } from "../../modules/guildConfig/strikes.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import Strike from "../../slash/strike.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
-import { MockSWAPI, createMockPlayer } from "../mocks/mockSwapi.ts";
+import { createMockPlayer, MockSWAPI } from "../mocks/mockSwapi.ts";
 import { assertErrorReply, getLastReply } from "./helpers.ts";
 
 // IDs unique to this file: the mock defaults are shared by dozens of files running concurrently
@@ -81,7 +81,9 @@ describe("Strike command", () => {
         });
 
         it("adds a strike for player found via swapi but not in cache", async () => {
-            mockSwapi.setPlayerData(createMockPlayer({ allyCode: PLAYER_AC, name: "SwapiPlayer", guildId: "game-guild-1", guildName: "Test Guild Game" }));
+            mockSwapi.setPlayerData(
+                createMockPlayer({ allyCode: PLAYER_AC, name: "SwapiPlayer", guildId: "game-guild-1", guildName: "Test Guild Game" }),
+            );
             const { ctx } = makeCtx("add", { allycode: PLAYER_AC, reason: "Missed TW attacks" });
             await new Strike().run(ctx);
 
@@ -155,10 +157,23 @@ describe("Strike command", () => {
             await guildConfigDB.put(
                 { guildId: GUILD_ID },
                 {
-                    strikes: [{
-                        allyCode: PLAYER_AC, playerName: "TestPlayer", guildId: "g1", guildName: "G1",
-                        strikes: [{ id: "exp-id", reason: "Old", issuedBy: "u1", issuedAt: Date.now() - 200000, expiresAt: Date.now() - 1000 }],
-                    }],
+                    strikes: [
+                        {
+                            allyCode: PLAYER_AC,
+                            playerName: "TestPlayer",
+                            guildId: "g1",
+                            guildName: "G1",
+                            strikes: [
+                                {
+                                    id: "exp-id",
+                                    reason: "Old",
+                                    issuedBy: "u1",
+                                    issuedAt: Date.now() - 200000,
+                                    expiresAt: Date.now() - 1000,
+                                },
+                            ],
+                        },
+                    ],
                 } as never,
                 false,
             );
@@ -238,10 +253,23 @@ describe("Strike command", () => {
             await guildConfigDB.put(
                 { guildId: GUILD_ID },
                 {
-                    strikes: [{
-                        allyCode: PLAYER_AC, playerName: "TestPlayer", guildId: "g1", guildName: "G1",
-                        strikes: [{ id: "exp1", reason: "Old offense", issuedBy: "u1", issuedAt: Date.now() - 200000, expiresAt: Date.now() - 1000 }],
-                    }],
+                    strikes: [
+                        {
+                            allyCode: PLAYER_AC,
+                            playerName: "TestPlayer",
+                            guildId: "g1",
+                            guildName: "G1",
+                            strikes: [
+                                {
+                                    id: "exp1",
+                                    reason: "Old offense",
+                                    issuedBy: "u1",
+                                    issuedAt: Date.now() - 200000,
+                                    expiresAt: Date.now() - 1000,
+                                },
+                            ],
+                        },
+                    ],
                 } as never,
                 false,
             );
@@ -249,7 +277,7 @@ describe("Strike command", () => {
             const { interaction, ctx } = makeCtx("view", { allycode: PLAYER_AC });
             await new Strike().run(ctx);
 
-            const embed = (getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0]);
+            const embed = getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0];
             const activeField = embed?.fields?.find((f: any) => f.name.toLowerCase().includes("active"));
             assert.ok(activeField?.value?.toLowerCase().includes("no active"), "Expected 'no active strikes' text");
         });
@@ -258,13 +286,24 @@ describe("Strike command", () => {
             await guildConfigDB.put(
                 { guildId: GUILD_ID },
                 {
-                    strikes: [{
-                        allyCode: PLAYER_AC, playerName: "TestPlayer", guildId: "g1", guildName: "G1",
-                        strikes: [
-                            { id: "a1", reason: "Active", issuedBy: "u1", issuedAt: Date.now() },
-                            { id: "e1", reason: "Expired", issuedBy: "u1", issuedAt: Date.now() - 200000, expiresAt: Date.now() - 1000 },
-                        ],
-                    }],
+                    strikes: [
+                        {
+                            allyCode: PLAYER_AC,
+                            playerName: "TestPlayer",
+                            guildId: "g1",
+                            guildName: "G1",
+                            strikes: [
+                                { id: "a1", reason: "Active", issuedBy: "u1", issuedAt: Date.now() },
+                                {
+                                    id: "e1",
+                                    reason: "Expired",
+                                    issuedBy: "u1",
+                                    issuedAt: Date.now() - 200000,
+                                    expiresAt: Date.now() - 1000,
+                                },
+                            ],
+                        },
+                    ],
                 } as never,
                 false,
             );
@@ -272,7 +311,7 @@ describe("Strike command", () => {
             const { interaction, ctx } = makeCtx("view", { allycode: PLAYER_AC });
             await new Strike().run(ctx);
 
-            const embed = (getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0]);
+            const embed = getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0];
             assert.ok(
                 embed?.fields?.some((f: any) => f.name.toLowerCase().includes("history")),
                 "Expected history field when expired strikes exist",
@@ -286,7 +325,7 @@ describe("Strike command", () => {
             const { interaction, ctx } = makeCtx("view", { allycode: PLAYER_AC });
             await new Strike().run(ctx);
 
-            const embed = (getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0]);
+            const embed = getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0];
             assert.ok(
                 !embed?.fields?.some((f: any) => f.name.toLowerCase().includes("history")),
                 "Expected no history field when no expired strikes",
@@ -379,13 +418,24 @@ describe("Strike command", () => {
             await guildConfigDB.put(
                 { guildId: GUILD_ID },
                 {
-                    strikes: [{
-                        allyCode: PLAYER_AC, playerName: "TestPlayer", guildId: "g1", guildName: "G1",
-                        strikes: [
-                            { id: "active-id", reason: "Recent offense", issuedBy: "u1", issuedAt: Date.now() },
-                            { id: "exp-id", reason: "Old offense", issuedBy: "u1", issuedAt: Date.now() - 200000, expiresAt: Date.now() - 1000 },
-                        ],
-                    }],
+                    strikes: [
+                        {
+                            allyCode: PLAYER_AC,
+                            playerName: "TestPlayer",
+                            guildId: "g1",
+                            guildName: "G1",
+                            strikes: [
+                                { id: "active-id", reason: "Recent offense", issuedBy: "u1", issuedAt: Date.now() },
+                                {
+                                    id: "exp-id",
+                                    reason: "Old offense",
+                                    issuedBy: "u1",
+                                    issuedAt: Date.now() - 200000,
+                                    expiresAt: Date.now() - 1000,
+                                },
+                            ],
+                        },
+                    ],
                 } as never,
                 false,
             );
@@ -421,7 +471,7 @@ describe("Strike command", () => {
             const { interaction, ctx } = makeCtx("list", {});
             await new Strike().run(ctx);
 
-            const embed = (getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0]);
+            const embed = getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0];
             assert.ok(embed?.description?.includes("Player1"), "Expected Player1 in list");
             assert.ok(embed?.description?.includes("Player2"), "Expected Player2 in list");
         });
@@ -430,10 +480,17 @@ describe("Strike command", () => {
             await guildConfigDB.put(
                 { guildId: GUILD_ID },
                 {
-                    strikes: [{
-                        allyCode: PLAYER_AC, playerName: "ExpiredPlayer", guildId: "g1", guildName: "G1",
-                        strikes: [{ id: "e1", reason: "Old", issuedBy: "u1", issuedAt: Date.now() - 200000, expiresAt: Date.now() - 1000 }],
-                    }],
+                    strikes: [
+                        {
+                            allyCode: PLAYER_AC,
+                            playerName: "ExpiredPlayer",
+                            guildId: "g1",
+                            guildName: "G1",
+                            strikes: [
+                                { id: "e1", reason: "Old", issuedBy: "u1", issuedAt: Date.now() - 200000, expiresAt: Date.now() - 1000 },
+                            ],
+                        },
+                    ],
                 } as never,
                 false,
             );
@@ -441,7 +498,7 @@ describe("Strike command", () => {
             const { interaction, ctx } = makeCtx("list", {});
             await new Strike().run(ctx);
 
-            const embed = (getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0]);
+            const embed = getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0];
             assert.ok(!embed?.description?.includes("ExpiredPlayer"), "Expired-only players should not appear in list");
         });
 
@@ -469,7 +526,10 @@ describe("Strike command", () => {
             await new Strike().run(ctx);
 
             const desc = (getLastReply(interaction)?.embeds?.[0]?.data || getLastReply(interaction)?.embeds?.[0])?.description ?? "";
-            assert.ok(desc.indexOf("TwoStrikes") < desc.indexOf("OneStrike"), "Expected TwoStrikes before OneStrike when sorted by strikes");
+            assert.ok(
+                desc.indexOf("TwoStrikes") < desc.indexOf("OneStrike"),
+                "Expected TwoStrikes before OneStrike when sorted by strikes",
+            );
         });
     });
 });

@@ -33,9 +33,7 @@ export interface FakeComlink {
  * Starts a scriptable stand-in for comlink on an ephemeral port so dispatcher and service tests
  * can drive real HTTP without touching the live API.
  */
-export async function startFakeComlink(
-    handler: (request: { uri: string; count: number }) => FakeComlinkResponse,
-): Promise<FakeComlink> {
+export async function startFakeComlink(handler: (request: { uri: string; count: number }) => FakeComlinkResponse): Promise<FakeComlink> {
     let count = 0;
     let headers: Record<string, string | string[] | undefined> = {};
     let body = "";

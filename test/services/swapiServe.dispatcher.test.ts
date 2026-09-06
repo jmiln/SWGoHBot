@@ -252,10 +252,7 @@ describe("swapiServe.Dispatcher health adaptation", () => {
         const startingLimit = dispatcher.status().backends[0].limit;
         // Deadlines inside the probe interval, so the tail of the burst is shed once the breaker
         // opens rather than waiting the outage out. This test is about the limit, not the queue.
-        await settle(
-            clock,
-            Promise.all(Array.from({ length: 8 }, () => dispatcher.submit(requestAt(clock, PRIORITY.BULK, 5_000)))),
-        );
+        await settle(clock, Promise.all(Array.from({ length: 8 }, () => dispatcher.submit(requestAt(clock, PRIORITY.BULK, 5_000)))));
 
         assert.ok(dispatcher.status().backends[0].limit < startingLimit, "limit should shrink under throttling");
     });

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
-import {env} from "../../config/config.ts";
+import type { MongoClient } from "mongodb";
+import { env } from "../../config/config.ts";
 import cache from "../../modules/cache.ts";
 import { MAX_ALIAS_LENGTH } from "../../schemas/guildConfigs.schema.ts";
 import Aliases from "../../slash/aliases.ts";
@@ -35,20 +35,21 @@ describe("Aliases Command Functionality", () => {
             // Scope to this file's mock guild - test files run in parallel against the
             // shared test DB, so a collection-wide wipe races with other suites' docs
             await mongoClient.db(testDbName).collection("guildConfigs").deleteMany({ guildId: ALIASES_GUILD_ID });
-        } catch (e) {
+        } catch (_e) {
             // Ignore cleanup errors
         }
         await closeMongoClient();
     });
 
     describe("add subcommand", () => {
-        it("should successfully add an alias for a valid character", async () => {            const command = new Aliases();
+        it("should successfully add an alias for a valid character", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
                 optionsData: {
                     _subcommand: "add",
-                    unit: "TRIPLEZERO",  // Using actual character from data file
+                    unit: "TRIPLEZERO", // Using actual character from data file
                     alias: "000",
                 },
             });
@@ -56,11 +57,7 @@ describe("Aliases Command Functionality", () => {
             await command.run(createCommandContext({ interaction }));
 
             // Verify the alias was saved to MongoDB
-            const savedData = await cache.get(
-                testDbName,
-                "guildConfigs",
-                { guildId: interaction.guild?.id }
-            );
+            const savedData = await cache.get(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
 
             assert.strictEqual(savedData.length, 1, "Expected one guild config to be saved");
             assert.ok(savedData[0].aliases, "Expected aliases array to exist");
@@ -72,16 +69,14 @@ describe("Aliases Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description = getReplyDescription(replies[0]);
-            assert.ok(
-                description?.includes("COMMAND_ALIASES_ADDED"),
-                "Expected success message"
-            );
+            assert.ok(description?.includes("COMMAND_ALIASES_ADDED"), "Expected success message");
 
             // Clean up
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should successfully add an alias for a valid ship", async () => {            const command = new Aliases();
+        it("should successfully add an alias for a valid ship", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -95,11 +90,7 @@ describe("Aliases Command Functionality", () => {
             await command.run(createCommandContext({ interaction }));
 
             // Verify the alias was saved to MongoDB
-            const savedData = await cache.get(
-                testDbName,
-                "guildConfigs",
-                { guildId: interaction.guild?.id }
-            );
+            const savedData = await cache.get(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
 
             assert.strictEqual(savedData[0].aliases.length, 1, "Expected one alias");
             assert.strictEqual(savedData[0].aliases[0].alias, "HT");
@@ -110,7 +101,8 @@ describe("Aliases Command Functionality", () => {
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should return an error when unit does not exist", async () => {            const command = new Aliases();
+        it("should return an error when unit does not exist", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -129,10 +121,7 @@ describe("Aliases Command Functionality", () => {
             assert.ok(replies[0].embeds, "Expected embeds in reply");
             assert.ok(replies[0].embeds[0], "Expected at least one embed");
             const description = replies[0].embeds[0].data?.description || replies[0].embeds[0].description;
-            assert.ok(
-                description?.includes("COMMAND_ALIASES_UNIT_NOT_FOUND"),
-                "Expected error message about unit not found"
-            );
+            assert.ok(description?.includes("COMMAND_ALIASES_UNIT_NOT_FOUND"), "Expected error message about unit not found");
         });
 
         it("should reject an alias longer than the cap, and not store it", async () => {
@@ -159,10 +148,7 @@ describe("Aliases Command Functionality", () => {
 
             const savedData = await cache.get(testDbName, "guildConfigs", { guildId: ALIASES_GUILD_ID }, { aliases: 1 });
             const stored = savedData?.[0]?.aliases || [];
-            assert.ok(
-                !stored.some((al: { alias: string }) => al.alias === tooLong),
-                "An over-length alias must not reach the database",
-            );
+            assert.ok(!stored.some((al: { alias: string }) => al.alias === tooLong), "An over-length alias must not reach the database");
         });
 
         it("should accept an alias exactly at the cap", async () => {
@@ -188,7 +174,8 @@ describe("Aliases Command Functionality", () => {
             );
         });
 
-        it("should return an error when alias is already in use", async () => {            const command = new Aliases();
+        it("should return an error when alias is already in use", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -205,11 +192,9 @@ describe("Aliases Command Functionality", () => {
                 "guildConfigs",
                 { guildId: interaction.guild?.id },
                 {
-                    aliases: [
-                        { alias: "DV", defId: "DARTHVADER", name: "Darth Vader" },
-                    ],
+                    aliases: [{ alias: "DV", defId: "DARTHVADER", name: "Darth Vader" }],
                 } as never,
-                false
+                false,
             );
 
             await command.run(createCommandContext({ interaction }));
@@ -217,10 +202,7 @@ describe("Aliases Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description1 = getReplyDescription(replies[0]);
-            assert.ok(
-                description1?.includes("COMMAND_ALIASES_IN_USE"),
-                "Expected error message about duplicate alias"
-            );
+            assert.ok(description1?.includes("COMMAND_ALIASES_IN_USE"), "Expected error message about duplicate alias");
 
             // Clean up
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
@@ -228,7 +210,8 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("remove subcommand", () => {
-        it("should successfully remove an existing alias", async () => {            const command = new Aliases();
+        it("should successfully remove an existing alias", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -249,17 +232,13 @@ describe("Aliases Command Functionality", () => {
                         { alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" },
                     ],
                 } as never,
-                false
+                false,
             );
 
             await command.run(createCommandContext({ interaction }));
 
             // Verify the alias was removed
-            const savedData = await cache.get(
-                testDbName,
-                "guildConfigs",
-                { guildId: interaction.guild?.id }
-            );
+            const savedData = await cache.get(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
 
             assert.strictEqual(savedData[0].aliases.length, 1, "Expected one alias remaining");
             assert.strictEqual(savedData[0].aliases[0].alias, "CLS");
@@ -269,16 +248,14 @@ describe("Aliases Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description2 = getReplyDescription(replies[0]);
-            assert.ok(
-                description2?.includes("COMMAND_ALIASES_REMOVED"),
-                "Expected success message"
-            );
+            assert.ok(description2?.includes("COMMAND_ALIASES_REMOVED"), "Expected success message");
 
             // Clean up
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should return an error when trying to remove non-existent alias", async () => {            const command = new Aliases();
+        it("should return an error when trying to remove non-existent alias", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -294,11 +271,9 @@ describe("Aliases Command Functionality", () => {
                 "guildConfigs",
                 { guildId: interaction.guild?.id },
                 {
-                    aliases: [
-                        { alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" },
-                    ],
+                    aliases: [{ alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" }],
                 } as never,
-                false
+                false,
             );
 
             await command.run(createCommandContext({ interaction }));
@@ -306,16 +281,14 @@ describe("Aliases Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description3 = getReplyDescription(replies[0]);
-            assert.ok(
-                description3?.includes("COMMAND_ALIASES_NOT_FOUND"),
-                "Expected error message about alias not existing"
-            );
+            assert.ok(description3?.includes("COMMAND_ALIASES_NOT_FOUND"), "Expected error message about alias not existing");
 
             // Clean up
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should remove alias and sort remaining aliases alphabetically", async () => {            const command = new Aliases();
+        it("should remove alias and sort remaining aliases alphabetically", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -337,17 +310,13 @@ describe("Aliases Command Functionality", () => {
                         { alias: "MMM", defId: "UNIT2", name: "Unit 2" },
                     ],
                 } as never,
-                false
+                false,
             );
 
             await command.run(createCommandContext({ interaction }));
 
             // Verify aliases are sorted after removal
-            const savedData = await cache.get(
-                testDbName,
-                "guildConfigs",
-                { guildId: interaction.guild?.id }
-            );
+            const savedData = await cache.get(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
 
             assert.strictEqual(savedData[0].aliases.length, 2, "Expected two aliases remaining");
             assert.strictEqual(savedData[0].aliases[0].alias, "AAA", "Expected AAA to be first");
@@ -359,7 +328,8 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("view subcommand", () => {
-        it("should display all aliases when they exist", async () => {            const command = new Aliases();
+        it("should display all aliases when they exist", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -379,7 +349,7 @@ describe("Aliases Command Functionality", () => {
                         { alias: "CLS", defId: "COMMANDERLUKESKYWALKER", name: "Commander Luke Skywalker" },
                     ],
                 } as never,
-                false
+                false,
             );
 
             await command.run(createCommandContext({ interaction }));
@@ -387,20 +357,15 @@ describe("Aliases Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             assert.ok(replies[0].content, "Expected content in reply");
-            assert.ok(
-                replies[0].content.includes("DV - Darth Vader"),
-                "Expected DV alias in view"
-            );
-            assert.ok(
-                replies[0].content.includes("CLS - Commander Luke Skywalker"),
-                "Expected CLS alias in view"
-            );
+            assert.ok(replies[0].content.includes("DV - Darth Vader"), "Expected DV alias in view");
+            assert.ok(replies[0].content.includes("CLS - Commander Luke Skywalker"), "Expected CLS alias in view");
 
             // Clean up
             await cache.remove(testDbName, "guildConfigs", { guildId: interaction.guild?.id });
         });
 
-        it("should handle viewing when no aliases exist", async () => {            const command = new Aliases();
+        it("should handle viewing when no aliases exist", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: { id: ALIASES_GUILD_ID, name: "Test Guild" } as any,
@@ -419,7 +384,8 @@ describe("Aliases Command Functionality", () => {
     });
 
     describe("guild-only behavior", () => {
-        it("should return error when used outside of a guild", async () => {            const command = new Aliases();
+        it("should return error when used outside of a guild", async () => {
+            const command = new Aliases();
 
             const interaction = createMockInteraction({
                 guild: null,
@@ -436,10 +402,7 @@ describe("Aliases Command Functionality", () => {
             const replies = (interaction as any)._getReplies();
             assert.strictEqual(replies.length, 1, "Expected one reply");
             const description4 = getReplyDescription(replies[0]);
-            assert.ok(
-                description4?.includes("BASE_COMMAND_UNAVAILABLE"),
-                "Expected error about guild-only command"
-            );
+            assert.ok(description4?.includes("BASE_COMMAND_UNAVAILABLE"), "Expected error about guild-only command");
         });
     });
 });

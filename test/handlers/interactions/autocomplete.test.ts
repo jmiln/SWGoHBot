@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { characterNameList, journeyNames, localeTagFor, shipNameList } from "../../../data/constants/units.ts";
-import { createRealLanguage } from "../../mocks/mockInteraction.ts";
 import {
     buildUnitList,
     filterAutocomplete,
@@ -10,6 +9,7 @@ import {
     type UnitAutocompleteItem,
 } from "../../../handlers/interactions/autocomplete.ts";
 import type { GuildAlias } from "../../../types/types.ts";
+import { createRealLanguage } from "../../mocks/mockInteraction.ts";
 
 const items: UnitAutocompleteItem[] = [
     { name: "Jedi Knight Luke", defId: "JEDIKNIGHTLUKE", aliases: ["jkl"] },
@@ -43,7 +43,9 @@ describe("filterAutocomplete", () => {
     });
 
     it("uses the alias field for prefix matching on alias items", () => {
-        const aliasItems: UnitAutocompleteItem[] = [{ name: "Jedi Knight Luke", defId: "JEDIKNIGHTLUKE", aliases: [], isAlias: true, alias: "jkl" }];
+        const aliasItems: UnitAutocompleteItem[] = [
+            { name: "Jedi Knight Luke", defId: "JEDIKNIGHTLUKE", aliases: [], isAlias: true, alias: "jkl" },
+        ];
         const res = filterAutocomplete(aliasItems, "jk");
         assert.deepStrictEqual(
             res.map((u) => u.defId),

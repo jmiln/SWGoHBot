@@ -1,8 +1,8 @@
 import assert from "node:assert";
 import { after, afterEach, before, beforeEach, describe, it } from "node:test";
 import { env } from "../../config/config.ts";
-import cache from "../../modules/cache.ts";
 import arenaPlayerRegistry from "../../modules/arenaPlayerRegistry.ts";
+import cache from "../../modules/cache.ts";
 import swgohAPI from "../../modules/swapi.ts";
 import ArenaWatch, { fillAWSkeleton, processAWChanges } from "../../slash/arenawatch.ts";
 import type { UserConfig } from "../../types/types.ts";
@@ -158,7 +158,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "channel", channelId: "123456789", arena: "char" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.arena.char.channel, "123456789");
@@ -172,7 +171,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "channel", channelId: "987654321", arena: "both" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.arena.char.channel, "987654321");
@@ -186,7 +184,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "channel", channelId: null, arena: "char" } as any,
                     aw,
-
                 });
 
                 assert.ok(result.error);
@@ -201,7 +198,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "report", arena: "climb" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.report, "climb");
@@ -214,7 +210,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "report", arena: "drop" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.report, "drop");
@@ -227,7 +222,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "report", arena: "both" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.report, "both");
@@ -328,7 +322,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "showvs", enabled: true } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.showvs, true);
@@ -342,7 +335,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "showvs", enabled: false } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.showvs, false);
@@ -356,7 +348,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "showvs", enabled: true } as any,
                     aw,
-
                 });
 
                 assert.ok(result.outLog.includes("already"));
@@ -370,7 +361,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "use_marks_in_log", enabled: true } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.useMarksInLog, true);
@@ -384,7 +374,6 @@ describe("ArenaWatch", () => {
                     target: "arena_log",
                     interactionOptions: { subCommand: "use_marks_in_log", enabled: false } as any,
                     aw,
-
                 });
 
                 assert.ok(result.outLog);
@@ -439,7 +428,6 @@ describe("ArenaWatch", () => {
                     target: "payout",
                     interactionOptions: { subCommand: "channel", channelId: "555555555", arena: "fleet" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.payout.fleet.channel, "555555555");
@@ -453,7 +441,6 @@ describe("ArenaWatch", () => {
                     target: "payout",
                     interactionOptions: { subCommand: "channel", channelId: null, arena: "char" } as any,
                     aw,
-
                 });
 
                 assert.ok(result.error);
@@ -477,7 +464,6 @@ describe("ArenaWatch", () => {
                     target: "allycode",
                     interactionOptions: { subCommand: "remove", allyCodes: "123456789" } as any,
                     aw,
-
                 });
 
                 assert.strictEqual(awRes.allyCodes.length, 0);
@@ -490,7 +476,6 @@ describe("ArenaWatch", () => {
                     target: "allycode",
                     interactionOptions: { subCommand: "remove", allyCodes: "999999999" } as any,
                     aw,
-
                 });
 
                 assert.ok(result.error);

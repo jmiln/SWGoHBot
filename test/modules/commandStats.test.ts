@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import { getCommandDetail, STATS_WINDOW_MS } from "../../modules/commandStats.ts";
 import database from "../../modules/database.ts";
@@ -23,10 +23,10 @@ describe("commandStats module", () => {
         const now = Date.now();
         await col().deleteMany({ commandName: { $in: CS_CMD_NAMES } });
         await col().insertMany([
-            { commandName: "mods", subcommand: null, count: 10, success: true,  executionTime: 200, timestamp: now },
-            { commandName: "mods", subcommand: null, count: 5,  success: false, executionTime: 400, timestamp: now },
-            { commandName: "mods", subcommand: null, count: 3,  success: true,  executionTime: 100, timestamp: now },
-            { commandName: "mymods", subcommand: "best",      count: 8, success: true, executionTime: 150, timestamp: now },
+            { commandName: "mods", subcommand: null, count: 10, success: true, executionTime: 200, timestamp: now },
+            { commandName: "mods", subcommand: null, count: 5, success: false, executionTime: 400, timestamp: now },
+            { commandName: "mods", subcommand: null, count: 3, success: true, executionTime: 100, timestamp: now },
+            { commandName: "mymods", subcommand: "best", count: 8, success: true, executionTime: 150, timestamp: now },
             { commandName: "mymods", subcommand: "character", count: 4, success: true, executionTime: 120, timestamp: now },
         ]);
 
@@ -48,9 +48,7 @@ describe("commandStats module", () => {
                 count: 1,
                 success: true,
                 timestamp: now,
-                options: [
-                    { name: "allycode", type: 3, value: "987654321" },
-                ],
+                options: [{ name: "allycode", type: 3, value: "987654321" }],
             },
             {
                 commandName: "mycharacter",
@@ -63,7 +61,7 @@ describe("commandStats module", () => {
             {
                 commandName: "mycharacter",
                 subcommand: "character",
-                count: 3,  // represents 3 executions
+                count: 3, // represents 3 executions
                 success: true,
                 timestamp: now,
                 options: [{ name: "allycode", type: 3, value: "111111111" }],
@@ -95,8 +93,8 @@ describe("commandStats module", () => {
             const now = Date.now();
             const result = await getCommandDetail("mymods", now - STATS_WINDOW_MS, now);
             assert.strictEqual(result.totalCount, 12); // 8 + 4
-            assert.strictEqual(result.subcommandCounts["best"], 8);
-            assert.strictEqual(result.subcommandCounts["character"], 4);
+            assert.strictEqual(result.subcommandCounts.best, 8);
+            assert.strictEqual(result.subcommandCounts.character, 4);
         });
 
         it("returns null avgExecutionTime when no timing data", async () => {
@@ -120,8 +118,8 @@ describe("commandStats module", () => {
         it("returns argument usage counts collapsed across all subcommands", async () => {
             const now = Date.now();
             const result = await getCommandDetail("mycharacter", now - STATS_WINDOW_MS, now);
-            assert.strictEqual(result.argumentUsage["allycode"], 5);
-            assert.strictEqual(result.argumentUsage["compare"], 1);
+            assert.strictEqual(result.argumentUsage.allycode, 5);
+            assert.strictEqual(result.argumentUsage.compare, 1);
             assert.strictEqual(Object.keys(result.argumentUsage).length, 2);
         });
 

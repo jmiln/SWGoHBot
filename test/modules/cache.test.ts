@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import { Cache } from "../../modules/cache.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
@@ -22,7 +22,7 @@ describe("Cache Module", () => {
         // Clean up test database
         try {
             await client.db(testDbName).dropDatabase();
-        } catch (e) {
+        } catch (_e) {
             // Ignore errors during cleanup
         }
         await closeMongoClient();
@@ -106,10 +106,7 @@ describe("Cache Module", () => {
         });
 
         it("throws error for empty array", async () => {
-            await assert.rejects(
-                async () => await cache.putMany(testDbName, testCollection, []),
-                /Object array is empty or missing/
-            );
+            await assert.rejects(async () => await cache.putMany(testDbName, testCollection, []), /Object array is empty or missing/);
         });
     });
 
@@ -248,10 +245,7 @@ describe("Cache Module", () => {
         });
 
         it("throws error when database name is undefined", async () => {
-            await assert.rejects(
-                async () => await cache.put(undefined as any, testCollection, {}, {}),
-                /Database name must be provided/
-            );
+            await assert.rejects(async () => await cache.put(undefined as any, testCollection, {}, {}), /Database name must be provided/);
         });
     });
 });

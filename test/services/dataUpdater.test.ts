@@ -81,7 +81,7 @@ describe("processModData", () => {
     it("maps mod definitions to pips/set/slot by id", () => {
         const input = [{ id: "mod1", rarity: 5, setId: "1", slot: 2 }];
         const result = processModData(input as any);
-        assert.deepStrictEqual(result["mod1"], { pips: 5, set: "1", slot: 2 });
+        assert.deepStrictEqual(result.mod1, { pips: 5, set: "1", slot: 2 });
     });
 
     it("handles multiple mods", () => {
@@ -91,7 +91,7 @@ describe("processModData", () => {
         ];
         const result = processModData(input as any);
         assert.strictEqual(Object.keys(result).length, 2);
-        assert.deepStrictEqual(result["modB"], { pips: 6, set: "3", slot: 4 });
+        assert.deepStrictEqual(result.modB, { pips: 6, set: "3", slot: 4 });
     });
 
     it("returns empty object for empty input", () => {
@@ -144,7 +144,16 @@ describe("processMaterials", () => {
 
 describe("processRecipes", () => {
     it("filters out GRIND ingredients", () => {
-        const input = [{ id: "r1", descKey: "Recipe1", ingredients: [{ id: "GRIND", count: 1 }, { id: "unitshard_VADER", count: 5 }] }];
+        const input = [
+            {
+                id: "r1",
+                descKey: "Recipe1",
+                ingredients: [
+                    { id: "GRIND", count: 1 },
+                    { id: "unitshard_VADER", count: 5 },
+                ],
+            },
+        ];
         const { mappedRecipeList } = processRecipes(input as any);
         assert.strictEqual(mappedRecipeList[0].ingredients.length, 1);
         assert.strictEqual(mappedRecipeList[0].ingredients[0].id, "unitshard_VADER");
@@ -288,9 +297,9 @@ describe("processAbilities", () => {
         const abilities = [makeAbility("ab1")] as any;
         const skills = [makeSkill("ab1", ["RECIPE_T1", "RECIPE_T2_ZETA"])] as any;
         const { skillMap } = processAbilities(abilities, skills);
-        assert.ok(skillMap["skill_ab1"]);
-        assert.strictEqual(skillMap["skill_ab1"].isZeta, true);
-        assert.strictEqual(skillMap["skill_ab1"].tiers, 2);
+        assert.ok(skillMap.skill_ab1);
+        assert.strictEqual(skillMap.skill_ab1.isZeta, true);
+        assert.strictEqual(skillMap.skill_ab1.tiers, 2);
     });
 
     it("uses last ability tier as descKey", () => {
@@ -312,8 +321,14 @@ describe("processAbilities", () => {
             const abilities = [makeAbility("ab1")] as any;
             const skills = [makeSkill("ab1", ["SKILLRECIPE_PASSIVE_T1", "SKILLRECIPE_PASSIVE_T2"])] as any;
             const recipes = [
-                makeRecipe("SKILLRECIPE_PASSIVE_T1", [["GRIND", 100], ["ability_mat_A", 2]]),
-                makeRecipe("SKILLRECIPE_PASSIVE_T2", [["GRIND", 200], ["ability_mat_A", 3]]),
+                makeRecipe("SKILLRECIPE_PASSIVE_T1", [
+                    ["GRIND", 100],
+                    ["ability_mat_A", 2],
+                ]),
+                makeRecipe("SKILLRECIPE_PASSIVE_T2", [
+                    ["GRIND", 200],
+                    ["ability_mat_A", 3],
+                ]),
             ] as any;
             const { abilitiesOut } = processAbilities(abilities, skills, recipes);
             assert.deepStrictEqual(abilitiesOut[0].cost, { Credits: 300, AbilityMatMk1: 5 });
@@ -408,9 +423,9 @@ describe("processModResults", () => {
         };
         const result = processModResults(input);
         // Most common primary is the one with count 100
-        assert.ok(result["VADER"].mods["square"], "Expected square slot to be set");
-        assert.strictEqual(result["VADER"].mods["square"], "Speed"); // stat 5 = Speed
-        assert.strictEqual(result["VADER"].mods["arrow"], "Potency"); // stat 17 = Potency
+        assert.ok(result.VADER.mods.square, "Expected square slot to be set");
+        assert.strictEqual(result.VADER.mods.square, "Speed"); // stat 5 = Speed
+        assert.strictEqual(result.VADER.mods.arrow, "Potency"); // stat 17 = Potency
     });
 
     it("maps set string to readable format", () => {
@@ -421,7 +436,7 @@ describe("processModResults", () => {
             },
         };
         const result = processModResults(input);
-        assert.ok(result["VADER"].mods.sets.includes("Health x2"), `Expected 'Health x2', got ${JSON.stringify(result["VADER"].mods.sets)}`);
+        assert.ok(result.VADER.mods.sets.includes("Health x2"), `Expected 'Health x2', got ${JSON.stringify(result.VADER.mods.sets)}`);
     });
 
     it("expands multi-mod sets", () => {
@@ -433,8 +448,8 @@ describe("processModResults", () => {
         };
         const result = processModResults(input);
         // "Crit. Chance x4" should expand to two "Crit. Chance x2"
-        assert.strictEqual(result["VADER"].mods.sets.length, 2);
-        assert.ok(result["VADER"].mods.sets.every((s: string) => s === "Crit. Chance x2"));
+        assert.strictEqual(result.VADER.mods.sets.length, 2);
+        assert.ok(result.VADER.mods.sets.every((s: string) => s === "Crit. Chance x2"));
     });
 
     it("handles multiple units independently", () => {
@@ -443,8 +458,8 @@ describe("processModResults", () => {
             LUKE: { primaries: { "1-5": 5 }, sets: { "2x4": 5 } },
         };
         const result = processModResults(input);
-        assert.ok(result["VADER"]);
-        assert.ok(result["LUKE"]);
+        assert.ok(result.VADER);
+        assert.ok(result.LUKE);
     });
 });
 
@@ -555,7 +570,10 @@ describe("unitsToCharacterDB", () => {
 
     it("extracts crew unit IDs from crewList", () => {
         const unit = makeProcessedUnit({
-            crewList: [{ unitId: "FIVEKNOB", skillReference: [] }, { unitId: "R2D2", skillReference: [] }],
+            crewList: [
+                { unitId: "FIVEKNOB", skillReference: [] },
+                { unitId: "R2D2", skillReference: [] },
+            ],
         });
         const result = unitsToCharacterDB([unit] as any);
         const crew = result[0].updateOne.update.$set.crew as string[];
@@ -577,14 +595,14 @@ describe("unitsForUnitMapFile", () => {
     it("keys output by baseId", () => {
         const units = [{ baseId: "VADER", nameKey: "UNIT_VADER", combatType: 1, crewList: [] }];
         const result = unitsForUnitMapFile(units as any);
-        assert.ok(result["VADER"]);
+        assert.ok(result.VADER);
     });
 
     it("includes nameKey and combatType", () => {
         const units = [{ baseId: "VADER", nameKey: "UNIT_VADER", combatType: 1, crewList: [] }];
         const result = unitsForUnitMapFile(units as any);
-        assert.strictEqual(result["VADER"].nameKey, "UNIT_VADER");
-        assert.strictEqual(result["VADER"].combatType, 1);
+        assert.strictEqual(result.VADER.nameKey, "UNIT_VADER");
+        assert.strictEqual(result.VADER.combatType, 1);
     });
 
     it("maps crew from crewList", () => {
@@ -597,14 +615,14 @@ describe("unitsForUnitMapFile", () => {
             },
         ];
         const result = unitsForUnitMapFile(units as any);
-        assert.strictEqual(result["HOUNDSTOOTH"].crew.length, 1);
-        assert.strictEqual(result["HOUNDSTOOTH"].crew[0].unitId, "BOSSK");
+        assert.strictEqual(result.HOUNDSTOOTH.crew.length, 1);
+        assert.strictEqual(result.HOUNDSTOOTH.crew[0].unitId, "BOSSK");
     });
 
     it("returns empty crew array when crewList is empty", () => {
         const units = [{ baseId: "VADER", nameKey: "UNIT_VADER", combatType: 1, crewList: [] }];
         const result = unitsForUnitMapFile(units as any);
-        assert.deepStrictEqual(result["VADER"].crew, []);
+        assert.deepStrictEqual(result.VADER.crew, []);
     });
 });
 

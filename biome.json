@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
     "files": {
-        "includes": ["**", "!**/node_modules", "!scripts", "!languages", "!data", "!wipCommands", "!test"]
+        "includes": ["**", "!**/node_modules", "!scripts", "!languages", "!data", "!wipCommands"]
     },
     "assist": {
         "actions": {
@@ -48,5 +48,17 @@
                 "noExplicitAny": "error"
             }
         }
-    }
+    },
+    "overrides": [
+        {
+            "includes": ["test/**"],
+            "linter": {
+                "rules": {
+                    "suspicious": {
+                        "noExplicitAny": "off"
+                    }
+                }
+            }
+        }
+    ]
 }

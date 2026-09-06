@@ -144,20 +144,14 @@ describe("UserReg Module", () => {
         });
 
         it("throws when the user is not found", async () => {
-            await assert.rejects(
-                async () => await userReg.removeAllyCode("nonexistent-user", 123456789),
-                /Could not find specified user/,
-            );
+            await assert.rejects(async () => await userReg.removeAllyCode("nonexistent-user", 123456789), /Could not find specified user/);
         });
 
         it("throws when the ally code is not linked to the user", async () => {
             const config = makeUserConfig("user-rem-ac-2", 111111111);
             await userReg.updateUser("user-rem-ac-2", config);
 
-            await assert.rejects(
-                async () => await userReg.removeAllyCode("user-rem-ac-2", 999999999),
-                /Specified ally code not linked/,
-            );
+            await assert.rejects(async () => await userReg.removeAllyCode("user-rem-ac-2", 999999999), /Specified ally code not linked/);
         });
 
         it("leaves other ally codes intact when removing one", async () => {

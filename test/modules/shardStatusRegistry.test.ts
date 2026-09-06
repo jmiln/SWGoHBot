@@ -1,12 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import {
-    GRACE_MS,
-    IPC_STALE_MS,
-    type ShardHeartbeat,
-    ShardRegistry,
-    STARTUP_DEADLINE_MS,
-} from "../../modules/shardStatus/registry.ts";
+import { GRACE_MS, IPC_STALE_MS, type ShardHeartbeat, ShardRegistry, STARTUP_DEADLINE_MS } from "../../modules/shardStatus/registry.ts";
 import { FakeClock } from "../helpers/fakeClock.ts";
 
 function heartbeat(shardId: number, overrides: Partial<ShardHeartbeat> = {}): ShardHeartbeat {

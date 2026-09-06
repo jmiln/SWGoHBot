@@ -18,7 +18,10 @@ const LEADER = "TESTLEADER_CI";
 const META_FILE = path.join(mkdtempSync(path.join(tmpdir(), "counterIngest-")), "counterMetadata.json");
 
 const duel = (outcome: number) => ({
-    defenderUnit: [{ definitionId: `${LEADER}:X`, squadUnitType: 2 }, { definitionId: "DEF2:X", squadUnitType: 1 }],
+    defenderUnit: [
+        { definitionId: `${LEADER}:X`, squadUnitType: 2 },
+        { definitionId: "DEF2:X", squadUnitType: 1 },
+    ],
     attackerUnit: [{ definitionId: "ATK_CI:X", squadUnitType: 2 }],
     battleOutcome: outcome,
 });
@@ -85,7 +88,15 @@ describe("counterIngest", () => {
             TEST_DB,
             "counterData",
             { mode: "3v3", battleType: "char", leader: LEADER },
-            { mode: "3v3", battleType: "char", leader: LEADER, instanceId: "STALE_CI_O0", season: 80, overall: { sampleN: 1, counters: [] }, variants: [] },
+            {
+                mode: "3v3",
+                battleType: "char",
+                leader: LEADER,
+                instanceId: "STALE_CI_O0",
+                season: 80,
+                overall: { sampleN: 1, counters: [] },
+                variants: [],
+            },
         );
 
         const res = await runMode("3v3", { ...baseDeps, client: emptyClient });

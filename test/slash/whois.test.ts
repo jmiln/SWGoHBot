@@ -22,7 +22,7 @@ describe("WhoIs", () => {
         } as any);
 
         const interaction = createMockInteraction({
-            optionsData: { name: "TestPlayer" }
+            optionsData: { name: "TestPlayer" },
         });
 
         const command = new WhoIs();
@@ -40,7 +40,7 @@ describe("WhoIs", () => {
     it("should return error when name is too long (>50 chars)", async () => {
         const longName = "a".repeat(51);
         const interaction = createMockInteraction({
-            optionsData: { name: longName }
+            optionsData: { name: longName },
         });
 
         const command = new WhoIs();
@@ -57,7 +57,7 @@ describe("WhoIs", () => {
 
     it("should return message when no players found", async () => {
         const interaction = createMockInteraction({
-            optionsData: { name: "NonexistentPlayer" }
+            optionsData: { name: "NonexistentPlayer" },
         });
 
         const command = new WhoIs();
@@ -80,7 +80,7 @@ describe("WhoIs", () => {
         }
 
         const interaction = createMockInteraction({
-            optionsData: { name: "Player" }
+            optionsData: { name: "Player" },
         });
 
         const command = new WhoIs();
@@ -102,7 +102,7 @@ describe("WhoIs", () => {
         mockSwapi.setPlayerData({ allyCode: 333333333, name: "AlphaGamma", level: 85 } as any);
 
         const interaction = createMockInteraction({
-            optionsData: { name: "Alpha" }
+            optionsData: { name: "Alpha" },
         });
 
         const command = new WhoIs();
@@ -118,12 +118,11 @@ describe("WhoIs", () => {
         assert.ok(content.includes("333333333"), "Expected third player");
     });
 
-
     it("should defer reply before fetching data", async () => {
         mockSwapi.setPlayerData({ allyCode: 123456789, name: "Test", level: 85 } as any);
 
         const interaction = createMockInteraction({
-            optionsData: { name: "Test" }
+            optionsData: { name: "Test" },
         });
 
         const command = new WhoIs();

@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
 import { ArenaWatchConfigSchema } from "../../schemas/users.schema.ts";
 import { oldFormatUserFilter, runMigration } from "../../scripts/migrateArenaPlayers.ts";
@@ -18,34 +18,52 @@ describe("migrateArenaPlayers", () => {
     });
 
     after(async () => {
-        await client.db(db).collection("users").deleteMany({ id: { $in: TEST_USER_IDS } });
-        await client.db(db).collection("arenaPlayers").deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
+        await client
+            .db(db)
+            .collection("users")
+            .deleteMany({ id: { $in: TEST_USER_IDS } });
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
         await closeMongoClient();
     });
 
     beforeEach(async () => {
-        await client.db(db).collection("users").deleteMany({ id: { $in: TEST_USER_IDS } });
-        await client.db(db).collection("arenaPlayers").deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
+        await client
+            .db(db)
+            .collection("users")
+            .deleteMany({ id: { $in: TEST_USER_IDS } });
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
     });
 
     describe("oldFormatUserFilter", () => {
         it("matches users with old-format object accounts", async () => {
-            await client.db(db).collection("users").insertOne({
-                id: "mig_user_old",
-                accounts: [{ allyCode: 474747471, name: "OldFmt", primary: true }],
-            });
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_old",
+                    accounts: [{ allyCode: 474747471, name: "OldFmt", primary: true }],
+                });
             const matches = await client.db(db).collection("users").find(oldFormatUserFilter).toArray();
             assert.ok(matches.some((d) => d.id === "mig_user_old"));
         });
 
         it("matches arenaWatch-only users with old-format watch entries and no object accounts", async () => {
-            await client.db(db).collection("users").insertOne({
-                id: "mig_user_awonly",
-                accounts: [],
-                arenaWatch: {
-                    allyCodes: [{ allyCode: 474747472, name: "WatchOnly", lastChar: 12, poOffset: 0, mention: null }],
-                },
-            });
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_awonly",
+                    accounts: [],
+                    arenaWatch: {
+                        allyCodes: [{ allyCode: 474747472, name: "WatchOnly", lastChar: 12, poOffset: 0, mention: null }],
+                    },
+                });
             const matches = await client.db(db).collection("users").find(oldFormatUserFilter).toArray();
             assert.ok(
                 matches.some((d) => d.id === "mig_user_awonly"),
@@ -69,12 +87,15 @@ describe("migrateArenaPlayers", () => {
         });
 
         it("does not match new-format users", async () => {
-            await client.db(db).collection("users").insertOne({
-                id: "mig_user_new",
-                accounts: [474747473],
-                primaryAllyCode: 474747473,
-                arenaWatch: { allyCodes: [{ allyCode: 474747473, mention: null, poOffset: 60 }] },
-            });
+            await client
+                .db(db)
+                .collection("users")
+                .insertOne({
+                    id: "mig_user_new",
+                    accounts: [474747473],
+                    primaryAllyCode: 474747473,
+                    arenaWatch: { allyCodes: [{ allyCode: 474747473, mention: null, poOffset: 60 }] },
+                });
             const matches = await client.db(db).collection("users").find(oldFormatUserFilter).toArray();
             assert.ok(!matches.some((d) => d.id === "mig_user_new"));
         });

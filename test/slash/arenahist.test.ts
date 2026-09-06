@@ -19,7 +19,7 @@ describe("ArenaHist", () => {
 
     // A patron at exactly the 100-cent threshold (the gate is `< 100`)
     function stubPatron(amount_cents = 500): void {
-        patreonFuncs.getPatronUser = async () => ({ amount_cents } as PatronUser);
+        patreonFuncs.getPatronUser = async () => ({ amount_cents }) as PatronUser;
     }
 
     // A registered user owning a single ally code as their primary account
@@ -66,7 +66,7 @@ describe("ArenaHist", () => {
         });
 
         it("shows the Patreon teaser when the pledge is below the 100-cent threshold", async () => {
-            patreonFuncs.getPatronUser = async () => ({ amount_cents: 99 } as PatronUser);
+            patreonFuncs.getPatronUser = async () => ({ amount_cents: 99 }) as PatronUser;
 
             const interaction = createMockInteraction({ optionsData: {} });
             const command = new ArenaHist();

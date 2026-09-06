@@ -1,4 +1,12 @@
-import { Collection, type ChatInputCommandInteraction, type Client, type Guild, type GuildMember, type InteractionReplyOptions, type User } from "discord.js";
+import {
+    type ChatInputCommandInteraction,
+    type Client,
+    Collection,
+    type Guild,
+    type GuildMember,
+    type InteractionReplyOptions,
+    type User,
+} from "discord.js";
 import Language from "../../base/Language.ts";
 import EnUS from "../../languages/en_US.ts";
 import type { SWAPILang } from "../../types/swapi_types.ts";
@@ -33,45 +41,50 @@ interface MockInteractionOptions {
  *   optionsData: { character: "vader", limit: 10 }
  * });
  */
-export function createMockInteraction(
-    overrides: MockInteractionOptions & Record<string, any> = {}
-): ChatInputCommandInteraction {
+export function createMockInteraction(overrides: MockInteractionOptions & Record<string, any> = {}): ChatInputCommandInteraction {
     // State tracking
     let _deferred = false;
     let _replied = false;
     const _replies: any[] = [];
 
     // Options data storage
-    const optionsData = new Map<string, any>(
-        Object.entries(overrides.optionsData || {})
-    );
+    const optionsData = new Map<string, any>(Object.entries(overrides.optionsData || {}));
 
     const interaction: any = {
-        user: overrides.user || {
-            id: "123456789",
-            username: "TestUser",
-            discriminator: "0000",
-            bot: false,
-            avatar: null,
-        } as unknown as User,
-        guild: overrides.guild !== undefined ? overrides.guild : {
-            id: "987654321",
-            name: "Test Guild",
-        } as unknown as Guild,
-        member: overrides.member || {
-            id: "123456789",
-            roles: { cache: new Map() },
-        } as unknown as GuildMember,
-        client: overrides.client || {
-            user: { id: "bot123", username: "BotUser" },
-            shard: null,
-            guilds: {
-                cache: defaultGuildCache,
-            },
-            users: {
-                cache: { size: 50000 },
-            },
-        } as unknown as Client<true>,
+        user:
+            overrides.user ||
+            ({
+                id: "123456789",
+                username: "TestUser",
+                discriminator: "0000",
+                bot: false,
+                avatar: null,
+            } as unknown as User),
+        guild:
+            overrides.guild !== undefined
+                ? overrides.guild
+                : ({
+                      id: "987654321",
+                      name: "Test Guild",
+                  } as unknown as Guild),
+        member:
+            overrides.member ||
+            ({
+                id: "123456789",
+                roles: { cache: new Map() },
+            } as unknown as GuildMember),
+        client:
+            overrides.client ||
+            ({
+                user: { id: "bot123", username: "BotUser" },
+                shard: null,
+                guilds: {
+                    cache: defaultGuildCache,
+                },
+                users: {
+                    cache: { size: 50000 },
+                },
+            } as unknown as Client<true>),
         channelId: overrides.channelId || "123",
         commandName: overrides.commandName || "test",
         createdTimestamp: overrides.createdTimestamp || Date.now(),
@@ -148,7 +161,7 @@ export function createMockInteraction(
             },
             data: optionsData,
         } as any,
-        deferReply: async (options?: any) => {
+        deferReply: async (_options?: any) => {
             _deferred = true;
             return {} as any;
         },
@@ -203,8 +216,8 @@ class MockLanguage extends Language {
         this.language = {};
         this.DAYSOFWEEK = {};
         this.TIMES = {
-            DAY:    { PLURAL: "days",    SING: "day",    SHORT_PLURAL: "ds",   SHORT_SING: "d"   },
-            HOUR:   { PLURAL: "hours",   SING: "hour",   SHORT_PLURAL: "hrs",  SHORT_SING: "hr"  },
+            DAY: { PLURAL: "days", SING: "day", SHORT_PLURAL: "ds", SHORT_SING: "d" },
+            HOUR: { PLURAL: "hours", SING: "hour", SHORT_PLURAL: "hrs", SHORT_SING: "hr" },
             MINUTE: { PLURAL: "minutes", SING: "minute", SHORT_PLURAL: "mins", SHORT_SING: "min" },
             SECOND: { PLURAL: "seconds", SING: "second", SHORT_PLURAL: "secs", SHORT_SING: "sec" },
         };
@@ -235,17 +248,34 @@ class MockLanguage extends Language {
         // Mod stat names (unitStat ID → display name)
         if (key === "BASE_MODS_FROM_GAME") {
             return {
-                1: "Health", 5: "+Speed", 16: "Critical Damage %",
-                17: "Potency %", 18: "Tenacity %", 28: "Protection",
-                41: "+Offense", 42: "Offense %", 48: "Defense",
-                49: "Defense %", 52: "Accuracy %", 53: "Critical Avoidance %",
+                1: "Health",
+                5: "+Speed",
+                16: "Critical Damage %",
+                17: "Potency %",
+                18: "Tenacity %",
+                28: "Protection",
+                41: "+Offense",
+                42: "Offense %",
+                48: "Defense",
+                49: "Defense %",
+                52: "Accuracy %",
+                53: "Critical Avoidance %",
                 55: "Speed",
             };
         }
 
         // Mod set names (set ID → display name)
         if (key === "BASE_MODSETS_FROM_GAME") {
-            return { 1: "Health", 2: "Offense", 3: "Defense", 4: "Speed", 5: "Critical Chance", 6: "Critical Damage", 7: "Potency", 8: "Tenacity" };
+            return {
+                1: "Health",
+                2: "Offense",
+                3: "Defense",
+                4: "Speed",
+                5: "Critical Chance",
+                6: "Critical Damage",
+                7: "Potency",
+                8: "Tenacity",
+            };
         }
 
         // Handle guild-specific keys with parameters

@@ -7,6 +7,7 @@ import { parsePriorityPath, resolveDeadlineMs, startSwapiServe } from "../../ser
 
 // The interval arenaTick runs on, mirrored from events/clientReady.ts where it is a local const.
 const ARENA_TICK_INTERVAL_MS = 60_000;
+
 import { startFakeComlink } from "../helpers/fakeComlink.ts";
 
 /**
@@ -256,7 +257,14 @@ describe("swapiServe end to end", () => {
 
         const response = await fetch(`${service.url}/status`);
         const status = (await response.json()) as {
-            backends: { url: string; limit: number; ratePerSecond: number; state: string; drained: boolean; outcomes: Record<string, number> }[];
+            backends: {
+                url: string;
+                limit: number;
+                ratePerSecond: number;
+                state: string;
+                drained: boolean;
+                outcomes: Record<string, number>;
+            }[];
             queue: { depths: number[]; oldestAgeMs: number[]; meanWaitMs: number[]; maxWaitMs: number[] };
             blocked: Record<string, number>;
             terminal: Record<string, number>;
@@ -474,9 +482,7 @@ describe("swapiServe control API", () => {
         );
 
         warnings.length = 0;
-        started.push(
-            await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, host: "127.0.0.2", controlSecret: "s3cret" }),
-        );
+        started.push(await startSwapiServe({ port: 0, backends: [comlink.url], ...CREDS, host: "127.0.0.2", controlSecret: "s3cret" }));
         assert.deepStrictEqual(warnings, [], "a secret set means no warning");
 
         warnings.length = 0;

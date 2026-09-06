@@ -88,7 +88,6 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
     // number is checked below.
     const liveByBackend = new Map<string, number>();
     const statesSeen = new Map<string, string[]>();
-    let submitted = 0;
 
     let dispatcher: Dispatcher | null = null;
 
@@ -175,7 +174,6 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
     let settledCount = 0;
 
     for (let i = 0; i < requestCount; i++) {
-        submitted = i;
         if (storm && i === storm.from) stormActive = true;
         const priority = Math.floor(random() * PRIORITY_COUNT) as Priority;
         const id = String(i);
@@ -218,8 +216,6 @@ async function runWorkload({ seed, requestCount = REQUEST_COUNT, storm }: Worklo
             recordState();
         }
     }
-
-    submitted = requestCount;
 
     // Drain on settles, not on an empty queue: a request waiting out its backoff is in no queue.
     // Sample every iteration, since half-open lasts only until the probe reports.
@@ -280,7 +276,11 @@ function assertUniversalInvariants(seed: number, run: WorkloadResult, requestCou
     assert.strictEqual(run.concurrentDuplicate, null, `seed ${seed}: request in flight twice at once: ${run.concurrentDuplicate}`);
     assert.strictEqual(run.dispatchedAfterSettle, null, `seed ${seed}: request dispatched after it settled: ${run.dispatchedAfterSettle}`);
     assert.strictEqual(run.negativeAccounting, false, `seed ${seed}: in-flight accounting went negative`);
-    assert.strictEqual(run.dispatchedAfterCancel, null, `seed ${seed}: cancelled request reached the backend: ${run.dispatchedAfterCancel}`);
+    assert.strictEqual(
+        run.dispatchedAfterCancel,
+        null,
+        `seed ${seed}: cancelled request reached the backend: ${run.dispatchedAfterCancel}`,
+    );
     assert.strictEqual(run.accountingMismatch, null, `seed ${seed}: backend slot accounting drifted: ${run.accountingMismatch}`);
 
     assert.strictEqual(

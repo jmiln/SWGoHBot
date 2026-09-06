@@ -100,14 +100,19 @@ describe("Showconf", () => {
     });
 
     it("should render ID-based roles and channels as mentions", async () => {
-        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
-            guildId: TEST_GUILD_ID,
-            settings: {
-                adminRole: [ROLE_ID, "Officers"],
-                announceChan: CHANNEL_ID,
-                enableWelcome: true,
+        await cache.put(
+            testDbName,
+            "guildConfigs",
+            { guildId: TEST_GUILD_ID },
+            {
+                guildId: TEST_GUILD_ID,
+                settings: {
+                    adminRole: [ROLE_ID, "Officers"],
+                    announceChan: CHANNEL_ID,
+                    enableWelcome: true,
+                },
             },
-        });
+        );
 
         const interaction = makeInteraction();
         await new Showconf().run(createCommandContext({ interaction }));
@@ -130,13 +135,18 @@ describe("Showconf", () => {
 
     it("should truncate long messages to 100 chars with an ellipsis", async () => {
         const longMessage = "x".repeat(150);
-        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
-            guildId: TEST_GUILD_ID,
-            settings: {
-                enableWelcome: true,
-                welcomeMessage: longMessage,
+        await cache.put(
+            testDbName,
+            "guildConfigs",
+            { guildId: TEST_GUILD_ID },
+            {
+                guildId: TEST_GUILD_ID,
+                settings: {
+                    enableWelcome: true,
+                    welcomeMessage: longMessage,
+                },
             },
-        });
+        );
 
         const interaction = makeInteraction();
         await new Showconf().run(createCommandContext({ interaction }));
@@ -149,12 +159,17 @@ describe("Showconf", () => {
     });
 
     it("should list cached supporters by display name", async () => {
-        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
-            guildId: TEST_GUILD_ID,
-            patreonSettings: {
-                supporters: [{ userId: SUPPORTER_ID, tier: 5 }],
+        await cache.put(
+            testDbName,
+            "guildConfigs",
+            { guildId: TEST_GUILD_ID },
+            {
+                guildId: TEST_GUILD_ID,
+                patreonSettings: {
+                    supporters: [{ userId: SUPPORTER_ID, tier: 5 }],
+                },
             },
-        });
+        );
 
         const interaction = makeInteraction();
         interaction.guild.members.cache.set(SUPPORTER_ID, { displayName: "SomeUser" });
@@ -169,15 +184,20 @@ describe("Showconf", () => {
 
     it("should fall back to a mention for supporters missing from the member cache", async () => {
         const UNCACHED_ID = "333444555666777888";
-        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
-            guildId: TEST_GUILD_ID,
-            patreonSettings: {
-                supporters: [
-                    { userId: SUPPORTER_ID, tier: 5 },
-                    { userId: UNCACHED_ID, tier: 1 },
-                ],
+        await cache.put(
+            testDbName,
+            "guildConfigs",
+            { guildId: TEST_GUILD_ID },
+            {
+                guildId: TEST_GUILD_ID,
+                patreonSettings: {
+                    supporters: [
+                        { userId: SUPPORTER_ID, tier: 5 },
+                        { userId: UNCACHED_ID, tier: 1 },
+                    ],
+                },
             },
-        });
+        );
 
         const interaction = makeInteraction();
         interaction.guild.members.cache.set(SUPPORTER_ID, { displayName: "SomeUser" });
@@ -196,10 +216,15 @@ describe("Showconf", () => {
             userId: `4440000000000${String(i).padStart(5, "0")}`,
             tier: 1,
         }));
-        await cache.put(testDbName, "guildConfigs", { guildId: TEST_GUILD_ID }, {
-            guildId: TEST_GUILD_ID,
-            patreonSettings: { supporters },
-        });
+        await cache.put(
+            testDbName,
+            "guildConfigs",
+            { guildId: TEST_GUILD_ID },
+            {
+                guildId: TEST_GUILD_ID,
+                patreonSettings: { supporters },
+            },
+        );
 
         const interaction = makeInteraction();
         await new Showconf().run(createCommandContext({ interaction }));

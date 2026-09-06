@@ -33,16 +33,7 @@ describe("swapi.pruneModFields", () => {
     it("keeps only the whitelisted SWAPIMod fields", () => {
         const pruned = pruneModFields(rawMod);
 
-        assert.deepStrictEqual(Object.keys(pruned).sort(), [
-            "id",
-            "level",
-            "pips",
-            "primaryStat",
-            "secondaryStat",
-            "set",
-            "slot",
-            "tier",
-        ]);
+        assert.deepStrictEqual(Object.keys(pruned).sort(), ["id", "level", "pips", "primaryStat", "secondaryStat", "set", "slot", "tier"]);
     });
 
     it("drops the unused raw game-economy fields", () => {

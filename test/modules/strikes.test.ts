@@ -1,15 +1,15 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
 import cache from "../../modules/cache.ts";
+import { guildConfigDB } from "../../modules/guildConfig/db.ts";
 import {
     addStrike,
     clearStrikes,
-    getAllStrikes,
     getActiveStrikes,
+    getAllStrikes,
     getPlayerStrikes,
     revokeStrike,
 } from "../../modules/guildConfig/strikes.ts";
-import { guildConfigDB } from "../../modules/guildConfig/db.ts";
 import type { Strike } from "../../types/guildConfig_types.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 

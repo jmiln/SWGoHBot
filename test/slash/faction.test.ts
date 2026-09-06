@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { beforeEach, describe, it } from "node:test";
-import cache from "../../modules/cache.ts";
 import { factionNames } from "../../data/constants/units.ts";
+import cache from "../../modules/cache.ts";
 import Faction from "../../slash/faction.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 import { assertErrorReply } from "./helpers.ts";
@@ -23,9 +23,9 @@ const mockMongoClient = {
                     project: () => ({
                         toArray: async () => {
                             return mockCacheData;
-                        }
-                    })
-                })
+                        },
+                    }),
+                }),
             }),
             findOne: async () => null,
             updateOne: async () => ({}),
@@ -33,10 +33,10 @@ const mockMongoClient = {
             deleteOne: async () => ({}),
             countDocuments: async () => 0,
             listIndexes: () => ({
-                toArray: async () => []
-            })
-        })
-    })
+                toArray: async () => [],
+            }),
+        }),
+    }),
 } as any;
 
 describe("Faction", () => {
@@ -48,8 +48,9 @@ describe("Faction", () => {
     });
 
     // Validation tests
-    it("should return error when no faction is selected", async () => {        const interaction = createMockInteraction({
-            optionsData: {}
+    it("should return error when no faction is selected", async () => {
+        const interaction = createMockInteraction({
+            optionsData: {},
         });
 
         const command = new Faction();
@@ -60,15 +61,16 @@ describe("Faction", () => {
     });
 
     // Functionality tests - faction selection
-    it("should successfully process faction selection", async () => {        setMockCacheData([
+    it("should successfully process faction selection", async () => {
+        setMockCacheData([
             { baseId: "VADER", nameKey: "Darth Vader" },
-            { baseId: "COUNTDOOKU", nameKey: "Count Dooku" }
+            { baseId: "COUNTDOOKU", nameKey: "Count Dooku" },
         ]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_sith"
-            }
+                faction: "profession_sith",
+            },
         });
 
         const command = new Faction();
@@ -83,7 +85,10 @@ describe("Faction", () => {
 
         const embedData = embed.data || embed;
         assert.ok(embedData.author?.name?.includes("Sith"), "Expected Sith in author name");
-        assert.ok(embedData.description?.includes("Darth Vader") || embedData.description?.includes("Count Dooku"), "Expected character name in description");
+        assert.ok(
+            embedData.description?.includes("Darth Vader") || embedData.description?.includes("Count Dooku"),
+            "Expected character name in description",
+        );
     });
 
     // The category the hand-maintained factionMap never had. Its absence there is what made the
@@ -115,15 +120,16 @@ describe("Faction", () => {
         assert.ok(embedData.author?.name?.includes(localized), "Expected the localized faction name, not the english one");
     });
 
-    it("should successfully process jedi faction selection", async () => {        setMockCacheData([
+    it("should successfully process jedi faction selection", async () => {
+        setMockCacheData([
             { baseId: "COMMANDERLUKESKYWALKER", nameKey: "Commander Luke Skywalker" },
-            { baseId: "GRANDMASTERYODA", nameKey: "Grand Master Yoda" }
+            { baseId: "GRANDMASTERYODA", nameKey: "Grand Master Yoda" },
         ]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_jedi"
-            }
+                faction: "profession_jedi",
+            },
         });
 
         const command = new Faction();
@@ -137,19 +143,23 @@ describe("Faction", () => {
         assert.ok(embed, "Expected embed in reply");
 
         const embedData = embed.data || embed;
-        assert.ok(embedData.description?.includes("Commander Luke Skywalker") || embedData.description?.includes("Grand Master Yoda"), "Expected character in results");
+        assert.ok(
+            embedData.description?.includes("Commander Luke Skywalker") || embedData.description?.includes("Grand Master Yoda"),
+            "Expected character in results",
+        );
     });
 
-    it("should display character names sorted alphabetically", async () => {        setMockCacheData([
+    it("should display character names sorted alphabetically", async () => {
+        setMockCacheData([
             { baseId: "GRANDMASTERYODA", nameKey: "Grand Master Yoda" },
             { baseId: "VADER", nameKey: "Darth Vader" },
-            { baseId: "COMMANDERLUKESKYWALKER", nameKey: "Commander Luke Skywalker" }
+            { baseId: "COMMANDERLUKESKYWALKER", nameKey: "Commander Luke Skywalker" },
         ]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_jedi"
-            }
+                faction: "profession_jedi",
+            },
         });
 
         const command = new Faction();
@@ -174,14 +184,13 @@ describe("Faction", () => {
     // covered here.
 
     // Option parsing tests
-    it("should parse faction option correctly", async () => {        setMockCacheData([
-            { baseId: "VADER", nameKey: "Darth Vader" }
-        ]);
+    it("should parse faction option correctly", async () => {
+        setMockCacheData([{ baseId: "VADER", nameKey: "Darth Vader" }]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_sith"
-            }
+                faction: "profession_sith",
+            },
         });
 
         const command = new Faction();
@@ -192,17 +201,17 @@ describe("Faction", () => {
         assert.ok(replies.length > 0, "Expected reply with faction option");
     });
 
-
     // Output format tests
-    it("should return embed with character list when no allycode provided", async () => {        setMockCacheData([
+    it("should return embed with character list when no allycode provided", async () => {
+        setMockCacheData([
             { baseId: "VADER", nameKey: "Darth Vader" },
-            { baseId: "COUNTDOOKU", nameKey: "Count Dooku" }
+            { baseId: "COUNTDOOKU", nameKey: "Count Dooku" },
         ]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_sith"
-            }
+                faction: "profession_sith",
+            },
         });
 
         const command = new Faction();
@@ -215,19 +224,23 @@ describe("Faction", () => {
 
         assert.ok(embedData.author?.name, "Expected author name");
         assert.ok(embedData.description, "Expected description with character list");
-        assert.ok(embedData.description.includes("Count Dooku") || embedData.description.includes("Darth Vader"), "Expected character in list");
+        assert.ok(
+            embedData.description.includes("Count Dooku") || embedData.description.includes("Darth Vader"),
+            "Expected character in list",
+        );
     });
 
-    it("should filter out ships from character results", async () => {        setMockCacheData([
+    it("should filter out ships from character results", async () => {
+        setMockCacheData([
             { baseId: "VADER", nameKey: "Darth Vader" },
             { baseId: "TIEFIGHTERFOSP", nameKey: "TIE Fighter (FO)" }, // Ship - should be filtered
-            { baseId: "COUNTDOOKU", nameKey: "Count Dooku" }
+            { baseId: "COUNTDOOKU", nameKey: "Count Dooku" },
         ]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_sith"
-            }
+                faction: "profession_sith",
+            },
         });
 
         const command = new Faction();
@@ -243,14 +256,13 @@ describe("Faction", () => {
         assert.ok(!embedData.description.includes("TIE Fighter"), "Should not include ships");
     });
 
-    it("should respond with proper embed structure", async () => {        setMockCacheData([
-            { baseId: "VADER", nameKey: "Darth Vader" }
-        ]);
+    it("should respond with proper embed structure", async () => {
+        setMockCacheData([{ baseId: "VADER", nameKey: "Darth Vader" }]);
 
         const interaction = createMockInteraction({
             optionsData: {
-                faction: "profession_sith"
-            }
+                faction: "profession_sith",
+            },
         });
 
         const command = new Faction();

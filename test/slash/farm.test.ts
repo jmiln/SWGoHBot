@@ -16,7 +16,7 @@ const testDb = env.MONGODB_SWAPI_DB;
 const originalUnits = swgohAPI.units.bind(swgohAPI);
 let mockUnitsEnabled = false;
 
-async function mockUnits(defId?: string, language: string = "eng_us") {
+async function mockUnits(defId?: string, language = "eng_us") {
     if (!mockUnitsEnabled) {
         return originalUnits(defId, language);
     }

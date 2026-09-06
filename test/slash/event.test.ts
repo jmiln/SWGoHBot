@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import { after, before, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import cache from "../../modules/cache.ts";
 import eventSocket from "../../modules/eventSocket.ts";
 import Event from "../../slash/event.ts";
@@ -16,7 +16,7 @@ function createMockGuild(overrides = {}) {
 
     // Add Collection-like methods to Map
     (channelsMap as any).find = function (predicate: (value: any) => boolean) {
-        for (const [key, value] of this.entries()) {
+        for (const [_key, value] of this.entries()) {
             if (predicate(value)) {
                 return value;
             }
@@ -53,7 +53,7 @@ function createMockGuild(overrides = {}) {
 // The command sends errors/successes as embeds (description) and direct results as content.
 function getReplyContent(reply: any): string {
     if (reply.content) return reply.content;
-    if (reply.embeds && reply.embeds[0]) {
+    if (reply.embeds?.[0]) {
         const embed = reply.embeds[0];
         const embedData = embed.data || embed;
         return embedData.description || "";

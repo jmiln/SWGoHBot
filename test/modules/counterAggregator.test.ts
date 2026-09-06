@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import { CounterDocSchema, CounterMetadataSchema } from "../../schemas/counters.schema.ts";
 import { baseId, squadInfo, teamIds, teamKey } from "../../modules/counters/counterAggregator.ts";
+import { CounterDocSchema, CounterMetadataSchema } from "../../schemas/counters.schema.ts";
 
 describe("counters schema", () => {
     it("accepts a valid counter doc", () => {
@@ -18,7 +18,15 @@ describe("counters schema", () => {
     });
 
     it("rejects a doc with an unknown mode", () => {
-        const bad = { mode: "7v7", battleType: "char", leader: "X", instanceId: "O1", season: 1, overall: { sampleN: 0, counters: [] }, variants: [] };
+        const bad = {
+            mode: "7v7",
+            battleType: "char",
+            leader: "X",
+            instanceId: "O1",
+            season: 1,
+            overall: { sampleN: 0, counters: [] },
+            variants: [],
+        };
         assert.strictEqual(CounterDocSchema.safeParse(bad).success, false);
     });
 
@@ -49,11 +57,17 @@ describe("baseId / teamKey", () => {
 
 describe("squadInfo", () => {
     it("finds the character leader by squadUnitType 2", () => {
-        const units = [{ definitionId: "MEMBER:X", squadUnitType: 1 }, { definitionId: "LEAD:X", squadUnitType: 2 }];
+        const units = [
+            { definitionId: "MEMBER:X", squadUnitType: 1 },
+            { definitionId: "LEAD:X", squadUnitType: 2 },
+        ];
         assert.deepStrictEqual(squadInfo(units), { kind: "char", leader: "LEAD" });
     });
     it("classifies a fleet by squadUnitType 3/5 and keys on the capital", () => {
-        const units = [{ definitionId: "CAP:X", squadUnitType: 3 }, { definitionId: "SHIP:X", squadUnitType: 5 }];
+        const units = [
+            { definitionId: "CAP:X", squadUnitType: 3 },
+            { definitionId: "SHIP:X", squadUnitType: 5 },
+        ];
         assert.deepStrictEqual(squadInfo(units), { kind: "fleet", leader: "CAP" });
     });
     it("returns unknown for an empty squad", () => {
@@ -61,11 +75,14 @@ describe("squadInfo", () => {
     });
 });
 
-import { foldDuel, foldPlayer } from "../../modules/counters/counterAggregator.ts";
 import type { Accumulator } from "../../modules/counters/counterAggregator.ts";
+import { foldDuel, foldPlayer } from "../../modules/counters/counterAggregator.ts";
 
 const charDuel = (outcome: number) => ({
-    defenderUnit: [{ definitionId: "GRIEVOUS:X", squadUnitType: 2 }, { definitionId: "STAP:X", squadUnitType: 1 }],
+    defenderUnit: [
+        { definitionId: "GRIEVOUS:X", squadUnitType: 2 },
+        { definitionId: "STAP:X", squadUnitType: 1 },
+    ],
     attackerUnit: [{ definitionId: "WAMPA:X", squadUnitType: 2 }],
     battleOutcome: outcome,
 });
@@ -105,12 +122,14 @@ describe("foldPlayer", () => {
     it("folds only attackResult duels (not defenseResult)", () => {
         const acc: Accumulator = new Map();
         foldPlayer(acc, {
-            matchResult: [{
-                attackResult: [{ duelResult: [charDuel(1)] }],
-                // defenseResult intentionally present but must be ignored:
-                // @ts-expect-error extra field for the test
-                defenseResult: [{ duelResult: [charDuel(1)] }],
-            }],
+            matchResult: [
+                {
+                    attackResult: [{ duelResult: [charDuel(1)] }],
+                    // defenseResult intentionally present but must be ignored:
+                    // @ts-expect-error extra field for the test
+                    defenseResult: [{ duelResult: [charDuel(1)] }],
+                },
+            ],
         });
         assert.strictEqual(acc.get("char:GRIEVOUS")?.sampleN, 1);
     });
@@ -213,7 +232,11 @@ describe("buildCounterDocs", () => {
         // 3 distinct attack teams vs the same leader, each won 5 times
         for (const atk of ["A", "B", "C"]) {
             for (let i = 0; i < 5; i++) {
-                foldDuel(acc, { defenderUnit: [{ definitionId: "GRIEVOUS:X", squadUnitType: 2 }], attackerUnit: [{ definitionId: `${atk}:X`, squadUnitType: 2 }], battleOutcome: 1 });
+                foldDuel(acc, {
+                    defenderUnit: [{ definitionId: "GRIEVOUS:X", squadUnitType: 2 }],
+                    attackerUnit: [{ definitionId: `${atk}:X`, squadUnitType: 2 }],
+                    battleOutcome: 1,
+                });
             }
         }
         const docs = buildCounterDocs(acc, meta, { ...DEFAULT_BUILD_OPTIONS, minBattles: 1, countersPerBucket: 2 });
@@ -224,7 +247,10 @@ describe("buildCounterDocs", () => {
 /** Build a duel against a distinct GRIEVOUS defense variant (leader + given member baseIds). */
 function variantDuel(defMembers: string[], atkId: string, outcome: number) {
     return {
-        defenderUnit: [{ definitionId: "GRIEVOUS:X", squadUnitType: 2 }, ...defMembers.map((m) => ({ definitionId: `${m}:X`, squadUnitType: 1 }))],
+        defenderUnit: [
+            { definitionId: "GRIEVOUS:X", squadUnitType: 2 },
+            ...defMembers.map((m) => ({ definitionId: `${m}:X`, squadUnitType: 1 })),
+        ],
         attackerUnit: [{ definitionId: `${atkId}:X`, squadUnitType: 2 }],
         battleOutcome: outcome,
     };
@@ -247,7 +273,10 @@ describe("selectVariants (via buildCounterDocs)", () => {
         const doc = docs.find((d) => d.leader === "GRIEVOUS");
         assert.ok(doc);
         assert.strictEqual(doc.variants.length, 2);
-        assert.deepStrictEqual(doc.variants.map((v) => v.sampleN), [50, 30]);
+        assert.deepStrictEqual(
+            doc.variants.map((v) => v.sampleN),
+            [50, 30],
+        );
         assert.ok(doc.variants[0].defense.includes("M1") && doc.variants[0].defense.includes("M2"));
         assert.ok(doc.variants[1].defense.includes("M3") && doc.variants[1].defense.includes("M4"));
     });

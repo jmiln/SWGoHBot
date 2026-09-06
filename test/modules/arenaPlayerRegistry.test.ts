@@ -1,9 +1,9 @@
 import assert from "node:assert";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { MongoClient } from "mongodb";
+import type { MongoClient } from "mongodb";
 import { env } from "../../config/config.ts";
-import cache from "../../modules/cache.ts";
 import { ArenaPlayerRegistry } from "../../modules/arenaPlayerRegistry.ts";
+import cache from "../../modules/cache.ts";
 import { closeMongoClient, getMongoClient } from "../helpers/mongodb.ts";
 
 describe("ArenaPlayerRegistry", () => {
@@ -23,12 +23,18 @@ describe("ArenaPlayerRegistry", () => {
     const TEST_ALLY_CODES = [111111111, 222222222, 333333333, 999999999];
 
     after(async () => {
-        await client.db(db).collection("arenaPlayers").deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
         await closeMongoClient();
     });
 
     beforeEach(async () => {
-        await client.db(db).collection("arenaPlayers").deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
+        await client
+            .db(db)
+            .collection("arenaPlayers")
+            .deleteMany({ allyCode: { $in: TEST_ALLY_CODES } });
     });
 
     describe("getPlayer()", () => {
@@ -53,10 +59,13 @@ describe("ArenaPlayerRegistry", () => {
         });
 
         it("returns a Map keyed by allyCode", async () => {
-            await client.db(db).collection("arenaPlayers").insertMany([
-                { allyCode: 111111111, name: "Alpha" },
-                { allyCode: 222222222, name: "Beta" },
-            ]);
+            await client
+                .db(db)
+                .collection("arenaPlayers")
+                .insertMany([
+                    { allyCode: 111111111, name: "Alpha" },
+                    { allyCode: 222222222, name: "Beta" },
+                ]);
             const result = await registry.batchGet([111111111, 222222222, 333333333]);
             assert.strictEqual(result.size, 2);
             assert.strictEqual(result.get(111111111)?.name, "Alpha");
@@ -102,7 +111,10 @@ describe("ArenaPlayerRegistry", () => {
                 { allyCode: 111111111, name: "Alpha", lastCharRank: 1 },
                 { allyCode: 222222222, name: "Beta", lastCharRank: 2 },
             ]);
-            const count = await client.db(db).collection("arenaPlayers").countDocuments({ allyCode: { $in: [111111111, 222222222] } });
+            const count = await client
+                .db(db)
+                .collection("arenaPlayers")
+                .countDocuments({ allyCode: { $in: [111111111, 222222222] } });
             assert.strictEqual(count, 2);
         });
 

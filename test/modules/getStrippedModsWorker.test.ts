@@ -129,7 +129,10 @@ describe("fetchPlayerData", () => {
         );
         after(async () => await comlink.close());
 
-        await assert.rejects(() => fetchPlayerData(comlink.url, 123456789, MOD_MAP), "the failure should surface rather than being retried here");
+        await assert.rejects(
+            () => fetchPlayerData(comlink.url, 123456789, MOD_MAP),
+            "the failure should surface rather than being retried here",
+        );
         assert.strictEqual(comlink.requestCount(), 1, "exactly one upstream call per task");
     });
 

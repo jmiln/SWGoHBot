@@ -31,62 +31,63 @@ const createMockGuild = (overrides: Partial<SWAPIGuild> = {}): SWAPIGuild => {
     } as any;
 };
 
-const createMockPlayer = (allyCode: number, overrides: Partial<SWAPIPlayer> = {}): SWAPIPlayer => ({
-    name: `Player${allyCode}`,
-    allyCode: allyCode,
-    level: 85,
-    stats: [
-        { nameKey: "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME", value: 5000000 },
-        { nameKey: "STAT_GALACTIC_POWER_ACQUIRED_NAME", value: 8000000 },
-    ],
-    roster: [
-        // Character with +15 speed mod and G13 R7
-        {
-            defId: "COMMANDERLUKESKYWALKER",
-            nameKey: "Commander Luke Skywalker",
-            rarity: 7,
-            level: 85,
-            gear: 13,
-            relic: { currentTier: 7 },
-            mods: [
-                {
-                    slot: 1,
-                    set: 1,
-                    level: 15,
-                    pips: 5,
-                    primaryStat: { unitStat: 48, value: 100 },
-                    secondaryStat: [
-                        { unitStat: 5, value: 20, roll: 0 }, // Speed +20
-                    ],
-                } as any,
-            ],
-        } as any,
-        // Character with +15 speed mod and G12
-        {
-            defId: "DARTHVADER",
-            nameKey: "Darth Vader",
-            rarity: 7,
-            level: 85,
-            gear: 12,
-            relic: { currentTier: 0 },
-            mods: [
-                {
-                    slot: 2,
-                    set: 1,
-                    level: 15,
-                    pips: 5,
-                    primaryStat: { unitStat: 48, value: 100 },
-                    secondaryStat: [
-                        { unitStat: 5, value: 15, roll: 0 }, // Speed +15
-                    ],
-                } as any,
-            ],
-        } as any,
-    ],
-    arena: { char: { rank: 50, squad: [] }, ship: { rank: 100, squad: [] } } as any,
-    updated: Date.now(),
-    ...overrides,
-} as any);
+const createMockPlayer = (allyCode: number, overrides: Partial<SWAPIPlayer> = {}): SWAPIPlayer =>
+    ({
+        name: `Player${allyCode}`,
+        allyCode: allyCode,
+        level: 85,
+        stats: [
+            { nameKey: "STAT_CHARACTER_GALACTIC_POWER_ACQUIRED_NAME", value: 5000000 },
+            { nameKey: "STAT_GALACTIC_POWER_ACQUIRED_NAME", value: 8000000 },
+        ],
+        roster: [
+            // Character with +15 speed mod and G13 R7
+            {
+                defId: "COMMANDERLUKESKYWALKER",
+                nameKey: "Commander Luke Skywalker",
+                rarity: 7,
+                level: 85,
+                gear: 13,
+                relic: { currentTier: 7 },
+                mods: [
+                    {
+                        slot: 1,
+                        set: 1,
+                        level: 15,
+                        pips: 5,
+                        primaryStat: { unitStat: 48, value: 100 },
+                        secondaryStat: [
+                            { unitStat: 5, value: 20, roll: 0 }, // Speed +20
+                        ],
+                    } as any,
+                ],
+            } as any,
+            // Character with +15 speed mod and G12
+            {
+                defId: "DARTHVADER",
+                nameKey: "Darth Vader",
+                rarity: 7,
+                level: 85,
+                gear: 12,
+                relic: { currentTier: 0 },
+                mods: [
+                    {
+                        slot: 2,
+                        set: 1,
+                        level: 15,
+                        pips: 5,
+                        primaryStat: { unitStat: 48, value: 100 },
+                        secondaryStat: [
+                            { unitStat: 5, value: 15, roll: 0 }, // Speed +15
+                        ],
+                    } as any,
+                ],
+            } as any,
+        ],
+        arena: { char: { rank: 50, squad: [] }, ship: { rank: 100, squad: [] } } as any,
+        updated: Date.now(),
+        ...overrides,
+    }) as any;
 
 // Store original swgohAPI methods
 const originalGuild = swgohAPI.guild.bind(swgohAPI);
@@ -216,10 +217,8 @@ describe("GuildQuality", () => {
         mockGuildEnabled = true;
         mockUnitStatsEnabled = true;
         mockGuildData = createMockGuild();
-        mockPlayerData = [
-            createMockPlayer(111111111),
-            createMockPlayer(222222222),
-        ];        const interaction = createMockInteraction({
+        mockPlayerData = [createMockPlayer(111111111), createMockPlayer(222222222)];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -245,7 +244,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -271,7 +271,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -285,8 +286,10 @@ describe("GuildQuality", () => {
         const description = embed?.description || "";
 
         // Gear quality should be 0.055 (rounded to 0.05 or 0.06)
-        assert.ok(description.includes("0.05") || description.includes("0.06"),
-            `Expected gear quality around 0.05-0.06, got: ${description}`);
+        assert.ok(
+            description.includes("0.05") || description.includes("0.06"),
+            `Expected gear quality around 0.05-0.06, got: ${description}`,
+        );
     });
 
     it("should calculate total quality correctly", async () => {
@@ -298,7 +301,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -336,12 +340,18 @@ describe("GuildQuality", () => {
                     relic: { currentTier: 9 },
                     mods: [
                         {
-                            slot: 1, set: 1, level: 15, pips: 5,
+                            slot: 1,
+                            set: 1,
+                            level: 15,
+                            pips: 5,
                             primaryStat: { unitStat: 48, value: 100 },
                             secondaryStat: [{ unitStat: 5, value: 25, roll: 0 }],
                         } as any,
                         {
-                            slot: 2, set: 1, level: 15, pips: 5,
+                            slot: 2,
+                            set: 1,
+                            level: 15,
+                            pips: 5,
                             primaryStat: { unitStat: 48, value: 100 },
                             secondaryStat: [{ unitStat: 5, value: 20, roll: 0 }],
                         } as any,
@@ -353,7 +363,10 @@ describe("GuildQuality", () => {
                     relic: { currentTier: 7 },
                     mods: [
                         {
-                            slot: 1, set: 1, level: 15, pips: 5,
+                            slot: 1,
+                            set: 1,
+                            level: 15,
+                            pips: 5,
                             primaryStat: { unitStat: 48, value: 100 },
                             secondaryStat: [{ unitStat: 5, value: 18, roll: 0 }],
                         } as any,
@@ -387,7 +400,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player1, player2];        const interaction = createMockInteraction({
+        mockPlayerData = [player1, player2];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -404,8 +418,10 @@ describe("GuildQuality", () => {
         const highPlayerIndex = description.indexOf("HighQualityPlayer");
         const lowPlayerIndex = description.indexOf("LowQualityPlayer");
         assert.ok(highPlayerIndex > 0 && lowPlayerIndex > 0, "Both players should be in description");
-        assert.ok(highPlayerIndex < lowPlayerIndex,
-            `Higher quality player should appear before lower quality player. Description: ${description}`);
+        assert.ok(
+            highPlayerIndex < lowPlayerIndex,
+            `Higher quality player should appear before lower quality player. Description: ${description}`,
+        );
     });
 
     it("should calculate guild averages correctly", async () => {
@@ -421,7 +437,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player1, player2];        const interaction = createMockInteraction({
+        mockPlayerData = [player1, player2];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -451,7 +468,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -482,7 +500,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -515,7 +534,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -540,7 +560,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -568,7 +589,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 
@@ -594,7 +616,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [player];        const interaction = createMockInteraction({
+        mockPlayerData = [player];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" }, // Provide ally code
         } as any);
 
@@ -622,13 +645,18 @@ describe("GuildQuality", () => {
                     defId: "CHAR1",
                     gear: 13,
                     relic: { currentTier: 7 },
-                    mods: [{
-                        slot: 1, set: 1, level: 15, pips: 5,
-                        primaryStat: { unitStat: 48, value: 100 },
-                        secondaryStat: [
-                            { unitStat: "UNITSTATSPEED" as any, value: 18, roll: 0 }, // Named stat instead of number 5
-                        ],
-                    } as any],
+                    mods: [
+                        {
+                            slot: 1,
+                            set: 1,
+                            level: 15,
+                            pips: 5,
+                            primaryStat: { unitStat: 48, value: 100 },
+                            secondaryStat: [
+                                { unitStat: "UNITSTATSPEED" as any, value: 18, roll: 0 }, // Named stat instead of number 5
+                            ],
+                        } as any,
+                    ],
                 } as any,
             ],
         });
@@ -638,7 +666,8 @@ describe("GuildQuality", () => {
         });
 
         mockGuildData = guild;
-        mockPlayerData = [playerWithNamedStat];        const interaction = createMockInteraction({
+        mockPlayerData = [playerWithNamedStat];
+        const interaction = createMockInteraction({
             optionsData: { allycode: "123456789" },
         } as any);
 

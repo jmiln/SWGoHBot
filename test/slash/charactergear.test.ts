@@ -4,7 +4,8 @@ import Charactergear from "../../slash/charactergear.ts";
 import { createCommandContext, createMockInteraction } from "../mocks/index.ts";
 
 describe("Charactergear", () => {
-    it("should validate gear level - reject values below 0", async () => {        const interaction = createMockInteraction({
+    it("should validate gear level - reject values below 0", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "Luke", gearlevel: -1 },
         });
 
@@ -20,7 +21,8 @@ describe("Charactergear", () => {
         assert.ok(errorMsg.includes("COMMAND_CHARACTERGEAR_INVALID_LEVEL"), "Expected invalid gear level error");
     });
 
-    it("should validate gear level - reject values above 13", async () => {        const interaction = createMockInteraction({
+    it("should validate gear level - reject values above 13", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "Luke", gearlevel: 15 },
         });
 
@@ -36,7 +38,8 @@ describe("Charactergear", () => {
         assert.ok(errorMsg.includes("COMMAND_CHARACTERGEAR_INVALID_LEVEL"), "Expected invalid gear level error");
     });
 
-    it("should accept valid gear levels (1-13)", async () => {        const interaction = createMockInteraction({
+    it("should accept valid gear levels (1-13)", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER", gearlevel: 12 },
         });
 
@@ -53,7 +56,8 @@ describe("Charactergear", () => {
         assert.ok(!errorMsg.includes("not a valid gear level"), "Should not reject valid gear level");
     });
 
-    it("should handle character not found error", async () => {        const interaction = createMockInteraction({
+    it("should handle character not found error", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "NonexistentCharacter999" },
         });
 
@@ -74,7 +78,8 @@ describe("Charactergear", () => {
         assert.ok(replies[0].flags, "Expected ephemeral flag");
     });
 
-    it("should handle multiple character matches", async () => {        const interaction = createMockInteraction({
+    it("should handle multiple character matches", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "Luke" }, // Multiple matches: CLS, JKL, etc.
         });
 
@@ -94,7 +99,8 @@ describe("Charactergear", () => {
         assert.equal(desc, "BASE_SWGOH_CHAR_LIST");
     });
 
-    it("should parse character option correctly", async () => {        const interaction = createMockInteraction({
+    it("should parse character option correctly", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER" },
         });
 
@@ -106,7 +112,8 @@ describe("Charactergear", () => {
         assert.ok(replies.length > 0, "Expected at least one reply");
     });
 
-    it("should parse gearlevel option correctly", async () => {        const interaction = createMockInteraction({
+    it("should parse gearlevel option correctly", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER", gearlevel: 12 },
         });
 
@@ -118,7 +125,8 @@ describe("Charactergear", () => {
         assert.ok(replies.length > 0, "Expected at least one reply");
     });
 
-    it("should handle expand option (boolean)", async () => {        const interaction = createMockInteraction({
+    it("should handle expand option (boolean)", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER", expand: true },
         });
 
@@ -130,7 +138,8 @@ describe("Charactergear", () => {
         assert.ok(replies.length > 0, "Expected reply with expand option");
     });
 
-    it("should process character search by alias", async () => {        const interaction = createMockInteraction({
+    it("should process character search by alias", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "CLS", gearlevel: 3 }, // Alias for Commander Luke
         });
 
@@ -142,7 +151,8 @@ describe("Charactergear", () => {
         assert.ok(replies.length > 0, "Expected reply for alias search");
     });
 
-    it("should respond to gear requests (any response, success or error)", async () => {        const interaction = createMockInteraction({
+    it("should respond to gear requests (any response, success or error)", async () => {
+        const interaction = createMockInteraction({
             optionsData: { character: "COMMANDERLUKESKYWALKER", gearlevel: 12 },
         });
 

@@ -81,7 +81,7 @@ describe("buildArenaHistChart", () => {
         const result = buildArenaHistChart(charHist, [], 30, NOW, "Test");
         assert.ok(result);
         assert.strictEqual(result.labels.length, 30);
-        const nonNull = result.datasets[0].data.filter(d => d !== null);
+        const nonNull = result.datasets[0].data.filter((d) => d !== null);
         assert.strictEqual(nonNull.length, 3);
     });
 
@@ -116,8 +116,8 @@ describe("buildArenaHistChart", () => {
     it("char dataset uses blue color, fleet dataset uses orange with borderDash", () => {
         const result = buildArenaHistChart([makeEntry(1, 50)], [makeEntry(1, 20)], 7, NOW, "Test");
         assert.ok(result);
-        const char = result.datasets.find(d => d.label === "Char Arena");
-        const fleet = result.datasets.find(d => d.label === "Fleet Arena");
+        const char = result.datasets.find((d) => d.label === "Char Arena");
+        const fleet = result.datasets.find((d) => d.label === "Fleet Arena");
         assert.ok(char);
         assert.ok(fleet);
         assert.strictEqual(char.borderColor, "#4a90d9");

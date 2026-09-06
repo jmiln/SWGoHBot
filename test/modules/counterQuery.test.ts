@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { describe, it } from "node:test";
-import type { CounterDoc } from "../../schemas/counters.schema.ts";
 import { displayRows, distinctLeaders, inferBattleType, selectBucket, variantMemberIds } from "../../modules/counters/counterQuery.ts";
+import type { CounterDoc } from "../../schemas/counters.schema.ts";
 
 const SHIP_IDS = new Set(["CAPITALMALEVOLENCE", "CAPITALCHIMAERA"]);
 
@@ -66,8 +66,16 @@ const doc: CounterDoc = {
     season: 80,
     overall: { sampleN: 100, counters: [{ attack: ["GAS"], atkLeader: "GAS", wins: 6, total: 10, draws: 0 }] },
     variants: [
-        { defense: ["BOSSNASS", "JARJAR", "BOBBAFETT"], sampleN: 40, counters: [{ attack: ["REY"], atkLeader: "REY", wins: 9, total: 10, draws: 0 }] },
-        { defense: ["BOSSNASS", "JARJAR", "QUEENAMIDALA"], sampleN: 25, counters: [{ attack: ["SLKR"], atkLeader: "SLKR", wins: 8, total: 10, draws: 0 }] },
+        {
+            defense: ["BOSSNASS", "JARJAR", "BOBBAFETT"],
+            sampleN: 40,
+            counters: [{ attack: ["REY"], atkLeader: "REY", wins: 9, total: 10, draws: 0 }],
+        },
+        {
+            defense: ["BOSSNASS", "JARJAR", "QUEENAMIDALA"],
+            sampleN: 25,
+            counters: [{ attack: ["SLKR"], atkLeader: "SLKR", wins: 8, total: 10, draws: 0 }],
+        },
     ],
 };
 

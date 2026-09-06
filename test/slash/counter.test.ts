@@ -9,7 +9,6 @@ const language = createRealLanguage();
 
 describe("counter metadata", () => {
     const meta = Counter.metadata;
-    // biome-ignore lint/suspicious/noExplicitAny: metadata is a literal union; tests index it structurally
     const sub = (name: string) => meta.options.find((o: any) => o.name === name) as any;
 
     it("is free for everyone", () => {
@@ -18,7 +17,6 @@ describe("counter metadata", () => {
 
     it("exposes 5v5 and 3v3 as subcommands, since mode is always required", () => {
         assert.deepStrictEqual(
-            // biome-ignore lint/suspicious/noExplicitAny: see above
             meta.options.map((o: any) => o.name),
             ["5v5", "3v3"],
         );
@@ -29,7 +27,6 @@ describe("counter metadata", () => {
 
     it("gives each mode a required leader and optional members", () => {
         for (const mode of ["5v5", "3v3"]) {
-            // biome-ignore lint/suspicious/noExplicitAny: see above
             const opt = (n: string) => sub(mode).options.find((o: any) => o.name === n);
             assert.strictEqual(opt("leader")?.required, true, `${mode} leader should be required`);
             assert.strictEqual(opt("leader")?.autocomplete, true, `${mode} leader should autocomplete`);
@@ -42,7 +39,8 @@ describe("counter metadata", () => {
 
 describe("buildCounterEmbed", () => {
     // nameOf is a plain (baseId -> display name) function passed in by the command.
-    const nameOf = (id: string) => ({ GAS: "General Skywalker", ARC: "ARC Trooper", FIVES: "Fives", BOSSNASS: "Boss Nass", JARJAR: "Jar Jar" }[id] ?? id);
+    const nameOf = (id: string) =>
+        ({ GAS: "General Skywalker", ARC: "ARC Trooper", FIVES: "Fives", BOSSNASS: "Boss Nass", JARJAR: "Jar Jar" })[id] ?? id;
     const view = {
         kind: "variant" as const,
         defense: ["BOSSNASS", "JARJAR"],

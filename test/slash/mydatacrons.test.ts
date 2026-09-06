@@ -34,7 +34,11 @@ describe("/mydatacrons metadata", () => {
         assert.ok(allycode);
         assert.strictEqual(allycode?.required ?? false, false);
         assert.strictEqual(allycode?.autocomplete, true);
-        assert.strictEqual(MyDatacrons.metadata.options.find((o) => o.name === "set"), undefined, "no set filter - shows everything");
+        assert.strictEqual(
+            MyDatacrons.metadata.options.find((o) => o.name === "set"),
+            undefined,
+            "no set filter - shows everything",
+        );
     });
 });
 
@@ -61,15 +65,12 @@ describe("buildPlayerDatacronEmbeds", () => {
     it("puts live datacrons first and marks expired ones, so dead sets don't bury the current one", () => {
         // set 24 expired back in Jan 2026; set 32 is active. Feed them worst-order on purpose.
         const expiredOne: PlayerDatacron = { ...datacron, id: "old", setId: 24, focused: false };
-        const embeds = buildPlayerDatacronEmbeds(
-            { name: "Bob", datacron: [expiredOne, datacron] },
-            textMap,
-            abilities,
-            language,
-            "eng_us",
-        );
+        const embeds = buildPlayerDatacronEmbeds({ name: "Bob", datacron: [expiredOne, datacron] }, textMap, abilities, language, "eng_us");
         const fields = embeds[0].fields ?? [];
-        assert.ok(fields[0].name.includes("32") || fields[0].name.includes("Necessary Means"), `live set should sort first: ${fields[0].name}`);
+        assert.ok(
+            fields[0].name.includes("32") || fields[0].name.includes("Necessary Means"),
+            `live set should sort first: ${fields[0].name}`,
+        );
         const expiredField = fields.find((f) => f.name.includes("24"));
         assert.ok(expiredField?.name.includes("expired"), `expired datacron must be flagged: ${expiredField?.name}`);
     });

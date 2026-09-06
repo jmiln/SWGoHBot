@@ -6,7 +6,6 @@ const { processDatacrons, buildDatacronLocRows } = dataUpdater;
 
 // Verified 2026-07-21 against the cached gameData blob. The SET's tier scopeIdentifier is ignored
 // on purpose: it cannot express the ROLE mechanic, so labels come from each ability's nameKey.
-// biome-ignore lint/suspicious/noExplicitAny: narrow test fixture, not a full GameData
 const gameData: any = {
     datacronSet: [
         { id: 31, displayName: "DATACRON_SET_31_NAME", expirationTimeMs: 1800000000000, tier: [] },
@@ -68,11 +67,11 @@ describe("processDatacrons", () => {
 
     it("builds an abilities map from gameData.ability, datacron abilities only", () => {
         const out = processDatacrons(gameData);
-        assert.deepStrictEqual(out.abilities["datacron_faction_generic_007"], {
+        assert.deepStrictEqual(out.abilities.datacron_faction_generic_007, {
             nameKey: "DATACRON_FACTION_MECHANIC_NAME",
             descKey: "DATACRON_FACTION_GENERIC_007_DESC",
         });
-        assert.strictEqual(out.abilities["some_other_ability"], undefined, "non-datacron abilities excluded");
+        assert.strictEqual(out.abilities.some_other_ability, undefined, "non-datacron abilities excluded");
     });
 
     it("excludes datacronHelpEntry, which is in-client help text", () => {

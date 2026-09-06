@@ -137,7 +137,10 @@ describe("target search", () => {
 
         it("handles a target no set can boost", () => {
             const embeds = buildTargetSearchEmbeds("Nobody", [], textMap, language);
-            assert.ok(embeds[0].description?.toLowerCase().includes("no datacron"), `expected a no-match message: ${embeds[0].description}`);
+            assert.ok(
+                embeds[0].description?.toLowerCase().includes("no datacron"),
+                `expected a no-match message: ${embeds[0].description}`,
+            );
         });
 
         it("states possibilities, never reroll instructions (presentation rule)", () => {

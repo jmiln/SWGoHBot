@@ -26,12 +26,16 @@ describe("eachLimit", () => {
     it("never exceeds the concurrency limit", async () => {
         let inFlight = 0;
         let peak = 0;
-        await eachLimit(Array.from({ length: 40 }, (_, i) => i), 5, async () => {
-            inFlight++;
-            peak = Math.max(peak, inFlight);
-            await sleep(1);
-            inFlight--;
-        });
+        await eachLimit(
+            Array.from({ length: 40 }, (_, i) => i),
+            5,
+            async () => {
+                inFlight++;
+                peak = Math.max(peak, inFlight);
+                await sleep(1);
+                inFlight--;
+            },
+        );
         assert.strictEqual(peak, 5, `expected peak in-flight of 5, saw ${peak}`);
     });
 
